@@ -11,19 +11,48 @@
  * 开发联调：PI_WEB_DESKTOP_URL=http://localhost:5173 可让窗口指到 vite
  * （仅开发模式生效，打包版忽略该 override —— 见 startServerSidecar）。
  */
-import { app, BrowserWindow, ipcMain, shell } from "electron";
+import { app, BrowserWindow, dialog, ipcMain, shell } from "electron";
 import { spawn, type ChildProcess } from "node:child_process";
-import { existsSync, mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createServer } from "node:net";
-import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { isAllowedExternalUrl } from "./external-url.js";
+import { validateWorkspace } from "./workspace.js";
 import { setupPortableMode } from "./portable.js";
 import { buildDesktopLoadUrl, DEFAULT_DESKTOP_PORT, resolveHealthTimeoutMs, waitForHealth } from "./startup.js";
 
 // 便携模式初始化：在 app ready 之前完成 Electron userData 重定向与便携环境变量装载
+if (process.env.PI_DESKTOP_USER_DATA) app.setPath("userData", process.env.PI_DESKTOP_USER_DATA);
+else app.setPath("userData", join(app.getPath("appData"), "Pi Agent Desktop"));
 setupPortableMode(app);
+
+async function selectWorkspace(): Promise<string | null> {
+	if (process.env.PI_WEB_CWD) return validateWorkspace(process.env.PI_WEB_CWD);
+	const preferencesPath = join(app.getPath("userData"), "startup.json");
+	try {
+		const saved = JSON.parse(readFileSync(preferencesPath, "utf8"));
+		if (typeof saved.workspace === "string") return validateWorkspace(saved.workspace);
+	} catch {
+		// A deleted or inaccessible recent workspace opens the picker again.
+	}
+	for (;;) {
+		const result = await dialog.showOpenDialog({
+			title: "选择项目工作区 / Select project workspace",
+			properties: ["openDirectory"],
+		});
+		if (result.canceled || !result.filePaths[0]) return null;
+		try {
+			const workspace = validateWorkspace(result.filePaths[0]);
+			mkdirSync(app.getPath("userData"), { recursive: true });
+			writeFileSync(preferencesPath, JSON.stringify({ workspace }), { mode: 0o600 });
+			return workspace;
+		} catch (error) {
+			dialog.showErrorBox("工作区不可用 / Invalid workspace", (error as Error).message);
+		}
+	}
+}
+let workspace = "";
 
 const here = dirname(fileURLToPath(import.meta.url));
 /** 开发：dist/desktop → dist/server；打包后：asar 关闭，app 目录即根布局（dist/server + web/dist + themes）。 */
@@ -120,15 +149,12 @@ async function startServerSidecar(): Promise<string> {
 	console.log(`[desktop] server entry: ${entry}`);
 	const port = await resolvePort();
 	const dataDir = process.env.PI_WEB_DATA_DIR ?? join(app.getPath("userData"), "data");
-	const cwd = process.env.PI_WEB_CWD ?? homedir();
+	const cwd = workspace;
+	const agentDir = process.env.PI_CODING_AGENT_DIR ?? join(app.getPath("userData"), "agent");
+	mkdirSync(agentDir, { recursive: true });
 	// 确保工作区与数据目录在子进程启动前已实体创建，防止第一次打开找不到目录
 	try {
 		mkdirSync(dataDir, { recursive: true });
-	} catch {
-		/* ignore */
-	}
-	try {
-		mkdirSync(cwd, { recursive: true });
 	} catch {
 		/* ignore */
 	}
@@ -158,6 +184,8 @@ async function startServerSidecar(): Promise<string> {
 				PI_WEB_PORT: String(port),
 				PI_WEB_CWD: cwd,
 				PI_WEB_DATA_DIR: dataDir,
+				PI_CODING_AGENT_DIR: agentDir,
+				PI_WEB_SDK: "bundled",
 			},
 			stdio: "inherit",
 			windowsHide: true,
@@ -276,6 +304,12 @@ void app.whenReady().then(async () => {
 	console.log("[desktop] app ready");
 	try {
 		wireWindowControls();
+		const selected = await selectWorkspace();
+		if (!selected) {
+			app.quit();
+			return;
+		}
+		workspace = selected;
 		const url = await startServerSidecar();
 		await createWindow(url);
 		await wireAutoUpdater();

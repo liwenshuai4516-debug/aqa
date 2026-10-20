@@ -1,0 +1,5 @@
+desktop/main.ts 79ms
+desktop/workspace.ts 3ms (unchanged)
+desktop/tsconfig.json 10ms (unchanged)
+tests/unit/desktop-workspace.test.ts 3ms (unchanged)
+tests/desktop/baseline-run.mjs 7ms

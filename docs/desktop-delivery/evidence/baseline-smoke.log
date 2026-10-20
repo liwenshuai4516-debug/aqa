@@ -1,0 +1,1857 @@
+ℹ 并行模式：4 worker（串行用 --jobs=1；各 worker 端口见 ▶ 行）
+ℹ 跳过构建（--no-build）：直接用现有 dist/
+
+▶ clear-provider-key-test（worker0 :9100）
+
+▶ conv-cross-project-test（worker1 :9120）
+
+▶ conv-cwd-test（worker2 :9140）
+
+▶ project-model-key-test（worker3 :9160）
+
+----- project-model-key-test 输出开始 -----
+✓ project A model set to beta-mock
+✓ client-state remembers project A model — {"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-project-model-key-XtE5p6/projA":"main/beta-mock"}
+✓ client-state remembers project A provider key — {"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-project-model-key-XtE5p6/projA":{"main":"k1"}}
+✓ project B defaults to alpha-mock (so restore is distinguishable) — got alpha-mock
+✓ project B remembers provider key k2
+✓ global auth.json is k2 while in B — k2-val
+✓ project A model restored (beta-mock, not B's/alpha default)
+✓ project A provider key restored to k1 in auth.json — k1-val
+ALL PASS
+----- project-model-key-test 输出结束 -----
+
+▶ plugin-jobs-test（worker3 :9160）
+
+----- conv-cwd-test 输出开始 -----
+ready
+✓ conv1 cwd = A — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-proj-a-ui9kRA
+✓ new_chat reuses the blank active conversation (same id) — c1 → c1
+✓ conv2 cwd = A
+✓ no running conversations listed (nothing was displaced while streaming) — 0 listed
+✓ set_cwd(B) → B gets its OWN conversation id — c1 → c2
+✓ convB cwd = B
+✓ file tree shows B's files
+✓ set_cwd(A) → fresh A conversation (old A conv was dismissed) — c2 → c3
+✓ file tree shows A's files
+✓ set_cwd(B) again → new B conversation (previous B conv was dismissed) — c2 → c4
+✓ conversations list stays empty (per-project + only listed) — 0 listed
+✓ workspace-switch notices fired — 正在同步目录与检查最近会话：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-proj-b-mot1xv | 工作区会话已就绪，正在挂载智能体与工具… | 已切换到工作目录：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-proj-b-mot1xv | 正在同步目录与检查最近会话：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-proj-a-ui9kRA | 工作区会话已就绪，正在挂载智能体与工具… | 已切换到工作目录：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-proj-a-ui9kRA | 正在同步目录与检查最近会话：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-proj-b-mot1xv | 工作区会话已就绪，正在挂载智能体与工具… | 已切换到工作目录：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-proj-b-mot1xv
+--- conversation summaries ---
+--- notices ---
+   正在同步目录与检查最近会话：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-proj-b-mot1xv
+   工作区会话已就绪，正在挂载智能体与工具…
+   已切换到工作目录：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-proj-b-mot1xv
+   正在同步目录与检查最近会话：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-proj-a-ui9kRA
+   工作区会话已就绪，正在挂载智能体与工具…
+   已切换到工作目录：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-proj-a-ui9kRA
+   正在同步目录与检查最近会话：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-proj-b-mot1xv
+   工作区会话已就绪，正在挂载智能体与工具…
+   已切换到工作目录：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-proj-b-mot1xv
+
+ALL PASS
+----- conv-cwd-test 输出结束 -----
+
+▶ plugin-grants-test（worker2 :9140）
+
+----- conv-cross-project-test 输出开始 -----
+✓ slow run is streaming in project A
+     active now: cwd=/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-cross-project-RM4VlS/projB conversation=c3
+✓ A's streaming conversation stays visible after leaving the project
+✓ conversation is named from its first prompt immediately — title="SLOW cross-project run"
+✓ A's conversation stays listed after the run finishes
+✓ switch_conversation switches conversation AND project back to A — conversation=c2 cwd=/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-cross-project-RM4VlS/projA
+✓ the background response is still there after switching back
+✓ server re-pushed a file listing after the cross-project switch — 1 → 2 pushes
+ALL PASS
+----- conv-cross-project-test 输出结束 -----
+
+▶ plugin-api-catalog-test（worker1 :9120）
+
+----- plugin-jobs-test 输出开始 -----
+[srv] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[srv] 
+  ⚡ pi-web-ui — web chat for the pi coding agent
+[srv]     http://localhost:29796
+    workspace   : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/piweb-pjob-okNk8w
+    session dir : /Users/liyingjun/.pi/agent/sessions
+    pi SDK      : v1.1.0
+[srv]     bind        : 127.0.0.1:29796
+
+[srv]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/piweb-pjob-data-EWOVxr/pi-web-ui.sock
+server up
+ws connected
+ready received
+  ✓ 非法来源被拒（就回一条 done，不让面板等超时）
+  ✓ 拒绝原因可读
+  ✓ 卸载成功作业回 done(ok)
+  ✓ 插件目录已被 CLI 删掉
+  ✓ 成功后服务端重推了插件列表
+  ✓ 卸载不存在的插件失败并回 done(ok:false)
+  ✓ 失败回执带输出尾部
+  ✓ 目录同步成功回执 ok
+  ✓ 回执带合并后的列表
+  ✓ 自定义目录已原子写盘
+  ✓ 写盘内容为白名单字段
+  ✓ 新条目已推给客户端（plugin_catalog）
+  ✓ 坏 JSON 回执 ok:false
+  ✓ 坏文档不覆盖已有目录
+
+14 checks passed
+[srv exited early: null]
+----- plugin-jobs-test 输出结束 -----
+
+▶ plugin-client-conversation-test（worker3 :9160）
+
+----- plugin-grants-test 输出开始 -----
+[server] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[server] 
+[server]   ⚡ pi-web-ui — web chat for the pi coding agent
+    http://localhost:8976
+    workspace   : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-plugin-grants-SdMTee/work
+    session dir : /Users/liyingjun/.pi/agent/sessions
+    pi SDK      : v1.1.0
+[server]     bind        : 127.0.0.1:8976
+[server] 
+[server]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-plugin-grants-SdMTee/data/pi-web-ui.sock
+[server] [plugin:grantprobe] registered command: /probe-grant
+[server] [plugin:grantprobe] registered command: /probe-dirs
+[server] [plugin:grantprobe] activated (v0.1.0)
+✓ 工作区内的目录不需确认（requestAccess 直接 true） — OK:inside-content
+✓ 工作区内不产生授权弹窗
+✓ 插件请求工作区外目录 → 浏览器收到 plugin_path_request — {"pluginId":"grantprobe","path":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-plugin-grants-SdMTee/outside"}
+✓ 请求里带着插件 id 与目标目录
+✓ 用户同意后插件读到该目录（授权链路打通） — OK:granted-content
+✓ plugin_grants 推给浏览器且含该目录 — {"pluginId":"grantprobe","paths":["/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-plugin-grants-SdMTee/outside"]}
+✓ 新连接 attach 时也收到 plugin_grants（刷新不丢授权）
+✓ 已授权的目录不再弹窗（remember 生效） — OK:granted-content
+✓ authorizedDirs() 列出该目录 — DIRS:["/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-plugin-grants-SdMTee/outside"]
+✓ 撤销后推送的授权表里该插件为空
+✓ 撤销后再读该目录会重新弹窗确认
+✓ 这次选择拒绝 → 插件拿到 DENY（不静默放行） — DENY:用户拒绝或宿主未接线
+
+ALL PASS
+----- plugin-grants-test 输出结束 -----
+
+▶ plugin-scaffold-test（worker2 :9140）
+
+----- plugin-api-catalog-test 输出开始 -----
+✓ 回包带 catalog
+✓ 33 个 slot — 33
+✓ topbar.primary 别名含 topbar — ["topbar"]
+✓ 例子可抄（非空）
+✓ 占用者点名探针插件（manifest 基线 1 条） — [{"pluginId":"catprobe","items":1}]
+✓ 工具表非空 — 27
+✓ 方法表含 onToolPre/onToolPost
+✓ 方法表行行有例子
+✓ registerAgentTool 标 tools 族
+
+ALL PASS
+----- plugin-api-catalog-test 输出结束 -----
+
+▶ provider-oauth-test（worker1 :9120）
+
+----- provider-oauth-test 输出开始 -----
+  ✓ OAuth provider protocol
+----- provider-oauth-test 输出结束 -----
+
+▶ provider-keys-test（worker1 :9120）
+
+----- plugin-client-conversation-test 输出开始 -----
+✓ tab-1 能取到自己的快照
+✓ tab-2 能取到自己的快照
+✓ 快照点名 clientId
+✓ 两个标签页拿的是各自的对话（会话文件不同） — c1@2026-10-20T07-19-12-842Z_01a1582d-b4ca-7792-8402-dcebba822dbc.jsonl vs c1@2026-10-20T07-19-12-858Z_01a1582d-b4da-7792-8402-dcec7253ee6d.jsonl
+✓ 快照带 sessionFile（成本账本用）
+✓ 重复取同一个客户端结果稳定
+✓ 快照带 isSubagent（主对话 = false）
+✓ 缺省取用 = 全局回落（不认识 clientId 也一样）
+✓ clientId 不认识 → 回落全局
+✓ 切换前没有事件
+✓ 切模型后不发消息也立即收到事件 — {"clientId":"tab-1","conversationId":"c1","sessionFile":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-plugin-client-conv-9gxOVS/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-plugin-client-conv-9gxOVS-work--/2026-10-20T07-19-12-842Z_01a1582d-b4ca-7792-8402-dcebba822dbc.jsonl","model":"mock/mock-model","isSubagent":false,"totalMessages":0}
+✓ 事件归属发起切换的标签页与会话
+✓ 另一个标签页没收到（不串台）
+✓ 事件带 isSubagent 与消息数
+✓ 重复切同一个模型不重复发事件 — events=1
+✓ 另一个标签页切模型单独出事件 — {"clientId":"tab-2","conversationId":"c1","sessionFile":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-plugin-client-conv-9gxOVS/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-plugin-client-conv-9gxOVS-work--/2026-10-20T07-19-12-858Z_01a1582d-b4da-7792-8402-dcec7253ee6d.jsonl","model":"mock/mock-model","isSubagent":false,"totalMessages":0}
+✓ 切换失败不产生事件 — events=2
+✓ 切到新模型再发事件 — {"clientId":"tab-1","conversationId":"c1","sessionFile":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-plugin-client-conv-9gxOVS/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-plugin-client-conv-9gxOVS-work--/2026-10-20T07-19-12-842Z_01a1582d-b4ca-7792-8402-dcebba822dbc.jsonl","model":"mock/other-model","isSubagent":false,"totalMessages":0}
+✓ 切回原模型也再发一次（A→B→A 不被永久静音）
+
+ALL PASS
+----- plugin-client-conversation-test 输出结束 -----
+
+▶ db-client-test（worker3 :9160）
+
+----- plugin-scaffold-test 输出开始 -----
+▶ 脚手架生成与静态自检
+  ✓ minimal：CLI 退出码 0
+  ✓ minimal：无自检告警
+  ✓ minimal：manifest.json 已生成
+  ✓ minimal：index.mjs 已生成
+  ✓ minimal：client/entry.mjs 已生成
+  ✓ minimal：sdk/index.mjs 已生成
+  ✓ minimal：sdk/client-utils.mjs 已生成
+  ✓ minimal：client/sdk/已拷（客户端要用）
+  ✓ minimal：客户端 import 落在 client/ 内
+  ✓ minimal：import 自检零问题
+  ✓ ui-slot：CLI 退出码 0
+  ✓ ui-slot：无自检告警
+  ✓ ui-slot：manifest.json 已生成
+  ✓ ui-slot：index.mjs 已生成
+  ✓ ui-slot：client/entry.mjs 已生成
+  ✓ ui-slot：sdk/index.mjs 已生成
+  ✓ ui-slot：sdk/client-utils.mjs 已生成
+  ✓ ui-slot：client/sdk/已拷（客户端要用）
+  ✓ ui-slot：客户端 import 落在 client/ 内
+  ✓ ui-slot：import 自检零问题
+  ✓ agent-tool：CLI 退出码 0
+  ✓ agent-tool：无自检告警
+  ✓ agent-tool：manifest.json 已生成
+  ✓ agent-tool：index.mjs 已生成
+  ✓ agent-tool：client/entry.mjs 已生成
+  ✓ agent-tool：sdk/index.mjs 已生成
+  ✓ agent-tool：sdk/client-utils.mjs 已生成
+  ✓ agent-tool：client/sdk/已拷（客户端要用）
+  ✓ agent-tool：客户端 import 落在 client/ 内
+  ✓ agent-tool：import 自检零问题
+  ✓ renderer：CLI 退出码 0
+  ✓ renderer：无自检告警
+  ✓ renderer：manifest.json 已生成
+  ✓ renderer：index.mjs 已生成
+  ✓ renderer：client/entry.mjs 已生成
+  ✓ renderer：sdk/index.mjs 已生成
+  ✓ renderer：sdk/client-utils.mjs 已生成
+  ✓ renderer：client/sdk/不白拷（客户端不用 SDK）
+  ✓ renderer：客户端 import 落在 client/ 内
+  ✓ renderer：import 自检零问题
+  ✓ minimal：服务端入口可加载
+  ✓ ui-slot：服务端入口可加载
+  ✓ agent-tool：服务端入口可加载
+  ✓ renderer：服务端入口可加载
+  ✓ renderer：客户端是裸 ESM（renderers 表）
+▶ plugin upgrade-sdk：补齐两处拷贝
+  ✓ upgrade-sdk：退出码 0
+  ✓ upgrade-sdk：服务端副本补齐 client-utils.mjs
+  ✓ upgrade-sdk：客户端副本补建（代码 import ./sdk/ 但目录曾被删）
+  ✓ upgrade-sdk：修复前的坏骨架被点名（escapes-client 告警）
+▶ 真服务：清单 + 客户端 import 图
+  ✓ minimal：清单里有它且 hasClient
+  ✓ minimal：激活无 error
+  ✓ ui-slot：清单里有它且 hasClient
+  ✓ ui-slot：激活无 error
+  ✓ agent-tool：清单里有它且 hasClient
+  ✓ agent-tool：激活无 error
+  ✓ renderer：清单里有它且 hasClient
+  ✓ renderer：激活无 error
+  ✓ minimal：activate 真的跑过（服务端有 [plugin:scaffold-minimal] 日志）
+  ✓ ui-slot：activate 真的跑过（服务端有 [plugin:scaffold-ui-slot] 日志）
+  ✓ agent-tool：activate 真的跑过（服务端有 [plugin:scaffold-agent-tool] 日志）
+  ✓ renderer：activate 真的跑过（服务端有 [plugin:scaffold-renderer] 日志）
+  ✓ minimal：客户端 import 图全部可加载
+  ✓ minimal：import 图包含 client/sdk/（index + client-utils）
+  ✓ ui-slot：客户端 import 图全部可加载
+  ✓ ui-slot：import 图包含 client/sdk/（index + client-utils）
+  ✓ agent-tool：客户端 import 图全部可加载
+  ✓ agent-tool：import 图包含 client/sdk/（index + client-utils）
+  ✓ renderer：客户端 import 图全部可加载
+  ✓ 暴露面边界：/plugins/<id>/sdk/* 不是 JS（故客户端依赖必须拷进 client/）
+
+ALL PASS
+----- plugin-scaffold-test 输出结束 -----
+
+▶ chat-abort-attachments-rollback-test（worker2 :9140）
+
+----- chat-abort-attachments-rollback-test 输出开始 -----
+[srv out] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[srv out] 
+[srv out]   ⚡ pi-web-ui — web chat for the pi coding agent
+    http://localhost:8996
+    workspace   : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-chat-test-BAjLrr/work
+    session dir : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-chat-test-BAjLrr/agent/sessions
+    pi SDK      : v1.1.0
+[srv out]     bind        : 127.0.0.1:8996
+
+[srv out]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-chat-test-BAjLrr/data/pi-web-ui.sock
+[TEST RECV] ready 
+[TEST RECV] widgets 
+[TEST RECV] conversations 
+[TEST RECV] slash_commands 
+[TEST RECV] goal_status 
+[TEST RECV] settings_state 
+[TEST RECV] bg_servers 
+[TEST RECV] provider_keys 
+[TEST RECV] snapshot full snap msgs: 0
+[TEST RECV] provider_oauth_flows 
+[TEST RECV] default_model 
+[TEST RECV] dsh_presets 
+[TEST RECV] dsh_permission 
+[TEST RECV] terminal_list 
+[TEST RECV] plugins 
+[TEST RECV] plugin_catalog 
+[TEST RECV] plugin_panel_items 
+[TEST RECV] plugin_grants 
+[TEST RECV] plugin_permissions 
+[TEST RECV] slash_commands 
+[TEST RECV] snapshot full snap msgs: 0
+[TEST RECV] scheduler_tasks 
+[SNAP_DELTA] isStreaming: false error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: undefined appended: []
+[TEST RECV] snapshot_delta 
+
+=== 1. 基础对话测试 (Chat Stream) ===
+[TEST RECV] conversations 
+[MOCK END FIRED]
+[MOCK REQ] POST /v1/chat/completions
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+✓ Prompt triggered isStreaming: true
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'user' ]
+[TEST RECV] snapshot_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[MOCK req.destroyed after loop] true
+[MOCK RES ENDED]
+[TEST RECV] message_delta 
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'assistant' ]
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: undefined appended: []
+[TEST RECV] snapshot_delta 
+✓ Prompt finished with isStreaming: false
+✓ Assistant message completed cleanly
+
+=== 2. 空闲时调用 Abort 幂等性测试 (Idle Abort Guard) ===
+[SNAP_DELTA] isStreaming: false error: undefined appended: []
+[TEST RECV] snapshot_delta 
+✓ Idle abort returned quickly without hanging (<1000ms) — 601ms
+✓ Idle abort did not trigger false forced reset notice
+
+=== 3. 流式生成中中断测试 (Abort mid-stream) ===
+[MOCK END FIRED]
+[MOCK REQ] POST /v1/chat/completions
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'user' ]
+[TEST RECV] snapshot_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] conversations 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: Request was aborted appended: [ 'assistant' ]
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: Request was aborted appended: []
+[TEST RECV] snapshot_delta 
+✓ Stream was successfully stopped by abort
+✓ Last assistant message marked aborted or truncated
+
+=== 4. 文件附件消息测试 (File Attachments) ===
+[SNAP_DELTA] isStreaming: false error: Request was aborted appended: []
+[TEST RECV] snapshot_delta 
+[MOCK END FIRED]
+[MOCK REQ] POST /v1/chat/completions
+[SNAP_DELTA] isStreaming: false error: Request was aborted appended: [ 'custom', 'custom', 'custom' ]
+[TEST RECV] snapshot_delta 
+✓ File attachments converted into customMessage asides — count: 3
+✓ Path-reference attachment rendered correctly
+✓ Reference attachment rendered correctly
+✓ Uploaded fileData rendered correctly
+
+=== 5. 中断文件附加的消息再次发文件附加的消息 (Abort with Attachments, Then Re-send Attachments) ===
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'user' ]
+[TEST RECV] snapshot_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[TEST RECV] message_delta 
+[TEST RECV] heartbeat 
+[TEST RECV] message_delta 
+Triggering abort while analyzing file-a...
+[TEST RECV] message_delta 
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: Request was aborted appended: [ 'assistant' ]
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: Request was aborted appended: []
+[TEST RECV] snapshot_delta 
+✓ First attachment message was aborted smoothly
+Re-sending prompt with file-b attachment immediately after abort...
+[SNAP_DELTA] isStreaming: false error: Request was aborted appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: Request was aborted appended: [ 'custom' ]
+[TEST RECV] snapshot_delta 
+[MOCK END FIRED]
+[MOCK REQ] POST /v1/chat/completions
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'user' ]
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'user' ]
+[TEST RECV] snapshot_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[MOCK req.destroyed after loop] true
+[MOCK RES ENDED]
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[MOCK req.destroyed after loop] true
+[MOCK RES ENDED]
+[TEST RECV] message_delta 
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'assistant' ]
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: undefined appended: []
+[TEST RECV] snapshot_delta 
+✓ Second prompt with attachment completed cleanly
+✓ Both file-a and file-b are preserved in transcript
+
+=== 6. 会话回滚测试 (Rollback Session) ===
+✓ Found target message for rollback
+Rolling back to first user message id: u-1792480758639-1
+[TEST RECV] snapshot full snap msgs: 1
+✓ Session rolled back to initial checkpoint
+[TEST RECV] snapshot full snap msgs: 1
+[NOTICE] info 已回滚至选定消息，后续内容已丢弃，可直接继续对话。
+[TEST RECV] notice 
+[TEST RECV] conversations 
+[TEST RECV] snapshot full snap msgs: 1
+[SNAP_DELTA] isStreaming: false error: undefined appended: [ 'custom' ]
+[TEST RECV] snapshot_delta 
+[MOCK END FIRED]
+[MOCK REQ] POST /v1/chat/completions
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'user' ]
+[TEST RECV] snapshot_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[MOCK req.destroyed after loop] true
+[MOCK RES ENDED]
+[TEST RECV] message_delta 
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'assistant' ]
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: undefined appended: []
+[TEST RECV] snapshot_delta 
+✓ Successfully prompted with attachments after rollback
+
+=== 7. 编辑重问测试 (Edit Message with Attachments) ===
+✓ Found target message for edit
+[MOCK req.destroyed after loop] true
+[MOCK RES ENDED]
+[MOCK END FIRED]
+[MOCK REQ] POST /v1/chat/completions
+[TEST RECV] snapshot full snap msgs: 2
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'user' ]
+[TEST RECV] snapshot_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[MOCK req.destroyed after loop] true
+[MOCK RES ENDED]
+[TEST RECV] message_delta 
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'assistant' ]
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: undefined appended: []
+[TEST RECV] snapshot_delta 
+✓ Edit-and-reask with attachments succeeded
+=== 8. 边界测试：快速连续中断与再次发附件 (Rapid Abort & Prompt) ===
+[NOTICE] info 已从该问题重新提问（原对话已保留，但默认不在历史列表中显示）
+[TEST RECV] notice 
+[SNAP_DELTA] isStreaming: false error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: undefined appended: [ 'custom' ]
+[TEST RECV] snapshot_delta 
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'user' ]
+[TEST RECV] snapshot_delta 
+[MOCK END FIRED]
+[MOCK REQ] POST /v1/chat/completions
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: Request aborted appended: [ 'assistant' ]
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: Request aborted appended: []
+[TEST RECV] snapshot_delta 
+✓ Rapid abort 1 stopped
+[SNAP_DELTA] isStreaming: false error: Request aborted appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: Request aborted appended: [ 'custom' ]
+[TEST RECV] snapshot_delta 
+[MOCK END FIRED]
+[MOCK REQ] POST /v1/chat/completions
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'user' ]
+[TEST RECV] snapshot_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: Request was aborted appended: [ 'assistant' ]
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: Request was aborted appended: []
+[TEST RECV] snapshot_delta 
+✓ Rapid abort 2 stopped
+[SNAP_DELTA] isStreaming: false error: Request was aborted appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: Request was aborted appended: [ 'custom', 'custom' ]
+[TEST RECV] snapshot_delta 
+[MOCK END FIRED]
+[MOCK REQ] POST /v1/chat/completions
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'user' ]
+[TEST RECV] snapshot_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[MOCK req.destroyed after loop] true
+[MOCK RES ENDED]
+[TEST RECV] message_delta 
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'assistant' ]
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: undefined appended: []
+[TEST RECV] snapshot_delta 
+✓ Rapid abort recovery prompt succeeded cleanly
+=== 9. 边界测试：连续二次回滚 (Double Rollback) ===
+First rollback to mid message: u-1792480760417-1
+[TEST RECV] snapshot full snap msgs: 9
+[TEST RECV] snapshot full snap msgs: 9
+[NOTICE] info 已回滚至选定消息，后续内容已丢弃，可直接继续对话。
+[TEST RECV] notice 
+[TEST RECV] conversations 
+[TEST RECV] snapshot full snap msgs: 9
+[TEST RECV] conversations 
+[MOCK req.destroyed after loop] true
+[MOCK RES ENDED]
+[MOCK req.destroyed after loop] true
+[MOCK RES ENDED]
+Second rollback to root message: u-1792480758639-1
+[TEST RECV] snapshot full snap msgs: 1
+✓ Double rollback successfully reset context to initial user message
+[TEST RECV] snapshot full snap msgs: 1
+[NOTICE] info 已回滚至选定消息，后续内容已丢弃，可直接继续对话。
+[TEST RECV] notice 
+[TEST RECV] conversations 
+[TEST RECV] snapshot full snap msgs: 1
+[MOCK END FIRED]
+[MOCK REQ] POST /v1/chat/completions
+[SNAP_DELTA] isStreaming: false error: undefined appended: [ 'custom' ]
+[TEST RECV] snapshot_delta 
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: []
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'user' ]
+[TEST RECV] snapshot_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[TEST RECV] message_delta 
+[MOCK req.destroyed after loop] true
+[MOCK RES ENDED]
+[TEST RECV] message_delta 
+[TEST RECV] conversations 
+[SNAP_DELTA] isStreaming: true error: undefined appended: [ 'assistant' ]
+[TEST RECV] snapshot_delta 
+[SNAP_DELTA] isStreaming: false error: undefined appended: []
+[TEST RECV] snapshot_delta 
+✓ Prompting with attachments after double rollback succeeded
+
+=========================================
+Total failures: 0
+=========================================
+----- chat-abort-attachments-rollback-test 输出结束 -----
+
+▶ ephemeral-chat-test（worker2 :9140）
+
+----- ephemeral-chat-test 输出开始 -----
+✓ new_chat{ephemeral} 建出新对话 — c1 → c2
+✓ 快照带上 isEphemeral 标记（空白时就该有，提示条据此渲染） — true
+✓ 临时对话能正常跑一轮（mock 模型有回复）
+✓ 临时对话不产生 .jsonl 会话文件 — 0 → 0
+✓ 临时对话出现在「运行的对话」并带 isEphemeral 标记 — {"id":"c2","title":"hi","cwd":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-ephemeral-test-vPMwd2/work","messageCount":3,"isStreaming":true,"isSubagent":false,"isEphemeral":true,"sessionId":"01a1582d-da8d-779e-b43e-5895c70eb70b"}
+✓ 临时对话行没有 sessionFile — undefined
+✓ 转正后 isEphemeral 标记消失 — {"id":"c2","title":"hi","cwd":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-ephemeral-test-vPMwd2/work","messageCount":3,"isStreaming":false,"isSubagent":false,"sessionId":"01a1582d-da8d-779e-b43e-5895c70eb70b","sessionFile":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-ephemeral-test-vPMwd2/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-ephemeral-test-vPMwd2-work--/2026-10-20T07-19-23-312Z_01a1582d-da8d-779e-b43e-5895c70eb70b.jsonl"}
+✓ 转正后快照 isEphemeral 翻成 false（增量合并不残留） — false
+✓ 转正后拿到 sessionFile — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-ephemeral-test-vPMwd2/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-ephemeral-test-vPMwd2-work--/2026-10-20T07-19-23-312Z_01a1582d-da8d-779e-b43e-5895c70eb70b.jsonl
+✓ 转正后 .jsonl 真的落盘 — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-ephemeral-test-vPMwd2/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-ephemeral-test-vPMwd2-work--/2026-10-20T07-19-23-312Z_01a1582d-da8d-779e-b43e-5895c70eb70b.jsonl
+✓ 转正后会话 id 不变（对话内容原地保留）
+✓ 转正有明确提示 — 已将临时对话「hi」保存为正式对话，并存入历史记录
+✓ 普通 new_chat 建出另一个对话 — c2 → c3
+✓ 普通新对话会落盘（对照组，证明临时对话的不落盘断言有意义） — 1 → 2
+✓ 普通新对话不带 isEphemeral 标记
+
+ALL PASS
+----- ephemeral-chat-test 输出结束 -----
+
+▶ fork-assistant-bubble-test（worker2 :9140）
+
+----- provider-keys-test 输出开始 -----
+  ✓ legacy auth.json key seeded
+  ✓ adding a key keeps legacy active
+  ✓ no value/masked/id on the wire
+  ✓ auth.json still legacy
+  ✓ auth.json has deepseek
+  ✓ provider-keys.json records deepseek
+  ✓ provider_keys lists 1 active key (name only)
+  ✓ no value/masked/id on the wire
+  ✓ auth.json still sk-A
+  ✓ added key is inactive
+  ✓ first key still active
+  ✓ duplicate add not duplicated
+  ✓ auth.json now sk-B
+  ✓ key B active now
+  ✓ auth.json fell back to sk-A
+  ✓ only 1 key left
+  ✓ auth.json deepseek gone
+  ✓ provider-keys.json deepseek gone
+
+18 passed, 0 failed
+----- provider-keys-test 输出结束 -----
+
+▶ dsh-smoke-test（worker1 :9120）
+
+----- db-client-test 输出开始 -----
+· state ok（depsAvail 按驱动粒度）
+· conns_save ok（脱敏回显）
+· test ok
+· connect ok（connId=c1）
+· tables_list ok
+· describe ok
+· page 分页/排序 ok
+· query_exec 成功/失败路径 ok
+· 行编辑 update/insert/delete + 写语句 ok
+· disconnect + conn_closed 事件 ok
+· 重连/未知连接报错 ok
+· 静态服务/穿越拦截 ok
+· conns_delete 级联断开 ok
+
+✓ db-client-test 全部通过
+----- db-client-test 输出结束 -----
+
+▶ dsh-stats-test（worker3 :9160）
+
+----- dsh-smoke-test 输出开始 -----
+⏭ SKIP：未找到 dsh 运行时树（需 npm i -g @deepseek-ai/dsh@0.1.5-rc.3 或 PI_WEB_DSH_RUNTIME 指向运行时树根）
+----- dsh-smoke-test 输出结束 -----
+
+▶ fetch-models-test（worker1 :9120）
+
+----- clear-provider-key-test 输出开始 -----
+  ✓ key stored in auth.json
+  ✓ auth.json entry removed
+  ✓ second clear → friendly notice
+  ✓ other entries untouched
+
+4 passed, 0 failed
+----- clear-provider-key-test 输出结束 -----
+
+▶ global-search-test（worker0 :9100）
+
+----- dsh-stats-test 输出开始 -----
+PASS 初始 contextUsage.tokens === null
+PASS 直播帧建出 streamingMessage
+PASS 流式文本按 delta 累积
+PASS 每个 text-delta 一条 message_delta
+PASS message_delta.messageId 与流式消息 id 一致
+PASS usage 帧 → tokens 四桶 + total
+PASS 上下文 = prompt(1250) + output(8)
+PASS 上下文百分比 = 1258 / 1M
+PASS 缓存命中率分母口径（read/(miss+read+write)）
+PASS assistant/message 清空 streamingMessage
+PASS assistant/message 进消息列表
+PASS assistant/message.usage 回填统计（新版形状）
+PASS 老路径 streamingMessage 仍工作
+PASS 老路径 usage 仍进统计
+PASS 未接管的会话老 chunk 正常追加（对照组）
+PASS 直播接管后持久 assistant/chunk 被忽略（不重复）
+PASS 未知 sessionId 的直播帧被忽略
+
+ALL PASS
+----- dsh-stats-test 输出结束 -----
+
+▶ goal-prefs-test（worker3 :9160）
+
+----- fork-assistant-bubble-test 输出开始 -----
+[1] assistant bubble rendered as a-1792480766261-3
+[2] rollback to assistant bubble resolved and truncated to 2 messages
+[3] fork from assistant bubble resolved; new conversation has 2 messages
+✓ fork/rollback resolve on assistant bubbles (issue #381)
+----- fork-assistant-bubble-test 输出结束 -----
+
+▶ goal-test（worker2 :9140）
+
+----- fetch-models-test 输出开始 -----
+mock /models on :9121
+[srv] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[srv] 
+  ⚡ pi-web-ui — web chat for the pi coding agent
+    http://localhost:9120
+[srv]     workspace   : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-fetchmodels-EPXbcL/work
+    session dir : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-fetchmodels-EPXbcL/agent/sessions
+    pi SDK      : v1.1.0
+[srv]     bind        : 127.0.0.1:9120
+
+[srv]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-fetchmodels-EPXbcL/data/pi-web-ui.sock
+  · ready
+  ✓ happy path: ok + deduped sorted models with metadata
+  ✓ auth header sent (Bearer test-key)
+  ✓ authHeader=false: ok and no auth recorded on a NEW /models hit
+  ✓ /v1 fallback works
+  ✓ empty baseUrl → error
+  ✓ invalid baseUrl → error
+  ✓ non-http(s) baseUrl → error
+  ✓ empty model list → error
+  ✓ non-JSON body → error
+  ✓ 404 route → HTTP error surfaced
+  ✓ google format parsed (models/ prefix stripped, limits filled)
+  ✓ concurrent reqIds matched
+
+12 checks passed
+[srv] 
+shutting down…
+----- fetch-models-test 输出结束 -----
+
+▶ goal-delegated-test（worker1 :9120）
+
+----- goal-test 输出开始 -----
+✓ set_goal sets status — {"conversationId":"c1","goal":"把首页标题改为 Goal Buddy","reviewModel":"openai/gpt-4o-mini","maxRounds":2,"locked":true,"execModel":"openai/gpt-4o-mini","phase":"idle","reviewing":false,"round":0,"status":"目标已设，等待生成…","verdict":"pending","wizard":{"active":false,"draft":"","model":null,"step":0,"maxSteps":6,"status":"","statusEn":""},"roles":{},"statusEn":"Goal set, waiting to generate…"}
+✓ locked + execModel + maxRounds carried — {"conversationId":"c1","goal":"把首页标题改为 Goal Buddy","reviewModel":"openai/gpt-4o-mini","maxRounds":2,"locked":true,"execModel":"openai/gpt-4o-mini","phase":"idle","reviewing":false,"round":0,"status":"目标已设，等待生成…","verdict":"pending","wizard":{"active":false,"draft":"","model":null,"step":0,"maxSteps":6,"status":"","statusEn":""},"roles":{},"statusEn":"Goal set, waiting to generate…"}
+✓ verdict resets to pending
+✓ phase 字段存在（目标模式 2.0：idle/executing/reviewing/blocked） — idle
+✓ reviewMode 已从协议移除（只剩委托一条路径） — undefined
+✓ clear_goal clears the goal — {"conversationId":null,"goal":null,"reviewModel":null,"maxRounds":0,"locked":true,"execModel":null,"phase":"idle","reviewing":false,"round":0,"status":"","verdict":"pending","wizard":{"active":false,"draft":"","model":null,"step":0,"maxSteps":6,"status":""}}
+✓ single-shot locked=false — {"conversationId":"c1","goal":"只审查这一轮","reviewModel":"openai/gpt-4o-mini","maxRounds":3,"locked":false,"execModel":"openai/gpt-4o-mini","phase":"idle","reviewing":false,"round":0,"status":"目标已设，等待生成…","verdict":"pending","wizard":{"active":false,"draft":"","model":null,"step":0,"maxSteps":6,"status":"","statusEn":""},"roles":{},"statusEn":"Goal set, waiting to generate…"}
+✓ empty goal treated as clear — goal=null
+
+ALL PASS
+----- goal-test 输出结束 -----
+
+▶ plan-mode-test（worker2 :9140）
+
+----- global-search-test 输出开始 -----
+✓ reqId 回显
+✓ ok:true — {"type":"search_files_result","reqId":42,"ok":true,"results":[{"path":"src/alpha-util.ts","name":"alpha-util.ts","type":"file"}]}
+✓ 命中 src/alpha-util.ts — alpha-util.ts
+✓ 相对路径为 src/alpha-util.ts — src/alpha-util.ts
+✓ node_modules 不进结果 — []
+✓ 目录 src 命中且 type=dir — [{"path":"src","name":"src","type":"dir"}]
+✓ 空 query 返回空列表
+----- global-search-test 输出结束 -----
+
+▶ delegate-mode-test（worker0 :9100）
+
+----- goal-prefs-test 输出开始 -----
+✓ set_goal_prefs applied (model/rounds/locked) — {"rm":"openai/gpt-4o-mini","mr":8,"lo":false}
+✓ prefs persisted across reload (model/rounds/locked) — {"rm":"openai/gpt-4o-mini","mr":8,"lo":false}
+
+ALL PASS
+----- goal-prefs-test 输出结束 -----
+
+▶ left-panel-delete-test（worker3 :9160）
+
+----- goal-delegated-test 输出开始 -----
+✓ 主对话已就绪 — c1
+✓ reviewMode 已从协议移除（只剩一条路径） — undefined
+✓ execModel 字段存在（新后端标志） — null
+✓ 服务端拉起了常驻执行对话 — conv-4363abad
+✓ 循环相位已进入执行/审查 — executing
+✓ 左栏出现执行对话（挂在主对话下） — conv-4363abad · [Goal executor] 把 README 的安装说明补全
+✓ 执行对话是落盘对话（无「子代理」微标 + 带目标执行标题） — false · [Goal executor] 把 README 的安装说明补全
+✓ 主对话没收到「请开始实现」kick（它是审查者）
+✓ 清目标后执行对话被移出左栏
+
+ALL PASS
+----- goal-delegated-test 输出结束 -----
+
+▶ legado-web-engine-test（worker1 :9120）
+
+----- legado-web-engine-test 输出开始 -----
+✓ 注册 AI 工具：legado_rules, legado_book_sources, legado_source_probe, legado_run_rule
+✓ legado_rules 返回规则速查（6569 字）
+✓ 「AI 修复源」正文组装（含书源/现场/规则 + 书源文件与规则文件路径 + “只改书源不改插件”硬约束）+ 脏上下文归一化
+✓ 「AI 新建书源」正文模板（网址 + 抓页步骤 + 落盘要求 + 硬约束）
+✓ legado_book_sources：list / get / add / update（深合并落盘）/ 通知
+✓ legado_source_probe：完整链路正常（搜索 2 本 / 目录 2 章 / 正文 85 字）（逐步回报请求 + 规则 + 页体片段）
+✓ legado_source_probe：step 只跑指定步骤
+✓ legado_run_rule：抓页试规则（页面级 + 条目级）
+✓ 单段 CSS 规则 = 选择器 + 取文本（`.title##正则`、`text` 均可用）
+✓ java.ajax 同步规则可用（搜索正常（1 本））
+✓ legado_book_sources：remove
+✓ 写操作通知用户（4 条，例如「info: 已写入书源《本地测试源》，刷新阅读页生效…」）
+✓ {type:"info"} → 回目录信息（sourcesFile / rulesFile / dataDir / pluginDir / workspace）
+
+all ok
+----- legado-web-engine-test 输出结束 -----
+
+▶ legado-web-test（worker1 :9120）
+
+----- plan-mode-test 输出开始 -----
+✓ set_plan_mode{true} → 快照 planMode=true
+✓ 开启时有 notice 提示
+✓ 计划模式下写工具从活跃集动态剔除
+✓ write 在计划模式被拒 — SEEN:Tool write not found
+✓ bash 写命令被拒 — SEEN:Plan mode: only read-only commands are allowed; rejected: `rm -rf /tmp/nope`. Use read/grep or read-only git (status/diff/log). Put pro
+✓ bash 只读命令放行（无拒绝文案） — SEEN:fatal: not a git repository (or any of the parent directories): .git
+
+
+Command exited with code 128
+✓ set_plan_mode{false} → 快照 planMode=false
+✓ 关闭后 write 不再被计划模式拒 — SEEN:Successfully wrote to made-by-test.txt
+✓ 计划模式写入会话转录（可回放恢复）
+
+ALL OK
+----- plan-mode-test 输出结束 -----
+
+▶ list-files-missing-dir-test（worker2 :9140）
+
+----- delegate-mode-test 输出开始 -----
+✓ 默认关闭
+✓ set_delegate_mode{true} → 快照 delegateMode=true
+✓ 开启时有 notice 提示
+✓ prompt 触发自动路由 → 生成常驻执行对话 id — conv-a3b2b46c
+✓ 派活有 notice（主对话这一轮不跑模型）
+✓ 施工发生在执行对话（文件落盘）
+✓ set_delegate_mode{false} → 快照 delegateMode=false
+✓ 关闭后清空执行对话 id
+✓ 关闭后主对话恢复自己施工
+✓ 关闭后不再自动派活（无新的执行对话 id）
+✓ 审查者模式写入会话转录（可回放恢复）
+
+ALL OK
+----- delegate-mode-test 输出结束 -----
+
+▶ list-files-symlink-home-test（worker0 :9100）
+
+----- left-panel-delete-test 输出开始 -----
+✓ list_sessions 命中两条种子会话 — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-lp-del-1vCAg2/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-lp-del-1vCAg2-proj--/2026-08-04T00-00-00-000Z_del-keep.jsonl,/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-lp-del-1vCAg2/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-lp-del-1vCAg2-proj--/2026-08-04T00-00-00-000Z_del-target.jsonl
+✓ 删除后文件从磁盘消失 — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-lp-del-1vCAg2/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-lp-del-1vCAg2-proj--/2026-08-04T00-00-00-000Z_del-target.jsonl
+✓ 删除后列表不再包含该会话 — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-lp-del-1vCAg2/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-lp-del-1vCAg2-proj--/2026-08-04T00-00-00-000Z_del-keep.jsonl
+✓ 另一条会话仍在
+✓ 越界删除返回错误提示 — 只能删除会话目录中的对话记录
+✓ 越界文件未被删除
+✓ 初始最近项目含 otherDir — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-lp-del-1vCAg2/proj,/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-lp-del-1vCAg2/other
+✓ 移除后最近项目不含 otherDir — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-lp-del-1vCAg2/proj
+✓ 移除只动 UI 状态，目录仍在磁盘
+✓ 重连后 otherDir 仍不在最近项目里
+✓ 启动恢复最近会话（当前对话持有 cur-target） — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-lp-del-cur-S5BMaR/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-lp-del-cur-S5BMaR-proj--/2026-08-04T00-00-00-000Z_cur-target.jsonl
+✓ 删除当前对话后自动切换到次新会话
+✓ 切换产生了新的活跃对话 — c1 → c2
+✓ 被删的当前会话文件已从磁盘消失 — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-lp-del-cur-S5BMaR/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-lp-del-cur-S5BMaR-proj--/2026-08-04T00-00-00-000Z_cur-target.jsonl
+✓ 唯一会话被删后自动新建空白对话 — c3
+✓ 旧会话文件从磁盘消失 — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-lp-del-cur-S5BMaR/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-lp-del-cur-S5BMaR-proj--/2026-08-04T00-00-00-000Z_cur-fallback.jsonl
+✓ 切走后原对话保留为后台运行 — c4
+✓ 后台对话占用的会话拒绝删除 — 该对话正在后台运行，请先停止或关闭该对话再删除
+✓ 后台会话文件仍在磁盘 — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-lp-del-cur-S5BMaR/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-lp-del-cur-S5BMaR-proj--/2026-08-04T00-00-00-000Z_cur-bg.jsonl
+----- left-panel-delete-test 输出结束 -----
+
+▶ plugin-cron-overflow-test（worker3 :9160）
+
+----- list-files-missing-dir-test 输出开始 -----
+✓ initial listing returns the file
+✓ refresh after deletion returns an empty listing — entries=0
+✓ server emits 目录不存在/Directory not found notice — ["Directory not found: documents/review"]
+✓ server stays alive and lists the workspace root afterwards — alive=true root=documents,top.txt
+
+ALL PASS
+----- list-files-missing-dir-test 输出结束 -----
+
+▶ notes-test（worker2 :9140）
+
+----- list-files-symlink-home-test 输出开始 -----
+✓ directory symlink is listed as dir — type=dir
+✓ symlinked directory is navigable — entries=[{"name":"inner.txt","path":"link/inner.txt","type":"file","kind":"text"}]
+✓ path bar "~/" input expands to the home directory — entries=link,real,top.txt
+✓ cwd picker classifies directory symlink as dir — type=dir
+✓ server stays alive
+
+ALL PASS
+----- list-files-symlink-home-test 输出结束 -----
+
+▶ plugin-bgtask-test（worker0 :9100）
+
+----- legado-web-test 输出开始 -----
+✓ 清单推送 legado-web（hasClient=true, view=true）
+✓ /plugins/legado-web/client/app/index.html → 200 + 相对资源
+✓ 前端 bundle 静态托管（index-Ctj2X9xA.js）
+✓ 代理 UTF-8 页面（跨域抓取 + 原文返回）
+✓ 代理 GBK 页面（无三方依赖解码）
+✓ charset=gbk → URL 中文按 GBK 百分号编码
+✓ charset=gbk → POST body 按 GBK 编码，自定义头透传
+✓ 浏览器 cookie/referer 不透传（只带默认 UA + 书源声明的头）
+✓ 上游不可达 → 502 + 原因
+✓ GET /store → 键列表（初始 0 个）
+✓ 存储读写 + 落盘数据目录（<dataDir>/legado-web/sources.json）
+✓ 旧版插件目录 storage/ 仍可读并自动搬入数据目录
+✓ GET /store?meta=1 → 各键 size+mtime（sources 82B）
+✓ 外部改写文件后 meta 变化（前端据此自动重读）
+✓ POST /store 回带 meta（前端不会把自己的写入当成外部改动）
+✓ 大 payload（4.9 MB）写入正常
+✓ 非法键 / 缺键 → 400
+
+all ok
+----- legado-web-test 输出结束 -----
+
+▶ plugin-leftpanel-running-test（worker1 :9120）
+
+----- plugin-bgtask-test 输出开始 -----
+✓ 插件任务并入后台面板：{"taskId":"nightly","plugin":"worker","since":1792480777208,"name":"🌙 定时任务","status":"每 1h"}
+✓ task.update 刷新状态生效
+✓ kill taskId → stop 回调触发 + 移出列表
+✓ 未知 taskId 静默处理（进程存活）
+
+all ok
+----- plugin-bgtask-test 输出结束 -----
+
+▶ bg-cleanup-test（worker0 :9100）
+
+----- plugin-cron-overflow-test 输出开始 -----
+✓ 测试插件已激活并排了两条 cron 任务
+✓ 5 秒内远期（100 天开外）与永不发生（2/31）的 cron 都没被触发 —— 没有溢出死循环
+✓ 服务端没有 TimeoutOverflowWarning
+✓ 服务仍然健康（事件循环没被定时器占满）
+✓ 「永不发生」的后台任务状态：不再触发（表达式在一年内不会命中）
+✓ 远期任务显示真实的下次时间：下次 1/1/2027, 9:00:00 AM
+
+all ok
+----- plugin-cron-overflow-test 输出结束 -----
+
+▶ pm2-manager-plugin-test（worker3 :9160）
+
+----- notes-test 输出开始 -----
+✓ 插件已激活：笔记 v0.3.0
+✓ 顶栏动作 notes:toggle 已随清单下发
+✓ AI 工具 5 个：notes_add, notes_list, notes_reminder, notes_todo, notes_update
+✓ 斜杠命令已注册：note, todo, remind
+✓ GET /plugins-api/notes/store → 空库
+✓ 记笔记成功（id n_mvgcrv4k8rqcr9）
+✓ 加待办成功（截止时间归一化为本地可排序串）
+✓ 设提醒成功，服务端算出的下次触发：2026-10-21T01:00:00.000Z
+✓ 长轮询被唤醒（358ms）并带回新快照
+✓ GET /export?format=md → 带文件名的 Markdown
+✓ 服务重启后库仍在（数据在 <dataDir>/notes/）
+
+all ok
+----- notes-test 输出结束 -----
+
+▶ plugin-command-test（worker2 :9140）
+
+----- bg-cleanup-test 输出开始 -----
+✓ 服务器起来了 — :34786
+✓ 默认关（0） — bgAutoCleanupMin=undefined
+✓ 设 30 分钟 → 快照回显 — 30
+✓ 脏值 7 → 归一为 0（只认档位表） — 0
+✓ set_bg_keep 对不在列表的端口给通知 — 端口 65000 不在后台任务列表中（可能已自行退出）
+✓ 立即清理给「没有需要清理」反馈 — 没有需要清理的遗留实例（阈值 15 分钟，已钉住的不算）
+✓ bg_servers 可拉取 — count=0
+✓ 阈值落盘 client-state.json
+
+后台任务自动清理协议面全过
+----- bg-cleanup-test 输出结束 -----
+
+▶ plugin-cwd-test（worker0 :9100）
+
+----- pm2-manager-plugin-test 输出开始 -----
+✓ 服务器起来了 — :38076
+✓ manifest 被接受且无激活错误 — name=进程管家 hasClient=true
+✓ 没有独立面板（view:false）
+✓ 占住 tasks.panel 槽位 — {"pluginId":"pm2-manager","items":1}
+✓ 槽位条目是 kind=view（面板内嵌渲染本插件） — {"kind":"view","view":"plugin:pm2-manager"}
+✓ activate 跑完（日志可见）
+✓ 无插件运行时报错
+✓ GET /status 回结构化状态 — {"installed":false,"platform":"darwin"}
+✓ 未装 pm2 时给出安装路径（不崩） — npm i -g pm2
+✓ POST /action 挡非法入参 — "非法操作"
+✓ 已删的 /scan 真回 404（遗留实例交给宿主面板） — status=404
+
+pm2-manager 插件 E2E 全过
+----- pm2-manager-plugin-test 输出结束 -----
+
+▶ plugin-http-test（worker3 :9160）
+
+----- plugin-command-test 输出开始 -----
+✓ 命令目录含 /probe-echo（source=plugin, hint=<文本>）
+✓ 插件 run 收到参数并广播；notice 回显「已收到：hello 世界」
+✓ 空参数调用正常
+
+all ok
+----- plugin-command-test 输出结束 -----
+
+▶ plugin-proxy-test（worker2 :9140）
+
+----- plugin-cwd-test 输出开始 -----
+✓ attach 时插件拿到服务端工作区 /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/cwd-proj-a-qaoXSk
+✓ set_cwd 后插件收到新根 /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/cwd-proj-b-IR1Z2E
+✓ 同路径重复 set_cwd 幂等（无多余广播）
+
+all ok
+----- plugin-cwd-test 输出结束 -----
+
+▶ mcp-bridge-test（worker0 :9100）
+
+----- plugin-http-test 输出开始 -----
+[server] [plugin:api] manifest 未声明 permissions（旧格式全权模式）——已放行 "http"；apiVersion 2 起将默认拒绝，请尽快声明
+✓ GET /plugins-api/api/ping → {"pong":true}
+✓ POST body 解析并透传 handler
+✓ GET /plugins-api/api/deep/nested → 多段 splat 正常
+✓ 未注册/已注销路由 → 404
+[server] [plugin:api] http GET /boom failed: Error: 炸了
+    at file:///private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-http-plugin-GCLn8w/plugins/api/index.mjs?e=0:11:44
+    at PluginManager.handleHttp (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/dist/server/plugins.js:1348:34)
+    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/dist/server/index.js:722:15
+    at Layer.handleRequest (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/router/lib/layer.js:152:17)
+    at next (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/router/lib/route.js:117:3)
+    at handle (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/router/lib/layer.js:152:17)
+    at /Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/router/index.js:295:15
+    at param (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/router/index.js:600:14)
+[server] [plugin:api] http GET /boom-async failed: Error: 异步炸了
+    at file:///private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-http-plugin-GCLn8w/plugins/api/index.mjs?e=0:19:56
+    at PluginManager.handleHttp (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/dist/server/plugins.js:1348:34)
+    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/dist/server/index.js:722:15
+    at Layer.handleRequest (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/router/lib/layer.js:152:17)
+    at next (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/router/lib/route.js:117:3)
+    at handle (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/router/lib/layer.js:152:17)
+    at /Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/router/index.js:295:15
+    at param (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/router/index.js:600:14)
+✓ 未知插件 → 404；handler（同步/异步）抛错 → 500 且服务存活
+
+all ok
+----- plugin-http-test 输出结束 -----
+
+▶ plugin-settings-test（worker3 :9160）
+
+----- plugin-proxy-test 输出开始 -----
+✓ GET /liveserver/ → index.html（含相对引用 + 刷新脚本）
+✓ 代理前缀头透传 → meta 基址正确
+✓ GET /liveserver/style.css → 200（相对路径可用）
+✓ GET /liveserver/app.js → 200 + js MIME
+✓ GET /md/docs/a.md → 渲染 HTML（标题/加粗/围栏/表格）
+✓ GET /md/docs/ → 目录列表
+✓ 缺失文件 → 404
+✓ 越界路径拿不到工作区外文件
+✓ Range 单段 → 206 + Content-Range
+✓ SSE __livepreview/events → 首帧含 version
+
+all ok
+----- plugin-proxy-test 输出结束 -----
+
+▶ plugin-test（worker2 :9140）
+
+----- mcp-bridge-test 输出开始 -----
+✓ MCP 服务器启动并握手（日志：[mcp:csrv] ready, 10 tools）
+✓ 坏服务器被隔离（进程存活）
+all ok
+----- mcp-bridge-test 输出结束 -----
+
+▶ plugin-update-test（worker0 :9100）
+
+----- plugin-leftpanel-running-test 输出开始 -----
+[server] [plugin:runner] manifest 未声明 permissions（旧格式全权模式）——已放行 "ui"；apiVersion 2 起将默认拒绝，请尽快声明
+[server] [plugin:ticker] manifest 未声明 permissions（旧格式全权模式）——已放行 "ui"；apiVersion 2 起将默认拒绝，请尽快声明
+✓ 激活后条目经 plugin_panel_items 推给客户端（分组带插件显示名） — {"pluginId":"runner","pluginName":"运行器","items":[{"id":"job-1","title":"同步收件箱","status":"running","hint":"1/3","icon":"📬","action":"runner:open"},{"id":"job-x","title":"job-x","status":"running"}]}
+✓ 条目字段完整（title/hint/icon/action 保留，缺省 status=running） — {"id":"job-1","title":"同步收件箱","status":"running","hint":"1/3","icon":"📬","action":"runner:open"}
+✓ 非法条目被清洗：空 title 回落 id、非法 status 回落 running，不影响其它条目 — {"id":"job-x","title":"job-x","status":"running"}
+✓ 新客户端 attach 时补发全量分组（无需主动拉取） — groups=2
+✓ clear() 立即清空本插件分组并广播
+✓ 清空后可再次 setRunning（状态 done 保留） — [{"id":"job-2","title":"第二个","status":"done"}]
+✓ 心跳过期：未再调用 setRunning 的插件整组自动清空并广播
+✓ 未过期的插件（TTL 更长）不受影响
+
+ALL PASS
+----- plugin-leftpanel-running-test 输出结束 -----
+
+▶ plugin-catalog-cli-test（worker1 :9120）
+
+----- plugin-update-test 输出开始 -----
+✓ install 记录 sha=907fccbd0f6c
+✓ check-updates 报可更新
+✓ install --force 更新 + 自动备份 + sha 刷新 → 已是最新
+✓ --rollback 回滚 v1 + 备份清理
+✓ 回滚后 check-updates 重新报可更新
+all ok
+----- plugin-update-test 输出结束 -----
+
+▶ preview-test（worker0 :9100）
+
+----- plugin-settings-test 输出开始 -----
+✓ plugins 清单带 settingsSchema + 默认 settingsValues
+✓ select 的 optionsFrom（宿主动态候选值）随 schema 下发
+✓ plugin_settings 保存 → 落盘 + 重推回显
+✓ 越界值被拒（notice 报错）且已存值不变
+
+all ok
+----- plugin-settings-test 输出结束 -----
+
+▶ preview-http-test（worker3 :9160）
+
+----- plugin-catalog-cli-test 输出开始 -----
+✓ 1. 源码插件不加 flag 仍安装成功 (exit=0): · 已跳过构建：目录里没有产物，装上后该插件不会被加载（授权后重装可补产物）
+✓ 1. 输出警告构建命令未授权执行
+✓ 1. 确实没有构建产物
+✓ 1b. 显式 --build 照常构建安装 (exit=0): · 源码构建（--build）：先 node --version，再 node build.mjs
+✓ 1b. 构建产物落盘
+✓ 1b. client 产物落盘
+✓ 2. --no-build 安装成功不构建 (exit=0)
+✓ 2. 输出说明跳过了构建
+✓ 2. 确实没有产物
+✓ 3. --build + --no-build 互斥报错
+✓ 4. 产物齐全时不触发构建（坏构建脚本也没跑）
+✓ 4. 输出里没有构建字样
+✓ 5. --catalog 同步+安装成功 (exit=0): rs/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/plugin-catalog-cli-kWxzzv/data/plugin-catalog.json
+✓ 5. 非法条目被丢弃并计数
+✓ 5. 两条合法全部安装成功
+✓ 5. 可安装列表原子写盘
+✓ 5. 目录里的源码条目随 --build 显式构建
+✓ 6. 重跑默认跳过已安装条目
+✓ 6. --force 把已安装条目更新到新版
+✓ 6. --replace 整体替换列表（旧条目不再保留）
+all ok
+----- plugin-catalog-cli-test 输出结束 -----
+
+▶ quiesce-test（worker1 :9120）
+
+----- plugin-test 输出开始 -----
+[server] [plugin:bad-json] manifest.json missing or unparsable (bad-json/), not a valid plugin — fix or remove the directory, then hit Rescan
+[server] [plugin:demo-mailbox] manifest 未声明 permissions（旧格式全权模式）——已放行 "http"；apiVersion 2 起将默认拒绝，请尽快声明
+✓ plugins list includes demo-mailbox with client entry
+✓ frontend-only plugin detected (client entry, no server code)
+✓ bad manifest surfaces a placeholder row (error + view:false, never activated)
+✓ renderer plugin carries view:false + renderers:[plantuml,narr]
+✓ regular plugin defaults view:true, renderers:undefined
+✓ plugin_message round-trips to plugin_data
+✓ host.notify delivers a system notice
+[server] [plugin:bad-json] manifest.json missing or unparsable (bad-json/), not a valid plugin — fix or remove the directory, then hit Rescan
+✓ host.sendTo targets only the addressed socket
+✓ set_settings echoes disabledPlugins toggle
+[server] [plugin:bad-json] manifest.json missing or unparsable (bad-json/), not a valid plugin — fix or remove the directory, then hit Rescan
+[server] [plugin:demo-mailbox] manifest 未声明 permissions（旧格式全权模式）——已放行 "http"；apiVersion 2 起将默认拒绝，请尽快声明
+[server] [plugin:bad-json] manifest.json missing or unparsable (bad-json/), not a valid plugin — fix or remove the directory, then hit Rescan
+✓ plugins_reload bumps epoch (0 → 1) and re-pushes catalog
+✓ host.route serves /plugins-api/:id/* with the plugin's own handler
+[server] [plugin:bad-json] manifest.json missing or unparsable (bad-json/), not a valid plugin — fix or remove the directory, then hit Rescan
+[server] [plugin:bad-json] manifest.json missing or unparsable (bad-json/), not a valid plugin — fix or remove the directory, then hit Rescan
+[server] [plugin:demo-mailbox] manifest 未声明 permissions（旧格式全权模式）——已放行 "http"；apiVersion 2 起将默认拒绝，请尽快声明
+✓ plugin reactivates with fresh code after the install window (no server restart)
+✓ unknown/illegal pluginId silently ignored
+✓ /plugins/:id/client/* serves JS with correct Content-Type
+✓ /plugins/:id/client/vendor/* serves nested JS (issue #225)
+✓ server entry/manifest/path-traversal never exposed
+✓ plugin_catalog carries 37 builtin + 1 custom entries
+✓ plugin_catalog_add persists custom entry + re-pushes
+✓ plugin_catalog_remove drops the custom entry, builtin survives
+✓ <dataDir>/plugin-catalog.json persisted
+
+ALL PLUGIN TESTS PASSED
+----- plugin-test 输出结束 -----
+
+▶ approval-policy-test（worker2 :9140）
+
+----- preview-http-test 输出开始 -----
+✓ /api/preview/sub/n.txt → 200 内容正确
+✓ /api/preview/sub/deep/a.md → 200 内容正确
+✓ /api/preview/__abs__/<cwd>/sub/n.txt → 200 内容正确
+✓ 相对路径穿越不泄露（404）
+ALL PREVIEW HTTP TESTS PASSED
+----- preview-http-test 输出结束 -----
+
+▶ approval-rules-test（worker3 :9160）
+
+----- preview-test 输出开始 -----
+✓ unknown extension text previews as text — kind=text
+✓ jsonl still text
+✓ binary zip gets hex dump — text=00000000  50 4b 03 04 00 01 02
+✓ NUL inside text-extension file → hex — text=00000000  61 62 00 63         
+✓ image stays metadata-only
+✓ empty file previews as empty text
+
+ALL PASS
+----- preview-test 输出结束 -----
+
+▶ question-bridge-test（worker0 :9100）
+
+----- approval-policy-test 输出开始 -----
+✓ settings_state 带 toolApprovalEnabled（默认开）
+✓ settings_state 带 approvalPolicy（默认空策略） — {"conversationId":"c1","allowAll":false,"categories":[]}
+✓ set_approval_policy allowAll=true 生效并推回面板
+✓ set_approval_policy allowAll=false 撤销
+✓ 撤销后同类名单为空（没有凭空塞档位）
+✓ 未知审批 id / 空策略消息不崩，服务仍回 settings_state
+✓ 全局审批开关可关（settings_state 回显 false）
+✓ 总开关随 client-state 持久化（重连仍是关）
+
+all checks passed
+----- approval-policy-test 输出结束 -----
+
+▶ recursive-watch-test（worker2 :9140）
+
+----- approval-rules-test 输出开始 -----
+✓ settings_state 携带 approvalRules 数组
+✓ 默认包含 11 条内置规则
+✓ 内置 rm -rf 规则存在且 builtin=true
+✓ save_approval_rule 成功并推回 settings_state
+✓ save_approval_rules 批量重排生效
+✓ delete_approval_rule 删除成功
+✓ 内置规则可被修改并推回
+✓ reset_builtin_approval_rule 成功恢复默认
+
+all checks passed
+----- approval-rules-test 输出结束 -----
+
+▶ refresh-models-test（worker3 :9160）
+
+----- refresh-models-test 输出开始 -----
+  ✓ refresh ok, added=1, total=2
+  ✓ manual fields preserved (name/contextWindow/input NOT overridden)
+  ✓ refresh #2 ok, added=1, total=3
+  ✓ new id appended with endpoint metadata (reasoning)
+  ✓ probe used saved apiKey (Bearer saved-secret-key)
+  ✓ unknown provider → ok:false with error
+
+6 passed, 0 failed
+----- refresh-models-test 输出结束 -----
+
+▶ restart-handoff-test（worker3 :9160）
+
+----- recursive-watch-test 输出开始 -----
+✓ 深层变化推送 file_changed (path=)
+✓ node_modules 事件已过滤
+✓ 列出目录切换后 path 跟随 (deep)
+
+全部通过 ✅
+----- recursive-watch-test 输出结束 -----
+
+▶ restart-service-test（worker2 :9140）
+
+----- restart-handoff-test 输出开始 -----
+✓ instance A up
+✓ A answers health
+✓ B did not crash while A holds the port — exitCode=still running
+✓ B took over the port after A exited
+✓ B still alive — exitCode=null
+
+ALL PASS
+----- restart-handoff-test 输出结束 -----
+
+▶ running-list-test（worker3 :9160）
+
+----- quiesce-test 输出开始 -----
+[1] server on :8911 (data=/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-quiesce-BsNUGY)
+  ✅ server started + control socket reachable
+
+[2] control socket: status
+  ✅ status ok
+  ✅ status has pid
+  ✅ status quiesced=false initially
+  ✅ status cwd=repo
+
+[3] Origin admission (HTTP-level)
+  ✅ cross-origin rejected (not open)
+  ✅ same-authority opens
+  ✅ same-authority got ready + snapshot
+  ✅ different-port origin rejected
+
+[4] headers stripped from models_config
+  ✅ models_config has no headers field
+
+[5] quiesce admission gate
+  ✅ quiesce command ok
+  ✅ status now quiesced=true
+  ✅ status quiescedSince present
+  ✅ existing client attaches while quiesced
+  ✅ prompt rejected with notice
+  ✅ brand-new client attach refused (closed)
+  ✅ brand-new client closed with 4403
+  ✅ unquiesce ok
+  ✅ status quiesced=false after unquiesce
+
+[6] unknown control command
+  ✅ unknown cmd → {ok:false}
+
+🎉 ALL PASS
+----- quiesce-test 输出结束 -----
+
+▶ scm-features-test（worker1 :9120）
+
+----- restart-service-test 输出开始 -----
+  ✅ 服务实例启动
+  ✅ 前台实例启动
+  ✅ ready.service 带 supervisor（界面据此显示「重启服务」）
+  ✅ 控制 socket status 带 service（CLI `server status` 显示启动方式）
+  ✅ restart_service 回执「正在重启」
+  ✅ 服务实例按重启语义退出（supervisor 会拉起）
+  ✅ 前台实例 ready.service 缺省（界面不显示按钮）
+  ✅ 控制 socket status: service = null
+  ✅ restart_service 被拒绝（error notice）
+  ✅ 前台实例仍在运行（没被关掉）
+  ✅ 前台实例连接仍然活着
+
+✅ restart-service-test passed
+----- restart-service-test 输出结束 -----
+
+▶ settings-test（worker2 :9140）
+
+----- scm-features-test 输出开始 -----
+server up
+  ✓ status ok
+  ✓ current branch is main
+  ✓ local branch listed
+  ✓ remote branch listed with remote=origin
+  ✓ history absent from status payload
+  ✓ history ok
+  ✓ history has both commits
+  ✓ external commit pushed scm_changed
+  ✓ status sees the new commit's parent state (clean tree)
+  ✓ scm_commitmsg answered
+  ✓ scm_commitmsg kind echo
+  ✓ scm_commitmsg fails without credentials (ok:false)
+  ✓ scm_commitmsg carries an error message
+
+13 passed, 0 failed
+----- scm-features-test 输出结束 -----
+
+▶ sftp-plugin-test（worker1 :9120）
+
+----- settings-test 输出开始 -----
+data-dir: /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-set-test-HlhYYx
+[srv] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[srv] 
+  ⚡ pi-web-ui — web chat for the pi coding agent
+    http://localhost:9140
+[srv]     workspace   : /Users/liyingjun/Desktop/SW-QA/15-aqa
+    session dir : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-set-test-HlhYYx/agent/sessions
+    pi SDK      : v1.1.0
+[srv]     bind        : 127.0.0.1:9140
+
+[srv]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-set-test-HlhYYx/pi-web-ui.sock
+  ✓ settings_state pushed on attach
+  ✓ has skills array
+  ✓ has extensions array
+  ✓ has presets array
+  ✓ settings_state carries compose template + overrides (default empty)
+  skills=0 extensions=0
+  ✓ get_settings echoes state
+  ✓ compose template persisted
+  ✓ effective prompt = compose render（只拼模板里的 token）
+  ✓ promptSourceDefaults = per-source auto text（soul/cwd 等未覆盖时展开值）
+  ✓ per-source override persisted
+  ✓ override 替换灵魂段生效
+  ✓ preset saved
+  ✓ override cleared when sent empty
+  ✓ terminalToolsEnabled defaults off
+  ✓ terminalToolsEnabled off persisted
+  ✓ terminalBash defaults off
+  ✓ terminalBashIdleMs defaults 15000
+  ✓ terminalBashMaxForegroundMs defaults 60000
+  ✓ terminalBash on round-trips
+  ✓ terminalBashIdleMs round-trips
+  ✓ terminalBashMaxForegroundMs round-trips
+  ✓ thinkingWrap defaults off
+  ✓ thinkingWrap off round-trips
+  ✓ retainFinishedConversations defaults off
+  ✓ retainFinishedConversations on round-trips
+  (no skills loaded — skipping)
+  (no extensions loaded — skipping)
+  ✓ preset applied (template restored)
+  ✓ preset applied (override restored)
+  ✓ preset applied (terminal toggle restored to captured value)
+  ✓ preset deleted
+  ✓ preset_export ok
+  ✓ preset_export file name
+  ✓ export doc shape (format/version/settings)
+  ✓ export doc carries no name inside settings
+  ✓ export doc 带全量字段（含以前排除的运行开关与 UI 偏好）
+  ✓ preset_import dryRun preview
+  ✓ preview reports no replace for a fresh name
+  ✓ preset_import saved
+  ✓ imported preset listed
+  ✓ import with apply restored the exported template
+  ✓ import with apply restored the exported override
+  ✓ unknown fields reported as ignored
+  ✓ wrong-typed field reported as rejected
+  ✓ whitelisted field survives sanitizing
+  ✓ 可选导入回执只列实际写入的字段
+  ✓ 一个字段都没勾时拒绝导入
+  ✓ bad JSON returns ok:false + error
+  ✓ url import blocks loopback hosts
+  ✓ url import rejects non-http schemes
+  ✓ share disabled by env returns ok:false
+  ✓ share still returns the JSON for manual sharing
+  ✓ catalog result shape
+  ✓ catalog refuses a loopback source
+  ✓ keepRecentMessages clamped to 100 over the wire
+  ✓ compose template survives reconnect
+  ✓ override survives reconnect
+  ✓ terminalToolsEnabled survives reconnect (off)
+  ✓ keepRecentMessages survives reconnect
+  ✓ extensions_reload re-pushes settings
+
+58 passed, 0 failed
+[srv] 
+shutting down…
+----- settings-test 输出结束 -----
+
+▶ shutdown-test（worker2 :9140）
+
+----- shutdown-test 输出开始 -----
+  ok - server booted
+  ok - SIGINT → process exits by itself within 20s
+  ok - exit code is 0 (clean shutdown, watchdog not fired)
+
+PASS shutdown-test
+----- shutdown-test 输出结束 -----
+
+▶ slash-commands-test（worker2 :9140）
+
+----- running-list-test 输出开始 -----
+✓ blank chat is NOT in the running list — 0 listed
+✓ active conversation is listed while streaming
+✓ that row is marked as the active one — activeId=c1
+✓ that row reports streaming
+✓ title comes from the first prompt — title=SLOW 第一条消息
+✓ blank sibling rows were not invented — c1
+✓ finished active conversation stays listed
+✓ messageCount counts user + assistant
+✓ dismissing the active row moves the active marker away
+✓ dismissing the active row removes it from the list
+✓ the replacement chat is a blank (unlisted) one — 0 listed
+✓ background streaming run stays listed after new_chat
+✓ the new blank chat is not listed
+✓ exactly one row (the background run) — 1 listed
+✓ finished background run is still listed
+✓ switching back keeps the conversation in the list
+
+ALL PASS
+----- running-list-test 输出结束 -----
+
+▶ snapshot-delta-test（worker3 :9160）
+
+----- slash-commands-test 输出开始 -----
+[1] catalog on attach: 12 commands {"builtin":12}
+[2] get_commands re-request: 12 commands
+[3] /cwd valid → 正在同步目录与检查最近会话：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/slash-cwd-04hFxg → 已切换到工作目录：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/slash-cwd-04hFxg
+[4] /cwd invalid → 切换工作目录失败：ENOENT: no such file or directory, stat '/nonexistent-zzz'
+[5] /model no-match → 没有匹配到模型：这个模型必然不存在xyz（可用模型见顶栏模型列表）
+[6] /help intercepted, no SDK leak
+[7] /new → active conversation c1…
+[7b] /new /cwd → first prompt delivered (当前工作目录：/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/slash-cwd-04hFxg)
+[8] /reload → catalog re-pushed (12 commands), 已重新加载扩展、技能与提示模板
+
+✅ SLASH-COMMAND CHECKS PASSED
+----- slash-commands-test 输出结束 -----
+
+▶ ssh-plugin-test（worker2 :9140）
+
+----- snapshot-delta-test 输出开始 -----
+✓ ready received with protocolVersion=2
+✓ attach burst settled (scheduler_tasks arrived)
+✓ get_state returns FULL snapshot
+✓ full snapshot carries messages array + numeric rev
+✓ emission after native slash prompt arrived as delta — 1 new msg(s)
+✓ delta chains onto immediately preceding rev — 4 vs 4
+✓ delta state has NO messages field
+✓ delta appended is an array
+✓ delta state still carries conversationId/streamingMessage/stats/rev
+✓ rev chain continuous across all emissions
+✓ get_state after deltas returns full again
+----- snapshot-delta-test 输出结束 -----
+
+▶ steer-queue-smoke（worker3 :9160）
+
+----- steer-queue-smoke 输出开始 -----
+[out] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[out] 
+[out]   ⚡ pi-web-ui — web chat for the pi coding agent
+    http://localhost:8921
+    workspace   : /Users/liyingjun/Desktop/SW-QA/15-aqa
+    session dir : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/steer-agent-aU3NSB/sessions
+    pi SDK      : v1.1.0
+[out]     bind        : 127.0.0.1:8921
+
+[out]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/steer-queue-a9OEGt/pi-web-ui.sock
+OK: prompt(queue) + queue_remove 消息被服务端正常接收，dispatch/签名无异常（无模型时按预期提示发送失败）
+[out] 
+shutting down…
+----- steer-queue-smoke 输出结束 -----
+
+▶ subagent-template-test（worker3 :9160）
+
+----- subagent-template-test 输出开始 -----
+data-dir: /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-satpl-test-sp60YJ
+[srv] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[srv] 
+[srv]   ⚡ pi-web-ui — web chat for the pi coding agent
+    http://localhost:9160
+    workspace   : /Users/liyingjun/Desktop/SW-QA/15-aqa
+    session dir : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-satpl-test-sp60YJ/agent/sessions
+    pi SDK      : v1.1.0
+[srv]     bind        : 127.0.0.1:9160
+[srv] 
+[srv]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-satpl-test-sp60YJ/pi-web-ui.sock
+  ✓ settings_state 携带 subagentTemplates 字段
+  ✓ settings_state 携带 subagentDefaultTemplates（默认徽标源）
+  ✓ 初始列表已带内置默认模板
+  ✓ 保存后列表含新模板
+  ✓ promptMode / 白名单 / 模型 / 思考强度 / 简介 完整
+  ✓ 默认 enabled=true
+  ✓ 内置模板不预设思考强度（空 = 跟随主对话）
+  ✓ 同名校验：停用后仍保留在面板
+  ✓ 覆盖生效（append + 空白名单）
+  ✓ 覆盖时未传模型 → 归一为空串（跟随主对话）
+  ✓ 覆盖时未传思考强度 → 归一为空串（跟随主对话）
+  ✓ 未知档位归一为空串（不报错、不猜，回落跟随主对话）
+  ✓ 模板持久化到 <dataDir>/subagent-templates.json（默认 + 用户）
+  ✓ 删除后用户模板消失（默认模板仍在）
+  ✓ 磁盘同步删除用户模板
+  ✓ 默认模型初始为 null（跟随主对话）
+  ✓ subagentModels 字段存在（零模型环境为空数组）
+  ✓ set_settings 更新 subagentDefaultModel
+  ✓ 置空恢复跟随主对话
+  ✓ 非法名：错误 notice
+  ✓ 非法名：列表未被污染（默认仍在、无 reviewer）
+  ✓ 简中界面：内置模板是出厂简中
+  ✓ zh → zh-TW：补推快照，内置模板换成繁中
+  ✓ 繁中视图：提示词也是繁中，英文字段不动
+  ✓ 繁中界面点开关：保存成功且仍显示繁中
+  ✓ 落盘文字仍是出厂简中（没被改写成繁体）
+  ✓ zh-HK 同样是繁中视图
+  ✓ 切回英文：显示出厂简中（库未被繁中操作污染）
+
+subagent-template-test: 28 通过, 0 失败
+----- subagent-template-test 输出结束 -----
+
+▶ subagent-thinking-test（worker3 :9160）
+
+----- ssh-plugin-test 输出开始 -----
+[mock-ssh] 本地无 ssh2 依赖，回退 npm install…
+
+added 8 packages in 4s
+✓ attach 后主动收到插件状态推送（服务端唯一事实源）
+✓ state 初始返回，ssh2 依赖就绪
+✓ 本地文件读写正常（无 connId 直走 fs）
+✓ 空 host 校验拒绝
+✓ hosts_save 落盘 + 回显脱敏（password 不回传）
+✓ ssh-hosts.json 不再含明文密码（已迁入 host.secrets）
+✓ 加密机密文件 secrets.bin 已生成
+✓ 错误密码连接被拒（[client-authentication] All configured a…）
+✓ 连接成功 connId=c2
+✓ shell 打开并收到欢迎横幅
+✓ 终端输入回显正常
+✓ exec 输出与退出码 0
+✓ exec 非零退出码 + stderr 合并
+✓ 远程 list（connId 路由）sub, a.txt, big.bin
+✓ 远程 read 文本内容
+✓ 远程 read 二进制标记（NUL 嗅探）
+✗ 远程 write 失败: mkdirpRemote is not defined
+✗ write→read 不一致: {"res":true,"reqId":"tu9ipxndo0hi","ok":false,"error":"No such file or directory"}
+✗ create dir 异常: {"res":true,"reqId":"tzf8rlxzf0yq","ok":false,"error":"mkdirpRemote is not defined"}
+✗ rename 异常: {"res":true,"reqId":"tgfltfp8s6rm","ok":false,"error":"No such file or directory"}
+✗ delete 异常: {"res":true,"reqId":"tktr25k8538","ok":false,"error":"No such file or directory"}
+✓ rename 非法名称拒绝
+✗ 远程末片异常: {"res":true,"reqId":"tsmqbjdzpj9","ok":false,"error":"mkdirpRemote is not defined"}
+✗ 远程 upload_begin 应报 exists: {"res":true,"reqId":"tml8f2xhfzsk","ok":true,"action":"upload_begin","uploadId":"umvgcssh63etydf","exists":false}
+✗ 远程子目录上传失败: {"res":true,"reqId":"tezcpsa85cg","ok":false,"error":"mkdirpRemote is not defined"}
+✓ 远程 upload_abort 丢弃内存分片不落盘
+✓ disconnect 触发 conn_closed 事件
+✓ hosts_delete
+✓ 未知 action 报错不崩
+✗ sync_get 失败: 未知操作 sync_get
+✗ sync_save 失败: 未知操作 sync_save
+✗ sftp.json 内容异常: {}
+✗ sync_get 回读异常: {"res":true,"reqId":"tu4mhhwce0x","ok":false,"error":"未知操作 sync_get"}
+✗ 留空密码应沿用旧值: {"res":true,"reqId":"tyfr7jgt84l","ok":false,"error":"未知操作 sync_save"}
+✓ 相对路径远端根拒绝
+✗ sync_ensure 异常: {"res":true,"reqId":"t8bbwdhuoun7","ok":false,"error":"未知操作 sync_ensure"}
+✗ ENOENT: no such file or directory, open '/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-ssh-test-wTbMsM/.vscode/sftp.json'
+Error: ENOENT: no such file or directory, open '/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-ssh-test-wTbMsM/.vscode/sftp.json'
+    at readFileSync (node:fs:484:20)
+    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/ssh-plugin-test.mjs:444:22 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-ssh-test-wTbMsM/.vscode/sftp.json'
+}
+----- ssh-plugin-test 输出结束 -----
+
+▶ subagent-ui-context-test（worker2 :9140）
+
+----- sftp-plugin-test 输出开始 -----
+[mock-ssh] 本地无 ssh2 依赖，回退 npm install…
+
+added 8 packages in 10s
+✓ plugins 清单里能看到本插件
+✓ 插件激活成功
+✓ AI 工具合并为一个（sftp）
+✓ sftp 动作表完整（15 个：status, save, secret, test, plan, sync, cancel, ls, read, write, mkdir, mv, rm, search, exec）
+✓ secret 动作只回引用（${secret:名}），不回明文
+✓ 界面上只有一个 SFTP 入口（topbar.primary/__view/view）
+✓ 顶栏入口就是插件自己的视图 tab（id __view，不再依赖宿主合成 + 手动钉住）
+✓ 底栏不再有 SFTP 条目
+✓ 文件右键菜单包含六条上传、下载及忽略动作
+✓ 右键菜单动作 sftp:upload-file 已被客户端接管
+✓ 右键菜单动作 sftp:upload-dir 已被客户端接管
+✓ 右键菜单动作 sftp:download-file 已被客户端接管
+✓ 右键菜单动作 sftp:download-dir 已被客户端接管
+✓ 右键菜单动作 sftp:ignore-item 已被客户端接管
+✓ 右键菜单动作 sftp:unignore-item 已被客户端接管
+✓ 没有残留的无人接管动作 sftp:open
+✓ GET /state 可用
+✓ active/perfiles 正确（mock）
+✓ 连接解析：remotePath 与 ready
+✓ 凭据脱敏：明文只报 plain，不回真值
+✓ state 里不含任何明文口令
+✓ 明文凭据告警被识别（auth.password）
+✓ test：连接成功且远端根存在
+✓ test：探针文件可写可删（写权限正常）
+✓ POST /plan 可用
+✓ 计划：本地独有 1 个待上传（实际 1）
+✓ 计划：a.txt 一致 + big.bin 因删除策略跳过 = 2（实际 2）
+✓ 计划：无下载、无清理（删除策略默认 none）
+✓ 默认 ignore 生效（扫描结果：a.txt, big.bin, src/new.txt）
+✓ 远端独有项给出「为什么不清理」的原因
+✓ POST /sync dryRun=true 只回计划
+✓ dry-run 后远端文件集合未变
+✓ dry-run 没有真的上传
+✓ 同步执行：上传 1（实际 1）
+✓ 上传内容落到远端且字节一致
+✓ 一致的文件没有被重传覆盖
+✓ 传输用的半成品文件已清理，不留残渣
+✓ 二次计划：无待传（upload=0 download=0）
+✓ 二次计划：3 个文件全部一致/跳过（实际 3）
+✓ 清理远端多余文件 1 个（实际 1）
+✓ 被清理的文件确实离开原位
+✓ 进入远端垃圾桶（/home/test/.sftp-trash/2026-10-20T07-20-16/big.bin）
+✓ 垃圾桶里的内容完好（4 字节）
+✓ 垃圾桶被内部护栏排除，不会被下次同步回传（本次扫描：a.txt, src/new.txt）
+✓ 垃圾桶排除后仅剩 2 个文件参与比对（实际 2）
+✓ POST /secret 写入加密机密并回引用（不回显明文）
+✓ 把连接凭据改成 ${secret:mock-pass} 引用
+✓ 配置文件里不再有明文口令（只剩引用）
+✓ 用 ${secret:} 引用仍能连上（加密存储 → 引用解析链路通）
+✓ 用 ${env:PI_WEB_TEST_PASS} 引用仍能连上
+[server] [plugin:sftp] POST /test 失败：mock.auth.password 引用的机密 does-not-exist 不存在——用 sftp_secret 工具写入，或在设置里重新保存
+✓ 引用不存在的机密显式报错（mock.auth.password 引用的机密 does-not-exist 不存在——用 sftp_secret 工具写入，或在设置里重新保存）
+[server] [plugin:sftp] POST /test 失败：mock.auth.password 的引用写法不合法：${env}。可用 ${env:VAR} / ${secret:name} / ${file:~/path}，或直接写明文。
+✓ 写法不合法的引用报错而不是静默当成空密码
+✓ 写远端文件（父目录自动创建）
+✓ 读远端文件内容一致
+✓ 移动远端文件
+✓ 远端递归建目录
+✓ 删除远端目录（递归，3 项）
+✓ 删除后文件确实不在原位
+✓ 删除走垃圾桶而不是真删
+✓ 列远端目录
+[server] [plugin:sftp] GET /remote 失败：目录不能含 ..：/home/test/../..
+✓ 远端路径含 .. 被拒（目录不能含 ..：/home/test/../..）
+[server] [plugin:sftp] POST /remote-write 失败：路径必须是绝对路径（以 / 开头）：relative.txt
+✓ 远端写相对路径被拒
+[server] [plugin:sftp] POST /remote-rm 失败：拒绝删除同步根目录
+✓ 拒绝把同步根目录整个删掉
+[server] [plugin:sftp] POST /plan 失败：连接「bad」的 remotePath 必须是绝对路径
+✓ remotePath 非绝对路径时计划直接拒绝（连接「bad」的 remotePath 必须是绝对路径）
+✓ 清理完临时 profile 后 active 不变（mock）
+✓ POST /import 迁移 vscode-sftp 配置
+✓ 明文口令转入加密机密
+✓ 迁移后 legacy 连接里没有明文口令（{"password":"${secret:legacy-password}"}）
+✓ 配置里落的是 ${secret:legacy-password} 引用
+✓ 迁移出来的连接可直接连通（127.0.0.1）
+✓ down 单文件：下载 1 个（实际 1）
+✓ down 单文件：本地内容被远端覆盖
+✓ both：两个方向都有活（up=1 down=1）
+✓ both：执行成功
+✓ both：本地独有的文件被传到远端
+✓ both：远端独有的文件被拉到本地
+✓ both：原有文件没被误删（双向不删多余项）
+✓ mappings：只产出一个同步根（1）
+✓ mappings：根映射正确（src → /home/test/mapped）
+✓ mappings：条目是相对映射根的相对路径（new.txt）
+✓ mappings：内容落到映射后的远端目录（实际 "changed on server\n"，结果 {"upload":1,"download":0,"trashRemote":0,"trashLocal":0,"skip":0}，失败 []）
+[server] [plugin:sftp] POST /plan 失败：「a.txt」不在任何 mappings 同步根内 —— 配了 mappings 时只同步被映射的子树
+✓ mappings：映射外的路径被拒且给出原因（「a.txt」不在任何 mappings 同步根内 —— 配了 mappings 时只同步被映射的子树）
+[server] [plugin:sftp] POST /exec 失败：远端执行命令未开启（设置 → 插件 → SFTP 同步 → 允许在远端执行命令）
+✓ sftp_exec 开关关着时路由也拒绝（远端执行命令未开启（设置 → 插件 → SFTP 同步 → 允许在远端执行命令））
+✓ POST /sync 缺 body → 当成 dry-run（dryRun=true）
+✓ POST /sync 缺 body 时远端文件集合未变
+✓ dry-run 不回 result（没执行就没什么可报的）
+✓ POST /prune-trash 可用（清除 0 个批次）
+✓ 默认排除里含 .vscode/sftp.json（.git, node_modules, .pi, .sftp-trash, *.log, *.tmp, .vscode/sftp.json, **/.vscode/sftp.json, dist）
+✓ 手动上传单文件（scope=file upload=1）
+✓ 单文件内容落到远端
+✓ 手动下载单文件（download=1）
+✓ 下载覆盖了本地内容
+✓ 远端目录反查到本地子树（scope=tree target=src）
+✓ 子树内容上传到对应远端目录（实际 "extra\n"，失败 []）
+✓ 手动传输不动删除策略（远端多出来的文件还在）
+[server] [plugin:sftp] POST /transfer 失败：路径越出工作区：../outside
+✓ 手动上传拒绝越界（路径越出工作区：../outside）
+[server] [plugin:sftp] POST /transfer 失败：「/etc/passwd」不在任何同步根内（远端根 /home/test，无本地对应目录）
+✓ 手动下载拒绝同步根外的路径（「/etc/passwd」不在任何同步根内（远端根 /home/test，无本地对应目录））
+[server] [plugin:sftp] POST /transfer 失败：远端不存在：/home/test/nope.txt
+✓ 手动下载不存在的文件报错（远端不存在：/home/test/nope.txt）
+✓ 工具按 allowExec 重新组装（enum 里多/少一个 exec）
+✓ 重启后仍只有一个 sftp 工具
+✓ 远端命令真的跑起来了（code=0）
+✓ 退出码与 stderr 原样回传
+✓ 设置页的并发值生效（2）
+✓ 重新读取插件清单仍为激活态
+✓ 重启后仍是单个 sftp 工具（sftp）
+✓ POST /plan 回计划 token
+✓ 带 token 回来的任务沿用了刚才那份计划（没重扫）
+✓ token 对不上就老老实实重扫（不传旧计划）
+✓ allowExec 打开时出计划（走一次 find 快扫，待上传 13）
+✓ 13 个小文件全部落盘（实际 13）
+✓ 13 个小文件走了一次 tar 批量（batched=13）
+✓ tar 解包出来的嵌套文件内容正确（相对路径算对了）
+✓ 批量上传后暂存目录已清理（不会留半成品给下次同步）
+✓ find 快扫看到刚传上去的 13 个文件（skip=13）
+✓ 13 个小文件全部拉回（实际 13）
+✓ 13 个小文件走了一次 tar 批量下载（batched=13）
+✓ 本地解包出来的嵌套文件内容正确
+✓ 本地解包出来的普通文件内容正确
+✓ 本地暂存目录已清理（不会留半成品在工作区）
+[server] [plugin:sftp] 批量下载出错（unexpected end of file），回落逐文件下载
+✓ 远端没有 tar 时回落逐文件仍全部拉回（13）
+✓ 回落时 batched 诚实为 0
+✓ 回落不是失败（failed 为空）
+✓ 回落路径的内容也对
+✓ 逐目录扫描与 find 快扫结论一致（{"upload":0,"download":0,"trashRemote":0,"trashLocal":0,"skip":13,"conflict":0,"total":13}）
+✓ 扫描期间 /state 能看到运行中的任务（界面才画得出进度与停止键）
+✓ 扫描期间 phase=scan（实际 scan）
+✓ 扫描进度里有目录计数（前端据此显示「已扫 N 个文件 / M 个目录」）
+✓ POST /cancel 接受了停止请求
+✓ 被停掉的任务回 cancelled，而不是报错
+✓ 取消后很快收尾（285ms，没等整棵树扫完）
+✓ 取消后运行位释放、状态标成已停止（不会一直卡在「已有同步任务在运行」）
+✓ 没有任务在跑时 /cancel 幂等返回（不报错）
+✓ 取消之后插件照常出计划（运行位没被卡住）
+----- sftp-plugin-test 输出结束 -----
+
+▶ switch-session-background-test（worker1 :9120）
+
+----- subagent-thinking-test 输出开始 -----
+✓ 主对话收尾回合完成（3 个子代理都已启动）
+  probe log:
+    REQ role=main think=low effort=low model=mock-reasoner
+    REQ role=thinker think=high effort=high model=mock-reasoner
+    REQ role=clamped think=high effort=high model=mock-reasoner
+    REQ role=inheritor think=low effort=low model=mock-reasoner
+    REQ role=main-final think=low effort=low model=mock-reasoner
+✓ 派发没有意外递归（5 条请求） — 实际 5 条
+✓ 模板指定 high → 子代理思考强度 high — 实际 high
+✓ 模板留空 → 跟随主对话当前强度（low，不是 SDK 默认） — 实际 low
+✓ 模板指定 max 但模型只支持到 high → 收敛成 high（不报错） — 实际 high
+✓ 主对话自己的强度没被派发改掉（仍 low） — 实际 low
+✓ 没有「思考强度设置失败」告警（收敛由 SDK 正常完成） — 无
+
+subagent-thinking-test: all ok
+----- subagent-thinking-test 输出结束 -----
+
+▶ cross-client-session-test（worker3 :9160）
+
+----- question-bridge-test 输出开始 -----
+✓ 模型 ask_user_question → question_pending（题目透传） — id=q-1 n=2
+✓ 快照携带 pendingQuestion（id/题目与 question_pending 一致） — ["scope","note"]
+✓ 刷新/重连后的快照带回同一张问卷（对话框可恢复） — q-1
+✓ 问卷挂着 5s（看门狗阈值 2000ms）未被自动终止 — 无通知
+✓ 等待期间 run 仍在跑（isStreaming 未中断） — isStreaming=true
+✓ 等待期间无「无任何响应…可能已失联」误报 — 无通知
+✓ 回答后 pendingQuestion 从快照清空
+✓ 模型收到答案（工具结果回显含所选 label 与自定义文本） — 
+ANSWERED:范围: 最小可用
+补充: (no selection) (wrote: 别动图标)
+
+ALL PASS
+----- question-bridge-test 输出结束 -----
+
+▶ orphan-adopt-test（worker0 :9100）
+
+----- subagent-ui-context-test 输出开始 -----
+✓ 子代理跑完并产出文本（SUBAGENT_SMOKE_OK）
+  probe log:
+    OK rpc confirm=TIMEOUT /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-subui-ikJgFi/proj
+    OK rpc confirm=null /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-subui-ikJgFi/proj
+✓ 主对话 + 子代理的扩展 session_start 都调通新 UI API — 2 条 OK
+✓ 没有 UI API 调用失败（旧 mock 在这里 TypeError） — 无 ERR
+✓ 子代理的弹窗立即按取消返回（没有挂在无人应答的 Promise 上） — OK rpc confirm=TIMEOUT /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-subui-ikJgFi/proj | OK rpc confirm=null /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-subui-ikJgFi/proj
+✓ 挂浏览器的上下文照常等待用户回答（只有子代理被 headless 化）
+✓ 没有向浏览器推 TypeError error notice — 无
+
+ALL PASS
+----- subagent-ui-context-test 输出结束 -----
+
+▶ takeover-test（worker2 :9140）
+
+----- switch-session-background-test 输出开始 -----
+✓ history switch leaves the active stream running in background
+✓ background response completes and remains recoverable
+----- switch-session-background-test 输出结束 -----
+
+▶ takeover-rollback-test（worker1 :9120）

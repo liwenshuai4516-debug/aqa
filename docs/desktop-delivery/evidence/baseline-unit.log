@@ -1,0 +1,20 @@
+
+ RUN  v5.0.1 /Users/liyingjun/Desktop/SW-QA/15-aqa
+
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollBy() method
+Not implemented: HTMLCanvasElement's toDataURL() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's toDataURL() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's toDataURL() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's toDataURL() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's toDataURL() method: without installing the canvas npm package
+
+ Test Files  452 passed (452)
+      Tests  5132 passed | 9 skipped (5141)
+   Start at  15:17:46
+   Duration  38.30s (import 57%, tests 22%, transform 11%, environment 8%, setup 1%, worker 1%)
+
+     Import  1049 modules were evaluated 9849 times · 165.81s total, 57% of tracked time
+             ~12.60s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation
+
