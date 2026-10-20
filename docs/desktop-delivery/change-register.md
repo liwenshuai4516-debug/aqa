@@ -38,3 +38,7 @@
 ## T11 同机对照
 
 新增 baseline-comparison-run.mjs 与只读原宿主对照证据；六个有效样本覆盖新配置启动、进程树 RSS、长对话滚动、终端响应和相同内容区截图。另从真实 DMG 挂载复制后验证。生产代码与安装包未改。
+
+## T12 首次启动与模型设置
+
+新增 first-run-run.mjs 验证生产选择循环、取消、路径错误和最近工作区；ui-acceptance-run.mjs 增加空白配置下通过原设置 UI 录入本地测试密钥并实际发送。测试与交付记录以外未修改。详见 T12-first-run-and-model-config.md。

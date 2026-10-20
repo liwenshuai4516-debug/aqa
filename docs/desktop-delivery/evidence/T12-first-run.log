@@ -1,0 +1,22 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-first-run-GpZWlu",
+  "executable": "/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+  "instrumentation": "compiled production main loaded through a test harness; only dialog return values supplied, native chooser interaction not tested",
+  "checks": [
+    {
+      "id": "T03",
+      "status": "PASS",
+      "check": "no workspace override: native picker invoked; cancel exits with no service or saved workspace"
+    },
+    {
+      "id": "T03",
+      "status": "PASS",
+      "check": "home directory rejected through error dialog; picker repeats, valid Chinese path saved and real window loads"
+    },
+    {
+      "id": "T03",
+      "status": "PASS",
+      "check": "restart without cwd override restores recent workspace and never invokes picker"
+    }
+  ]
+}

@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | A01 | 部分 PASS | snapshot-delta、token-auth、重连原集成回归通过；D02 真实 SDK 与本地流式供应商通过。deepseek-ui.json：真实安装包界面 → 原服务 → 包内 SDK → DeepSeek 流式回复通过。 |
 | A02 | 部分 PASS | ephemeral、cross-client、历史恢复原回归；no-replay.json 实际退出重开历史可读且不自动继续。全部 UI 组合未完成。 |
-| A03 | 部分 PASS | provider-keys、provider-oauth、fetch-models 原回归通过；真实 DeepSeek：包内 SDK 实际连接通过，1 次请求、15 输入 / 8 输出 tokens（deepseek-sdk.json）；deepseek-ui.json 已补界面发送到真实供应商回复；测试凭据使用内存代理，设置 UI 凭据录入仍未验收。真实 OAuth 仍未验证。 |
+| A03 | 部分 PASS | provider-keys、provider-oauth、fetch-models 原回归通过；真实 DeepSeek：包内 SDK 实际连接通过，1 次请求、15 输入 / 8 输出 tokens（deepseek-sdk.json）；deepseek-ui.json 已补界面发送到真实供应商回复；测试凭据使用内存代理，T12 model-config-ui.json 已验证原设置 UI 保存本地测试密钥、供应商、模型并实际发送；未在 UI 保存真实供应商密钥。真实 OAuth 仍未验证。 |
 | A04 | 部分 PASS | approval-policy、approval-rules、tool-prompt、lazy-tools 原回归通过；不得将 mock 当真实模型工具执行。 |
 | A05 | 部分 PASS / FAIL | preview、preview-http、sftp、vscode-editor 原回归通过；D03-ssh-sftp.json 真实 SSH/SFTP 读写、嵌套上传、权限失败、版本同步通过。packaged-ui.json 已验证安装包中文文本、二进制与 SVG 文件上传、PNG 粘贴、附件卡片和本地流式回复。原 file-upload/image-paste UI 测试因旧选择器匹配两个输入而失败，保留原结果。 |
 | A06 | 部分 PASS / FAIL | packaged-smoke.json：实际包内 PTY 输入、尺寸和退出通过，SCM 原回归通过。terminal-smoke 原测试仍失败，terminal-browser 受浮层阻挡。 |

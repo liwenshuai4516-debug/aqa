@@ -2,10 +2,11 @@ import { _electron } from "playwright-core";
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import { once } from "node:events";
-import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
+const configureUI = process.env.PI_DESKTOP_CONFIGURE_UI === "1";
 const realProvider = process.env.PI_DESKTOP_REAL_PROVIDER === "deepseek";
 let credential = "";
 if (realProvider) {
@@ -85,22 +86,24 @@ const provider = createServer(async (req, res) => {
 });
 provider.listen(0, "127.0.0.1");
 await once(provider, "listening");
-writeFileSync(
-	join(agent, "models.json"),
-	JSON.stringify({
-		providers: {
-			fixture: {
-				api: "openai-completions",
-				baseUrl: `http://127.0.0.1:${provider.address().port}`,
-				apiKey: "local-only",
-				models: [
-					{ id: "ui-fixture", name: "UI Fixture", input: ["text", "image"], contextWindow: 32000, maxTokens: 128 },
-				],
+if (!configureUI) {
+	writeFileSync(
+		join(agent, "models.json"),
+		JSON.stringify({
+			providers: {
+				fixture: {
+					api: "openai-completions",
+					baseUrl: `http://127.0.0.1:${provider.address().port}`,
+					apiKey: "local-only",
+					models: [
+						{ id: "ui-fixture", name: "UI Fixture", input: ["text", "image"], contextWindow: 32000, maxTokens: 128 },
+					],
+				},
 			},
-		},
-	}),
-);
-writeFileSync(join(agent, "auth.json"), JSON.stringify({ fixture: { type: "api_key", key: "local-only" } }));
+		}),
+	);
+	writeFileSync(join(agent, "auth.json"), JSON.stringify({ fixture: { type: "api_key", key: "local-only" } }));
+}
 const reservation = createServer().listen(0, "127.0.0.1");
 await once(reservation, "listening");
 const port = reservation.address().port;
@@ -137,6 +140,37 @@ try {
 	const page = await app.firstWindow({ timeout: 45000 });
 	await page.waitForSelector(".app");
 	await page.waitForLoadState("networkidle");
+
+	if (configureUI) {
+		await page.getByRole("button", { name: "设置", exact: true }).click();
+		await page.locator(".settings-tab", { hasText: "模型与服务商" }).click();
+		await page.getByRole("button", { name: "打开管理面板", exact: true }).click();
+		const studio = page.locator(".model-studio-modal");
+		await studio.getByRole("button", { name: "添加自定义服务商", exact: true }).click();
+		await studio.getByPlaceholder("例如 deepseek", { exact: true }).fill("fixture");
+		await studio
+			.getByPlaceholder("https://api.deepseek.com/v1", { exact: true })
+			.fill(`http://127.0.0.1:${provider.address().port}`);
+		await studio.locator('input[type="password"]').fill("local-only");
+		await studio.locator(".form-grid select").selectOption("openai-completions");
+		await studio.locator(".id-group input").fill("ui-fixture");
+		await studio.locator(".name-group input").fill("UI Fixture");
+		await studio.getByRole("button", { name: "保存", exact: true }).click();
+		await page.waitForTimeout(500);
+		assert(existsSync(join(agent, "models.json")), "UI saved model configuration");
+		await studio.waitFor({ state: "hidden" });
+		await page.keyboard.press("Escape");
+		const settings = page.locator(".settings-modal");
+		if (await settings.isVisible()) await page.keyboard.press("Escape");
+		await page.locator(".chip-model").click();
+		await page.locator(".dd-model-name", { hasText: "UI Fixture" }).click();
+		result.checks.push({
+			id: "A03",
+			status: "PASS",
+			check:
+				"original model manager UI saves custom provider, password and model to isolated agent directory; model selected in composer",
+		});
+	}
 	await page.getByRole("button", { name: "UI Fixture", exact: true }).waitFor({ timeout: 30000 });
 	if (realProvider) {
 		await page.locator(".inputbox textarea").fill("Reply with exactly DESKTOP_ACCEPTANCE_OK. Do not use tools.");
@@ -231,10 +265,18 @@ try {
 			check:
 				"real packaged UI selects text/binary/SVG, pastes PNG, renders attachment cards and streams one fixture response",
 		});
-		await page.screenshot({ path: "docs/desktop-delivery/evidence/packaged-ui.png" });
+		await page.screenshot({ path: `docs/desktop-delivery/evidence/${configureUI ? "model-config-ui" : "packaged-ui"}.png` });
 	}
 } catch (error) {
 	result.error = error.stack;
+	if (configureUI) {
+		const page = app?.context().pages()[0];
+		if (page)
+			result.visibleButtons = await page
+				.locator("button")
+				.evaluateAll((elements) => elements.filter((e) => e.getBoundingClientRect().width).map((e) => e.innerText))
+				.catch(() => []);
+	}
 	process.exitCode = 1;
 } finally {
 	await app?.close().catch(() => {});
@@ -242,7 +284,7 @@ try {
 	credential = "";
 	if (realProvider) result.providerEvidence = providerEvidence;
 	writeFileSync(
-		`docs/desktop-delivery/evidence/${realProvider ? "deepseek-ui" : "packaged-ui"}.json`,
+		`docs/desktop-delivery/evidence/${realProvider ? "deepseek-ui" : configureUI ? "model-config-ui" : "packaged-ui"}.json`,
 		JSON.stringify(result, null, 2),
 	);
 	console.log(JSON.stringify(result, null, 2));
