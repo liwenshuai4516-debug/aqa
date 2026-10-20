@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "existingVersionsChanged": [],
+  "newPackagePaths": [],
+  "productionPromotions": [
+    "@deepseek-ai/cordis",
+    "@deepseek-ai/dsh-anonymous-user-id",
+    "@deepseek-ai/dsh-atomic-write",
+    "@deepseek-ai/dsh-attachment",
+    "@deepseek-ai/dsh-credentials",
+    "@deepseek-ai/dsh-home-paths",
+    "@deepseek-ai/dsh-launch-environment",
+    "@deepseek-ai/dsh-llm",
+    "@deepseek-ai/dsh-llm-deepseek",
+    "@deepseek-ai/dsh-scope",
+    "@deepseek-ai/dsh-tools"
+  ]
+}

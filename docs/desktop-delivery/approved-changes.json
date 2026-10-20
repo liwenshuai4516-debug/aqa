@@ -1,11 +1,11 @@
 [
 	{
 		"path": "server/agent-service-daemon.ts",
-		"decision": "D02",
+		"decision": "D02 + D04",
 		"approvedBy": "User explicit reply on 2026-10-20",
 		"baselineSha256": "4e043dfe5b0bacc19c6bfb771fd39551ff0fa04adfc68d8aa15ff4a1ae7ee588",
-		"sha256": "fb70ecd6c183b7db13f98479b439f45d10b1b305de93e46de26199aee2f757b8",
-		"scope": "Only gate interrupted session auto-continuation for PI_WEB_RESUME_INTERRUPTED=0"
+		"sha256": "6d05b254f90af43a5b09fe1d5bfd2ae5462cbaf48db52c0a36b75a3394fa8051",
+		"scope": "D02: gate interrupted auto-continuation for PI_WEB_RESUME_INTERRUPTED=0; D04: refresh existing SDK sessions once after pluginToolsProvider assignment, explicitly approved by user"
 	},
 	{
 		"path": "plugins/vscode-editor/index.mjs",
@@ -22,5 +22,13 @@
 		"baselineSha256": "da8e2c33a555ae4806e47fe54e931dcf675c9d21e5d1f7b0d0f583e259c095c7",
 		"sha256": "b4d52206e31c9c907a96a1d33f860f39da6a2ee40e6b3952f06cd022e9604720",
 		"scope": "Restore missing mkdirpRemote helper only; plugin version 0.5.1 to 0.5.2"
+	},
+	{
+		"path": "server/mcp-bridge.ts",
+		"decision": "D05",
+		"approvedBy": "User explicit reply on 2026-10-20",
+		"baselineSha256": "3378198f7ad9b8c15456bddc1f937800a6b6eb6133ae8c57f2ec73728731cd0a",
+		"sha256": "960bd5507e4b7eac3caa2b1a235019deaeafe6c02291043fcc23f1468c768988",
+		"scope": "One existing onToolsChanged callback after reload aggregates new tools and closes stale clients"
 	}
 ]

@@ -1,0 +1,11 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-system-browser-eoLsgJ",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-Qj9MoD/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "checks": [
+    {
+      "status": "FAIL",
+      "error": "browserType.connectOverCDP: connect ECONNREFUSED 127.0.0.1:65535\nCall log:\n\u001b[2m  - <ws preparing> retrieving websocket url from http://127.0.0.1:65535\u001b[22m\n\n    at launchNativeApp (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/native-app.mjs:68:28)\n    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/system-browser-run.mjs:28:17"
+    }
+  ],
+  "modelRequests": 0
+}

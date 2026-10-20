@@ -1,0 +1,6 @@
+[
+  {
+    "status": "FAIL",
+    "error": "AssertionError [ERR_ASSERTION]: tool registered: read_text_file\n    at Server.<anonymous> (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/mcp-filesystem-run.mjs:103:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+  }
+]

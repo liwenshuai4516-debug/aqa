@@ -1242,6 +1242,7 @@ export class AgentService {
 		cs.onConversationChanged = () => this.onConversationChanged?.();
 		cs.onClientModelChanged = (snap) => this.onClientModelChanged?.(snap);
 		cs.pluginToolsProvider = this.pluginToolsProvider;
+		cs.refreshPluginTools();
 		cs.pluginCommandsProvider = this.pluginCommandsProvider;
 		cs.pluginBgTasksProvider = this.pluginBgTasksProvider;
 		cs.pluginStopBgTask = this.pluginStopBgTask;

@@ -1,0 +1,11 @@
+npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+
+added 531 packages in 18s
+npm warn allow-scripts 5 packages have install scripts not yet covered by allowScripts:
+npm warn allow-scripts   @deepseek-ai/dsh-subprocess-local@0.1.5-rc.3 (postinstall: node scripts/ensure-spawn-helper.mjs)
+npm warn allow-scripts   koffi@3.3.3 (install: node ./cnoke.cjs -P . -D src/koffi --prebuild --release)
+npm warn allow-scripts   node-pty@1.2.0-beta.15 (install: node scripts/prebuild.js || node-gyp rebuild; postinstall: node scripts/post-install.js)
+npm warn allow-scripts   @google/genai@1.52.0 (preinstall: echo 'preinstall: no-op')
+npm warn allow-scripts   protobufjs@7.6.6 (postinstall: node scripts/postinstall)
+npm warn allow-scripts
+npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.

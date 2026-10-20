@@ -1,0 +1,17 @@
+[
+  {
+    "status": "PASS",
+    "check": "production window.open → unmodified shell.openExternal → actual system default browser → same local application attaches a distinct authenticated client",
+    "defaultBrowser": "Google Chrome (macOS LaunchServices HTTP/HTTPS handler)",
+    "clientCountBefore": 1,
+    "clientCountAfter": 2
+  },
+  {
+    "status": "PASS",
+    "check": "browser handoff does not remove anonymous API authentication"
+  },
+  {
+    "status": "UNVERIFIED",
+    "check": "browser tab cleanup unavailable; only this test app is stopped"
+  }
+]

@@ -4,7 +4,7 @@
 
 ## 开发与构建
 
-使用 Node 24 LTS（本机验证 24.19.0）；锁文件保持原样。Electron 44.4.2 内置 Node 24.21.0，包内 SDK 为 1.1.0。
+使用 Node 24 LTS（本机验证 24.19.0）。Electron 44.4.2 内置 Node 24.21.0，包内 SDK 为 1.1.0。T14 将已锁定版本的 DSH 适配器运行依赖显式列入生产依赖，修复安装包遗漏 peer 依赖的问题；没有升级现有依赖版本。
 
 ```sh
 npm ci --include=dev --include=optional
@@ -27,7 +27,7 @@ npx electron-builder -c desktop/electron-builder.yml --mac --arm64 --publish nev
 
 服务只监听 127.0.0.1，优先端口 8790，已占用则安全回退，不终止占用进程。每次启动随机生成鉴权令牌，并以原 cookie 流程交给界面；健康与身份校验通过才打开窗口。主题、语言和面板设置按明确白名单跨端口恢复，不复制身份或授权。
 
-客户端自身启动不需要全局 Node/Pi CLI。用户项目的 Git、Shell、Python、MCP 等仍需原有外部环境；模型和市场需要网络及用户配置。
+客户端自身启动不需要全局 Node/Pi CLI。用户项目的 Git、Shell、Python、MCP 等仍需原有外部环境；模型和市场需要网络及用户配置。DSH 引擎还需官方运行时树（本次验证 `@deepseek-ai/dsh@0.1.5-rc.3`），可由 `PI_WEB_DSH_RUNTIME` 指向其 node_modules；应用仅随包携带原适配器所需依赖，不内置完整官方 DSH 运行时。
 
 ## 窗口、恢复与浏览器
 
@@ -35,7 +35,9 @@ macOS 关闭窗口保留服务，Dock 激活重建窗口；重复实例聚焦原
 
 D02 已获批准：桌面设置 `PI_WEB_RESUME_INTERRUPTED=0`，保留中断记录、历史与手动恢复，不自动发送“继续”。Web/CLI 默认行为保留。
 
-D01 已选择 A：浏览器操作在系统浏览器中打开同一应用后，安装并授权原 page-picker 扩展，明确接管会话后执行。Electron 当前会话不提供无缝浏览器桥接。真实 Chrome 扩展、接管和 SDK 工具结果链路的证据见 `docs/desktop-delivery/evidence/D01-browser.json`；测试将外链路由至隔离 Chrome，未证明系统默认应用派发。
+D01 已选择 A：浏览器操作在系统浏览器中打开同一应用后，安装并授权原 page-picker 扩展，明确接管会话后执行。Electron 当前会话不提供无缝浏览器桥接。真实 Chrome 扩展、接管和 SDK 工具结果链路的证据见 `docs/desktop-delivery/evidence/D01-browser.json`；T14-system-browser.json 另外验证了未经拦截的系统默认 Chrome 派发及第二个认证会话连接。
+
+D04/D05 已获批准：首次客户端连接后同步已经就绪的插件/MCP 工具；MCP 重载完成后通知原会话刷新，避免继续调用已关闭的旧客户端。两处均使用原刷新管线，适用于 Web/CLI。
 
 ## 安装、更新与故障处理
 

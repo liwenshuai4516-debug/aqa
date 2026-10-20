@@ -1,0 +1,15 @@
+[dsh] initialize 失败 (model=deepseek-v4-flash cwd=/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-dsh-runtime-4g3xVL/workspace): DSH runtime exited (code=1 signal=null) stderr: f6psss9y80000gn/T/pi-artifact-install-lsJ14H/dmg 中文 installation/Pi Agent Desktop.app/Contents/Resources/app/dist/server/dsh/runtime/goal-rpc.mjs
+          Cannot find package '@deepseek-ai/dsh-tools' imported from /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-lsJ14H/dmg 中文 installation/Pi Agent Desktop.app/Contents/Resources/app/dist/server/dsh/runtime/goal-rpc.mjs
+
+DSH runtime 已退出 (code=1 signal=null) stderr: f6psss9y80000gn/T/pi-artifact-install-lsJ14H/dmg 中文 installation/Pi Agent Desktop.app/Contents/Resources/app/dist/server/dsh/runtime/goal-rpc.mjs
+          Cannot find package '@deepseek-ai/dsh-tools' imported from /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-lsJ14H/dmg 中文 installation/Pi Agent Desktop.app/Contents/Resources/app/dist/server/dsh/runtime/goal-rpc.mjs
+
+  launcher stderr: mg 中文 installation/Pi Agent Desktop.app/Contents/Resources/app/dist/server/dsh/runtime/goal-rpc.mjs): Cannot find package '@deepseek-ai/dsh-tools' imported from /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-lsJ14H/dmg 中文 installation/Pi Agent Desktop.app/Contents/Resources/app/dist/server/dsh/runtime/goal-rpc.mjs
+          Cannot find package '@deepseek-ai/dsh-tools' imported from /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-lsJ14H/dmg 中文 installation/Pi Agent Desktop.app/Contents/Resources/app/dist/server/dsh/runtime/goal-rpc.mjs
+
+[
+  {
+    "status": "FAIL",
+    "error": "DshTransportError: DSH runtime exited (code=1 signal=null) stderr: f6psss9y80000gn/T/pi-artifact-install-lsJ14H/dmg 中文 installation/Pi Agent Desktop.app/Contents/Resources/app/dist/server/dsh/runtime/goal-rpc.mjs\n          Cannot find package '@deepseek-ai/dsh-tools' imported from /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-lsJ14H/dmg 中文 installation/Pi Agent Desktop.app/Contents/Resources/app/dist/server/dsh/runtime/goal-rpc.mjs\n\nDSH runtime 已退出 (code=1 signal=null) stderr: f6psss9y80000gn/T/pi-artifact-install-lsJ14H/dmg 中文 installation/Pi Agent Desktop.app/Contents/Resources/app/dist/server/dsh/runtime/goal-rpc.mjs\n          Cannot find package '@deepseek-ai/dsh-tools' imported from /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-lsJ14H/dmg 中文 installation/Pi Agent Desktop.app/Contents/Resources/app/dist/server/dsh/runtime/goal-rpc.mjs\n\n    at ChildProcess.<anonymous> (file:///private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-lsJ14H/dmg%20%E4%B8%AD%E6%96%87%20installation/Pi%20Agent%20Desktop.app/Contents/Resources/app/dist/server/dsh/dsh-client.js:220:25)\n    at ChildProcess.emit (node:events:514:28)\n    at ChildProcess._handle.onexit (node:internal/child_process:295:12)"
+  }
+]

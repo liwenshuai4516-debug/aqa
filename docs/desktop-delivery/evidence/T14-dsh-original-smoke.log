@@ -1,0 +1,49 @@
+server up (engine=dsh)
+✓ ready.engine === 'dsh' — engine=dsh proto=33
+✓ 初始推送齐全（conversations/goal_status/settings_state/slash_commands/snapshot）
+✓ dsh_patches 列表 — patchDir=/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/dsh-smoke-hqL9lQ/dsh-patches files=00-user.patch.yml
+✓ dsh_presets 四预设 — cordis,minimal,ptc,standard
+✓ dsh_presets 无 broken（clone 改写生效） — standard:ok, ptc:ok, minimal:ok, cordis:ok
+✓ dsh_presets 默认 standard — standard
+✓ 快照 agentPreset=standard
+✓ new_chat{preset:minimal} 生效
+✓ 空白切换回 standard
+✓ 默认改 ptc
+✓ 非法默认被拒绝 — 未知预设「no-such-preset」，默认预设未改
+✓ dsh_permission 四选项（表） — danger-full-access,read-only,workspace-write,workspace-write-never
+✓ dsh_permission 默认 workspace-write-never — workspace-write-never
+✓ 快照 permission 默认档
+✓ 切换 read-only
+✓ 切换 danger-full-access
+✓ 切回默认档
+✓ 新会话默认改 read-only
+✓ 非法权限默认被拒绝 — 未知权限预设「no-such-preset」，默认未改
+✓ list_sessions 空列表 — count=0
+✓ list_models 本地表 + 动态目录合并 — count=4 flash=true vision=true
+✓ set_settings → settings_state 回显 — prompt=你是 DSH 冒烟测试助手 mode=replace
+✓ 重连后设置持久化恢复 — prompt=你是 DSH 冒烟测试助手
+✓ DSH 导出当前设置为交换文档
+✓ DSH 导入预览（dryRun 不落盘）
+✓ DSH 导入落盘
+✓ DSH 导入的预设出现在预设列表
+[srv] [dsh] listSkills 失败 (client=dsh-smoke): DshTransportError: runtime killed (interrupt)
+运行时已被终止（中断）
+    at DshRuntime.kill (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/dist/server/dsh/dsh-client.js:526:26)
+    at DshRuntime.restart (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/dist/server/dsh/dsh-client.js:598:24)
+    at DshClientSession.applyPersona (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/dist/server/dsh/dsh-agent-service.js:3765:33)
+    at DshClientSession.applyPreset (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/dist/server/dsh/dsh-agent-service.js:4128:20)
+    at handlePresetAndDshMessage (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/dist/server/dispatch-domain-handlers.js:234:21)
+    at dispatch (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/dist/server/index.js:2207:17)
+    at WebSocket.<anonymous> (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/dist/server/index.js:2605:9)
+    at WebSocket.emit (node:events:509:28)
+    at Receiver.receiverOnMessage (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/ws/lib/websocket.js:1239:20)
+    at Receiver.emit (node:events:509:28)
+✓ DSH 网址导入拦回环地址
+✓ DSH 目录回执形状完整
+✓ slash /model 无匹配 → notice — 没有匹配到模型：这个模型必然不存在xyz（可用模型见顶栏模型列表）
+✓ slash /cwd 无效路径 → notice — 切换工作目录失败：目录不存在：/nonexistent-zzz
+✓ slash /new <首条提示> 投递到新对话 — 当前工作目录：/Users/liyingjun/Desktop/SW-QA/15-aqa
+✓ terminal echo TERM_OK 回显
+✓ scm_status → scm_data — ok=true branch=master notRepo=false
+
+===== dsh-smoke PASS =====

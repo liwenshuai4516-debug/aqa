@@ -18,6 +18,9 @@ for (const path of [
 	"LICENSE",
 	"node_modules/@earendil-works/pi-coding-agent/package.json",
 	"node_modules/node-pty/package.json",
+	"node_modules/@deepseek-ai/dsh-tools/package.json",
+	"node_modules/@deepseek-ai/dsh-attachment/package.json",
+	"node_modules/@deepseek-ai/dsh-llm-deepseek/package.json",
 ]) {
 	assert(existsSync(join(root, path)), `Missing package resource: ${path}`);
 }

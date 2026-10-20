@@ -1,0 +1,7 @@
+✓ DSH 引擎徽标显示 — DSH
+✓ 目标条（GoalBar）渲染 — count=1
+✓ 设置面板打开
+✓ 补丁文件 00-ui.patch.yml 展示
+✓ DSH 专属预设与权限页签展示
+
+===== dsh-ui PASS =====

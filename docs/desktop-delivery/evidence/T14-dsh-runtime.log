@@ -1,0 +1,98 @@
+[
+  {
+    "status": "PASS",
+    "check": "installed packaged adapter and launcher initialize official external DSH runtime with no system Node or credentials"
+  },
+  {
+    "status": "PASS",
+    "check": "real runtime provides at least four healthy presets",
+    "presets": {
+      "presets": [
+        {
+          "id": "standard",
+          "trust": "system",
+          "isDefault": true,
+          "name": "标准模式",
+          "description": "功能完整的编码 Agent，支持文件编辑、Shell、文件与网页检索、Skills、计划、目标、子代理和工作流。",
+          "order": 1
+        },
+        {
+          "id": "ptc",
+          "trust": "system",
+          "isDefault": false,
+          "name": "PTC 模式",
+          "description": "功能完整的编码 Agent，但默认不提供 workflow 工具；其他工具通过 PTC 模式 SDK 呈现，让模型用一个 TypeScript 程序组合多步操作。",
+          "order": 2
+        },
+        {
+          "id": "minimal",
+          "trust": "system",
+          "isDefault": false,
+          "name": "极简模式",
+          "description": "仅提供持久 shell 的单工具编码 Agent。",
+          "order": 3
+        },
+        {
+          "id": "cordis",
+          "trust": "system",
+          "isDefault": false,
+          "name": "创造模式",
+          "description": "用于创建自定义 Agent preset：具备标准模式的全部能力，并提供运行时检查、插件实验和 preset 创作指导。",
+          "order": 4
+        }
+      ],
+      "defaultPreset": "standard",
+      "authorable": true
+    }
+  },
+  {
+    "status": "PASS",
+    "check": "real runtime tool schema RPC",
+    "tools": [
+      "ask_user_question"
+    ]
+  },
+  {
+    "status": "PASS",
+    "check": "real runtime skill RPC",
+    "count": 0
+  },
+  {
+    "status": "PASS",
+    "check": "real runtime model catalog RPC",
+    "models": {
+      "models": [
+        {
+          "id": "deepseek-flash",
+          "name": "DeepSeek-V41-Flash",
+          "inputModalities": [
+            "text",
+            "image"
+          ]
+        },
+        {
+          "id": "deepseek-v4-flash",
+          "name": "DeepSeek-V4-Flash",
+          "inputModalities": [
+            "text"
+          ]
+        },
+        {
+          "id": "deepseek-v4-pro",
+          "name": "DeepSeek-V4-Pro",
+          "inputModalities": [
+            "text"
+          ]
+        },
+        {
+          "id": "deepseek-v4-flash-vision-exp",
+          "name": "DeepSeek-V4-Flash-Vision-Exp",
+          "inputModalities": [
+            "text",
+            "image"
+          ]
+        }
+      ]
+    }
+  }
+]

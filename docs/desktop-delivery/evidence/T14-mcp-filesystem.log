@@ -1,0 +1,37 @@
+[
+  {
+    "id": "A09/A05",
+    "status": "PASS",
+    "check": "packaged UI → real bundled SDK → original MCP bridge → official filesystem 2.0.0 stdio server reads Chinese filename and contents; scripted local provider only"
+  },
+  {
+    "id": "A09/A05",
+    "status": "PASS",
+    "check": "official MCP write_file writes actual workspace file; result returns through SDK and UI"
+  },
+  {
+    "id": "A09",
+    "status": "PASS",
+    "check": "official MCP filesystem server refuses read outside its configured allowed root"
+  },
+  {
+    "id": "A04",
+    "status": "PASS",
+    "check": "original built-in write custom approval rule: UI denies with no disk write, then UI approves and actual file is written; no write occurs before either decision"
+  },
+  {
+    "id": "A09",
+    "status": "PASS",
+    "check": "original MCP settings UI shows real tools and missing-command error independently; disable stops official process and persists config; enable starts a new process"
+  },
+  {
+    "id": "A09",
+    "status": "PASS",
+    "check": "after disabling and enabling MCP, the same chat calls the new official process successfully without reload"
+  },
+  {
+    "id": "T05/A09",
+    "status": "PASS",
+    "check": "normal desktop quit cleans up the external MCP server process"
+  }
+]

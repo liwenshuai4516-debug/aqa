@@ -1,0 +1,6 @@
+{
+  "status": "PASS",
+  "root": "/Users/liyingjun/Desktop/SW-QA/15-aqa/release/mac-arm64/Pi Agent Desktop.app/Contents/Resources/app",
+  "plugins": 35,
+  "sdk": "1.1.0"
+}

@@ -1158,6 +1158,7 @@ export class McpBridge {
 		this.tools = [];
 		for (const c of this.clients) for (const t of c.getTools()) this.tools.push(adaptMcpTool(c.name, t, c));
 		for (const c of stale) c.close();
+		this.opts.onToolsChanged?.();
 		return {
 			kept,
 			started,

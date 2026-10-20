@@ -1,0 +1,11 @@
+diff --git a/server/agent-service-daemon.ts b/server/agent-service-daemon.ts
+--- a/server/agent-service-daemon.ts
++++ b/server/agent-service-daemon.ts
+@@ -1242,6 +1242,7 @@
+ 		cs.onConversationChanged = () => this.onConversationChanged?.();
+ 		cs.onClientModelChanged = (snap) => this.onClientModelChanged?.(snap);
+ 		cs.pluginToolsProvider = this.pluginToolsProvider;
++		cs.refreshPluginTools();
+ 		cs.pluginCommandsProvider = this.pluginCommandsProvider;
+ 		cs.pluginBgTasksProvider = this.pluginBgTasksProvider;
+ 		cs.pluginStopBgTask = this.pluginStopBgTask;

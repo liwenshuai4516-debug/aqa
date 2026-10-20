@@ -1,0 +1,22 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-system-browser-zrk0gh",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-Qj9MoD/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "checks": [
+    {
+      "status": "PASS",
+      "check": "production window.open → unmodified shell.openExternal → actual system default browser → same local application attaches a distinct authenticated client",
+      "defaultBrowser": "Google Chrome (macOS LaunchServices HTTP/HTTPS handler)",
+      "clientCountBefore": 1,
+      "clientCountAfter": 2
+    },
+    {
+      "status": "PASS",
+      "check": "browser handoff does not remove anonymous API authentication"
+    },
+    {
+      "status": "UNVERIFIED",
+      "check": "browser tab cleanup unavailable; only this test app is stopped"
+    }
+  ],
+  "modelRequests": 0
+}
