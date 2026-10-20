@@ -1,0 +1,8 @@
+{
+  "executable": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg \u4e2d\u6587 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "hashes": {
+    "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg \u4e2d\u6587 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop": "ad321e34b2795d1910ff1a24f2b4249269f556dc7184ea64f353a851339f1582",
+    "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg \u4e2d\u6587 installation/Pi Agent Desktop.app/Contents/Resources/app/dist/desktop/main.js": "b386e560347412e007dd58e636cbc38f3149db56ae4a2502e5112a8693c14fde",
+    "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg \u4e2d\u6587 installation/Pi Agent Desktop.app/Contents/Resources/app/dist/server/agent-service.js": "98662c3fad11a78d71d2736247ff4d2dcceaa6142d5815e97b7e3f7edab86d3f"
+  }
+}

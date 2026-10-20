@@ -1,0 +1,23 @@
+{
+  "sourceFixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-no-replay-2Jx3Fb",
+  "afterRestartBytesHex": "415050454e445f4f4e43450a",
+  "sha256": "04246607efdea631430fedb25a7e700076d956411298eca71e3a0b9bb27719c6",
+  "bytes": 12,
+  "sessions": [
+    {
+      "file": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-no-replay-2Jx3Fb/desktop/agent/sessions/--private-var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-no-replay-2Jx3Fb-中文 project--/2026-10-20T11-44-26-172Z_01a15920-863c-74d7-8c8b-9e2bf5213655.jsonl",
+      "sha256": "228dd5e8adfc893480773896ad193ded9a0cbf474aaf78d0319dd8fce0c6aa7b",
+      "bashCalls": [
+        {
+          "type": "toolCall",
+          "id": "append-once",
+          "name": "bash",
+          "arguments": {
+            "command": "printf 'APPEND_ONCE\\n' >> replay-proof.txt"
+          }
+        }
+      ],
+      "completedHistoryPresent": true
+    }
+  ]
+}

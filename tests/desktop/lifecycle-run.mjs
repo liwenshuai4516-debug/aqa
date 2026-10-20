@@ -1,10 +1,10 @@
 import { _electron } from "playwright-core";
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
-import { mkdtempSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, readdirSync, writeFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
 import { once } from "node:events";
 import { launchNativeApp } from "./native-app.mjs";
 const fixture = mkdtempSync(join(tmpdir(), "pi-desktop-lifecycle-"));
@@ -13,6 +13,11 @@ mkdirSync(workspace);
 const userData = join(fixture, "desktop");
 mkdirSync(userData);
 const evidence = resolve("docs/desktop-delivery/evidence");
+const evidencePrefix = process.env.PI_DESKTOP_LIFECYCLE_EVIDENCE_PREFIX;
+if (evidencePrefix) {
+	assert(/^[A-Za-z0-9-]+$/.test(evidencePrefix), "Evidence prefix must be a filename stem");
+	assert(!existsSync(join(evidence, `${evidencePrefix}.json`)), "Preserve previous lifecycle evidence");
+}
 const results = [];
 const record = results.push.bind(results);
 results.push = (...entries) => {
@@ -119,6 +124,7 @@ function alive(pid) {
 }
 let run;
 let blocker;
+let duplicate;
 try {
 	run = await launch();
 	const pid = childPid(run.application);
@@ -152,6 +158,24 @@ try {
 	await until(() => run.application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isMinimized()));
 	await run.application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].restore());
 	await until(() => run.application.evaluate(({ BrowserWindow }) => !BrowserWindow.getAllWindows()[0].isMinimized()));
+	await run.application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].minimize());
+	await until(() => run.application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isMinimized()));
+	duplicate = spawn(executablePath, packaged ? [] : [resolve("dist/desktop/main.js")], { env, stdio: "ignore" });
+	await until(() => duplicate.exitCode !== null, 15000);
+	assert.equal(duplicate.exitCode, 0, "Second app process must exit normally");
+	assert.equal(childPid(run.application), pid, "Second launch must retain original sidecar");
+	await until(() =>
+		run.application.evaluate(({ BrowserWindow }) => {
+			const windows = BrowserWindow.getAllWindows();
+			return windows.length === 1 && !windows[0].isMinimized() && windows[0].isFocused();
+		}),
+	);
+	results.push({
+		id: "T05",
+		status: "PASS",
+		check:
+			"Real second executable launch exits, restores and focuses the original single window, without another sidecar",
+	});
 	await run.page.evaluate(() => {
 		window.__desktopFullscreen = null;
 		window.piDesktop.onFullScreenChange((value) => {
@@ -188,7 +212,10 @@ try {
 		(await BrowserWindow.getAllWindows()[0].webContents.capturePage()).toPNG().toString("base64"),
 	);
 	writeFileSync(
-		join(evidence, packaged ? "packaged-electron.png" : "desktop-electron.png"),
+		join(
+			evidence,
+			evidencePrefix ? `${evidencePrefix}.png` : packaged ? "packaged-electron.png" : "desktop-electron.png",
+		),
 		Buffer.from(png, "base64"),
 	);
 	await run.application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].close());
@@ -277,16 +304,19 @@ try {
 	results.push({ status: "FAIL", error: error.stack });
 	throw error;
 } finally {
+	if (duplicate && duplicate.exitCode === null) duplicate.kill("SIGTERM");
 	if (run) await run.application.close().catch(() => {});
 	if (blocker) await new Promise((r) => blocker.close(r));
 	writeFileSync(
 		join(
 			evidence,
-			process.env.PI_DESKTOP_NATIVE_AUTOMATION === "1"
-				? "native-lifecycle.json"
-				: packaged
-					? "packaged-lifecycle.json"
-					: "desktop-lifecycle.json",
+			evidencePrefix
+				? `${evidencePrefix}.json`
+				: process.env.PI_DESKTOP_NATIVE_AUTOMATION === "1"
+					? "native-lifecycle.json"
+					: packaged
+						? "packaged-lifecycle.json"
+						: "desktop-lifecycle.json",
 		),
 		JSON.stringify({ fixture, packaged, platform: process.platform, architecture: process.arch, results }, null, 2),
 	);

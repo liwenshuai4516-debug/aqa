@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "path": "dist/desktop/main.js",
+      "expectedSha256": "b386e560347412e007dd58e636cbc38f3149db56ae4a2502e5112a8693c14fde",
+      "installedSha256": "b386e560347412e007dd58e636cbc38f3149db56ae4a2502e5112a8693c14fde",
+      "pass": true
+    },
+    {
+      "path": "dist/server/agent-service.js",
+      "expectedSha256": "98662c3fad11a78d71d2736247ff4d2dcceaa6142d5815e97b7e3f7edab86d3f",
+      "installedSha256": "98662c3fad11a78d71d2736247ff4d2dcceaa6142d5815e97b7e3f7edab86d3f",
+      "pass": true
+    },
+    {
+      "path": "dist/server/agent-service-daemon.js",
+      "expectedSha256": "a81d6819227fd46b8f063a978bd5479ee4fb820e553a89320d9866aa66b8df80",
+      "installedSha256": "a81d6819227fd46b8f063a978bd5479ee4fb820e553a89320d9866aa66b8df80",
+      "pass": true
+    },
+    {
+      "path": "dist/server/mcp-bridge.js",
+      "expectedSha256": "69f8de0a6c8096d9c2165062a56f3fdac1bc3c920a161414dded48a3c3940c64",
+      "installedSha256": "69f8de0a6c8096d9c2165062a56f3fdac1bc3c920a161414dded48a3c3940c64",
+      "pass": true
+    },
+    {
+      "path": "release/Pi-Agent-Desktop-0.109.0-arm64.dmg",
+      "expectedSha256": "ba2f4f3efcca5c8cb098c2f0612b8acc6422bf3295010f78e0c17d2e41e2bc71",
+      "actualSha256": "ba2f4f3efcca5c8cb098c2f0612b8acc6422bf3295010f78e0c17d2e41e2bc71",
+      "pass": true
+    },
+    {
+      "path": "release/Pi-Agent-Desktop-0.109.0-arm64.zip",
+      "expectedSha256": "0add6ad5b3870724c169c0ce54c64798823cae9ec5b3636379e7f4933a01da49",
+      "actualSha256": "0add6ad5b3870724c169c0ce54c64798823cae9ec5b3636379e7f4933a01da49",
+      "pass": true
+    }
+  ]
+}
