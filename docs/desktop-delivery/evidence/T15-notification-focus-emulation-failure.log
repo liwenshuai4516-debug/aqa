@@ -1,0 +1,22 @@
+[
+  {
+    "status": "PASS",
+    "check": "original notification toggle obtains real Electron/browser notification permission",
+    "permission": "granted"
+  },
+  {
+    "status": "PASS",
+    "check": "original sound preview synthesizes actual audio; system volume unchanged",
+    "nodes": [
+      "AudioDestination",
+      "Oscillator",
+      "Gain",
+      "Oscillator",
+      "Gain"
+    ]
+  },
+  {
+    "status": "FAIL",
+    "error": "page.waitForFunction: Timeout 30000ms exceeded.\n    at /Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/notification-run.mjs:138:13"
+  }
+]

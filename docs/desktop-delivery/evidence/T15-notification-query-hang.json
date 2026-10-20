@@ -1,0 +1,41 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-notification-RyFfmt",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-cDWh9l/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "realModelRequests": 0,
+  "localRequests": 1,
+  "checks": [
+    {
+      "status": "PASS",
+      "check": "original notification toggle obtains real Electron/browser notification permission",
+      "permission": "granted"
+    },
+    {
+      "status": "PASS",
+      "check": "original sound preview synthesizes actual audio; system volume unchanged",
+      "nodes": [
+        "AudioDestination",
+        "Oscillator",
+        "Gain",
+        "Oscillator",
+        "Gain",
+        "Oscillator",
+        "Gain",
+        "Oscillator",
+        "Gain"
+      ]
+    },
+    {
+      "status": "PASS",
+      "check": "real window minimized and original page focus suppression released",
+      "presence": {
+        "visibility": "visible",
+        "focused": false
+      }
+    },
+    {
+      "status": "FAIL",
+      "error": "page.evaluate: Target page, context or browser has been closed\n    at /Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/notification-run.mjs:161:29"
+    }
+  ],
+  "humanObservation": "not recorded by automation; see separate user response evidence"
+}

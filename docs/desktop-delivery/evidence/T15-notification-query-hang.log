@@ -1,0 +1,34 @@
+[
+  {
+    "status": "PASS",
+    "check": "original notification toggle obtains real Electron/browser notification permission",
+    "permission": "granted"
+  },
+  {
+    "status": "PASS",
+    "check": "original sound preview synthesizes actual audio; system volume unchanged",
+    "nodes": [
+      "AudioDestination",
+      "Oscillator",
+      "Gain",
+      "Oscillator",
+      "Gain",
+      "Oscillator",
+      "Gain",
+      "Oscillator",
+      "Gain"
+    ]
+  },
+  {
+    "status": "PASS",
+    "check": "real window minimized and original page focus suppression released",
+    "presence": {
+      "visibility": "visible",
+      "focused": false
+    }
+  },
+  {
+    "status": "FAIL",
+    "error": "page.evaluate: Target page, context or browser has been closed\n    at /Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/notification-run.mjs:161:29"
+  }
+]

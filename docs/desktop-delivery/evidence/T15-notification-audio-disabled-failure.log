@@ -1,0 +1,11 @@
+[
+  {
+    "status": "PASS",
+    "check": "original notification toggle obtains real Electron/browser notification permission",
+    "permission": "granted"
+  },
+  {
+    "status": "FAIL",
+    "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(nodes.some((type) => type.includes(\"Oscillator\")))\n\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/notification-run.mjs:117:2"
+  }
+]

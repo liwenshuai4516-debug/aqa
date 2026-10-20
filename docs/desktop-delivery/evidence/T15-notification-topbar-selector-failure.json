@@ -1,0 +1,13 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-notification-pQYWNW",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-cDWh9l/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "realModelRequests": 0,
+  "localRequests": 0,
+  "checks": [
+    {
+      "status": "FAIL",
+      "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-bar-item=\"host:sound\"]')\u001b[22m\n\n    at /Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/notification-run.mjs:53:54"
+    }
+  ],
+  "humanObservation": "not recorded by automation; see separate user response evidence"
+}

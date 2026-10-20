@@ -1,0 +1,14 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-native-notification-8B42rC",
+  "scope": "diagnostic only; native API does not establish original UI completion delivery",
+  "realModelRequests": 0,
+  "native": {
+    "supported": true,
+    "events": [
+      {
+        "event": "failed",
+        "detail": "未能完成操作。（UNErrorDomain错误1。）"
+      }
+    ]
+  }
+}

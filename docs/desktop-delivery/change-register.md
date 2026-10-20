@@ -56,3 +56,7 @@ desktop/main.ts 增加更新初始化异常边界，防止损坏配置或 update
 - docs/desktop-delivery、desktop/README.md：记录批准、失败证据、当前产物和覆盖边界。未知 bottombar 差异继续独立保留。
 
 详见 T14-external-runtimes.md；解锁后生命周期、外部 DSH 与真实系统浏览器证据均已补齐，目标仍未全部完成。
+
+## T15 通知与声音实测
+
+新增两个安装包验收/诊断脚本及证据；生产代码未修改。声音合成通过，实际听感未确认；系统通知被 macOS 原生接口拒绝，用户明确暂不调整、保留待验收。测试失败与诊断边界详见 T15-notification-acceptance.md。

@@ -1,0 +1,6 @@
+[
+  {
+    "status": "FAIL",
+    "error": "locator.check: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.notify-menu input[type=checkbox]')\u001b[22m\n\n    at /Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/notification-run.mjs:55:59"
+  }
+]
