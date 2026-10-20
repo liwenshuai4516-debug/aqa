@@ -75,6 +75,28 @@ async function main() {
 		if (m.type() === "error") consoleErrors.push(m.text());
 	});
 	page.on("pageerror", (e) => consoleErrors.push(String(e)));
+	let fileReference = "";
+	page.on("websocket", (socket) =>
+		socket.on("framereceived", ({ payload }) => {
+			try {
+				const message = JSON.parse(String(payload));
+				const messages =
+					message.type === "snapshot"
+						? message.state?.messages
+						: message.type === "snapshot_delta"
+							? message.appended
+							: [];
+				const file = messages?.find((item) => item.customType === "file" && item.details?.name === "note.txt");
+				if (file)
+					fileReference = file.content
+						.filter((item) => item.type === "text")
+						.map((item) => item.text)
+						.join("\n");
+			} catch {
+				/* ignore non-snapshot frames */
+			}
+		}),
+	);
 
 	await page.goto(`http://localhost:${PORT}/`);
 	await page.waitForSelector(".boot-wait", { state: "hidden", timeout: 60000 });
@@ -97,7 +119,7 @@ async function main() {
 	// 2) Upload a binary file via the hidden file input.
 	const binFile = join(workdir, "data.bin");
 	writeFileSync(binFile, Buffer.from([0, 1, 2, 250, 251, 252, 253, 254, 255]));
-	await page.locator('input[type="file"]').setInputFiles(binFile);
+	await page.locator('.inputbox input[type="file"]').setInputFiles(binFile);
 	await page.waitForTimeout(800);
 	check("upload: two 📄 chips", (await page.locator(".attach-chip.file").count()) === 2);
 
@@ -108,7 +130,7 @@ async function main() {
 		svgFile,
 		'<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10" fill="red"/></svg>',
 	);
-	await page.locator('input[type="file"]').setInputFiles(svgFile);
+	await page.locator('.inputbox input[type="file"]').setInputFiles(svgFile);
 	await page.waitForTimeout(800);
 	check(
 		"svg: attached as file chip (📄), not image (🖼)",
@@ -128,12 +150,14 @@ async function main() {
 	const firstMode = (await first.locator(".attachcard-mode").textContent()).trim();
 	await first.locator(".attachcard-head").click();
 	await page.waitForTimeout(400);
-	const firstContent = (
-		await first
-			.locator(".attachcard-content")
-			.textContent()
-			.catch(() => "")
-	).trim();
+	// Reference cards intentionally omit the content block. Verify the actual
+	// server message retains only its path, and the UI does not expose file text.
+	check(
+		"reference card exposes the path without an inline content block",
+		(await first.locator(".attachcard-content").count()) === 0 &&
+			(await first.locator(".attachcard-path").textContent())?.includes("note.txt"),
+	);
+	const firstContent = fileReference.trim();
 	check(
 		`text card reference (content not injected): "${firstName}" / ${firstMode}`,
 		firstName === "note.txt" &&

@@ -1,0 +1,25 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-original-ui-KLKNQW",
+  "realModelRequests": 0,
+  "localRequests": 2,
+  "checks": [
+    {
+      "script": "terminal-browser",
+      "code": 1,
+      "signal": null,
+      "status": "FAIL"
+    },
+    {
+      "script": "file-upload-browser",
+      "code": 1,
+      "signal": null,
+      "status": "FAIL"
+    },
+    {
+      "script": "image-paste-browser",
+      "code": 0,
+      "signal": null,
+      "status": "PASS"
+    }
+  ]
+}

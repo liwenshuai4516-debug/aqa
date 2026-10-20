@@ -1,0 +1,27 @@
+app booted
+  ✓ folder row visible in file panel
+  ✓ folder chip added to the input bar
+  ✓ folder chip shows the folder icon
+  ✓ terminal view renders
+  ✓ command saved into the list
+  ✓ commands.json on disk
+  ✓ disk commands[0].cwd is ${pwd}
+  ✓ terminal tab appears
+  ✓ command ran in terminal
+  ✓ banner shows command
+  ✓ first shell pid captured
+  ✓ same command reuses the running tab
+  ✓ terminal cleared for the re-run
+  ✓ re-run spawns a fresh shell (old one interrupted)
+  ✓ tab marked exited
+  ✓ exited tab reused (still one tab)
+  ✓ tab running again after re-run
+  ✓ typing reaches the PTY
+  ✓ second tab + shell prompt
+  ✓ terminals survive view switch
+  ✓ tab close removes one tab
+  ✓ conversation with terminal remains listed
+  ✓ switching back restores conversation terminal
+  ✓ no console errors
+
+24 checks passed

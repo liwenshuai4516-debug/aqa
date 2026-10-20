@@ -99,6 +99,7 @@ async function main() {
 		await page.waitForSelector(".panel-right .file-item.dir", { timeout: 5000 });
 		await sleep(300);
 		const dirRow = page.locator(".file-item.dir", { hasText: "subdir" });
+		await dirRow.waitFor({ state: "visible", timeout: 5000 });
 		check("folder row visible in file panel", (await dirRow.count()) === 1);
 		await dirRow.hover();
 		await dirRow.locator(".file-attach.ref").click();
@@ -117,7 +118,7 @@ async function main() {
 	// Opening the terminal view creates a default shell. Close it so the
 	// command-list assertions below exercise a single command terminal.
 	const initialShell = page.locator(".term-tab", { hasText: "终端 1" });
-	if (await initialShell.count()) await initialShell.locator(".term-tab-close").click();
+	if (await initialShell.count()) await initialShell.getByRole("button", { name: "关闭终端", exact: true }).click();
 	await sleep(300);
 
 	// Add a command via the form.
@@ -206,16 +207,28 @@ async function main() {
 	check("terminals survive view switch", (await page.locator(".term-tab").count()) === 2);
 
 	// Close one tab — the other stays.
-	await page.locator(".term-tab-close").first().click();
+	await page.getByRole("button", { name: "关闭终端", exact: true }).first().click();
 	await sleep(800);
 	check("tab close removes one tab", (await page.locator(".term-tab").count()) === 1);
+	// Untouched auto-created shells intentionally do not retain a conversation.
+	// Use the remaining shell before checking used-terminal persistence.
+	await page.locator(".term-xterm:not(.hidden) .xterm-helper-textarea").first().click();
+	await page.keyboard.type("echo RETAIN_TERMINAL_OK");
+	await page.keyboard.press("Enter");
+	await page.waitForFunction(() => document.querySelector(".term-main")?.textContent?.includes("RETAIN_TERMINAL_OK"));
 
 	// Conversation-level persistence: an idle conversation with a terminal must
 	// remain switchable after creating a new chat, and its PTY/tab must return.
 	await page.click(".newchat");
 	await sleep(1800);
 	await page.click('.topbar-flow [role="tab"]:has-text("对话")');
-	await page.waitForSelector(".panel-convs .session-item", { timeout: 5000 });
+	try {
+		await page.waitForSelector(".panel-convs .session-item", { timeout: 5000 });
+	} catch (error) {
+		await page.screenshot({ path: "docs/desktop-delivery/evidence/T18-terminal-conversation-failure.png" });
+		console.log("CONVERSATION_DIAGNOSTIC", await page.locator("body").innerText());
+		throw error;
+	}
 	check("conversation with terminal remains listed", (await page.locator(".panel-convs .session-item").count()) >= 1);
 	await page.locator(".panel-convs .session-item").first().click();
 	await sleep(900);

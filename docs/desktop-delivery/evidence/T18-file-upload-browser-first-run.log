@@ -1,0 +1,9 @@
+[srv!] [control] socket error: listen EINVAL: invalid argument /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-original-ui-KLKNQW/file-upload-browser/data/pi-web-ui.sock
+app booted
+  ✓ drag: 📄 text chip appeared
+  ✓ upload: two 📄 chips
+  ✓ svg: attached as file chip (📄), not image (🖼)
+  ✗ FAIL: text card reference (content not injected): "note.txt" / 仅引用 · 27 B
+  ✓ binary card reference: "data.bin" / 仅引用 · 9 B
+  ✓ no console errors
+DONE — 5 checks passed

@@ -1,0 +1,17 @@
+app booted
+  ✗ FAIL: folder row visible in file panel
+  ✓ folder chip added to the input bar
+  ✓ folder chip shows the folder icon
+  ✓ terminal view renders
+TEST ERROR: locator.click: Error: strict mode violation: locator('.term-tab').filter({ hasText: '终端 1' }).locator('.term-tab-close') resolved to 2 elements:
+    1) <button type="button" title="重命名终端" class="term-tab-close term-tab-rename">…</button> aka getByRole('button', { name: '重命名终端' })
+    2) <button title="关闭终端" type="button" class="term-tab-close">…</button> aka getByRole('button', { name: '关闭终端' })
+
+Call log:
+[2m  - waiting for locator('.term-tab').filter({ hasText: '终端 1' }).locator('.term-tab-close')[22m
+
+    at main (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/terminal-browser-test.mjs:120:80) {
+  log: [
+    "  - waiting for locator('.term-tab').filter({ hasText: '终端 1' }).locator('.term-tab-close')"
+  ]
+}

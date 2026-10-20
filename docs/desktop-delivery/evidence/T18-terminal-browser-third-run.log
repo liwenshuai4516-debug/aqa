@@ -1,0 +1,156 @@
+app booted
+  ✓ folder row visible in file panel
+  ✓ folder chip added to the input bar
+  ✓ folder chip shows the folder icon
+  ✓ terminal view renders
+  ✓ command saved into the list
+  ✓ commands.json on disk
+  ✓ disk commands[0].cwd is ${pwd}
+  ✓ terminal tab appears
+  ✓ command ran in terminal
+  ✓ banner shows command
+  ✓ first shell pid captured
+  ✓ same command reuses the running tab
+  ✓ terminal cleared for the re-run
+  ✓ re-run spawns a fresh shell (old one interrupted)
+  ✓ tab marked exited
+  ✓ exited tab reused (still one tab)
+  ✓ tab running again after re-run
+  ✓ typing reaches the PTY
+  ✓ second tab + shell prompt
+  ✓ terminals survive view switch
+  ✓ tab close removes one tab
+CONVERSATION_DIAGNOSTIC pi-web-ui
+打开项目
+对话
+终端
+Git
+插件
+搜索
+后台任务
+极简模式
+设置
+新对话
+临时对话
+启动沙盒
+最近项目 (1)
+piweb-ui-MzlHxe
+/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/piweb-ui-MzlHxe
+18:49
+历史对话 (0)
+还没有历史对话
+提示词模板
+点击卡片直接填入输入框，✏️ 可编辑或删除 · 也能新增自己的模板
+🛠
+仓库初始化
+让仓库了解它的构建与约定
+🧭
+技能导航
+告诉我该用哪个流程
+🗣
+需求拷问·落档
+边盘问需求边记录决策
+📝
+转规格说明
+把讨论结果整理成规格书
+🎫
+拆工单
+把规格拆成可构建的小任务
+🏗
+规格落地
+按规格测试优先实现
+🧹
+代码审查
+对照规格与标准审查 diff
+🗺
+大任务地图
+把大工程画成决策地图
+🔬
+快速原型
+用一次性代码验证设计假设
+📚
+有据调研
+读一手来源给出带引用的答案
+🏛
+架构体检
+找出值得重构的模块（报告）
+🐛
+系统化排错
+从可复现的失败开始诊断
+🔀
+解决合并冲突
+逐个 hunk 完成合并/变基
+🗂
+工单分流
+把原始 issue 整理成可领取的工作
+✨
+设置向导
+生成引导人类完成设置的脚本
+🔍
+需求拷问
+动手前盘问对齐想法
+🤝
+交接
+把长会话写成交接文档
+📋
+转问卷
+把开放问题变成可填问卷
+🎓
+持续学习
+跨多次会话循序渐进学习
+💬
+说人话
+用大白话重讲刚才的解释
+📄
+写给 agent 的文档
+按 agent 易读的原则写文档
+🧱
+深模块设计
+用深模块原则审查与设计
+🏷
+领域建模
+打磨项目用词并写下来
+🔥
+拷问流程
+用拷问压测一个计划
+🧪
+测试驱动
+红-绿-重构的规则
+新建模板
+把常用工作流存成模板
+恢复默认模板
+目标
+继续
+总结一下
+详细解释一下
+检查并修复问题
+补充测试覆盖
+发布上传
+UI Fixture
+关闭
+工作区内修改
+全功能
+文件列表
+根目录
+..
+subdir
+已连接
+0ms
+PI
+12.3K/32K
+$
+0
+—
+0
+29% · 97%
+piweb-ui-MzlHxe
+TEST ERROR: page.waitForSelector: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for locator('.panel-convs .session-item') to be visible[22m
+
+    at main (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/terminal-browser-test.mjs:220:14) {
+  log: [
+    "  - waiting for locator('.panel-convs .session-item') to be visible"
+  ],
+  name: 'TimeoutError'
+}

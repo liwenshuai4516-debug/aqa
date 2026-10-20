@@ -130,7 +130,7 @@ async function main() {
 	// 3) Upload via the hidden file input (the button opens it).
 	const upFile = join(workdir, "upload-me.png");
 	writeFileSync(upFile, Buffer.from(PNG_B64, "base64"));
-	await page.locator('input[type="file"]').setInputFiles(upFile);
+	await page.locator('.inputbox input[type="file"]').setInputFiles(upFile);
 	await page.waitForTimeout(500);
 	check("upload: three 🖼 chips", (await page.locator(".attach-chip.image").count()) === 3);
 

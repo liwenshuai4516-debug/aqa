@@ -1,0 +1,12 @@
+[srv!] [control] socket error: listen EINVAL: invalid argument /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-original-ui-KLKNQW/image-paste-browser/data/pi-web-ui.sock
+app booted
+  ✓ paste: 🖼 chip appeared
+  ✓ drop: two 🖼 chips (big image accepted)
+  ✓ upload: three 🖼 chips
+  ✓ remove: back to two 🖼 chips
+  ✓ send button enabled with image-only attachments
+  ✓ chat: attachment card rendered with image preview
+  ✓ chat: 4000px image downscaled to 1568px (≤1568)
+  ✓ chips cleared after send
+  ✓ no console errors
+DONE — 9 checks passed

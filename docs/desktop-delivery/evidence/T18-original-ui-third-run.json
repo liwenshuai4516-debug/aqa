@@ -1,0 +1,13 @@
+{
+  "fixture": "/tmp/pi-ui-PZuGdh",
+  "realModelRequests": 0,
+  "localRequests": 0,
+  "checks": [
+    {
+      "script": "terminal-browser",
+      "code": 1,
+      "signal": null,
+      "status": "FAIL"
+    }
+  ]
+}

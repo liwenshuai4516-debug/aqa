@@ -1,0 +1,9 @@
+app booted
+  ✓ drag: 📄 text chip appeared
+  ✓ upload: two 📄 chips
+  ✓ svg: attached as file chip (📄), not image (🖼)
+  ✓ reference card exposes the path without an inline content block
+  ✓ text card reference (content not injected): "note.txt" / 仅引用 · 27 B
+  ✓ binary card reference: "data.bin" / 仅引用 · 9 B
+  ✓ no console errors
+DONE — 7 checks passed
