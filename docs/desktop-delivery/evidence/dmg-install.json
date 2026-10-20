@@ -1,0 +1,6 @@
+{
+  "artifact": "/Users/liyingjun/Desktop/SW-QA/15-aqa/release/Pi-Agent-Desktop-0.109.0-arm64.dmg",
+  "installedPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/Pi DMG 安装 验收-cgx63gby/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "method": "mounted DMG readonly, copied app with ditto, detached disk image",
+  "signed": false
+}

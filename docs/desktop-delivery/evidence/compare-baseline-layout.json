@@ -1,0 +1,50 @@
+[
+  {
+    "class": "topbar",
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 1280,
+      "height": 49,
+      "top": 0,
+      "right": 1280,
+      "bottom": 49,
+      "left": 0
+    },
+    "font": "14px / 22.4px -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Roboto, Helvetica, Arial, sans-serif",
+    "color": "rgb(230, 232, 239)",
+    "background": "color(srgb 0.0784314 0.0862745 0.109804 / 0.62)"
+  },
+  {
+    "class": "inputbar",
+    "rect": {
+      "x": 240,
+      "y": 679.5,
+      "width": 800,
+      "height": 160.5,
+      "top": 679.5,
+      "right": 1040,
+      "bottom": 840,
+      "left": 240
+    },
+    "font": "14px / 22.4px -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Roboto, Helvetica, Arial, sans-serif",
+    "color": "rgb(230, 232, 239)",
+    "background": "rgba(0, 0, 0, 0)"
+  },
+  {
+    "class": "inputbox",
+    "rect": {
+      "x": 288,
+      "y": 722,
+      "width": 704,
+      "height": 104,
+      "top": 722,
+      "right": 992,
+      "bottom": 826,
+      "left": 288
+    },
+    "font": "14px / 22.4px -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", Roboto, Helvetica, Arial, sans-serif",
+    "color": "rgb(230, 232, 239)",
+    "background": "color(srgb 0.101961 0.113725 0.14902 / 0.62)"
+  }
+]

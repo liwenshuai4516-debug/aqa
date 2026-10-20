@@ -16,7 +16,7 @@
 | A08 | 部分 PASS | goal、goal-delegated、plan-mode、delegate-mode、子代理相关原回归通过；真实模型审查/委派未验证。 |
 | A09 | 部分 PASS / FAIL | dsh、mcp-bridge、sftp、预设单测通过；dsh-ui 被首次配置浮层阻挡，真实外部 MCP/DSH 连接未验证。 |
 | A10 | 部分 PASS / FAIL | cross-client、takeover、rollback、offline、cross-device 原回归通过；D01 扩展会话接管通过。elsewhere-lifecycle 原回归失败保留。 |
-| A11 | 部分 PASS | native-launch.json：实际包连续启动，端口变化时主题/语言/面板宽度恢复；窗口生命周期源码测试通过。全量同样本视觉对照与草稿组合仍未完成。 |
+| A11 | 部分 PASS | native-launch.json：实际包连续启动，端口变化时主题/语言/面板宽度恢复；窗口生命周期源码测试通过。T11 同机原宿主/当前包的长对话及草稿截图对照，主要布局记录一致、差异像素 0.2844%；仅覆盖该样本，其他页面与草稿组合仍未完成。 |
 | A12 | 部分 PASS | D01-browser.json：真实 Chrome 0.4.1 扩展、授权、接管、工具往返通过。系统默认浏览器派发被测试拦截，尚需实际派发验证。 |
 | A13 | 部分 PASS / FAIL | 桌面专项 49 项通过；原生包启动通过；packaged-lifecycle 中崩溃恢复、Dock 重建、退出通过，原 Playwright 启动接管在最后重开出现窗口发现超时；采用不拦截 ready 事件的原生启动、加载后接入调试，同一套完整断言全部通过（native-lifecycle.json）。签名、更新升级及中断恢复未运行。 |
 | A14 | 部分 PASS / FAIL | 最小化/恢复及全屏进出、preload 事件实测通过（T09-source-lifecycle.log）；packaged-ui.json 验证声音主开关、事件开关、音量、重载持久化及实际 WebAudio Oscillator/Gain 音频图；未证明扬声器可听感知，系统通知尚未实测。旧 sound-settings UI 选择器失败保留。 |
@@ -25,6 +25,6 @@
 
 原完整集成冒烟：83/86 通过（final-smoke.log）。三项失败为 ssh-plugin、elsewhere-lifecycle、terminal-smoke。D03 修复后 SSH 的远程目录、读写和分片上传已通过；旧 ssh-plugin 测试后续 sync_* API 已迁移，仍失败，未删断言。
 
-性能：冷启动、空闲内存、长对话滚动及终端延迟的同机同样本基线对照为 NOT_RUN；不承诺固定性能指标。
+性能：T11 已完成各三次新配置启动、空闲 RSS、200 条消息滚动和 PTY 响应对照，见 T11-comparison.md；未清系统缓存，不是严格冷盘测量，不承诺固定性能指标。
 
 最终状态：尚未达到任务书全部完成条件。内部 macOS 安装包可运行；未覆盖项与失败项保留在本矩阵，不作为后续优化移出范围。

@@ -1,0 +1,150 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-host-comparison-H1FF41",
+  "source": "/Users/liyingjun/Desktop/SW-QA/pi-web-ui-main/desktop",
+  "sourceHashes": {
+    "external-url.ts": "c0254c871e9cd4b73e7180b35df1ffd26d516301da699a07ff892be6452fbf2f",
+    "main.ts": "4cc6249ef5acd0a5472b936c58586c0b6869582ccf2b1e28d39ad5a1ad161ba4",
+    "portable.ts": "cc8a9622f96ed671793fd3c21b254a5a947ae8da2ad29a7ad4840efcc716be62",
+    "preload.cts": "a27da058db1f7d2294ae1d239e5aa831e2457b76e901ffa35bf1d13f64269936",
+    "startup.ts": "f53b7b62e93b663b67fcf7df9b1594391cc44136684dee2686aeda2bf72c672e"
+  },
+  "samples": [
+    {
+      "mode": "baseline",
+      "iteration": 1,
+      "startupMs": 3096.961625,
+      "terminalResponseMs": 51.69987500000025,
+      "idle": {
+        "rssMiB": 775.953125,
+        "processCount": 5
+      },
+      "size": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 2
+      },
+      "scroll": {
+        "frames": 60,
+        "medianFrameMs": 5.5,
+        "p95FrameMs": 33.59999990463257,
+        "scrollHeight": 43447,
+        "viewportHeight": 674
+      }
+    },
+    {
+      "mode": "current",
+      "iteration": 1,
+      "startupMs": 2511.623834,
+      "terminalResponseMs": 51.71945799999958,
+      "idle": {
+        "rssMiB": 858.421875,
+        "processCount": 5
+      },
+      "size": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 2
+      },
+      "scroll": {
+        "frames": 60,
+        "medianFrameMs": 8.300000190734863,
+        "p95FrameMs": 9.299999952316284,
+        "scrollHeight": 0,
+        "viewportHeight": 0
+      }
+    },
+    {
+      "mode": "current",
+      "iteration": 2,
+      "startupMs": 2470.489416999997,
+      "terminalResponseMs": 51.27637500000128,
+      "idle": {
+        "rssMiB": 828.890625,
+        "processCount": 5
+      },
+      "size": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 2
+      },
+      "scroll": {
+        "frames": 60,
+        "medianFrameMs": 4.599999904632568,
+        "p95FrameMs": 35.39999985694885,
+        "scrollHeight": 43447,
+        "viewportHeight": 674
+      }
+    },
+    {
+      "mode": "baseline",
+      "iteration": 2,
+      "startupMs": 2318.719916000002,
+      "terminalResponseMs": 51.455165999999736,
+      "idle": {
+        "rssMiB": 837.84375,
+        "processCount": 5
+      },
+      "size": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 2
+      },
+      "scroll": {
+        "frames": 60,
+        "medianFrameMs": 6,
+        "p95FrameMs": 35.80000019073486,
+        "scrollHeight": 43848,
+        "viewportHeight": 674
+      }
+    },
+    {
+      "mode": "baseline",
+      "iteration": 3,
+      "startupMs": 2039.0970000000016,
+      "terminalResponseMs": 51.752458999995724,
+      "idle": {
+        "rssMiB": 829.671875,
+        "processCount": 5
+      },
+      "size": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 2
+      },
+      "scroll": {
+        "frames": 60,
+        "medianFrameMs": 8.299999952316284,
+        "p95FrameMs": 9.200000047683716,
+        "scrollHeight": 0,
+        "viewportHeight": 0
+      }
+    },
+    {
+      "mode": "current",
+      "iteration": 3,
+      "startupMs": 2779.9511249999996,
+      "terminalResponseMs": 50.492041000004974,
+      "idle": {
+        "rssMiB": 818.53125,
+        "processCount": 5
+      },
+      "size": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 2
+      },
+      "scroll": {
+        "frames": 60,
+        "medianFrameMs": 8.300000190734863,
+        "p95FrameMs": 9.400000095367432,
+        "scrollHeight": 0,
+        "viewportHeight": 0
+      }
+    }
+  ],
+  "caveats": [
+    "Fresh application data per sample; OS filesystem cache is not flushed, so these are fresh-profile startup samples, not guaranteed cold-disk measurements.",
+    "Both use the same Electron 44.4.2 and Playwright launch instrumentation. Original host TS is transformed without bundling; both serve the same frozen business build, except approved D02/D03 which are inactive in this fixture.",
+    "Memory sums RSS of the owned process tree after three idle seconds; shared memory can be counted more than once."
+  ]
+}

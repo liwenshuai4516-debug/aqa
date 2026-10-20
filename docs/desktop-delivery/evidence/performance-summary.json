@@ -1,0 +1,16 @@
+{
+  "baseline": {
+    "samples": 3,
+    "startupMedianMs": 2698.587292,
+    "idleRssMedianMiB": 824.296875,
+    "terminalMedianMs": 51.012582999996084,
+    "scrollP95MedianMs": 33.60000014305115
+  },
+  "current": {
+    "samples": 3,
+    "startupMedianMs": 2372.0095,
+    "idleRssMedianMiB": 832,
+    "terminalMedianMs": 51.323749999995925,
+    "scrollP95MedianMs": 34.59999990463257
+  }
+}

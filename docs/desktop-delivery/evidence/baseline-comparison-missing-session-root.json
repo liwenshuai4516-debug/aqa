@@ -1,0 +1,18 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-host-comparison-fUWnNW",
+  "source": "/Users/liyingjun/Desktop/SW-QA/pi-web-ui-main/desktop",
+  "sourceHashes": {
+    "external-url.ts": "c0254c871e9cd4b73e7180b35df1ffd26d516301da699a07ff892be6452fbf2f",
+    "main.ts": "4cc6249ef5acd0a5472b936c58586c0b6869582ccf2b1e28d39ad5a1ad161ba4",
+    "portable.ts": "cc8a9622f96ed671793fd3c21b254a5a947ae8da2ad29a7ad4840efcc716be62",
+    "preload.cts": "a27da058db1f7d2294ae1d239e5aa831e2457b76e901ffa35bf1d13f64269936",
+    "startup.ts": "f53b7b62e93b663b67fcf7df9b1594391cc44136684dee2686aeda2bf72c672e"
+  },
+  "samples": [],
+  "caveats": [
+    "Fresh application data per sample; OS filesystem cache is not flushed, so these are fresh-profile startup samples, not guaranteed cold-disk measurements.",
+    "Both use the same Electron 44.4.2 and Playwright launch instrumentation. Original host TS is transformed without bundling; both serve the same frozen business build, except approved D02/D03 which are inactive in this fixture.",
+    "Memory sums RSS of the owned process tree after three idle seconds; shared memory can be counted more than once."
+  ],
+  "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.session-item').filter({ hasText: 'PERF_SAMPLE' })\u001b[22m\n\n    at /Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/baseline-comparison-run.mjs:177:68"
+}

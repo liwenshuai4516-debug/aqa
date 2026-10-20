@@ -1,0 +1,108 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-host-comparison-9TyiAh",
+  "source": "/Users/liyingjun/Desktop/SW-QA/pi-web-ui-main/desktop",
+  "sourceHashes": {
+    "external-url.ts": "c0254c871e9cd4b73e7180b35df1ffd26d516301da699a07ff892be6452fbf2f",
+    "main.ts": "4cc6249ef5acd0a5472b936c58586c0b6869582ccf2b1e28d39ad5a1ad161ba4",
+    "portable.ts": "cc8a9622f96ed671793fd3c21b254a5a947ae8da2ad29a7ad4840efcc716be62",
+    "preload.cts": "a27da058db1f7d2294ae1d239e5aa831e2457b76e901ffa35bf1d13f64269936",
+    "startup.ts": "f53b7b62e93b663b67fcf7df9b1594391cc44136684dee2686aeda2bf72c672e"
+  },
+  "samples": [
+    {
+      "mode": "baseline",
+      "iteration": 1,
+      "startupMs": 3887.613459,
+      "terminalResponseMs": 51.5635829999992,
+      "idle": {
+        "rssMiB": 755.09375,
+        "processCount": 5
+      },
+      "size": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 2
+      }
+    },
+    {
+      "mode": "current",
+      "iteration": 1,
+      "startupMs": 2548.3729160000003,
+      "terminalResponseMs": 50.51258400000006,
+      "idle": {
+        "rssMiB": 819.734375,
+        "processCount": 5
+      },
+      "size": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 2
+      }
+    },
+    {
+      "mode": "current",
+      "iteration": 2,
+      "startupMs": 2185.3353339999994,
+      "terminalResponseMs": 50.796792000001005,
+      "idle": {
+        "rssMiB": 809.34375,
+        "processCount": 5
+      },
+      "size": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 2
+      }
+    },
+    {
+      "mode": "baseline",
+      "iteration": 2,
+      "startupMs": 2708.8976250000014,
+      "terminalResponseMs": 51.30445899999904,
+      "idle": {
+        "rssMiB": 804.90625,
+        "processCount": 5
+      },
+      "size": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 2
+      }
+    },
+    {
+      "mode": "baseline",
+      "iteration": 3,
+      "startupMs": 2480.2795419999966,
+      "terminalResponseMs": 50.78254200000083,
+      "idle": {
+        "rssMiB": 796.296875,
+        "processCount": 5
+      },
+      "size": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 2
+      }
+    },
+    {
+      "mode": "current",
+      "iteration": 3,
+      "startupMs": 3507.6661660000027,
+      "terminalResponseMs": 51.649790999996185,
+      "idle": {
+        "rssMiB": 833.984375,
+        "processCount": 5
+      },
+      "size": {
+        "width": 1280,
+        "height": 860,
+        "dpr": 2
+      }
+    }
+  ],
+  "caveats": [
+    "Fresh application data per sample; OS filesystem cache is not flushed, so these are fresh-profile startup samples, not guaranteed cold-disk measurements.",
+    "Both use the same Electron 44.4.2 and Playwright launch instrumentation. Original host TS is transformed without bundling; both serve the same frozen business build, except approved D02/D03 which are inactive in this fixture.",
+    "Memory sums RSS of the owned process tree after three idle seconds; shared memory can be counted more than once."
+  ]
+}

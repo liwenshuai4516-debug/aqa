@@ -1,0 +1,16 @@
+{
+  "size": [
+    2560,
+    1720
+  ],
+  "changedPixelsThreshold8": 12522,
+  "totalPixels": 4403200,
+  "ratio": 0.0028438408430232556,
+  "layoutEqual": true,
+  "maskSelectors": [
+    ".status-host-metrics",
+    ".project-time",
+    ".session-time"
+  ],
+  "note": "Caret hidden, only live metrics and timestamps masked; all layout and transcript content retained."
+}
