@@ -1,0 +1,11 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-updater-startup-ypJ0vR",
+  "instrumentation": "native clone of internal package with current compiled desktop main; real preload IPC and sidecar; no updater network or provider requests",
+  "checks": [
+    {
+      "name": "malformed",
+      "status": "FAIL",
+      "error": "browserType.connectOverCDP: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - <ws preparing> retrieving websocket url from http://127.0.0.1:62526\u001b[22m\n\n    at launchNativeApp (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/native-app.mjs:68:28)\n    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/updater-startup-run.mjs:44:17"
+    }
+  ]
+}

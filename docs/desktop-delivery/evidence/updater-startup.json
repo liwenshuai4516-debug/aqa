@@ -1,0 +1,132 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-updater-startup-1gncHo",
+  "instrumentation": "native clone of current internal package (compiled main verified identical); only updater configuration varied; real preload IPC and sidecar; no updater network or provider requests",
+  "checks": [
+    {
+      "name": "absent",
+      "status": "PASS",
+      "errors": [
+        {
+          "operation": "check",
+          "message": "Error invoking remote method 'pi-desktop-updater:check': Error: 自动更新尚未配置本产品的发布渠道；请联系发布者获取安装包。"
+        },
+        {
+          "operation": "download",
+          "message": "Error invoking remote method 'pi-desktop-updater:download': Error: 自动更新尚未配置本产品的发布渠道；请联系发布者获取安装包。"
+        },
+        {
+          "operation": "quitAndInstall",
+          "message": "Error invoking remote method 'pi-desktop-updater:quit-install': Error: 自动更新尚未配置本产品的发布渠道；请联系发布者获取安装包。"
+        }
+      ],
+      "health": 200,
+      "cleanQuit": true,
+      "configSecretAbsentFromLogs": true
+    },
+    {
+      "name": "malformed",
+      "status": "PASS",
+      "errors": [
+        {
+          "operation": "check",
+          "message": "Error invoking remote method 'pi-desktop-updater:check': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        },
+        {
+          "operation": "download",
+          "message": "Error invoking remote method 'pi-desktop-updater:download': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        },
+        {
+          "operation": "quitAndInstall",
+          "message": "Error invoking remote method 'pi-desktop-updater:quit-install': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        }
+      ],
+      "health": 200,
+      "cleanQuit": true,
+      "configSecretAbsentFromLogs": true
+    },
+    {
+      "name": "invalid-url",
+      "status": "PASS",
+      "errors": [
+        {
+          "operation": "check",
+          "message": "Error invoking remote method 'pi-desktop-updater:check': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        },
+        {
+          "operation": "download",
+          "message": "Error invoking remote method 'pi-desktop-updater:download': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        },
+        {
+          "operation": "quitAndInstall",
+          "message": "Error invoking remote method 'pi-desktop-updater:quit-install': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        }
+      ],
+      "health": 200,
+      "cleanQuit": true,
+      "configSecretAbsentFromLogs": true
+    },
+    {
+      "name": "http",
+      "status": "PASS",
+      "errors": [
+        {
+          "operation": "check",
+          "message": "Error invoking remote method 'pi-desktop-updater:check': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        },
+        {
+          "operation": "download",
+          "message": "Error invoking remote method 'pi-desktop-updater:download': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        },
+        {
+          "operation": "quitAndInstall",
+          "message": "Error invoking remote method 'pi-desktop-updater:quit-install': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        }
+      ],
+      "health": 200,
+      "cleanQuit": true,
+      "configSecretAbsentFromLogs": true
+    },
+    {
+      "name": "credentials",
+      "status": "PASS",
+      "errors": [
+        {
+          "operation": "check",
+          "message": "Error invoking remote method 'pi-desktop-updater:check': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        },
+        {
+          "operation": "download",
+          "message": "Error invoking remote method 'pi-desktop-updater:download': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        },
+        {
+          "operation": "quitAndInstall",
+          "message": "Error invoking remote method 'pi-desktop-updater:quit-install': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        }
+      ],
+      "health": 200,
+      "cleanQuit": true,
+      "configSecretAbsentFromLogs": true
+    },
+    {
+      "name": "upstream",
+      "status": "PASS",
+      "errors": [
+        {
+          "operation": "check",
+          "message": "Error invoking remote method 'pi-desktop-updater:check': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        },
+        {
+          "operation": "download",
+          "message": "Error invoking remote method 'pi-desktop-updater:download': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        },
+        {
+          "operation": "quitAndInstall",
+          "message": "Error invoking remote method 'pi-desktop-updater:quit-install': Error: 自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。"
+        }
+      ],
+      "health": 200,
+      "cleanQuit": true,
+      "configSecretAbsentFromLogs": true
+    }
+  ]
+}

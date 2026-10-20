@@ -1,0 +1,36 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-lsJ14H",
+  "checks": [
+    {
+      "format": "dmg",
+      "status": "PASS",
+      "artifact": "/Users/liyingjun/Desktop/SW-QA/15-aqa/release/Pi-Agent-Desktop-0.109.0-arm64.dmg",
+      "destination": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-lsJ14H/dmg 中文 installation",
+      "currentCompiledMain": true,
+      "mountedDmgDetachedBeforeLaunch": true,
+      "info": {
+        "packaged": true,
+        "appPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-lsJ14H/dmg 中文 installation/Pi Agent Desktop.app/Contents/Resources/app",
+        "loaded": true
+      },
+      "health": 200,
+      "cleanQuit": true
+    },
+    {
+      "format": "zip",
+      "status": "PASS",
+      "artifact": "/Users/liyingjun/Desktop/SW-QA/15-aqa/release/Pi-Agent-Desktop-0.109.0-arm64.zip",
+      "destination": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-lsJ14H/zip 中文 installation",
+      "currentCompiledMain": true,
+      "mountedDmgDetachedBeforeLaunch": false,
+      "info": {
+        "packaged": true,
+        "appPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-lsJ14H/zip 中文 installation/Pi Agent Desktop.app/Contents/Resources/app",
+        "loaded": true
+      },
+      "health": 200,
+      "cleanQuit": true
+    }
+  ],
+  "limitation": "same macOS user, no quarantine/download or clean-account Gatekeeper validation; no signing or upgrade test"
+}

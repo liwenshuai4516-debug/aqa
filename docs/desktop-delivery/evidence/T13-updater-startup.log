@@ -1,0 +1,6 @@
+absent PASS
+malformed PASS
+invalid-url PASS
+http PASS
+credentials PASS
+upstream PASS

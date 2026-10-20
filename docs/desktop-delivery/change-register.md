@@ -42,3 +42,7 @@
 ## T12 首次启动与模型设置
 
 新增 first-run-run.mjs 验证生产选择循环、取消、路径错误和最近工作区；ui-acceptance-run.mjs 增加空白配置下通过原设置 UI 录入本地测试密钥并实际发送。测试与交付记录以外未修改。详见 T12-first-run-and-model-config.md。
+
+## T13 更新渠道异常
+
+desktop/main.ts 增加更新初始化异常边界，防止损坏配置或 updater 加载失败关闭已经可用的应用；只记录通用错误。tests/desktop/updater-startup-run.mjs 验证六种配置下真实 preload 响应、服务可用、正常退出及日志隐私；artifact-install-run.mjs 检验实际 DMG/ZIP 在源码目录外安装后的启动与主进程一致性。新增失败复现和最终证据，重新构建 macOS 内部包、资源审计及校验和。未改受保护业务层，未配置或发布正式更新。详见 T13-updater-startup.md。

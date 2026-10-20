@@ -622,6 +622,23 @@ let updaterWired = false;
 async function wireAutoUpdater(): Promise<void> {
 	if (updaterWired) return;
 	updaterWired = true;
+	try {
+		await configureAutoUpdater();
+	} catch {
+		// Configuration/import errors must not close an otherwise usable app.
+		// Do not log the exception: malformed feed URLs can contain credentials.
+		console.error("[desktop] 自动更新初始化失败（不影响使用）；请联系发布者检查更新渠道配置。");
+		for (const operation of ["check", "download", "quit-install"]) {
+			const channel = `pi-desktop-updater:${operation}`;
+			ipcMain.removeHandler(channel);
+			ipcMain.handle(channel, () => {
+				throw new Error("自动更新不可用：发布渠道初始化失败；请联系发布者获取安装包。");
+			});
+		}
+	}
+}
+
+async function configureAutoUpdater(): Promise<void> {
 	// dev（`npm run desktop:dev`，isPackaged=false）也注册同一套 IPC：调用直接
 	// 报“仅打包后可用”，前端据此显示下载页指引 —— 不让 invoke 挂起无 handler。
 	if (!app.isPackaged || !existsSync(join(app.getAppPath(), "desktop-update.json"))) {

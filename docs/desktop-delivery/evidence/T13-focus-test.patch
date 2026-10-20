@@ -1,0 +1,26 @@
+diff --git a/tests/desktop/lifecycle-run.mjs b/tests/desktop/lifecycle-run.mjs
+index 0cf3471..05fee1e 100644
+--- a/tests/desktop/lifecycle-run.mjs
++++ b/tests/desktop/lifecycle-run.mjs
+@@ -152,6 +152,21 @@ try {
+ 	await until(() => run.application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isMinimized()));
+ 	await run.application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].restore());
+ 	await until(() => run.application.evaluate(({ BrowserWindow }) => !BrowserWindow.getAllWindows()[0].isMinimized()));
++	const restoredWindow = await run.application.evaluate(({ BrowserWindow, app }) => {
++		const window = BrowserWindow.getAllWindows()[0];
++		const before = {
++			focused: window.isFocused(),
++			visible: window.isVisible(),
++			fullscreen: window.isFullScreen(),
++			fullscreenable: window.isFullScreenable(),
++		};
++		// On macOS a restored background window may ignore fullscreen requests.
++		app.focus({ steal: true });
++		window.focus();
++		return before;
++	});
++	console.log("Restored window before fullscreen", JSON.stringify(restoredWindow));
++	await until(() => run.application.evaluate(({ BrowserWindow }) => BrowserWindow.getAllWindows()[0].isFocused()));
+ 	await run.page.evaluate(() => {
+ 		window.__desktopFullscreen = null;
+ 		window.piDesktop.onFullScreenChange((value) => {

@@ -1,0 +1,21 @@
+2026-10-20T09:25:10.319Z [log] [desktop] main started, waiting for app ready…
+2026-10-20T09:25:10.384Z [log] [desktop] app ready
+2026-10-20T09:25:10.385Z [log] [desktop] server entry: /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-updater-startup-ypJ0vR/Pi Agent Desktop.app/Contents/Resources/app/dist/server/index.js
+2026-10-20T09:25:10.389Z [log] [desktop] spawning server on 127.0.0.1:8790 (data: /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-updater-startup-ypJ0vR/malformed/data)
+2026-10-20T09:25:11.766Z [log] [server] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+2026-10-20T09:25:11.766Z [log] [server] 
+2026-10-20T09:25:11.766Z [log] [server]   ⚡ pi-web-ui — web chat for the pi coding agent
+2026-10-20T09:25:11.766Z [log] [server]     http://localhost:8790
+2026-10-20T09:25:11.766Z [log] [server]     workspace   : /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-updater-startup-ypJ0vR/中文 workspace
+2026-10-20T09:25:11.766Z [log] [server]     session dir : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-updater-startup-ypJ0vR/malformed/agent/sessions
+2026-10-20T09:25:11.767Z [log] [server]     pi SDK      : v1.1.0
+2026-10-20T09:25:11.767Z [log] [server]     bind        : 127.0.0.1:8790
+2026-10-20T09:25:11.767Z [log] [server] 
+2026-10-20T09:25:11.767Z [log] [server]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-updater-startup-ypJ0vR/malformed/data/pi-web-ui.sock
+2026-10-20T09:25:11.790Z [log] [desktop] server 就绪：http://127.0.0.1:8790
+2026-10-20T09:25:11.913Z [log] [desktop] opening window: http://127.0.0.1:8790
+2026-10-20T09:25:12.119Z [log] [desktop] window loaded
+2026-10-20T09:25:12.158Z [error] ✖ 桌面版启动失败： SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at wireAutoUpdater (file:///private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-updater-startup-ypJ0vR/Pi%20Agent%20Desktop.app/Contents/Resources/app/dist/desktop/main.js:650:31)
+    at async file:///private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-updater-startup-ypJ0vR/Pi%20Agent%20Desktop.app/Contents/Resources/app/dist/desktop/main.js:504:9

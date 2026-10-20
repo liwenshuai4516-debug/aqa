@@ -1,0 +1,139 @@
+
+> pi-web-ui@0.109.0 desktop:dist
+> npm run build && npm run build:desktop && electron-builder -c desktop/electron-builder.yml --mac --arm64
+
+
+> pi-web-ui@0.109.0 build
+> npm run build:web && npm run build:server && npm run build:dsh-runtime && npm run build:mermaid-vendor && npm run build:runtrace-vendor
+
+
+> pi-web-ui@0.109.0 build:web
+> vite build --config web/vite.config.ts
+
+vite v8.3.0 building client environment for production...
+
+ WARN  advancedChunks option is deprecated, please use codeSplitting instead.
+
+transforming...
+✓ 756 modules transformed.
+rendering chunks...
+computing gzip size...
+web/dist/index.html                                           1.39 kB │ gzip:   0.63 kB
+web/dist/assets/KaTeX_Size3-Regular-CTq5MqoE.woff             4.42 kB
+web/dist/assets/KaTeX_Size4-Regular-Dl5lxZxV.woff2            4.92 kB
+web/dist/assets/KaTeX_Size2-Regular-Dy4dx90m.woff2            5.20 kB
+web/dist/assets/KaTeX_Size1-Regular-mCD8mA8B.woff2            5.46 kB
+web/dist/assets/KaTeX_Size4-Regular-BF-4gkZK.woff             5.98 kB
+web/dist/assets/KaTeX_Size2-Regular-oD1tc_U0.woff             6.18 kB
+web/dist/assets/KaTeX_Size1-Regular-C195tn64.woff             6.49 kB
+web/dist/assets/KaTeX_Caligraphic-Regular-Di6jR-x-.woff2      6.90 kB
+web/dist/assets/KaTeX_Caligraphic-Bold-Dq_IR9rO.woff2         6.91 kB
+web/dist/assets/KaTeX_Size3-Regular-DgpXs0kz.ttf              7.58 kB
+web/dist/assets/KaTeX_Caligraphic-Regular-CTRA-rTL.woff       7.65 kB
+web/dist/assets/KaTeX_Caligraphic-Bold-BEiXGLvX.woff          7.71 kB
+web/dist/assets/KaTeX_Script-Regular-D3wIWfF6.woff2           9.64 kB
+web/dist/assets/KaTeX_SansSerif-Regular-DDBCnlJ7.woff2       10.34 kB
+web/dist/assets/KaTeX_Size4-Regular-DWFBv043.ttf             10.36 kB
+web/dist/assets/KaTeX_Script-Regular-D5yQViql.woff           10.58 kB
+web/dist/assets/KaTeX_Fraktur-Regular-CTYiF6lA.woff2         11.31 kB
+web/dist/assets/KaTeX_Fraktur-Bold-CL6g_b3V.woff2            11.34 kB
+web/dist/assets/KaTeX_Size2-Regular-B7gKUWhC.ttf             11.50 kB
+web/dist/assets/KaTeX_SansSerif-Italic-C3H0VqGB.woff2        12.02 kB
+web/dist/assets/KaTeX_SansSerif-Bold-D1sUS0GD.woff2          12.21 kB
+web/dist/assets/KaTeX_Size1-Regular-Dbsnue_I.ttf             12.22 kB
+web/dist/assets/KaTeX_SansSerif-Regular-CS6fqUqJ.woff        12.31 kB
+web/dist/assets/KaTeX_Caligraphic-Regular-wX97UBjC.ttf       12.34 kB
+web/dist/assets/KaTeX_Caligraphic-Bold-ATXxdsX0.ttf          12.36 kB
+web/dist/assets/KaTeX_Fraktur-Regular-Dxdc4cR9.woff          13.20 kB
+web/dist/assets/KaTeX_Fraktur-Bold-BsDP51OF.woff             13.29 kB
+web/dist/assets/KaTeX_Typewriter-Regular-CO6r4hn1.woff2      13.56 kB
+web/dist/assets/KaTeX_SansSerif-Italic-DN2j7dab.woff         14.11 kB
+web/dist/assets/KaTeX_SansSerif-Bold-DbIhKOiC.woff           14.40 kB
+web/dist/assets/KaTeX_Typewriter-Regular-C0xS9mPB.woff       16.02 kB
+web/dist/assets/KaTeX_Math-BoldItalic-CZnvNsCZ.woff2         16.40 kB
+web/dist/assets/KaTeX_Math-Italic-t53AETM-.woff2             16.44 kB
+web/dist/assets/KaTeX_Script-Regular-C5JkGWo-.ttf            16.64 kB
+web/dist/assets/KaTeX_Main-BoldItalic-DxDJ3AOS.woff2         16.78 kB
+web/dist/assets/KaTeX_Main-Italic-NWA7e6Wa.woff2             16.98 kB
+web/dist/assets/KaTeX_Math-BoldItalic-iY-2wyZ7.woff          18.66 kB
+web/dist/assets/KaTeX_Math-Italic-DA0__PXp.woff              18.74 kB
+web/dist/assets/KaTeX_Main-BoldItalic-SpSLRI95.woff          19.41 kB
+web/dist/assets/KaTeX_SansSerif-Regular-BNo7hRIc.ttf         19.43 kB
+web/dist/assets/KaTeX_Fraktur-Regular-CB_wures.ttf           19.57 kB
+web/dist/assets/KaTeX_Fraktur-Bold-BdnERNNW.ttf              19.58 kB
+web/dist/assets/KaTeX_Main-Italic-BMLOBm91.woff              19.67 kB
+web/dist/assets/KaTeX_SansSerif-Italic-YYjJ1zSn.ttf          22.36 kB
+web/dist/assets/KaTeX_SansSerif-Bold-CFMepnvq.ttf            24.50 kB
+web/dist/assets/KaTeX_Main-Bold-Cx986IdX.woff2               25.32 kB
+web/dist/assets/KaTeX_Main-Regular-B22Nviop.woff2            26.27 kB
+web/dist/assets/KaTeX_Typewriter-Regular-D3Ib7_Hf.ttf        27.55 kB
+web/dist/assets/KaTeX_AMS-Regular-BQhdFMY1.woff2             28.07 kB
+web/dist/assets/KaTeX_Main-Bold-Jm3AIy58.woff                29.91 kB
+web/dist/assets/KaTeX_Main-Regular-Dr94JaBh.woff             30.77 kB
+web/dist/assets/KaTeX_Math-BoldItalic-B3XSjfu4.ttf           31.19 kB
+web/dist/assets/KaTeX_Math-Italic-flOr_0UB.ttf               31.30 kB
+web/dist/assets/KaTeX_Main-BoldItalic-DzxPMmG6.ttf           32.96 kB
+web/dist/assets/KaTeX_AMS-Regular-DMm9YOAa.woff              33.51 kB
+web/dist/assets/KaTeX_Main-Italic-3WenGoN9.ttf               33.58 kB
+web/dist/assets/KaTeX_Main-Bold-waoOVXN0.ttf                 51.33 kB
+web/dist/assets/KaTeX_Main-Regular-ypZvNtVU.ttf              53.58 kB
+web/dist/assets/KaTeX_AMS-Regular-DRggAlZN.ttf               63.63 kB
+web/dist/assets/xterm-B1njb2Cr.css                            3.96 kB │ gzip:   1.02 kB
+web/dist/assets/markdown-CCeVCbci.css                        30.86 kB │ gzip:   8.38 kB
+web/dist/assets/index-CgZ9KzyW.css                          386.52 kB │ gzip:  62.02 kB
+web/dist/assets/rolldown-runtime-hePW80VL.js                  0.71 kB │ gzip:   0.42 kB
+web/dist/assets/TerminalPanel-0tOnA2ab.js                    12.06 kB │ gzip:   4.03 kB
+web/dist/assets/es-DIDZppIF.js                               12.85 kB │ gzip:   5.10 kB
+web/dist/assets/react-CR5VJ85Q.js                           218.84 kB │ gzip:  68.25 kB
+web/dist/assets/xterm-Cf5xxe4g.js                           332.37 kB │ gzip:  83.36 kB
+web/dist/assets/markdown-DXwnfD9T.js                        759.20 kB │ gzip: 230.23 kB
+web/dist/assets/index-z6uqH_Ya.js                         1,272.55 kB │ gzip: 364.54 kB
+
+✓ built in 546ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+
+> pi-web-ui@0.109.0 build:server
+> tsc -p tsconfig.server.json
+
+
+> pi-web-ui@0.109.0 build:dsh-runtime
+> node scripts/copy-dsh-runtime.mjs
+
+✓ copied 6 dsh runtime files → dist/server/dsh/runtime/
+
+> pi-web-ui@0.109.0 build:mermaid-vendor
+> node scripts/build-mermaid-vendor.mjs
+
+
+  plugins/mermaid/client/vendor/mermaid.bundle.mjs  5.1mb ⚠️
+
+⚡ Done in 468ms
+✓ mermaid vendor bundle → plugins/mermaid/vendor/mermaid.bundle.mjs
+
+> pi-web-ui@0.109.0 build:runtrace-vendor
+> node scripts/build-runtrace-vendor.mjs
+
+✓ run-trace vendor ← vis-timeline v8.5.4
+
+> pi-web-ui@0.109.0 build:desktop
+> tsc -p desktop/tsconfig.json
+
+  • electron-builder  version=26.15.3 os=25.6.0
+  • loaded configuration  file=/Users/liyingjun/Desktop/SW-QA/15-aqa/desktop/electron-builder.yml
+  • skipped dependencies rebuild  reason=npmRebuild is set to false
+  • packaging       platform=darwin arch=arm64 electron=44.4.2 appOutDir=release/mac-arm64
+  • downloaded      label=electron progress=100%
+  • downloaded electron zip extracted successfully  output=/Users/liyingjun/Desktop/SW-QA/15-aqa/release/mac-arm64
+  • asar usage is disabled — this is strongly not recommended  solution=enable asar and use asarUnpack to unpack files that must be externally available
+  • searching for node modules  pm=npm searchDir=/Users/liyingjun/Desktop/SW-QA/15-aqa
+  • duplicate dependency references  dependencies=["@deepseek-ai/cordis@4.0.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/schemastery@3.18.2","@deepseek-ai/dsh-llm@0.1.5-rc.3","@deepseek-ai/cordis@4.0.2","@deepseek-ai/dsh-session@0.1.5-rc.3","@deepseek-ai/dsh-session@0.1.5-rc.3","@deepseek-ai/cordis@4.0.2","@deepseek-ai/dsh-invariants@0.1.5-rc.3","@deepseek-ai/dsh-llm@0.1.5-rc.3","@deepseek-ai/schemastery@3.18.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/dsh-invariants@0.1.5-rc.3","@deepseek-ai/cordis@4.0.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/dsh-invariants@0.1.5-rc.3","@deepseek-ai/dsh-llm@0.1.5-rc.3","@deepseek-ai/dsh-sandbox@0.1.5-rc.3","@deepseek-ai/cordis@4.0.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/dsh-llm@0.1.5-rc.3","@deepseek-ai/cordis@4.0.2","@deepseek-ai/dsh-invariants@0.1.5-rc.3","@deepseek-ai/dsh-session@0.1.5-rc.3","@deepseek-ai/schemastery@3.18.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/schemastery@3.18.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/schemastery@3.18.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/dsh-invariants@0.1.5-rc.3","@deepseek-ai/cordis@4.0.2","@deepseek-ai/dsh-llm@0.1.5-rc.3","@deepseek-ai/cordis@4.0.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/dsh-invariants@0.1.5-rc.3","@deepseek-ai/dsh-llm@0.1.5-rc.3","@deepseek-ai/cordis@4.0.2","@deepseek-ai/dsh-llm@0.1.5-rc.3","@deepseek-ai/dsh-session@0.1.5-rc.3","@deepseek-ai/dsh-session-projection@0.1.5-rc.3","@deepseek-ai/dsh-session@0.1.5-rc.3","@deepseek-ai/dsh-system-prompt@0.1.5-rc.3","@deepseek-ai/cordis@4.0.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/dsh-invariants@0.1.5-rc.3","@deepseek-ai/dsh-llm@0.1.5-rc.3","@deepseek-ai/dsh-session@0.1.5-rc.3","@deepseek-ai/dsh-system-prompt@0.1.5-rc.3","@deepseek-ai/dsh-user-approval@0.1.5-rc.3","@deepseek-ai/schemastery@3.18.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/dsh-invariants@0.1.5-rc.3","@deepseek-ai/dsh-llm@0.1.5-rc.3","@deepseek-ai/dsh-session@0.1.5-rc.3","@deepseek-ai/dsh-system-prompt@0.1.5-rc.3","@deepseek-ai/schemastery@3.18.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/cordis@4.0.2","@deepseek-ai/dsh-llm@0.1.5-rc.3","@deepseek-ai/dsh-session@0.1.5-rc.3","@deepseek-ai/dsh-subagent@0.1.5-rc.3","@earendil-works/pi-ai@1.1.0","@aws-sdk/types@3.974.6","@smithy/types@4.19.0","@smithy/core@3.35.1","@smithy/signature-v4@5.7.4","@smithy/types@4.19.0","@aws-sdk/core@3.978.1","@aws-sdk/types@3.974.6","@smithy/core@3.35.1","@smithy/types@4.19.0","@aws-sdk/core@3.978.1","@aws-sdk/types@3.974.6","@smithy/core@3.35.1","@smithy/fetch-http-handler@5.8.0","@smithy/node-http-handler@4.12.1","@smithy/types@4.19.0","@aws-sdk/core@3.978.1","@aws-sdk/credential-provider-env@3.972.72","@aws-sdk/credential-provider-http@3.972.74","@aws-sdk/core@3.978.1","@aws-sdk/nested-clients@3.997.46","@aws-sdk/types@3.974.6","@smithy/core@3.35.1","@smithy/types@4.19.0","@aws-sdk/credential-provider-process@3.972.72","@aws-sdk/credential-provider-sso@3.973.16","@aws-sdk/credential-provider-web-identity@3.972.78","@aws-sdk/nested-clients@3.997.46","@aws-sdk/types@3.974.6","@smithy/core@3.35.1","@smithy/credential-provider-imds@4.5.2","@smithy/types@4.19.0","@aws-sdk/core@3.978.1","@aws-sdk/types@3.974.6","@smithy/core@3.35.1","@smithy/types@4.19.0","@aws-sdk/core@3.978.1","@aws-sdk/nested-clients@3.997.46","@aws-sdk/core@3.978.1","@aws-sdk/nested-clients@3.997.46","@aws-sdk/types@3.974.6","@smithy/core@3.35.1","@smithy/types@4.19.0","@aws-sdk/types@3.974.6","@smithy/core@3.35.1","@smithy/types@4.19.0","@aws-sdk/core@3.978.1","@aws-sdk/nested-clients@3.997.46","@aws-sdk/types@3.974.6","@smithy/core@3.35.1","@smithy/types@4.19.0","@aws-sdk/types@3.974.6","@smithy/core@3.35.1","@smithy/core@3.35.1","@smithy/types@4.19.0","@smithy/types@4.19.0","@aws-sdk/types@3.974.6","@smithy/core@3.35.1","@smithy/types@4.19.0","@aws-sdk/types@3.974.6","@smithy/core@3.35.1","@smithy/types@4.19.0","@aws-sdk/core@3.978.1","@aws-sdk/types@3.974.6","@smithy/core@3.35.1","@smithy/fetch-http-handler@5.8.0","@smithy/signature-v4@5.7.4","@smithy/types@4.19.0","@aws-sdk/core@3.978.1","@aws-sdk/core@3.978.1","@aws-sdk/types@3.974.6","@smithy/signature-v4@5.7.4","@smithy/types@4.19.0","@aws-sdk/types@3.974.6","@smithy/core@3.35.1","@smithy/fetch-http-handler@5.8.0","@smithy/node-http-handler@4.12.1","@smithy/types@4.19.0","@aws-sdk/types@3.974.6","@smithy/core@3.35.1","@smithy/types@4.19.0","@smithy/types@4.19.0","@smithy/types@4.19.0","@smithy/core@3.35.1","@smithy/types@4.19.0","@smithy/node-http-handler@4.12.1","debug@4.4.3","fetch-blob@3.2.0","gaxios@7.3.1","ecdsa-sig-formatter@1.0.11","@smithy/core@3.35.1","@smithy/types@4.19.0","debug@4.4.3","debug@4.4.3","@aws-sdk/credential-provider-node@3.972.84","@smithy/core@3.35.1","@smithy/types@4.19.0","cross-spawn@7.0.6","brace-expansion@5.0.12","debug@4.4.3","debug@4.4.3","http-errors@2.0.1","on-finished@2.4.1","qs@6.16.0","http-errors@2.0.1","iconv-lite@0.7.3","type-is@2.1.0","debug@4.4.3","on-finished@2.4.1","get-intrinsic@1.3.0","call-bind-apply-helpers@1.0.2","call-bind-apply-helpers@1.0.2","es-object-atoms@1.1.2","call-bound@1.0.4","get-intrinsic@1.3.0","side-channel-map@1.0.1","debug@4.4.3","debug@4.4.3","http-errors@2.0.1","on-finished@2.4.1","send@1.2.1"]
+  • asar usage is disabled — this is strongly not recommended  solution=enable asar and use asarUnpack to unpack files that must be externally available
+  • skipped macOS application code signing  reason=, see https://electron.build/code-signing CSC_IDENTITY_AUTO_DISCOVERY=false
+  • building        target=macOS zip arch=arm64 file=release/Pi-Agent-Desktop-0.109.0-arm64.zip
+  • building        target=DMG arch=arm64 file=release/Pi-Agent-Desktop-0.109.0-arm64.dmg
+  • building block map  blockMapFile=release/Pi-Agent-Desktop-0.109.0-arm64.zip.blockmap
+  • building block map  blockMapFile=release/Pi-Agent-Desktop-0.109.0-arm64.dmg.blockmap

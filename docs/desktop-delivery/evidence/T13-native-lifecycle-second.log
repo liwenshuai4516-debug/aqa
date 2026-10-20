@@ -1,0 +1,41 @@
+T04/A13: PASS real window, sandbox, private token authentication, bundled SDK
+test: FAIL page.waitForFunction: Timeout 30000ms exceeded.
+    at /Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:162:17
+[desktop] server 提前退出（code=0 signal=null），请看上方 server 日志
+[
+  {
+    "id": "T04/A13",
+    "status": "PASS",
+    "check": "real window, sandbox, private token authentication, bundled SDK",
+    "health": {
+      "ok": true,
+      "piVersion": "1.1.0",
+      "piSdkCopies": [
+        {
+          "path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/release/mac-arm64/Pi Agent Desktop.app/Contents/Resources/app/node_modules/@earendil-works/pi-coding-agent/package.json",
+          "version": "1.1.0"
+        },
+        {
+          "path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/@earendil-works/pi-coding-agent/package.json",
+          "version": "1.1.0"
+        }
+      ],
+      "engine": "pi"
+    }
+  },
+  {
+    "status": "FAIL",
+    "error": "page.waitForFunction: Timeout 30000ms exceeded.\n    at /Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:162:17"
+  }
+]
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.waitForFunction: Timeout 30000ms exceeded.
+    at /Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:162:17 {
+  log: [],
+  name: 'TimeoutError'
+}
+
+Node.js v24.19.0

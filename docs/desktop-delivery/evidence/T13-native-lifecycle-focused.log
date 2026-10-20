@@ -1,0 +1,41 @@
+T04/A13: PASS real window, sandbox, private token authentication, bundled SDK
+Restored window before fullscreen {"focused":false,"visible":true,"fullscreen":false,"fullscreenable":true}
+test: FAIL Error: condition timeout
+    at until (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:101:8)
+    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:169:2
+[desktop] server 提前退出（code=0 signal=null），请看上方 server 日志
+[
+  {
+    "id": "T04/A13",
+    "status": "PASS",
+    "check": "real window, sandbox, private token authentication, bundled SDK",
+    "health": {
+      "ok": true,
+      "piVersion": "1.1.0",
+      "piSdkCopies": [
+        {
+          "path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/release/mac-arm64/Pi Agent Desktop.app/Contents/Resources/app/node_modules/@earendil-works/pi-coding-agent/package.json",
+          "version": "1.1.0"
+        },
+        {
+          "path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/@earendil-works/pi-coding-agent/package.json",
+          "version": "1.1.0"
+        }
+      ],
+      "engine": "pi"
+    }
+  },
+  {
+    "status": "FAIL",
+    "error": "Error: condition timeout\n    at until (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:101:8)\n    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:169:2"
+  }
+]
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+Error: condition timeout
+    at until (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:101:8)
+    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:169:2
+
+Node.js v24.19.0
