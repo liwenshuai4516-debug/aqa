@@ -1,0 +1,26 @@
+[
+	{
+		"path": "server/agent-service-daemon.ts",
+		"decision": "D02",
+		"approvedBy": "User explicit reply on 2026-10-20",
+		"baselineSha256": "4e043dfe5b0bacc19c6bfb771fd39551ff0fa04adfc68d8aa15ff4a1ae7ee588",
+		"sha256": "fb70ecd6c183b7db13f98479b439f45d10b1b305de93e46de26199aee2f757b8",
+		"scope": "Only gate interrupted session auto-continuation for PI_WEB_RESUME_INTERRUPTED=0"
+	},
+	{
+		"path": "plugins/vscode-editor/index.mjs",
+		"decision": "D03",
+		"approvedBy": "User explicit reply on 2026-10-20",
+		"baselineSha256": "01b96899d5e89c82b96281a8ec5755c22d22bf5ddba34a8d1ac3826a0e3f8844",
+		"sha256": "ad759d17713836240fa55e3aa7ec4856b681c7969996bd8f240d1fe1c115ba97",
+		"scope": "Restore missing mkdirpRemote helper only; plugin version 0.5.1 to 0.5.2"
+	},
+	{
+		"path": "plugins/vscode-editor/manifest.json",
+		"decision": "D03",
+		"approvedBy": "User explicit reply on 2026-10-20",
+		"baselineSha256": "da8e2c33a555ae4806e47fe54e931dcf675c9d21e5d1f7b0d0f583e259c095c7",
+		"sha256": "b4d52206e31c9c907a96a1d33f860f39da6a2ee40e6b3952f06cd022e9604720",
+		"scope": "Restore missing mkdirpRemote helper only; plugin version 0.5.1 to 0.5.2"
+	}
+]

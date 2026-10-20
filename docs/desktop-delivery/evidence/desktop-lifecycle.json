@@ -1,0 +1,53 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-desktop-lifecycle-huo16O",
+  "packaged": false,
+  "platform": "darwin",
+  "architecture": "arm64",
+  "results": [
+    {
+      "id": "T04/A13",
+      "status": "PASS",
+      "check": "real window, sandbox, private token authentication, bundled SDK",
+      "health": {
+        "ok": true,
+        "piVersion": "1.1.0",
+        "piSdkCopies": [
+          {
+            "path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/@earendil-works/pi-coding-agent/package.json",
+            "version": "1.1.0"
+          }
+        ],
+        "engine": "pi"
+      }
+    },
+    {
+      "id": "A14",
+      "status": "PASS",
+      "check": "real minimize/restore and fullscreen enter/leave, preload event delivered"
+    },
+    {
+      "id": "T05",
+      "status": "PASS",
+      "check": "close window + Dock activate recreates UI on same sidecar PID"
+    },
+    {
+      "id": "T05",
+      "status": "PASS",
+      "check": "real sidecar crash shows recovery dialog and creates fresh process without replay command"
+    },
+    {
+      "id": "T05",
+      "status": "PASS",
+      "check": "graceful app quit waits for owned sidecar exit"
+    },
+    {
+      "id": "T04/A11",
+      "status": "PASS",
+      "check": "occupied port falls back; allowlisted preferences restored; identity not copied; unrelated server survives"
+    },
+    {
+      "status": "FAIL",
+      "error": "electronApplication.firstWindow: Timeout 30000ms exceeded while waiting for event \"window\"\n    at launch (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:57:28)\n    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:259:8"
+    }
+  ]
+}

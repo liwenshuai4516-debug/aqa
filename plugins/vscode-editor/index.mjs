@@ -529,6 +529,21 @@ export default {
 			return new Promise((resolve, reject) => sftp[method](...args, (err, r) => (err ? reject(err) : resolve(r))));
 		}
 
+		async function mkdirpRemote(sftp, directory) {
+			let current = "";
+			for (const segment of safeRemotePath(directory).split("/").filter(Boolean)) {
+				current += `/${segment}`;
+				try {
+					await sftpCall(sftp, "mkdir", current);
+				} catch (error) {
+					const attrs = await sftpCall(sftp, "stat", current).catch(() => {
+						throw error;
+					});
+					if (!attrs.isDirectory()) throw error;
+				}
+			}
+		}
+
 		const sshDeps = { mod: null, ok: false, installing: false, waiters: [] };
 
 		/** 惰性加载 ssh2；未安装时自动 npm 补装（同 ssh 插件模式）。 */

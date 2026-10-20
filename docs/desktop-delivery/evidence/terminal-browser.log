@@ -1,0 +1,58 @@
+app booted
+  ✓ folder row visible in file panel
+TEST ERROR: locator.hover: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('.file-item.dir').filter({ hasText: 'subdir' })[22m
+[2m    - locator resolved to <div data-type="dir" data-path="subdir" class="file-item dir">…</div>[22m
+[2m  - attempting hover action[22m
+[2m    2 × waiting for element to be visible and stable[22m
+[2m      - element is visible and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <div class="modal-backdrop">…</div> intercepts pointer events[22m
+[2m    - retrying hover action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible and stable[22m
+[2m      - element is visible and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <div class="modal-backdrop">…</div> intercepts pointer events[22m
+[2m    - retrying hover action[22m
+[2m      - waiting 100ms[22m
+[2m    57 × waiting for element to be visible and stable[22m
+[2m       - element is visible and stable[22m
+[2m       - scrolling into view if needed[22m
+[2m       - done scrolling[22m
+[2m       - <div class="modal-backdrop">…</div> intercepts pointer events[22m
+[2m     - retrying hover action[22m
+[2m       - waiting 500ms[22m
+
+    at main (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/terminal-browser-test.mjs:103:16) {
+  log: [
+    "  - waiting for locator('.file-item.dir').filter({ hasText: 'subdir' })",
+    '    - locator resolved to <div data-type="dir" data-path="subdir" class="file-item dir">…</div>',
+    '  - attempting hover action',
+    '    2 × waiting for element to be visible and stable',
+    '      - element is visible and stable',
+    '      - scrolling into view if needed',
+    '      - done scrolling',
+    '      - <div class="modal-backdrop">…</div> intercepts pointer events',
+    '    - retrying hover action',
+    '    - waiting 20ms',
+    '    2 × waiting for element to be visible and stable',
+    '      - element is visible and stable',
+    '      - scrolling into view if needed',
+    '      - done scrolling',
+    '      - <div class="modal-backdrop">…</div> intercepts pointer events',
+    '    - retrying hover action',
+    '      - waiting 100ms',
+    '    57 × waiting for element to be visible and stable',
+    '       - element is visible and stable',
+    '       - scrolling into view if needed',
+    '       - done scrolling',
+    '       - <div class="modal-backdrop">…</div> intercepts pointer events',
+    '     - retrying hover action',
+    '       - waiting 500ms'
+  ],
+  name: 'TimeoutError'
+}

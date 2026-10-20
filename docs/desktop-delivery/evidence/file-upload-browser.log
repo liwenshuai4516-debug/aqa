@@ -1,0 +1,12 @@
+app booted
+  ✓ drag: 📄 text chip appeared
+test error: locator.setInputFiles: Error: strict mode violation: locator('input[type="file"]') resolved to 2 elements:
+    1) <input multiple hidden="" type="file"/> aka getByRole('main').locator('input[type="file"]')
+    2) <input multiple hidden="" type="file"/> aka getByRole('tabpanel', { name: '文件列表' }).locator('input[type="file"]')
+
+Call log:
+[2m  - waiting for locator('input[type="file"]')[22m
+
+    at async main (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/file-upload-browser-test.mjs:100:2) {
+  log: [ `  - waiting for locator('input[type="file"]')` ]
+}

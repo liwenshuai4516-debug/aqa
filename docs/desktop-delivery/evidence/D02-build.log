@@ -1,0 +1,8 @@
+
+> pi-web-ui@0.109.0 build:server
+> tsc -p tsconfig.server.json
+
+
+> pi-web-ui@0.109.0 build:desktop
+> tsc -p desktop/tsconfig.json
+

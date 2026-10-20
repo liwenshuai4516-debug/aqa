@@ -1,0 +1,18 @@
+{
+  "provider": "DeepSeek",
+  "model": "deepseek-chat",
+  "packageRoot": "/Users/liyingjun/Desktop/SW-QA/15-aqa/release/mac-arm64/Pi Agent Desktop.app/Contents/Resources/app",
+  "requests": 1,
+  "maxOutputTokens": 128,
+  "budgetCny": 1,
+  "fixture": "one short text prompt; no tools or user files",
+  "status": "PASS",
+  "stopReason": "stop",
+  "usage": {
+    "input": 15,
+    "output": 8,
+    "cacheRead": 0,
+    "cacheWrite": 0
+  },
+  "elapsedMs": 990
+}

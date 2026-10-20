@@ -1,0 +1,9 @@
+--- a/server/agent-service-daemon.ts
++++ b/server/agent-service-daemon.ts
+@@
+-		void cs.resumeInterrupted(this.stateStore.takeInterrupted(clientId));
++		const interrupted = this.stateStore.takeInterrupted(clientId);
++		const resumable = process.env.PI_WEB_RESUME_INTERRUPTED === "0"
++			? interrupted?.map(({ title, cwd, at }) => ({ title, cwd, at }))
++			: interrupted;
++		void cs.resumeInterrupted(resumable);

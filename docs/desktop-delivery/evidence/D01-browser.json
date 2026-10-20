@@ -1,0 +1,24 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-real-extension-9Ei92q",
+  "checks": [
+    {
+      "id": "D01/A12",
+      "status": "PASS",
+      "check": "Desktop external-window handler produces authenticated same-service URL; fresh real Chrome profile loads same application",
+      "extensionId": "ecnkfdonloldcfflanockcakppokhokc",
+      "extensionVersion": "0.4.1",
+      "note": "OS shell dispatch intercepted to route into isolated test browser; default personal browser not modified"
+    },
+    {
+      "id": "D01/A12",
+      "status": "PASS",
+      "check": "Real loaded MV3 extension UI grants target; original host bridge reads title, clicks and types into real target tab; eval denied by default"
+    },
+    {
+      "id": "D01/A10/A12",
+      "status": "PASS",
+      "check": "Browser has independent client identity, explicitly takes over desktop conversation, then real SDK browser_page request travels through original WS, real extension and target page; tool result returns to local test provider",
+      "providerRequests": 3
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+[
+  {
+    "id": "T05/D02",
+    "status": "PASS",
+    "check": "Real SDK streaming request interrupted by graceful desktop quit; completed history and interrupted record persisted"
+  },
+  {
+    "id": "T05/D02/A02",
+    "status": "PASS",
+    "check": "Same client reconnects, receives interruption notice, opens saved history manually; provider request count remains exactly 2",
+    "providerRequests": 2
+  }
+]

@@ -1,0 +1,9 @@
+desktop/main.ts 105ms
+desktop/startup.ts 12ms
+desktop/preload.cts 9ms
+desktop/tsconfig.json 7ms
+desktop/logging.ts 7ms
+desktop/preferences.ts 2ms
+tests/unit/desktop-readiness.test.ts 3ms
+tests/unit/desktop-logging.test.ts 3ms
+tests/unit/desktop-preferences.test.ts 3ms

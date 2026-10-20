@@ -1,0 +1,47 @@
+[mock-ssh] 本地无 ssh2 依赖，回退 npm install…
+
+added 8 packages in 4s
+✓ attach 后主动收到插件状态推送（服务端唯一事实源）
+✓ state 初始返回，ssh2 依赖就绪
+✓ 本地文件读写正常（无 connId 直走 fs）
+✓ 空 host 校验拒绝
+✓ hosts_save 落盘 + 回显脱敏（password 不回传）
+✓ ssh-hosts.json 不再含明文密码（已迁入 host.secrets）
+✓ 加密机密文件 secrets.bin 已生成
+✓ 错误密码连接被拒（[client-authentication] All configured a…）
+✓ 连接成功 connId=c2
+✓ shell 打开并收到欢迎横幅
+✓ 终端输入回显正常
+✓ exec 输出与退出码 0
+✓ exec 非零退出码 + stderr 合并
+✓ 远程 list（connId 路由）sub, a.txt, big.bin
+✓ 远程 read 文本内容
+✓ 远程 read 二进制标记（NUL 嗅探）
+✓ 远程 write 写入后读回一致（UTF-8）
+✓ 远程 create 目录
+✓ 远程 rename
+✓ 远程 delete 文件
+✓ rename 非法名称拒绝
+✓ 远程 upload 分片上传落盘（exists=false）
+✓ 远程 upload_begin 识别已存在文件（exists=true）
+✓ 远程 upload 自动创建目标目录
+✓ 远程 upload_abort 丢弃内存分片不落盘
+✓ disconnect 触发 conn_closed 事件
+✓ hosts_delete
+✓ 未知 action 报错不崩
+✗ sync_get 失败: 未知操作 sync_get
+✗ sync_save 失败: 未知操作 sync_save
+✗ sftp.json 内容异常: {}
+✗ sync_get 回读异常: {"res":true,"reqId":"to12bjeoxel","ok":false,"error":"未知操作 sync_get"}
+✗ 留空密码应沿用旧值: {"res":true,"reqId":"tpy61miczay","ok":false,"error":"未知操作 sync_save"}
+✓ 相对路径远端根拒绝
+✗ sync_ensure 异常: {"res":true,"reqId":"treqo2zzqbxp","ok":false,"error":"未知操作 sync_ensure"}
+✗ ENOENT: no such file or directory, open '/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-ssh-test-JcnLS9/.vscode/sftp.json'
+Error: ENOENT: no such file or directory, open '/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-ssh-test-JcnLS9/.vscode/sftp.json'
+    at readFileSync (node:fs:484:20)
+    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/ssh-plugin-test.mjs:444:22 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-ssh-test-JcnLS9/.vscode/sftp.json'
+}

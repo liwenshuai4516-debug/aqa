@@ -1,0 +1,12 @@
+app booted
+test crashed: locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('.topbar-flow .chip').filter({ hasText: '声音' })[22m
+
+    at openSoundMenu (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/sound-settings-test.mjs:75:62)
+    at main (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/sound-settings-test.mjs:102:8) {
+  log: [
+    "  - waiting for locator('.topbar-flow .chip').filter({ hasText: '声音' })"
+  ],
+  name: 'TimeoutError'
+}

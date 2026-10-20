@@ -1,0 +1,5 @@
+desktop/main.ts 89ms
+desktop/sidecar.ts 3ms
+desktop/process-lifecycle.ts 5ms
+desktop/tsconfig.json 7ms
+tests/unit/desktop-process-lifecycle.test.ts 3ms

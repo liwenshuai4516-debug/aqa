@@ -1,0 +1,38 @@
+diff --git a/tests/unit/bottombar-metrics-universal.test.ts b/tests/unit/bottombar-metrics-universal.test.ts
+index 872869a..3e86db9 100644
+--- a/tests/unit/bottombar-metrics-universal.test.ts
++++ b/tests/unit/bottombar-metrics-universal.test.ts
+@@ -172,7 +172,16 @@ describe("通用 Agent 底座会话统计与底栏指标适配", () => {
+ 
+ 	it("ClaudeCodeDriver 的真实 NDJSON result 事件正确解析出成本与 Token，并由底座吸收", async () => {
+ 		const emitted: ServerMessage[] = [];
+-		const driver = new ClaudeCodeDriver(process.cwd(), { agentDir: testAgentDir });
++		// 指向不存在的可执行文件：本机装有 claude 时也不会真的拉起 CLI（否则会发真实请求并超时）
++		const driver = new ClaudeCodeDriver(process.cwd(), {
++			agentDir: testAgentDir,
++			executablePath: join(testAgentDir, "missing-claude-cli"),
++		});
++		// 单测禁止启动真实 CLI（会发起网络请求并超时），只捕获底座构建的 sink 注入 NDJSON 帧
++		let capturedSink: any = null;
++		(driver as any).sendPrompt = async (_prompt: string, _attach: any, sink: any) => {
++			capturedSink = sink;
++		};
+ 		const session = new UniversalSession({
+ 			clientId: "claude-ndjson-client",
+ 			cwd: process.cwd(),
+@@ -186,14 +195,7 @@ describe("通用 Agent 底座会话统计与底栏指标适配", () => {
+ 
+ 		// 模拟 Claude Code CLI 输出的真实 result 帧
+ 		const activeTools = new Map<string, string>();
+-		const sink = (session as any)["sink"] || {
+-			onTextDelta: () => {},
+-			onThinkingDelta: () => {},
+-			onToolStart: () => {},
+-			onToolEnd: () => {},
+-			onTurnComplete: (meta: any) => (session as any).finalizeTurn(meta),
+-			onError: () => {},
+-		};
++		const sink = capturedSink;
+ 
+ 		// 模拟 CLI 返回带有 total_cost_usd 与 4 桶 usage 的 result 事件
+ 		(driver as any).handleClaudeEvent(

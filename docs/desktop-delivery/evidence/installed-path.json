@@ -1,0 +1,11 @@
+{
+  "artifact": "/Users/liyingjun/Desktop/SW-QA/15-aqa/release/Pi-Agent-Desktop-0.109.0-arm64.zip",
+  "installedPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/Pi 最新安装 验收-s3chmvte/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "method": "ditto extract final zip outside checkout",
+  "signed": false,
+  "sourceHashMatches": {
+    "plugins/vscode-editor/index.mjs": true,
+    "plugins/vscode-editor/manifest.json": true,
+    "dist/desktop/main.js": true
+  }
+}

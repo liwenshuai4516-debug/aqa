@@ -1252,7 +1252,12 @@ export class AgentService {
 		// notifyCwd 幂等去重；此后 set_cwd 成功时由 cs.onCwdChanged 继续驱动。
 		cs.onCwdChanged = (abs, roots) => this.onClientCwdChanged?.(abs, roots);
 		this.onClientCwdChanged?.(cs.cwd, cs.workspaceRoots);
-		void cs.resumeInterrupted(this.stateStore.takeInterrupted(clientId));
+		const interrupted = this.stateStore.takeInterrupted(clientId);
+		const resumable =
+			process.env.PI_WEB_RESUME_INTERRUPTED === "0"
+				? interrupted?.map(({ title, cwd, at }) => ({ title, cwd, at }))
+				: interrupted;
+		void cs.resumeInterrupted(resumable);
 		return cs;
 	}
 

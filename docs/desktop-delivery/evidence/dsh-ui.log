@@ -1,0 +1,7 @@
+✓ DSH 引擎徽标显示 — DSH
+✓ 目标条（GoalBar）渲染 — count=1
+✗ 设置面板打开
+✗ dsh-ui crashed: page.waitForSelector: Timeout 10000ms exceeded.
+Call log:
+[2m  - waiting for locator('.settings-tab') to be visible[22m
+

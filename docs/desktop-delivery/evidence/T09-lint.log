@@ -1,0 +1,4 @@
+
+> pi-web-ui@0.109.0 lint
+> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/
+

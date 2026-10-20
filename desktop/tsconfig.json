@@ -6,7 +6,19 @@
 		"outDir": "../dist/desktop",
 		"rootDir": ".",
 		"sourceMap": false,
-		"types": ["node", "electron"]
+		"types": ["node", "electron"],
+		"lib": ["ES2023", "DOM"]
 	},
-	"include": ["main.ts", "preload.cts", "external-url.ts", "startup.ts", "portable.ts", "workspace.ts"]
+	"include": [
+		"main.ts",
+		"preload.cts",
+		"external-url.ts",
+		"startup.ts",
+		"portable.ts",
+		"workspace.ts",
+		"logging.ts",
+		"preferences.ts",
+		"sidecar.ts",
+		"process-lifecycle.ts"
+	]
 }

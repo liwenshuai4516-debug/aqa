@@ -10,12 +10,16 @@ const protectedRoots = ["server/", "web/src/", "web/public/", "themes/", "plugin
 const sourceMode = process.argv.includes("--source");
 const target = sourceMode ? manifest.sourceRoot : root;
 const known = new Set([...manifest.files, ...supplement].map((file) => file.path));
+const approved = JSON.parse(readFileSync(join(directory, "approved-changes.json"), "utf8"));
 const changes = [];
 for (const file of [...manifest.files, ...supplement]) {
 	if (!sourceMode && !protectedRoots.some((prefix) => file.path.startsWith(prefix))) continue;
 	try {
 		const contents = readFileSync(resolve(target, file.path));
-		if (createHash("sha256").update(contents).digest("hex") !== file.sha256)
+		if (
+			createHash("sha256").update(contents).digest("hex") !==
+			(sourceMode ? file.sha256 : (approved.find((entry) => entry.path === file.path)?.sha256 ?? file.sha256))
+		)
 			changes.push({ path: file.path, status: "MODIFIED" });
 	} catch {
 		changes.push({ path: file.path, status: "MISSING" });

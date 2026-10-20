@@ -1,0 +1,14 @@
+{
+  "status": "FAIL",
+  "target": "/Users/liyingjun/Desktop/SW-QA/15-aqa/",
+  "changes": [
+    {
+      "path": "plugins/vscode-editor/index.mjs",
+      "status": "MODIFIED"
+    },
+    {
+      "path": "plugins/vscode-editor/manifest.json",
+      "status": "MODIFIED"
+    }
+  ]
+}

@@ -48,3 +48,39 @@ contextBridge.exposeInMainWorld("piDesktop", {
 		},
 	},
 });
+
+// Restore a strict preference allowlist synchronously, before the original React bundle reads storage.
+const saved = ipcRenderer.sendSync("pi-desktop:preferences-load") as {
+	keys: string[];
+	values: Record<string, string>;
+} | null;
+if (saved && location.protocol === "http:") {
+	try {
+		for (const key of saved.keys) {
+			if (typeof saved.values[key] === "string") localStorage.setItem(key, saved.values[key]);
+			else localStorage.removeItem(key);
+		}
+	} catch {
+		/* Chromium storage unavailable */
+	}
+	let last = "";
+	const capture = () => {
+		try {
+			const values: Record<string, string> = {};
+			for (const key of saved.keys) {
+				const value = localStorage.getItem(key);
+				if (value !== null) values[key] = value;
+			}
+			const serialized = JSON.stringify(values);
+			if (serialized === last) return;
+			ipcRenderer.send("pi-desktop:preferences-save", values);
+			last = serialized;
+		} catch {
+			/* Keep original UI usable if storage is disabled. */
+		}
+	};
+	const timer = setInterval(() => capture(), 500);
+	addEventListener("beforeunload", () => {
+		clearInterval(timer);
+	});
+}

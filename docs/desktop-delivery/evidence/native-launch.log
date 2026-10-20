@@ -1,0 +1,23 @@
+[
+  {
+    "iteration": 1,
+    "status": "PASS",
+    "check": "Packaged executable launched without Playwright Electron loader, no Node PATH, Chinese workspace; real window renders; browser close protocol exits normally",
+    "portConflict": false,
+    "preferencesRestored": false
+  },
+  {
+    "iteration": 2,
+    "status": "PASS",
+    "check": "Packaged executable launched without Playwright Electron loader, no Node PATH, Chinese workspace; real window renders; browser close protocol exits normally",
+    "portConflict": true,
+    "preferencesRestored": true
+  },
+  {
+    "iteration": 3,
+    "status": "PASS",
+    "check": "Packaged executable launched without Playwright Electron loader, no Node PATH, Chinese workspace; real window renders; browser close protocol exits normally",
+    "portConflict": false,
+    "preferencesRestored": true
+  }
+]

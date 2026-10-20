@@ -1,0 +1,54 @@
+✓ 注入后拾取器挂上（overlay host 存在）
+✓ 拾取器启动时向 background 要了设置（详细度档位）
+✓ 拾取器启动时就问了本页的 AI 授权状态（底部常驻细条靠它显示「未授权/已授权」）
+✓ 拾取结果回传到 background — 1 个元素
+✓ 选择器唯一且短（有唯一 id 就用 #id，不再叠 tag/父级） — #card
+✓ 命中的 CSS 认到源文件 — {"file":"/src/components/Card.css","line":2,"selector":".card","declarations":"padding-top:12px;padding-right:16px;padding-bottom:12px;padding-left:16px;display:flex;row-gap:8px;column-gap:8px"}
+✓ CSS 行号来自 Vite 的 data-vite-dev-id（.card 在第 2 行） — line=2
+✓ React 源码位置（文件:行:列） — {"kind":"react","file":"/src/components/Card.tsx","line":18,"column":5,"component":"Card","chain":["Card","SettingsPage"]}
+✓ 组件名 + 调用链 — ["Card","SettingsPage"]
+✓ 样式子集：只报作者动过的（默认值/继承值不进上下文） — {"display":"flex","gap":"8px","padding":"12px 16px"}
+✓ 文本采集（折叠空白） — "卡片标题\n\n正文内容"
+✓ 页面上下文含 URL/视口/框架 — unknown
+✓ Markdown 渲染出来并投递 — ### 网页元素拾取（1 个元素）
+✓ Markdown 带源码行号
+✓ Markdown 带 CSS 命中块
+✓ **真正的验收点**：pi-web-ui 输入框拿到了那段 Markdown — "### 网页元素拾取（1 个元素）\n\n- 页面：`http://127.0.0.1:9441/` — 夹具页\n- 视口："
+✓ 发送成功后拾取器自己收起了 overlay
+✓ 重复注入不叠出第二套 overlay — 1 个
+✓ 多选：两个元素都进了契约 — 2 个
+✓ 多选：每个元素各自的选择器（没串味） — ["#card","#card2"]
+✓ 多选：两张卡片各自的选择器/文本都分开渲染（不串味）
+✓ 多选：渲染出两个区块
+✓ 找不到 pi-web-ui 页面 → 不静默失败 — "没找到打开的 pi-web-ui 页面（http://localhost:8953），Markdown 已复制到剪贴板"
+✓ 兜底把 Markdown 交回给页面（可复制/手动粘贴）
+✓ 输入框没有被写入（没有目标页面就别乱写）
+✓ 截图失败不影响投递（点了添加就必须进去） — "已添加到 pi-web-ui 输入框（2 个元素），补充说明后发送"
+✓ 截图失败时 Markdown 照常落进输入框 — "### 网页元素拾取（2 个元素）\n\n- 页面：`http://127.0.0."
+✓ 多个标签页时投到 pi-web-ui 那个（不碰调试站点/前缀相似的站） — tab=1
+✓ 内容真的进了 pi-web-ui 输入框
+✓ 真实 pi-web-ui 页面被认出来 — {"isPiWebUi":true,"hasHost":true,"url":"http://localhost:8953/#s=01a15848-610d-740d-a985-9fe67d937792","title":"work — pi-web-ui"}
+✓ 任意网页（连路径都回 200 的夹具页）不会被误认成 pi-web-ui — {"isPiWebUi":false,"hasHost":false,"url":"http://127.0.0.1:9441/","title":"夹具页"}
+✓ 浮条问的是「换成本页地址」，两个地址都写清楚 — 这个页面是 pi-web-ui把拾取的服务地址从 http://127.0.0.1:8787 改成 http://loc
+✓ 浮条提供「设为服务地址」
+✓ 绑定结果回显到浮条（不静默）
+✓ 绑定成功 → 存储里的 serverUrl 真的换成了本页地址 — http://localhost:8953
+✗ 绑定消息带的是页面自己的地址（不依赖 tab.url 的权限）
+✓ 已绑定的地址再点图标 → 只说明现状，不再提供「设为服务地址」 — 这个页面就是已绑定的 pi-web-uihttp://localhost:8953 —— 从别的页面拾取的内容会注入到这
+✓ 重复注入不叠出第二条浮条 — 1 条
+✓ 绑定之后拾取照常投递（新地址真的在用） — "已添加到 pi-web-ui 输入框（2 个元素），补充说明后发送"
+✓ 绑定后的内容落在输入框里
+✓ 夹具页全程无 JS 报错
+✓ 多选：勾了的（选择器/源码）在
+✓ 多选：没勾的（CSS 规则 / 计算样式 / HTML 骨架 / XPath）整段不出现 — ### 网页元素拾取（1 个元素） |  | #### 元素 1 · `<section id="card" class="card card--active">`
+✓ 多选：Markdown 也真的投进了输入框
+✓ 非 pi-web-ui 页面上：浮条自己退场（不闪空卡片、不留下垃圾 DOM）
+✓ 退场时请 worker 补注入拾取器（用户不会得到「点了没反应」）
+✓ 夹具页仍然无 JS 报错
+✓ 页面上切预设 → 写回扩展设置（选项页会同步、下次拾取沿用） — detail=compact sections=["page","selector","source","text"]
+✓ 切预设真的回传给了 background（不是只改了页面里的变量）
+✓ **已经选好的元素也按新预设重采**（不是只影响下一个选的） — detail=compact sections=["page","selector","source","text"]
+✓ 精简档发出去的 Markdown 真的瘦了（CSS 规则/计算样式/骨架整段不出现） — ### 网页元素拾取（1 个元素） | 
+✓ 夹具页仍然无 JS 报错（切预设没把页面搞崩）
+
+1 FAILED

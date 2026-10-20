@@ -1,0 +1,87 @@
+T04/A13: PASS real window, sandbox, private token authentication, bundled SDK
+T05: PASS close window + Dock activate recreates UI on same sidecar PID
+[desktop] server 提前退出（code=null signal=SIGKILL），请看上方 server 日志
+T05: PASS real sidecar crash shows recovery dialog and creates fresh process without replay command
+[desktop] server 提前退出（code=0 signal=null），请看上方 server 日志
+T05: PASS graceful app quit waits for owned sidecar exit
+T04/A11: PASS occupied port falls back; allowlisted preferences restored; identity not copied; unrelated server survives
+[desktop] server 提前退出（code=0 signal=null），请看上方 server 日志
+Window discovery diagnostics {
+  ready: true,
+  windows: [ { id: 1, visible: true, loading: true, url: '' } ]
+}
+Automation pages []
+[desktop] 界面偏好保存失败 TypeError: Invalid URL
+    at new URL (node:internal/url:895:25)
+    at captureWindowPreferences (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/release/mac-arm64/Pi%20Agent%20Desktop.app/Contents/Resources/app/dist/desktop/main.js:98:13)
+    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/release/mac-arm64/Pi%20Agent%20Desktop.app/Contents/Resources/app/dist/desktop/main.js:523:15
+    at EventEmitter.<anonymous> (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/release/mac-arm64/Pi%20Agent%20Desktop.app/Contents/Resources/app/dist/desktop/main.js:528:7)
+    at EventEmitter.emit (node:events:514:28)
+    at eval (eval at evaluate (:311:30), <anonymous>:1:18)
+    at UtilityScript.evaluate (<anonymous>:313:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44) {
+  code: 'ERR_INVALID_URL',
+  input: ''
+}
+[desktop] server 提前退出（code=0 signal=null），请看上方 server 日志
+test: FAIL electronApplication.firstWindow: Timeout 30000ms exceeded while waiting for event "window"
+    at launch (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:57:28)
+    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:240:8
+[
+  {
+    "id": "T04/A13",
+    "status": "PASS",
+    "check": "real window, sandbox, private token authentication, bundled SDK",
+    "health": {
+      "ok": true,
+      "piVersion": "1.1.0",
+      "piSdkCopies": [
+        {
+          "path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/release/mac-arm64/Pi Agent Desktop.app/Contents/Resources/app/node_modules/@earendil-works/pi-coding-agent/package.json",
+          "version": "1.1.0"
+        },
+        {
+          "path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/@earendil-works/pi-coding-agent/package.json",
+          "version": "1.1.0"
+        }
+      ],
+      "engine": "pi"
+    }
+  },
+  {
+    "id": "T05",
+    "status": "PASS",
+    "check": "close window + Dock activate recreates UI on same sidecar PID"
+  },
+  {
+    "id": "T05",
+    "status": "PASS",
+    "check": "real sidecar crash shows recovery dialog and creates fresh process without replay command"
+  },
+  {
+    "id": "T05",
+    "status": "PASS",
+    "check": "graceful app quit waits for owned sidecar exit"
+  },
+  {
+    "id": "T04/A11",
+    "status": "PASS",
+    "check": "occupied port falls back; allowlisted preferences restored; identity not copied; unrelated server survives"
+  },
+  {
+    "status": "FAIL",
+    "error": "electronApplication.firstWindow: Timeout 30000ms exceeded while waiting for event \"window\"\n    at launch (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:57:28)\n    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:240:8"
+  }
+]
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+electronApplication.firstWindow: Timeout 30000ms exceeded while waiting for event "window"
+    at launch (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:57:28)
+    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/lifecycle-run.mjs:240:8 {
+  log: [],
+  name: 'TimeoutError'
+}
+
+Node.js v24.19.0

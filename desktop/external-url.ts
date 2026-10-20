@@ -21,3 +21,11 @@ export function isAllowedExternalUrl(raw: string): boolean {
 		return false;
 	}
 }
+
+/** Authenticate the existing “open same app in browser” path, without sending secrets to other origins. */
+export function prepareExternalUrl(raw: string, appUrl: string, token: string): string | null {
+	if (!isAllowedExternalUrl(raw)) return null;
+	const target = new URL(raw);
+	if (appUrl && token && target.origin === new URL(appUrl).origin) target.searchParams.set("token", token);
+	return target.toString();
+}

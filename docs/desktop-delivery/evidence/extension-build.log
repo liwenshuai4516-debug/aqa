@@ -1,0 +1,25 @@
+
+> pi-web-ui@0.109.0 build:extension
+> node plugins/page-picker/extension/build.mjs
+
+
+  plugins/page-picker/extension/dist/background.js  79.9kb
+
+⚡ Done in 13ms
+
+  plugins/page-picker/extension/dist/picker.js  64.7kb
+
+⚡ Done in 5ms
+
+  plugins/page-picker/extension/dist/bind.js  12.9kb
+
+⚡ Done in 2ms
+
+  plugins/page-picker/extension/dist/bridge.js  2.6kb
+
+⚡ Done in 2ms
+
+  plugins/page-picker/extension/dist/options.js  33.5kb
+
+⚡ Done in 3ms
+✓ page-picker extension → plugins/page-picker/extension/dist/

@@ -1,0 +1,10 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-d03-sftp-Ax8C2k",
+  "transport": "ssh2 SSH + SFTP over loopback TCP",
+  "checks": [
+    "PASS: isolated installed 0.5.1 upgraded to exact 0.5.2 source, user file retained",
+    "PASS: nested Chinese/space directories, disk write and SFTP read, existing parents",
+    "PASS: non-directory and SFTP permission-denied errors propagate without writing",
+    "PASS: chunked upload creates missing parents and writes exact contents"
+  ]
+}

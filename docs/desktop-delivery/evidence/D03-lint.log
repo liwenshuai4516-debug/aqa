@@ -1,0 +1,5 @@
+
+> pi-web-ui@0.109.0 lint
+> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/
+
+desktop/main.ts:346:4: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it

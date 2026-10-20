@@ -1,0 +1,5 @@
+  • electron-builder  version=26.15.3 os=25.6.0
+  • loaded configuration  file=/Users/liyingjun/Desktop/SW-QA/15-aqa/desktop/electron-builder.yml
+  • skipped dependencies rebuild  reason=npmRebuild is set to false
+  • packaging       platform=darwin arch=arm64 electron=44.4.2 appOutDir=release/mac-arm64
+  • downloaded      label=electron progress=100%

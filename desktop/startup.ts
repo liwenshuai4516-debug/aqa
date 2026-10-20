@@ -50,10 +50,11 @@ export function buildDesktopLoadUrl(baseUrl: string, env: Record<string, string 
 export interface WaitForHealthOptions {
 	timeoutMs?: number;
 	pollIntervalMs?: number;
+	requestTimeoutMs?: number;
 	/** 若子进程已提前退出或报错，返回对应 Error 可立即中止轮询，不必傻等超时。 */
 	shouldAbort?: () => Error | null | undefined;
 	/** 单测注入自定义 fetch。 */
-	fetchFn?: (url: string) => Promise<{ ok: boolean }>;
+	fetchFn?: (url: string, init?: RequestInit) => Promise<{ ok: boolean }>;
 }
 
 /**
@@ -63,7 +64,7 @@ export async function waitForHealth(url: string, opts: number | WaitForHealthOpt
 	const options: WaitForHealthOptions = typeof opts === "number" ? { timeoutMs: opts } : opts;
 	const timeoutMs = options.timeoutMs ?? DEFAULT_HEALTH_TIMEOUT_MS;
 	const pollIntervalMs = Math.max(10, options.pollIntervalMs ?? 200);
-	const fetchImpl = options.fetchFn ?? ((u: string) => fetch(u));
+	const fetchImpl = options.fetchFn ?? fetch;
 	const deadline = Date.now() + timeoutMs;
 	const healthUrl = `${url.replace(/\/+$/, "")}/api/health`;
 
@@ -71,7 +72,10 @@ export async function waitForHealth(url: string, opts: number | WaitForHealthOpt
 		const abortErr = options.shouldAbort?.();
 		if (abortErr) throw abortErr;
 		try {
-			const res = await fetchImpl(healthUrl);
+			const res = await boundedRequest(
+				(signal) => fetchImpl(healthUrl, { signal, redirect: "error" }),
+				Math.min(options.requestTimeoutMs ?? 1_000, Math.max(1, deadline - Date.now())),
+			);
 			if (res.ok) return;
 		} catch {
 			/* 还没起来 */
@@ -81,6 +85,48 @@ export async function waitForHealth(url: string, opts: number | WaitForHealthOpt
 		if (Date.now() >= deadline) {
 			throw new Error(`server 未在 ${timeoutMs}ms 内就绪：${url}`);
 		}
-		await new Promise((r) => setTimeout(r, pollIntervalMs));
+		await new Promise((r) => setTimeout(r, Math.min(pollIntervalMs, Math.max(1, deadline - Date.now()))));
+	}
+}
+
+/** The deadline also bounds mocks or transports that ignore AbortSignal. */
+async function boundedRequest<T>(request: (signal: AbortSignal) => Promise<T>, timeoutMs: number): Promise<T> {
+	const controller = new AbortController();
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	try {
+		return await Promise.race([
+			request(controller.signal),
+			new Promise<never>((_, reject) => {
+				timer = setTimeout(() => {
+					controller.abort();
+					reject(new Error("服务请求超时"));
+				}, timeoutMs);
+			}),
+		]);
+	} finally {
+		clearTimeout(timer);
+		controller.abort();
+	}
+}
+
+/** Health is public. Prove the protected endpoint requires our fresh per-launch secret. */
+export async function verifySidecarIdentity(url: string, token: string): Promise<void> {
+	const endpoint = `${url}/api/themes`;
+	const probe = (authorized: boolean) =>
+		boundedRequest(async (signal) => {
+			const response = await fetch(endpoint, {
+				signal,
+				redirect: "error",
+				headers: authorized ? { Authorization: `Bearer ${token}` } : {},
+			});
+			const result = { status: response.status, cookie: response.headers.get("set-cookie") ?? "" };
+			await response.body?.cancel();
+			return result;
+		}, 2_000);
+	const anonymous = await probe(false);
+	if (anonymous.status !== 401) throw new Error("服务身份校验失败：端口可能被其他服务占用。");
+	const authenticated = await probe(true);
+	if (authenticated.status !== 200 || !authenticated.cookie.includes(`pi_web_token=${encodeURIComponent(token)};`)) {
+		throw new Error("服务身份校验失败：启动令牌未匹配。");
 	}
 }

@@ -1,0 +1,18 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-no-replay-dGKnn5",
+  "platform": "darwin",
+  "arch": "arm64",
+  "checks": [
+    {
+      "id": "T05/D02",
+      "status": "PASS",
+      "check": "Real SDK streaming request interrupted by graceful desktop quit; completed history and interrupted record persisted"
+    },
+    {
+      "id": "T05/D02/A02",
+      "status": "PASS",
+      "check": "Same client reconnects, receives interruption notice, opens saved history manually; provider request count remains exactly 2",
+      "providerRequests": 2
+    }
+  ]
+}

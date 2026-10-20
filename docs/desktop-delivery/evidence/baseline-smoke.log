@@ -1855,3 +1855,581 @@ ALL PASS
 ----- switch-session-background-test 输出结束 -----
 
 ▶ takeover-rollback-test（worker1 :9120）
+
+----- takeover-rollback-test 输出开始 -----
+✓ B 看到 A 正在跑的对话（另一处行） — owner=rollback-A
+✓ B 收到诚实的失败回执（不是静默失败） — 过户失败（injected takeover insert failure）——对话已退回原页面，可直接重试
+✓ A 的运行列表里那条对话回来了
+✓ A 的当前对话仍是它（active 修回） — now=c1
+✓ B 没有把这条对话留在自己手里
+✓ B 又能看到它作为「另一处」行（对话可达，没变成幽灵） — [{"id":"c1","owner":"rollback-A"}]
+✓ 过户夭折没有打断正在跑的 run（A 仍在收流）
+✓ 服务还活着（失败被就地兜住，没有把 handler 打崩）
+
+ALL PASS
+----- takeover-rollback-test 输出结束 -----
+
+▶ idle-takeover-test（worker1 :9120）
+
+----- takeover-test 输出开始 -----
+✓ A 问卷挂起 — id=q-1
+✓ 运行列表标出等问卷（A 页自有行）
+✓ B 的 elsewhere 行带 owner/convId — {"title":"先问我几个问题","cwd":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-takeover-raP2TB/work","isStreaming":true,"convId":"c1","hasQuestion":true,"questionTitle":"范围","sessionFile":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-takeover-raP2TB/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-takeover-raP2TB-work--/2026-10-20T07-20-26-073Z_01a1582e-d2d9-76b1-801b-28ec2f157656.jsonl","owner":"takeover-A"}
+✓ elsewhere 行标出等答复问卷 — hasQuestion=true
+✓ elsewhere 指回 A 的对话 — convId=c1 owner=takeover-A
+✓ 问卷在 B 页重新弹出（同题目） — newId=q-1
+✓ A 页的问卷已搬走（不再挂起）
+✓ B 快照 pendingQuestion 就位（切过去了）
+✓ B 运行列表里有搬过来的对话 — conv=c2 streaming=true
+✓ 过户把等问卷状态一起带过来
+✓ 搬过来的 run 还在跑
+✓ B 落在搬过来的对话上 — c2
+✓ B 的 elsewhere 已清空 — []
+✓ B 收到过户成功通知
+✓ A 页该对话已消失
+✓ A 页旧问卷被撤回（对话框收起） — id=q-1
+✓ A 收到去向通知
+✓ A 的会话没被搬空（active 自动修好） — c2
+✓ 过户后新问卷送达持有方 B — id=q-2
+✓ 过户后新问卷进 B 的快照（刷新/重连可恢复）
+✓ 新问卷没有误发给过户前的设备 A — 无
+✓ 过户后 page_request 送达持有方 B — id=p-1 op=read
+✓ page_request 没有误发给过户前的设备 A — 无
+✓ B 答卷后模型收到答案并继续 — 
+
+
+ANSWERED:范围: 完整实现
+补充: (no selection) (wrote: 别动图标) | 范围: 完整实现 | {
+  "title": "Mock page"
+}
+✓ 回答后等问卷角标消失
+
+ALL PASS
+----- takeover-test 输出结束 -----
+
+▶ offline-takeover-test（worker2 :9140）
+
+----- idle-takeover-test 输出开始 -----
+✓ A 的 run 已结束并拿到回答
+✓ B 没有自动恢复别处的会话（空白落地） — msgs=0 convs=[]
+✓ B 收到空闲持有提示（指路 elsewhere/历史）
+✓ 结束后 B 仍看到 elsewhere 行 — {"title":"hi","cwd":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-idle-takeover-hlnKNx/work","isStreaming":false,"convId":"c1","hasQuestion":false,"sessionFile":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-idle-takeover-hlnKNx/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-idle-takeover-hlnKNx-work--/2026-10-20T07-20-31-288Z_01a1582e-e738-74fb-93c6-039fd6bbaacb.jsonl","owner":"idle-takeover-A"}
+✓ 结束的行标为空闲（非 running） — isStreaming=false
+✓ 空闲行带过户定位 — owner=idle-takeover-A convId=c1
+✓ B 过户后看到完整转录
+✓ B 收到过户成功通知
+✓ A 页该对话已搬走
+✓ B 过户后可正常发送新消息并获得回复（无须刷新页面）
+
+ALL PASS
+----- idle-takeover-test 输出结束 -----
+
+▶ cross-device-switch-session-test（worker1 :9120）
+
+----- cross-device-switch-session-test 输出开始 -----
+✓ 手机端 A 的任务已完成并拿到最终结果
+✓ 手机端 A 会话已持久化至 sessionFile — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-cross-device-567-c3B2v5/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-cross-device-567-c3B2v5-work--/2026-10-20T07-20-33-445Z_01a1582e-efa5-7120-897e-7cb4df7f30b0.jsonl
+✓ 电脑端 switch_session 自动过户接管，完整显示手机端结果（issue #567）
+✓ 手机端 A 的原会话已安全迁出，避免双 writer 冲突
+✓ 打开被旧侧枝劫持的历史文件时，自动纠偏并恢复主分支完整历史（issue #567）
+
+ALL PASS
+----- cross-device-switch-session-test 输出结束 -----
+
+▶ remote-answer-test（worker1 :9120）
+
+----- remote-answer-test 输出开始 -----
+✓ A 空闲时 B 看不到 elsewhere — []
+✓ A 问卷挂起 — id=q-1
+✓ 已打开的 B 页实时看到 elsewhere 问卷标记 — hasQuestion=true
+✓ B 收到问卷原文（本页弹框） — id=q-1 owner=remote-A
+✓ 对话没被搬走（仍在 A 手里） — c1
+✓ A 的模型收到跨页答案并继续 — 
+ANSWERED:范围: 完整实现
+补充: (no selection) (wrote: 别动图标)
+✓ A 页旧对话框同步收起
+✓ B 页 elsewhere 角标消失
+✓ A 仍持有对话（无过户发生）
+✓ 问卷消失后 peek 给出明确通知
+
+ALL PASS
+----- remote-answer-test 输出结束 -----
+
+▶ elsewhere-lifecycle-test（worker1 :9120）
+
+----- orphan-adopt-test 输出开始 -----
+✓ A 正在跑（conv=c1），模拟关闭浏览器
+✓ B 收到认领 notice
+✓ B 落在 A 的同一对话上（同 conversationId）
+✓ B 的运行列表里有该对话（含历史、streaming 中）
+✓ B 没有 elsewhere 行（不是只读感知，是真接管）
+✓ B 能看到 A 的历史消息
+✓ B 继承了 A 的模型（同一会话对象）
+✓ C（B 在线时上线）走空白新对话，不抢认领
+✓ C 在 elsewhere 只读看到 B 正在跑（issue #145 行为保留）
+✓ B 对认领来的对话 steer 成功（可操作，不只是可看）
+
+ALL PASS
+----- orphan-adopt-test 输出结束 -----
+
+▶ terminal-smoke-test（worker0 :9100）
+
+----- cross-client-session-test 输出开始 -----
+✓ A streaming on /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-cross-client-tiJa2G/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-cross-client-tiJa2G-work--/2026-10-20T07-20-25-218Z_01a1582e-cf81-74b1-b5a0-909901492096.jsonl
+✓ 新标签页不再默认打开正在跑的对话（attach 即纠正，首帧空白）
+✓ 切项目首访同样跳过正在跑的会话（停在空白新对话）
+✓ B 上来同样不恢复正在跑的会话
+✓ B 在 elsewhere 看到 A 正在运行
+✓ B 打开正在跑的会话被拒绝，未建第二个 writer
+✓ B 收到同项目并行提醒
+✓ A 收到对端并行通告
+✓ B 的并行 run 正常跑完（未因防护被误杀）
+✓ A 的 run 正常跑完（不受 B 影响）
+✓ A 结束后 B 可正常打开该会话
+✓ 对端关闭后打开其会话不再误报（幽灵持有者不打扰）
+----- cross-client-session-test 输出结束 -----
+
+▶ host-metrics-test（worker3 :9160）
+
+----- host-metrics-test 输出开始 -----
+  ✓ heartbeat 携带有效 hostMetrics 与 latencyMs (16ms) 指标
+----- host-metrics-test 输出结束 -----
+
+▶ token-auth-test（worker3 :9160）
+
+----- offline-takeover-test 输出开始 -----
+✓ 观察者在线（阻断认领路径）
+   手机页面已关闭（run 仍在服务端继续跑）
+✓ PC 看到「另一处（离线）」行 — elsewhere=[{"title":"手机端发起的任务","cwd":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-offline-takeover-6fGrXG/work","isStreaming":true,"convId":"c1","hasQuestion":false,"sessionFile":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-offline-takeover-6fGrXG/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-offline-takeover-6fGrXG-work--/2026-10-20T07-20-32-470Z_01a1582e-ebd6-708a-bb02-b5bfc151b192.jsonl","owner":"phone-page","ownerOffline":true}]
+✓ 离线行带过户定位（owner/convId）
+✓ 离线行不是只读（不是无头伪客户端）
+✓ 接管离线行后拿到完整转录（提问 + 回答） — msgs=2
+✓ PC 收到过户成功通知 — ["该项目最近的对话「手机端发起的任务」正在另一处运行，为你停在了新对话 —— 直接打开会造出第二个写者。左栏「运行的对话」里能看到它（标着“另一处”），等它跑完再打开。","已将「手机端发起的任务」过户到当前页面，可直接继续查看与操作。"]
+✓ 接管后该离线行消失（残骸不再持有） — elsewhere=[]
+✓ run 跑完后离线行仍在下发（宽限期内可接管） — elsewhere=[{"title":"手机端第二段任务","cwd":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-offline-takeover-6fGrXG/work","isStreaming":false,"convId":"c1","hasQuestion":false,"sessionFile":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-offline-takeover-6fGrXG/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-offline-takeover-6fGrXG-work--/2026-10-20T07-20-36-604Z_01a1582e-fbfc-708a-bb02-b5c916c7d33a.jsonl","owner":"phone2-page","ownerOffline":true}]
+✓ 空闲离线行同样带过户定位
+✓ 宽限期到期后离线行自动消失（不再永久占位） — elsewhere=[]
+
+ALL PASS
+----- offline-takeover-test 输出结束 -----
+
+▶ theme-dotfile-test（worker2 :9140）
+
+----- token-auth-test 输出开始 -----
+  ok - health open without token
+  ok - health does NOT leak pi_web_token in Set-Cookie
+  ok - health issues no Set-Cookie at all
+  ok - GET / without token → 401
+  ok - GET / with wrong token → 401
+  ok - GET /api/themes without token → 401
+  ok - GET / with stale cookie value → 401
+  ok - 401 with stale cookie expires it (Max-Age=0)
+  ok - GET / with ?token= → 200
+  ok - Set-Cookie issues HttpOnly pi_web_token
+  ok - GET / again with same ?token= → 200
+  ok - Authorization: Bearer accepted
+  ok - X-PI-Token header accepted
+  ok - WS without token rejected
+  ok - WS with ?token= connects
+  ok - WS with wrong token rejected
+  ok - GET / with stale cookie after token change → 401
+  ok - stale cookie expired on 401 (Max-Age=0)
+  ok - 401 body hints at changed server token
+  ok - GET /?token=new after token change → 200
+  ok - healed cookie now carries the NEW token
+  ok - GET / with healed cookie (no query) → 200
+  ok - WS with healed cookie connects
+  ok - 特殊字符口令：错的 ?token= 仍 401
+  ok - 特殊字符口令：X-PI-Token 头接受
+  ok - 特殊字符口令：Authorization: Bearer 接受
+  ok - 特殊字符口令：?token= → 200
+  ok - 特殊字符口令：cookie 存的是 URL 编码值（与浏览器一致）
+  ok - 特殊字符口令：仅凭 cookie 导航 → 200
+  ok - 特殊字符口令：WS 凭 cookie 连接
+  ok - 特殊字符口令：明文 cookie 也接受
+
+31 passed, 0 failed
+----- token-auth-test 输出结束 -----
+
+▶ tool-info-test（worker3 :9160）
+
+----- theme-dotfile-test 输出开始 -----
+✓ user theme listed — {"id":"dottheme","name":"DotDirTheme","builtin":false,"group":"builtin"}
+✓ user theme css under dot-dir returns 200 — status=200
+✓ user theme css content-type — text/css; charset=utf-8
+✓ user theme css body intact
+✓ builtin theme still 200 — status=200
+✓ unknown theme still 404 — status=404
+✓ non-whitelist id still 404 — status=404
+
+ALL PASS
+----- theme-dotfile-test 输出结束 -----
+
+▶ tool-prompt-test（worker2 :9140）
+
+----- tool-prompt-test 输出开始 -----
+✓ bash 取到默认（found: true） — {"found":true}
+✓ 带回出厂默认描述 — len=455
+✓ 未覆盖时无 override 字段
+✓ 覆盖回读到 get_tool_prompt — {"description":"CUSTOM-BASH-DESC-zzz: run a shell command for the regression test","promptSnippet":"custom-bash-snippet-zzz","promptGuidelines":["custom-bash-guideline-zzz"]}
+✓ get_tool_info 回**生效描述**（覆盖优先） — desc=CUSTOM-BASH-DESC-zzz: run a shell comman
+✓ get_tool_info 回生效 snippet — custom-bash-snippet-zzz
+✓ get_tool_info 回生效 guidelines — ["custom-bash-guideline-zzz"]
+✓ toolsSchema（设置页预览）用覆盖文案 — toolsSchema len=40140
+✓ effectiveSystemPrompt 含覆盖的 snippet / guideline — prompt len=8018
+✓ 模型请求里带上了 bash 工具 — payloads=1
+✓ 模型看到的 bash description = 覆盖文案 — desc=CUSTOM-BASH-DESC-zzz: run a shell command for the regression test
+
+Codemode: `to
+✓ 系统提示词含覆盖的 snippet / guideline — system len=8018
+✓ 清空后无 override
+✓ 清空后 get_tool_info 复原出厂默认 — desc=Run a shell command and return its full 
+✓ 清空后 toolsSchema 回到默认（不再含自定义文案）
+✓ 服务进程仍然存活 — exitCode=null
+
+ALL PASS
+----- tool-prompt-test 输出结束 -----
+
+▶ lazy-tools-test（worker2 :9140）
+
+----- tool-info-test 输出开始 -----
+✓ bash 有定义（found: true） — {"found":true}
+✓ bash 带回说明文字 — len=455
+✓ bash 带回参数 JSON Schema（command 等属性） — command,timeout,persist,head,tail
+✓ bash 标了「当前启用」 — active=true
+✓ bash 带回来源信息（source 非空） — source=sdk scope=temporary
+✓ 参数 schema 没被当成超限丢掉 — parametersDropped=undefined
+✓ 被覆盖的 read 也能取到定义 — {"found":true}
+✓ 不存在的工具名回 found:false — {"type":"tool_info","name":"definitely_not_a_real_tool_zzz","found":false}
+✓ 「没找到」不会被报成「引擎不支持」 — unsupported=undefined
+✓ 应答里的工具名原样回显 — definitely_not_a_real_tool_zzz
+✓ 连问两次都能拿到定义（服务没被这次请求搞挂） — {"found":true}
+✓ 服务进程仍然存活 — exitCode=null
+
+ALL PASS
+----- tool-info-test 输出结束 -----
+
+▶ vision-bridge-test（worker3 :9160）
+
+----- lazy-tools-test 输出开始 -----
+✓ 会话已就绪 — conv=c1
+✓ 已切到 mock 模型 — model=lazy-tools-mock
+✓ 默认关：开箱即用全部工具，load_tools 不出现 — lazy=false tools=read,bash,powershell,edit,write,grep,find,ls,codemode,tool_search,subagent,delegate_task,plan_update,ask_user_question,browser_page,conversation_read,claim_files,present_files,skill,compact_context,schedule,eval,patch,lsp,mcp_manage,sandbox,worktree
+✓ 默认关：显式打开按需加载后设置生效 — value=true
+✓ 按需加载开的会话里，只有核心工具 + load_tools 常驻 — tools=read,bash,edit,write,load_tools
+✓ 已发出第一次模型请求 — requests=2
+✓ 按需加载开：只常驻核心工具 + load_tools — read,bash,edit,write,load_tools
+✓ 未加载的工具（patch/lsp）不在 tools 里 — read,bash,edit,write,load_tools
+✓ 系统提示词里列了目录工具（名称 + 一行摘要） — system len=7874
+✓ 系统提示词带「先 load_tools」的说明
+✓ load_tools 执行后又发了一次请求 — requests=2
+✓ load_tools 拒绝对核心常驻工具 read 的加载请求（提示无需加载） — toolContent=Loaded 1 tool(s) — their full parameter schema is now attached for the rest of this conversation:
+- patch: Apply content-hashed, line-anchored patches to workspace files — prevents stale edits, line drift, and indentation hallucination.
+- read: always available without loading
+✓ patch 已被加载进 tools — read,bash,edit,write,load_tools,patch
+✓ 加载前后系统提示词逐字节相同（不破坏前缀缓存） — before=7874 after=7874
+✓ tools 数组只追加（第一次的序列是第二次的前缀） — before=[read,bash,edit,write,load_tools] after=[read,bash,edit,write,load_tools,patch]
+✓ 加载后目录里 patch 的描述仍在提示词里（列表不随加载变化）
+✓ settings_state.effectiveSystemPrompt 不随加载变化 — len=7874
+✓ 关闭按需加载后，snapshot.tools 中不再包含 load_tools — tools=read,bash,powershell,edit,write,grep,find,ls,codemode,tool_search,subagent,delegate_task,plan_update,ask_user_question,browser_page,conversation_read,claim_files,present_files,skill,compact_context,schedule,eval,patch,lsp,mcp_manage,sandbox,worktree
+✓ 关闭按需加载后，effectiveSystemPrompt 不再提及 load_tools — promptPreview=You are an expert coding assistant operating inside pi, a coding agent harness. You help users by reading files, executing commands, editing code, and writing new files.
+
+Available tools:
+- read: file...
+✓ 已新建会话
+✓ 已发出第三次模型请求 — requests=4
+✓ 关闭按需加载时，模型请求的 tools 数组绝不包含 load_tools — thirdTools=read,bash,powershell,edit,write,grep,find,ls,codemode,tool_search,subagent,delegate_task,plan_update,ask_user_question,browser_page,conversation_read,claim_files,present_files,skill,compact_context,schedule,eval,patch,lsp,mcp_manage,sandbox,worktree
+✓ 关闭按需加载时，核心工具依然正常暴露 — thirdTools=read,bash,powershell,edit,write,grep,find,ls,codemode,tool_search,subagent,delegate_task,plan_update,ask_user_question,browser_page,conversation_read,claim_files,present_files,skill,compact_context,schedule,eval,patch,lsp,mcp_manage,sandbox,worktree
+✓ 关闭按需加载时，系统提示词绝不包含 load_tools 说明 — system len=8218
+✓ 已新建 JIT 会话
+✓ JIT：首次请求里 find 尚未加载（不在活跃 tools 里） — tools=read,bash,edit,write,load_tools
+✓ JIT：直呼未加载工具时 SDK 仍回 not found（这是 SDK 侧行为，不是我们的死路） — Tool find not found
+✓ JIT：该工具已被自动激活（下一次请求的 tools 里已经出现） — tools=read,bash,edit,write,load_tools,find
+✓ JIT：原样重试即成功，不再回 not found（issue #652 的死路已解除） — No files found matching pattern
+✓ 服务进程仍然存活 — exitCode=null
+
+ALL PASS
+----- lazy-tools-test 输出结束 -----
+
+▶ vscode-editor-plugin-test（worker2 :9140）
+
+----- terminal-smoke-test 输出开始 -----
+[srv] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[srv] 
+  ⚡ pi-web-ui — web chat for the pi coding agent
+[srv]     http://localhost:25662
+    workspace   : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/piweb-term-38UtmY
+    session dir : /Users/liyingjun/.pi/agent/sessions
+    pi SDK      : v1.1.0
+[srv]     bind        : 127.0.0.1:25662
+
+[srv]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/piweb-term-data-sGT8ZN/pi-web-ui.sock
+server up
+ws connected
+ready received
+  ✓ agent exposes persistent terminal tools
+  ✓ list_commands returns empty list
+  ✓ commands path is <cwd>/.pi/commands.json
+  ✓ save_commands persisted
+  ✓ commands.json written on disk
+  ✓ disk format is {commands:[...]}
+  ✓ folder not skipped as a non-file attachment
+  ✓ no attachment error for the folder
+  ✓ persisted session appears in the conversation list
+  ✓ shell produced output
+  ✓ terminal_list identifies the active conversation
+  ✓ input echoes through PTY
+  ✓ run_command banner shown
+  ✓ ${pwd} resolved to session cwd
+  ✓ re-run banner appears
+  ✓ re-run executed
+  ✓ restarted shell accepts input
+  ✓ terminal_kill emits exit
+  ✓ shell exit emits terminal_exit
+  ✓ exited terminal name can be reused
+  ✓ run_command enforces terminal limit
+  ✓ Ctrl+ArrowUp = ESC[1;5A (not Ctrl+A)
+  ✓ Ctrl+Enter = ESC[13;5u (not Ctrl+E)
+  ✓ Ctrl+ArrowRight = ESC[1;5C
+  ✓ plain ArrowUp stays ESC[A
+  ✓ Alt+ArrowUp = ESC[1;3A
+  ✓ Ctrl+Shift+ArrowUp = ESC[1;6A
+  ✓ Shift+Tab = ESC[9;2u
+  ✓ plain Enter stays CR
+  ✓ Ctrl+C = 0x03
+  ✓ Alt+c = ESC c
+  ✓ unsupported key reports an error
+  ✓ Ctrl on a non-letter reports an error
+  ✓ terminal_create + run_command both reject an invalid id
+  ✓ hist-0 exited and moved to history
+  ✓ run_command of an exited id at the cap is rejected
+  ✓ issue #147 setup: earlier terminals settled
+  ✓ issue #147 setup: user cap is full
+  ✓ terminal_create with agentBash:true bypasses the full user cap
+  ✓ agent terminal_create/list works
+  ✓ agent terminal_read waits for incremental output
+  ✓ agent terminal_key sends named keys
+  ✓ agent terminal_close releases the PTY
+  ✓ countLive counts a live PTY
+  ✓ countLive drops to 0 after the PTY exits
+  ✓ exited terminal stays readable in list but not live
+  ✓ pristine shell is live but not blocking
+  ✓ touched shell becomes blocking
+  ✓ ai-bash shell is blocking from birth
+  ✓ closing pristine/ai-bash test shells releases all slots
+  ✓ issue #147 setup: AI terminal exited into history
+  ✓ rebuilt exited AI terminal inherits agentBash despite the full user cap
+  ✓ issue #147 setup: user terminal exited into history
+  ✓ exited user terminal is still rejected at the cap
+  ✓ server still alive after bogus messages
+[srv] 
+shutting down…
+[srv exited early: 0]
+
+55 checks passed
+----- terminal-smoke-test 输出结束 -----
+
+▶ workspace-roots-test（worker0 :9100）
+
+----- vscode-editor-plugin-test 输出开始 -----
+✓ plugins 清单含 vscode-editor（hasClient）
+✓ vscode-editor 正常激活
+✓ list 根目录：目录优先 + 忽略 node_modules
+✓ list 子目录 src/main.js
+✓ read 文本内容正确
+✓ read GBK 回退解码为「你好」
+✓ ../ 路径越界被拒绝
+✓ 拒绝删除根目录
+✓ write 原子落盘（自动补父目录）
+✓ create file（带子目录）
+✓ create dir + 重名报错
+✓ rename
+✓ rename 拒绝路径分隔符/..
+✓ flatlist 5 个相对路径
+✓ delete 目录递归删除
+✓ copy 文件复制
+✓ copy 拒绝覆盖已存在目标
+✓ copy move=true 移动
+✓ copy 目录递归复制
+✓ copy 拒绝目标为源子目录
+✓ copy 路径越界被拒绝
+✓ search 文件名命中
+✓ search 大小写不敏感
+✓ search 空关键词被拒绝
+✓ upload 分片上传落盘（新文件）
+✓ upload 覆盖已存在文件（rename 原子取代）
+✓ upload 自动创建目标目录
+✓ upload_begin 拒绝非法文件名
+✓ upload_begin 拒绝越界目录
+✓ upload_begin 拒绝超上限文件大小
+✓ upload_abort 丢弃分片 + 清理临时文件
+✓ 未知 action 返回错误且进程存活
+✓ client/entry.mjs 静态服务 200 + JS Content-Type
+✓ /plugins/vscode-editor/%2e%2e/index.mjs 未暴露插件文件（text/html）
+✓ /plugins/vscode-editor/manifest.json 未暴露插件文件（text/html）
+----- vscode-editor-plugin-test 输出结束 -----
+
+----- workspace-roots-test 输出开始 -----
+✓ 初始快照的 workspaceRoots 为空（单根） — []
+✓ 加根前读工作区外路径被拒（提示未授权） — DENY:目录未授权：先 await host.fs.requestAccess(dir)（/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-ws-roots-Kl4O46/extra/
+✓ set_workspace_roots 落进快照 — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-ws-roots-Kl4O46/extra
+✓ 加根后同一路径放行（插件阅读不必再授权） — OK:from-extra
+✓ 相对路径与非字符串被丢弃，绝对路径留下 — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-ws-roots-Kl4O46/extra2
+✓ 被丢弃的根不再放行（列表是覆盖语义，不是并集） — DENY:目录未授权：先 await host.fs.requestAccess(dir)（/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-ws
+✓ 切到别的项目：该项目没有根（快照清空）
+✓ 切回原项目：原来的根还在（按项目持久化） — /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-ws-roots-Kl4O46/extra
+✓ client-state.json 里按项目存了两个根 — 1525 bytes
+✓ 空数组 = 回到单根（工作区外又需要授权） — DENY:目录未授权：先 await host.fs.requestAccess(dir)（/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-ws
+
+ALL PASS
+----- workspace-roots-test 输出结束 -----
+
+----- elsewhere-lifecycle-test 输出开始 -----
+✓ A 在线时 B 能看到其 elsewhere 行（正向对照） — owner=probe-dead-1790000000000
+✓ 普通客户端 elsewhere 条目 pseudo 为 false/undefined（#426）
+✓ A 断连后其行仍在且标 ownerOffline（宽限期内可过户） — elsewhere=[{"title":"残骸测试：只回复 OK","cwd":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-elsewhere-lifecycle-iG9KkW/work","isStreaming":false,"convId":"c1","hasQuestion":false,"sessionFile":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-elsewhere-lifecycle-iG9KkW/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-elsewhere-lifecycle-iG9KkW-work--/2026-10-20T07-20-38-109Z_01a1582f-01dd-778e-99f5-ee01b2d72ff4.jsonl","owner":"probe-dead-1790000000000","ownerOffline":true}]
+✓ 宽限期到期后其行自动消失（#291「残骸不永久占位」仍成立） — elsewhere=[]
+✓ 定时任务伪客户端出现在 elsewhere（正向对照） — owner=scheduler:task-lifecycle-291
+✓ 定时任务伪客户端 elsewhere 条目标记为 pseudo（#426）
+
+FAIL: [observer-b] timeout waiting for notice
+--- server output ---
+[mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+
+  ⚡ pi-web-ui — web chat for the pi coding agent
+    http://localhost:9120
+    workspace   : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-elsewhere-lifecycle-iG9KkW/work
+    session dir : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-elsewhere-lifecycle-iG9KkW/agent/sessions
+    pi SDK      : v1.1.0
+    bind        : 127.0.0.1:9120
+
+  control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-elsewhere-lifecycle-iG9KkW/data/pi-web-ui.sock
+
+----- elsewhere-lifecycle-test 输出结束 -----
+
+----- vision-bridge-test 输出开始 -----
+mock API on :9161
+[srv] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[srv] 
+  ⚡ pi-web-ui — web chat for the pi coding agent
+    http://localhost:9160
+    workspace   : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-visionbridge-RIyGGx/work
+    session dir : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-visionbridge-RIyGGx/agent/sessions
+    pi SDK      : v1.1.0
+[srv]     bind        : 127.0.0.1:9160
+
+[srv]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-visionbridge-RIyGGx/data/pi-web-ui.sock
+  · ready, data-dir: /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-visionbridge-RIyGGx/data
+  · main model: deepseek-main
+  ✓ transcribe-start notice
+  ✓ transcribe-done notice
+  ✓ vision API received 1 image
+  ✓ vision prompt asks for transcription
+  ✓ attachment card mode=bridged
+  ✓ card contains <vision-bridge> transcript
+  ✓ card keeps the image thumbnail
+  · main model replied
+  ✓ same image reuses transcript cache (no 2nd vision call)
+  ✓ settings_state has vision-bridge fields
+  ✓ settings_state carries the built-in default prompts
+  ✓ preferred model from settings is used
+  ✓ disabled bridge warns and skips transcription
+  ✓ path-referenced image triggers the vision bridge
+  ✓ path image renders as a bridged card with path
+  ✓ bridged card carries the transcript text
+  ✓ append mode: custom text appended to the built-in default prompt
+  ✓ replace mode: built-in prompt fully replaced by custom text
+  ✓ custom prompt change invalidates the transcript cache
+
+18 checks passed
+----- vision-bridge-test 输出结束 -----
+
+===== 冒烟汇总 =====
+✓ clear-provider-key-test
+✓ conv-cross-project-test
+✓ conv-cwd-test
+✓ project-model-key-test
+✓ plugin-jobs-test
+✓ plugin-grants-test
+✓ plugin-api-catalog-test
+✓ plugin-client-conversation-test
+✓ plugin-scaffold-test
+✓ provider-oauth-test
+✓ provider-keys-test
+✓ db-client-test
+✓ chat-abort-attachments-rollback-test
+✓ ephemeral-chat-test
+✓ fork-assistant-bubble-test
+✓ dsh-smoke-test
+✓ dsh-stats-test
+✓ fetch-models-test
+✓ global-search-test
+✓ goal-prefs-test
+✓ goal-test
+✓ goal-delegated-test
+✓ plan-mode-test
+✓ delegate-mode-test
+✓ left-panel-delete-test
+✓ legado-web-engine-test
+✓ legado-web-test
+✓ list-files-missing-dir-test
+✓ list-files-symlink-home-test
+✓ plugin-cron-overflow-test
+✓ notes-test
+✓ plugin-bgtask-test
+✓ plugin-leftpanel-running-test
+✓ bg-cleanup-test
+✓ pm2-manager-plugin-test
+✓ plugin-command-test
+✓ plugin-cwd-test
+✓ plugin-http-test
+✓ plugin-proxy-test
+✓ mcp-bridge-test
+✓ plugin-settings-test
+✓ plugin-test
+✓ plugin-update-test
+✓ plugin-catalog-cli-test
+✓ preview-test
+✓ preview-http-test
+✓ quiesce-test
+✓ approval-policy-test
+✓ approval-rules-test
+✓ question-bridge-test
+✓ recursive-watch-test
+✓ refresh-models-test
+✓ restart-handoff-test
+✓ restart-service-test
+✓ running-list-test
+✓ scm-features-test
+✓ settings-test
+✓ sftp-plugin-test
+✓ shutdown-test
+✓ slash-commands-test
+✓ snapshot-delta-test
+✗ ssh-plugin-test
+✓ steer-queue-smoke
+✓ subagent-template-test
+✓ subagent-thinking-test
+✓ subagent-ui-context-test
+✓ switch-session-background-test
+✓ cross-client-session-test
+✓ orphan-adopt-test
+✓ takeover-test
+✓ takeover-rollback-test
+✓ idle-takeover-test
+✓ offline-takeover-test
+✓ cross-device-switch-session-test
+✓ remote-answer-test
+✗ elsewhere-lifecycle-test
+✓ terminal-smoke-test
+✓ host-metrics-test
+✓ token-auth-test
+✓ theme-dotfile-test
+✓ tool-info-test
+✓ tool-prompt-test
+✓ lazy-tools-test
+✓ vision-bridge-test
+✓ vscode-editor-plugin-test
+✓ workspace-roots-test
+
+84/86 通过

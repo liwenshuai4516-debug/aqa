@@ -1,0 +1,24 @@
+
+> pi-web-ui@0.109.0 test
+> vitest run
+
+
+ RUN  v5.0.1 /Users/liyingjun/Desktop/SW-QA/15-aqa
+
+Not implemented: Window's scrollTo() method
+Not implemented: Window's scrollBy() method
+Not implemented: HTMLCanvasElement's toDataURL() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's toDataURL() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's toDataURL() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's toDataURL() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's toDataURL() method: without installing the canvas npm package
+
+ Test Files  459 passed (459)
+      Tests  5143 passed | 9 skipped (5152)
+   Start at  16:18:35
+   Duration  39.71s (import 54%, tests 25%, transform 11%, environment 9%, setup 1%, worker 1%)
+
+     Import  1060 modules were evaluated 10013 times · 163.16s total, 54% of tracked time
+             ~12.47s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation
+
