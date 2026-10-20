@@ -1,0 +1,416 @@
+{
+  "desktopUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) pi-agent-desktop/0.109.0 Chrome/152.0.7977.130 Electron/44.4.2 Safari/537.36",
+  "chromeVersion": "155.0.8059.84",
+  "pixelThreshold": 8,
+  "comparisons": [
+    {
+      "scene": "dark-chat",
+      "desktopSize": [
+        2560,
+        1720
+      ],
+      "webSize": [
+        2560,
+        1720
+      ],
+      "desktopRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 860,
+        "top": 0,
+        "right": 1280,
+        "bottom": 860,
+        "left": 0
+      },
+      "webRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 860,
+        "top": 0,
+        "right": 1280,
+        "bottom": 860,
+        "left": 0
+      },
+      "differentPixelsOver8": 305986,
+      "totalPixels": 4403200,
+      "differentPercent": 6.9491733284883725
+    },
+    {
+      "scene": "settings-models",
+      "desktopSize": [
+        1880,
+        1412
+      ],
+      "webSize": [
+        1880,
+        1412
+      ],
+      "desktopRect": {
+        "x": 170,
+        "y": 77.3984375,
+        "width": 940,
+        "height": 705.1953125,
+        "top": 77.3984375,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "webRect": {
+        "x": 170,
+        "y": 77.40625,
+        "width": 940,
+        "height": 705.1875,
+        "top": 77.40625,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "differentPixelsOver8": 179034,
+      "totalPixels": 2654560,
+      "differentPercent": 6.744394551262733
+    },
+    {
+      "scene": "settings-prompt",
+      "desktopSize": [
+        1880,
+        1412
+      ],
+      "webSize": [
+        1880,
+        1412
+      ],
+      "desktopRect": {
+        "x": 170,
+        "y": 77.3984375,
+        "width": 940,
+        "height": 705.1953125,
+        "top": 77.3984375,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "webRect": {
+        "x": 170,
+        "y": 77.40625,
+        "width": 940,
+        "height": 705.1875,
+        "top": 77.40625,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "differentPixelsOver8": 255963,
+      "totalPixels": 2654560,
+      "differentPercent": 9.642388945813995
+    },
+    {
+      "scene": "settings-tools",
+      "desktopSize": [
+        1880,
+        1412
+      ],
+      "webSize": [
+        1880,
+        1412
+      ],
+      "desktopRect": {
+        "x": 170,
+        "y": 77.3984375,
+        "width": 940,
+        "height": 705.1953125,
+        "top": 77.3984375,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "webRect": {
+        "x": 170,
+        "y": 77.40625,
+        "width": 940,
+        "height": 705.1875,
+        "top": 77.40625,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "differentPixelsOver8": 135952,
+      "totalPixels": 2654560,
+      "differentPercent": 5.121451389307456
+    },
+    {
+      "scene": "settings-approval-rules",
+      "desktopSize": [
+        1880,
+        1412
+      ],
+      "webSize": [
+        1880,
+        1412
+      ],
+      "desktopRect": {
+        "x": 170,
+        "y": 77.3984375,
+        "width": 940,
+        "height": 705.1953125,
+        "top": 77.3984375,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "webRect": {
+        "x": 170,
+        "y": 77.40625,
+        "width": 940,
+        "height": 705.1875,
+        "top": 77.40625,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "differentPixelsOver8": 223730,
+      "totalPixels": 2654560,
+      "differentPercent": 8.428138749924658
+    },
+    {
+      "scene": "settings-skills",
+      "desktopSize": [
+        1880,
+        1412
+      ],
+      "webSize": [
+        1880,
+        1412
+      ],
+      "desktopRect": {
+        "x": 170,
+        "y": 77.3984375,
+        "width": 940,
+        "height": 705.1953125,
+        "top": 77.3984375,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "webRect": {
+        "x": 170,
+        "y": 77.40625,
+        "width": 940,
+        "height": 705.1875,
+        "top": 77.40625,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "differentPixelsOver8": 73367,
+      "totalPixels": 2654560,
+      "differentPercent": 2.763810198300283
+    },
+    {
+      "scene": "settings-plugins",
+      "desktopSize": [
+        1880,
+        1412
+      ],
+      "webSize": [
+        1880,
+        1412
+      ],
+      "desktopRect": {
+        "x": 170,
+        "y": 77.3984375,
+        "width": 940,
+        "height": 705.1953125,
+        "top": 77.3984375,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "webRect": {
+        "x": 170,
+        "y": 77.40625,
+        "width": 940,
+        "height": 705.1875,
+        "top": 77.40625,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "differentPixelsOver8": 199640,
+      "totalPixels": 2654560,
+      "differentPercent": 7.52064372250015
+    },
+    {
+      "scene": "settings-mcp",
+      "desktopSize": [
+        1880,
+        1412
+      ],
+      "webSize": [
+        1880,
+        1412
+      ],
+      "desktopRect": {
+        "x": 170,
+        "y": 77.3984375,
+        "width": 940,
+        "height": 705.1953125,
+        "top": 77.3984375,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "webRect": {
+        "x": 170,
+        "y": 77.40625,
+        "width": 940,
+        "height": 705.1875,
+        "top": 77.40625,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "differentPixelsOver8": 161735,
+      "totalPixels": 2654560,
+      "differentPercent": 6.092723464528961
+    },
+    {
+      "scene": "settings-layout",
+      "desktopSize": [
+        1880,
+        1412
+      ],
+      "webSize": [
+        1880,
+        1412
+      ],
+      "desktopRect": {
+        "x": 170,
+        "y": 77.3984375,
+        "width": 940,
+        "height": 705.1953125,
+        "top": 77.3984375,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "webRect": {
+        "x": 170,
+        "y": 77.40625,
+        "width": 940,
+        "height": 705.1875,
+        "top": 77.40625,
+        "right": 1110,
+        "bottom": 782.59375,
+        "left": 170
+      },
+      "differentPixelsOver8": 136194,
+      "totalPixels": 2654560,
+      "differentPercent": 5.130567777710807
+    },
+    {
+      "scene": "light-english-chat",
+      "desktopSize": [
+        2560,
+        1720
+      ],
+      "webSize": [
+        2560,
+        1720
+      ],
+      "desktopRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 860,
+        "top": 0,
+        "right": 1280,
+        "bottom": 860,
+        "left": 0
+      },
+      "webRect": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 860,
+        "top": 0,
+        "right": 1280,
+        "bottom": 860,
+        "left": 0
+      },
+      "differentPixelsOver8": 383290,
+      "totalPixels": 4403200,
+      "differentPercent": 8.704805595930234
+    },
+    {
+      "scene": "narrow-light-chat",
+      "desktopSize": [
+        1600,
+        1280
+      ],
+      "webSize": [
+        1600,
+        1280
+      ],
+      "desktopRect": {
+        "x": 0,
+        "y": 0,
+        "width": 800,
+        "height": 640,
+        "top": 0,
+        "right": 800,
+        "bottom": 640,
+        "left": 0
+      },
+      "webRect": {
+        "x": 0,
+        "y": 0,
+        "width": 800,
+        "height": 640,
+        "top": 0,
+        "right": 800,
+        "bottom": 640,
+        "left": 0
+      },
+      "differentPixelsOver8": 90132,
+      "totalPixels": 2048000,
+      "differentPercent": 4.4009765625
+    },
+    {
+      "scene": "narrow-settings-layout",
+      "desktopSize": [
+        1504,
+        1052
+      ],
+      "webSize": [
+        1504,
+        1052
+      ],
+      "desktopRect": {
+        "x": 24,
+        "y": 57.6015625,
+        "width": 752,
+        "height": 524.796875,
+        "top": 57.6015625,
+        "right": 776,
+        "bottom": 582.3984375,
+        "left": 24
+      },
+      "webRect": {
+        "x": 24,
+        "y": 57.59375,
+        "width": 752,
+        "height": 524.796875,
+        "top": 57.59375,
+        "right": 776,
+        "bottom": 582.390625,
+        "left": 24
+      },
+      "differentPixelsOver8": 69074,
+      "totalPixels": 1582208,
+      "differentPercent": 4.365671264460804
+    }
+  ],
+  "note": "Raw screenshots are retained. No resize or layout masks in pixel calculation; contact sheet only is scaled for inspection. Differences require visual interpretation."
+}

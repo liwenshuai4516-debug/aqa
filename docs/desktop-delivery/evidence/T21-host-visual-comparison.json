@@ -1,0 +1,207 @@
+{
+  "sourceHostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.130 Electron/44.4.2 Safari/537.36",
+  "currentUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) pi-agent-desktop/0.109.0 Chrome/152.0.7977.130 Electron/44.4.2 Safari/537.36",
+  "sourceHashes": {
+    "external-url.ts": "c0254c871e9cd4b73e7180b35df1ffd26d516301da699a07ff892be6452fbf2f",
+    "main.ts": "4cc6249ef5acd0a5472b936c58586c0b6869582ccf2b1e28d39ad5a1ad161ba4",
+    "portable.ts": "cc8a9622f96ed671793fd3c21b254a5a947ae8da2ad29a7ad4840efcc716be62",
+    "preload.cts": "a27da058db1f7d2294ae1d239e5aa831e2457b76e901ffa35bf1d13f64269936",
+    "startup.ts": "f53b7b62e93b663b67fcf7df9b1594391cc44136684dee2686aeda2bf72c672e"
+  },
+  "pixelThreshold": 8,
+  "comparisons": [
+    {
+      "scene": "dark-chat",
+      "sameRect": true,
+      "sameTextHash": false,
+      "currentSize": [
+        2560,
+        1720
+      ],
+      "sourceHostSize": [
+        2560,
+        1720
+      ],
+      "differentPixelsOver8": 350636,
+      "totalPixels": 4403200,
+      "differentPercent": 7.963208575581396
+    },
+    {
+      "scene": "settings-models",
+      "sameRect": true,
+      "sameTextHash": true,
+      "currentSize": [
+        1880,
+        1412
+      ],
+      "sourceHostSize": [
+        1880,
+        1412
+      ],
+      "differentPixelsOver8": 18895,
+      "totalPixels": 2654560,
+      "differentPercent": 0.7117940449641371
+    },
+    {
+      "scene": "settings-prompt",
+      "sameRect": true,
+      "sameTextHash": false,
+      "currentSize": [
+        1880,
+        1412
+      ],
+      "sourceHostSize": [
+        1880,
+        1412
+      ],
+      "differentPixelsOver8": 43905,
+      "totalPixels": 2654560,
+      "differentPercent": 1.653946416731963
+    },
+    {
+      "scene": "settings-tools",
+      "sameRect": true,
+      "sameTextHash": true,
+      "currentSize": [
+        1880,
+        1412
+      ],
+      "sourceHostSize": [
+        1880,
+        1412
+      ],
+      "differentPixelsOver8": 16044,
+      "totalPixels": 2654560,
+      "differentPercent": 0.6043939485263095
+    },
+    {
+      "scene": "settings-approval-rules",
+      "sameRect": true,
+      "sameTextHash": true,
+      "currentSize": [
+        1880,
+        1412
+      ],
+      "sourceHostSize": [
+        1880,
+        1412
+      ],
+      "differentPixelsOver8": 17394,
+      "totalPixels": 2654560,
+      "differentPercent": 0.6552498342474836
+    },
+    {
+      "scene": "settings-skills",
+      "sameRect": true,
+      "sameTextHash": true,
+      "currentSize": [
+        1880,
+        1412
+      ],
+      "sourceHostSize": [
+        1880,
+        1412
+      ],
+      "differentPixelsOver8": 3984,
+      "totalPixels": 2654560,
+      "differentPercent": 0.1500813694171539
+    },
+    {
+      "scene": "settings-plugins",
+      "sameRect": true,
+      "sameTextHash": true,
+      "currentSize": [
+        1880,
+        1412
+      ],
+      "sourceHostSize": [
+        1880,
+        1412
+      ],
+      "differentPixelsOver8": 10653,
+      "totalPixels": 2654560,
+      "differentPercent": 0.40130944487975406
+    },
+    {
+      "scene": "settings-mcp",
+      "sameRect": true,
+      "sameTextHash": false,
+      "currentSize": [
+        1880,
+        1412
+      ],
+      "sourceHostSize": [
+        1880,
+        1412
+      ],
+      "differentPixelsOver8": 13958,
+      "totalPixels": 2654560,
+      "differentPercent": 0.5258121873304804
+    },
+    {
+      "scene": "settings-layout",
+      "sameRect": true,
+      "sameTextHash": true,
+      "currentSize": [
+        1880,
+        1412
+      ],
+      "sourceHostSize": [
+        1880,
+        1412
+      ],
+      "differentPixelsOver8": 6575,
+      "totalPixels": 2654560,
+      "differentPercent": 0.24768699897534807
+    },
+    {
+      "scene": "light-english-chat",
+      "sameRect": true,
+      "sameTextHash": false,
+      "currentSize": [
+        2560,
+        1720
+      ],
+      "sourceHostSize": [
+        2560,
+        1720
+      ],
+      "differentPixelsOver8": 250365,
+      "totalPixels": 4403200,
+      "differentPercent": 5.685978379360465
+    },
+    {
+      "scene": "narrow-light-chat",
+      "sameRect": true,
+      "sameTextHash": false,
+      "currentSize": [
+        1600,
+        1280
+      ],
+      "sourceHostSize": [
+        1600,
+        1280
+      ],
+      "differentPixelsOver8": 89472,
+      "totalPixels": 2048000,
+      "differentPercent": 4.3687499999999995
+    },
+    {
+      "scene": "narrow-settings-layout",
+      "sameRect": true,
+      "sameTextHash": true,
+      "currentSize": [
+        1504,
+        1052
+      ],
+      "sourceHostSize": [
+        1504,
+        1052
+      ],
+      "differentPixelsOver8": 12669,
+      "totalPixels": 1582208,
+      "differentPercent": 0.8007164671143112
+    }
+  ],
+  "note": "Same workspace and viewport; independent agent/userData profiles, same current frozen business build. No layout/content masks or resized pixel comparisons. Does not claim independently rebuilt source backend equivalence."
+}

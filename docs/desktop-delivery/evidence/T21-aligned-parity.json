@@ -1,0 +1,21 @@
+{
+  "fixture": "/tmp/pi-parity-Q1lMj4",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "sourceHost": false,
+  "status": "FAIL",
+  "checks": [],
+  "scenes": [],
+  "caveats": [
+    "Both hosts use the same actual packaged sidecar and frozen frontend, with separate authenticated clients; this isolates browser/desktop presentation, not every original backend behavior.",
+    "Chrome and Electron Chromium versions may differ; pixel differences are reported and inspected, not treated as proof of equivalence alone.",
+    "Settings screenshots crop only the actual modal; chat screenshots mask only live host metrics and time labels, and hide the caret."
+  ],
+  "desktop": {
+    "width": 1280,
+    "height": 860,
+    "dpr": 2,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) pi-agent-desktop/0.109.0 Chrome/152.0.7977.130 Electron/44.4.2 Safari/537.36"
+  },
+  "error": "locator.click: Error: strict mode violation: locator('.settings-modal .dd-refresh') resolved to 2 elements:\n    1) <button type=\"button\" class=\"dd-refresh\">恢复默认短语</button> aka getByRole('button', { name: '恢复默认短语' })\n    2) <button type=\"button\" class=\"dd-refresh set-close-btn\">关闭</button> aka getByRole('button', { name: '关闭' }).nth(3)\n\nCall log:\n\u001b[2m  - waiting for locator('.settings-modal .dd-refresh')\u001b[22m\n\n    at scenarios (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/web-desktop-parity-run.mjs:148:52)\n    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/web-desktop-parity-run.mjs:271:2",
+  "providerRequests": 0
+}

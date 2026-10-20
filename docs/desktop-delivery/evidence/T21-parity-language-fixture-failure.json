@@ -1,0 +1,630 @@
+{
+  "fixture": "/tmp/pi-parity-TAmCxE",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "FAIL",
+  "checks": [],
+  "scenes": [
+    {
+      "mode": "desktop",
+      "name": "dark-chat",
+      "path": "docs/desktop-delivery/evidence/T21-parity-desktop-dark-chat.png",
+      "state": {
+        "viewport": {
+          "width": 1280,
+          "height": 860,
+          "dpr": 2
+        },
+        "documentWidth": 1280,
+        "theme": null,
+        "locale": null,
+        "palette": {
+          "--bg": "#0d0e12",
+          "--text": "#e6e8ef",
+          "--accent": "#8b5cf6"
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 860,
+          "top": 0,
+          "right": 1280,
+          "bottom": 860,
+          "left": 0
+        },
+        "controls": [
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "History",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Open project",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Chat",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Terminal",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Git",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Plugins",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Search",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Background tasks",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Focus Mode",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Settings",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "New chat",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Files",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "More features & layout",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Collapse panel",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Collapse",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Launch Sandbox Project (isolated workspace)",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Manage projects and working directories",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "/private/tmp/pi-parity-TAmCxE/中文 workspace",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Remove from recent projects",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Collapse",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "New chat",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to fill the input",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "New template",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Enter the goal to achieve…",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to send: Continue（Left-click to steer, right-click to queue）",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to send: Summarize（Left-click to steer, right-click to queue）",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to send: Explain in detail（Left-click to steer, right-click to queue）",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to send: Check and fix issues（Left-click to steer, right-click to queue）",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to send: Add test coverage（Left-click to steer, right-click to queue）",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Click to send: Publish release（Left-click to steer, right-click to queue）",
+            "disabled": false
+          },
+          {
+            "tag": "INPUT",
+            "type": "file",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "TEXTAREA",
+            "type": "textarea",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Add files (images / text / any file — or drag in / paste a screenshot)",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Prompt templates (reusable prompts, anytime)",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Send (Enter)",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Collapse panel",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Files",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "This PC",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Home directory",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Desktop",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Show hidden files (names starting with a dot)",
+            "disabled": false
+          },
+          {
+            "tag": "INPUT",
+            "type": "file",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "中文 sample.txt — Preview",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Reference path only (AI reads on demand)",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Copy name",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Copy path",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Reload .pi/commands.json",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "New command",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "New terminal",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Commands",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Re-query git status & diff",
+            "disabled": false
+          },
+          {
+            "tag": "SELECT",
+            "type": "select-one",
+            "label": "Switch branch",
+            "disabled": true
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Runs git checkout  in the terminal",
+            "disabled": true
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Runs git push in the terminal",
+            "disabled": true
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Runs git pull in the terminal",
+            "disabled": true
+          },
+          {
+            "tag": "INPUT",
+            "type": "text",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Generate a commit message with the current model: staged changes when any, otherwise all changes (incl. untracked); style follows this repo's recent commits",
+            "disabled": true
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Runs git commit -m \"…\" in the terminal (commits staged changes only)",
+            "disabled": true
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "Runs git add -A && git commit -m \"…\" in the terminal (stages all changes incl. untracked and commits)",
+            "disabled": true
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "",
+            "disabled": false
+          },
+          {
+            "tag": "BUTTON",
+            "type": "button",
+            "label": "中文 workspace",
+            "disabled": false
+          }
+        ],
+        "textSha256": "e5c0b0c2dc6ec0f21d2091893b576b298d1617db6f970ac85fbe7407f3404dd4"
+      }
+    }
+  ],
+  "caveats": [
+    "Both hosts use the same actual packaged sidecar and frozen frontend, with separate authenticated clients; this isolates browser/desktop presentation, not every original backend behavior.",
+    "Chrome and Electron Chromium versions may differ; pixel differences are reported and inspected, not treated as proof of equivalence alone.",
+    "Settings screenshots crop only the actual modal; chat screenshots mask only live host metrics and time labels, and hide the caret."
+  ],
+  "desktop": {
+    "width": 1280,
+    "height": 860,
+    "dpr": 2,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) pi-agent-desktop/0.109.0 Chrome/152.0.7977.130 Electron/44.4.2 Safari/537.36"
+  },
+  "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: '设置', exact: true })\u001b[22m\n\n    at scenarios (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/web-desktop-parity-run.mjs:129:62)\n    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/web-desktop-parity-run.mjs:211:2",
+  "providerRequests": 0
+}

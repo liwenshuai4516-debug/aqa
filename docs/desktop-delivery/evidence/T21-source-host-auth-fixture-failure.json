@@ -1,0 +1,28 @@
+{
+  "fixture": "/tmp/pi-parity-jMnQzu",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "sourceHost": true,
+  "status": "FAIL",
+  "checks": [],
+  "scenes": [],
+  "caveats": [
+    "Original desktop TS is transformed read-only and runs the current frozen business build with bundled SDK; this isolates host presentation, not an independent rebuild of the original backend.",
+    "Chrome and Electron Chromium versions may differ; pixel differences are reported and inspected, not treated as proof of equivalence alone.",
+    "Settings screenshots crop only the actual modal; chat screenshots mask only live host metrics and time labels, and hide the caret."
+  ],
+  "sourceHashes": {
+    "external-url.ts": "c0254c871e9cd4b73e7180b35df1ffd26d516301da699a07ff892be6452fbf2f",
+    "main.ts": "4cc6249ef5acd0a5472b936c58586c0b6869582ccf2b1e28d39ad5a1ad161ba4",
+    "portable.ts": "cc8a9622f96ed671793fd3c21b254a5a947ae8da2ad29a7ad4840efcc716be62",
+    "preload.cts": "a27da058db1f7d2294ae1d239e5aa831e2457b76e901ffa35bf1d13f64269936",
+    "startup.ts": "f53b7b62e93b663b67fcf7df9b1594391cc44136684dee2686aeda2bf72c672e"
+  },
+  "desktop": {
+    "width": 1280,
+    "height": 860,
+    "dpr": 2,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.130 Electron/44.4.2 Safari/537.36"
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Actual sidecar auth cookie required\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/web-desktop-parity-run.mjs:246:2",
+  "providerRequests": 0
+}

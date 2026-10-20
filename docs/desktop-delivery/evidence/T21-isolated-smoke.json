@@ -1,0 +1,12 @@
+{
+  "fixture": "/tmp/pi-smoke-isolated-t5TQqG",
+  "aggregator": "tests/run-smoke.mjs",
+  "args": [
+    "--no-build"
+  ],
+  "code": 1,
+  "signal": null,
+  "removedCredentialEnvironmentNames": [],
+  "externalDshRuntime": "/tmp/pi-T14-runtimes.JdW099/node_modules",
+  "isolation": "empty fallback auth/models, independent agent/data/DSH home; original tests and assertions are unchanged"
+}

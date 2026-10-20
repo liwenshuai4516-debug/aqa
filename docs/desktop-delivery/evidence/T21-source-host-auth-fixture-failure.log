@@ -1,0 +1,1 @@
+{"status":"FAIL","error":"AssertionError [ERR_ASSERTION]: Actual sidecar auth cookie required\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/web-desktop-parity-run.mjs:246:2","scenes":0,"checks":0,"fixture":"/tmp/pi-parity-jMnQzu"}

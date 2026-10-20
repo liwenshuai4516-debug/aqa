@@ -7,14 +7,24 @@ import { once } from "node:events";
 import { resolve } from "node:path";
 import WebSocket from "ws";
 
-export async function launchNativeApp({ executablePath, packaged, env }) {
+export async function launchNativeApp({
+	executablePath,
+	packaged,
+	env,
+	mainPath,
+	readyMarker = "[desktop] window loaded",
+}) {
 	const reservation = createServer().listen(0, "127.0.0.1");
 	await once(reservation, "listening");
 	const port = reservation.address().port;
 	await new Promise((r) => reservation.close(r));
 	const child = spawn(
 		executablePath,
-		["--inspect=0", `--remote-debugging-port=${port}`, ...(packaged ? [] : [resolve("dist/desktop/main.js")])],
+		[
+			"--inspect=0",
+			`--remote-debugging-port=${port}`,
+			...(packaged ? [] : [resolve(mainPath ?? "dist/desktop/main.js")]),
+		],
 		{ env, stdio: ["ignore", "pipe", "pipe"] },
 	);
 	let logs = "";
@@ -27,7 +37,7 @@ export async function launchNativeApp({ executablePath, packaged, env }) {
 	const deadline = Date.now() + 60000;
 	let browser, inspector;
 	try {
-		while (!logs.includes("[desktop] window loaded")) {
+		while (!logs.includes(readyMarker)) {
 			if (child.exitCode !== null || Date.now() > deadline)
 				throw new Error("Native app failed to load before automation attached");
 			await new Promise((r) => setTimeout(r, 100));
