@@ -6,6 +6,7 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { execFileSync } from "node:child_process";
 import { once } from "node:events";
+import { launchNativeApp } from "./native-app.mjs";
 const fixture = mkdtempSync(join(tmpdir(), "pi-desktop-lifecycle-"));
 const workspace = join(fixture, "中文 project");
 mkdirSync(workspace);
@@ -40,14 +41,17 @@ delete env.PI_WEB_DATA_DIR;
 delete env.PI_CODING_AGENT_DIR;
 delete env.PI_WEB_DESKTOP_URL;
 async function launch() {
-	const application = await _electron.launch({
-		...(packaged ? { executablePath } : {}),
-		args: packaged
-			? ["-r", resolve("node_modules/playwright-core/lib/server/electron/loader.js")]
-			: [resolve("dist/desktop/main.js")],
-		env,
-		timeout: 60000,
-	});
+	const application =
+		process.env.PI_DESKTOP_NATIVE_AUTOMATION === "1"
+			? await launchNativeApp({ executablePath, packaged, env })
+			: await _electron.launch({
+					...(packaged ? { executablePath } : {}),
+					args: packaged
+						? ["-r", resolve("node_modules/playwright-core/lib/server/electron/loader.js")]
+						: [resolve("dist/desktop/main.js")],
+					env,
+					timeout: 60000,
+				});
 	application.process().stderr.on("data", (chunk) => {
 		const text = chunk.toString();
 		if (text.includes("[desktop]") || text.includes("preload")) process.stderr.write(text);
@@ -276,7 +280,14 @@ try {
 	if (run) await run.application.close().catch(() => {});
 	if (blocker) await new Promise((r) => blocker.close(r));
 	writeFileSync(
-		join(evidence, packaged ? "packaged-lifecycle.json" : "desktop-lifecycle.json"),
+		join(
+			evidence,
+			process.env.PI_DESKTOP_NATIVE_AUTOMATION === "1"
+				? "native-lifecycle.json"
+				: packaged
+					? "packaged-lifecycle.json"
+					: "desktop-lifecycle.json",
+		),
 		JSON.stringify({ fixture, packaged, platform: process.platform, architecture: process.arch, results }, null, 2),
 	);
 	console.log(JSON.stringify(results, null, 2));

@@ -1,0 +1,28 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-packaged-ui-D7PxtR",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "provider": "local SSE fixture; no real model calls",
+  "checks": [
+    {
+      "id": "A14",
+      "status": "PASS",
+      "check": "settings sound panel, master gating, event toggle, volume persistence and real WebAudio preview synthesis",
+      "audioNodes": [
+        "AudioDestination",
+        "Oscillator",
+        "Gain"
+      ]
+    },
+    {
+      "id": "A11/A14",
+      "status": "PASS",
+      "check": "sound settings restored after real renderer reload"
+    },
+    {
+      "id": "A01/A05",
+      "status": "PASS",
+      "check": "real packaged UI selects text/binary/SVG, pastes PNG, renders attachment cards and streams one fixture response"
+    }
+  ]
+}

@@ -30,3 +30,7 @@
 `tests/unit/bottombar-metrics-universal.test.ts` 来源仍未知，单独保留差异与调查记录，不归因于用户或其他聊天。该变化使真实 CLI 调用变成解析夹具，不能将后来全量绿灯当作真实 CLI 验收。
 
 | D03 | plugins/vscode-editor/index.mjs、manifest.json | 用户明确批准：补回远程目录递归创建；版本 0.5.1 → 0.5.2 | D03-proposed.patch；D03-ssh-sftp.json |
+
+## T10 验收补证
+
+新增原生加载后接入的测试适配器，复用完整生命周期断言并通过；新增安装包声音/附件交互与受限真实 DeepSeek UI 链路。生产代码未改。详见 T10-verification.md。

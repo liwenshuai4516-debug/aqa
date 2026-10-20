@@ -1,0 +1,49 @@
+{
+  "fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-packaged-ui-Y5NWlf",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "provider": "DeepSeek deepseek-chat through credential-only bounded proxy",
+  "checks": [
+    {
+      "id": "A01/A03",
+      "status": "PASS",
+      "check": "packaged UI sends prompt through original service and bundled SDK to real DeepSeek; streamed reply renders",
+      "requests": 1,
+      "maxOutputTokens": 128,
+      "maxRequestBytes": 30000,
+      "receivedRequests": 1,
+      "receivedRequestBytes": 12533,
+      "requestBytes": 12533,
+      "httpStatus": 200,
+      "usage": {
+        "prompt_tokens": 3220,
+        "completion_tokens": 8,
+        "total_tokens": 3228,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3220
+      }
+    }
+  ],
+  "providerEvidence": {
+    "requests": 1,
+    "maxOutputTokens": 128,
+    "maxRequestBytes": 30000,
+    "receivedRequests": 1,
+    "receivedRequestBytes": 12533,
+    "requestBytes": 12533,
+    "httpStatus": 200,
+    "usage": {
+      "prompt_tokens": 3220,
+      "completion_tokens": 8,
+      "total_tokens": 3228,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 3220
+    }
+  }
+}
