@@ -1,0 +1,10 @@
+✓ A 在线时 B 能看到其 elsewhere 行（正向对照） — owner=probe-dead-1790000000000
+✓ 普通客户端 elsewhere 条目 pseudo 为 false/undefined（#426）
+✓ A 断连后其行仍在且标 ownerOffline（宽限期内可过户） — elsewhere=[{"title":"残骸测试：只回复 OK","cwd":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-elsewhere-lifecycle-XRSziv/work","isStreaming":false,"convId":"c1","hasQuestion":false,"sessionFile":"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-web-elsewhere-lifecycle-XRSziv/agent/sessions/--var-folders-zl-dv8m7cfs0mj0j3vf6psss9y80000gn-T-pi-web-elsewhere-lifecycle-XRSziv-work--/2026-10-20T10-38-32-483Z_01a158e4-3223-760c-9256-1665a12e2beb.jsonl","owner":"probe-dead-1790000000000","ownerOffline":true}]
+✓ 宽限期到期后其行自动消失（#291「残骸不永久占位」仍成立） — elsewhere=[]
+✓ 定时任务伪客户端出现在 elsewhere（正向对照） — owner=scheduler:task-lifecycle-291
+✓ 定时任务伪客户端 elsewhere 条目标记为 pseudo（#426）
+✓ 请求过户伪客户端时被拒并给出后台任务引导（#426）
+✓ 删除定时任务后伪客户端从 elsewhere 消失（#291 修复点） — elsewhere=[]
+
+PASS: elsewhere 生命周期（#291）

@@ -1,0 +1,74 @@
+[srv] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[srv] 
+[srv]   ⚡ pi-web-ui — web chat for the pi coding agent
+    http://localhost:22937
+    workspace   : /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/piweb-term-MB9c08
+    session dir : /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/piweb-term-agent-bR8DGI/sessions
+    pi SDK      : v1.1.0
+[srv]     bind        : 127.0.0.1:22937
+[srv] 
+[srv]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/piweb-term-data-uHbuE9/pi-web-ui.sock
+[srv] [catalog] 插件市场列表预同步完成（共 0 个条目，按需安装）
+server up
+ws connected
+ready received
+  ✓ agent exposes persistent terminal tools
+  ✓ list_commands returns empty list
+  ✓ commands path is <cwd>/.pi/commands.json
+  ✓ save_commands persisted
+  ✓ commands.json written on disk
+  ✓ disk format is {commands:[...]}
+  ✓ folder not skipped as a non-file attachment
+  ✓ no attachment error for the folder
+  ✓ persisted session appears in the conversation list
+  ✓ shell produced output
+  ✓ terminal_list identifies the active conversation
+  ✓ input echoes through PTY
+  ✓ run_command banner shown
+  ✓ ${pwd} resolved to session cwd
+  ✓ re-run banner appears
+  ✓ re-run executed
+  ✓ restarted shell accepts input
+  ✓ terminal_kill emits exit
+  ✓ shell exit emits terminal_exit
+  ✓ exited terminal name can be reused
+  ✓ run_command enforces terminal limit
+  ✓ Ctrl+ArrowUp = ESC[1;5A (not Ctrl+A)
+  ✓ Ctrl+Enter = ESC[13;5u (not Ctrl+E)
+  ✓ Ctrl+ArrowRight = ESC[1;5C
+  ✓ plain ArrowUp stays ESC[A
+  ✓ Alt+ArrowUp = ESC[1;3A
+  ✓ Ctrl+Shift+ArrowUp = ESC[1;6A
+  ✓ Shift+Tab = ESC[9;2u
+  ✓ plain Enter stays CR
+  ✓ Ctrl+C = 0x03
+  ✓ Alt+c = ESC c
+  ✓ unsupported key reports an error
+  ✓ Ctrl on a non-letter reports an error
+  ✓ terminal_create + run_command both reject an invalid id
+  ✓ hist-0 exited and moved to history
+  ✓ run_command of an exited id at the cap is rejected
+  ✓ issue #147 setup: earlier terminals settled
+  ✓ issue #147 setup: user cap is full
+  ✓ terminal_create with agentBash:true bypasses the full user cap
+  ✓ agent terminal_create/list works
+  ✓ agent terminal_read waits for incremental output
+  ✓ agent terminal_key sends named keys
+  ✓ agent terminal_close releases the PTY
+  ✓ countLive counts a live PTY
+  ✓ countLive drops to 0 after the PTY exits
+  ✓ exited terminal stays readable in list but not live
+  ✓ pristine shell is live but not blocking
+  ✓ touched shell becomes blocking
+  ✓ ai-bash shell is blocking from birth
+  ✓ closing pristine/ai-bash test shells releases all slots
+  ✓ issue #147 setup: AI terminal exited into history
+  ✓ rebuilt exited AI terminal inherits agentBash despite the full user cap
+  ✓ issue #147 setup: user terminal exited into history
+  ✓ exited user terminal is still rejected at the cap
+  ✓ server still alive after bogus messages
+[srv] 
+shutting down…
+[srv exited early: 0]
+
+55 checks passed

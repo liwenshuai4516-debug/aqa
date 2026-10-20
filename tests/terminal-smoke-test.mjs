@@ -10,11 +10,13 @@ import WebSocket from "ws";
 import { freePort } from "./lib/port-utils.mjs";
 
 const PORT = 20000 + Math.floor(Math.random() * 10000);
-const workdir = mkdtempSync(join(tmpdir(), "piweb-term-"));
+const workdir = realpathSync(mkdtempSync(join(tmpdir(), "piweb-term-")));
 const dataDir = mkdtempSync(join(tmpdir(), "piweb-term-data-"));
+const agentDir = realpathSync(mkdtempSync(join(tmpdir(), "piweb-term-agent-")));
 process.env.PI_WEB_PORT = String(PORT);
 process.env.PI_WEB_CWD = workdir;
 process.env.PI_WEB_DATA_DIR = dataDir;
+process.env.PI_CODING_AGENT_DIR = agentDir;
 // 工具按需加载自 #652 起**默认关**，这里仍显式钉住关闭态：本测试断言「持久终端开关打开后终端工具
 // 出现在活跃工具集里」，若哪天又把部署默认改回开，按需加载会把这些工具藏进目录里不加载
 // （同 takeover / subagent-* / question-bridge 等用例）。
@@ -203,10 +205,9 @@ async function main() {
 	// The CLI stores sessions in <agentDir>/sessions/--<cwd-sanitized>--; fabricate
 	// one there and check list_sessions discovers the same persisted file.
 	{
-		const { homedir } = await import("node:os");
 		const { writeFileSync, mkdirSync } = await import("node:fs");
 		const safePath = `--${workdir.replace(/^[/\\]/, "").replace(/[/\\:]/g, "-")}--`;
-		const tuiDir = join(homedir(), ".pi", "agent", "sessions", safePath);
+		const tuiDir = join(agentDir, "sessions", safePath);
 		const tuiFile = join(tuiDir, "2026-08-04T00-00-00-000Z_tui-smoke-test.jsonl");
 		mkdirSync(tuiDir, { recursive: true });
 		writeFileSync(
@@ -649,6 +650,7 @@ process.on("exit", () => {
 	try {
 		rmSync(workdir, { recursive: true, force: true });
 		rmSync(dataDir, { recursive: true, force: true });
+		rmSync(agentDir, { recursive: true, force: true });
 	} catch {
 		/* best effort */
 	}
