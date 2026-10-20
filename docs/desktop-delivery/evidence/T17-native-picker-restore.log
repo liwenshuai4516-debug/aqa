@@ -1,0 +1,16 @@
+{
+  "fixture": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-native-picker-ikIHM0",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-cDWh9l/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "instrumentation": "follow-up restoration of the actual selection from the prior native chooser; does not establish Chinese path selection",
+  "checks": [
+    {
+      "status": "PASS",
+      "check": "previous manually selected directory reopens in the installed application",
+      "workspace": "/Users/liyingjun/Downloads"
+    },
+    {
+      "status": "PASS",
+      "check": "actual second launch restores the selected workspace without another picker interaction"
+    }
+  ]
+}

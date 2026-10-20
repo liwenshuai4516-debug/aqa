@@ -38,3 +38,5 @@ T14 / A13–A14：用户解锁后，同一套完整生命周期断言已通过�
 T14 全量 Vitest：461 文件 / 5145 PASS / 9 SKIP（T14-all-unit.log）；未知 bottombar 差异仍不能作为真实 CLI 通过证据。最新实际 DMG 安装包 package-smoke、完整 native-lifecycle、官方 MCP 首会话与重启后同会话调用、DSH 原适配器/官方运行时均通过，详见对应 T14 JSON。
 
 T16：修复两条回归脚本的隔离夹具/过时文案，终端 55 断言、elsewhere 全流程及 8 文件 / 55 相关单测通过。没有重跑或重新汇总完整 86 项；生产代码不变，详见 T16-regression-fixtures.md。
+
+T17：用户实际原生目录选择保存 Downloads，随后连续两次真实安装包重启恢复通过；最初期待临时中文目录的精确路径断言失败保留。不能据此宣称中文路径实际选择或原生取消通过。详见 T17-native-picker.md。

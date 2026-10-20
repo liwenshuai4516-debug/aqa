@@ -1,0 +1,11 @@
+{
+  "fixture": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-native-picker-ikIHM0",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-cDWh9l/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "instrumentation": "native chooser is not replaced; requires human selection, then validates actual saved path and restarts",
+  "checks": [
+    {
+      "status": "FAIL",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ '/Users/liyingjun/Downloads'\n- '/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-native-picker-ikIHM0/中文 workspace'\n\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/native-picker-run.mjs:36:9"
+    }
+  ]
+}
