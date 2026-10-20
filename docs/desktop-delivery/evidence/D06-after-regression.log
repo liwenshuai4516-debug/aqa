@@ -1,0 +1,15 @@
+✓ 默认关闭
+✓ set_delegate_mode{true} → 快照 delegateMode=true
+✓ 开启时有 notice 提示
+✓ prompt 触发自动路由 → 生成常驻执行对话 id — conv-40f0eee5
+✓ 派活有 notice（主对话这一轮不跑模型）
+✓ 施工发生在执行对话（文件落盘）
+✓ 委派执行请求遵守工具禁用设置
+✓ set_delegate_mode{false} → 快照 delegateMode=false
+✓ 关闭后清空执行对话 id
+✓ 关闭后主对话恢复自己施工
+✓ 关闭委派重载后仍保留工具禁用设置
+✓ 关闭后不再自动派活（无新的执行对话 id）
+✓ 审查者模式写入会话转录（可回放恢复）
+
+ALL OK

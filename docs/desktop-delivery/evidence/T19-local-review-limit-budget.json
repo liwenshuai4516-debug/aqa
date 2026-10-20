@@ -1,0 +1,30 @@
+{
+  "priorRequests": 2,
+  "priorReservedCny": 0.1,
+  "requests": [
+    {
+      "ordinal": 3,
+      "reservedCny": 0.1,
+      "inputBytes": 4982,
+      "status": "local-completed"
+    },
+    {
+      "ordinal": 4,
+      "reservedCny": 0.1,
+      "inputBytes": 5334,
+      "status": "local-completed"
+    },
+    {
+      "ordinal": 5,
+      "reservedCny": 0.1,
+      "inputBytes": 5404,
+      "status": "local-completed"
+    },
+    {
+      "ordinal": 6,
+      "reservedCny": 0.1,
+      "inputBytes": 5744,
+      "status": "local-completed"
+    }
+  ]
+}

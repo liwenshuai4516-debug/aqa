@@ -1,0 +1,292 @@
+{
+  "fixture": "/tmp/pi-goal-h0gn1x",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "mode": "real DeepSeek",
+  "checks": [],
+  "requests": [
+    {
+      "ordinal": 9,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 5411
+    },
+    {
+      "ordinal": 10,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 5812
+    },
+    {
+      "ordinal": 11,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 7081
+    },
+    {
+      "ordinal": 12,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 7502
+    }
+  ],
+  "status": "FAIL",
+  "goalStatus": {
+    "conversationId": null,
+    "goal": null,
+    "reviewModel": null,
+    "maxRounds": 1,
+    "locked": true,
+    "execModel": "acceptance/deepseek-flash",
+    "phase": "idle",
+    "reviewing": false,
+    "round": 1,
+    "status": "✅ 已通过目标审查",
+    "verdict": "pass",
+    "wizard": {
+      "active": false,
+      "draft": "",
+      "model": null,
+      "step": 0,
+      "maxSteps": 6,
+      "status": "",
+      "statusEn": ""
+    },
+    "usage": {
+      "inputTokens": 1847,
+      "outputTokens": 146
+    },
+    "history": [
+      {
+        "goal": "Use write once to create goal-proof.txt containing exactly GOAL_OK, then reply Done. This is the entire execution task; no additional verification steps are required from the executor.",
+        "verdict": "pass",
+        "rounds": 1,
+        "feedback": "goal-proof.txt exists in the workspace and contains exactly GOAL_OK, created via a single write call, and the executor replied Done.",
+        "finishedAt": 1792494842541
+      }
+    ],
+    "roles": {},
+    "feedback": "goal-proof.txt exists in the workspace and contains exactly GOAL_OK, created via a single write call, and the executor replied Done.",
+    "statusEn": "✅ Goal review passed"
+  },
+  "lastRequestShape": {
+    "bytes": 7502,
+    "messages": [
+      {
+        "role": "system",
+        "bytes": 3105
+      },
+      {
+        "role": "user",
+        "bytes": 179
+      },
+      {
+        "role": "user",
+        "bytes": 2095
+      },
+      {
+        "role": "assistant",
+        "bytes": 205
+      },
+      {
+        "role": "user",
+        "bytes": 214
+      }
+    ],
+    "tools": [
+      {
+        "name": "read",
+        "bytes": 1102
+      },
+      {
+        "name": "write",
+        "bytes": 430
+      }
+    ]
+  },
+  "goalExecutor": "conv-de5318b6",
+  "error": "Goal executor wrote exact requested content",
+  "budget": {
+    "priorRequests": 2,
+    "priorReservedCny": 0.1,
+    "requests": [
+      {
+        "ordinal": 3,
+        "reservedCny": 0.1,
+        "inputBytes": 4982,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1307,
+          "completion_tokens": 74,
+          "total_tokens": 1381,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 1307
+        }
+      },
+      {
+        "ordinal": 4,
+        "reservedCny": 0.1,
+        "inputBytes": 5392,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1416,
+          "completion_tokens": 2,
+          "total_tokens": 1418,
+          "prompt_tokens_details": {
+            "cached_tokens": 1280
+          },
+          "prompt_cache_hit_tokens": 1280,
+          "prompt_cache_miss_tokens": 136
+        }
+      },
+      {
+        "ordinal": 5,
+        "reservedCny": 0.1,
+        "inputBytes": 5404,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1397,
+          "completion_tokens": 72,
+          "total_tokens": 1469,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 373
+        }
+      },
+      {
+        "ordinal": 6,
+        "reservedCny": 0.1,
+        "inputBytes": 5802,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1504,
+          "completion_tokens": 54,
+          "total_tokens": 1558,
+          "prompt_tokens_details": {
+            "cached_tokens": 1280
+          },
+          "prompt_cache_hit_tokens": 1280,
+          "prompt_cache_miss_tokens": 224
+        }
+      },
+      {
+        "ordinal": 7,
+        "reservedCny": 0.1,
+        "inputBytes": 6108,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1573,
+          "completion_tokens": 86,
+          "total_tokens": 1659,
+          "prompt_tokens_details": {
+            "cached_tokens": 1408
+          },
+          "prompt_cache_hit_tokens": 1408,
+          "prompt_cache_miss_tokens": 165
+        }
+      },
+      {
+        "ordinal": 8,
+        "reservedCny": 0.1,
+        "inputBytes": 7288,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1819,
+          "completion_tokens": 54,
+          "total_tokens": 1873,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 795
+        }
+      },
+      {
+        "ordinal": 9,
+        "reservedCny": 0.1,
+        "inputBytes": 5411,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1397,
+          "completion_tokens": 74,
+          "total_tokens": 1471,
+          "prompt_tokens_details": {
+            "cached_tokens": 512
+          },
+          "prompt_cache_hit_tokens": 512,
+          "prompt_cache_miss_tokens": 885
+        }
+      },
+      {
+        "ordinal": 10,
+        "reservedCny": 0.1,
+        "inputBytes": 5812,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1507,
+          "completion_tokens": 36,
+          "total_tokens": 1543,
+          "prompt_tokens_details": {
+            "cached_tokens": 1280
+          },
+          "prompt_cache_hit_tokens": 1280,
+          "prompt_cache_miss_tokens": 227
+        }
+      },
+      {
+        "ordinal": 11,
+        "reservedCny": 0.1,
+        "inputBytes": 7081,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1759,
+          "completion_tokens": 36,
+          "total_tokens": 1795,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 735
+        }
+      },
+      {
+        "ordinal": 12,
+        "reservedCny": 0.1,
+        "inputBytes": 7502,
+        "status": "reserved",
+        "httpStatus": 200
+      }
+    ]
+  },
+  "notices": [
+    "设置已应用",
+    "🎯 已设目标：Use write once to create goal-proof.txt containing exactly GOAL_OK, then reply D…",
+    "已强行关闭对话「[Goal executor] Use write once to create goal-proof.txt …」",
+    "✅ 目标已通过审查"
+  ]
+}

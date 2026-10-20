@@ -7922,6 +7922,7 @@ export class ClientSession {
 		// 提示词段随之增减（下一轮生效）；失败不阻断（硬闸门仍拦得住）。
 		try {
 			await target.session.reload?.();
+			this.applyToolGating(target.session, target.agentPreset);
 		} catch {
 			// best effort
 		}

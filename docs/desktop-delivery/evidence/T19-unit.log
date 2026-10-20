@@ -1,0 +1,13 @@
+
+ RUN  v5.0.1 /Users/liyingjun/Desktop/SW-QA/15-aqa
+
+
+ Test Files  17 passed (17)
+      Tests  113 passed (113)
+   Start at  19:04:54
+   Duration  2.78s (import 51%, transform 38%, tests 8%, setup 1%, worker 1%)
+
+  Transform  transforming modules took 3.07s · 38% of tracked time, re-done on every run
+             persist transforms across runs with fsModuleCache: true
+             learn more: https://vitest.dev/guide/improving-performance#caching-between-reruns
+

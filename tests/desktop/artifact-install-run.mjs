@@ -28,7 +28,7 @@ for (const format of ["dmg", "zip"]) {
 			execFileSync("ditto", ["-x", "-k", artifact, destination]);
 		}
 		const bundle = join(destination, "Pi Agent Desktop.app");
-		for (const path of ["dist/desktop/main.js", "dist/server/agent-service-daemon.js"])
+		for (const path of ["dist/desktop/main.js", "dist/server/agent-service-daemon.js", "dist/server/agent-service.js"])
 			assert.equal(readFileSync(join(bundle, "Contents/Resources/app", path), "utf8"), readFileSync(path, "utf8"));
 		const reservation = createServer().listen(0, "127.0.0.1");
 		await once(reservation, "listening");

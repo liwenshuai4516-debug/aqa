@@ -1,0 +1,5 @@
+ba2f4f3efcca5c8cb098c2f0612b8acc6422bf3295010f78e0c17d2e41e2bc71  Pi-Agent-Desktop-0.109.0-arm64.dmg
+794894cc421eba34f89cd82f625e7525dff62ca0f54846f6af922fc70c0ed4bc  Pi-Agent-Desktop-0.109.0-arm64.dmg.blockmap
+0add6ad5b3870724c169c0ce54c64798823cae9ec5b3636379e7f4933a01da49  Pi-Agent-Desktop-0.109.0-arm64.zip
+b6c8fc0f142bc7cddafd04c7a6b98576b8aaa808cef45b2fd20e14e754e2ae22  Pi-Agent-Desktop-0.109.0-arm64.zip.blockmap
+0dee1745cc60960df8c2039f5e5ef3cd98450178554d86c748549660f1f0ba44  builder-debug.yml

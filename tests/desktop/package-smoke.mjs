@@ -10,6 +10,7 @@ import WebSocket from "ws";
 const executablePath = resolve(
 	process.argv[2] ?? "release/mac-arm64/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
 );
+const evidencePrefix = process.argv[3]?.replace(/\.json$/, "") ?? "docs/desktop-delivery/evidence/packaged-smoke";
 const fixture = mkdtempSync(join(tmpdir(), "pi-packaged-smoke-"));
 const workspace = join(fixture, "中文 workspace");
 mkdirSync(workspace);
@@ -151,7 +152,7 @@ try {
 	const png = await app.evaluate(async ({ BrowserWindow }) =>
 		(await BrowserWindow.getAllWindows()[0].webContents.capturePage()).toPNG().toString("base64"),
 	);
-	writeFileSync(resolve("docs/desktop-delivery/evidence/packaged-smoke.png"), Buffer.from(png, "base64"));
+	writeFileSync(resolve(`${evidencePrefix}.png`), Buffer.from(png, "base64"));
 	result.runtime = info.versions;
 } catch (error) {
 	result.checks.push({ status: "FAIL", error: error.stack });
@@ -159,6 +160,6 @@ try {
 } finally {
 	ws?.close();
 	await app.close();
-	writeFileSync(resolve("docs/desktop-delivery/evidence/packaged-smoke.json"), JSON.stringify(result, null, 2));
+	writeFileSync(resolve(`${evidencePrefix}.json`), JSON.stringify(result, null, 2));
 	console.log(JSON.stringify(result, null, 2));
 }

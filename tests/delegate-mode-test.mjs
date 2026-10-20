@@ -18,6 +18,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { setTimeout as sleep } from "node:timers/promises";
 import { freePort, portUp } from "./lib/port-utils.mjs";
+import { ALL_KNOWN_AGENT_TOOL_NAMES } from "../dist/server/tool-manager.js";
 
 const REPO_ROOT = fileURLToPath(new URL("../", import.meta.url));
 const PORT = 8942; // ≥8900，与其他回归隔离
@@ -31,6 +32,7 @@ function check(name, ok, extra = "") {
 
 // ── mock LLM ────────────────────────────────────────────────────────────
 let script = [];
+const requestTools = [];
 const delta = (model, d, finish = null) => ({
 	id: "chatcmpl-mock",
 	object: "chat.completion.chunk",
@@ -73,6 +75,7 @@ const mockServer = createServer((req, res) => {
 	req.on("data", (c) => (body += c));
 	req.on("end", () => {
 		const payload = JSON.parse(body || "{}");
+		requestTools.push((payload.tools ?? []).map((tool) => tool.function.name));
 		const messages = Array.isArray(payload.messages) ? payload.messages : [];
 		const model = payload.model ?? "mock-model";
 		const lastUser = messages.map((m) => m.role).lastIndexOf("user");
@@ -184,6 +187,11 @@ await new Promise((r) => ws.on("open", r));
 ws.send(JSON.stringify({ type: "hello", clientId: CLIENT_ID }));
 await waitFor(() => snapshot !== null, "initial snapshot");
 send({ type: "set_model", modelId: "mock/mock-model" });
+send({
+	type: "set_settings",
+	disabledAgentTools: ALL_KNOWN_AGENT_TOOL_NAMES.filter((name) => !["read", "write"].includes(name)),
+	toolLazyLoading: false,
+});
 await sleep(600);
 
 try {
@@ -215,6 +223,10 @@ try {
 	if (!gotDispatchNotice) console.log("  [debug] notices:", JSON.stringify(notices));
 	await waitFor(() => existsSync(join(workDir, "executor-wrote.txt")), "执行对话真的把文件写了", 25000);
 	check("施工发生在执行对话（文件落盘）", existsSync(join(workDir, "executor-wrote.txt")));
+	check(
+		"委派执行请求遵守工具禁用设置",
+		requestTools.length > 0 && requestTools.every((tools) => tools.every((name) => ["read", "write"].includes(name))),
+	);
 
 	// ── 4. 关闭 → 恢复普通对话（主对话自己能写） ──────────────────────────
 	send({ type: "set_delegate_mode", enabled: false });
@@ -228,6 +240,10 @@ try {
 	await waitFor(() => (snapshot?.messages ?? []).length > markCount, "关闭后主对话回包");
 	await waitFor(() => existsSync(join(workDir, "main-wrote.txt")), "主对话自己写文件", 25000);
 	check("关闭后主对话恢复自己施工", existsSync(join(workDir, "main-wrote.txt")));
+	check(
+		"关闭委派重载后仍保留工具禁用设置",
+		requestTools.at(-1)?.every((name) => ["read", "write"].includes(name)) === true,
+	);
 	check("关闭后不再自动派活（无新的执行对话 id）", !snapshot?.delegateConvId);
 
 	// ── 5. 转录落 delegate/mode（主对话跑完一轮后才有 jsonl） ─────────────

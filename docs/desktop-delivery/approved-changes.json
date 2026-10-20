@@ -30,5 +30,13 @@
 		"baselineSha256": "3378198f7ad9b8c15456bddc1f937800a6b6eb6133ae8c57f2ec73728731cd0a",
 		"sha256": "960bd5507e4b7eac3caa2b1a235019deaeafe6c02291043fcc23f1468c768988",
 		"scope": "One existing onToolsChanged callback after reload aggregates new tools and closes stale clients"
+	},
+	{
+		"path": "server/agent-service.ts",
+		"decision": "D06",
+		"approvedBy": "User explicit reply on 2026-10-20",
+		"baselineSha256": "5d842a224171c6878cbabcf8495c75fa5cc0c4f36a63c61b27dbd0102441abbf",
+		"sha256": "604ef8b58f345711649ca90f9423b9280c79150f375a099b46827635ac9c3f8c",
+		"scope": "One existing applyToolGating call after delegate mode reload; preserve disabled tools in Web/CLI and desktop"
 	}
 ]

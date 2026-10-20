@@ -1,0 +1,2 @@
+Original Delegate Mode created an executor and wrote the requested file
+{"status":"FAIL","error":"Provider forwarding stopped; see proxyError","proxyError":"Cumulative eight-request allowance exhausted","requests":6,"fixture":"/tmp/pi-goal-EFHPGe"}

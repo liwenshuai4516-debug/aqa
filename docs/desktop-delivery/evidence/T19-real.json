@@ -1,0 +1,256 @@
+{
+  "fixture": "/tmp/pi-goal-EFHPGe",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "mode": "real DeepSeek",
+  "checks": [
+    "Original Delegate Mode created an executor and wrote the requested file"
+  ],
+  "requests": [
+    {
+      "ordinal": 3,
+      "stage": "delegate",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 4982
+    },
+    {
+      "ordinal": 4,
+      "stage": "delegate",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 5392
+    },
+    {
+      "ordinal": 5,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 5404
+    },
+    {
+      "ordinal": 6,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 5802
+    },
+    {
+      "ordinal": 7,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 6108
+    },
+    {
+      "ordinal": 8,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 7288
+    }
+  ],
+  "status": "FAIL",
+  "goalStatus": {
+    "conversationId": "c1",
+    "goal": "Use write to create goal-proof.txt containing exactly GOAL_OK. Do not read first. Reviewer: use read to verify that exact file content and return the required verdict JSON only.",
+    "reviewModel": null,
+    "maxRounds": 1,
+    "locked": true,
+    "execModel": "acceptance/deepseek-flash",
+    "phase": "reviewing",
+    "reviewing": true,
+    "round": 1,
+    "status": "审查中（第 1/1 轮）…",
+    "verdict": "pending",
+    "wizard": {
+      "active": false,
+      "draft": "",
+      "model": null,
+      "step": 0,
+      "maxSteps": 6,
+      "status": "",
+      "statusEn": ""
+    },
+    "usage": {
+      "inputTokens": 762,
+      "outputTokens": 212
+    },
+    "roles": {
+      "executor": {
+        "convId": "conv-c54ce377",
+        "spawned": true,
+        "streaming": false,
+        "activity": "I created `/private/tmp/pi-goal-EFHPGe/workspace/goal-proof.",
+        "activityEn": "I created `/private/tmp/pi-goal-EFHPGe/workspace/goal-proof."
+      }
+    },
+    "statusEn": "Reviewing (round 1/1)…"
+  },
+  "lastRequestShape": {
+    "bytes": 7594,
+    "messages": [
+      {
+        "role": "system",
+        "bytes": 3105
+      },
+      {
+        "role": "user",
+        "bytes": 179
+      },
+      {
+        "role": "user",
+        "bytes": 2302
+      },
+      {
+        "role": "assistant",
+        "bytes": 219
+      },
+      {
+        "role": "tool",
+        "bytes": 85
+      }
+    ],
+    "tools": [
+      {
+        "name": "read",
+        "bytes": 1102
+      },
+      {
+        "name": "write",
+        "bytes": 430
+      }
+    ]
+  },
+  "delegateConvId": "conv-c15fcd41",
+  "goalExecutor": "conv-c54ce377",
+  "proxyError": "Cumulative eight-request allowance exhausted",
+  "error": "Provider forwarding stopped; see proxyError",
+  "budget": {
+    "priorRequests": 2,
+    "priorReservedCny": 0.1,
+    "requests": [
+      {
+        "ordinal": 3,
+        "reservedCny": 0.1,
+        "inputBytes": 4982,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1307,
+          "completion_tokens": 74,
+          "total_tokens": 1381,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 1307
+        }
+      },
+      {
+        "ordinal": 4,
+        "reservedCny": 0.1,
+        "inputBytes": 5392,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1416,
+          "completion_tokens": 2,
+          "total_tokens": 1418,
+          "prompt_tokens_details": {
+            "cached_tokens": 1280
+          },
+          "prompt_cache_hit_tokens": 1280,
+          "prompt_cache_miss_tokens": 136
+        }
+      },
+      {
+        "ordinal": 5,
+        "reservedCny": 0.1,
+        "inputBytes": 5404,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1397,
+          "completion_tokens": 72,
+          "total_tokens": 1469,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 373
+        }
+      },
+      {
+        "ordinal": 6,
+        "reservedCny": 0.1,
+        "inputBytes": 5802,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1504,
+          "completion_tokens": 54,
+          "total_tokens": 1558,
+          "prompt_tokens_details": {
+            "cached_tokens": 1280
+          },
+          "prompt_cache_hit_tokens": 1280,
+          "prompt_cache_miss_tokens": 224
+        }
+      },
+      {
+        "ordinal": 7,
+        "reservedCny": 0.1,
+        "inputBytes": 6108,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1573,
+          "completion_tokens": 86,
+          "total_tokens": 1659,
+          "prompt_tokens_details": {
+            "cached_tokens": 1408
+          },
+          "prompt_cache_hit_tokens": 1408,
+          "prompt_cache_miss_tokens": 165
+        }
+      },
+      {
+        "ordinal": 8,
+        "reservedCny": 0.1,
+        "inputBytes": 7288,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1819,
+          "completion_tokens": 54,
+          "total_tokens": 1873,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 795
+        }
+      }
+    ]
+  },
+  "notices": [
+    "设置已应用",
+    "🔎 审查者模式：本对话只审阅，你的每条请求已由服务端转给常驻执行对话执行",
+    "🔎 已派给执行对话：Use write now to create delegate-proof.txt containing exactly DELEGATE_OK. Then reply Done. Do not read or use other too…（本对话只审阅）",
+    "审查者模式已关闭：恢复正常对话（本对话可以直接施工）",
+    "🎯 已设目标：Use write to create goal-proof.txt containing exactly GOAL_OK. Do not read first…",
+    "✅ 执行对话已交付，请审阅：[{\"type\":\"text\",\"text\":\"Done.\"}]（左栏「委派执行」可打开看全文）"
+  ]
+}

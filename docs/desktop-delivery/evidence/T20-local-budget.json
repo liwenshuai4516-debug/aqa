@@ -1,0 +1,144 @@
+{
+  "priorRequests": 2,
+  "priorReservedCny": 0.1,
+  "requests": [
+    {
+      "ordinal": 3,
+      "reservedCny": 0.1,
+      "inputBytes": 4982,
+      "status": "completed",
+      "httpStatus": 200,
+      "usage": {
+        "prompt_tokens": 1307,
+        "completion_tokens": 74,
+        "total_tokens": 1381,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 1307
+      }
+    },
+    {
+      "ordinal": 4,
+      "reservedCny": 0.1,
+      "inputBytes": 5392,
+      "status": "completed",
+      "httpStatus": 200,
+      "usage": {
+        "prompt_tokens": 1416,
+        "completion_tokens": 2,
+        "total_tokens": 1418,
+        "prompt_tokens_details": {
+          "cached_tokens": 1280
+        },
+        "prompt_cache_hit_tokens": 1280,
+        "prompt_cache_miss_tokens": 136
+      }
+    },
+    {
+      "ordinal": 5,
+      "reservedCny": 0.1,
+      "inputBytes": 5404,
+      "status": "completed",
+      "httpStatus": 200,
+      "usage": {
+        "prompt_tokens": 1397,
+        "completion_tokens": 72,
+        "total_tokens": 1469,
+        "prompt_tokens_details": {
+          "cached_tokens": 1024
+        },
+        "prompt_cache_hit_tokens": 1024,
+        "prompt_cache_miss_tokens": 373
+      }
+    },
+    {
+      "ordinal": 6,
+      "reservedCny": 0.1,
+      "inputBytes": 5802,
+      "status": "completed",
+      "httpStatus": 200,
+      "usage": {
+        "prompt_tokens": 1504,
+        "completion_tokens": 54,
+        "total_tokens": 1558,
+        "prompt_tokens_details": {
+          "cached_tokens": 1280
+        },
+        "prompt_cache_hit_tokens": 1280,
+        "prompt_cache_miss_tokens": 224
+      }
+    },
+    {
+      "ordinal": 7,
+      "reservedCny": 0.1,
+      "inputBytes": 6108,
+      "status": "completed",
+      "httpStatus": 200,
+      "usage": {
+        "prompt_tokens": 1573,
+        "completion_tokens": 86,
+        "total_tokens": 1659,
+        "prompt_tokens_details": {
+          "cached_tokens": 1408
+        },
+        "prompt_cache_hit_tokens": 1408,
+        "prompt_cache_miss_tokens": 165
+      }
+    },
+    {
+      "ordinal": 8,
+      "reservedCny": 0.1,
+      "inputBytes": 7288,
+      "status": "completed",
+      "httpStatus": 200,
+      "usage": {
+        "prompt_tokens": 1819,
+        "completion_tokens": 54,
+        "total_tokens": 1873,
+        "prompt_tokens_details": {
+          "cached_tokens": 1024
+        },
+        "prompt_cache_hit_tokens": 1024,
+        "prompt_cache_miss_tokens": 795
+      }
+    },
+    {
+      "ordinal": 9,
+      "reservedCny": 0.1,
+      "inputBytes": 5411,
+      "status": "local-completed"
+    },
+    {
+      "ordinal": 10,
+      "reservedCny": 0.1,
+      "inputBytes": 5751,
+      "status": "local-completed"
+    },
+    {
+      "ordinal": 11,
+      "reservedCny": 0.1,
+      "inputBytes": 6887,
+      "status": "local-completed"
+    },
+    {
+      "ordinal": 12,
+      "reservedCny": 0.1,
+      "inputBytes": 7173,
+      "status": "local-completed"
+    },
+    {
+      "ordinal": 13,
+      "reservedCny": 0.1,
+      "inputBytes": 7412,
+      "status": "local-completed"
+    },
+    {
+      "ordinal": 14,
+      "reservedCny": 0.1,
+      "inputBytes": 8159,
+      "status": "local-completed"
+    }
+  ]
+}

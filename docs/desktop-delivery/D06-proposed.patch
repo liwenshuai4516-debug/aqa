@@ -1,0 +1,10 @@
+diff --git a/server/agent-service.ts b/server/agent-service.ts
+--- a/server/agent-service.ts
++++ b/server/agent-service.ts
+@@ -7923,5 +7923,6 @@
+ 		try {
+ 			await target.session.reload?.();
++			this.applyToolGating(target.session, target.agentPreset);
+ 		} catch {
+ 			// best effort
+ 		}

@@ -1,0 +1,125 @@
+{
+  "fixture": "/tmp/pi-goal-6Q4WJ2",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-cDWh9l/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "mode": "scripted local provider",
+  "checks": [
+    "Original Delegate Mode created an executor and wrote the requested file"
+  ],
+  "requests": [
+    {
+      "ordinal": 3,
+      "stage": "delegate",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 4982
+    },
+    {
+      "ordinal": 4,
+      "stage": "delegate",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 5334
+    },
+    {
+      "ordinal": 5,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 5404
+    },
+    {
+      "ordinal": 6,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 5744
+    }
+  ],
+  "status": "FAIL",
+  "goalStatus": {
+    "conversationId": "c1",
+    "goal": "Use write to create goal-proof.txt containing exactly GOAL_OK. Do not read first. Reviewer: use read to verify that exact file content and return the required verdict JSON only.",
+    "reviewModel": null,
+    "maxRounds": 1,
+    "locked": true,
+    "execModel": "acceptance/deepseek-flash",
+    "phase": "reviewing",
+    "reviewing": true,
+    "round": 1,
+    "status": "审查中（第 1/1 轮）…",
+    "verdict": "pending",
+    "wizard": {
+      "active": false,
+      "draft": "",
+      "model": null,
+      "step": 0,
+      "maxSteps": 6,
+      "status": "",
+      "statusEn": ""
+    },
+    "usage": {
+      "inputTokens": 0,
+      "outputTokens": 0
+    },
+    "roles": {
+      "executor": {
+        "convId": "conv-bb7c59d8",
+        "spawned": true,
+        "streaming": false,
+        "activity": "Verified. Done.",
+        "activityEn": "Verified. Done."
+      }
+    },
+    "statusEn": "Reviewing (round 1/1)…"
+  },
+  "delegateConvId": "conv-cadfd6a0",
+  "goalExecutor": "conv-bb7c59d8",
+  "proxyError": "Input byte allowance exceeded",
+  "error": "Provider forwarding stopped; see proxyError",
+  "budget": {
+    "priorRequests": 2,
+    "priorReservedCny": 0.1,
+    "requests": [
+      {
+        "ordinal": 3,
+        "reservedCny": 0.1,
+        "inputBytes": 4982,
+        "status": "local-completed"
+      },
+      {
+        "ordinal": 4,
+        "reservedCny": 0.1,
+        "inputBytes": 5334,
+        "status": "local-completed"
+      },
+      {
+        "ordinal": 5,
+        "reservedCny": 0.1,
+        "inputBytes": 5404,
+        "status": "local-completed"
+      },
+      {
+        "ordinal": 6,
+        "reservedCny": 0.1,
+        "inputBytes": 5744,
+        "status": "local-completed"
+      }
+    ]
+  },
+  "notices": [
+    "设置已应用",
+    "🔎 审查者模式：本对话只审阅，你的每条请求已由服务端转给常驻执行对话执行",
+    "🔎 已派给执行对话：Use write now to create delegate-proof.txt containing exactly DELEGATE_OK. Then reply Done. Do not read or use other too…（本对话只审阅）",
+    "审查者模式已关闭：恢复正常对话（本对话可以直接施工）",
+    "🎯 已设目标：Use write to create goal-proof.txt containing exactly GOAL_OK. Do not read first…",
+    "✅ 执行对话已交付，请审阅：[{\"type\":\"text\",\"text\":\"Verified. Done.\"}]（左栏「委派执行」可打开看全文）"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "fixture": "/tmp/pi-goal-tLK01z",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-cDWh9l/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "mode": "scripted local provider",
+  "checks": [],
+  "requests": [],
+  "status": "FAIL",
+  "error": "Error",
+  "budget": {
+    "priorRequests": 2,
+    "priorReservedCny": 0.1,
+    "requests": []
+  },
+  "notices": []
+}
