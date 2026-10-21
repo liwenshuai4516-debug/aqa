@@ -2152,6 +2152,7 @@ const apiTestingRunner = new ApiTestingRunner(
 	join(DATA_DIR, "plugins", "api-testing"),
 );
 pluginMgr.mcpCaller = apiTestingRunner.call;
+pluginMgr.apiScheduleProvider = apiTestingRunner.attachScheduler;
 const mcpBridge = new McpBridge(DATA_DIR, (...a) => console.log("[mcp]", ...a), {
 	agentDir: getAgentDir(),
 	cwd: CWD,

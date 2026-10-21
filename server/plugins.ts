@@ -100,7 +100,13 @@ import {
 	type McpInstallSpec,
 	type McpInstallResult,
 } from "./mcp-manager.js";
-import { callPluginMcp, type PluginMcpCaller, type PluginMcpRequest, type PluginToolContext } from "./plugin-mcp.js";
+import {
+	callPluginMcp,
+	type PluginApiScheduleHost,
+	type PluginMcpCaller,
+	type PluginMcpRequest,
+	type PluginToolContext,
+} from "./plugin-mcp.js";
 import type { McpBridge } from "./mcp-bridge.js";
 import type { UiMcpServer } from "./protocol.js";
 import type { Request, Response } from "express";
@@ -673,8 +679,15 @@ export interface PluginHost {
 	 *  持久任务的毫秒间隔底线 60s（内存版 10s）。 */
 	schedule(
 		cronOrMs: string | number,
-		fn: () => void,
-		opts?: { id?: string; persistent?: boolean; catchUp?: "skip" | "once"; label?: string },
+		fn: (tick: { scheduledAt: number; firedAt: number }) => void,
+		opts?: {
+			id?: string;
+			persistent?: boolean;
+			catchUp?: "skip" | "once";
+			label?: string;
+			strictPersistence?: boolean;
+			onStop?: () => void;
+		},
 	): () => void;
 	/** 插件可见的模型列表（经 modelLister 注入点；无注入回 []）。 */
 	models: {
@@ -2350,6 +2363,8 @@ export class PluginManager {
 	mcpBridge: McpBridge | undefined = undefined;
 	/** Dedicated controlled runner provider; never added to the model tool registry. */
 	mcpCaller: PluginMcpCaller | undefined = undefined;
+	/** Dedicated fixture scheduling service. No chat identity is retained. */
+	apiScheduleProvider: ((host: PluginApiScheduleHost) => Promise<void>) | undefined;
 	/** 插件能力动态授权表（host.requestPermission 的底层，见 server/plugin-permissions.ts）。 */
 	readonly permGrants: PluginPermissionStore;
 	/** 由 index.ts 注入：向浏览器请求能力授权的用户确认（{ok, remember}）。
@@ -4505,7 +4520,7 @@ export class PluginManager {
 						...(prev?.lastRun !== undefined ? { lastRun: prev.lastRun } : {}),
 						createdAt: prev?.createdAt ?? Date.now(),
 					};
-					saveScheduleRecords(dir, records);
+					saveScheduleRecords(dir, records, opts?.strictPersistence);
 				}
 				let timer: NodeJS.Timeout | undefined;
 				let grace: NodeJS.Timeout | undefined;
@@ -4561,18 +4576,35 @@ export class PluginManager {
 					};
 					fireBg();
 				}
-				const fire = (): void => {
+				const fire = (scheduledAt = Date.now()): void => {
 					if (cancelled) return;
-					if (persistent) {
-						const records = loadScheduleRecords(dir);
-						const rec = records[sid];
-						if (rec) {
-							rec.lastRun = Date.now();
-							saveScheduleRecords(dir, records);
+					try {
+						if (persistent) {
+							const records = loadScheduleRecords(dir);
+							const rec = records[sid];
+							if (opts?.strictPersistence && (!rec || rec.spec !== specText || rec.catchUp !== catchUp))
+								throw new Error("Schedule declaration is missing or changed");
+							if (rec) {
+								rec.lastRun = Date.now();
+								saveScheduleRecords(dir, records, opts?.strictPersistence);
+							}
 						}
+					} catch (error) {
+						cancelTimer();
+						bgUnreg?.();
+						try {
+							opts?.onStop?.();
+						} catch {
+							/* Timer is already stopped. */
+						}
+						console.error(`[plugin:${info.id}] schedule trigger persistence failed:`, error);
+						return;
 					}
 					try {
-						const r = (fn as () => unknown)();
+						const r = (fn as (tick: { scheduledAt: number; firedAt: number }) => unknown)({
+							scheduledAt,
+							firedAt: Date.now(),
+						});
 						if (r instanceof Promise) {
 							r.catch((err) => console.error(`[plugin:${info.id}] scheduled task failed:`, err));
 						}
@@ -4596,9 +4628,7 @@ export class PluginManager {
 					timer = setTimeout(
 						() => {
 							if (cancelled) return;
-							const at = nextCronFire(parts, Date.now());
-							if (at === null) return;
-							if (at <= Date.now() + 1000) fire();
+							if (next <= Date.now()) fire(next);
 							armCron();
 						},
 						armDelay(next, Date.now()),
@@ -4607,7 +4637,12 @@ export class PluginManager {
 				};
 				if (parts) armCron();
 				else {
-					timer = setInterval(fire, ms);
+					let dueAt = Date.now() + ms;
+					timer = setInterval(() => {
+						const planned = dueAt;
+						dueAt = Math.max(planned + ms, Date.now() + ms);
+						fire(planned);
+					}, ms);
 					timer.unref?.();
 				}
 				// 漏跑补跑：以上次触发（没跑过按创建时间）为锚，下一次已在过去=漏了。
@@ -4636,17 +4671,21 @@ export class PluginManager {
 				};
 				const off = (): void => {
 					cancelTimer();
+					opts?.onStop?.();
 					bgUnreg?.();
 					if (persistent) {
 						const records = loadScheduleRecords(dir);
 						if (sid in records) {
 							delete records[sid];
-							saveScheduleRecords(dir, records);
+							saveScheduleRecords(dir, records, opts?.strictPersistence);
 						}
 					}
 				};
 				// 反激活只停表、不断持久化：下次 activate 重调 schedule() 即按落盘声明重建。
-				effects.add(`schedule:${sid}`, cancelTimer);
+				effects.add(`schedule:${sid}`, () => {
+					cancelTimer();
+					bgUnreg?.();
+				});
 				return off;
 			},
 			models: {
@@ -4906,6 +4945,22 @@ export class PluginManager {
 				legacyWarned: gateWarned,
 				settingsHandlers,
 			});
+			if (info.id === "api-testing" && self.apiScheduleProvider && existsSync(join(dir, "schedules.mjs"))) {
+				const stopped = new AbortController();
+				effects.add("api-schedules", () => stopped.abort(new Error("Plugin deactivated")));
+				const cwd = self.cwdValue;
+				await self.apiScheduleProvider({
+					cwd,
+					signal: stopped.signal,
+					declaration: (id) => loadScheduleRecords(dir)[id],
+					verify() {
+						stopped.signal.throwIfAborted();
+						if (self.cwdValue !== cwd || !can("tools"))
+							throw new Error("Scheduled project or plugin permission changed");
+					},
+					schedule: host.schedule,
+				});
+			}
 			console.log(`[plugin:${info.id}] activated (v${info.version ?? "?"})`);
 			// 首次安装/能力变更提醒（尽力而为）：<dir>/.pi-approved 记录上次激活时
 			// 的能力清单——新装或 permissions 变更后向在线客户端推一条警告通知，

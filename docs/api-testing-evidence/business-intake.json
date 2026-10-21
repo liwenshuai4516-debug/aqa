@@ -89,7 +89,8 @@
 		"unattendedAuthorized": false
 	},
 	"remainingConditions": [
-		"业务测试数据、鉴权方式及明确业务规则尚未确认",
+		"公开前端已查明登录形式，仍无可使用的专用测试凭据；不猜测账户或借用个人会话",
+		"创建业务的隔离数据/成功业务取值尚无可信依据；不把 HTTP 200 等同业务成功",
 		"契约响应媒体为 */*，不推定 JSON",
 		"运行器 OS 文件/网络隔离未证明，仅允许 fixture"
 	],
@@ -103,5 +104,16 @@
 		"status": "passed-real-model-fixture",
 		"evidence": "P1-4-model-summary.json",
 		"credentialHandling": "SDK 正常认证调用；未输出或复制密钥"
+	},
+	"followup": {
+		"date": "2026-10-21",
+		"authorization": "用户要求自行处理接入条件；不读取个人凭据、不绕过登录",
+		"access": "仅 GET 测试环境公开 HTML/JS，无业务 API 请求",
+		"frontendStatus": 200,
+		"baseURL": "/api",
+		"authentication": "公开前端代码使用 token 请求头及 x-parent-client-code/x-client-code；密码登录包含 captchaVerification",
+		"frontendSha256": "619040e2dc094da48e7db4411a432c61782a93b704d75b89356628a7eddec678",
+		"loginAvailable": false,
+		"rules": "OAS 只声明 200 和 */*；未从登录页面推断创建成功业务取值"
 	}
 }

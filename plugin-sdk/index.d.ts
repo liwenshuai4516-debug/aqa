@@ -123,6 +123,10 @@ export interface PluginHostScheduleOptions {
 	catchUp?: "skip" | "once";
 	/** 后台面板显示名（缺省 id）。 */
 	label?: string;
+	/** Fail closed when persisting the declaration or trigger fails. */
+	strictPersistence?: boolean;
+	/** Explicit Stop hook; not called on plugin deactivation. Persist business pause here. */
+	onStop?: () => void;
 }
 
 /** host.fs：工作区相对方法 + 跨目录 *Path 方法（后者需用户授权）。 */
@@ -268,7 +272,11 @@ export interface PluginHost {
 	};
 	ensureDeps(specs: string[], opts?: { onProgress?: (msg: string) => void }): Promise<boolean>;
 	fs: PluginHostFs;
-	schedule(spec: string | number, fn: () => void, opts?: PluginHostScheduleOptions): () => void;
+	schedule(
+		spec: string | number,
+		fn: (tick: { scheduledAt: number; firedAt: number }) => void,
+		opts?: PluginHostScheduleOptions,
+	): () => void;
 	requestPermission(req: PluginPermissionRequest): Promise<boolean>;
 	getSettings(): Record<string, unknown>;
 	onSettingsChanged(handler: (values: Record<string, unknown>) => void): () => void;

@@ -1,0 +1,143 @@
+{
+	"task": "P3-1",
+	"status": "passed-fixture-scheduling",
+	"timer": {
+		"task": "P3-1",
+		"status": "passed",
+		"scope": "real MCP/Newman, explicit review stub; no business calls",
+		"checks": [
+			{
+				"name": "live-approved-P1-package-published-outside-removable-plugin",
+				"status": "passed"
+			},
+			{
+				"name": "schedule-requires-same-version-manual-pass",
+				"status": "passed"
+			},
+			{
+				"name": "fixed-version-environment-expiring-fixture-lease-persisted-before-enable",
+				"status": "passed"
+			},
+			{
+				"name": "actual-host-persistent-timer-real-MCP-Newman-success-zero-model-calls",
+				"status": "passed"
+			},
+			{
+				"name": "planned-UTC-claim-links-new-run-and-report-with-history",
+				"status": "passed"
+			},
+			{
+				"name": "background-stop-persists-business-pause",
+				"status": "passed"
+			},
+			{
+				"name": "stopped-schedule-does-not-revive-after-new-host-and-runner",
+				"status": "passed"
+			},
+			{
+				"name": "enabled-definition-resumes-on-new-host-without-replaying-missed-requests",
+				"status": "passed"
+			}
+		],
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-Nu2Ofo",
+		"hits": 2,
+		"modelCalls": 1,
+		"completedTrigger": {
+			"schemaVersion": 1,
+			"projectId": "121d898b447ece90ce9c08af5930b215bb97b621125627ca7df89b15152ce88d",
+			"scheduleId": "33462f96-1546-42b2-bb82-b3bd0bb72f21",
+			"revision": 1,
+			"dueAtUTC": "2026-10-21T11:50:08.626Z",
+			"firedAt": "2026-10-21T11:50:08.629Z",
+			"status": "completed",
+			"runId": "6494167d-a4dc-4c69-b3e0-7522c0ad7817",
+			"executionVerdict": "passed",
+			"modelCalls": {
+				"generation": 0,
+				"review": 0,
+				"analysis": 0
+			}
+		}
+	},
+	"guards": {
+		"task": "P3-1",
+		"status": "passed",
+		"scope": "explicit scheduler/executor doubles; no real timer or MCP in guard test",
+		"checks": [
+			{
+				"name": "duplicate-planned-time-claim-never-reexecutes",
+				"status": "passed"
+			},
+			{
+				"name": "missed-trigger-skipped-with-evidence",
+				"status": "passed"
+			},
+			{
+				"name": "overlap-skips-without-clearing-active-run",
+				"status": "passed"
+			},
+			{
+				"name": "claim-write-failure-sends-no-request-and-stops",
+				"status": "passed"
+			},
+			{
+				"name": "business-definition-write-failure-does-not-enable",
+				"status": "passed"
+			},
+			{
+				"name": "host-declaration-write-failure-pauses-business-definition",
+				"status": "passed"
+			},
+			{
+				"name": "permission-revocation-pauses-before-request",
+				"status": "passed"
+			},
+			{
+				"name": "unknown-writes-block-unattended-execution",
+				"status": "passed"
+			},
+			{
+				"name": "timezone-definition-change-pauses-instead-of-executing",
+				"status": "passed"
+			},
+			{
+				"name": "authorizationExpiresAt-definition-change-pauses-instead-of-executing",
+				"status": "passed"
+			},
+			{
+				"name": "assetRef-definition-change-pauses-instead-of-executing",
+				"status": "passed"
+			},
+			{
+				"name": "restart-missing-host-declaration-pauses-business-record",
+				"status": "passed"
+			},
+			{
+				"name": "authorization-lease-expiry-pauses-before-request",
+				"status": "passed"
+			},
+			{
+				"name": "live-server-timezone-change-pauses-before-request",
+				"status": "passed"
+			},
+			{
+				"name": "revocation-during-run-aborts-only-its-signal-and-preserves-unknown-run-link",
+				"status": "passed"
+			}
+		],
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-guards-psrVDZ"
+	},
+	"realBusiness": "not-executed",
+	"realCredentialExpiry": "unsupported; anonymous fixture leases only",
+	"validation": {
+		"relatedUnits": "39/39",
+		"coreSmoke": "22/22",
+		"persistenceRegression": "15/15",
+		"managementRegression": "14/14",
+		"typecheck": "passed",
+		"build": "passed",
+		"lint": "passed",
+		"protocol": "main check passed; tag heuristic SKIP"
+	},
+	"localEvidence": "tests/scratch/api-testing-p3-1/evidence"
+}

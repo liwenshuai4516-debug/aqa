@@ -4,7 +4,7 @@ import { mkdirSync, readFileSync, realpathSync, writeFileSync, symlinkSync, exis
 import { isAbsolute, join, relative, resolve } from "node:path";
 import { McpClient } from "./mcp-bridge.js";
 import { pathToFileURL } from "node:url";
-import type { PluginModelComplete, PluginMcpRequest, PluginToolContext } from "./plugin-mcp.js";
+import type { PluginApiScheduleHost, PluginModelComplete, PluginMcpRequest, PluginToolContext } from "./plugin-mcp.js";
 
 const sha256 = (bytes: string | Buffer): string => createHash("sha256").update(bytes).digest("hex");
 const readJson = (path: string): Record<string, any> => JSON.parse(readFileSync(path, "utf8"));
@@ -22,6 +22,11 @@ interface FixtureApproval {
 
 export class ApiTestingRunner {
 	private workflow: Promise<any> | undefined;
+	private scheduler: PluginApiScheduleHost | undefined;
+	readonly attachScheduler = async (host: PluginApiScheduleHost): Promise<void> => {
+		this.scheduler = host;
+		await (await this.getWorkflow()).attachScheduler(host);
+	};
 	private workflowFingerprint: string | undefined;
 	private readonly approvals = new Map<string, FixtureApproval>();
 	private readonly attempted = new Set<string>();
@@ -98,7 +103,15 @@ export class ApiTestingRunner {
 
 	private async getWorkflow(): Promise<any> {
 		if (process.platform === "win32") throw new Error("Fixture workflow is not verified on Windows");
-		const names = ["suite.mjs", "review.mjs", "workflow.mjs", "report.mjs", "assets.mjs", "asset-management.mjs"];
+		const names = [
+			"suite.mjs",
+			"review.mjs",
+			"workflow.mjs",
+			"report.mjs",
+			"assets.mjs",
+			"asset-management.mjs",
+			"schedules.mjs",
+		];
 		const sources = names.map((name) => readFileSync(join(this.pluginRoot, name)));
 		const executionSources = ["runner.mjs", "network-guard.cjs", "package-lock.json"].map((name) =>
 			readFileSync(join(this.pluginRoot, name)),
@@ -130,6 +143,7 @@ export class ApiTestingRunner {
 					approve: (input: any) => this.approveFixture({ ...input, trustedAssetRoot: assetRoot }),
 					execute: this.call,
 				});
+				if (this.scheduler) await assets.attachScheduler(this.scheduler);
 				return createWorkflow({ approve: (input: any) => this.approveFixture(input), execute: this.call, assets });
 			})();
 			this.workflow.catch(() => {

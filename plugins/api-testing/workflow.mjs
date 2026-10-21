@@ -49,6 +49,7 @@ export function createWorkflow({ approve, execute, assets }) {
 			{ mode: 0o600 },
 		);
 	return {
+		attachScheduler: (host) => assets.attachScheduler(host),
 		dispose() {
 			if ([...workflows.values()].some((state) => state.busy)) fail("API workflow is still active");
 			assets.close();
@@ -57,7 +58,8 @@ export function createWorkflow({ approve, execute, assets }) {
 			signal.throwIfAborted();
 			const input = structuredClone(request.input ?? {}),
 				action = input.action;
-			if (typeof action === "string" && action.startsWith("asset_")) return assets.call(identity, input, signal);
+			if (typeof action === "string" && (action.startsWith("asset_") || action.startsWith("schedule_")))
+				return assets.call(identity, input, signal);
 			if (!allowed[action] || Object.keys(input).some((key) => !allowed[action].includes(key)))
 				fail("Unknown workflow action or argument");
 			if (action === "prepare") {

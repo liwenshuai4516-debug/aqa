@@ -537,7 +537,10 @@ export function createMockHost(overrides) {
 				return scheduleStore;
 			},
 			// 依次触发全部已登记的定时回调（返回各回调返回值；抛错即 reject）。
-			fireSchedules: () => Promise.all(scheduleStore.map((s) => s.fn())),
+			fireSchedules: () => {
+				const at = Date.now();
+				return Promise.all(scheduleStore.map((s) => s.fn({ scheduledAt: at, firedAt: at })));
+			},
 		},
 		reset: () => {
 			calls.length = 0;

@@ -1,0 +1,68 @@
+[
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-3dTDoE",
+		"status": "failed",
+		"checksPassed": 5,
+		"error": "TypeError: manager.stopBgTask is not a function\n    at <anonymous> (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/api-testing-schedules-test.mjs:147:10)"
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-guards-3cU4Af",
+		"status": "failed",
+		"checksPassed": 6,
+		"error": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /permission revoked/. Input:\n\n'stopped; explicit new authorization required'\n\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/api-testing-schedule-guards-test.mjs:62:9"
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-guards-7OXzLd",
+		"status": "passed",
+		"checksPassed": 12,
+		"error": null
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-Rk8cG4",
+		"status": "passed",
+		"checksPassed": 7,
+		"error": null
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-guards-qs5XtW",
+		"status": "passed",
+		"checksPassed": 14,
+		"error": null
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-zL6Vjd",
+		"status": "passed",
+		"checksPassed": 8,
+		"error": null
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-guards-uVfLYf",
+		"status": "failed",
+		"checksPassed": 0,
+		"error": "ReferenceError: guardFailure is not defined\n    at Object.call (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/plugins/api-testing/schedules.mjs:249:5)\n    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/api-testing-schedule-guards-test.mjs:99:2"
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-guards-RoJZ4m",
+		"status": "passed",
+		"checksPassed": 14,
+		"error": null
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-guards-Y7z6sO",
+		"status": "failed",
+		"checksPassed": 14,
+		"error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'passed'\n- 'unknown'\n\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/api-testing-schedule-guards-test.mjs:221:9"
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-Nu2Ofo",
+		"status": "passed",
+		"checksPassed": 8,
+		"error": null
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-guards-psrVDZ",
+		"status": "passed",
+		"checksPassed": 15,
+		"error": null
+	}
+]

@@ -1,6 +1,6 @@
 # 接口自动化测试分阶段执行计划
 
-状态：2026-10-21 已完成 P0-1 的 fixture 可行性验证，真实目标因隔离缺口阻塞；P0-2 已实施受控 fixture 接线，详见下方执行记录；P1-1 已完成导入/编译模块验收；P1-2 评审控制工程验收通过，实际模型待 P1-4；P1-3 及以后尚未验收。详细证据见 [P0-1 验收记录](api-testing-evidence/P0-1.md)。原设计复审不计作功能验收。
+状态：2026-10-21 P0–P2 的 fixture 工程验收及 P1-4 实际 GPT 验收已完成；P3-1 已完成 fixture 定时执行，真实业务仍受鉴权/规则及 OS 隔离限制。按 §7 逐条记录区分工程、模型与真实业务结果。
 
 [总体设计](api-testing-workflow-design.md) · [资产设计](api-testing-assets-design.md) · [模块规范](module-development.md) · [AGENTS.md](../AGENTS.md)
 
@@ -143,3 +143,5 @@ P1 工程验收通过后可以开展 P2 本地管理；没有用户真实环境�
 | P2-2 | fixture 最小资产管理工程通过 | [记录](api-testing-evidence/P2-2.md)、[摘要](api-testing-evidence/P2-2-summary.json)、[历史](api-testing-evidence/P2-2-attempts.json) | 14/14 管理检查；P2-1 15/15、P1 闭环 17/17；52/52 相关单测，build 通过 | 复用现有工具卡片，无新工作台；备份信任限同宿主/项目/策略，异宿主需重新评审；下一步 P3-1 |
 
 完成一个阶段的标准：对应任务有证据、关键失败路径验证、文档与代码一致、无冒充成功的 SKIP/unknown；未解决事项明确归属。不要用测试数量或提交数量代替业务验收。
+
+| P3-1 | fixture 定时执行工程通过 | [记录](api-testing-evidence/P3-1.md)、[摘要](api-testing-evidence/P3-1-summary.json) | 真实 60 秒宿主→MCP/Newman、零模型重跑、后台停止与重启恢复；门禁及运行中撤权验证 | 仅匿名 loopback fixture；真实凭据/真实无人值守未授权、未验收；下一步 P3-2 |

@@ -14,6 +14,7 @@ import { randomUUID } from "node:crypto";
 import { hash } from "./suite.mjs";
 import { inspectDraft, REVIEW_POLICY } from "./review.mjs";
 import { buildReport } from "./report.mjs";
+import { createSchedules } from "./schedules.mjs";
 import { createAssetManagement } from "./asset-management.mjs";
 const json = (x) => JSON.stringify(x, null, 2) + "\n";
 const fail = (message) => {
@@ -186,13 +187,16 @@ export function createAssetStore({ root, policyHash, approve, execute }) {
 		});
 	};
 	const management = createAssetManagement({ root, policyHash, project, load, histories, rebuild });
-	return {
+	const schedules = createSchedules({ project, load, histories, read, atomic, run: (...args) => store.call(...args) });
+	const store = {
+		attachScheduler: (host) => schedules.attach(host),
 		publish,
 		copyRun,
 		isArchived(identity, assetRef) {
 			return management.isArchived(project(identity, false), assetRef);
 		},
 		close() {
+			schedules.close();
 			if (running.size) fail("Stored API run is still active");
 			if (owner) {
 				if (JSON.parse(read(join(root, ".owner.json"))).token !== owner) fail("Asset ownership changed");
@@ -201,6 +205,7 @@ export function createAssetStore({ root, policyHash, approve, execute }) {
 			}
 		},
 		async call(identity, input, signal) {
+			if (input.action?.startsWith("schedule_")) return schedules.call(identity, input);
 			if (management.handles(input.action)) return management.call(identity, input, signal);
 			const allowed = {
 				asset_import: ["action", "sourcePath"],
@@ -344,4 +349,5 @@ export function createAssetStore({ root, policyHash, approve, execute }) {
 			}
 		},
 	};
+	return store;
 }

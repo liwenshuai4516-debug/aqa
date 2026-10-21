@@ -10,7 +10,8 @@
  *    上次触发 lastRun；fn 回调永远由插件代码在 activate 里重给（重启后重建）。
  *    坏文件当空表（不回写，避免一次磁盘抖动清空全部定时）。
  */
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync, renameSync, rmSync } from "node:fs";
+import { randomUUID } from "node:crypto";
 import { join } from "node:path";
 import { writeJsonAtomicSync } from "./atomic-file.js";
 
@@ -230,7 +231,22 @@ export function loadScheduleRecords(pluginDir: string): Record<string, Persisten
 }
 
 /** 写持久记录（tmp+rename 原子写；失败只记日志，内存态本次会话仍生效）。 */
-export function saveScheduleRecords(pluginDir: string, records: Record<string, PersistentScheduleRecord>): void {
+export function saveScheduleRecords(
+	pluginDir: string,
+	records: Record<string, PersistentScheduleRecord>,
+	strict = false,
+): void {
+	if (strict) {
+		const target = scheduleFile(pluginDir),
+			temp = target + ".tmp-" + randomUUID();
+		try {
+			writeFileSync(temp, JSON.stringify({ v: 1, schedules: records }), { flag: "wx", mode: 0o600 });
+			renameSync(temp, target);
+		} finally {
+			rmSync(temp, { force: true });
+		}
+		return;
+	}
 	try {
 		writeJsonAtomicSync(scheduleFile(pluginDir), { v: 1, schedules: records });
 	} catch (err) {

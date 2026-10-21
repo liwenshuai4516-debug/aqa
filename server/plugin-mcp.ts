@@ -90,3 +90,23 @@ export async function callPluginMcp(
 		clearInterval(timer);
 	}
 }
+
+/** Trusted host scheduler binding, never a model argument or a retained chat invocation. */
+export interface PluginApiScheduleHost {
+	readonly cwd: string;
+	readonly signal: AbortSignal;
+	declaration(id: string): { spec: string; catchUp: "skip" | "once" } | undefined;
+	verify(): void;
+	schedule(
+		spec: string | number,
+		fn: (tick: { scheduledAt: number; firedAt: number }) => void,
+		opts: {
+			id: string;
+			persistent: boolean;
+			catchUp: "skip";
+			strictPersistence: boolean;
+			onStop(): void;
+			label: string;
+		},
+	): () => void;
+}
