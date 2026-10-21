@@ -1,0 +1,164 @@
+{
+  "fixture": "/tmp/pi-plan-ui-hiIJTO",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "PASS",
+  "realModelRequests": 0,
+  "checks": [
+    "Original goal bar plan action enables server plan mode",
+    "SDK excludes write from model tools while planning",
+    "Forced write call is rejected without creating a file",
+    "Actual plan_update tool creates original board with Chinese step",
+    "Original board implement action disables server plan mode",
+    "Write tool becomes available after user implementation action",
+    "SDK implementation writes exact expected file bytes"
+  ],
+  "requests": [
+    {
+      "ordinal": 1,
+      "tools": [
+        "read",
+        "bash",
+        "powershell",
+        "grep",
+        "find",
+        "ls",
+        "tool_search",
+        "plan_update",
+        "ask_user_question",
+        "browser_page",
+        "conversation_read",
+        "claim_files",
+        "present_files",
+        "skill",
+        "compact_context",
+        "lsp",
+        "worktree"
+      ],
+      "toolResults": []
+    },
+    {
+      "ordinal": 2,
+      "tools": [
+        "read",
+        "bash",
+        "powershell",
+        "grep",
+        "find",
+        "ls",
+        "tool_search",
+        "plan_update",
+        "ask_user_question",
+        "browser_page",
+        "conversation_read",
+        "claim_files",
+        "present_files",
+        "skill",
+        "compact_context",
+        "lsp",
+        "worktree"
+      ],
+      "toolResults": [
+        "Plan updated successfully.\n\nPlan Progress: 0/1 completed\n[ ] 1. 中文计划：确认后写入测试文件"
+      ]
+    },
+    {
+      "ordinal": 3,
+      "tools": [
+        "read",
+        "bash",
+        "powershell",
+        "grep",
+        "find",
+        "ls",
+        "tool_search",
+        "plan_update",
+        "ask_user_question",
+        "browser_page",
+        "conversation_read",
+        "claim_files",
+        "present_files",
+        "skill",
+        "compact_context",
+        "lsp",
+        "worktree"
+      ],
+      "toolResults": [
+        "Plan updated successfully.\n\nPlan Progress: 0/1 completed\n[ ] 1. 中文计划：确认后写入测试文件",
+        "Tool write not found"
+      ]
+    },
+    {
+      "ordinal": 4,
+      "tools": [
+        "tool_search",
+        "read",
+        "bash",
+        "powershell",
+        "edit",
+        "write",
+        "grep",
+        "find",
+        "ls",
+        "codemode",
+        "subagent",
+        "delegate_task",
+        "plan_update",
+        "ask_user_question",
+        "browser_page",
+        "conversation_read",
+        "claim_files",
+        "present_files",
+        "skill",
+        "compact_context",
+        "schedule",
+        "eval",
+        "patch",
+        "lsp",
+        "mcp_manage",
+        "sandbox",
+        "worktree"
+      ],
+      "toolResults": [
+        "Plan updated successfully.\n\nPlan Progress: 0/1 completed\n[ ] 1. 中文计划：确认后写入测试文件",
+        "Tool write not found"
+      ]
+    },
+    {
+      "ordinal": 5,
+      "tools": [
+        "tool_search",
+        "read",
+        "bash",
+        "powershell",
+        "edit",
+        "write",
+        "grep",
+        "find",
+        "ls",
+        "codemode",
+        "subagent",
+        "delegate_task",
+        "plan_update",
+        "ask_user_question",
+        "browser_page",
+        "conversation_read",
+        "claim_files",
+        "present_files",
+        "skill",
+        "compact_context",
+        "schedule",
+        "eval",
+        "patch",
+        "lsp",
+        "mcp_manage",
+        "sandbox",
+        "worktree"
+      ],
+      "toolResults": [
+        "Plan updated successfully.\n\nPlan Progress: 0/1 completed\n[ ] 1. 中文计划：确认后写入测试文件",
+        "Tool write not found",
+        "Successfully wrote to plan-proof.txt"
+      ]
+    }
+  ]
+}
