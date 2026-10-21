@@ -1,0 +1,7 @@
+{
+  "status": "FAIL",
+  "scope": "First persistence assertion",
+  "error": "Only the first concatenated Zstandard frame was decoded, so expected tool/call and tool/result events were absent from that partial view",
+  "runtimeRun": "T38-dsh-local-write.json",
+  "recordKind": "Diagnostic note after the initial assertion failure; raw assertion output remains in chat tool history"
+}

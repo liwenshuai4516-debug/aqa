@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "scope": "Official runtime local model fixture; real supplier not tested",
+  "fileBytes": 11,
+  "fileSha256": "5f886599d786b148f3c4dc29b3733e329e55e425af3962d0834f5ab2c3ac127d",
+  "fileHex": "4453485f46494c455f4f4b",
+  "localRequests": 3,
+  "inputBytesTotal": 86234,
+  "outputLimits": [
+    128,
+    64,
+    128
+  ],
+  "persistence": {
+    "file": "/tmp/pi-dsh-local-execution-HFFNv2/sessions/--tmp-pi-dsh-local-execution-HFFNv2-workspace--/dsh-local-execution/session.v3.jsonl.zstd",
+    "compressedFrames": 10,
+    "records": 24,
+    "toolCall": true,
+    "toolResult": true,
+    "reply": true,
+    "completed": true
+  },
+  "realModelRequests": 0
+}
