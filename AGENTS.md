@@ -3,6 +3,14 @@
 > 给 AI 编码助手（pi / Claude Code / Cursor 等）看的高层指南，细节按主题在 `docs/`。
 > 修改后在 pi 里跑 `/reload`。精简前全文备份：`AGENTS.md.bak`。
 
+## 0. 协作与测试要求
+
+- 开始测试前，明确测试对象、范围、依据、环境和验收标准；优先查阅需求、接口契约、代码和现有测试。区分已知事实、合理假设、待确认事项与实际验证结果，未定义的行为标记为待确认。
+- 优先覆盖核心流程、高风险变更、异常输入、边界条件、状态转换、权限和数据一致性；复用现有框架与隔离测试数据，不削弱断言、不跳过失败、不伪造结果。修复缺陷前先复现，修改后执行相关回归并保留证据。
+- 写入、删除、压测、生产操作和外部提交须在用户授权范围内；本项目日常提交与推送按 §6 的持续授权执行。测试不得读取个人凭据、污染个人数据或中断用户服务。
+- 交付说明测试范围、环境和依据，分别报告已设计、已执行、通过、失败、阻塞和未执行项；列出关键缺陷、复现证据、未覆盖风险及后续建议。不把历史结果当作本轮执行结果，不把 SKIP 或部分通过记为通过。
+- 默认使用简体中文，保留必要的代码、接口和字段原名；修改和交付时明确文件路径。
+
 ## 1. 项目是什么
 
 pi-web-ui 是 pi 编码智能体（`@earendil-works/pi-coding-agent` SDK）的 Web 聊天界面：
@@ -10,7 +18,7 @@ pi-web-ui 是 pi 编码智能体（`@earendil-works/pi-coding-agent` SDK）的 W
 一条命令可跑，可 Docker / systemd / launchd / Windows 计划任务部署。
 另有 **Electron 桌面壳**（`desktop/`，随机空闲口起同一 server，网页版零改动；见 `desktop/README.md`）。
 
-- 仓库：`git@github.com:xing-shuyin/pi-web-ui.git`；npm 包 `pi-web-ui`
+- 当前仓库：`https://github.com/liwenshuai4516-debug/aqa.git`（`origin`），主分支 `master`；上游：`https://github.com/xing-shuyin/pi-web-ui`；npm 包 `pi-web-ui`
 - Node **>= 22.19.0**；版本 `package.json` 与 `package-lock.json` 两处同步
 
 ## 2. 技术栈
@@ -33,7 +41,9 @@ pi-web-ui 是 pi 编码智能体（`@earendil-works/pi-coding-agent` SDK）的 W
 - **web/src 核心模块（★=优先阅读）**：
   `use-chat.ts`★（WS 通信 + Reducer + 终端 Bridge）· `app-globals.ts`★（模块级全局 Store + `appSend`，高频快照流禁入）· `ui-slots.ts`★（宿主 33 个 UI 扩展插槽与四层合并）· `types.ts`（协议类型 shim，受脚本守护）· `styles.css`（全应用共享 CSS 变量与主题基线）· `i18n.tsx`（前端双语国际化）· `composer-bridge.ts`（输入框草稿管理与自动聚焦）· `topbar-fit.ts`（顶栏溢出测量）· `use-floating-panel.ts`（浮层统管 Hook）。
 - **测试与 CI 套件**：
-  `tests/run-smoke.mjs`（零 token 冒烟聚合列表）· `tests/unit/`（vitest 纯函数单测）· `tests/*-test.mjs`（Playwright / WS 集成测试，无 Chrome 自动 SKIP）；CI 矩阵见 `.github/workflows/ci.yml`。
+  `tests/run-smoke.mjs`（零 token 冒烟聚合列表）· `tests/unit/`（vitest 单测）· `tests/*-test.mjs`（Playwright / WS 集成测试；浏览器依赖缺失时部分脚本会 SKIP，必须如实报告）；CI 矩阵见 `.github/workflows/ci.yml`。
+- **桌面验收记录**：
+  `docs/desktop-delivery/scope-decisions.md`（当前范围与用户决定，优先于历史轮次）· `completion-audit.md`（完成条件与缺口）· `acceptance-matrix.md`（验收矩阵）· `delivery-status.md`（交付状态与历史证据）· `approved-changes.json`（受保护代码的已批准差异）。涉及桌面交付时先核对这些记录，不将内部安装包交付等同于项目全部完成；平台、费用、个人数据和受保护代码边界按当前有效决定执行。
 
 ## 4. 核心架构与设计索引
 
@@ -72,13 +82,17 @@ pi-web-ui 是 pi 编码智能体（`@earendil-works/pi-coding-agent` SDK）的 W
 
 ```bash
 npm run dev          # node --watch 后端(:8788) + vite 前端(:5173)
-npm run typecheck    # 双端 tsc --noEmit（提交前必跑）
+npm run typecheck    # 5 个配置：server / web / tests / desktop / page-picker 扩展
+npm run check:protocol # 协议单源 shim 检查
 npm run format       # prettier（提交前必跑；只检查用 format:check）
 npm run lint         # oxlint（提交前必跑；自动修用 lint:fix）
-npm run build        # build:web + build:server
+npm run build        # web + server + DSH runtime + mermaid/run-trace vendor
 npm start            # 跑 dist/server/index.js（生产）
 npm test             # vitest
 npm run test:smoke   # 零 token 冒烟
+npm run test:smoke:core # 核心冒烟子集
+npm run build:desktop # 编译 Electron 桌面壳
+npm run desktop:dist # 构建桌面安装包
 ```
 
 约定：缩进 Tab；样式全在 `styles.css`；协议消息只改 `protocol.ts`（§4）；服务端 URL 一律 `appUrl()` 包一层（§9）。
@@ -99,16 +113,23 @@ Playwright：Chrome 路径走 `tests/lib/chrome.mjs`（`PI_WEB_CHROME` 可覆盖
 - 推送后核对远端分支提交与本地 HEAD 一致，再报告提交号。推送失败时保留本地提交，明确报告原因和未同步状态；不得声称已备份。
 - 保留提交历史，禁止为自动推送使用强制推送、重置远端或删除历史；回滚优先创建 `git revert` 提交并推送。
 
+日常备份按以下流程执行；先完成 §9 的提交前验证及相关回归。`<本次改动文件...>` 必须替换为明确文件列表，`<当前分支>` 通过 `git branch --show-current` 核实：
+
 ```bash
-npm run typecheck && npm run build
-npm run changelog:i18n   # 文案有增减必跑
-git add -A && git commit -m "feat(xxx): 描述"   # 不带 Co-authored-by
-git push origin main
-git tag vX.Y.Z && git push origin vX.Y.Z   # tag 带 v，与 npm 版本一致；Action 自动建 Release+桌面包
-npm publish
+git status --short
+git diff --check
+git add -- <本次改动文件...>
+git diff --cached --stat
+git diff --cached
+git commit -m "docs: 描述本次更新" # 按实际改动选择 docs/fix/feat/test 等，不带 Co-authored-by
+git push -u origin <当前分支>
+git rev-parse HEAD
+git ls-remote origin refs/heads/<当前分支>
 ```
 
-版本须高于 registry；升级后 `pi-web-ui server restart`；发布前检查示例文件不泄密；Release 说明预览：`node scripts/release-notes.mjs X.Y.Z --base v<上版>`。
+提交前检查暂存区仅包含本次文件，推送后核对两处提交号一致。日常备份不执行 `git add -A`、创建标签或 `npm publish`。
+
+正式发布仅在用户另行授权后按 `docs/release.md` 执行：`npm run typecheck && npm run build`；UI 国际化文案有增减时运行 `npm run changelog:i18n`。版本须高于 registry；升级后 `pi-web-ui server restart`；发布前检查示例文件不泄密；Release 说明预览：`node scripts/release-notes.mjs X.Y.Z --base v<上版>`。
 
 ## 7. 常用环境变量
 
