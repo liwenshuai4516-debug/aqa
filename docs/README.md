@@ -28,6 +28,10 @@
 | 日常代码备份、正式发布               | [AGENTS.md §6](../AGENTS.md)、[发布说明](release.md)                                     |
 | Electron 开发、安装包与桌面验收      | [桌面说明](../desktop/README.md)、下方桌面交付记录                                       |
 
+## 功能设计提案
+
+- [Agent 接口自动化测试闭环](api-testing-workflow-design.md)：多格式导入、用例评审回路、MCP 执行选型、异常分析与复测关闭；当前为设计，尚未实现。
+
 ## 桌面交付记录
 
 `desktop-delivery/` 保存当前决定与历史验证证据，阅读顺序如下：
