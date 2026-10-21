@@ -1,0 +1,9 @@
+{
+  "observedAtUtc": "2026-10-21T02:29:30.909541+00:00",
+  "userReportedDirectory": "/private/tmp/pi-file-media-4Ywng5/中文 downloads",
+  "resolvedDirectory": "/private/tmp/pi-file-media-4Ywng5/中文 downloads",
+  "entries": [],
+  "expectedFileExists": false,
+  "status": "NOT_VERIFIED",
+  "note": "User reported saving; actual target directory remains empty. Do not count native save as PASS. Runner is still waiting within its bounded 15-minute window."
+}

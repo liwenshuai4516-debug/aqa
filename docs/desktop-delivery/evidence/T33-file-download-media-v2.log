@@ -1,0 +1,61 @@
+{
+  "fixture": "/tmp/pi-file-media-xJkeqB",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "FAIL",
+  "checks": [
+    "Installed Electron offers original native save branch",
+    "Text download endpoint preserves exact UTF-8 bytes",
+    "Download endpoint encodes Chinese filename as attachment",
+    "Original text preview decodes GBK Chinese bytes",
+    "Original audio preview decodes real PCM WAV metadata",
+    "Installed media endpoint returns exact requested byte range",
+    "Media endpoint supports exact suffix range",
+    "Unsatisfiable media range reports 416 without full file"
+  ],
+  "realModelRequests": 0,
+  "downloads": [],
+  "picker": {
+    "nativeFilePicker": "function",
+    "secureContext": true
+  },
+  "range": {
+    "status": 206,
+    "range": "bytes 44-75/16044",
+    "accept": "bytes",
+    "bytes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Unauthenticated external media request is rejected\n    at check (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/file-download-media-run.mjs:42:2)\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/file-download-media-run.mjs:179:2\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+}

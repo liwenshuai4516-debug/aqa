@@ -68,3 +68,5 @@ T31：实际安装包临时会话保存/丢弃、原历史切换和完整重启�
 T26 实际补验：用户批准累计 18 次后，真实 DeepSeek 严格目标两项 PASS；独立核对文件七字节及执行者 write、审查者 read/verdict、goal 清除。新增 6 次、累计 18/18，停止付费请求；最终账本保守总额含先前预留 0.158860 元。T20 失败与结果快照/最终账本时序差异保留。详见 T26-strict-goal-proposal.md 和 T26-real-independent.json；仍不能关闭整个项目。
 
 T32 / T03：实际安装包 macOS 显式便携根启动、路径优先级、SDK 聊天落盘、真实 PTY 写入/关闭、完整重启历史/主题和普通独立数据对照共 12 项通过，2 文件/17 单测通过；仅 1 次本地请求，无生产改动。未覆盖根迁移或 Windows PortableGit/Node，详见 T32-portable-mode.md。
+
+T33 进行中 / A05：实际安装包中文 UTF-8 下载接口字节/文件名、GBK 原预览、WAV 元数据和分段读取已检查；原生 showSaveFilePicker 已打开，等待用户保存，尚不计下载闭环 PASS。3 文件/19 单测通过、5 个 Windows 专属 SKIP，原失败保留。无生产修改或模型请求，详见 T33-download-media.md。

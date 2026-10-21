@@ -1,0 +1,13 @@
+{
+  "fixture": "/tmp/pi-file-media-T8vrLN",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "FAIL",
+  "checks": [],
+  "realModelRequests": 0,
+  "downloads": [],
+  "picker": {
+    "nativeFilePicker": "function",
+    "secureContext": true
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Installed Electron naturally uses original blob download branch\n    at check (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/file-download-media-run.mjs:42:2)\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/file-download-media-run.mjs:109:2"
+}
