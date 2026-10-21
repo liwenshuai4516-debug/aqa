@@ -14,7 +14,7 @@ import {
 } from "node:fs";
 import { isAbsolute, join, relative, dirname, resolve } from "node:path";
 
-export const COMPILER_VERSION = "1";
+export const COMPILER_VERSION = "2";
 export const hash = (value) => createHash("sha256").update(value).digest("hex");
 const bytes = (value) => JSON.stringify(value, null, 2) + "\n";
 const fail = (message) => {
@@ -307,12 +307,23 @@ export function compileSuite({ imported, cases, rules = [], baseUrl, requiredKey
 	if (!Array.isArray(cases) || !cases.length || new Set(cases.map((c) => c.id)).size !== cases.length)
 		fail("Cases must have unique IDs");
 	const compiled = cases.map((candidate) => {
+		if (candidate.phase && !["main", "cleanup"].includes(candidate.phase)) fail("Unsupported case phase");
 		if (candidate.state && candidate.state !== "ready") fail("Candidate still needs confirmed input");
 
 		if (
 			Object.keys(candidate).some(
 				(key) =>
-					!["id", "operationId", "request", "status", "checks", "negativeRuleId", "state", "priority"].includes(key),
+					![
+						"id",
+						"operationId",
+						"request",
+						"status",
+						"checks",
+						"negativeRuleId",
+						"state",
+						"priority",
+						"phase",
+					].includes(key),
 			)
 		)
 			fail("Unsupported case field; imported scripts are not accepted");

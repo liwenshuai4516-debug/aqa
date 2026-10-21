@@ -1,9 +1,10 @@
 /** Dedicated fixture-only MCP execution, immutable approvals and one attempt per run reference. */
 import { createHash, randomUUID } from "node:crypto";
-import { mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, realpathSync, writeFileSync, symlinkSync, existsSync } from "node:fs";
 import { isAbsolute, join, relative, resolve } from "node:path";
 import { McpClient } from "./mcp-bridge.js";
-import type { PluginMcpRequest, PluginToolContext } from "./plugin-mcp.js";
+import { pathToFileURL } from "node:url";
+import type { PluginModelComplete, PluginMcpRequest, PluginToolContext } from "./plugin-mcp.js";
 
 const sha256 = (bytes: string | Buffer): string => createHash("sha256").update(bytes).digest("hex");
 const readJson = (path: string): Record<string, any> => JSON.parse(readFileSync(path, "utf8"));
@@ -16,9 +17,12 @@ interface FixtureApproval {
 	runner: Buffer;
 	guard: Buffer;
 	timeoutMs: number;
+	bundleHashes: Record<string, string>;
 }
 
 export class ApiTestingRunner {
+	private workflow: Promise<any> | undefined;
+	private workflowFingerprint: string | undefined;
 	private readonly approvals = new Map<string, FixtureApproval>();
 	private readonly attempted = new Set<string>();
 	private readonly activeProjects = new Set<string>();
@@ -58,9 +62,25 @@ export class ApiTestingRunner {
 		};
 		if (!Array.isArray(collection.item) || !collection.item.length) throw new Error("Fixture collection is empty");
 		checkItems(collection.item);
+		const manifest = readJson(join(bundleRoot, "manifest.json"));
+		const bundleHashes: Record<string, string> = {};
+		for (const name of new Set([
+			"manifest.json",
+			"review.json",
+			"collection.json",
+			...Object.keys(manifest.files ?? {}),
+		])) {
+			if (!/^[a-zA-Z0-9.-]+$/.test(name) || name === "..") throw new Error("Unsafe suite filename");
+			const file = realpathSync(join(bundleRoot, name));
+			if (relative(bundleRoot, file) !== name) throw new Error("Suite file escapes bundle");
+			bundleHashes[name] = sha256(readFileSync(file));
+			if (manifest.files?.[name] && manifest.files[name] !== bundleHashes[name])
+				throw new Error("Suite file hash changed");
+		}
 		const runRef = randomUUID();
 		this.approvals.set(runRef, {
 			identity,
+			bundleHashes,
 			bundleRoot,
 			collectionHash,
 			fixtureOrigin: origin.origin,
@@ -69,6 +89,37 @@ export class ApiTestingRunner {
 			timeoutMs: Math.min(Math.max(input.timeoutMs ?? 20000, 100), 120000),
 		});
 		return runRef;
+	}
+
+	private async getWorkflow(): Promise<any> {
+		if (process.platform === "win32") throw new Error("Fixture workflow is not verified on Windows");
+		const names = ["suite.mjs", "review.mjs", "workflow.mjs", "report.mjs"];
+		const sources = names.map((name) => readFileSync(join(this.pluginRoot, name)));
+		const fingerprint = sha256(Buffer.concat(sources));
+		if (this.workflowFingerprint !== fingerprint) {
+			this.workflow = undefined;
+			this.workflowFingerprint = fingerprint;
+		}
+		if (!this.workflow) {
+			this.workflow = (async () => {
+				const runtime = join(this.outputRoot, "runtime", fingerprint);
+				mkdirSync(runtime, { recursive: true, mode: 0o700 });
+				for (const [i, name] of names.entries()) {
+					const target = join(runtime, name);
+					if (existsSync(target) && sha256(readFileSync(target)) !== sha256(sources[i]))
+						throw new Error("Workflow snapshot changed");
+					if (!existsSync(target)) writeFileSync(target, sources[i], { mode: 0o600, flag: "wx" });
+				}
+				if (!existsSync(join(runtime, "node_modules")))
+					symlinkSync(join(this.pluginRoot, "node_modules"), join(runtime, "node_modules"), "dir");
+				const { createWorkflow } = await import(pathToFileURL(join(runtime, "workflow.mjs")).href);
+				return createWorkflow({ approve: (input: any) => this.approveFixture(input), execute: this.call });
+			})();
+			this.workflow.catch(() => {
+				this.workflow = undefined;
+			});
+		}
+		return this.workflow;
 	}
 
 	private verifyBundle(root: string, expectedHash?: string): string {
@@ -92,8 +143,16 @@ export class ApiTestingRunner {
 		identity: PluginToolContext,
 		request: PluginMcpRequest,
 		signal: AbortSignal,
+		complete?: PluginModelComplete,
 	): Promise<unknown> => {
 		signal.throwIfAborted();
+		if (request.serverId === "api-testing" && request.toolName === "workflow") {
+			if (identity.pluginId !== "api-testing" || identity.toolName !== "api_test_execute")
+				throw new Error("Workflow caller is not allowed");
+			if (JSON.stringify(request.input ?? {}).length > 128000) throw new Error("Workflow input exceeds limit");
+			const workflow = await this.getWorkflow();
+			return workflow.call(identity, request, signal, complete);
+		}
 		if (
 			request.serverId !== "api-testing" ||
 			request.toolName !== "runApprovedSuite" ||
@@ -108,6 +167,11 @@ export class ApiTestingRunner {
 				throw new Error("Run reference belongs to another caller");
 		}
 		this.verifyBundle(approval.bundleRoot, approval.collectionHash);
+		for (const [name, hash] of Object.entries(approval.bundleHashes)) {
+			const path = realpathSync(join(approval.bundleRoot, name));
+			if (relative(approval.bundleRoot, path) !== name || sha256(readFileSync(path)) !== hash)
+				throw new Error("Approved suite content changed");
+		}
 		const collection = readFileSync(join(approval.bundleRoot, "collection.json"));
 		if (sha256(collection) !== approval.collectionHash) throw new Error("Collection changed during preflight");
 		if (

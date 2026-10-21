@@ -11,12 +11,28 @@ export interface PluginMcpRequest {
 	serverId: string;
 	toolName: string;
 	runRef: string;
+	input?: Record<string, unknown>;
 }
+
+export type PluginModelComplete = (request: {
+	prompt: string;
+	system?: string;
+	model?: string;
+	maxChars?: number;
+	timeoutMs?: number;
+}) => Promise<{
+	ok: boolean;
+	text?: string;
+	model?: string;
+	usage?: { input: number; output: number };
+	error?: string;
+}>;
 
 export type PluginMcpCaller = (
 	identity: PluginToolContext,
 	request: PluginMcpRequest,
 	signal: AbortSignal,
+	complete?: PluginModelComplete,
 ) => Promise<unknown>;
 
 export interface PluginInvocationScope {

@@ -34,12 +34,20 @@ server.registerTool("runApprovedSuite", { description: "Run the single host-appr
 		params: { collectionId: manifest.runId, requestTimeout: manifest.requestTimeout ?? 1000, scriptTimeout: 500 },
 	});
 	// Deliberately narrow evidence projection for these fixtures; never serialize raw summary.
+	const validJson = (response) => {
+		try {
+			response.json();
+			return true;
+		} catch {
+			return false;
+		}
+	};
 	const executions = result.summary.run.executions.map((execution) => ({
 		caseId: execution.item.name,
 		method: execution.request.method,
-		path: execution.request.url.getPath(),
+
 		status: execution.response?.code ?? null,
-		response: execution.response ? { ok: execution.response.json().ok ?? null } : null,
+		response: execution.response ? { jsonValid: validJson(execution.response) } : null,
 		requestError: execution.requestError ? { code: execution.requestError.code ?? "REQUEST_ERROR" } : null,
 		assertions: (execution.assertions ?? []).map((a) => ({
 			name: a.assertion,
@@ -48,10 +56,7 @@ server.registerTool("runApprovedSuite", { description: "Run the single host-appr
 			error: a.error
 				? {
 						name: a.error.name,
-						message: a.error.message.replaceAll(
-							process.env.PI_API_TEST_SECRET ?? "p0-synthetic-sensitive-marker",
-							"[REDACTED]",
-						),
+						message: "Assertion did not match its frozen expectation; raw values omitted",
 					}
 				: null,
 		})),

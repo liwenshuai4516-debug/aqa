@@ -173,10 +173,10 @@ export default definePlugin({
 
 完整契约见 `docs/architecture-plugins.md`。
 
-## 受控内部 MCP 调用（SDK 0.1.1）
+## 受控内部 MCP 调用（SDK 0.1.2）
 
 `registerAgentTool` 的 `execute(id, params, signal, onUpdate, context)` 可收到宿主注入的第五个参数 `PluginToolContext`。该对象绑定 client/conversation/project/plugin/tool，只有当前工具调用期间有效，不能由模型参数、复制对象或持久化后重建。
 
-`host.mcp.call(context, { serverId, toolName, runRef }, signal)` 要求 `tools` 能力及宿主安装的受控调用提供者。它不是任意 MCP 调用 API：当前仅 `api-testing/runApprovedSuite` 和宿主已批准的一次性 fixture 引用可用。权限和原会话状态在执行前、执行中及返回时复核；插件停用会取消本调用，原始 MCP 工具不进入模型工具列表。没有该上下文或提供者的引擎明确报不可用；mock 默认拒绝执行。原有 list/check/install/promptInstall 的管理语义不变。
+`host.mcp.call(context, { serverId, toolName, runRef, input? }, signal)` 要求 `tools` 能力及宿主安装的受控调用提供者。它不是任意 MCP 调用 API：当前仅 `api-testing/workflow` 的受控 action 及 `api-testing/runApprovedSuite` 的一次性 fixture 引用可用。workflow 的模型补全经原宿主 llm 权限/模型范围包装，不直接取得供应商接口。权限和原会话状态在执行前、执行中及返回时复核；插件停用会取消本调用，原始 MCP 工具不进入模型工具列表。没有该上下文或提供者的引擎明确报不可用；mock 默认拒绝执行。原有 list/check/install/promptInstall 的管理语义不变。
 
 完整的 fixture 范围、批准来源和复现命令见 [接口测试插件](../plugins/api-testing/README.md)。不要把此接缝视作文件/网络沙箱或真实业务授权。

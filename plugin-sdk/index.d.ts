@@ -77,6 +77,7 @@ export interface PluginMcpRequest {
 	serverId: string;
 	toolName: string;
 	runRef: string;
+	input?: Record<string, unknown>;
 }
 
 export interface PluginAgentTool {

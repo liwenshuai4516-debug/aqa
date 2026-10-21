@@ -4672,7 +4672,16 @@ export class PluginManager {
 					const stopped = new AbortController();
 					const off = effects.add("mcp:run", () => stopped.abort(new Error("Plugin deactivated")));
 					try {
-						return await callPluginMcp(info.id, context, request, self.mcpCaller, stopped.signal, signal);
+						return await callPluginMcp(
+							info.id,
+							context,
+							request,
+							self.mcpCaller
+								? (identity, frozen, stop) => self.mcpCaller!(identity, frozen, stop, host.llm.complete)
+								: undefined,
+							stopped.signal,
+							signal,
+						);
 					} finally {
 						off();
 					}

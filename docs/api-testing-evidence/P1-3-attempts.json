@@ -1,0 +1,32 @@
+[
+	{
+		"source": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-whnO12/summary.json",
+		"status": "passed-fixture-model-stub-only",
+		"checks": 13
+	},
+	{
+		"source": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-zTbovX/summary.json",
+		"status": "passed-fixture-model-stub-only",
+		"checks": 15
+	},
+	{
+		"source": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-WNC3Qn/summary.json",
+		"status": "passed-fixture-model-stub-only",
+		"checks": 15
+	},
+	{
+		"source": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-RY2toj/summary.json",
+		"status": "passed-fixture-model-stub-only",
+		"checks": 16
+	},
+	{
+		"source": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-Yw1meX/summary.json",
+		"status": "passed-fixture-model-stub-only",
+		"checks": 16
+	},
+	{
+		"source": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-3192rP/summary.json",
+		"status": "passed-fixture-model-stub-only",
+		"checks": 17
+	}
+]

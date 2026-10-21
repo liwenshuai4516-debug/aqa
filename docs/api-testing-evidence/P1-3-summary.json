@@ -1,0 +1,182 @@
+{
+	"schemaVersion": 1,
+	"task": "P1-3",
+	"environment": "macOS fixture; real private MCP/Newman, explicit model stub",
+	"startedAt": "2026-10-21T10:47:31.033Z",
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-3192rP",
+	"checks": [
+		{
+			"name": "one-entry-prepare-freezes-draft-and-unreviewed-cannot-run",
+			"status": "passed"
+		},
+		{
+			"name": "semantic-return-correction-approval-only-from-live-independent-call",
+			"status": "passed"
+		},
+		{
+			"name": "actual-contract-defect-produces-open-finding-and-report",
+			"status": "passed"
+		},
+		{
+			"name": "unfixed-retest-retains-open-identity-and-new-evidence",
+			"status": "passed"
+		},
+		{
+			"name": "fixture-fix-retest-closes-finding-without-erasing-first-failure-or-model-recalls",
+			"status": "passed"
+		},
+		{
+			"name": "historical-report-never-requests-or-calls-model",
+			"status": "passed"
+		},
+		{
+			"name": "workflow-reference-bound-to-original-conversation",
+			"status": "passed"
+		},
+		{
+			"name": "business-target-still-blocked-despite-user-write-authorization",
+			"status": "passed"
+		},
+		{
+			"name": "changed-approved-package-cannot-execute",
+			"status": "passed"
+		},
+		{
+			"name": "actual-network-fault-separated-from-contract-defect",
+			"status": "passed"
+		},
+		{
+			"name": "actual-cleanup-response-failure-is-visible",
+			"status": "passed"
+		},
+		{
+			"name": "post-execution-case-revision-requires-new-review-and-retains-prior-version-finding",
+			"status": "passed"
+		},
+		{
+			"name": "concurrent-start-blocked-and-cancellation-preserves-unknown-report",
+			"status": "passed"
+		},
+		{
+			"name": "public-review-actions-share-no-improvement-and-model-call-budget",
+			"status": "passed"
+		},
+		{
+			"name": "unknown-write-blocks-new-requests-and-preserves-residual-record",
+			"status": "passed"
+		},
+		{
+			"name": "workflow-model-calls-obey-host-model-scope",
+			"status": "passed"
+		},
+		{
+			"name": "missing-real-model-does-not-fake-approval",
+			"status": "passed"
+		}
+	],
+	"runs": [
+		{
+			"workflowRef": "986a1f58-e2b7-4ba6-8d11-546b77cee5d0",
+			"runId": "6de5c01a-4b60-4b89-8b89-07da23d3a277",
+			"executionVerdict": "failed",
+			"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-3192rP/project/suite-1-evidence-986a1f58-e2b7-4ba6-8d11-546b77cee5d0/6de5c01a-4b60-4b89-8b89-07da23d3a277/report.md",
+			"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-3192rP/project/suite-1-evidence-986a1f58-e2b7-4ba6-8d11-546b77cee5d0/6de5c01a-4b60-4b89-8b89-07da23d3a277/findings.json",
+			"cleanup": "not-required",
+			"openFindings": 1
+		},
+		{
+			"workflowRef": "986a1f58-e2b7-4ba6-8d11-546b77cee5d0",
+			"runId": "b9501bdd-e0e0-47d8-a305-e59400f8e686",
+			"executionVerdict": "failed",
+			"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-3192rP/project/suite-1-evidence-986a1f58-e2b7-4ba6-8d11-546b77cee5d0/b9501bdd-e0e0-47d8-a305-e59400f8e686/report.md",
+			"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-3192rP/project/suite-1-evidence-986a1f58-e2b7-4ba6-8d11-546b77cee5d0/b9501bdd-e0e0-47d8-a305-e59400f8e686/findings.json",
+			"cleanup": "not-required",
+			"openFindings": 1
+		},
+		{
+			"workflowRef": "986a1f58-e2b7-4ba6-8d11-546b77cee5d0",
+			"runId": "a5cd07ae-2203-4b63-85d9-4f2ef4cf9844",
+			"executionVerdict": "passed",
+			"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-3192rP/project/suite-1-evidence-986a1f58-e2b7-4ba6-8d11-546b77cee5d0/a5cd07ae-2203-4b63-85d9-4f2ef4cf9844/report.md",
+			"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-3192rP/project/suite-1-evidence-986a1f58-e2b7-4ba6-8d11-546b77cee5d0/a5cd07ae-2203-4b63-85d9-4f2ef4cf9844/findings.json",
+			"cleanup": "not-required",
+			"openFindings": 0
+		},
+		{
+			"workflowRef": "ad0e71d5-f651-49b3-8ac5-265d85e0494c",
+			"runId": "0f364ec1-ca59-4867-934e-5a9baf20b3dd",
+			"executionVerdict": "error",
+			"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-3192rP/project/suite-3-evidence-ad0e71d5-f651-49b3-8ac5-265d85e0494c/0f364ec1-ca59-4867-934e-5a9baf20b3dd/report.md",
+			"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-3192rP/project/suite-3-evidence-ad0e71d5-f651-49b3-8ac5-265d85e0494c/0f364ec1-ca59-4867-934e-5a9baf20b3dd/findings.json",
+			"cleanup": "not-required",
+			"openFindings": 2
+		},
+		{
+			"workflowRef": "931cde47-5fd2-47f0-92c8-8ddc7b39a834",
+			"runId": "c45f91b5-ea89-438c-9f7e-ecebcffaa097",
+			"executionVerdict": "failed",
+			"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-3192rP/project/suite-4-evidence-931cde47-5fd2-47f0-92c8-8ddc7b39a834/c45f91b5-ea89-438c-9f7e-ecebcffaa097/report.md",
+			"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-3192rP/project/suite-4-evidence-931cde47-5fd2-47f0-92c8-8ddc7b39a834/c45f91b5-ea89-438c-9f7e-ecebcffaa097/findings.json",
+			"cleanup": "failed",
+			"openFindings": 1
+		},
+		{
+			"workflowRef": "931cde47-5fd2-47f0-92c8-8ddc7b39a834",
+			"runId": "f3650e71-b936-46a7-8f40-af058a7cb786",
+			"executionVerdict": "failed",
+			"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-3192rP/project/suite-4-evidence-931cde47-5fd2-47f0-92c8-8ddc7b39a834/f3650e71-b936-46a7-8f40-af058a7cb786/report.md",
+			"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-3192rP/project/suite-4-evidence-931cde47-5fd2-47f0-92c8-8ddc7b39a834/f3650e71-b936-46a7-8f40-af058a7cb786/findings.json",
+			"cleanup": "failed",
+			"openFindings": 2
+		}
+	],
+	"status": "passed-fixture-model-stub-only",
+	"modelCalls": 9,
+	"fixtureRequests": [
+		{
+			"method": "GET",
+			"path": "/records/r-2"
+		},
+		{
+			"method": "GET",
+			"path": "/records/r-2"
+		},
+		{
+			"method": "GET",
+			"path": "/records/r-2"
+		},
+		{
+			"method": "GET",
+			"path": "/records/r-1"
+		},
+		{
+			"method": "DELETE",
+			"path": "/records/r-2"
+		},
+		{
+			"method": "DELETE",
+			"path": "/records/r-3"
+		},
+		{
+			"method": "GET",
+			"path": "/records/r-1"
+		},
+		{
+			"method": "DELETE",
+			"path": "/records/r-2"
+		}
+	],
+	"finishedAt": "2026-10-21T10:47:44.885Z",
+	"preservedEvidence": "tests/scratch/api-testing-p1-3/evidence",
+	"sourceHashes": {
+		"plugins/api-testing/workflow.mjs": "cff95d4edbad2d806bba451e19cdf1a94d3412960ba4bcfa12d1927d956dbcac",
+		"plugins/api-testing/report.mjs": "accfef954b3ed1a7cf9fc9e908ec1bc56748e1069827f77664200d9cc6eee8cf",
+		"plugins/api-testing/runner.mjs": "4dc40a3399835899088399abd7db1b82a298761b68a6a93f71abfee35029a2af",
+		"plugins/api-testing/review.mjs": "19c2e6bfc573ea12ac9c7771ea48c72cf161a5170c5643506db9e6fc5750c1ba",
+		"plugins/api-testing/suite.mjs": "4fee7d7b977b681d2d5d123a578480e40873ed303e6a101d41e044d62fc9cc8f",
+		"server/api-testing-runner.ts": "6640da68fce41676fb2d2b32054894a671dbbf8a71369319cdaa4c9a8c6c01e0",
+		"server/plugin-mcp.ts": "fc0ac7d8f0ef41e8eba7e025089d6c7e7780b6a86a70eb19b1eed3cfd03a8dcb",
+		"server/plugins.ts": "7e144c197be939b2ca930f5c7cbbdef4d20a3f79c9240f62d718516a4fcf82d9",
+		"tests/api-testing-workflow-test.mjs": "0b5c0651dc8fa79e85a859a8496c7f07f189f08d8704d0cb9a001c98d4f8ca91"
+	}
+}

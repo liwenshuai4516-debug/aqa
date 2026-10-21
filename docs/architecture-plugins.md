@@ -308,7 +308,7 @@ slot 框架的原则是「插件声明、宿主渲染」——插件碰不到宿
 
 ## MCP 工具桥（server/mcp-bridge.ts）
 
-受控内部执行接缝见 `server/plugin-mcp.ts`：pi 插件工具适配器注入短期身份，`host.mcp.call(context, request, signal)` 在工具权限、原会话模式及插件生命周期内调用私有提供者。当前只有 `server/api-testing-runner.ts` 的一次性批准 fixture 路径，不加入下述常规 MCP 注册表；不是任意 call 或 OS 沙箱。取消后由 `McpClient.closeAndWait()` 观察实际退出才释放项目锁。详见 [P0-2 验收](api-testing-evidence/P0-2.md) 和 [SDK](../plugin-sdk/README.md)。
+受控内部执行接缝见 `server/plugin-mcp.ts`：pi 插件工具适配器注入短期身份，`host.mcp.call(context, request, signal)` 在工具权限、原会话模式及插件生命周期内调用私有提供者。当前有 `server/api-testing-runner.ts` 的受控 fixture 工作流与一次性批准路径（P1-3）；工作流评审经宿主 llm 权限/模型范围包装，不加入下述常规 MCP 注册表；不是任意 call 或 OS 沙箱。取消后由 `McpClient.closeAndWait()` 观察实际退出才释放项目锁。详见 [P0-2 验收](api-testing-evidence/P0-2.md) 和 [SDK](../plugin-sdk/README.md)。
 
 读取 `<dataDir>/mcp.json` 启动外部 MCP 服务器（stdio、换行分隔 JSON-RPC，零三方依赖；`{servers:{名:{command,args,cwd,env}}}`），握手 initialize→initialized→tools/list→tools/call 后把每个远端工具适配成 PluginAgentTool（名字归一化 sanitizeToolName），并入 plugin.d.ts 的 pluginToolsProvider（与插件工具同一 customTools 管线）。单服务器失败隔离（rejectAll + 日志，不炸进程）；dispose 时 kill 子进程；请求按 id 匹配 + 超时看门狗。
 

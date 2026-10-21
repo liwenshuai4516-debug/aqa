@@ -4,7 +4,7 @@ import { readFileSync, realpathSync } from "node:fs";
 import { join, relative, isAbsolute } from "node:path";
 import { hash, importContract, compileSuite, COMPILER_VERSION } from "./suite.mjs";
 
-export const REVIEW_POLICY = "1";
+export const REVIEW_POLICY = "2";
 const FILES = ["source.json", "resolved-source.json", "cases.json", "rules.json", "collection.json", "review.json"];
 const json = (bytes) => JSON.parse(bytes.toString("utf8"));
 const fail = (message) => {
@@ -65,6 +65,8 @@ export async function inspectDraft(projectRoot, bundlePath) {
 	}));
 	const baseUrl = new URL(collection.item[0].request.url).origin;
 	const rebuilt = compileSuite({ imported, cases: declarative, rules, baseUrl });
+	if (JSON.stringify(manifest.unsupported) !== JSON.stringify(rebuilt.manifest.unsupported))
+		fail("Unsupported constraints were altered");
 	for (const name of FILES.filter((n) => n !== "review.json"))
 		if (rebuilt.files[name] !== files[name].toString("utf8")) fail("Deterministic recompilation differs: " + name);
 	return {
