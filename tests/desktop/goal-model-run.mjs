@@ -32,7 +32,10 @@ if (real) {
 }
 if (goalOnly && real && !existsSync(`${prefix}-budget.json`))
 	copyFileSync("docs/desktop-delivery/evidence/T20-real-budget.json", `${prefix}-budget.json`);
-const budget = openBudget(`${prefix}-budget.json`, goalOnly ? 14 : 8);
+const budget = openBudget(
+	`${prefix}-budget.json`,
+	goalOnly ? (real && strictBytes && evidencePrefix === "T26" ? 18 : 14) : 8,
+);
 const fixture = mkdtempSync("/tmp/pi-goal-");
 const workspace = join(fixture, "workspace");
 const userData = join(fixture, "desktop");

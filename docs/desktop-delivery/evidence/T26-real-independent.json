@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "exactFileHex": "474f414c5f4f4b",
+  "cumulativeRequests": 18,
+  "newRequests": 6,
+  "conservativeTotalCnyWithPriorReserve": 0.15886,
+  "newPeakCostCny": 0.023912,
+  "transcripts": [
+    {
+      "path": "/tmp/pi-goal-GyaIfa/desktop/agent/sessions/--private-tmp-pi-goal-GyaIfa-workspace--/2026-10-21T02-11-55-087Z_01a15c3a-ba4f-70b2-b6e8-00e027bc7ef7.jsonl",
+      "sha256": "71e761fa26182b982d41fe8ebb166b4181bbff41dfcdb4d7d574fd9eacae827c",
+      "tools": [
+        {
+          "name": "write",
+          "arguments": {
+            "path": "/private/tmp/pi-goal-GyaIfa/workspace/goal-proof.txt",
+            "content": "GOAL_OK"
+          }
+        },
+        {
+          "name": "read",
+          "arguments": {
+            "path": "/private/tmp/pi-goal-GyaIfa/workspace/goal-proof.txt"
+          }
+        }
+      ],
+      "reviewVerdicts": []
+    },
+    {
+      "path": "/tmp/pi-goal-GyaIfa/desktop/agent/sessions/--private-tmp-pi-goal-GyaIfa-workspace--/2026-10-21T02-11-53-877Z_01a15c3a-b595-70b2-b6e8-00dd876d21d3.jsonl",
+      "sha256": "86f1c11364279c165f32139e411bb76015d946169297750965aa4f8df90415e2",
+      "tools": [
+        {
+          "name": "read",
+          "arguments": {
+            "path": "/private/tmp/pi-goal-GyaIfa/workspace/goal-proof.txt"
+          }
+        }
+      ],
+      "reviewVerdicts": [
+        "{\"verdict\":\"pass\",\"feedback\":\"goal-proof.txt contains exactly the seven ASCII bytes GOAL_OK with no newline, whitespace, quotes, or BOM, verified by independent read.\"}"
+      ]
+    }
+  ],
+  "budgetSnapshotNote": "Result JSON captured request 18 before its usage settled; final persistent ledger completed all 18. Preserve both snapshots. Unsettled snapshot reserve total 0.254462 CNY; final conservative total 0.158860 CNY, including prior 0.10 reserve."
+}

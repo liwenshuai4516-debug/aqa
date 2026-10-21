@@ -1,0 +1,13 @@
+✔ six persisted reservations exhaust the cumulative eight-call allowance, including ambiguous failures (2.670292ms)
+✔ unapproved models, oversized context, output limits and other tools never consume or forward a request (0.731083ms)
+✔ T20 preserves all prior request counts and settles only completed usage (1.878ms)
+✔ uncertain calls retain their full cost reservation even with a larger request limit (1.259208ms)
+✔ T26 extends the persisted twelve-call ledger to eighteen without resetting prior attempts (2.413875ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 61.358667

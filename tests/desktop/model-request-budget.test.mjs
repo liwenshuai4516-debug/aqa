@@ -72,3 +72,25 @@ test("uncertain calls retain their full cost reservation even with a larger requ
 		rmSync(root, { recursive: true });
 	}
 });
+
+test("T26 extends the persisted twelve-call ledger to eighteen without resetting prior attempts", () => {
+	const root = mkdtempSync("/tmp/pi-budget-");
+	try {
+		const path = join(root, "ledger.json");
+		const prior = openBudget(path, 14);
+		for (let i = 0; i < 10; i++) {
+			const entry = prior.reserve(payload());
+			entry.status = "completed";
+			entry.usage = { prompt_tokens: 1500, completion_tokens: 100 };
+			prior.save();
+		}
+		for (let i = 0; i < 6; i++) openBudget(path, 18).reserve(payload());
+		const next = openBudget(path, 18);
+		assert.equal(next.state.requests.length + next.state.priorRequests, 18);
+		assert.equal(next.state.requests.at(-1).ordinal, 18);
+		assert.throws(() => next.reserve(payload()), /request allowance exhausted/);
+		assert.throws(() => openBudget(path, 19), /explicitly approved/);
+	} finally {
+		rmSync(root, { recursive: true });
+	}
+});

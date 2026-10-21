@@ -4,7 +4,7 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 // Reserve before forwarding, including failed/ambiguous requests. Never refund
 // a request count: restarting this runner must not create another paid allowance.
 export function openBudget(path, cumulativeLimit = 8) {
-	assert([8, 14].includes(cumulativeLimit), "Only explicitly approved request limits are allowed");
+	assert([8, 14, 18].includes(cumulativeLimit), "Only explicitly approved request limits are allowed");
 	const state = existsSync(path)
 		? JSON.parse(readFileSync(path, "utf8"))
 		: { priorRequests: 2, priorReservedCny: 0.1, requests: [] };

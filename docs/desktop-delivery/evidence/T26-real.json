@@ -1,0 +1,424 @@
+{
+  "fixture": "/tmp/pi-goal-GyaIfa",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "mode": "real DeepSeek",
+  "strictBytes": true,
+  "checks": [
+    "Goal executor wrote exact requested content",
+    "Original goal orchestration accepted the reviewer verdict"
+  ],
+  "requests": [
+    {
+      "ordinal": 13,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 5553
+    },
+    {
+      "ordinal": 14,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 5951
+    },
+    {
+      "ordinal": 15,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 6257
+    },
+    {
+      "ordinal": 16,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 7494
+    },
+    {
+      "ordinal": 17,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 7800
+    },
+    {
+      "ordinal": 18,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 8229
+    }
+  ],
+  "status": "PASS",
+  "goalStatus": {
+    "conversationId": null,
+    "goal": null,
+    "reviewModel": null,
+    "maxRounds": 1,
+    "locked": true,
+    "execModel": "acceptance/deepseek-flash",
+    "phase": "idle",
+    "reviewing": false,
+    "round": 1,
+    "status": "✅ 已通过目标审查",
+    "verdict": "pass",
+    "wizard": {
+      "active": false,
+      "draft": "",
+      "model": null,
+      "step": 0,
+      "maxSteps": 6,
+      "status": "",
+      "statusEn": ""
+    },
+    "usage": {
+      "inputTokens": 2321,
+      "outputTokens": 323
+    },
+    "history": [
+      {
+        "goal": "Use write once to create goal-proof.txt. Set content to the JSON string \"GOAL_OK\": exactly seven ASCII bytes 47 4f 41 4c 5f 4f 4b (hex). No newline, whitespace, quotes or BOM. Then reply Done. The rev",
+        "verdict": "pass",
+        "rounds": 1,
+        "feedback": "goal-proof.txt contains exactly the seven ASCII bytes GOAL_OK with no newline, whitespace, quotes, or BOM, verified by independent read.",
+        "finishedAt": 1792548722978
+      }
+    ],
+    "roles": {},
+    "feedback": "goal-proof.txt contains exactly the seven ASCII bytes GOAL_OK with no newline, whitespace, quotes, or BOM, verified by independent read.",
+    "statusEn": "✅ Goal review passed"
+  },
+  "lastRequestShape": {
+    "bytes": 8229,
+    "messages": [
+      {
+        "role": "system",
+        "bytes": 3105
+      },
+      {
+        "role": "user",
+        "bytes": 179
+      },
+      {
+        "role": "user",
+        "bytes": 2508
+      },
+      {
+        "role": "assistant",
+        "bytes": 219
+      },
+      {
+        "role": "tool",
+        "bytes": 85
+      },
+      {
+        "role": "assistant",
+        "bytes": 209
+      },
+      {
+        "role": "user",
+        "bytes": 218
+      }
+    ],
+    "tools": [
+      {
+        "name": "read",
+        "bytes": 1102
+      },
+      {
+        "name": "write",
+        "bytes": 430
+      }
+    ]
+  },
+  "goalExecutor": "conv-fe26a2fd",
+  "fileHex": "474f414c5f4f4b",
+  "budget": {
+    "priorRequests": 2,
+    "priorReservedCny": 0.1,
+    "requests": [
+      {
+        "ordinal": 3,
+        "reservedCny": 0.1,
+        "inputBytes": 4982,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1307,
+          "completion_tokens": 74,
+          "total_tokens": 1381,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 1307
+        }
+      },
+      {
+        "ordinal": 4,
+        "reservedCny": 0.1,
+        "inputBytes": 5392,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1416,
+          "completion_tokens": 2,
+          "total_tokens": 1418,
+          "prompt_tokens_details": {
+            "cached_tokens": 1280
+          },
+          "prompt_cache_hit_tokens": 1280,
+          "prompt_cache_miss_tokens": 136
+        }
+      },
+      {
+        "ordinal": 5,
+        "reservedCny": 0.1,
+        "inputBytes": 5404,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1397,
+          "completion_tokens": 72,
+          "total_tokens": 1469,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 373
+        }
+      },
+      {
+        "ordinal": 6,
+        "reservedCny": 0.1,
+        "inputBytes": 5802,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1504,
+          "completion_tokens": 54,
+          "total_tokens": 1558,
+          "prompt_tokens_details": {
+            "cached_tokens": 1280
+          },
+          "prompt_cache_hit_tokens": 1280,
+          "prompt_cache_miss_tokens": 224
+        }
+      },
+      {
+        "ordinal": 7,
+        "reservedCny": 0.1,
+        "inputBytes": 6108,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1573,
+          "completion_tokens": 86,
+          "total_tokens": 1659,
+          "prompt_tokens_details": {
+            "cached_tokens": 1408
+          },
+          "prompt_cache_hit_tokens": 1408,
+          "prompt_cache_miss_tokens": 165
+        }
+      },
+      {
+        "ordinal": 8,
+        "reservedCny": 0.1,
+        "inputBytes": 7288,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1819,
+          "completion_tokens": 54,
+          "total_tokens": 1873,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 795
+        }
+      },
+      {
+        "ordinal": 9,
+        "reservedCny": 0.1,
+        "inputBytes": 5411,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1397,
+          "completion_tokens": 74,
+          "total_tokens": 1471,
+          "prompt_tokens_details": {
+            "cached_tokens": 512
+          },
+          "prompt_cache_hit_tokens": 512,
+          "prompt_cache_miss_tokens": 885
+        }
+      },
+      {
+        "ordinal": 10,
+        "reservedCny": 0.1,
+        "inputBytes": 5812,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1507,
+          "completion_tokens": 36,
+          "total_tokens": 1543,
+          "prompt_tokens_details": {
+            "cached_tokens": 1280
+          },
+          "prompt_cache_hit_tokens": 1280,
+          "prompt_cache_miss_tokens": 227
+        }
+      },
+      {
+        "ordinal": 11,
+        "reservedCny": 0.1,
+        "inputBytes": 7081,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1759,
+          "completion_tokens": 36,
+          "total_tokens": 1795,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 735
+        }
+      },
+      {
+        "ordinal": 12,
+        "reservedCny": 0.1,
+        "inputBytes": 7502,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1835,
+          "completion_tokens": 2,
+          "total_tokens": 1837,
+          "prompt_tokens_details": {
+            "cached_tokens": 1664
+          },
+          "prompt_cache_hit_tokens": 1664,
+          "prompt_cache_miss_tokens": 171
+        }
+      },
+      {
+        "ordinal": 13,
+        "reservedCny": 0.1,
+        "inputBytes": 5553,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1447,
+          "completion_tokens": 72,
+          "total_tokens": 1519,
+          "prompt_tokens_details": {
+            "cached_tokens": 512
+          },
+          "prompt_cache_hit_tokens": 512,
+          "prompt_cache_miss_tokens": 935
+        }
+      },
+      {
+        "ordinal": 14,
+        "reservedCny": 0.1,
+        "inputBytes": 5951,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1554,
+          "completion_tokens": 54,
+          "total_tokens": 1608,
+          "prompt_tokens_details": {
+            "cached_tokens": 1408
+          },
+          "prompt_cache_hit_tokens": 1408,
+          "prompt_cache_miss_tokens": 146
+        }
+      },
+      {
+        "ordinal": 15,
+        "reservedCny": 0.1,
+        "inputBytes": 6257,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1623,
+          "completion_tokens": 103,
+          "total_tokens": 1726,
+          "prompt_tokens_details": {
+            "cached_tokens": 1408
+          },
+          "prompt_cache_hit_tokens": 1408,
+          "prompt_cache_miss_tokens": 215
+        }
+      },
+      {
+        "ordinal": 16,
+        "reservedCny": 0.1,
+        "inputBytes": 7494,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1886,
+          "completion_tokens": 54,
+          "total_tokens": 1940,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 862
+        }
+      },
+      {
+        "ordinal": 17,
+        "reservedCny": 0.1,
+        "inputBytes": 7800,
+        "status": "completed",
+        "httpStatus": 200,
+        "usage": {
+          "prompt_tokens": 1955,
+          "completion_tokens": 40,
+          "total_tokens": 1995,
+          "prompt_tokens_details": {
+            "cached_tokens": 1792
+          },
+          "prompt_cache_hit_tokens": 1792,
+          "prompt_cache_miss_tokens": 163
+        }
+      },
+      {
+        "ordinal": 18,
+        "reservedCny": 0.1,
+        "inputBytes": 8229,
+        "status": "reserved",
+        "httpStatus": 200
+      }
+    ]
+  },
+  "notices": [
+    "设置已应用",
+    "🎯 已设目标：Use write once to create goal-proof.txt. Set content to the JSON string \"GOAL_OK…",
+    "已强行关闭对话「[Goal executor] Use write once to create goal-proof.txt.…」",
+    "✅ 目标已通过审查"
+  ]
+}
