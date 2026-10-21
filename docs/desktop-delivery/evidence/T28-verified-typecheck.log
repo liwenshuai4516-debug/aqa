@@ -1,0 +1,4 @@
+
+> pi-web-ui@0.109.0 typecheck
+> tsc -p tsconfig.server.json --noEmit && tsc -p web/tsconfig.json --noEmit && tsc -p tsconfig.tests.json --noEmit && tsc -p desktop/tsconfig.json --noEmit && tsc -p plugins/page-picker/extension/tsconfig.json --noEmit
+
