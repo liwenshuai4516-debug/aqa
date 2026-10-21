@@ -1,0 +1,26 @@
+{
+  "fixture": "/tmp/pi-restore-Iny7IW",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "FAIL",
+  "checks": [
+    {
+      "status": "PASS",
+      "check": "Original SDK completed history and preferences persisted before offline backup"
+    },
+    {
+      "status": "PASS",
+      "check": "Full offline data backup hashes exactly match every source file"
+    },
+    {
+      "status": "PASS",
+      "check": "Restore to original userData path exactly matches the complete offline snapshot"
+    },
+    {
+      "status": "PASS",
+      "check": "Reinstalled application executable is byte-identical"
+    }
+  ],
+  "realModelRequests": 0,
+  "error": "Error: Native app failed to load before automation attached\n    at launchNativeApp (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/native-app.mjs:42:11)\n    at async launch (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/backup-restore-run.mjs:95:8)\n    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/backup-restore-run.mjs:192:8",
+  "localRequests": 1
+}

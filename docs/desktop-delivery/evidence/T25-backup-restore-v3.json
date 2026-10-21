@@ -1,0 +1,30 @@
+{
+  "fixture": "/tmp/pi-restore-T9RIFF",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "FAIL",
+  "checks": [
+    {
+      "status": "PASS",
+      "check": "Original SDK completed history and preferences persisted before offline backup"
+    },
+    {
+      "status": "PASS",
+      "check": "Full offline data backup hashes exactly match every source file"
+    },
+    {
+      "status": "PASS",
+      "check": "Restore to original userData path exactly matches the complete offline snapshot"
+    },
+    {
+      "status": "PASS",
+      "check": "Reinstalled application executable is byte-identical"
+    },
+    {
+      "status": "PASS",
+      "check": "Saved workspace and allowlisted UI preferences restore without cwd override"
+    }
+  ],
+  "realModelRequests": 0,
+  "error": "TypeError: Cannot read properties of undefined (reading 'includes')\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/backup-restore-run.mjs:205:78\n    at Array.some (<anonymous>)\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/backup-restore-run.mjs:205:33\n    at until (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/backup-restore-run.mjs:91:13)\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/backup-restore-run.mjs:205:8",
+  "localRequests": 1
+}

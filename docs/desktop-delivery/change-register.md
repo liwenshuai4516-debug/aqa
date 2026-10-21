@@ -92,3 +92,7 @@ D06 经用户明确批准，仅在 server/agent-service.ts 的 setDelegateMode �
 ## T24 目标、搜索与置顶界面
 
 仅修改 goal-ui-test 的独立工作区/中文夹具/折叠入口与原 Enter 提交，以及 global-search-ui-test 的中文/稳定等待/实际模型入口/预览关闭和过滤断言。原置顶测试不变。保留全部失败分轮，最终 4/17/10 断言通过，未知 bottombar 差异不变，生产与安装包不变。详见 T24-goal-search-pin-ui.md。
+
+## T25 离线备份与同版本恢复
+
+新增独立备份恢复验收脚本及恢复操作说明，实际安装包 8 项通过；保留前三轮失败 JSON，并明确 v3 原日志被误重定向覆盖的证据限制。无生产代码、依赖或安装包变化。详见 T25-backup-restore.md。

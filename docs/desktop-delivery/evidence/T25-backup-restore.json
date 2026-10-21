@@ -1,0 +1,9 @@
+{
+  "fixture": "/tmp/pi-restore-6DSIpR",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "FAIL",
+  "checks": [],
+  "realModelRequests": 0,
+  "error": "Error: Restore condition timeout\n    at until (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/backup-restore-run.mjs:92:8)\n    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/backup-restore-run.mjs:142:2",
+  "localRequests": 1
+}
