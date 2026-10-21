@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "checks": 11,
+  "blockedImportResponses": 4,
+  "localHttpRequests": 0,
+  "presetsPersisted": 0,
+  "previewApplied": false,
+  "credentialPatternScan": "PASS",
+  "paidRequests": 0,
+  "unknownTestFileSha256": "64935581d71dab253c85596bb1c718b07b6a3a35c6879750abf218990fe64f0f"
+}
