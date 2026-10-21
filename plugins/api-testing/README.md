@@ -1,6 +1,6 @@
-# 接口测试插件：P1-3
+# 接口测试插件：P2-1
 
-当前提供自包含 HTTP fixture 的导入、独立评审、受控执行、问题记录、复测与报告入口。真实目标仍因文件、重定向与操作系统出口隔离缺口阻塞；没有跨重启资产管理或调度。
+当前提供自包含 HTTP fixture 的导入、独立评审、受控执行、问题记录、复测与报告入口。真实目标仍因文件、重定向与操作系统出口隔离缺口阻塞；已支持跨重启的整包持久化与重跑，尚无管理列表或调度。
 
 ## 实现与权限
 
@@ -36,7 +36,7 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 
 `review.mjs` 在文件/hash 与确定性重编译检查后，通过传入的 `host.llm.complete` 做独立无工具评审；所有轮次共享调用/时间预算，批准绑定实际集合及包内内容 hash。模块返回评审结果，尚无面向模型的批准签发 API。
 
-[工程验收](../../docs/api-testing-evidence/P1-2.md)使用明确模型替身验证控制分支；实际模型语义评审未执行。宿主没有模型 AbortSignal，超时只保证模块停止后续步骤，不承诺供应商调用已经结束。
+[工程验收](../../docs/api-testing-evidence/P1-2.md)使用明确模型替身验证控制分支；该早期记录没有执行实际模型；后续 P1-4 已补实际 GPT 验收。宿主没有模型 AbortSignal，超时只保证模块停止后续步骤，不承诺供应商调用已经结束。
 
 ## P1-3 受控工作流
 
@@ -50,7 +50,7 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 
 所有 action 绑定项目/原会话与总体预算（180 秒、3 次评审调用）；重启不恢复内存工作流。不要通过重建工作流规避预算。不可变草稿及批准副本、每次运行身份、结果、问题与 Markdown/JSON 报告保存在项目目录。修改套件版本不自动关闭旧版本问题，分类是确定性线索，不等于已确认业务根因。响应原文和断言实际值不落盘。
 
-复现：[P1-1](../../docs/api-testing-evidence/P1-1.md) 准备隔离依赖，然后运行 `node --import tsx tests/api-testing-workflow-test.mjs tests/scratch/api-testing-p1-1/runtime`。17 项工程验收及限制见 [P1-3](../../docs/api-testing-evidence/P1-3.md)。实际模型与真实业务未验收。
+复现：[P1-1](../../docs/api-testing-evidence/P1-1.md) 准备隔离依赖，然后运行 `node --import tsx tests/api-testing-workflow-test.mjs tests/scratch/api-testing-p1-1/runtime`。17 项工程验收及限制见 [P1-3](../../docs/api-testing-evidence/P1-3.md)。后续 P1-4 已补实际模型工程验收；真实业务未验收。
 
 ## P1-4 技能分发与接入条件
 
@@ -59,3 +59,13 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 `node --import tsx tests/api-testing-skills-test.mjs` 将分发目录复制到临时项目，使用空 agentDir 验证真实 SDK 默认发现、宿主 skill 工具加载及禁用过滤。技能均小于 8192 bytes；它们不能替代宿主权限、评审与执行硬门禁。
 
 已复用系统配置的 GPT 完成实际生成/独立评审及真实 MCP fixture 验收，不要求额外专用配置。可写测试环境已登记，但未完成 OS 隔离、业务数据/规则/鉴权接入。完整清单及恢复条件见 [P1-4](../../docs/api-testing-evidence/P1-4.md)；不得把技能发现通过算成主流程业务验收。
+
+## P2-1 持久化与零模型复用
+
+独立评审批准时自动发布完整不可变套件到 `<dataDir>/api-testing/assets/<projectHash>/suites/<assetRef>/`，并返回 `assetRef`。P1 运行的报告与证据会复制到该根的 runs；保留项目内原件。持久目录位于可卸载插件目录之外，不删除历史。
+
+同一工具新增 `asset_inspect`（assetRef）、`asset_run`（assetRef，可选同版本 priorRunId）、`asset_report`（runId）、`asset_import`（项目内 sourcePath）。回看/重跑不依赖原会话内存，也不调用模型；每次重跑新建 run 身份。项目绑定服务端真实路径，不能通过外来 assetRef 跨项目执行。
+
+`asset_import` 只复用已由宿主真实发布的精确 P1 包；未登记的历史包或外部 pass 标签须先用 prepare/review 重新独立评审，原件不覆盖。版本变化、编译/评审/执行器或依赖锁变化会使旧批准失效。半写包和文件 hash 不符拒绝执行；索引仅派生，损坏可重建。
+
+资产根只允许一个写入者。正常服务退出释放所有权；非正常中断留下的所有权需操作人员确认旧进程和请求已结束后处理，期间只读历史仍可查，不自动恢复写请求。unknown 写入即使重启也阻止项目后续请求，不能通过新建 run 清除。未证明断电 fsync 或跨平台可靠性；只在 macOS fixture 验证。详见 [P2-1](../../docs/api-testing-evidence/P2-1.md)。

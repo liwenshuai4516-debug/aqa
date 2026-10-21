@@ -192,6 +192,7 @@ try {
 	server.closeAllConnections();
 	await new Promise((ok) => server.close(ok));
 	await manager.dispose();
+	await runner.dispose();
 	console.log(
 		JSON.stringify({
 			status: summary.status,

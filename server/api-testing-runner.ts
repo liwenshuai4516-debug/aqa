@@ -38,6 +38,7 @@ export class ApiTestingRunner {
 		bundleRoot: string;
 		fixtureOrigin: string;
 		timeoutMs?: number;
+		trustedAssetRoot?: string;
 	}): string {
 		const identity = Object.freeze({ ...input.identity, cwd: realpathSync(input.identity.cwd) });
 		if (identity.pluginId !== "api-testing" || identity.toolName !== "api_test_execute")
@@ -47,7 +48,11 @@ export class ApiTestingRunner {
 			throw new Error("Only explicit loopback fixtures are supported; real targets remain blocked");
 		const bundleRoot = realpathSync(input.bundleRoot);
 		const path = relative(identity.cwd, bundleRoot);
-		if (isAbsolute(path) || path.startsWith("..")) throw new Error("Fixture bundle is outside its project");
+		if (isAbsolute(path) || path.startsWith("..")) {
+			const stored = input.trustedAssetRoot ? relative(realpathSync(input.trustedAssetRoot), bundleRoot) : undefined;
+			if (stored === undefined || isAbsolute(stored) || stored.startsWith(".."))
+				throw new Error("Fixture bundle is outside its project");
+		}
 		const collectionHash = this.verifyBundle(bundleRoot);
 		const collection = readJson(join(bundleRoot, "collection.json"));
 		const checkItems = (items: Array<Record<string, any>>): void => {
@@ -93,10 +98,14 @@ export class ApiTestingRunner {
 
 	private async getWorkflow(): Promise<any> {
 		if (process.platform === "win32") throw new Error("Fixture workflow is not verified on Windows");
-		const names = ["suite.mjs", "review.mjs", "workflow.mjs", "report.mjs"];
+		const names = ["suite.mjs", "review.mjs", "workflow.mjs", "report.mjs", "assets.mjs"];
 		const sources = names.map((name) => readFileSync(join(this.pluginRoot, name)));
-		const fingerprint = sha256(Buffer.concat(sources));
+		const executionSources = ["runner.mjs", "network-guard.cjs", "package-lock.json"].map((name) =>
+			readFileSync(join(this.pluginRoot, name)),
+		);
+		const fingerprint = sha256(Buffer.concat([...sources, ...executionSources]));
 		if (this.workflowFingerprint !== fingerprint) {
+			if (this.workflow) await (await this.workflow).dispose();
 			this.workflow = undefined;
 			this.workflowFingerprint = fingerprint;
 		}
@@ -113,13 +122,27 @@ export class ApiTestingRunner {
 				if (!existsSync(join(runtime, "node_modules")))
 					symlinkSync(join(this.pluginRoot, "node_modules"), join(runtime, "node_modules"), "dir");
 				const { createWorkflow } = await import(pathToFileURL(join(runtime, "workflow.mjs")).href);
-				return createWorkflow({ approve: (input: any) => this.approveFixture(input), execute: this.call });
+				const { createAssetStore } = await import(pathToFileURL(join(runtime, "assets.mjs")).href);
+				const assetRoot = resolve(this.outputRoot, "..", "assets");
+				const assets = createAssetStore({
+					root: assetRoot,
+					policyHash: fingerprint,
+					approve: (input: any) => this.approveFixture({ ...input, trustedAssetRoot: assetRoot }),
+					execute: this.call,
+				});
+				return createWorkflow({ approve: (input: any) => this.approveFixture(input), execute: this.call, assets });
 			})();
 			this.workflow.catch(() => {
 				this.workflow = undefined;
 			});
 		}
 		return this.workflow;
+	}
+
+	async dispose(): Promise<void> {
+		if (this.activeProjects.size) throw new Error("Cannot close API assets while a run is active");
+		if (this.workflow) await (await this.workflow).dispose();
+		this.workflow = undefined;
 	}
 
 	private verifyBundle(root: string, expectedHash?: string): string {

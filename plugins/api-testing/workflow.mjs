@@ -22,7 +22,7 @@ const allowed = {
 	report: ["action", "runId"],
 };
 
-export function createWorkflow({ approve, execute }) {
+export function createWorkflow({ approve, execute, assets }) {
 	const workflows = new Map();
 	const inspect = async (state) => {
 		if (hash(readFileSync(join(state.bundlePath, "manifest.json"))) !== state.manifestHash)
@@ -49,10 +49,15 @@ export function createWorkflow({ approve, execute }) {
 			{ mode: 0o600 },
 		);
 	return {
+		dispose() {
+			if ([...workflows.values()].some((state) => state.busy)) fail("API workflow is still active");
+			assets.close();
+		},
 		async call(identity, request, signal, complete) {
 			signal.throwIfAborted();
 			const input = structuredClone(request.input ?? {}),
 				action = input.action;
+			if (typeof action === "string" && action.startsWith("asset_")) return assets.call(identity, input, signal);
 			if (!allowed[action] || Object.keys(input).some((key) => !allowed[action].includes(key)))
 				fail("Unknown workflow action or argument");
 			if (action === "prepare") {
@@ -192,6 +197,8 @@ export function createWorkflow({ approve, execute }) {
 						{ files, manifest },
 					).path;
 					state.manifestHash = hash(json(manifest));
+					const published = await assets.publish(identity, state.bundlePath);
+					state.assetRef = published.assetRef;
 					state.approvedHash = result.suiteHash;
 					state.artifactHash = result.artifactHash;
 					save(state);
@@ -200,6 +207,7 @@ export function createWorkflow({ approve, execute }) {
 						phase: "approved",
 						suitePath: state.bundlePath,
 						reviewCalls: state.reviewCalls,
+						assetRef: state.assetRef,
 					};
 				}
 				if (action !== "run" && action !== "retest") fail("Unsupported workflow transition");
@@ -272,6 +280,7 @@ export function createWorkflow({ approve, execute }) {
 				};
 				writeFileSync(join(root, "run.json"), json(record), { mode: 0o600 });
 				save(state);
+				assets.copyRun(identity, state.assetRef, root);
 				return { workflowRef: state.id, runId, ...record.summary };
 			} finally {
 				state.busy = false;

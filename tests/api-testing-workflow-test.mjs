@@ -313,6 +313,7 @@ try {
 	process.exitCode = 1;
 } finally {
 	manager.dispose();
+	await runner.dispose();
 	server.closeAllConnections();
 	server.close();
 	await once(server, "close");

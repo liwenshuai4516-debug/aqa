@@ -3329,6 +3329,7 @@ async function shutdown(signal: "SIGINT" | "SIGTERM" = "SIGINT"): Promise<void> 
 		mcpBridge.dispose();
 		await globalLspPool.shutdownAll();
 		await service.disposeAll();
+		await apiTestingRunner.dispose();
 		// Don't let dead browsers hold the exit open: half-open WebSocket /
 		// keep-alive HTTP connections (e.g. test clients killed without
 		// closing) would otherwise keep close() from ever finishing — drop

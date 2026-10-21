@@ -27,6 +27,8 @@ pi-web-ui/
 ├── plugins/api-testing/skills/ # P1-4 分发工作流/评审/分析技能，需项目级安装
 ├── tests/api-testing-model-test.mjs # P1-4 按需真实模型验收，会消耗配置模型额度
 ├── tests/api-testing-skills-test.mjs # 真实 SDK 发现与宿主加载，隔离 agentDir
+├── plugins/api-testing/assets.mjs # P2-1 宿主独立根、不可变套件与持久 runs
+├── tests/api-testing-assets-test.mjs # 跨重启零模型复用与文件损坏/取消检查
 ├── plugins/api-testing/workflow.mjs # P1-3 会话绑定工作流与不可变文件证据
 ├── plugins/api-testing/report.mjs # 确定性分类、历史与定向复测关闭
 ├── tests/api-testing-workflow-test.mjs # 真实执行闭环；模型替身

@@ -11,7 +11,22 @@ export default {
 				type: "object",
 				additionalProperties: false,
 				properties: {
-					action: { type: "string", enum: ["prepare", "revise", "review", "run", "retest", "report"] },
+					action: {
+						type: "string",
+						enum: [
+							"prepare",
+							"revise",
+							"review",
+							"run",
+							"retest",
+							"report",
+							"asset_import",
+							"asset_inspect",
+							"asset_run",
+							"asset_report",
+						],
+					},
+					assetRef: { type: "string" },
 					runRef: { type: "string" },
 					sourcePath: { type: "string" },
 					operationIds: { type: "array", items: { type: "string" }, maxItems: 3 },

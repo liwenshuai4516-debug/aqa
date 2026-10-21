@@ -2,7 +2,7 @@
 	"id": "api-testing",
 	"name": "接口自动化测试",
 	"nameEn": "API testing",
-	"version": "0.1.4",
+	"version": "0.2.0",
 	"description": "导入、评审、执行与复测本地 fixture 套件；真实目标仍阻塞。",
 	"descriptionEn": "Prepare, review, run and retest local fixture suites. Real targets remain blocked.",
 	"apiVersion": 2,

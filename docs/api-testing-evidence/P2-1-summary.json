@@ -1,0 +1,80 @@
+{
+	"task": "P2-1",
+	"status": "passed-fixture-persistence",
+	"scope": "real MCP/Newman, explicit review stub; no business calls",
+	"checks": [
+		{
+			"name": "live-approved-P1-package-published-outside-removable-plugin",
+			"status": "passed"
+		},
+		{
+			"name": "P1-run-report-copied-with-hashes-and-original-preserved",
+			"status": "passed"
+		},
+		{
+			"name": "P1-import-exact-version-is-idempotent-and-keeps-source",
+			"status": "passed"
+		},
+		{
+			"name": "restart-reads-frozen-scripts-and-P1-history-without-model",
+			"status": "passed"
+		},
+		{
+			"name": "same-version-reexecution-creates-new-run-and-zero-model-calls",
+			"status": "passed"
+		},
+		{
+			"name": "corrupt-derived-index-rebuilt-from-verified-packages",
+			"status": "passed"
+		},
+		{
+			"name": "changed-or-half-published-package-cannot-send-requests",
+			"status": "passed"
+		},
+		{
+			"name": "rehashing-imported-pass-label-cannot-grant-execution",
+			"status": "passed"
+		},
+		{
+			"name": "second-store-owner-is-rejected",
+			"status": "passed"
+		},
+		{
+			"name": "asset-reference-cannot-cross-project-boundary",
+			"status": "passed"
+		},
+		{
+			"name": "concurrent-start-rejected-and-cancellation-persists-unknown",
+			"status": "passed"
+		},
+		{
+			"name": "unknown-write-survives-restart-and-blocks-further-requests",
+			"status": "passed"
+		},
+		{
+			"name": "changed-review-or-runner-policy-invalidates-old-executable-approval",
+			"status": "passed"
+		},
+		{
+			"name": "stale-writer-owner-blocks-new-requests-but-keeps-history-readable",
+			"status": "passed"
+		},
+		{
+			"name": "plugin-uninstall-does-not-delete-unique-asset-or-report",
+			"status": "passed"
+		}
+	],
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p2-1-JodxmH",
+	"modelCalls": 2,
+	"fixtureRequests": 5,
+	"assetRef": "129b94e2bf92840a779d48a29f54f4baf3df489b58c7019ec30b9bb2098bbbd1",
+	"preservedEvidence": "tests/scratch/api-testing-p2-1/evidence",
+	"sourceHashes": {
+		"plugins/api-testing/assets.mjs": "6e3b6f88f47bd220bfd6bd40e234743685145f6df959e2e29b4d7bdf00fde902",
+		"plugins/api-testing/workflow.mjs": "dc194447a799e1c42dcfe661c0e6f5cf22c2f08f566dd2ef8ad3dd40fbd3a567",
+		"plugins/api-testing/index.mjs": "49aec60aca6a83916d4315763a40eabd2caf04e3c5a45e3b33e49b498eb47f84",
+		"server/api-testing-runner.ts": "a83137178a4ad6180aa6411025dce7f11a8ba23bec138d27b454fefc2679c3d1",
+		"server/index.ts": "66b55e179aa8a8e2d4a83415bf9770548a7284552a21cc29a2db0a364ecdbb2d",
+		"tests/api-testing-assets-test.mjs": "81fda2ffad7e920b3c94db8c3209c8af82966175179d8f1285b5638a500d4829"
+	}
+}
