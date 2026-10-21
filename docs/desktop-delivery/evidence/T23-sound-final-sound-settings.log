@@ -1,0 +1,18 @@
+app booted
+  ✓ sound panel shows master + 5 event rows + notify row
+  ✓ event rows labelled
+  ✓ volume slider present
+  ✓ default volume is 100
+  ✓ start cue default off
+  ✓ rows disabled when master off
+  ✓ start cue enabled
+  ✓ volume label updates
+  ✓ preview plays without errors
+  ✓ notify block rendered in the dropdown
+  ✓ notify block explains itself
+  ✓ notify switch disabled iff the browser withholds the API
+SKIP: notification permission/toggle acceptance explicitly deferred by user
+  ✓ start cue persisted after reload
+  ✓ volume persisted after reload
+
+14 checks passed

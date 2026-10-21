@@ -1,0 +1,24 @@
+[srv] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[srv] 
+  ⚡ pi-web-ui — web chat for the pi coding agent
+[srv]     http://localhost:22303
+    workspace   : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-setpage-ui-tMmt9K/work
+    session dir : /tmp/pi-ui-DOthRS/plugin-settings-page/agent/sessions
+    pi SDK      : v1.1.0
+[srv]     bind        : 127.0.0.1:22303
+
+[srv]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-setpage-ui-tMmt9K/data/pi-web-ui.sock
+  ✓ 设置面板打开
+  ✓ manifest 的 settings.pages 条目出现在设置面板导航里
+  ✓ hidden: true 的插件页默认不在导航里
+  ✓ 点开后插件自己的 mount() 渲染到页面画布
+  ✓ 切走后插件页从 DOM 里卸载
+  ✓ 切走时调用了插件 mount() 返回的 cleanup
+  ✓ 再点回来是重新挂载（不是一直留在 DOM 里）
+  ✓ 界面布局页列出了这个插件页（可隐藏/排序）
+  ✓ 取消勾选后导航项消失
+  ✓ 当前分区回落到默认页（不留空白正文）
+  ✓ 回落后不再挂着插件画布
+  ✓ 页面没有 JS 报错
+
+12 checks passed

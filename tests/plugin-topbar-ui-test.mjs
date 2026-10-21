@@ -102,6 +102,7 @@ async function main() {
 	// 默认 1280×720 下这个插件条目会落进溢出菜单，而本用例要验的正是
 	// 「插件声明的按钮渲染在宿主顶栏」。
 	const page = await browser.newPage({ viewport: { width: 1600, height: 900 } });
+	await page.addInitScript(() => localStorage.setItem("pi-web-ui:lang", "zh"));
 	const errors = [];
 	const jobFrames = [];
 	page.on("pageerror", (e) => errors.push(String(e)));
@@ -120,10 +121,15 @@ async function main() {
 	});
 
 	await page.goto(`http://localhost:${PORT}/`, { waitUntil: "domcontentloaded" });
-	// 只认这个插件自己的按钮：`.plugin-topbar-item` 也被「⋯」溢出按钮复用，
-	// `.first()` 会拿到「⋯」（文字不是 Ping Me）而误判。
-	const pluginBtn = page.locator(".plugin-topbar-item", { hasText: "Ping Me" }).first();
+	// The shared BarItem renderer uses the normal chip class; identify the actual
+	// plugin action by accessible name and keep the original direct-toolbar assertion.
+	const pluginBtn = page.locator(".topbar-flow").getByRole("button", { name: "Ping Me", exact: true });
 	await pluginBtn.waitFor({ timeout: 20000 }).catch(() => {});
+	if (!(await pluginBtn.count())) {
+		console.log("Missing topbar button diagnostics", await page.locator("body").innerText());
+		if (process.env.PI_TEST_SCREENSHOT) await page.screenshot({ path: process.env.PI_TEST_SCREENSHOT, fullPage: true });
+		throw new Error("Declared plugin button missing from actual DOM");
+	}
 	const label = await pluginBtn.textContent().catch(() => "");
 	check("插件声明的顶栏按钮渲染在宿主顶栏", (label ?? "").includes("Ping Me"));
 
@@ -149,7 +155,7 @@ async function main() {
 	if (await settingsBtn.count()) await settingsBtn.click();
 	await sleep(800);
 	// 按页签选择器点（`getByText` 可能命中页内文案而不是左侧导航的页签，点了不切页）。
-	const pluginsTab = page.locator(".settings-tab", { hasText: /界面插件|UI plugins/ }).first();
+	const pluginsTab = page.locator('.settings-tab[data-tab="plugins"]');
 	if (await pluginsTab.count()) await pluginsTab.click();
 	await sleep(600);
 	check("设置面板出现「界面布局」管理段", (await page.getByText("界面布局", { exact: false }).count()) > 0);

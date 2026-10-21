@@ -84,3 +84,7 @@ D06 经用户明确批准，仅在 server/agent-service.ts 的 setDelegateMode �
 ## T22 最新安装包生命周期
 
 仅修改 lifecycle-run 的独立证据前缀和真实重复启动断言、no-replay-run 的实际安装包启动/独立证据路径/可选实际追加后中断检查。原有行为断言保留；新增当前产物身份核对、完整系统生命周期与写入后不重放证据。未修改生产代码、安装包或未知 bottombar 差异，未新增付费请求。详见 T22-latest-package-lifecycle.md。
+
+## T23 原浏览器交互
+
+仅修改 original-ui-run 独立证据前缀/拒绝覆盖/凭据环境清理/SKIP 汇总，以及声音与插件顶栏原测试的实际入口定位、中文夹具、与冻结源一致的五声音事件检查；通知可显式跳过，默认原通知断言保留。新增多轮真实浏览器结果及失败诊断，生产代码和安装包不变，未知 bottombar 差异未纳入。详见 T23-browser-interactions.md。

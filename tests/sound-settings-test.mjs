@@ -25,6 +25,7 @@ import { chromium } from "playwright-core";
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const PORT = 30000 + Math.floor(Math.random() * 10000);
 const workdir = mkdtempSync(join(tmpdir(), "piweb-snd-"));
+const soundOnly = process.env.PI_TEST_SOUND_ONLY === "1";
 process.env.PI_WEB_PORT = String(PORT);
 process.env.PI_WEB_CWD = workdir;
 
@@ -72,8 +73,10 @@ async function waitServer() {
 }
 
 async function openSoundMenu(page) {
-	await page.locator(".topbar-flow .chip", { hasText: "声音" }).click();
-	await page.waitForSelector(".sound-menu", {
+	const button = () => page.locator('button[data-tip="声音"],button[title="声音"]').filter({ visible: true }).first();
+	if (!(await button().count())) await page.locator(".plugin-topbar-more > button").click();
+	await button().click();
+	await page.waitForSelector(".sound-menu:not(.notify-menu)", {
 		state: "visible",
 		timeout: 5000,
 	});
@@ -87,6 +90,7 @@ async function main() {
 	const page = await browser.newPage({
 		viewport: { width: 1400, height: 900 },
 	});
+	await page.addInitScript(() => localStorage.setItem("pi-web-ui:lang", "zh"));
 	const consoleErrors = [];
 	page.on("console", (m) => {
 		if (m.type() === "error") consoleErrors.push(m.text());
@@ -100,9 +104,9 @@ async function main() {
 
 	// -- dropdown structure ---------------------------------------------------
 	await openSoundMenu(page);
-	// 5 sound rows (master + 4 events) + 1 desktop-notification row below them.
+	// The frozen source has five events, including approval, plus master and notification.
 	const rows = await page.locator(".sound-row").count();
-	check("sound panel shows master + 4 event rows + notify row", rows === 6);
+	check("sound panel shows master + 5 event rows + notify row", rows === 7);
 	// The desktop-notification block below the sound rows is itself a
 	// .sound-menu (shared layout), so scope every sound-panel query with
 	// :not(.notify-menu) — a bare .sound-menu matches two elements now.
@@ -110,7 +114,8 @@ async function main() {
 		"event rows labelled",
 		(await page.locator(".sound-menu:not(.notify-menu)").textContent())?.includes("问卷弹出") &&
 			(await page.locator(".sound-menu:not(.notify-menu)").textContent())?.includes("回复结束") &&
-			(await page.locator(".sound-menu:not(.notify-menu)").textContent())?.includes("出错"),
+			(await page.locator(".sound-menu:not(.notify-menu)").textContent())?.includes("出错") &&
+			(await page.locator(".sound-menu:not(.notify-menu)").textContent())?.includes("等待审批"),
 	);
 	check("volume slider present", (await page.locator(".sound-volume input[type=range]").count()) === 1);
 	check("default volume is 100", (await page.locator(".sound-vol-num").textContent())?.includes("100"));
@@ -160,7 +165,8 @@ async function main() {
 	check("notify switch disabled iff the browser withholds the API", (await notifyBox.isDisabled()) === !notifyApi);
 
 	let notifyOn = false;
-	if (notifyApi) {
+	if (soundOnly) console.log("SKIP: notification permission/toggle acceptance explicitly deferred by user");
+	if (notifyApi && !soundOnly) {
 		await notifyBox.check();
 		await sleep(200);
 		notifyOn = await notifyBox.isChecked();
@@ -186,7 +192,7 @@ async function main() {
 		await page.locator(".sound-row", { hasText: "回复开始" }).locator('input[type="checkbox"]').isChecked(),
 	);
 	check("volume persisted after reload", (await page.locator(".sound-vol-num").textContent())?.includes("30"));
-	check("notify switch persisted after reload", (await notifyBox.isChecked()) === notifyOn);
+	if (!soundOnly) check("notify switch persisted after reload", (await notifyBox.isChecked()) === notifyOn);
 
 	if (consoleErrors.length > 0) {
 		console.log("console errors:", consoleErrors.slice(0, 5));

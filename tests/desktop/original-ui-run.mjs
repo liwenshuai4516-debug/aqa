@@ -1,13 +1,21 @@
 import { spawn } from "node:child_process";
 import { once } from "node:events";
 import { createServer } from "node:http";
-import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, writeFileSync, existsSync } from "node:fs";
+import assert from "node:assert/strict";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { CHROME_PATH } from "../lib/chrome.mjs";
 
-const scripts =
-	process.argv.length > 2 ? process.argv.slice(2) : ["terminal-browser", "file-upload-browser", "image-paste-browser"];
+const args = process.argv.slice(2);
+const prefixIndex = args.indexOf("--evidence-prefix");
+const evidencePrefix = prefixIndex >= 0 ? args.splice(prefixIndex, 2)[1] : "T18";
+assert(/^[A-Za-z0-9-]+$/.test(evidencePrefix), "Evidence prefix must be a filename stem");
+const scripts = args.length ? args : ["terminal-browser", "file-upload-browser", "image-paste-browser"];
+const evidencePath = `docs/desktop-delivery/evidence/${evidencePrefix}-original-ui.json`;
+assert(!existsSync(evidencePath), "Preserve previous UI evidence");
+for (const script of scripts)
+	assert(!existsSync(`docs/desktop-delivery/evidence/${evidencePrefix}-${script}.log`), "Preserve previous UI logs");
 const fixture = mkdtempSync(join(process.platform === "darwin" ? "/tmp" : tmpdir(), "pi-ui-"));
 let localRequests = 0;
 const provider = createServer(async (req, res) => {
@@ -57,14 +65,13 @@ try {
 			PI_WEB_PLUGIN_CATALOG_URL: "off",
 			PI_WEB_TOKEN: "",
 		};
-		for (const key of [
-			"DEEPSEEK_API_KEY",
-			"OPENAI_API_KEY",
-			"ANTHROPIC_API_KEY",
-			"PI_WEB_DESKTOP_URL",
-			"ELECTRON_RUN_AS_NODE",
-		])
-			delete env[key];
+		for (const key of Object.keys(env))
+			if (
+				/(API_KEY|AUTH_TOKEN|ACCESS_TOKEN|SECRET_ACCESS_KEY|SESSION_TOKEN)$/.test(key) ||
+				/^(AWS_|GOOGLE_|GCLOUD_|AZURE_)/.test(key) ||
+				["PI_WEB_DESKTOP_URL", "ELECTRON_RUN_AS_NODE"].includes(key)
+			)
+				delete env[key];
 		const child = spawn(process.execPath, [resolve(`tests/${script}-test.mjs`)], {
 			env,
 			stdio: ["ignore", "pipe", "pipe"],
@@ -77,16 +84,14 @@ try {
 			logs += data;
 		});
 		const [code, signal] = await once(child, "exit");
-		writeFileSync(`docs/desktop-delivery/evidence/T18-${script}.log`, logs);
-		checks.push({ script, code, signal, status: code === 0 ? "PASS" : "FAIL" });
+		writeFileSync(`docs/desktop-delivery/evidence/${evidencePrefix}-${script}.log`, logs);
+		const skipped = logs.split("\n").filter((line) => /\bSKIP\b/.test(line));
+		checks.push({ script, code, signal, status: code !== 0 ? "FAIL" : skipped.length ? "PARTIAL" : "PASS", skipped });
 		console.log(JSON.stringify(checks.at(-1)));
 		if (code !== 0) process.exitCode = 1;
 	}
 } finally {
 	provider.closeAllConnections();
 	await new Promise((resolveClose) => provider.close(resolveClose));
-	writeFileSync(
-		"docs/desktop-delivery/evidence/T18-original-ui.json",
-		JSON.stringify({ fixture, realModelRequests: 0, localRequests, checks }, null, 2),
-	);
+	writeFileSync(evidencePath, JSON.stringify({ fixture, realModelRequests: 0, localRequests, checks }, null, 2));
 }

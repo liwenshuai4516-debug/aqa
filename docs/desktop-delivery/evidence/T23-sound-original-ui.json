@@ -1,0 +1,13 @@
+{
+  "fixture": "/tmp/pi-ui-gDiO9b",
+  "realModelRequests": 0,
+  "localRequests": 0,
+  "checks": [
+    {
+      "script": "sound-settings",
+      "code": 0,
+      "signal": null,
+      "status": "PASS"
+    }
+  ]
+}

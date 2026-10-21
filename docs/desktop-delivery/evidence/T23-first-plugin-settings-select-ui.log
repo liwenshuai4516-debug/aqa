@@ -1,0 +1,25 @@
+[srv] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[srv] 
+[srv]   ⚡ pi-web-ui — web chat for the pi coding agent
+    http://localhost:21168
+    workspace   : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-setselect-ui-UNQXbb/work
+    session dir : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-setselect-ui-UNQXbb/agent/sessions
+    pi SDK      : v1.1.0
+[srv]     bind        : 127.0.0.1:21168
+
+[srv]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-setselect-ui-UNQXbb/data/pi-web-ui.sock
+[srv] [plugin:dds] activated (v0.0.1)
+  ✓ 设置面板打开
+  ✓ 界面插件配置默认折叠（表单未渲染且存在展开按钮）
+  ✓ 点击展开后，渲染出声明式设置表单
+  ✓ 静态 select 只有 manifest 声明的候选项
+  ✓ 模型下拉首项 = 跟随全局默认（空值）
+  ✓ 模型下拉列出已配置鉴权的模型（provider/id）
+  ✓ 模型下拉不重复、无空壳项
+  ✓ 思考强度下拉 = 空值 + SDK 全部档位
+  ✓ 档位文案走 i18n（不是裸 off/minimal）
+  ✓ 改选后保存按钮可用（脏判定生效）
+  ✓ 保存后 storage.json 落的是下拉选中的值
+  ✓ 页面没有 JS 报错
+
+12 checks passed

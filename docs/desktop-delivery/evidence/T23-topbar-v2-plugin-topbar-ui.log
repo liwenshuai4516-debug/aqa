@@ -1,0 +1,22 @@
+[srv] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[srv] 
+[srv]   ⚡ pi-web-ui — web chat for the pi coding agent
+    http://localhost:20639
+    workspace   : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-topbar-ui-lm1zOx/work
+    session dir : /tmp/pi-ui-tYWa0v/plugin-topbar-ui/agent/sessions
+    pi SDK      : v1.1.0
+[srv]     bind        : 127.0.0.1:20639
+[srv] 
+[srv]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-topbar-ui-lm1zOx/data/pi-web-ui.sock
+  ✗ FAIL: 插件声明的顶栏按钮渲染在宿主顶栏
+test error: locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('.plugin-topbar-item').filter({ hasText: 'Ping Me' }).first()[22m
+
+    at main (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/plugin-topbar-ui-test.mjs:132:18)
+    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/plugin-topbar-ui-test.mjs:205:2 {
+  log: [
+    "  - waiting for locator('.plugin-topbar-item').filter({ hasText: 'Ping Me' }).first()"
+  ],
+  name: 'TimeoutError'
+}

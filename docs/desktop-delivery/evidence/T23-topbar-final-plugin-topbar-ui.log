@@ -1,0 +1,22 @@
+[srv] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[srv] 
+[srv]   ⚡ pi-web-ui — web chat for the pi coding agent
+    http://localhost:20869
+    workspace   : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-topbar-ui-K8TkYL/work
+    session dir : /tmp/pi-ui-l7fxrE/plugin-topbar-ui/agent/sessions
+    pi SDK      : v1.1.0
+[srv]     bind        : 127.0.0.1:20869
+[srv] 
+[srv]   control    : /var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-topbar-ui-K8TkYL/data/pi-web-ui.sock
+  ✓ 插件声明的顶栏按钮渲染在宿主顶栏
+  ✓ 点击后插件接管的动作被执行（按需加载 client bundle）
+  ✓ 设置面板出现「界面布局」管理段
+  ✓ 插件市场出现「源码构建」勾选项
+  ✓ 插件列表有卸载按钮
+  ✓ 卸载走两步确认
+  ✓ 卸载走后台作业（客户端发 plugin_job，服务端回 done:ok）
+  ✓ 设置面板全程没有关闭
+  ✓ 卸载结果可见（插件从列表消失）
+  ✓ 页面没有 JS 报错
+
+10 checks passed

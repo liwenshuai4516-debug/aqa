@@ -1,0 +1,14 @@
+{
+  "fixture": "/tmp/pi-ui-tYWa0v",
+  "realModelRequests": 0,
+  "localRequests": 0,
+  "checks": [
+    {
+      "script": "plugin-topbar-ui",
+      "code": 1,
+      "signal": null,
+      "status": "FAIL",
+      "skipped": []
+    }
+  ]
+}
