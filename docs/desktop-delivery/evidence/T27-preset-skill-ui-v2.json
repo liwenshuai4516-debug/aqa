@@ -1,0 +1,19 @@
+{
+  "fixture": "/tmp/pi-preset-skill-atOE68",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "FAIL",
+  "checks": [
+    "Packaged SDK discovers local skill and settings displays enabled state",
+    "Original skill switch disables discovered skill",
+    "Original full-text skill option can be enabled",
+    "Empty preset name cannot be saved",
+    "Chinese preset saved through original UI",
+    "Applying saved preset restores disabled skill",
+    "Skill disabled state survives full application quit and relaunch",
+    "Full-text preference survives full application relaunch",
+    "Named preset survives full application relaunch",
+    "Preset deletion removes original UI entry"
+  ],
+  "realModelRequests": 0,
+  "error": "AssertionError [ERR_ASSERTION]: Persisted original configuration retains disabled skill and deletes preset\n    at check (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/preset-skill-ui-run.mjs:50:2)\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/preset-skill-ui-run.mjs:130:2"
+}
