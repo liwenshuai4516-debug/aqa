@@ -15,6 +15,7 @@
 import type { AgentSession, ToolDefinition } from "@earendil-works/pi-coding-agent";
 import type { AgentMessage } from "./serialize.js";
 import type { PluginAgentTool } from "./plugins.js";
+import type { PluginInvocationScope } from "./plugin-mcp.js";
 import { writeAtomicSync } from "./atomic-file.js";
 
 /** 轨迹事件 payload 封顶（可直接广播/持久化，不撑爆 storage.json）。 */
@@ -122,7 +123,10 @@ export function conversationTitle(session: AgentSession): string {
  * 插件结构化工具 → SDK ToolDefinition。
  * execute 返回值宽容处理：{content,details} 原样收编；字符串/对象包成文本块。
  */
-export function pluginToolToDefinition(tool: PluginAgentTool): ToolDefinition {
+export function pluginToolToDefinition(
+	tool: PluginAgentTool,
+	invocation?: (signal?: AbortSignal) => PluginInvocationScope,
+): ToolDefinition {
 	const normalize = (
 		result: unknown,
 	): {
@@ -154,13 +158,19 @@ export function pluginToolToDefinition(tool: PluginAgentTool): ToolDefinition {
 			signal: AbortSignal | undefined,
 			onUpdate: ((partial: unknown) => void) | undefined,
 		) => {
-			const raw = await tool.execute(
-				toolCallId,
-				params as Record<string, unknown>,
-				signal,
-				onUpdate ? (partial) => onUpdate(normalize(partial) as never) : undefined,
-			);
-			return normalize(raw) as never;
+			const scope = invocation?.(signal);
+			try {
+				const raw = await tool.execute(
+					toolCallId,
+					params as Record<string, unknown>,
+					signal,
+					onUpdate ? (partial) => onUpdate(normalize(partial) as never) : undefined,
+					scope?.context,
+				);
+				return normalize(raw) as never;
+			} finally {
+				scope?.dispose();
+			}
 		},
 	} as unknown as ToolDefinition;
 }

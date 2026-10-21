@@ -209,9 +209,9 @@ Agent 决定下一项业务动作；插件只实现固定阶段转换与条件�
 | 插件 UI 插槽与消息通道                              | 首期使用已有设置页/报告视图，避免新建顶层工作台                                   |
 | 现有目标模式                                        | 保留已有执行/审查机制；本功能不修改 `goal-service.ts`、不叠加另一套自动续轮控制器 |
 
-**必须补齐的宿主接缝**：当前 `host.mcp` 只有 list/check/install/promptInstall，没有插件可用的受控 call；插件 pre/post 守卫只覆盖 bash/read，不能拦截任意 MCP 工具。因此不能把“写一份 skill”视为完整执行门禁。
+**宿主接缝的实施状态**：P0-2 已增加绑定调用身份的 `host.mcp.call`，当前只接收一次性手工批准的 fixture 引用，原始 runner 工具不对模型开放。插件 pre/post 守卫仍不能替代执行侧门禁；真实目标隔离和后续业务工作流尚未验收。见 [P0-2 证据](api-testing-evidence/P0-2.md)。
 
-建议最小新增：宿主提供绑定调用身份、server/tool allowlist、AbortSignal 的内部 MCP 调用入口，并支持测试 runner 的内部可见性；由插件执行工具核验 snapshot 后调用。该 runner 的原始执行工具不另向模型直出，避免绕过评审；按 server ID + 原始 tool name 定位，不能只依赖清洗后的名字。权限、计划/委派限制和审计与现有工具路径一致。涉及 `server/plugins.ts`、`server/mcp-bridge.ts`、配置协议及对应守卫，均为待实现，不调用不存在的 `host.mcp.call()`。
+建议最小新增：宿主提供绑定调用身份、server/tool allowlist、AbortSignal 的内部 MCP 调用入口，并支持测试 runner 的内部可见性；由插件执行工具核验 snapshot 后调用。该 runner 的原始执行工具不另向模型直出，避免绕过评审；按 server ID + 原始 tool name 定位，不能只依赖清洗后的名字。权限、计划/委派限制和审计与现有工具路径一致。P0-2 涉及 `server/plugin-mcp.ts`、`server/api-testing-runner.ts`、`server/plugins.ts`、`server/mcp-bridge.ts` 和 SDK，对现有协议无新增消息；P1 的生成、评审、冻结包与真实目标门禁仍需按实施计划验收。
 
 测试请求不经过 `host.net.fetch`，后者的白名单并不自动约束 Newman。执行网络与文件隔离必须有部署层实测依据，不能把模型评审或关键词过滤当作沙箱。P1 仅接受声明式用例，由固定模板生成断言和变量提取脚本；不执行用户导入或模型自由编写的 JavaScript，禁止任意 `pm.sendRequest`、动态目标主机、外部脚本包和越界文件读取。请求目标、重定向及执行路径须在 P0 验证；无法约束时仅可在隔离 fixture 环境试验，不开放真实目标。发现不支持脚本即阻塞，不能静默删除后执行。取消时仅停止本 run 的专属进程，不能关闭用户共享 MCP 服务。自由 bash/外部执行权限不属于本工作流可证明的沙箱边界。
 

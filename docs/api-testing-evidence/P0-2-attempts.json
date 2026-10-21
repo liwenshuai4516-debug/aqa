@@ -1,0 +1,29 @@
+[
+	{
+		"attempt": "01-path-alias-failure",
+		"status": "failed",
+		"checksCompleted": 2,
+		"startedAt": "2026-10-21T10:02:34.214Z",
+		"finishedAt": "2026-10-21T10:02:34.225Z",
+		"error": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /hash/. Input:\n\n'Error: Run reference belongs to another caller'\n\n    at async rejectedWithoutRequest (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/api-testing-controlled-test.mjs:142:2)\n    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/api-testing-controlled-test.mjs:169:2",
+		"localEvidence": "tests/scratch/api-testing-p0-2/evidence/01-path-alias-failure"
+	},
+	{
+		"attempt": "02-intermediate-passed",
+		"status": "passed-fixture-only",
+		"checksCompleted": 15,
+		"startedAt": "2026-10-21T10:03:13.281Z",
+		"finishedAt": "2026-10-21T10:03:25.132Z",
+		"error": null,
+		"localEvidence": "tests/scratch/api-testing-p0-2/evidence/02-intermediate-passed"
+	},
+	{
+		"attempt": "03-final-passed",
+		"status": "passed-fixture-only",
+		"checksCompleted": 15,
+		"startedAt": "2026-10-21T10:10:26.508Z",
+		"finishedAt": "2026-10-21T10:10:39.052Z",
+		"error": null,
+		"localEvidence": "tests/scratch/api-testing-p0-2/evidence/03-final-passed"
+	}
+]

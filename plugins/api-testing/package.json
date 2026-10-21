@@ -1,0 +1,10 @@
+{
+	"name": "pi-web-ui-plugin-api-testing",
+	"private": true,
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "1.27.1",
+		"@postman/postman-mcp-server": "2.14.0",
+		"newman": "6.2.2"
+	},
+	"version": "0.1.0"
+}

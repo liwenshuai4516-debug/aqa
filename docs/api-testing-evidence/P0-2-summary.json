@@ -1,0 +1,116 @@
+{
+	"schemaVersion": 1,
+	"task": "P0-2",
+	"startedAt": "2026-10-21T10:10:26.508Z",
+	"platform": "darwin",
+	"node": "v23.10.0",
+	"output": "tests/scratch/api-testing-p0-2/evidence/03-final-passed",
+	"checks": [
+		{
+			"name": "raw-MCP-tool-is-private",
+			"status": "passed",
+			"evidence": {}
+		},
+		{
+			"name": "unreviewed-and-unknown-refs-never-start",
+			"status": "passed",
+			"evidence": {}
+		},
+		{
+			"name": "changed-hash-never-starts",
+			"status": "passed",
+			"evidence": {}
+		},
+		{
+			"name": "plan-and-delegate-modes-block-before-network",
+			"status": "passed",
+			"evidence": {}
+		},
+		{
+			"name": "closed-plugin-or-tool-blocks-stale-definitions",
+			"status": "passed",
+			"evidence": {}
+		},
+		{
+			"name": "model-supplied-context-cannot-forge-identity",
+			"status": "passed",
+			"evidence": {}
+		},
+		{
+			"name": "approved-ref-bound-to-client-conversation-project",
+			"status": "passed",
+			"evidence": {}
+		},
+		{
+			"name": "real-MCP-Newman-success-keeps-origin-on-foreground-switch",
+			"status": "passed",
+			"evidence": {
+				"runId": "4fbf34ef-9563-4d96-bd59-d7a6dcec7dae",
+				"assertions": {
+					"total": 1,
+					"pending": 0,
+					"failed": 0
+				}
+			}
+		},
+		{
+			"name": "duplicate-run-ref-never-resends",
+			"status": "passed",
+			"evidence": {}
+		},
+		{
+			"name": "stop-only-own-run-preserve-unknown-and-project-mutual-exclusion",
+			"status": "passed",
+			"evidence": {
+				"canceled": "8fd99d91-93f2-42d0-a158-64e0f08f8f4f",
+				"other": "f2400400-59a5-40b2-b624-dc67f20b7f09"
+			}
+		},
+		{
+			"name": "mode-revocation-stops-pending-dedicated-run",
+			"status": "passed",
+			"evidence": {}
+		},
+		{
+			"name": "replaced-origin-session-cancels-without-writing-another-conversation",
+			"status": "passed",
+			"evidence": {}
+		},
+		{
+			"name": "plugin-deactivation-stops-owned-runner-and-removes-workflow-tool",
+			"status": "passed",
+			"evidence": {}
+		},
+		{
+			"name": "whole-run-deadline-reaps-process-before-release",
+			"status": "passed",
+			"evidence": {}
+		},
+		{
+			"name": "new-run-works-after-cancellation-without-retrying-old-ref",
+			"status": "passed",
+			"evidence": {}
+		}
+	],
+	"status": "passed-fixture-only",
+	"finishedAt": "2026-10-21T10:10:39.052Z",
+	"fixtureRequests": [
+		"/ok",
+		"/hold-b",
+		"/hold-a",
+		"/hold-mode",
+		"/hold-session",
+		"/hold-unload",
+		"/hold-deadline",
+		"/ok"
+	],
+	"sourceSha256": {
+		"server/api-testing-runner.ts": "990b5421530e880c1c7d807020a129d0ca10fa98574889ad80499760ca2ad97a",
+		"server/plugin-mcp.ts": "1a052c03223f1895ada73e8921b3943222a389dec837361fb76a7346ac6567cf",
+		"tests/api-testing-controlled-test.mjs": "f9a8a19f96f6b06e6733883263b0b379d540a3b7f0f3bf69564901e92b23753d",
+		"plugins/api-testing/runner.mjs": "651f25fc52832f9de1886446f08ec13ecee47fdfa4d642a966abdb6a9eaf32bd",
+		"plugins/api-testing/index.mjs": "840c92ae8443e3212479257d1c209d39a3e088c5e3f4436fc7d3b77eabc4895e",
+		"plugins/api-testing/network-guard.cjs": "4b578e05a5318927915b80abb4a4d981f90da6c7af4f5a0df12dcfd12bf13eee",
+		"plugins/api-testing/package-lock.json": "0eeaeba8f398c5e9381c87c36260045ec5c4cf77b53f4cfb033c3167396cb9d4"
+	}
+}

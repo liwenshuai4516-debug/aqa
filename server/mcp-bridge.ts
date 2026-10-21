@@ -120,6 +120,7 @@ interface PendingRequest {
  */
 export class McpClient {
 	private child: ChildProcess | null = null;
+	private closingChild: ChildProcess | null = null;
 	private buffer = "";
 	private pending = new Map<string, PendingRequest>();
 	private log: (...a: unknown[]) => void;
@@ -428,6 +429,11 @@ export class McpClient {
 		this.initialized = false;
 		this.rejectAll(new Error("[mcp] client closed"));
 		if (this.child) {
+			const closing = this.child;
+			this.closingChild = closing;
+			closing.once("exit", () => {
+				if (this.closingChild === closing) this.closingChild = null;
+			});
 			try {
 				this.child.kill();
 			} catch {
@@ -444,6 +450,28 @@ export class McpClient {
 				headers: { "Mcp-Session-Id": sid },
 			}).catch(() => {});
 		}
+	}
+
+	/** Dedicated runners must actually exit before releasing their run lock. */
+	async closeAndWait(timeoutMs = 3000): Promise<void> {
+		const child = this.child ?? this.closingChild;
+		if (!child || child.exitCode !== null || child.signalCode !== null) {
+			this.close();
+			return;
+		}
+		await new Promise<void>((resolve, reject) => {
+			let hardStop: ReturnType<typeof setTimeout> | undefined;
+			const timer = setTimeout(() => {
+				child.kill("SIGKILL");
+				hardStop = setTimeout(() => reject(new Error("Dedicated MCP runner did not exit")), 1000);
+			}, timeoutMs);
+			child.once("exit", () => {
+				clearTimeout(timer);
+				if (hardStop) clearTimeout(hardStop);
+				resolve();
+			});
+			this.close();
+		});
 	}
 
 	// -- 内部 -------------------------------------------------------------

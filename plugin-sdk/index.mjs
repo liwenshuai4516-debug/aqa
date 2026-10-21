@@ -43,7 +43,7 @@
  * tests/unit/plugin-sdk-mock.test.ts 锁定）。脚手架拷贝 sdk/index.mjs 时连版本号
  * 一起带走；已装插件用 `pi-web-ui plugin upgrade-sdk` 刷新拷贝。
  */
-export const SDK_VERSION = "0.1.0";
+export const SDK_VERSION = "0.1.1";
 
 /** 服务端入口校验 + 原样返回（拼错 activate / 忘写 deactivate 在加载期就报错）。 */
 export function definePlugin(def) {
@@ -439,6 +439,9 @@ export function createMockHost(overrides) {
 			list: () => [],
 		},
 		mcp: {
+			call: async () => {
+				throw new Error("mock: controlled MCP execution unavailable");
+			},
 			list: async () => [],
 			check: async () => ({
 				installed: false,

@@ -53,6 +53,19 @@ describe("McpClient 握手与工具", () => {
 		expect(names).toEqual(["echo", "add", "fail", "slow", "screenshot", "pdf", "textfile", "mixed", "crash", "pid"]);
 	});
 
+	it("closeAndWait observes exit even after close and leaves another client running", async () => {
+		const owned = client();
+		const other = client();
+		await Promise.all([owned.start(), other.start()]);
+		const pid = JSON.parse(((await owned.call("pid", {})) as { content: string }).content);
+		owned.close();
+		await owned.closeAndWait();
+		expect(() => process.kill(pid, 0)).toThrow();
+		expect((await other.call("echo", { alive: true })) as { content: string }).toMatchObject({
+			content: JSON.stringify({ alive: true }),
+		});
+	});
+
 	it("echo 原样返回；add 求和", async () => {
 		const c = client();
 		await c.start();

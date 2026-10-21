@@ -95,6 +95,7 @@ import type {
 	PluginRunEvent,
 	PluginToolEvent,
 } from "./plugins.js";
+import { createPluginInvocation } from "./plugin-mcp.js";
 import { syncPluginToolsIntoSession } from "./plugins.js";
 import { modelChangeKey, pickClientConversation } from "./plugin-conversation-view.js";
 import { SettingsService } from "./settings-service.js";
@@ -3258,7 +3259,7 @@ export class ClientSession {
 					// 子代理模板带非空扩展白名单时不注入：插件/MCP 工具没有 SDK extensionKey
 					// 身份、无法参与白名单匹配，全放行等于白名单没关门，全收编才符合「只加载这些」。
 					// 空白名单 = 跟随主会话（插件工具照常进入子代理）。
-					...(apply && apply.enabledExtensions.length > 0 ? [] : this.enabledPluginToolDefs()),
+					...(apply && apply.enabledExtensions.length > 0 ? [] : this.enabledPluginToolDefs(undefined, ownerId)),
 					// 第一方子代理工具（spawn/get_result/steer/list/stop）。子代理会话
 					// 也注册了它们，因此可自然嵌套派发。host 按 ownerId 包装：子代理的
 					// 父对话 = 真正调用 spawn 的那个会话（本 runtime 所属会话），而不是
@@ -8149,7 +8150,7 @@ export class ClientSession {
 	 *  未知/已卸载插件的禁用条目保留但不影响现有工具）。
 	 *  预设是第二层门控（见 tool-manager.ts 语义总表）：非 standard 预设下插件工具
 	 *  一律不可用（读写未知，保守处理），此时返回空表，调用方负责从会话移除。 */
-	private enabledPluginToolDefs(preset?: string): ToolDefinition[] {
+	private enabledPluginToolDefs(preset?: string, ownerId?: string): ToolDefinition[] {
 		if (!presetAllowsPluginTools(preset)) return [];
 		const off = new Set(normalizeDisabledPluginTools(this.settingsSvc.current.disabledPluginTools));
 		const disabledPlugins = new Set(this.settingsSvc.current.disabledPlugins ?? []);
@@ -8158,7 +8159,46 @@ export class ClientSession {
 				if (t.pluginId && disabledPlugins.has(t.pluginId)) return false;
 				return !off.has(t.name);
 			})
-			.map(pluginToolToDefinition);
+			.map((tool) =>
+				pluginToolToDefinition(
+					tool,
+					tool.pluginId
+						? (signal) => {
+								const conversation = ownerId ? this.convs.get(ownerId) : undefined;
+								if (!conversation || !tool.pluginId) throw new Error("Plugin tool has no bound conversation");
+								const session = conversation.session;
+								const cwd = conversation.cwd;
+								return createPluginInvocation(
+									{
+										clientId: this.clientId,
+										conversationId: conversation.id,
+										cwd,
+										pluginId: tool.pluginId,
+										toolName: tool.name,
+									},
+									() => {
+										const current = this.convs.get(conversation.id);
+										if (!current || current.session !== session || current.cwd !== cwd)
+											throw new Error("Plugin conversation changed");
+										if (current.planMode || current.delegateMode || this.goalReviewTurnOf(conversation.id))
+											throw new Error("Plugin execution is blocked in this conversation mode");
+										if (!presetAllowsPluginTools(current.agentPreset) || current.subagentBarsPluginTools)
+											throw new Error("Plugin tools are unavailable in this preset");
+										if (
+											(this.settingsSvc.current.disabledPlugins ?? []).includes(tool.pluginId!) ||
+											normalizeDisabledPluginTools(this.settingsSvc.current.disabledPluginTools).includes(tool.name) ||
+											!(this.pluginToolsProvider?.() ?? []).some(
+												(entry) => entry.pluginId === tool.pluginId && entry.name === tool.name,
+											)
+										)
+											throw new Error("Plugin tool is disabled or unloaded");
+									},
+									signal,
+								);
+							}
+						: undefined,
+				),
+			);
 	}
 
 	/** 把插件 AI 工具同步进一个已存在的会话（新增/更新/移除；禁用工具同步移除）。
@@ -8167,13 +8207,15 @@ export class ClientSession {
 	 *  不回补，否则白名单等于没关门。 */
 	private syncPluginTools(session: AgentSession, preset?: string): void {
 		let targetPreset = preset;
+		let ownerId: string | undefined;
 		for (const conv of this.convs.values()) {
 			if (conv.session !== session) continue;
 			if (conv.subagentBarsPluginTools) return;
 			targetPreset ??= conv.agentPreset;
+			ownerId = conv.id;
 		}
 		try {
-			const defs = this.enabledPluginToolDefs(targetPreset);
+			const defs = this.enabledPluginToolDefs(targetPreset, ownerId);
 			// 移除口径 = 已同步过的 ∪ 全量插件宇宙：创建时工厂直接注册进
 			// _customTools 的工具不在 applied 表里，首轮同步（defs 为空时）否则删不掉。
 			const universe = new Set([

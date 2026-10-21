@@ -21,6 +21,10 @@ pi-web-ui/
 ├── deploy/                     # 部署示例：launchd plist / systemd unit / Windows 任务 XML
 ├── themes/                     # 内置主题（完整样式表：:root 变量 + 任意选择器/布局覆盖皆可，styles.css 只是共享基线）
 ├── make-light-theme.mjs        # 主题生成器（从 styles.css 的 :root 变量清单生成纯调色板）
+├── plugins/api-testing/        # P0-2 最小受控 fixture 工具与专属 MCP runner（未上市场）
+├── server/plugin-mcp.ts       # 插件工具短期调用身份和内部 MCP 门禁
+├── server/api-testing-runner.ts # 手工批准 fixture、一次性引用与运行生命周期
+├── tests/api-testing-controlled-test.mjs # P0-2 真实插件/适配器/MCP/Newman 集成验收
 ├── tests/api-testing-p0-test.mjs # P0-1 真实 MCP/Newman 验证（手动运行，需隔离依赖）
 ├── tests/fixtures/api-testing-p0/ # P0-1 专用依赖锁、本地执行入口、网络诊断钩子
 ├── tests/                      # 单测与集成/UI 测试；自包含用例独立端口 ≥8900 + 临时 data-dir，外部依赖用例见 development.md
@@ -53,7 +57,7 @@ pi-web-ui/
 │   ├── module-development.md   # 模块开发规范、联动检查表与设计/验收清单
 │   ├── api-testing-workflow-design.md # 接口自动化闭环设计提案（尚未实现）
 │   ├── api-testing-implementation-plan.md # 接口测试实施顺序、约束与验收计划
-│   ├── api-testing-evidence/    # P0-1 验收、脱敏摘要与调试历史；真实目标仍阻塞
+│   ├── api-testing-evidence/    # 分任务验收、脱敏摘要与调试历史；真实目标仍阻塞
 │   ├── api-testing-assets-design.md # 测试资产、回放与定时执行设计（主流程之后实施）
 │   ├── directory-reference.md  # 本文件：文件级定位参考
 │   └── desktop-delivery/      # 桌面范围决定、验收矩阵与历史证据

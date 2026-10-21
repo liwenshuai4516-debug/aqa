@@ -285,6 +285,12 @@ export const HOST_METHODS: ReadonlyArray<CatalogHostMethod> = [
 	},
 	{ name: "models.list", needs: "-", summary: "列出已配置鉴权的模型（provider/id）", example: `host.models.list()` },
 	{
+		name: "mcp.call",
+		needs: "tools",
+		summary: "仅从绑定身份的工具调用内部专属 runner；按批准引用执行，不暴露原始执行工具",
+		example: `await host.mcp.call(context, { serverId: "api-testing", toolName: "runApprovedSuite", runRef }, signal)`,
+	},
+	{
 		name: "mcp.list",
 		needs: "-",
 		summary: "列出已配置的全局与项目级 MCP 服务器及运行态/工具列表",

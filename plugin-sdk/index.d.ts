@@ -65,6 +65,20 @@ export interface UiContribution {
 	options?: UiSelectOption[];
 }
 
+export interface PluginToolContext {
+	readonly clientId: string;
+	readonly conversationId: string;
+	readonly cwd: string;
+	readonly pluginId: string;
+	readonly toolName: string;
+}
+
+export interface PluginMcpRequest {
+	serverId: string;
+	toolName: string;
+	runRef: string;
+}
+
 export interface PluginAgentTool {
 	name: string;
 	label?: string;
@@ -77,6 +91,7 @@ export interface PluginAgentTool {
 		params: Record<string, unknown>,
 		signal?: AbortSignal,
 		onUpdate?: (partial: unknown) => void,
+		context?: PluginToolContext,
 	): Promise<unknown>;
 }
 
@@ -344,6 +359,7 @@ export interface PluginHost {
 	};
 	/** MCP 服务器检测与便捷安装接口（list/check 只读免权限；install 要 "tools"；promptInstall 要 "chat" 或 "tools"）。 */
 	mcp: {
+		call(context: PluginToolContext, request: PluginMcpRequest, signal?: AbortSignal): Promise<unknown>;
 		list(): Promise<Array<{ name: string; scope: "global" | "project"; status: string; [key: string]: unknown }>>;
 		check(query: string): Promise<{
 			installed: boolean;

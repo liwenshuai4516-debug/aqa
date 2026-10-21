@@ -19,6 +19,7 @@
 // MUST be imported before the SDK is loaded so on-disk patches apply cleanly.
 import "./patch-remote-catalog.js";
 import "./patch-turn-end-boundary.js";
+import { ApiTestingRunner } from "./api-testing-runner.js";
 import { existsSync, mkdirSync, readFileSync, statSync } from "node:fs";
 import { stat } from "node:fs/promises";
 import { createServer, request as proxyRequest, type IncomingMessage } from "node:http";
@@ -2146,6 +2147,11 @@ function pushNoticeToAll(level: "info" | "warning" | "error", text: string, text
 
 // MCP 工具桥：读取配置启动外部 MCP 服务器（stdio / HTTP streamable-http），把它们的
 // 工具并入与插件工具相同的 customTools 管线；单服务器失败不炸进程。
+const apiTestingRunner = new ApiTestingRunner(
+	join(DATA_DIR, "api-testing", "runs"),
+	join(DATA_DIR, "plugins", "api-testing"),
+);
+pluginMgr.mcpCaller = apiTestingRunner.call;
 const mcpBridge = new McpBridge(DATA_DIR, (...a) => console.log("[mcp]", ...a), {
 	agentDir: getAgentDir(),
 	cwd: CWD,

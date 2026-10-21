@@ -100,6 +100,7 @@ import {
 	type McpInstallSpec,
 	type McpInstallResult,
 } from "./mcp-manager.js";
+import { callPluginMcp, type PluginMcpCaller, type PluginMcpRequest, type PluginToolContext } from "./plugin-mcp.js";
 import type { McpBridge } from "./mcp-bridge.js";
 import type { UiMcpServer } from "./protocol.js";
 import type { Request, Response } from "express";
@@ -287,6 +288,7 @@ export interface PluginAgentTool {
 		params: Record<string, unknown>,
 		signal?: AbortSignal,
 		onUpdate?: (partial: unknown) => void,
+		context?: PluginToolContext,
 	): Promise<unknown>;
 }
 
@@ -684,6 +686,8 @@ export interface PluginHost {
 	 *  - `install(spec)`：直接写入配置（支持 `package` 快捷方式转为 `npx -y <package>`）并触发热加载（需 `"tools"` 权限）；
 	 *  - `promptInstall(target, opts?)`：向当前或指定对话发送结构化指令，让 AI 协助检查并安装配置该 MCP（需 `"chat"` 或 `"tools"` 权限）。 */
 	mcp: {
+		/** Internal call from a live, identity-bound plugin tool; raw runner tools stay private. */
+		call(context: PluginToolContext, request: PluginMcpRequest, signal?: AbortSignal): Promise<unknown>;
 		list(): Promise<UiMcpServer[]>;
 		check(query: string): Promise<McpCheckResult>;
 		install(spec: McpInstallSpec): Promise<McpInstallResult>;
@@ -2344,6 +2348,8 @@ export class PluginManager {
 	modelLister: (() => PluginModelInfo[] | Promise<PluginModelInfo[]>) | undefined = undefined;
 	/** 由 index.ts 接入 McpBridge：供 host.mcp 读取实时运行状态与热重载。 */
 	mcpBridge: McpBridge | undefined = undefined;
+	/** Dedicated controlled runner provider; never added to the model tool registry. */
+	mcpCaller: PluginMcpCaller | undefined = undefined;
 	/** 插件能力动态授权表（host.requestPermission 的底层，见 server/plugin-permissions.ts）。 */
 	readonly permGrants: PluginPermissionStore;
 	/** 由 index.ts 注入：向浏览器请求能力授权的用户确认（{ok, remember}）。
@@ -4661,6 +4667,16 @@ export class PluginManager {
 				},
 			},
 			mcp: {
+				call: async (context, request, signal) => {
+					if (!can("tools")) throw new Error("Plugin tools permission denied");
+					const stopped = new AbortController();
+					const off = effects.add("mcp:run", () => stopped.abort(new Error("Plugin deactivated")));
+					try {
+						return await callPluginMcp(info.id, context, request, self.mcpCaller, stopped.signal, signal);
+					} finally {
+						off();
+					}
+				},
 				list: async () => {
 					try {
 						const res = listAllMcpServers({

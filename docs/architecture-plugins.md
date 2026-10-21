@@ -308,6 +308,8 @@ slot 框架的原则是「插件声明、宿主渲染」——插件碰不到宿
 
 ## MCP 工具桥（server/mcp-bridge.ts）
 
+受控内部执行接缝见 `server/plugin-mcp.ts`：pi 插件工具适配器注入短期身份，`host.mcp.call(context, request, signal)` 在工具权限、原会话模式及插件生命周期内调用私有提供者。当前只有 `server/api-testing-runner.ts` 的一次性批准 fixture 路径，不加入下述常规 MCP 注册表；不是任意 call 或 OS 沙箱。取消后由 `McpClient.closeAndWait()` 观察实际退出才释放项目锁。详见 [P0-2 验收](api-testing-evidence/P0-2.md) 和 [SDK](../plugin-sdk/README.md)。
+
 读取 `<dataDir>/mcp.json` 启动外部 MCP 服务器（stdio、换行分隔 JSON-RPC，零三方依赖；`{servers:{名:{command,args,cwd,env}}}`），握手 initialize→initialized→tools/list→tools/call 后把每个远端工具适配成 PluginAgentTool（名字归一化 sanitizeToolName），并入 plugin.d.ts 的 pluginToolsProvider（与插件工具同一 customTools 管线）。单服务器失败隔离（rejectAll + 日志，不炸进程）；dispose 时 kill 子进程；请求按 id 匹配 + 超时看门狗。
 
 **子进程生命周期与自愈**：进程意外退出（OOM / 被外部 kill / 自己崩）后不永久失效 —— `McpClient.call()` 发现子进程已死就先**惰性重启**（重新 spawn + initialize 握手 + tools/list）再发调用；显式 `close()` 之后才永久停用（不复活）。惰性而非「退出即后台重启」是刻意的：配置写错的服务器只会在真被调用时试一次，不会空转拉进程（重启循环天然受调用频率约束）。三条不变量：并发调用共享同一次重连（`starting` promise；先判 `starting` 再判 `child`，否则第二个调用会抢在 initialize 应答前发 tools/call）、重启过程中被 close() 则回收刚启动的进程不留孤儿、启动/握手失败也回收半启动进程并让调用方拿到明确错误（`服务器进程已退出且自动重启失败：<根因>`，替代原来挂满超时的泛化报错）。重启后 `McpClient.tools` 重新拉取。
