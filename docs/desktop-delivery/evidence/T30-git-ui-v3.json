@@ -1,0 +1,14 @@
+{
+  "fixture": "/tmp/pi-git-ui-pRTexd",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "FAIL",
+  "checks": [
+    "Actual package Git view discovers changed Chinese filename",
+    "Untracked file is displayed separately",
+    "Original Git UI renders real removed and added file content",
+    "Stage UI updates actual Git index for exactly the selected file",
+    "Original Git action switches to real terminal output"
+  ],
+  "realModelRequests": 0,
+  "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.scm-file').filter({ has: locator('.scm-file-path').filter({ hasText: '中文源文件.txt' }) }).getByRole('button', { name: '−', exact: true })\u001b[22m\n\n    at /Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/git-ui-run.mjs:108:66"
+}
