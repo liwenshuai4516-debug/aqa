@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "scope": "Native returned FileSystemFileHandle content and Chinese name; intended host destination NOT_VERIFIED",
+  "sourceEvidence": "T36-native-save-stable.json",
+  "bytes": 22,
+  "sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85",
+  "hex": "504b0506000000000000000000000000000000000000",
+  "expectedPathExists": false,
+  "userConfirmedSaved": true,
+  "actualHostPath": "NOT_VERIFIED",
+  "realModelRequests": 0
+}

@@ -4,6 +4,7 @@ import { mkdtempSync, mkdirSync, writeFileSync, existsSync, readFileSync } from 
 import { createServer } from "node:net";
 import { once } from "node:events";
 import { join, resolve } from "node:path";
+import { homedir } from "node:os";
 import WebSocket from "ws";
 import assert from "node:assert/strict";
 const executable = resolve(process.argv[2]),
@@ -13,7 +14,11 @@ const saveMode = process.argv.includes("--save");
 const fixture = mkdtempSync("/tmp/pi-native-save-raw-");
 const workspace = join(fixture, "中文 workspace");
 mkdirSync(workspace);
-const downloads = join(fixture, "中文 downloads");
+const observed = process.argv.includes("--observe-restrictions");
+const downloadsRoot = process.argv.includes("--home-downloads")
+	? mkdtempSync(join(homedir(), "Downloads/pi-native-save-"))
+	: fixture;
+const downloads = join(downloadsRoot, "中文 downloads");
 mkdirSync(downloads);
 const expectedPath = join(downloads, "报告.zip");
 const expectedHex = "504b0506000000000000000000000000000000000000";
@@ -62,6 +67,8 @@ const result = {
 	realModelRequests: 0,
 };
 let pageSocket, mainSocket;
+let lastNavigation = Date.now();
+result.navigations = [];
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 let sequence = 0;
 async function command(socket, method, params) {
@@ -94,6 +101,15 @@ try {
 	assert(target);
 	pageSocket = new WebSocket(target.webSocketDebuggerUrl);
 	await once(pageSocket, "open");
+	pageSocket.on("message", (data) => {
+		const message = JSON.parse(data);
+		if (message.method === "Page.frameNavigated" && !message.params.frame.parentId) {
+			lastNavigation = Date.now();
+			const u = new URL(message.params.frame.url);
+			result.navigations.push({ at: lastNavigation, origin: u.origin, pathname: u.pathname });
+		}
+	});
+	await command(pageSocket, "Page.enable", {});
 	const mainUrl = logs.match(/Debugger listening on (ws:\/\/127\.0\.0\.1:[^\s]+)/)?.[1];
 	assert(mainUrl);
 	mainSocket = new WebSocket(mainUrl);
@@ -103,6 +119,15 @@ try {
 			"(()=>{const e=process.getBuiltinModule('module').createRequire(process.cwd()+'/probe.cjs')('electron');e.app.focus({steal:true});e.BrowserWindow.getAllWindows()[0].show();e.BrowserWindow.getAllWindows()[0].focus();return true;})()",
 		returnByValue: true,
 	});
+	if (observed) {
+		await command(mainSocket, "Runtime.evaluate", {
+			expression:
+				"(()=>{const e=process.getBuiltinModule('module').createRequire(process.cwd()+'/probe.cjs')('electron');const s=e.BrowserWindow.getAllWindows()[0].webContents.session;globalThis.__restrictedTrace=[];const original=s.emit;s.emit=function(name,...args){if(name==='file-system-access-restricted'){const d=args[1];globalThis.__restrictedTrace.push({path:d?.path,isDirectory:d?.isDirectory,origin:d?.origin,at:Date.now()});}return Reflect.apply(original,this,[name,...args]);};return true;})()",
+			returnByValue: true,
+		});
+		result.instrumentation +=
+			"; passive session.emit wrapper records restricted-path events without registering a permission listener or invoking decision callbacks";
+	}
 	if (saveMode) {
 		const readyDeadline = Date.now() + 30000;
 		while (true) {
@@ -114,6 +139,17 @@ try {
 			assert(Date.now() < readyDeadline);
 			await sleep(100);
 		}
+		const stableDeadline = Date.now() + 30000;
+		while (Date.now() - lastNavigation < 1200) {
+			assert(Date.now() < stableDeadline, "Original page did not become navigation-stable");
+			await sleep(100);
+		}
+		const state = await command(mainSocket, "Runtime.evaluate", {
+			expression:
+				"(()=>{const e=process.getBuiltinModule('module').createRequire(process.cwd()+'/probe.cjs')('electron');const w=e.BrowserWindow.getAllWindows()[0];return JSON.stringify({focused:w.isFocused(),visible:w.isVisible(),minimized:w.isMinimized()});})()",
+			returnByValue: true,
+		});
+		result.windowBeforePicker = JSON.parse(state.result.value);
 		await command(pageSocket, "Runtime.evaluate", {
 			expression:
 				"(()=>{const original=window.showSaveFilePicker;window.__rawSave={state:'not-called'};window.showSaveFilePicker=async function(...args){window.__rawSave={state:'pending',startedAt:Date.now(),suggestedName:args[0]?.suggestedName};try{const h=await Reflect.apply(original,this,args);window.__rawSaveHandle=h;window.__rawSave={...window.__rawSave,state:'selected',name:h.name};return h;}catch(e){window.__rawSave={...window.__rawSave,state:'rejected',errorName:e.name,errorMessage:e.message};throw e;}};[...document.querySelectorAll('.file-item.file')].find(e=>e.textContent.includes('报告.zip')).querySelector('button.file-attach.download').click();return true;})()",
@@ -127,6 +163,7 @@ try {
 		});
 		result.initialOutcome = JSON.parse(initial.result.value);
 		assert.equal(result.initialOutcome.state, "pending", "Native picker did not remain open");
+		result.expectedPath = expectedPath;
 		console.log("NATIVE_SAVE_REQUIRED: " + expectedPath);
 		const deadline = Date.now() + 900000;
 		while (Date.now() < deadline) {
@@ -168,6 +205,17 @@ try {
 	process.exitCode = 1;
 } finally {
 	if (mainSocket?.readyState === WebSocket.OPEN) {
+		if (observed) {
+			try {
+				const trace = await command(mainSocket, "Runtime.evaluate", {
+					expression: "JSON.stringify(globalThis.__restrictedTrace ?? [])",
+					returnByValue: true,
+				});
+				result.restrictedEvents = JSON.parse(trace.result.value);
+			} catch (error) {
+				result.traceError = error.message;
+			}
+		}
 		void command(mainSocket, "Runtime.evaluate", {
 			expression: "process.getBuiltinModule('module').createRequire(process.cwd()+'/probe.cjs')('electron').app.quit()",
 		}).catch(() => {});

@@ -1,0 +1,18 @@
+{
+  "fixture": "/tmp/pi-native-save-raw-ajx01U",
+  "executable": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "FAIL",
+  "instrumentation": "Raw CDP only; original API; no download or chooser behavior override; passive session.emit wrapper records restricted-path events without registering a permission listener or invoking decision callbacks",
+  "realModelRequests": 0,
+  "initialOutcome": {
+    "state": "rejected",
+    "startedAt": 1792552268310,
+    "suggestedName": "报告.zip",
+    "errorName": "AbortError",
+    "errorMessage": "Failed to execute 'showSaveFilePicker' on 'Window': The user aborted a request."
+  },
+  "error": "Native picker did not remain open\n+ actual - expected\n\n+ 'rejected'\n- 'pending'\n",
+  "restrictedEvents": [],
+  "cleanupExit": 0,
+  "probeStoppedByClosingOwnedApp": true
+}

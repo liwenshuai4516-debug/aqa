@@ -29,3 +29,5 @@ v3 原有界运行已终止，状态 FAIL，原生保存目标路径未出现文
 诊断结论：原生保存未验证、不得计 PASS；原 blob 下载在显式选择回退分支并恢复 CDP 默认下载策略后，真实磁盘文件与名字通过。Playwright 下即时拒绝与原始 CDP 下 pending 后拒绝是不同观察，不能把后者默认为已解释。官方 Electron 44.4.2 session 文档还明确说明 file-system-access-restricted 的 deny 会触发 AbortError；当前未采集相应事件，不能断言这是本轮原因。没有通过关闭保护或自动放行目录来取得成功。
 
 工程收尾：全部新增脚本定向格式化，T33-raw-final-typecheck.log 与 T33-raw-final-related-unit.log 记录类型检查、3 文件/19 PASS / 5 Windows 专属 SKIP，T33-raw-source.json、T33-raw-protected.json 均 PASS。所有测试应用已正常退出，原真实供应商累计仍 18/18；没有生产代码、前端源码或安装包变化。
+
+T36 / A05：实际包原下载按钮返回原生 FileSystemFileHandle，中文名及写入后的 22 字节 ZIP 内容经独立核对通过，用户确认已保存。预设宿主路径不存在，实际完整路径仍未确定，不计指定中文目录或跨进程重开 PASS。新增原始 CDP 导航观察/稳定等待及被动事件记录；早期 AbortError 与其原因仍保留。3 文件/15 PASS/5 Windows SKIP、类型及源码门禁通过，无生产变更或付费请求，详见 T36-native-save-observation.md。

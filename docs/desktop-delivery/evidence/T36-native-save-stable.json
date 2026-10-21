@@ -1,0 +1,59 @@
+{
+  "fixture": "/tmp/pi-native-save-raw-x3e6px",
+  "executable": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "PASS",
+  "instrumentation": "Raw CDP only; original API; no download or chooser behavior override; passive session.emit wrapper records restricted-path events without registering a permission listener or invoking decision callbacks",
+  "realModelRequests": 0,
+  "navigations": [
+    {
+      "at": 1792552328541,
+      "origin": "http://127.0.0.1:8790",
+      "pathname": "/"
+    }
+  ],
+  "windowBeforePicker": {
+    "focused": false,
+    "visible": true,
+    "minimized": false
+  },
+  "initialOutcome": {
+    "state": "pending",
+    "startedAt": 1792552329782,
+    "suggestedName": "报告.zip"
+  },
+  "expectedPath": "/Users/liyingjun/Downloads/pi-native-save-HChpsJ/中文 downloads/报告.zip",
+  "outcome": {
+    "state": "selected",
+    "startedAt": 1792552329782,
+    "suggestedName": "报告.zip",
+    "name": "报告.zip",
+    "fileBytes": [
+      80,
+      75,
+      5,
+      6,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "expectedPathExists": false,
+  "restrictedEvents": [],
+  "cleanupExit": 0,
+  "probeStoppedByClosingOwnedApp": true
+}
