@@ -1,0 +1,28 @@
+{
+  "fixture": "/tmp/pi-ui-I0L6ib",
+  "realModelRequests": 0,
+  "localRequests": 0,
+  "checks": [
+    {
+      "script": "goal-ui",
+      "code": 1,
+      "signal": null,
+      "status": "FAIL",
+      "skipped": []
+    },
+    {
+      "script": "global-search-ui",
+      "code": 1,
+      "signal": null,
+      "status": "FAIL",
+      "skipped": []
+    },
+    {
+      "script": "conv-pin-browser",
+      "code": 0,
+      "signal": null,
+      "status": "PASS",
+      "skipped": []
+    }
+  ]
+}

@@ -30,6 +30,7 @@ function check(name, ok, extra = "") {
 }
 
 const dataDir = mkdtempSync(join(tmpdir(), "pi-web-goal-ui-"));
+const workDir = mkdtempSync(join(tmpdir(), "pi-goal-ui-work-"));
 let server = null;
 async function startServer() {
 	server = spawn("node", ["dist/server/index.js"], {
@@ -38,7 +39,7 @@ async function startServer() {
 			...process.env,
 			PI_WEB_PORT: String(PORT),
 			PI_WEB_DATA_DIR: dataDir,
-			PI_WEB_CWD: PROJ,
+			PI_WEB_CWD: workDir,
 		},
 		stdio: "ignore",
 	});
@@ -58,9 +59,10 @@ async function run() {
 	await startServer();
 	const browser = await chromium.launch({ executablePath: CHROME, headless: true });
 	const page = await browser.newPage();
+	await page.addInitScript(() => localStorage.setItem("pi-web-ui:lang", "zh"));
 	await page.goto(URL);
 	// The goal bar hint (idle, collapsed) should appear near the chat input.
-	await page.waitForSelector(".goalbar", { timeout: 20000 });
+	await page.waitForSelector(".goalbar-collapsed, .goalbar", { timeout: 20000 });
 	const hintVisible = await page.locator(".goalbar-hint").count();
 	check("goal bar renders (idle hint)", hintVisible > 0 || (await page.locator(".goalbar-input").count()) > 0);
 
@@ -71,8 +73,8 @@ async function run() {
 		await page.waitForSelector(".goalbar-input");
 	}
 	await page.locator(".goalbar-input").fill("把页面标题改为 Goal UI 测试");
-	// 开始 (Set) button — not the AI-提炼 (wizard) button.
-	await page.locator(".goalbar-btn:not(.wizard)").click();
+	// Enter submits the goal editor through its original set handler.
+	await page.locator(".goalbar-input").press("Enter");
 	// Active goal bar replaces the edit row.
 	await page.waitForSelector(".goalbar-active", { timeout: 8000 });
 	check("active goal bar shown after set", true);

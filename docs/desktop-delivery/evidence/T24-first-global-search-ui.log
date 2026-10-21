@@ -1,0 +1,10 @@
+✓ 顶栏有搜索按钮
+✓ 点击按钮打开全局搜索弹窗
+✓ 文件命中显示 alpha-util.ts
+✓ 点击后打开文件预览
+✓ Ctrl+K 打开弹窗
+✓ 再次 Ctrl+K 关闭弹窗
+FATAL: locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('.topbar .dropdown .chip').first()[22m
+

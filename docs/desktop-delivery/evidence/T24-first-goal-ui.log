@@ -1,0 +1,8 @@
+test error: page.waitForSelector: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for locator('.goalbar') to be visible[22m
+
+    at run (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/goal-ui-test.mjs:63:13) {
+  log: [ "  - waiting for locator('.goalbar') to be visible" ],
+  name: 'TimeoutError'
+}

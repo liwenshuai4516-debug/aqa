@@ -1,0 +1,33 @@
+✓ 顶栏有搜索按钮
+✓ 点击按钮打开全局搜索弹窗
+✓ 文件命中显示 alpha-util.ts
+✓ 点击后打开文件预览
+✓ Ctrl+K 打开弹窗
+✓ 再次 Ctrl+K 关闭弹窗
+FATAL: locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('.inputbox button:has(.chip-model)')[22m
+[2m    - locator resolved to <button class="chip" type="button" aria-expanded="false">…</button>[22m
+[2m  - attempting click action[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is visible, enabled and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <div class="fp-foot">…</div> from <div class="fp-overlay ">…</div> subtree intercepts pointer events[22m
+[2m    - retrying click action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is visible, enabled and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <div class="fp-foot">…</div> from <div class="fp-overlay ">…</div> subtree intercepts pointer events[22m
+[2m    - retrying click action[22m
+[2m      - waiting 100ms[22m
+[2m    58 × waiting for element to be visible, enabled and stable[22m
+[2m       - element is visible, enabled and stable[22m
+[2m       - scrolling into view if needed[22m
+[2m       - done scrolling[22m
+[2m       - <div class="fp-foot">…</div> from <div class="fp-overlay ">…</div> subtree intercepts pointer events[22m
+[2m     - retrying click action[22m
+[2m       - waiting 500ms[22m
+

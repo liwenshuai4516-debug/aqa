@@ -88,3 +88,7 @@ D06 经用户明确批准，仅在 server/agent-service.ts 的 setDelegateMode �
 ## T23 原浏览器交互
 
 仅修改 original-ui-run 独立证据前缀/拒绝覆盖/凭据环境清理/SKIP 汇总，以及声音与插件顶栏原测试的实际入口定位、中文夹具、与冻结源一致的五声音事件检查；通知可显式跳过，默认原通知断言保留。新增多轮真实浏览器结果及失败诊断，生产代码和安装包不变，未知 bottombar 差异未纳入。详见 T23-browser-interactions.md。
+
+## T24 目标、搜索与置顶界面
+
+仅修改 goal-ui-test 的独立工作区/中文夹具/折叠入口与原 Enter 提交，以及 global-search-ui-test 的中文/稳定等待/实际模型入口/预览关闭和过滤断言。原置顶测试不变。保留全部失败分轮，最终 4/17/10 断言通过，未知 bottombar 差异不变，生产与安装包不变。详见 T24-goal-search-pin-ui.md。

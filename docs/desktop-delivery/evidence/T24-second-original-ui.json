@@ -1,0 +1,21 @@
+{
+  "fixture": "/tmp/pi-ui-hoSv0C",
+  "realModelRequests": 0,
+  "localRequests": 1,
+  "checks": [
+    {
+      "script": "goal-ui",
+      "code": 0,
+      "signal": null,
+      "status": "PASS",
+      "skipped": []
+    },
+    {
+      "script": "global-search-ui",
+      "code": 1,
+      "signal": null,
+      "status": "FAIL",
+      "skipped": []
+    }
+  ]
+}

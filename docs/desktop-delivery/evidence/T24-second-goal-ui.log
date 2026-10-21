@@ -1,0 +1,6 @@
+✓ goal bar renders (idle hint)
+✓ active goal bar shown after set
+✓ active goal shows the goal text — 把页面标题改为 Goal UI 测试
+✓ goal cleared (back to idle)
+
+ALL PASS

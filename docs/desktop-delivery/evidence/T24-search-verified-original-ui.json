@@ -1,0 +1,14 @@
+{
+  "fixture": "/tmp/pi-ui-XSUxas",
+  "realModelRequests": 0,
+  "localRequests": 0,
+  "checks": [
+    {
+      "script": "global-search-ui",
+      "code": 1,
+      "signal": null,
+      "status": "FAIL",
+      "skipped": []
+    }
+  ]
+}

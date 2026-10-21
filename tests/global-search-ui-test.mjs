@@ -6,6 +6,7 @@
 import { chromium } from "playwright-core";
 import { CHROME_PATH } from "./lib/chrome.mjs";
 import { portUp } from "./lib/port-utils.mjs";
+import { waitForStablePage } from "./lib/page-stability.mjs";
 import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
 import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
@@ -48,13 +49,16 @@ async function run() {
 	}
 
 	const browser = await chromium.launch({ executablePath: CHROME_PATH });
-	const page = await browser.newPage();
+	const page = await browser.newPage({ viewport: { width: 1600, height: 900 } });
+	await page.addInitScript(() => localStorage.setItem("pi-web-ui:lang", "zh"));
 	page.on("pageerror", (e) => console.log("pageerror:", e.message));
 	await page.goto(BASE);
 	await page.waitForSelector(".topbar", { timeout: 15000 });
+	if (!(await waitForStablePage(page))) throw new Error("Page did not settle after initial build reload");
 
 	// 1) 顶栏搜索按钮存在且点击打开弹窗
 	const searchBtn = page.locator(".topbar .chip", { hasText: "搜索" }).first();
+	await searchBtn.waitFor();
 	check("顶栏有搜索按钮", (await searchBtn.count()) > 0);
 	await searchBtn.click();
 	await page.waitForSelector(".gs-modal", { timeout: 5000 });
@@ -68,11 +72,16 @@ async function run() {
 
 	// 3) 点击文件 → 打开文件预览
 	await page.locator(".gs-item", { hasText: "alpha-util.ts" }).first().click();
-	await page.waitForSelector(".fp-modal, .file-preview, [class*=fp-]", { timeout: 5000 }).catch(() => {});
-	const previewVisible = await page.locator("text=alpha-util.ts").count();
+	await page.waitForSelector(".fp-overlay", { timeout: 5000 });
+	const previewVisible = await page.locator(".fp-overlay").getByText("alpha-util.ts", { exact: true }).count();
 	check("点击后打开文件预览", previewVisible > 0);
-	await page.keyboard.press("Escape");
-	await sleep(300);
+	// File hits intentionally retain search results; dismiss that front panel
+	// before interacting with the separate preview underneath it.
+	await page.locator(".gs-close").click();
+	await page.locator(".gs-modal").waitFor({ state: "hidden" });
+	await page.locator(".fp-overlay .fp-close").click();
+	await page.locator(".fp-overlay").waitFor({ state: "hidden" });
+	check("文件预览关闭后恢复主界面", true);
 
 	// 4) Ctrl+K 开关
 	await page.keyboard.press("Control+k");
@@ -83,9 +92,23 @@ async function run() {
 	check("再次 Ctrl+K 关闭弹窗", (await page.locator(".gs-modal").count()) === 0);
 
 	// 5) 模型下拉搜索框
-	await page.locator(".topbar .dropdown .chip").first().click();
+	await page.locator(".inputbox button:has(.chip-model)").click();
 	await page.waitForSelector(".dd-search", { timeout: 3000 }).catch(() => {});
 	check("模型下拉出现搜索框", (await page.locator(".dd-search").count()) > 0);
+	const modelMenu = page.locator(".dd-menu-model");
+	await modelMenu.locator(".dd-model-name").first().waitFor();
+	const firstModelName = await modelMenu.locator(".dd-model-name").first().innerText();
+	await modelMenu.locator(".dd-search").fill("no-such-model-5ce3f");
+	await page.waitForFunction(() => document.querySelectorAll(".dd-menu-model .dd-model-name").length === 0);
+	check("无匹配搜索隐藏模型项", (await modelMenu.locator(".dd-model-name").count()) === 0);
+	await modelMenu.locator(".dd-search").fill(firstModelName);
+	await modelMenu.locator(".dd-model-name").first().waitFor();
+	check(
+		"搜索模型名恢复匹配项",
+		(await modelMenu.locator(".dd-model-name").allTextContents()).every((name) =>
+			name.toLowerCase().includes(firstModelName.toLowerCase()),
+		),
+	);
 
 	await browser.close();
 }
