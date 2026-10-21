@@ -1,6 +1,6 @@
-# 接口测试插件：P2-1
+# 接口测试插件：P2-2
 
-当前提供自包含 HTTP fixture 的导入、独立评审、受控执行、问题记录、复测与报告入口。真实目标仍因文件、重定向与操作系统出口隔离缺口阻塞；已支持跨重启的整包持久化与重跑，尚无管理列表或调度。
+当前提供自包含 HTTP fixture 的导入、独立评审、受控执行、问题记录、复测与报告入口。真实目标仍因文件、重定向与操作系统出口隔离缺口阻塞；已支持跨重启的整包持久化与重跑，已支持最小管理列表，尚无定时调度。
 
 ## 实现与权限
 
@@ -69,3 +69,11 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 `asset_import` 只复用已由宿主真实发布的精确 P1 包；未登记的历史包或外部 pass 标签须先用 prepare/review 重新独立评审，原件不覆盖。版本变化、编译/评审/执行器或依赖锁变化会使旧批准失效。半写包和文件 hash 不符拒绝执行；索引仅派生，损坏可重建。
 
 资产根只允许一个写入者。正常服务退出释放所有权；非正常中断留下的所有权需操作人员确认旧进程和请求已结束后处理，期间只读历史仍可查，不自动恢复写请求。unknown 写入即使重启也阻止项目后续请求，不能通过新建 run 清除。未证明断电 fsync 或跨平台可靠性；只在 macOS fixture 验证。详见 [P2-1](../../docs/api-testing-evidence/P2-1.md)。
+
+## P2-2 最小管理
+
+同一工具增加 `asset_list`（offset，固定每页 20 项）、`asset_clone`（assetRef、项目内新 outputPath、可选 cases）、`asset_archive`（assetRef、显式 archived 布尔）、`asset_delete`（仅归档且无运行/计划引用）、`asset_export`（项目内新 outputPath）、`asset_restore`（项目内备份 sourcePath）。列表复用现有工具卡片的 Markdown 与 bounded details，提供空状态与不可用标识，不新建独立工作台或浏览器入口。
+
+克隆只生成待评审文件，后续 prepare 指向其 source.json 并独立评审；不能继承批准。归档同时阻止 P1 会话入口和持久重跑。已有运行或计划引用的版本拒绝删除。
+
+备份为整包套件/运行/归档状态与 hash，最后发布 backup.json。宿主私有 HMAC key 不导出，恢复必须同宿主、同项目真实路径和同执行策略；同 ID 异内容拒绝覆盖。原件/重复恢复均保留；异宿主或整个宿主密钥丢失时重新导入草稿并独立评审，不把 pass 标签当可移植授权。备份上限 600 文件/16 MiB，敏感原始响应和凭据不进入备份。详见 [P2-2](../../docs/api-testing-evidence/P2-2.md)。

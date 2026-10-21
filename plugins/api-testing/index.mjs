@@ -24,9 +24,17 @@ export default {
 							"asset_inspect",
 							"asset_run",
 							"asset_report",
+							"asset_list",
+							"asset_clone",
+							"asset_archive",
+							"asset_delete",
+							"asset_export",
+							"asset_restore",
 						],
 					},
 					assetRef: { type: "string" },
+					offset: { type: "integer", minimum: 0 },
+					archived: { type: "boolean" },
 					runRef: { type: "string" },
 					sourcePath: { type: "string" },
 					operationIds: { type: "array", items: { type: "string" }, maxItems: 3 },
@@ -51,11 +59,17 @@ export default {
 					);
 				}
 				const { runRef, ...input } = params;
-				return host.mcp.call(
+				const result = await host.mcp.call(
 					context,
 					{ serverId: "api-testing", toolName: "workflow", runRef: runRef ?? "new", input },
 					signal,
 				);
+				if (params.action === "asset_list")
+					return {
+						content: [{ type: "text", text: result.markdown }],
+						details: { assets: result.assets, runs: result.runs, offset: result.offset, more: result.more },
+					};
+				return result;
 			},
 		});
 	},

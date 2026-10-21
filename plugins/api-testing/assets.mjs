@@ -14,6 +14,7 @@ import { randomUUID } from "node:crypto";
 import { hash } from "./suite.mjs";
 import { inspectDraft, REVIEW_POLICY } from "./review.mjs";
 import { buildReport } from "./report.mjs";
+import { createAssetManagement } from "./asset-management.mjs";
 const json = (x) => JSON.stringify(x, null, 2) + "\n";
 const fail = (message) => {
 	throw new Error(message);
@@ -184,9 +185,13 @@ export function createAssetStore({ root, policyHash, approve, execute }) {
 			),
 		});
 	};
+	const management = createAssetManagement({ root, policyHash, project, load, histories, rebuild });
 	return {
 		publish,
 		copyRun,
+		isArchived(identity, assetRef) {
+			return management.isArchived(project(identity, false), assetRef);
+		},
 		close() {
 			if (running.size) fail("Stored API run is still active");
 			if (owner) {
@@ -196,6 +201,7 @@ export function createAssetStore({ root, policyHash, approve, execute }) {
 			}
 		},
 		async call(identity, input, signal) {
+			if (management.handles(input.action)) return management.call(identity, input, signal);
 			const allowed = {
 				asset_import: ["action", "sourcePath"],
 				asset_inspect: ["action", "assetRef"],
@@ -255,6 +261,7 @@ export function createAssetStore({ root, policyHash, approve, execute }) {
 						truncated: true,
 					};
 				}
+				if (management.isArchived(p, input.assetRef)) fail("Archived asset cannot execute; explicitly unarchive first");
 				const previousRuns = histories(p);
 				if (previousRuns.some((r) => r.hasWrites && ["running", "unknown"].includes(r.status)))
 					fail("Unknown writes require reconciliation; no request sent");

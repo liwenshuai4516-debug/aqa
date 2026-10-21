@@ -98,7 +98,7 @@ export class ApiTestingRunner {
 
 	private async getWorkflow(): Promise<any> {
 		if (process.platform === "win32") throw new Error("Fixture workflow is not verified on Windows");
-		const names = ["suite.mjs", "review.mjs", "workflow.mjs", "report.mjs", "assets.mjs"];
+		const names = ["suite.mjs", "review.mjs", "workflow.mjs", "report.mjs", "assets.mjs", "asset-management.mjs"];
 		const sources = names.map((name) => readFileSync(join(this.pluginRoot, name)));
 		const executionSources = ["runner.mjs", "network-guard.cjs", "package-lock.json"].map((name) =>
 			readFileSync(join(this.pluginRoot, name)),

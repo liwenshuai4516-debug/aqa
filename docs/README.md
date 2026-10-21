@@ -30,6 +30,7 @@
 
 ## 功能设计提案
 
+- [P2-2 最小资产管理](api-testing-evidence/P2-2.md)：列表、草稿克隆、归档、引用检查及同宿主备份恢复。
 - [P2-1 持久化与复用](api-testing-evidence/P2-1.md)：重启回看、零模型重跑、文件校验与未知写入阻断；仍仅 fixture。
 - [P1-4 实际模型补验](api-testing-evidence/P1-4-model.md)：复用系统 GPT，独立语义退回/批准与真实 MCP fixture 闭环通过；业务验收另列。
 - [P1-4 技能发现与接入清单](api-testing-evidence/P1-4.md)：技能工程检查通过；用户确认暂无专用模型，实际主流程验收阻塞。

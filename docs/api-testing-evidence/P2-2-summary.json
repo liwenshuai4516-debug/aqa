@@ -1,0 +1,77 @@
+{
+	"task": "P2-2",
+	"scope": "isolated real controlled tool/MCP/Newman; explicit review stub; existing tool display",
+	"status": "passed-fixture-management",
+	"checks": [
+		{
+			"name": "empty-list-guides-user-through-existing-text-display-without-model-or-request",
+			"status": "passed"
+		},
+		{
+			"name": "asset-and-run-lists-are-bounded-and-use-existing-tool-display",
+			"status": "passed"
+		},
+		{
+			"name": "clone-is-new-draft-and-does-not-inherit-execution-approval",
+			"status": "passed"
+		},
+		{
+			"name": "archive-blocks-execution-and-retained-runs-prevent-deletion",
+			"status": "passed"
+		},
+		{
+			"name": "export-publishes-complete-hashed-backup-without-overwriting",
+			"status": "passed"
+		},
+		{
+			"name": "same-host-restore-recovers-exact-suite-and-run-hashes-after-loss",
+			"status": "passed"
+		},
+		{
+			"name": "duplicate-restore-is-idempotent-and-calls-no-model-or-interface",
+			"status": "passed"
+		},
+		{
+			"name": "tampered-backup-file-is-rejected-before-replacing-assets",
+			"status": "passed"
+		},
+		{
+			"name": "same-id-different-contents-conflict-never-overwrites",
+			"status": "passed"
+		},
+		{
+			"name": "copied-pass-label-or-forged-backup-cannot-grant-approval",
+			"status": "passed"
+		},
+		{
+			"name": "management-list-and-restore-stay-inside-bound-project",
+			"status": "passed"
+		},
+		{
+			"name": "backup-metadata-symlink-cannot-read-outside-project",
+			"status": "passed"
+		},
+		{
+			"name": "unreferenced-archived-clone-can-be-deleted-with-original-history-kept",
+			"status": "passed"
+		},
+		{
+			"name": "foreign-host-backup-does-not-silently-inherit-source-host-trust",
+			"status": "passed"
+		}
+	],
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p2-2-J7480B",
+	"modelCalls": 2,
+	"fixtureRequests": 1,
+	"assetRef": "0e1e382a585145a210bd942b8020418aa4aa09aa527a8985bb6cb20d14f611d1",
+	"preservedEvidence": "tests/scratch/api-testing-p2-2/evidence",
+	"backupKeyOmittedFromEvidenceCopy": true,
+	"sourceHashes": {
+		"plugins/api-testing/asset-management.mjs": "5dab9cec361697dae2fb6a2894010a556bcd3ba8e064ae3cf4f44ee2b47a7086",
+		"plugins/api-testing/assets.mjs": "15bdd2a218c899c92c16d47ac0eefd1a718f5648a81486cfbf16a13802e73b4e",
+		"plugins/api-testing/workflow.mjs": "b7b9702f224663c0d323f0c6fbe99247fb2a6ef4544b74ed6659cb94151d5070",
+		"plugins/api-testing/index.mjs": "00400cf3035fbd1afccf014b925fe16fb4533820938a900c59c533f7398194e2",
+		"server/api-testing-runner.ts": "63776313701f36c5ab4e6280749bb4ed10b56d8f3f345a596d28b94f15cb9783",
+		"tests/api-testing-asset-management-test.mjs": "37cfe5ee15c01a036dc21a8d0e24d33e7a42b146a5d1be6c7c23ce931781f837"
+	}
+}

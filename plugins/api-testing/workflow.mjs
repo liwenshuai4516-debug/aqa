@@ -213,6 +213,7 @@ export function createWorkflow({ approve, execute, assets }) {
 				if (action !== "run" && action !== "retest") fail("Unsupported workflow transition");
 				if (state.phase !== "approved" || state.unknownWrites)
 					fail("Suite is not approved or unknown writes need reconciliation");
+				if (assets.isArchived(identity, state.assetRef)) fail("Archived asset cannot execute");
 				const inspected = await inspect(state);
 				if (inspected.suiteHash !== state.approvedHash || inspected.artifactHash !== state.artifactHash)
 					fail("Approved suite changed");

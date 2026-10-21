@@ -140,4 +140,6 @@ P1 工程验收通过后可以开展 P2 本地管理；没有用户真实环境�
 
 | P2-1 | fixture 持久化/复用工程通过 | [记录](api-testing-evidence/P2-1.md)、[摘要](api-testing-evidence/P2-1-summary.json)、[历史](api-testing-evidence/P2-1-attempts.json) | 15/15 持久化、97/97 相关单测、P1 17/17、P0-2 15/15；build 通过；核心冒烟 21/22（已知基线失败） | 正常重启可回看/零模型重跑；崩溃残留所有权需核对，不自动恢复未知写入；下一步 P2-2 |
 
+| P2-2 | fixture 最小资产管理工程通过 | [记录](api-testing-evidence/P2-2.md)、[摘要](api-testing-evidence/P2-2-summary.json)、[历史](api-testing-evidence/P2-2-attempts.json) | 14/14 管理检查；P2-1 15/15、P1 闭环 17/17；52/52 相关单测，build 通过 | 复用现有工具卡片，无新工作台；备份信任限同宿主/项目/策略，异宿主需重新评审；下一步 P3-1 |
+
 完成一个阶段的标准：对应任务有证据、关键失败路径验证、文档与代码一致、无冒充成功的 SKIP/unknown；未解决事项明确归属。不要用测试数量或提交数量代替业务验收。

@@ -1,0 +1,26 @@
+[
+	{
+		"attempt": "01-management",
+		"status": "passed-fixture-management",
+		"checks": 14,
+		"error": null
+	},
+	{
+		"attempt": "02-alias-failure",
+		"status": "failed",
+		"checks": 4,
+		"error": "Error: Path is outside the selected project\n    at fail (file:///private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p2-2-gW0lCj/data/api-testing/runs/runtime/d03b3005e1cfa66690e5ba8ef0aa1fc1c67da47ee5fec6f9f9975534ea3fdb39/asset-management.mjs:17:8)\n    at inside (file:///private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p2-2-gW0lCj/data/api-testing/runs/runtime/d03b3005e1cfa66690e5ba8ef0aa1fc1c67da47ee5fec6f9f9975534ea3fdb39/asset-management.mjs:36:3)\n    at Object.call (file:///private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p2-2-gW0lCj/data/api-testing/runs/runtime/d03b3005e1cfa66690e5ba8ef0aa1fc1c67da47ee5fec6f9f9975534ea3fdb39/asset-management.mjs:255:25)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async callPluginMcp (/Users/liyingjun/Desktop/SW-QA/15-aqa/server/plugin-mcp.ts:85:18)\n    at async Object.call (/Users/liyingjun/Desktop/SW-QA/15-aqa/server/plugins.ts:4675:14)\n    at async Object.execute (file:///private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p2-2-gW0lCj/data/plugins/api-testing/index.mjs?e=0:62:20)\n    at async Object.execute (/Users/liyingjun/Desktop/SW-QA/15-aqa/server/agent-formatters.ts:163:17)\n    at async invoke (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/api-testing-asset-management-test.mjs:60:14)\n    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/api-testing-asset-management-test.mjs:139:19"
+	},
+	{
+		"attempt": "03-path-fix",
+		"status": "passed-fixture-management",
+		"checks": 14,
+		"error": null
+	},
+	{
+		"attempt": "04-final",
+		"status": "passed-fixture-management",
+		"checks": 14,
+		"error": null
+	}
+]
