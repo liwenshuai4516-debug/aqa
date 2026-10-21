@@ -1,0 +1,9 @@
+{
+	"name": "api-testing-p0-probe",
+	"private": true,
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "1.27.1",
+		"@postman/postman-mcp-server": "2.14.0",
+		"newman": "6.2.2"
+	}
+}

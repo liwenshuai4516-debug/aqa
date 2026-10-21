@@ -1,0 +1,322 @@
+{
+	"schemaVersion": 1,
+	"task": "P0-1",
+	"startedAt": "2026-10-21T09:42:38.864Z",
+	"platform": "darwin",
+	"node": "v23.10.0",
+	"output": "tests/scratch/api-testing-p0-1/evidence/04-final",
+	"versions": {
+		"postmanMcp": "2.14.0",
+		"newman": "6.2.2",
+		"mcpSdk": "1.27.1"
+	},
+	"harnessSha256": "c1870445855167189867dad963a3d8f9cb784c605c9d0d040a532be9bc9a0c56",
+	"inputs": {
+		"local-runner.mjs": "9662dd84934224bce172410564eb437b4d3938262532c3f0efcf9b84a96e3aee",
+		"network-audit.cjs": "dbc55a786f430c5c7d1544ce9798acde4c13c72cdc92701cc8ea62c82340012b",
+		"package-lock.json": "77866cfc54549297d573322ef495536b280b6300808a5c90e6943983aefc272c"
+	},
+	"checks": [
+		{
+			"name": "native-requires-cloud-key",
+			"status": "passed",
+			"evidence": {
+				"exitCode": 1
+			}
+		},
+		{
+			"name": "native-cloud-fetch-upload-despite-telemetry-false",
+			"status": "passed",
+			"evidence": {
+				"events": [
+					{
+						"method": "GET",
+						"path": "/collections/fixture",
+						"fileCanaryReceived": false,
+						"syntheticSecretReceived": false
+					},
+					{
+						"method": "POST",
+						"path": "/collectionruns",
+						"fileCanaryReceived": false,
+						"syntheticSecretReceived": true
+					}
+				],
+				"structuredContent": false
+			}
+		},
+		{
+			"name": "local-pass-and-projected-structured-evidence",
+			"status": "passed",
+			"evidence": {
+				"requests": {
+					"total": 1,
+					"pending": 0,
+					"failed": 0
+				},
+				"assertions": {
+					"total": 1,
+					"pending": 0,
+					"failed": 0
+				}
+			}
+		},
+		{
+			"name": "local-failed-assertion-preserved-and-synthetic-secret-redacted",
+			"status": "passed",
+			"evidence": {
+				"failures": 1
+			}
+		},
+		{
+			"name": "zero-assertions-never-pass",
+			"status": "passed",
+			"evidence": {
+				"verdict": "blocked"
+			}
+		},
+		{
+			"name": "network-error-is-not-assertion-success",
+			"status": "passed",
+			"evidence": {
+				"error": {
+					"code": "EADDRNOTAVAIL"
+				}
+			}
+		},
+		{
+			"name": "request-timeout",
+			"status": "passed",
+			"evidence": {
+				"error": {
+					"code": "ESOCKETTIMEDOUT"
+				}
+			}
+		},
+		{
+			"name": "redirect-external-egress-denied-by-diagnostic-hook",
+			"status": "passed",
+			"evidence": {
+				"processExit": 78,
+				"result": "unknown",
+				"osSandbox": false
+			}
+		},
+		{
+			"name": "upstream-follows-redirects-boundary-gap",
+			"status": "passed",
+			"evidence": {
+				"followed": true
+			}
+		},
+		{
+			"name": "upstream-can-read-absolute-file-boundary-gap",
+			"status": "passed",
+			"evidence": {
+				"syntheticFileReceived": true
+			}
+		},
+		{
+			"name": "script-process-global-unavailable",
+			"status": "passed",
+			"evidence": {
+				"sanitizedLauncherEnvironment": true,
+				"osIsolationProven": false
+			}
+		},
+		{
+			"name": "cancel-dedicated-process-stopped-no-retry",
+			"status": "passed",
+			"evidence": {
+				"unknownResultPreserved": true,
+				"unrelatedRunnerAlive": true,
+				"requests": 1
+			}
+		},
+		{
+			"name": "deadline-dedicated-process-stopped-no-retry",
+			"status": "passed",
+			"evidence": {
+				"unknownResultPreserved": true,
+				"unrelatedRunnerAlive": true,
+				"requests": 1
+			}
+		},
+		{
+			"name": "local-no-cloud-key-no-upload",
+			"status": "passed",
+			"evidence": {
+				"nativeControlUploads": 1,
+				"localUploads": 0
+			}
+		},
+		{
+			"name": "diagnostic-network-observations",
+			"status": "passed",
+			"evidence": {
+				"connections": [
+					{
+						"run": "cancel",
+						"host": "127.0.0.1",
+						"port": "18980"
+					},
+					{
+						"run": "deadline",
+						"host": "127.0.0.1",
+						"port": "18980"
+					},
+					{
+						"run": "egress",
+						"host": "127.0.0.1",
+						"port": "18980"
+					},
+					{
+						"run": "egress",
+						"host": "p0-egress.invalid",
+						"port": 80
+					},
+					{
+						"run": "environment",
+						"host": "127.0.0.1",
+						"port": "18980"
+					},
+					{
+						"run": "fail",
+						"host": "127.0.0.1",
+						"port": "18980"
+					},
+					{
+						"run": "file-read",
+						"host": "127.0.0.1",
+						"port": "18980"
+					},
+					{
+						"run": "native-cloud-path",
+						"host": "127.0.0.1",
+						"port": "18980"
+					},
+					{
+						"run": "native-cloud-path",
+						"host": "127.0.0.1",
+						"port": "18980"
+					},
+					{
+						"run": "network-error",
+						"host": "127.0.0.1",
+						"port": "0"
+					},
+					{
+						"run": "pass",
+						"host": "127.0.0.1",
+						"port": "18980"
+					},
+					{
+						"run": "redirect",
+						"host": "127.0.0.1",
+						"port": "18980"
+					},
+					{
+						"run": "request-timeout",
+						"host": "127.0.0.1",
+						"port": "18980"
+					},
+					{
+						"run": "zero",
+						"host": "127.0.0.1",
+						"port": "18980"
+					}
+				],
+				"packetCapture": false,
+				"osSandbox": false
+			}
+		}
+	],
+	"status": "fixture-feasibility-passed-real-target-blocked",
+	"finishedAt": "2026-10-21T09:43:00.124Z",
+	"fixtureEvents": [
+		{
+			"method": "GET",
+			"path": "/collections/fixture",
+			"fileCanaryReceived": false,
+			"syntheticSecretReceived": false
+		},
+		{
+			"method": "GET",
+			"path": "/ok",
+			"fileCanaryReceived": false,
+			"syntheticSecretReceived": false
+		},
+		{
+			"method": "POST",
+			"path": "/collectionruns",
+			"fileCanaryReceived": false,
+			"syntheticSecretReceived": true
+		},
+		{
+			"method": "GET",
+			"path": "/ok",
+			"fileCanaryReceived": false,
+			"syntheticSecretReceived": false
+		},
+		{
+			"method": "GET",
+			"path": "/ok",
+			"fileCanaryReceived": false,
+			"syntheticSecretReceived": false
+		},
+		{
+			"method": "GET",
+			"path": "/ok",
+			"fileCanaryReceived": false,
+			"syntheticSecretReceived": false
+		},
+		{
+			"method": "GET",
+			"path": "/slow",
+			"fileCanaryReceived": false,
+			"syntheticSecretReceived": false
+		},
+		{
+			"method": "GET",
+			"path": "/egress",
+			"fileCanaryReceived": false,
+			"syntheticSecretReceived": false
+		},
+		{
+			"method": "GET",
+			"path": "/redirect",
+			"fileCanaryReceived": false,
+			"syntheticSecretReceived": false
+		},
+		{
+			"method": "GET",
+			"path": "/redirect-target",
+			"fileCanaryReceived": false,
+			"syntheticSecretReceived": false
+		},
+		{
+			"method": "POST",
+			"path": "/upload",
+			"fileCanaryReceived": true,
+			"syntheticSecretReceived": false
+		},
+		{
+			"method": "GET",
+			"path": "/ok",
+			"fileCanaryReceived": false,
+			"syntheticSecretReceived": false
+		},
+		{
+			"method": "GET",
+			"path": "/cancel",
+			"fileCanaryReceived": false,
+			"syntheticSecretReceived": false
+		},
+		{
+			"method": "GET",
+			"path": "/deadline",
+			"fileCanaryReceived": false,
+			"syntheticSecretReceived": false
+		}
+	]
+}

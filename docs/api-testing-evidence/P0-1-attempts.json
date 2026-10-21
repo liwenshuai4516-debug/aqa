@@ -1,0 +1,38 @@
+[
+	{
+		"attempt": "01-network-observation-incomplete",
+		"status": "not-accepted-for-network-proof",
+		"startedAt": "2026-10-21T09:37:58.561Z",
+		"finishedAt": "2026-10-21T09:38:18.472Z",
+		"checksCompleted": 13,
+		"error": null,
+		"localEvidence": "tests/scratch/api-testing-p0-1/evidence/01-network-observation-incomplete"
+	},
+	{
+		"attempt": "02-egress-hook-failure",
+		"status": "failed",
+		"startedAt": "2026-10-21T09:39:18.458Z",
+		"finishedAt": "2026-10-21T09:39:29.705Z",
+		"checksCompleted": 7,
+		"error": "Error: [mcp:p0] 进程退出 (1)\n    at ChildProcess.<anonymous> (/Users/liyingjun/Desktop/SW-QA/15-aqa/server/mcp-bridge.ts:195:20)\n    at ChildProcess.emit (node:events:507:28)\n    at ChildProcess._handle.onexit (node:internal/child_process:294:12)",
+		"localEvidence": "tests/scratch/api-testing-p0-1/evidence/02-egress-hook-failure"
+	},
+	{
+		"attempt": "03-egress-fail-closed",
+		"status": "intermediate-passed",
+		"startedAt": "2026-10-21T09:40:41.505Z",
+		"finishedAt": "2026-10-21T09:41:04.707Z",
+		"checksCompleted": 14,
+		"error": null,
+		"localEvidence": "tests/scratch/api-testing-p0-1/evidence/03-egress-fail-closed"
+	},
+	{
+		"attempt": "04-final",
+		"status": "final-passed",
+		"startedAt": "2026-10-21T09:42:38.864Z",
+		"finishedAt": "2026-10-21T09:43:00.124Z",
+		"checksCompleted": 15,
+		"error": null,
+		"localEvidence": "tests/scratch/api-testing-p0-1/evidence/04-final"
+	}
+]

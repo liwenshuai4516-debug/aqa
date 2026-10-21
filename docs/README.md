@@ -30,6 +30,7 @@
 
 ## 功能设计提案
 
+- [P0-1 执行可行性验收](api-testing-evidence/P0-1.md)：真实 MCP/Newman fixture 结果、接入决定、隔离缺口与复现方式；不代表真实业务已接入。
 - [接口测试分阶段执行计划](api-testing-implementation-plan.md)：复审结论、优先级任务、依赖、约束、方案依据与 Codex 执行模板；后续实施先读此文。
 - [Agent 接口自动化测试闭环](api-testing-workflow-design.md)：多格式导入、用例评审回路、MCP 执行选型、异常分析与复测关闭；当前为设计，尚未实现。
 - [接口测试资产、回放与定时执行](api-testing-assets-design.md)：版本持久化、批准复用、历史回看与再次执行、低成本定时回归；先跑通主流程，再实施存储管理和调度。
