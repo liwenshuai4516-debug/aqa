@@ -1,0 +1,77 @@
+{
+  "fixture": "/tmp/pi-file-media-HuFvVi",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "PASS",
+  "checks": [
+    "Diagnostic explicitly selects original blob fallback",
+    "Text download endpoint preserves exact UTF-8 bytes",
+    "Download endpoint encodes Chinese filename as attachment",
+    "Original text preview decodes GBK Chinese bytes",
+    "Original audio preview decodes real PCM WAV metadata",
+    "Installed media endpoint returns exact requested byte range",
+    "Media endpoint supports exact suffix range",
+    "Unsatisfiable media range reports 416 without full file",
+    "Unauthenticated external media request is rejected",
+    "Original blob download preserves Chinese filename: 报告.zip",
+    "Actual Electron download bytes match source: 报告.zip"
+  ],
+  "realModelRequests": 0,
+  "downloads": [
+    {
+      "name": "报告.zip",
+      "branch": "original blob anchor / Electron download",
+      "manualSelection": false,
+      "bytes": 22,
+      "sha256": "8739c76e681f900923b900c9df0ef75cf421d39cabb54650c4b9ad19b6a76d85"
+    }
+  ],
+  "diagnosticOnly": true,
+  "instrumentation": "Disable optional picker in test renderer to evaluate proposed original blob fallback; not production acceptance",
+  "picker": {
+    "nativeFilePicker": "undefined",
+    "secureContext": true
+  },
+  "range": {
+    "status": 206,
+    "range": "bytes 44-75/16044",
+    "accept": "bytes",
+    "bytes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "media": {
+    "duration": 1,
+    "error": null
+  }
+}

@@ -8,6 +8,7 @@ import { waitForStablePage } from "../lib/page-stability.mjs";
 
 const executablePath = resolve(process.argv[2]);
 const output = resolve(process.argv[3]);
+const blobFallback = process.argv.includes("--blob-fallback");
 assert(!existsSync(output), "Preserve existing evidence");
 const fixture = mkdtempSync("/tmp/pi-file-media-");
 const workspace = join(fixture, "中文 workspace");
@@ -37,7 +38,18 @@ wav.writeUInt16LE(16, 34);
 wav.write("data", 36);
 wav.writeUInt32LE(16000, 40);
 writeFileSync(join(workspace, "静音样例.wav"), wav);
-const result = { fixture, executablePath, status: "FAIL", checks: [], realModelRequests: 0, downloads: [] };
+const result = {
+	fixture,
+	executablePath,
+	status: "FAIL",
+	checks: [],
+	realModelRequests: 0,
+	downloads: [],
+	diagnosticOnly: blobFallback,
+	instrumentation: blobFallback
+		? "Disable optional picker in test renderer to evaluate proposed original blob fallback; not production acceptance"
+		: "Unmodified renderer save behavior",
+};
 const check = (label, ok) => {
 	assert(ok, label);
 	result.checks.push(label);
@@ -77,12 +89,33 @@ const row = (name) =>
 	page.locator(".panel-right .file-item.file").filter({ has: page.locator(".file-name-text", { hasText: name }) });
 async function download(name, expected) {
 	const savePath = join(downloads, name);
+	if (blobFallback) {
+		await app.evaluate(({ BrowserWindow }, path) => {
+			globalThis.__blobDownload = null;
+			BrowserWindow.getAllWindows()[0].webContents.session.once("will-download", (_event, item) => {
+				globalThis.__blobDownload = { name: item.getFilename(), state: "started" };
+				item.setSavePath(path);
+				item.once("done", (_event, state) => {
+					globalThis.__blobDownload.state = state;
+				});
+			});
+		}, savePath);
+	}
 	await row(name).hover();
 	await row(name).locator("button.file-attach.download").click();
-	console.log("NATIVE_SAVE_REQUIRED: " + savePath);
+	if (blobFallback)
+		await until(async () => (await app.evaluate(() => globalThis.__blobDownload))?.state === "completed");
+	else console.log("NATIVE_SAVE_REQUIRED: " + savePath);
 	await until(() => existsSync(savePath) && readFileSync(savePath).equals(expected), 900000);
-	check(`Original native save preserves Chinese filename: ${name}`, existsSync(savePath));
-	const info = { name, branch: "unmodified showSaveFilePicker", manualSelection: true };
+	check(
+		`Original ${blobFallback ? "blob download" : "native save"} preserves Chinese filename: ${name}`,
+		blobFallback ? (await app.evaluate(() => globalThis.__blobDownload)).name === name : existsSync(savePath),
+	);
+	const info = {
+		name,
+		branch: blobFallback ? "original blob anchor / Electron download" : "unmodified showSaveFilePicker",
+		manualSelection: !blobFallback,
+	};
 	const bytes = readFileSync(savePath);
 	check(`Actual Electron download bytes match source: ${name}`, bytes.equals(expected));
 	result.downloads.push({ ...info, bytes: bytes.length, sha256: createHash("sha256").update(bytes).digest("hex") });
@@ -91,6 +124,11 @@ try {
 	app = await launchNativeApp({ executablePath, packaged: true, env });
 	page = await app.firstWindow();
 	await page.waitForSelector(".app");
+	if (blobFallback) {
+		await app.context().addInitScript(() => Object.defineProperty(window, "showSaveFilePicker", { value: undefined }));
+		await page.reload();
+		await page.waitForSelector(".app");
+	}
 	assert(await waitForStablePage(page));
 	await row("报告.zip").waitFor();
 	result.picker = await page.evaluate(() => ({
@@ -98,8 +136,12 @@ try {
 		secureContext: window.isSecureContext,
 	}));
 	check(
-		"Installed Electron offers original native save branch",
-		result.picker.nativeFilePicker === "function" && result.picker.secureContext,
+		blobFallback
+			? "Diagnostic explicitly selects original blob fallback"
+			: "Installed Electron offers original native save branch",
+		blobFallback
+			? result.picker.nativeFilePicker === "undefined"
+			: result.picker.nativeFilePicker === "function" && result.picker.secureContext,
 	);
 	const textDownload = await page.evaluate(async () => {
 		const r = await fetch("/api/file?" + new URLSearchParams({ path: "中文文本.txt", download: "1" }));

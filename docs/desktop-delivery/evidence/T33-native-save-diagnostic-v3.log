@@ -1,0 +1,15 @@
+ORIGINAL_NATIVE_SAVE_OPENED
+{
+  "status": "FAIL",
+  "instrumentation": "Passive wrapper calls original picker with unchanged arguments and returns original handle; postflight reads handle only",
+  "checks": [],
+  "trace": {
+    "state": "rejected",
+    "suggestedName": "报告.zip",
+    "openedAt": 1792550102398,
+    "errorName": "AbortError",
+    "errorMessage": "Failed to execute 'showSaveFilePicker' on 'Window': The user aborted a request.",
+    "rejectedAt": 1792550102400
+  },
+  "error": "Original picker rejected: AbortError"
+}

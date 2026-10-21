@@ -1,0 +1,11 @@
+{
+  "status": "FAIL",
+  "instrumentation": "Passive wrapper calls original picker with unchanged arguments and returns original handle; postflight reads handle only",
+  "checks": [],
+  "trace": {
+    "state": "rejected",
+    "suggestedName": "报告.zip",
+    "errorName": "AbortError"
+  },
+  "error": "Original picker rejected: AbortError"
+}

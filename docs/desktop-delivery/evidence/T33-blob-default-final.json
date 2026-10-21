@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "instrumentation": "Original blob branch selected by prior diagnostic; reset CDP download behavior to default; actual Electron will-download destination",
+  "checks": [
+    "Actual Electron download completed at explicit path with exact original ZIP bytes"
+  ],
+  "download": {
+    "name": "报告.zip",
+    "state": "completed",
+    "path": "/tmp/pi-file-media-HuFvVi/中文 downloads/报告.zip"
+  },
+  "fileExists": true,
+  "fileHex": "504b0506000000000000000000000000000000000000"
+}
