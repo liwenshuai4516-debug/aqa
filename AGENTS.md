@@ -51,6 +51,8 @@ pi-web-ui 是 pi 编码智能体（`@earendil-works/pi-coding-agent` SDK）的 W
 
 详细文档位于 `docs/<主题>.md`，以下为各模块核心设计原则与事实源：
 
+**接口测试实施入口**：[分阶段执行计划](docs/api-testing-implementation-plan.md) 是 Codex 的任务顺序与验收依据；先 P0 验证 MCP 接入，再做单格式/固定断言模板的主流程。完整设计中的多格式、独立资产实体与语义缓存不得提前实现。每次按指定任务编号执行并保留验收记录。
+
 **待实施功能设计**：[接口自动化测试闭环](docs/api-testing-workflow-design.md) 定义多格式导入、用例评审、Postman MCP/Newman 执行接入、异常归因与复测关闭；[测试资产、回放与定时执行](docs/api-testing-assets-design.md) 定义版本化用例/脚本/报告、批准复用与低成本调度。按用户决定（2026-10-21）先完成主业务闭环及必要文件证据，再实施完整持久化/资产管理，之后接入定时执行；重复执行不默认重跑生成与评审。当前仅为提案，涉及的工具、宿主接口与执行能力不得当作已经存在。
 
 `docs/` 索引（找详细文档先看这里，均为 `docs/<名>.md`）：**architecture-core** 快照驱动/协议单源/安全边界/主题/多对话并发 · **architecture-attachments** 附件/图片/视觉桥/上传预览下载 · **architecture-terminal** 终端 PTY/SCM/活力检测/bash 接管 · **architecture-plugins** 插件形态/协议/宿主扩展点/MCP 桥/多根工作区 · **architecture-system-prompt** 系统提示词组装链路与 override 钩子 · **tool-context-budget** 工具上下文预算（文案精简 / 逐工具覆盖 / **延迟加载** + 前缀缓存硬约束）· **dsh-engine** DSH 预设/问卷/底栏统计/工具桥 · **goal-conversation-design** 目标模式 2.0（把目标审查变成对话：执行对话干活 + 当前对话当审查者；**已实施且只剩这一条路径** —— v1 的隐藏隔离审查会话 + 自治标记路径已删除，轮次/熔断/代次全在服务端，见该文档 §4/§11）· **development** 开发工作流/CI/编码约定/测试规范 · **release** 发布流程 · **deployment** 部署 · **env-vars** 环境变量全表 · **preset-sharing** 预设导入/导出/社区共享仓库（交换格式 / 白名单净化 / 一键分享 / 浏览列表）· **antigravity-proxy** 反代接入 · **directory-reference** 完整注释版目录树
