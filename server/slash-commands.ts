@@ -169,9 +169,12 @@ export class SlashCommandsService {
 					// intercepts the exact native names.
 					for (const cmd of s.extensionRunner?.getRegisteredCommands?.() ?? []) {
 						if (seen.has(cmd.invocationName)) continue;
+						// Preserve optional extension translations for client-side language switching.
+						const localized = cmd as typeof cmd & { descriptionZh?: string; descriptionEn?: string };
 						commands.push({
 							name: cmd.invocationName,
-							description: cmd.description,
+							description: localized.descriptionZh || cmd.description,
+							descriptionEn: localized.descriptionEn || (localized.descriptionZh ? cmd.description : undefined),
 							source: "extension",
 						});
 						seen.add(cmd.invocationName);
