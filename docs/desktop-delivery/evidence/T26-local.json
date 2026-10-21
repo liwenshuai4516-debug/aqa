@@ -1,0 +1,210 @@
+{
+  "fixture": "/tmp/pi-goal-sC66wz",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "mode": "scripted local provider",
+  "strictBytes": true,
+  "checks": [
+    "Goal executor wrote exact requested content",
+    "Original goal orchestration accepted the reviewer verdict"
+  ],
+  "requests": [
+    {
+      "ordinal": 3,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 5553
+    },
+    {
+      "ordinal": 4,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 5893
+    },
+    {
+      "ordinal": 5,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 7029
+    },
+    {
+      "ordinal": 6,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 7315
+    },
+    {
+      "ordinal": 7,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 7554
+    },
+    {
+      "ordinal": 8,
+      "stage": "goal",
+      "tools": [
+        "read",
+        "write"
+      ],
+      "inputBytes": 8443
+    }
+  ],
+  "status": "PASS",
+  "goalStatus": {
+    "conversationId": null,
+    "goal": null,
+    "reviewModel": null,
+    "maxRounds": 1,
+    "locked": true,
+    "execModel": "acceptance/deepseek-flash",
+    "phase": "idle",
+    "reviewing": false,
+    "round": 1,
+    "status": "✅ 已通过目标审查",
+    "verdict": "pass",
+    "wizard": {
+      "active": false,
+      "draft": "",
+      "model": null,
+      "step": 0,
+      "maxSteps": 6,
+      "status": "",
+      "statusEn": ""
+    },
+    "usage": {
+      "inputTokens": 0,
+      "outputTokens": 0
+    },
+    "history": [
+      {
+        "goal": "Use write once to create goal-proof.txt. Set content to the JSON string \"GOAL_OK\": exactly seven ASCII bytes 47 4f 41 4c 5f 4f 4b (hex). No newline, whitespace, quotes or BOM. Then reply Done. The rev",
+        "verdict": "pass",
+        "rounds": 1,
+        "feedback": "Read goal-proof.txt and verified GOAL_OK.",
+        "finishedAt": 1792545777352
+      }
+    ],
+    "roles": {},
+    "feedback": "Read goal-proof.txt and verified GOAL_OK.",
+    "statusEn": "✅ Goal review passed"
+  },
+  "lastRequestShape": {
+    "bytes": 8443,
+    "messages": [
+      {
+        "role": "system",
+        "bytes": 3105
+      },
+      {
+        "role": "user",
+        "bytes": 179
+      },
+      {
+        "role": "user",
+        "bytes": 2043
+      },
+      {
+        "role": "assistant",
+        "bytes": 190
+      },
+      {
+        "role": "tool",
+        "bytes": 94
+      },
+      {
+        "role": "assistant",
+        "bytes": 114
+      },
+      {
+        "role": "user",
+        "bytes": 123
+      },
+      {
+        "role": "assistant",
+        "bytes": 215
+      },
+      {
+        "role": "tool",
+        "bytes": 123
+      },
+      {
+        "role": "user",
+        "bytes": 548
+      }
+    ],
+    "tools": [
+      {
+        "name": "read",
+        "bytes": 1102
+      },
+      {
+        "name": "write",
+        "bytes": 430
+      }
+    ]
+  },
+  "goalExecutor": "conv-830e24c2",
+  "fileHex": "474f414c5f4f4b",
+  "budget": {
+    "priorRequests": 2,
+    "priorReservedCny": 0.1,
+    "requests": [
+      {
+        "ordinal": 3,
+        "reservedCny": 0.1,
+        "inputBytes": 5553,
+        "status": "local-completed"
+      },
+      {
+        "ordinal": 4,
+        "reservedCny": 0.1,
+        "inputBytes": 5893,
+        "status": "local-completed"
+      },
+      {
+        "ordinal": 5,
+        "reservedCny": 0.1,
+        "inputBytes": 7029,
+        "status": "local-completed"
+      },
+      {
+        "ordinal": 6,
+        "reservedCny": 0.1,
+        "inputBytes": 7315,
+        "status": "local-completed"
+      },
+      {
+        "ordinal": 7,
+        "reservedCny": 0.1,
+        "inputBytes": 7554,
+        "status": "local-completed"
+      },
+      {
+        "ordinal": 8,
+        "reservedCny": 0.1,
+        "inputBytes": 8443,
+        "status": "local-completed"
+      }
+    ]
+  },
+  "notices": [
+    "设置已应用",
+    "🎯 已设目标：Use write once to create goal-proof.txt. Set content to the JSON string \"GOAL_OK…",
+    "已强行关闭对话「[Goal executor] Use write once to create goal-proof.txt.…」",
+    "✅ 目标已通过审查"
+  ]
+}

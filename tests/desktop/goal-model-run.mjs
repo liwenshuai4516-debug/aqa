@@ -16,7 +16,12 @@ import { openBudget } from "./model-request-budget.mjs";
 const executablePath = resolve(process.argv[2]);
 const real = process.argv.includes("--real");
 const goalOnly = process.argv.includes("--goal-only");
-const prefix = `docs/desktop-delivery/evidence/${goalOnly ? "T20" : "T19"}-${real ? "real" : "local"}`;
+const prefixArg = process.argv.indexOf("--evidence-prefix");
+const evidencePrefix = prefixArg < 0 ? (goalOnly ? "T20" : "T19") : process.argv[prefixArg + 1];
+assert(/^T\d+(?:-[a-z0-9]+)*$/.test(evidencePrefix), "Invalid evidence prefix");
+const strictBytes = process.argv.includes("--strict-bytes");
+assert(!strictBytes || goalOnly, "Strict byte retry covers goal only");
+const prefix = `docs/desktop-delivery/evidence/${evidencePrefix}-${real ? "real" : "local"}`;
 const evidencePath = `${prefix}.json`;
 assert(!existsSync(evidencePath), "Preserve existing evidence before another run");
 let credential = "";
@@ -25,8 +30,8 @@ if (real) {
 	credential = credential.trim();
 	assert(credential, "Credential required on stdin");
 }
-if (goalOnly && !existsSync(`${prefix}-budget.json`))
-	copyFileSync("docs/desktop-delivery/evidence/T19-real-budget.json", `${prefix}-budget.json`);
+if (goalOnly && real && !existsSync(`${prefix}-budget.json`))
+	copyFileSync("docs/desktop-delivery/evidence/T20-real-budget.json", `${prefix}-budget.json`);
 const budget = openBudget(`${prefix}-budget.json`, goalOnly ? 14 : 8);
 const fixture = mkdtempSync("/tmp/pi-goal-");
 const workspace = join(fixture, "workspace");
@@ -38,6 +43,7 @@ const evidence = {
 	fixture,
 	executablePath,
 	mode: real ? "real DeepSeek" : "scripted local provider",
+	strictBytes,
 	checks: [],
 	requests: [],
 	status: "FAIL",
@@ -279,9 +285,11 @@ try {
 	stage = "goal";
 	send({
 		type: "set_goal",
-		goal: goalOnly
-			? "Use write once to create goal-proof.txt containing exactly GOAL_OK, then reply Done. This is the entire execution task; no additional verification steps are required from the executor."
-			: "Use write to create goal-proof.txt containing exactly GOAL_OK. Do not read first. Reviewer: use read to verify that exact file content and return the required verdict JSON only.",
+		goal: strictBytes
+			? 'Use write once to create goal-proof.txt. Set content to the JSON string "GOAL_OK": exactly seven ASCII bytes 47 4f 41 4c 5f 4f 4b (hex). No newline, whitespace, quotes or BOM. Then reply Done. The reviewer must use read to inspect the file and return the original required verdict JSON; do not assume the executor succeeded.'
+			: goalOnly
+				? "Use write once to create goal-proof.txt containing exactly GOAL_OK, then reply Done. This is the entire execution task; no additional verification steps are required from the executor."
+				: "Use write to create goal-proof.txt containing exactly GOAL_OK. Do not read first. Reviewer: use read to verify that exact file content and return the required verdict JSON only.",
 		maxRounds: 1,
 		locked: true,
 		execModel: "acceptance/deepseek-flash",
@@ -293,6 +301,7 @@ try {
 		"Goal executor wrote exact requested content",
 		readFileSync(join(workspace, "goal-proof.txt"), "utf8") === "GOAL_OK",
 	);
+	evidence.fileHex = readFileSync(join(workspace, "goal-proof.txt")).toString("hex");
 	check(
 		"Original goal orchestration accepted the reviewer verdict",
 		goalStatus.verdict === "pass" && goalStatus.goal === null,
