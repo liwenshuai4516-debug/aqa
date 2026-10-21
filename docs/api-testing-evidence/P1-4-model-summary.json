@@ -1,0 +1,110 @@
+{
+	"attempt": "03-final",
+	"task": "P1-4",
+	"scope": "real configured model; isolated synthetic fixture; real MCP/Newman",
+	"model": "gpt/gpt-6.1-sol",
+	"calls": [
+		{
+			"phase": "generation",
+			"requestedModel": "gpt/gpt-6.1-sol",
+			"startedAt": "2026-10-21T11:07:01.130Z",
+			"status": "completed",
+			"model": "gpt/gpt-6.1-sol",
+			"usage": {
+				"input": 820,
+				"output": 53
+			}
+		},
+		{
+			"phase": "independent-review-deliberate-error",
+			"requestedModel": "gpt/gpt-6.1-sol",
+			"startedAt": "2026-10-21T11:07:06.000Z",
+			"status": "completed",
+			"model": "gpt/gpt-6.1-sol",
+			"usage": {
+				"input": 1081,
+				"output": 151
+			}
+		},
+		{
+			"phase": "independent-review-corrected",
+			"requestedModel": "gpt/gpt-6.1-sol",
+			"startedAt": "2026-10-21T11:07:11.448Z",
+			"status": "completed",
+			"model": "gpt/gpt-6.1-sol",
+			"usage": {
+				"input": 1076,
+				"output": 81
+			}
+		}
+	],
+	"checks": [
+		{
+			"name": "actual-model-generated-case-from-contract",
+			"status": "passed"
+		},
+		{
+			"name": "actual-independent-model-returns-deliberate-semantic-error",
+			"status": "passed"
+		},
+		{
+			"name": "corrected-model-generated-case-independently-approved",
+			"status": "passed"
+		},
+		{
+			"name": "real-mcp-newman-recorded-fixture-contract-defect",
+			"status": "passed"
+		},
+		{
+			"name": "unfixed-remains-open-fix-closes-with-first-evidence-and-zero-model-recalls",
+			"status": "passed"
+		},
+		{
+			"name": "historical-report-does-not-call-model-or-interface",
+			"status": "passed"
+		}
+	],
+	"runs": [
+		{
+			"workflowRef": "fe1f6333-e5bd-4273-9dff-639786729dc7",
+			"runId": "feec5e07-c31e-41c5-90a1-8ab9fc4244b1",
+			"executionVerdict": "failed",
+			"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-mSFArj/project/draft-incorrect-evidence-fe1f6333-e5bd-4273-9dff-639786729dc7/feec5e07-c31e-41c5-90a1-8ab9fc4244b1/report.md",
+			"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-mSFArj/project/draft-incorrect-evidence-fe1f6333-e5bd-4273-9dff-639786729dc7/feec5e07-c31e-41c5-90a1-8ab9fc4244b1/findings.json",
+			"cleanup": "not-required",
+			"openFindings": 1
+		},
+		{
+			"workflowRef": "fe1f6333-e5bd-4273-9dff-639786729dc7",
+			"runId": "abc3c824-9819-4d4c-8b19-0de0934c7480",
+			"executionVerdict": "failed",
+			"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-mSFArj/project/draft-incorrect-evidence-fe1f6333-e5bd-4273-9dff-639786729dc7/abc3c824-9819-4d4c-8b19-0de0934c7480/report.md",
+			"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-mSFArj/project/draft-incorrect-evidence-fe1f6333-e5bd-4273-9dff-639786729dc7/abc3c824-9819-4d4c-8b19-0de0934c7480/findings.json",
+			"cleanup": "not-required",
+			"openFindings": 1
+		},
+		{
+			"workflowRef": "fe1f6333-e5bd-4273-9dff-639786729dc7",
+			"runId": "fb38b735-811d-4352-9752-b81f5ce4913a",
+			"executionVerdict": "passed",
+			"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-mSFArj/project/draft-incorrect-evidence-fe1f6333-e5bd-4273-9dff-639786729dc7/fb38b735-811d-4352-9752-b81f5ce4913a/report.md",
+			"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-mSFArj/project/draft-incorrect-evidence-fe1f6333-e5bd-4273-9dff-639786729dc7/fb38b735-811d-4352-9752-b81f5ce4913a/findings.json",
+			"cleanup": "not-required",
+			"openFindings": 0
+		}
+	],
+	"status": "passed-real-model-fixture",
+	"startedAt": "2026-10-21T11:07:01.115Z",
+	"fixtureRequests": 3,
+	"finishedAt": "2026-10-21T11:07:22.811Z",
+	"sourceHashes": {
+		"plugins/api-testing/review.mjs": "2c9cdbceb22c88e5eaf0989d95e37fa94eba3ace760db83f007398b7a354c4cd",
+		"tests/api-testing-model-test.mjs": "41df31f820012daede868db23bb176804180bd1dd24f32cda4699a0ae0c49984"
+	},
+	"preservedEvidence": "tests/scratch/api-testing-p1-4-resume/03-final",
+	"allAttemptsModelCalls": 9,
+	"allAttemptsUsage": {
+		"input": 8778,
+		"output": 1144
+	}
+}

@@ -58,4 +58,4 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 
 `node --import tsx tests/api-testing-skills-test.mjs` 将分发目录复制到临时项目，使用空 agentDir 验证真实 SDK 默认发现、宿主 skill 工具加载及禁用过滤。技能均小于 8192 bytes；它们不能替代宿主权限、评审与执行硬门禁。
 
-当前用户已确认没有专用模型配置，实际生成/独立评审验收 blocked。可写测试环境已登记，但未完成 OS 隔离、业务数据/规则/鉴权接入。完整清单及恢复条件见 [P1-4](../../docs/api-testing-evidence/P1-4.md)；不得把技能发现通过算成主流程业务验收。
+已复用系统配置的 GPT 完成实际生成/独立评审及真实 MCP fixture 验收，不要求额外专用配置。可写测试环境已登记，但未完成 OS 隔离、业务数据/规则/鉴权接入。完整清单及恢复条件见 [P1-4](../../docs/api-testing-evidence/P1-4.md)；不得把技能发现通过算成主流程业务验收。

@@ -136,4 +136,6 @@ P1 工程验收通过后可以开展 P2 本地管理；没有用户真实环境�
 
 | P1-4 | 部分工程检查通过；实际模型验收 blocked | [记录与恢复清单](api-testing-evidence/P1-4.md)、[摘要](api-testing-evidence/P1-4-summary.json) | 技能发现/加载 5/5，3 个 skill-creator 校验通过；实际模型/真实业务未执行，用户明确暂无模型配置 | P2/P3 依赖未满足；P4 为按需项目，当前样例已是 OAS 3.0，不推测实现全部格式 |
 
+| P1-4 补验 | P1 工程主流程通过；真实业务未验收 | [实际模型记录](api-testing-evidence/P1-4-model.md)、[摘要](api-testing-evidence/P1-4-model-summary.json)、[失败与修复历史](api-testing-evidence/P1-4-model-attempts.json) | 6/6 实际 GPT/真实 MCP fixture；最终 3 次模型调用，全部尝试共 9 次；模型拒绝故意错误，修正批准，实际缺陷未修复 open、修复后关闭 | 原“必须专用配置”判断已纠正；业务隔离/数据规则待补，允许进入 P2 本地持久化，不开启真实调度 |
+
 完成一个阶段的标准：对应任务有证据、关键失败路径验证、文档与代码一致、无冒充成功的 SKIP/unknown；未解决事项明确归属。不要用测试数量或提交数量代替业务验收。

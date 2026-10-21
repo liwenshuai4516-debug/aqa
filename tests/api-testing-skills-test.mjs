@@ -45,12 +45,12 @@ assert.deepEqual(explicit.skills.map((s) => s.name).sort(), expected);
 checks.push({ name: "explicit-package-path-also-discoverable", status: "passed" });
 const summary = {
 	task: "P1-4",
-	status: "skills-passed-actual-model-blocked",
+	status: "skills-discovery-passed",
 	checks,
 	environment: "isolated project and empty agentDir; actual SDK and host tool",
 	actualModelCalls: 0,
 	businessRequests: 0,
-	modelBlocker: "User confirmed no dedicated model configuration is available",
+	modelAcceptance: "Not exercised by this discovery test; see api-testing-model-test.mjs",
 	skills: loaded.skills.map(({ name, filePath }) => ({ name, bytes: Buffer.byteLength(readFileSync(filePath)) })),
 };
 writeFileSync(join(output, "summary.json"), JSON.stringify(summary, null, 2) + "\n");

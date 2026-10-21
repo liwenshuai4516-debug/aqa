@@ -1,0 +1,256 @@
+[
+	{
+		"attempt": "01-scope-failure",
+		"task": "P1-4",
+		"scope": "real configured model; isolated synthetic fixture; real MCP/Newman",
+		"model": "gpt/gpt-6.1-sol",
+		"calls": [
+			{
+				"phase": "generation",
+				"requestedModel": "gpt/gpt-6.1-sol",
+				"startedAt": "2026-10-21T11:04:56.759Z",
+				"status": "completed",
+				"model": "gpt/gpt-6.1-sol",
+				"usage": {
+					"input": 821,
+					"output": 54
+				}
+			},
+			{
+				"phase": "independent-review-deliberate-error",
+				"requestedModel": "gpt/gpt-6.1-sol",
+				"startedAt": "2026-10-21T11:05:05.738Z",
+				"status": "completed",
+				"model": "gpt/gpt-6.1-sol",
+				"usage": {
+					"input": 998,
+					"output": 275
+				}
+			},
+			{
+				"phase": "independent-review-corrected",
+				"requestedModel": "gpt/gpt-6.1-sol",
+				"startedAt": "2026-10-21T11:05:18.809Z",
+				"status": "completed",
+				"model": "gpt/gpt-6.1-sol",
+				"usage": {
+					"input": 1004,
+					"output": 255
+				}
+			}
+		],
+		"checks": [
+			{
+				"name": "actual-model-generated-case-from-contract",
+				"status": "passed"
+			},
+			{
+				"name": "actual-independent-model-returns-deliberate-semantic-error",
+				"status": "passed"
+			}
+		],
+		"runs": [],
+		"status": "failed",
+		"startedAt": "2026-10-21T11:04:56.745Z",
+		"failure": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'revise'\n- 'approved'\n",
+		"fixtureRequests": 0,
+		"finishedAt": "2026-10-21T11:05:29.002Z"
+	},
+	{
+		"attempt": "02-harness-failure",
+		"task": "P1-4",
+		"scope": "real configured model; isolated synthetic fixture; real MCP/Newman",
+		"model": "gpt/gpt-6.1-sol",
+		"calls": [
+			{
+				"phase": "generation",
+				"requestedModel": "gpt/gpt-6.1-sol",
+				"startedAt": "2026-10-21T11:06:17.462Z",
+				"status": "completed",
+				"model": "gpt/gpt-6.1-sol",
+				"usage": {
+					"input": 821,
+					"output": 53
+				}
+			},
+			{
+				"phase": "independent-review-deliberate-error",
+				"requestedModel": "gpt/gpt-6.1-sol",
+				"startedAt": "2026-10-21T11:06:22.641Z",
+				"status": "completed",
+				"model": "gpt/gpt-6.1-sol",
+				"usage": {
+					"input": 1080,
+					"output": 141
+				}
+			},
+			{
+				"phase": "independent-review-corrected",
+				"requestedModel": "gpt/gpt-6.1-sol",
+				"startedAt": "2026-10-21T11:06:28.738Z",
+				"status": "completed",
+				"model": "gpt/gpt-6.1-sol",
+				"usage": {
+					"input": 1077,
+					"output": 81
+				}
+			}
+		],
+		"checks": [
+			{
+				"name": "actual-model-generated-case-from-contract",
+				"status": "passed"
+			},
+			{
+				"name": "actual-independent-model-returns-deliberate-semantic-error",
+				"status": "passed"
+			},
+			{
+				"name": "corrected-model-generated-case-independently-approved",
+				"status": "passed"
+			},
+			{
+				"name": "real-mcp-newman-recorded-fixture-contract-defect",
+				"status": "passed"
+			},
+			{
+				"name": "unfixed-remains-open-fix-closes-with-first-evidence-and-zero-model-recalls",
+				"status": "passed"
+			}
+		],
+		"runs": [
+			{
+				"workflowRef": "0ebe7f81-6f19-494d-916d-a59251304cef",
+				"runId": "d7ecb6ed-7168-4b44-80b7-7cef94b85eb5",
+				"executionVerdict": "failed",
+				"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-Djiy5n/project/draft-incorrect-evidence-0ebe7f81-6f19-494d-916d-a59251304cef/d7ecb6ed-7168-4b44-80b7-7cef94b85eb5/report.md",
+				"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-Djiy5n/project/draft-incorrect-evidence-0ebe7f81-6f19-494d-916d-a59251304cef/d7ecb6ed-7168-4b44-80b7-7cef94b85eb5/findings.json",
+				"cleanup": "not-required",
+				"openFindings": 1
+			},
+			{
+				"workflowRef": "0ebe7f81-6f19-494d-916d-a59251304cef",
+				"runId": "b4676175-f3d0-440b-86d5-bf05344e9cf7",
+				"executionVerdict": "failed",
+				"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-Djiy5n/project/draft-incorrect-evidence-0ebe7f81-6f19-494d-916d-a59251304cef/b4676175-f3d0-440b-86d5-bf05344e9cf7/report.md",
+				"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-Djiy5n/project/draft-incorrect-evidence-0ebe7f81-6f19-494d-916d-a59251304cef/b4676175-f3d0-440b-86d5-bf05344e9cf7/findings.json",
+				"cleanup": "not-required",
+				"openFindings": 1
+			},
+			{
+				"workflowRef": "0ebe7f81-6f19-494d-916d-a59251304cef",
+				"runId": "13dbf8f6-b2b4-4033-a9a4-a9e249674de7",
+				"executionVerdict": "passed",
+				"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-Djiy5n/project/draft-incorrect-evidence-0ebe7f81-6f19-494d-916d-a59251304cef/13dbf8f6-b2b4-4033-a9a4-a9e249674de7/report.md",
+				"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-Djiy5n/project/draft-incorrect-evidence-0ebe7f81-6f19-494d-916d-a59251304cef/13dbf8f6-b2b4-4033-a9a4-a9e249674de7/findings.json",
+				"cleanup": "not-required",
+				"openFindings": 0
+			}
+		],
+		"status": "failed",
+		"startedAt": "2026-10-21T11:06:17.451Z",
+		"failure": "Runtime/model output failed; inspect sanitized local evidence",
+		"fixtureRequests": 3,
+		"finishedAt": "2026-10-21T11:06:38.047Z"
+	},
+	{
+		"attempt": "03-final",
+		"task": "P1-4",
+		"scope": "real configured model; isolated synthetic fixture; real MCP/Newman",
+		"model": "gpt/gpt-6.1-sol",
+		"calls": [
+			{
+				"phase": "generation",
+				"requestedModel": "gpt/gpt-6.1-sol",
+				"startedAt": "2026-10-21T11:07:01.130Z",
+				"status": "completed",
+				"model": "gpt/gpt-6.1-sol",
+				"usage": {
+					"input": 820,
+					"output": 53
+				}
+			},
+			{
+				"phase": "independent-review-deliberate-error",
+				"requestedModel": "gpt/gpt-6.1-sol",
+				"startedAt": "2026-10-21T11:07:06.000Z",
+				"status": "completed",
+				"model": "gpt/gpt-6.1-sol",
+				"usage": {
+					"input": 1081,
+					"output": 151
+				}
+			},
+			{
+				"phase": "independent-review-corrected",
+				"requestedModel": "gpt/gpt-6.1-sol",
+				"startedAt": "2026-10-21T11:07:11.448Z",
+				"status": "completed",
+				"model": "gpt/gpt-6.1-sol",
+				"usage": {
+					"input": 1076,
+					"output": 81
+				}
+			}
+		],
+		"checks": [
+			{
+				"name": "actual-model-generated-case-from-contract",
+				"status": "passed"
+			},
+			{
+				"name": "actual-independent-model-returns-deliberate-semantic-error",
+				"status": "passed"
+			},
+			{
+				"name": "corrected-model-generated-case-independently-approved",
+				"status": "passed"
+			},
+			{
+				"name": "real-mcp-newman-recorded-fixture-contract-defect",
+				"status": "passed"
+			},
+			{
+				"name": "unfixed-remains-open-fix-closes-with-first-evidence-and-zero-model-recalls",
+				"status": "passed"
+			},
+			{
+				"name": "historical-report-does-not-call-model-or-interface",
+				"status": "passed"
+			}
+		],
+		"runs": [
+			{
+				"workflowRef": "fe1f6333-e5bd-4273-9dff-639786729dc7",
+				"runId": "feec5e07-c31e-41c5-90a1-8ab9fc4244b1",
+				"executionVerdict": "failed",
+				"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-mSFArj/project/draft-incorrect-evidence-fe1f6333-e5bd-4273-9dff-639786729dc7/feec5e07-c31e-41c5-90a1-8ab9fc4244b1/report.md",
+				"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-mSFArj/project/draft-incorrect-evidence-fe1f6333-e5bd-4273-9dff-639786729dc7/feec5e07-c31e-41c5-90a1-8ab9fc4244b1/findings.json",
+				"cleanup": "not-required",
+				"openFindings": 1
+			},
+			{
+				"workflowRef": "fe1f6333-e5bd-4273-9dff-639786729dc7",
+				"runId": "abc3c824-9819-4d4c-8b19-0de0934c7480",
+				"executionVerdict": "failed",
+				"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-mSFArj/project/draft-incorrect-evidence-fe1f6333-e5bd-4273-9dff-639786729dc7/abc3c824-9819-4d4c-8b19-0de0934c7480/report.md",
+				"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-mSFArj/project/draft-incorrect-evidence-fe1f6333-e5bd-4273-9dff-639786729dc7/abc3c824-9819-4d4c-8b19-0de0934c7480/findings.json",
+				"cleanup": "not-required",
+				"openFindings": 1
+			},
+			{
+				"workflowRef": "fe1f6333-e5bd-4273-9dff-639786729dc7",
+				"runId": "fb38b735-811d-4352-9752-b81f5ce4913a",
+				"executionVerdict": "passed",
+				"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-mSFArj/project/draft-incorrect-evidence-fe1f6333-e5bd-4273-9dff-639786729dc7/fb38b735-811d-4352-9752-b81f5ce4913a/report.md",
+				"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-4-model-mSFArj/project/draft-incorrect-evidence-fe1f6333-e5bd-4273-9dff-639786729dc7/fb38b735-811d-4352-9752-b81f5ce4913a/findings.json",
+				"cleanup": "not-required",
+				"openFindings": 0
+			}
+		],
+		"status": "passed-real-model-fixture",
+		"startedAt": "2026-10-21T11:07:01.115Z",
+		"fixtureRequests": 3,
+		"finishedAt": "2026-10-21T11:07:22.811Z"
+	}
+]

@@ -5,7 +5,7 @@ description: Review the basis and bounded independent approval of a frozen API t
 
 # API suite review
 
-Use the available `api_test_execute` review action for the exact workflow runRef. Its host-owned independent `llm.complete` call checks the frozen artifact and has no execution tools. A chat opinion or imported pass label cannot sign approval. If no dedicated model is configured, report blocked; a stub demonstrates control flow only.
+Use the available `api_test_execute` review action for the exact workflow runRef. Its host-owned independent `llm.complete` call checks the frozen artifact and has no execution tools. A chat opinion or imported pass label cannot sign approval. Reuse the configured host model through its normal permission gate; a separate model configuration is optional. A stub demonstrates control flow only.
 
 Check each selected case against the provided contract and confirmed rules: method/path, required request data, expected status, JSON media, required fields, type/enum and explicit values. Missing authorization semantics, wildcard response media or undocumented status mappings must remain uncertain. Check unsupported diagnostics; do not silently discard critical constraints or relax a failing assertion to match observed behavior.
 

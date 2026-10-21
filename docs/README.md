@@ -30,6 +30,7 @@
 
 ## 功能设计提案
 
+- [P1-4 实际模型补验](api-testing-evidence/P1-4-model.md)：复用系统 GPT，独立语义退回/批准与真实 MCP fixture 闭环通过；业务验收另列。
 - [P1-4 技能发现与接入清单](api-testing-evidence/P1-4.md)：技能工程检查通过；用户确认暂无专用模型，实际主流程验收阻塞。
 - [P1-3 执行与问题闭环](api-testing-evidence/P1-3.md)：17 项 fixture 检查、真实 MCP/Newman，实际模型/业务另验收。
 - [P1-2 评审控制工程验收](api-testing-evidence/P1-2.md)：确定性重编译、有界独立评审；模型替身不代表实际模型语义验收。

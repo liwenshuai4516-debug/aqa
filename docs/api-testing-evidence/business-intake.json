@@ -89,13 +89,19 @@
 		"unattendedAuthorized": false
 	},
 	"remainingConditions": [
-		"专用模型配置/凭据引用尚未提供",
 		"业务测试数据、鉴权方式及明确业务规则尚未确认",
 		"契约响应媒体为 */*，不推定 JSON",
 		"运行器 OS 文件/网络隔离未证明，仅允许 fixture"
 	],
 	"dedicatedModel": {
 		"status": "unavailable",
-		"source": "用户明确回复 暂无"
+		"source": "用户明确回复 暂无",
+		"required": false
+	},
+	"configuredModelAcceptance": {
+		"model": "gpt/gpt-6.1-sol",
+		"status": "passed-real-model-fixture",
+		"evidence": "P1-4-model-summary.json",
+		"credentialHandling": "SDK 正常认证调用；未输出或复制密钥"
 	}
 }
