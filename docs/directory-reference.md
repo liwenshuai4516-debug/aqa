@@ -50,6 +50,7 @@ pi-web-ui/
 │   ├── project-map.md          # 模块职责、请求路径、状态归属与目录管理
 │   ├── module-development.md   # 模块开发规范、联动检查表与设计/验收清单
 │   ├── api-testing-workflow-design.md # 接口自动化闭环设计提案（尚未实现）
+│   ├── api-testing-assets-design.md # 测试资产、回放与定时执行设计（主流程之后实施）
 │   ├── directory-reference.md  # 本文件：文件级定位参考
 │   └── desktop-delivery/      # 桌面范围决定、验收矩阵与历史证据
 └── tsconfig.server.json / tsconfig.extensions.json / tsconfig.tests.json / web/tsconfig.json
