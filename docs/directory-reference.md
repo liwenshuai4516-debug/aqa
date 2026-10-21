@@ -1,5 +1,7 @@
 # 目录树参考（directory-reference）
 
+[文档导航](README.md) · [按功能查模块](project-map.md) · [模块开发规范](module-development.md)
+
 > 来源：2026-09 精简前的 `AGENTS.md` §3 全文（备份见 `AGENTS.md.bak`）＋ 之后新增文件的补齐。
 > 约定：`★` = 单源/入口，先读；行内注释里的数字（工具个数、slot 个数等）以源码为准；
 > 新增文件先在树里占位，注释以后补（以各文件头注释为准）。
@@ -19,7 +21,7 @@ pi-web-ui/
 ├── deploy/                     # 部署示例：launchd plist / systemd unit / Windows 任务 XML
 ├── themes/                     # 内置主题（完整样式表：:root 变量 + 任意选择器/布局覆盖皆可，styles.css 只是共享基线）
 ├── make-light-theme.mjs        # 主题生成器（从 styles.css 的 :root 变量清单生成纯调色板）
-├── tests/                      # 全部测试脚本（自包含：独立端口 ≥8900 + 临时 data-dir）
+├── tests/                      # 单测与集成/UI 测试；自包含用例独立端口 ≥8900 + 临时 data-dir，外部依赖用例见 development.md
 │   ├── run-smoke.mjs           # 零 token 协议冒烟聚合跑器（ALL 列表；插件后台作业/目录同步 plugin-jobs-test、多根工作区
 │   │                           #   workspace-roots-test 都在里面）
 │   ├── unit/                   # vitest 纯函数单测（插件 UI 扩展点：plugin-ui-manifest / ui-slots / context-menu /
@@ -34,14 +36,21 @@ pi-web-ui/
 ├── .github/workflows/release-notes.yml   # tag 推送 → 按 CHANGELOG 建/更新 GitHub Release
 ├── .github/workflows/desktop-release.yml  # tag 推送 → windows-latest 出 NSIS 安装包并附到 Release（签名以后加这里）
 ├── extensions/                 # pi 扩展：webui.ts（/webui 命令启动本机服务并打开浏览器）
+├── plugin-sdk/                 # 插件 SDK、类型与脚手架使用说明
+├── launcher/                   # Windows 便携版启动器
+├── locales/                    # 可下载语言包（核心 zh/en 在 web/src/i18n.tsx）
+├── assets/                     # 项目展示资源
+├── cf-worker-feature-board/    # 独立 Cloudflare 功能看板 API
 ├── plugins/                    # 官方插件（webmail / db-client / vscode-editor / sftp / demo-mailbox / mermaid / run-trace / legado-web / wechat-ilink / image-toolkit / notes / live-preview / voice-input / desktop-use / pm2-manager，各自的 README.md 见其目录；page-picker/extension 是**浏览器扩展**，不是 pi-web-ui 插件）
 │   └── catalog.json            # ★ 插件市场内置列表（随包发布；社区加插件 = 在此加一条 + PR）
 ├── dev/                        # 本地开发辅助（notice/search 预览等，不入 npm 包）
 ├── Dockerfile / docker-compose.yml
-├── docs/                       # 详细文档（architecture-core / architecture-attachments / architecture-terminal /
-│                               #   architecture-plugins / architecture-system-prompt / goal-conversation-design /
-│                               #   tool-context-budget / development / release /
-│                               #   deployment / dsh-engine / antigravity-proxy / env-vars ＋ 本文件）
+├── docs/                       # 详细文档，专题全集见 README.md
+│   ├── README.md               # ★ 阅读顺序、专题导航与维护分工
+│   ├── project-map.md          # 模块职责、请求路径、状态归属与目录管理
+│   ├── module-development.md   # 模块开发规范、联动检查表与设计/验收清单
+│   ├── directory-reference.md  # 本文件：文件级定位参考
+│   └── desktop-delivery/      # 桌面范围决定、验收矩阵与历史证据
 └── tsconfig.server.json / tsconfig.extensions.json / tsconfig.tests.json / web/tsconfig.json
 ```
 

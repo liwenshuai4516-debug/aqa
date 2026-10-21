@@ -1,0 +1,51 @@
+# 项目文档导航
+
+本目录是当前仓库的开发与维护入口。用户安装说明见 [简体中文 README](../README.zh-CN.md)；参与开发先读 [AGENTS.md](../AGENTS.md)。
+
+## 建议阅读顺序
+
+1. [项目与模块地图](project-map.md)：了解各目录负责什么、一次请求经过哪些模块。
+2. [模块开发规范](module-development.md)：选择扩展方式，填写功能设计清单，确认需要联动的文件。
+3. [开发工作流](development.md)：运行、测试、格式和提交前验证。
+4. 按任务阅读下表中的专题；查具体文件时使用 [目录参考](directory-reference.md)。
+
+## 按任务查找
+
+| 任务                                 | 文档                                                                                     |
+| ------------------------------------ | ---------------------------------------------------------------------------------------- |
+| 新增功能、划分模块、准备验收         | [模块开发规范](module-development.md)                                                    |
+| 定位代码、维护目录与文档             | [项目与模块地图](project-map.md)、[目录参考](directory-reference.md)                     |
+| 会话、协议、快照、全局状态、安全边界 | [核心架构](architecture-core.md)                                                         |
+| 文件上传、附件、预览与下载           | [附件架构](architecture-attachments.md)                                                  |
+| PTY、终端接管、Git 操作              | [终端架构](architecture-terminal.md)                                                     |
+| 插件、UI 插槽、MCP、工作区授权       | [插件架构](architecture-plugins.md)、[插件 SDK](../plugin-sdk/README.md)                 |
+| 系统提示词、工具定义、上下文预算     | [系统提示词](architecture-system-prompt.md)、[工具上下文预算](tool-context-budget.md)    |
+| 引擎接入与 DSH                       | [项目与模块地图](project-map.md)、[DSH 引擎](dsh-engine.md)                              |
+| 目标审查、执行对话、轮次管理         | [目标模式设计](goal-conversation-design.md)                                              |
+| 设置预设导入、导出与分享             | [预设分享](preset-sharing.md)                                                            |
+| 本地开发、测试、CI                   | [开发工作流](development.md)                                                             |
+| 配置、部署、反向代理                 | [环境变量](env-vars.md)、[部署](deployment.md)、[Antigravity 反代](antigravity-proxy.md) |
+| 日常代码备份、正式发布               | [AGENTS.md §6](../AGENTS.md)、[发布说明](release.md)                                     |
+| Electron 开发、安装包与桌面验收      | [桌面说明](../desktop/README.md)、下方桌面交付记录                                       |
+
+## 桌面交付记录
+
+`desktop-delivery/` 保存当前决定与历史验证证据，阅读顺序如下：
+
+1. [当前范围与用户决定](desktop-delivery/scope-decisions.md)。
+2. [完成条件与缺口](desktop-delivery/completion-audit.md)、[验收矩阵](desktop-delivery/acceptance-matrix.md)。
+3. [交付状态](desktop-delivery/delivery-status.md)、[变更登记](desktop-delivery/change-register.md)、[已批准差异](desktop-delivery/approved-changes.json)。
+4. 需要追溯时再查看 `Txx-*`、`Dxx-*`、基线和补丁文件。提案不代表已经实施，历史通过不代表本轮通过。
+
+## 文档维护分工
+
+| 文档                            | 维护内容                                             |
+| ------------------------------- | ---------------------------------------------------- |
+| `AGENTS.md`                     | 必须执行的协作规则、模块规范摘要、开发禁令与提交要求 |
+| `docs/README.md`                | 阅读顺序与专题链接，不复制实现细节                   |
+| `docs/project-map.md`           | 模块职责、入口、依赖边界与目录管理                   |
+| `docs/module-development.md`    | 新功能开发步骤、联动清单与验收模板                   |
+| `docs/directory-reference.md`   | 文件级定位说明；以实际源码为准                       |
+| `docs/architecture-*.md` 等专题 | 实现机制、设计取舍和对应测试                         |
+
+新增模块时更新地图与目录参考；新增专题时在本文登记。规范冲突先核对当前用户决定、`AGENTS.md` 和代码事实，修正文档，不把历史描述当作新需求。

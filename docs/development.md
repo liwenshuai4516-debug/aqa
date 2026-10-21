@@ -1,5 +1,9 @@
 # 开发工作流
 
+[文档导航](README.md) · [项目与模块地图](project-map.md) · [模块开发规范](module-development.md)
+
+新增功能先按模块开发规范确定边界与验收标准；本页负责命令、测试环境与验证流程。日常提交和推送遵循 [AGENTS.md §6](../AGENTS.md)，正式发布另见 [release.md](release.md)。
+
 ## 常用命令
 
 ```bash
@@ -7,22 +11,24 @@ npm run dev          # 并行：node --watch --import tsx 后端(:8788，dev:ser
 #                     避开全局 pi-web-ui 的默认 :8787) + vite 前端(:5173，代理 /ws 到 :8788)。
 #                     注意：不要用 `tsx watch` 起后端——它在 Windows 下、stdio 为管道（concurrently 的 spawn 方式）
 #                     时会静默挂死（tsx 上游 bug），改用 Node 原生 --watch。
-npm run typecheck    # 双端 tsc --noEmit（提交前必跑）
+npm run typecheck    # server / web / tests / desktop / page-picker 扩展共 5 个配置
 npm run check:protocol  # 守护协议单源 shim 机制（CI 必跑）
-npm run format       # prettier 全仓库格式化（.prettierrc.json：tabs + 宽 120；提交前必跑）
+npm run format       # prettier 批量格式化源码（范围以 package.json 为准；日常优先只格式化改动文件）
 npm run format:check # 只检查不改写（CI 跑这个）
 npm run build        # build:web (vite) + build:server (tsc) + build:dsh-runtime + build:mermaid-vendor + build:runtrace-vendor
 npm start            # 跑编译产物 dist/server/index.js（生产）
 npm test             # vitest 纯函数单测（tests/unit/，毫秒级零 token）
-npm run test:smoke   # 零 token 协议冒烟聚合跑器（tests/run-smoke.mjs，82 个自包含测试；--core 只跑 PR 快检子集；--no-build 跳过套件前的构建）
+npm run test:smoke   # 零 token 冒烟聚合跑器（tests/run-smoke.mjs；--core 跑快检子集；--no-build 跳过套件前的构建）
 npm run test:freeze  # 冻结/重连回归测试（Playwright，需要本机 chromium headless）
 ```
 
 ## CI
 
-GitHub Actions ubuntu-latest（`.github/workflows/ci.yml`，push/PR → main 触发）：`format:check → lint → check:protocol → typecheck → build → build:extension → pack:extension → vitest → test:smoke`。
+GitHub Actions ubuntu-latest（[工作流配置](../.github/workflows/ci.yml)）：`format:check → lint → check:protocol → i18n:check → typecheck → build → 插件 bundle 新鲜度检查 → build:extension → pack:extension → vitest → test:smoke`。
 
-冒烟清单（tests/run-smoke.mjs 的 ALL，82 个）只收**自包含、零 token、跨平台**的测试；attach 型（需外部 server）、需真模型、平台相关的脚本不进 CI，本地手动跑（分类见 run-smoke.mjs 头部注释）。
+**当前触发范围**：配置中的 push/PR 目标仍为 `main`，本仓库主分支为 `master`。因此向 `master` 推送不触发该工作流的 push 检查，不能把推送成功作为 CI 通过的证据。若调整分支策略，须同步工作流；本地提交前验证仍必须执行。
+
+冒烟清单（`tests/run-smoke.mjs` 的 ALL，数量以代码为准）只收**自包含、零 token、跨平台**的测试；attach 型（需外部 server）、需真模型、平台相关的脚本不进 CI，本地手动跑（分类见 run-smoke.mjs 头部注释）。
 
 冒烟分层（CI 提速）：PR 跑 `--core` 快检子集（CORE，协议/安全/插件接线代表，2~4 分钟），push main + 每日 nightly（北京时间午夜）跑全量；`--retry-once` 让首轮失败重跑一次（标 FLAKY，重跑还挂才算真失败）。新测试默认进 ALL，跑得快（<20s）且稳才进 CORE（有 ALL↔CORE 同步守卫）。
 
@@ -30,7 +36,7 @@ GitHub Actions ubuntu-latest（`.github/workflows/ci.yml`，push/PR → main 触
 
 ## 编码约定
 
-- **缩进用 Tab**；前端组件小写文件名（`copy-button.tsx` 例外）；代码注释中英混写，UI 文案默认中文。
+- **缩进用 Tab**；React 组件默认 `PascalCase.tsx`（如 `ChatInput.tsx`），普通模块 `kebab-case.ts`，Hook `use-*.ts`；`copy-button.tsx` 等既有例外保留。代码注释中英混写，UI 文案通过国际化机制提供。
 - **i18n**：所有用户可见字符串走 `useT()`；改 `i18n.tsx` 必须同时给 `zh`/`en` 两个内置 locale 各加一个 key（`en` 的类型是 `Record<keyof typeof zh, string>`，漏一个会编译报错，这是特性不是 bug）。另外 `locales/*.json` 的 12 个可下载语言包（de/es/fr/it/ja/ko/pt/ru/tr/zh-Hant/zh-HK/zh-TW）也要同步加 key 且顺序与 `zh` 一致——`tests/unit/locales.test.ts` 锁这条对齐。繁中系语言包不手改：跑 `node --import tsx scripts/zh-tw-locale/build-all.mjs .`（详见 `scripts/zh-tw-locale/README.md`）一键从简中整份重新生成。
 - **通知文案**：服务端 notice 写中文 `text` + 英文 `textEn`（客户端按 locale 二选一；中英双语字段，见 `ChatInput` 的 `description`/`descriptionEn` 先例）。发给模型的提示保持中文。
 - **样式**：全部在 `styles.css`，按 `/* ---- 组件名 ---- */` 分区；颜色用 CSS 变量（`--bg-elev*`、`--border*`、`--text*`、`--accent*`、`--amber`、`--green`、`--red`）。新写/改名变量前先确认它**真有定义**：引用未定义的自定义属性按规范是 guaranteed-invalid，整条声明在计算值阶段失效（不带 fallback 的 `background` 直接没背景、`box-shadow` 连投影一起丢；带 fallback 的静默用硬编码值 → 浅色主题下是深色块）。`tests/unit/css-tokens.test.ts` 静态体检全仓 `var()` 引用，新增变量后跑一次。

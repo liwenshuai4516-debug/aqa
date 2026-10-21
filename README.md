@@ -14,6 +14,8 @@ _Just open your browser to get all your work done — browser cockpit for AI cod
 
 </div>
 
+Repository development: [Documentation index (中文)](docs/README.md) · [Module map](docs/project-map.md) · [Module development guide](docs/module-development.md) · [Contributor rules](AGENTS.md).
+
 pi-web-ui is a full-featured web interface and desktop workspace for the pi coding agent SDK (`@earendil-works/pi-coding-agent`) and DeepSeek Harness (DSH). It turns your local AI coding agent into a responsive, visual cockpit featuring real-time chat, workspace file management, in-line code editing, terminal execution, visual Git control, and multi-agent workflows — and natively supports opening and developing on remote SSH server projects in a single browser tab.
 
 ---

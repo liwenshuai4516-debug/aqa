@@ -3,6 +3,8 @@
 > 给 AI 编码助手（pi / Claude Code / Cursor 等）看的高层指南，细节按主题在 `docs/`。
 > 修改后在 pi 里跑 `/reload`。精简前全文备份：`AGENTS.md.bak`。
 
+阅读入口：[文档导航](docs/README.md) → [项目与模块地图](docs/project-map.md) → [模块开发规范](docs/module-development.md)。查具体文件见 [目录参考](docs/directory-reference.md)。
+
 ## 0. 协作与测试要求
 
 - 开始测试前，明确测试对象、范围、依据、环境和验收标准；优先查阅需求、接口契约、代码和现有测试。区分已知事实、合理假设、待确认事项与实际验证结果，未定义的行为标记为待确认。
@@ -100,6 +102,21 @@ i18n：前端 `useT()`，核心 `zh`/`en`（新 key 两处都加，`tests/unit/l
 服务端 `pick(lang,zh,en,key?)`（key 全局唯一 `<模块>.<slug>`；多行 `getServerBlock`）；**工具定义提示词（description/promptSnippet/promptGuidelines）纯英文精简**，守卫 `tests/unit/tool-prompt-hygiene.test.ts`；notice 推 UI 用 `text`+`textEn` 双字段。
 测试：端口 ≥8900 隔离；data-dir `mkdtempSync` 隔离；精确清理自己进程；**禁 `pkill -f`**；冒烟用例**不得自己 `npm run build`**（并行下互相踩 `dist/` 出假红），需要 dist 一律调 `tests/lib/ensure-build.mjs`（跑器开跑前已串行构建一次，CI 用 `--no-build`）。
 Playwright：Chrome 路径走 `tests/lib/chrome.mjs`（`PI_WEB_CHROME` 可覆盖）；仓库根用 `fileURLToPath(new URL("..", import.meta.url))`（Windows 下 `URL.pathname` 会 ENOENT）；win32 清理走 `tests/lib/port-utils.mjs` 的 `freePort`。
+
+### 模块开发规范（新增与扩展功能必读）
+
+完整流程、联动表及可复制的设计/验收清单见 [docs/module-development.md](docs/module-development.md)；职责与入口见 [docs/project-map.md](docs/project-map.md)。
+
+1. **先定义目标**：阅读需求、契约、相邻实现和现有测试，明确用户场景、范围、输入输出、权限、状态归属、兼容性和验收标准；区分事实、假设与待确认项。缺陷先复现，再修复与回归。
+2. **选择正确扩展层**：可独立启停且现有宿主 API 足够的功能优先插件；协议、会话、安全与跨引擎公共能力放核心；系统窗口和原生生命周期放桌面层。不要为单次功能新建通用框架。
+3. **保持职责边界**：入口只做必要校验与接线，业务规则进入所属服务，可独立验证的计算提取为纯函数；避免继续把业务堆进 `index.ts`、`agent-service.ts`、`use-chat.ts`。不引入循环依赖或另一会话的隐式可变状态。
+4. **沿用目录与命名**：普通模块 `kebab-case.ts`、React 组件 `PascalCase.tsx`、Hook `use-*.ts`；单测放 `tests/unit/<主题>.test.ts`，集成/UI 回归放 `tests/<主题>-test.mjs`。既有例外不批量改名。长期脚本放 `scripts/`，设计文档放 `docs/`，一次性调试放已忽略的 `tests/scratch/`。
+5. **状态与生命周期明确**：业务事实由服务端持有，先确定全局/项目/会话作用域；持久化字段提供默认值与旧数据兼容。高频消息/快照不进入 `app-globals.ts`。创建进程、订阅、定时器和异步任务时同时实现取消/销毁，防止迟到结果写入新会话。
+6. **按变更面联动**：协议单源 → 服务端分发/领域处理 → 前端接收与组件；设置变更联动持久化、默认值、UI 与预设白名单；新工具联动目录、注册与守卫；插件联动 manifest、权限、版本与必要的 bundle。只修改实际涉及的部分，具体检查表见模块规范。
+7. **复用公共机制**：沿用 `appSend`、`appUrl()`、`useFloatingPanel`、主题令牌和国际化机制；新增 UI 词条同步 zh/en 与语言包，保持 key 顺序及占位符。权限、审批、计划/委派限制必须在执行侧落实，不以隐藏按钮代替。
+8. **声明支持范围**：跨引擎能力逐一核对实现，不支持时明确反馈；涉及本地/SSH、浏览器/桌面或不同操作系统时分别说明。桌面变更先读当前范围决定与批准记录。
+9. **测试和产物隔离**：测试加载隔离 data-dir 中的新代码，不默认覆盖个人插件。依赖、运行数据和构建目录遵循忽略规则；已跟踪的插件 bundle 按现有流程同步。验证遵循 §9，SKIP、阻塞和未执行不得算通过。
+10. **同步导航与交付**：新增/移动模块更新模块地图与目录参考，新增专题更新文档导航；移动文件须核对 import、脚本、构建和打包引用。保留历史交付证据，只提交本次改动，按 §6 推送并核对远端提交号。
 
 ## 6. 发布流程
 
@@ -221,7 +238,7 @@ git ls-remote origin refs/heads/<当前分支>
 - **宿主提供的包只能声明在 `peerDependencies`（`"*"`）**：pi 扩展加载器只扫 `dependencies`（命中 `@earendil-works/pi-coding-agent` / `typebox` 就告警：嵌套副本会绕开加载器注入、搞出重复运行时模块）。本包同时是扩展与独立服务端，服务端子进程真要这两个包（`PI_WEB_SDK=bundled` 也要自带副本）→ 落在 `optionalDependencies`（npm 默认照装）。守卫 `tests/unit/extension-host-packages.test.ts`。
 - **布局页改名 / 插件 `arrange.label` 必须落到渲染层**：合并引擎对「显式指定的文案」置 `UiSlotEntry.labelExplicit`；内置条目（顶栏按钮、底栏数值徽标）一直画写死的 i18n 与实时数值，只有旗立着时才让位（名字型顶掉内置文案；数值型把名字插在数值前，不吞实时数据）。只在设置页生效 = 假承诺（`#555`，守卫 `tests/unit/bar-item-unified.test.ts`）。
 - **插件修改必须递增版本号（Bump Version）**：内置官方插件（`plugins/<id>/`）凡修改了代码/功能/静态资源（非纯文档），必须同步递增 `manifest.json` 中的 `version`（若有 `package.json` 的 `version` 须保持一致）。原因：随包热同步（`syncBuiltinPlugins`）与更新器（`plugin-updater`）均以 `compareVersions(srcVer, tgtVer) > 0` 作为升级判定的唯一权威事实源；若漏改版本号，老用户更新主程序后数据目录中的旧插件代码永远不会被热更新覆盖，导致缺陷滞留（守卫：`tests/unit/plugin-version-bump-guard.test.ts`）。
-- **修改测试插件一定要及时更新本地插件**：本地实际运行加载的插件位于数据目录（`<dataDir>/plugins/<id>/`，如 `~/.pi-web/plugins/<id>/`）。修改或测试工作区内置插件时，除递增版本号外，必须及时将最新源码同步覆盖至本地数据目录的对应插件中，防止开发调试时因旧代码缓存导致行为脱节。
+- **修改测试插件一定要及时更新测试目录中的插件**：实际运行加载的插件位于 `<dataDir>/plugins/<id>/`。修改或测试工作区内置插件时，除递增版本号外，必须将最新源码同步到隔离测试 data-dir 的对应插件中（或显式指定该目录使用现有链接脚本），确认加载新代码；不得默认覆盖个人数据目录的插件。
 - **国际化字面量要求**：`i18n.tsx` 的词条值必须使用字符串字面量（仅允许 `+` 拼接），确保 `scripts/i18n-diff.mjs` 静态解析器正常运行。
 
 ### 5. 提交前三连验（防 CI 失败铁律）

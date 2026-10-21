@@ -1,5 +1,7 @@
 # pi-web-ui
 
+本仓库开发入口：[文档导航](docs/README.md) · [项目与模块地图](docs/project-map.md) · [模块开发规范](docs/module-development.md) · [协作规则](AGENTS.md)。
+
 [English](https://github.com/xing-shuyin/pi-web-ui/blob/main/README.md) | **简体中文** · [繁體中文](https://github.com/xing-shuyin/pi-web-ui/blob/main/README.zh-TW.md) · 🌐 [**官方网站**](https://xing-shuyin.github.io/pi-web-ui-site/) · 📖 [**详细文档中心**](https://xing-shuyin.github.io/pi-web-ui-site/docs.html)
 
 [![npm 版本](https://img.shields.io/npm/v/pi-web-ui?color=cb3837&logo=npm)](https://www.npmjs.com/package/pi-web-ui)
