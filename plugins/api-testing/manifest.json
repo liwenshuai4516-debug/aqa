@@ -2,7 +2,7 @@
 	"id": "api-testing",
 	"name": "接口自动化测试",
 	"nameEn": "API testing",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "执行宿主已审定的本地测试套件。当前仅支持隔离 fixture。",
 	"descriptionEn": "Run host-approved API suites. Currently limited to isolated fixtures.",
 	"apiVersion": 2,

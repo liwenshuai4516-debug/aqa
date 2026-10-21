@@ -24,6 +24,9 @@ pi-web-ui/
 ├── plugins/api-testing/        # P0-2 最小受控 fixture 工具与专属 MCP runner（未上市场）
 ├── server/plugin-mcp.ts       # 插件工具短期调用身份和内部 MCP 门禁
 ├── server/api-testing-runner.ts # 手工批准 fixture、一次性引用与运行生命周期
+├── plugins/api-testing/suite.mjs # P1-1 本地 OAS 3.0 与固定模板草稿编译
+├── tests/api-testing-suite-test.mjs # P1-1 导入/候选/冻结草稿工程检查
+├── tests/fixtures/api-testing-workflow/ # 脱敏契约与闭环 fixture
 ├── tests/api-testing-controlled-test.mjs # P0-2 真实插件/适配器/MCP/Newman 集成验收
 ├── tests/api-testing-p0-test.mjs # P0-1 真实 MCP/Newman 验证（手动运行，需隔离依赖）
 ├── tests/fixtures/api-testing-p0/ # P0-1 专用依赖锁、本地执行入口、网络诊断钩子

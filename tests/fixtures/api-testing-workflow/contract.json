@@ -1,0 +1,46 @@
+{
+	"openapi": "3.0.3",
+	"info": { "title": "Synthetic records fixture", "version": "1.0" },
+	"paths": {
+		"/records/{id}": {
+			"get": {
+				"operationId": "getRecord",
+				"parameters": [
+					{ "name": "id", "in": "path", "required": true, "schema": { "type": "string", "minLength": 1 } }
+				],
+				"responses": {
+					"200": {
+						"description": "Found",
+						"content": { "application/json": { "schema": { "$ref": "#/components/schemas/Record" } } }
+					},
+					"404": {
+						"description": "Missing",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"required": ["error"],
+									"properties": { "error": { "type": "string", "enum": ["missing"] } }
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"Record": {
+				"type": "object",
+				"required": ["id", "status", "example"],
+				"properties": {
+					"id": { "type": "string" },
+					"status": { "type": "string", "enum": ["active", "closed"] },
+					"example": { "type": "string", "example": "synthetic-example" },
+					"note": { "type": "string", "nullable": true }
+				}
+			}
+		}
+	}
+}

@@ -25,3 +25,9 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 ```
 
 测试复制本插件到临时 data-dir，调用真实宿主适配器、私有 MCP 和 Newman；不调用模型或真实业务。验收与剩余范围见 [P0-2 证据](../../docs/api-testing-evidence/P0-2.md)。
+
+## P1-1 导入与编译模块
+
+`suite.mjs` 导出 `importContract`、`designCandidates`、`compileSuite`、`saveDraft`，供后续工作流组合。候选仅是待补输入的纲要；确定性编译保留契约/规则依据，固定模板拒绝任意 JS。输出为带文件 hash 的 draft，review 为 pending，不取得执行权限。当前 API 不作为模型可直接调用的产品工具；完整接线与独立评审另按任务验收。
+
+支持矩阵、未覆盖关键字、源码净化限制、负向规则和复现见 [P1-1 验收](../../docs/api-testing-evidence/P1-1.md)。依赖新增固定 Swagger Parser 13.1.0 和 Ajv 8.17.1；均安装于隔离 runtime，未改项目根依赖或个人配置。

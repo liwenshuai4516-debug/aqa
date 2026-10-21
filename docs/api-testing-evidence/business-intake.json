@@ -1,0 +1,85 @@
+{
+	"time": "2026-10-21T10:23:21.773Z",
+	"access": "read-only GET of documentation; no business API calls",
+	"openapi": "3.0.1",
+	"paths": 58,
+	"sourceSha256": "6c4d286e69c5a5b9da1dba44e1b1519c540352c6302b439f655283f5f4befc94",
+	"status": "imported",
+	"operation": {
+		"path": "/v1/web/proj-reserve/reserve-proj-list",
+		"method": "post",
+		"operationId": "createReserveProj",
+		"security": [],
+		"requestBodyRequired": true,
+		"statuses": ["200"]
+	},
+	"unsupported": [
+		{
+			"operationId": "createReserveProj",
+			"pointer": "#/paths/~1v1~1web~1proj-reserve~1reserve-proj-list/post/requestBody/content/application~1json/schema/properties/departmentId",
+			"keyword": "format",
+			"status": "not-covered"
+		},
+		{
+			"operationId": "createReserveProj",
+			"pointer": "#/paths/~1v1~1web~1proj-reserve~1reserve-proj-list/post/requestBody/content/application~1json/schema/properties/bdManagerId",
+			"keyword": "format",
+			"status": "not-covered"
+		},
+		{
+			"operationId": "createReserveProj",
+			"pointer": "#/paths/~1v1~1web~1proj-reserve~1reserve-proj-list/post/requestBody/content/application~1json/schema/properties/operationContractId",
+			"keyword": "format",
+			"status": "not-covered"
+		},
+		{
+			"operationId": "createReserveProj",
+			"pointer": "#/paths/~1v1~1web~1proj-reserve~1reserve-proj-list/post/requestBody/content/application~1json/schema/properties/createBy",
+			"keyword": "format",
+			"status": "not-covered"
+		},
+		{
+			"operationId": "createReserveProj",
+			"pointer": "#/paths/~1v1~1web~1proj-reserve~1reserve-proj-list/post/requestBody/content/application~1json/schema/properties/createDate",
+			"keyword": "format",
+			"status": "not-covered"
+		},
+		{
+			"operationId": "createReserveProj",
+			"pointer": "#/paths/~1v1~1web~1proj-reserve~1reserve-proj-list/post/responses/200/content/*~1*/schema/properties/code",
+			"keyword": "format",
+			"status": "not-covered"
+		},
+		{
+			"operationId": "createReserveProj",
+			"pointer": "#/paths/~1v1~1web~1proj-reserve~1reserve-proj-list/post/responses/200/content/*~1*/schema/properties/timestamp",
+			"keyword": "format",
+			"status": "not-covered"
+		},
+		{
+			"operationId": "createReserveProj",
+			"pointer": "#/paths/~1v1~1web~1proj-reserve~1reserve-proj-list/post/responses/200/content/*~1*/schema/properties/pageNum",
+			"keyword": "format",
+			"status": "not-covered"
+		},
+		{
+			"operationId": "createReserveProj",
+			"pointer": "#/paths/~1v1~1web~1proj-reserve~1reserve-proj-list/post/responses/200/content/*~1*/schema/properties/pageSize",
+			"keyword": "format",
+			"status": "not-covered"
+		},
+		{
+			"operationId": "createReserveProj",
+			"pointer": "#/paths/~1v1~1web~1proj-reserve~1reserve-proj-list/post/responses/200/content/*~1*/schema/properties/pages",
+			"keyword": "format",
+			"status": "not-covered"
+		},
+		{
+			"operationId": "createReserveProj",
+			"pointer": "#/paths/~1v1~1web~1proj-reserve~1reserve-proj-list/post/responses/200/content/*~1*/schema/properties/rows",
+			"keyword": "format",
+			"status": "not-covered"
+		}
+	],
+	"candidates": []
+}

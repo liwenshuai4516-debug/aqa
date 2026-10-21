@@ -1,0 +1,59 @@
+{
+	"schemaVersion": 1,
+	"task": "P1-1",
+	"startedAt": "2026-10-21T10:23:39.314Z",
+	"platform": "darwin",
+	"node": "v23.10.0",
+	"output": "tests/scratch/api-testing-p1-1/evidence/04-final",
+	"checks": [
+		{
+			"name": "mature-parser-resolves-internal-ref-and-keeps-property-named-example",
+			"status": "passed"
+		},
+		{
+			"name": "candidate-outlines-preserve-missing-input-and-request-boundary-validation",
+			"status": "passed"
+		},
+		{
+			"name": "normal-case-traceability-and-frozen-draft-hashes-with-pending-review",
+			"status": "passed"
+		},
+		{
+			"name": "publication-refuses-overwrite-and-project-escape-including-symlink",
+			"status": "passed"
+		},
+		{
+			"name": "negative-status-requires-explicit-confirmed-input-behavior",
+			"status": "passed"
+		},
+		{
+			"name": "missing-basis-undeclared-status-field-nullability-and-request-input-blocked",
+			"status": "passed"
+		},
+		{
+			"name": "uncovered-keyword-visible-and-critical-constraint-blocks",
+			"status": "passed"
+		},
+		{
+			"name": "unsupported-format-missing-ref-remote-file-refs-and-operation-blocked",
+			"status": "passed"
+		},
+		{
+			"name": "auth-requires-explicit-adapter-and-inline-url-credentials-rejected",
+			"status": "passed"
+		},
+		{
+			"name": "fixed-template-escapes-literals-and-does-not-execute-input-code",
+			"status": "passed"
+		}
+	],
+	"status": "passed-engineering-only",
+	"fixtureDraft": "tests/scratch/api-testing-p1-1/evidence/04-final/project/draft-1",
+	"finishedAt": "2026-10-21T10:23:39.449Z",
+	"sources": {
+		"plugins/api-testing/suite.mjs": "07ffd17db0c6bff06b111b338d4caf0c53aaa762a9e300cbc47ac2da8883b1fd",
+		"plugins/api-testing/package-lock.json": "b5c2d4c53e7486cf534e3740bb597f765ff58930cbafbce37482ae45c5b60694",
+		"tests/api-testing-suite-test.mjs": "ad1256e1a22d5240a9a6abec8f601925385e148f7d31f201a2b4274d1f7fb038",
+		"tests/fixtures/api-testing-workflow/contract.json": "42cdffddb7ea14ebcb89e3248a861603f980e115a0565bc87358d010f02674fd"
+	}
+}

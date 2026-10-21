@@ -1,0 +1,26 @@
+[
+	{
+		"attempt": "01-initial",
+		"status": "passed-engineering-only",
+		"checks": 9,
+		"error": null
+	},
+	{
+		"attempt": "02-outlines",
+		"status": "passed-engineering-only",
+		"checks": 10,
+		"error": null
+	},
+	{
+		"attempt": "03-state-order-failure",
+		"status": "failed",
+		"checks": 1,
+		"error": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /needs confirmed input/. Input:\n\n'Error: Unsupported case field; imported scripts are not accepted'\n\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/api-testing-suite-test.mjs:63:9"
+	},
+	{
+		"attempt": "04-final",
+		"status": "passed-engineering-only",
+		"checks": 10,
+		"error": null
+	}
+]
