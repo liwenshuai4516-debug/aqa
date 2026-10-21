@@ -17,7 +17,7 @@ npm run build:desktop
 npx electron-builder -c desktop/electron-builder.yml --mac --arm64 --publish never
 ```
 
-产物在 `release/`。Windows x64 NSIS 与 Linux x64 AppImage 配置位于同一文件；须在对应系统构建、运行验收后才能声明支持。桌面 workflow 仅手动生成内部构建附件，不向原作者仓库发布。既有便携版入口仍保留，尚未进行本次独立验收。
+产物在 `release/`。Windows x64 NSIS 与 Linux x64 AppImage 配置位于同一文件；须在对应系统构建、运行验收后才能声明支持。桌面 workflow 仅手动生成内部构建附件，不向原作者仓库发布。既有便携版入口保留；macOS 显式便携根的实际安装包启动、聊天/终端和重启恢复已验证，见 `docs/desktop-delivery/T32-portable-mode.md`，不代表 Windows 便携版已验收。
 
 ## 启动与数据
 
@@ -28,6 +28,8 @@ npx electron-builder -c desktop/electron-builder.yml --mac --arm64 --publish nev
 服务只监听 127.0.0.1，优先端口 8790，已占用则安全回退，不终止占用进程。每次启动随机生成鉴权令牌，并以原 cookie 流程交给界面；健康与身份校验通过才打开窗口。主题、语言和面板设置按明确白名单跨端口恢复，不复制身份或授权。
 
 客户端自身启动不需要全局 Node/Pi CLI。用户项目的 Git、Shell、Python、MCP 等仍需原有外部环境；模型和市场需要网络及用户配置。DSH 引擎还需官方运行时树（本次验证 `@deepseek-ai/dsh@0.1.5-rc.3`），可由 `PI_WEB_DSH_RUNTIME` 指向其 node_modules；应用仅随包携带原适配器所需依赖，不内置完整官方 DSH 运行时。
+
+便携模式可通过原 `PI_PORTABLE_ROOT` 指向可写便携根，默认数据布局为其 `data/electron`、`data/web`、`data/agent` 和 `data/workspace`。macOS `.app` 不依赖同级标记自动发现，受控启动时显式指定根；需要独立 shell home 时沿用 `PI_PORTABLE_HOME`。不要在便携启动中混入个人 agent/data 路径覆盖。当前仅验证同路径重启，移动目录后的历史绝对路径处理没有新增验收。
 
 ## 窗口、恢复与浏览器
 

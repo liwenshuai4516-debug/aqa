@@ -1,0 +1,31 @@
+{
+  "fixture": "/tmp/pi-portable-ui-wxWNSf",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "PASS",
+  "realModelRequests": 0,
+  "checks": [
+    "Installed app activates original portable branch",
+    "Electron userData and sessionData use portable root",
+    "Original business, SDK and workspace paths stay under portable data",
+    "Bundled SDK persists real reply under portable agent directory",
+    "Actual packaged PTY writes exact file inside portable workspace",
+    "Portable PTY closes through original terminal protocol",
+    "Portable shutdown persists desktop preferences under portable userData",
+    "Portable desktop preferences restore after full application restart",
+    "Original history restores portable session after full application restart",
+    "Portable workspace file remains byte exact",
+    "Portable mode leaves ordinary explicit userData untouched",
+    "History restore and restart produce no extra local provider request"
+  ],
+  "paths": {
+    "userData": "/tmp/pi-portable-ui-wxWNSf/中文 portable root/data/electron",
+    "sessionData": "/tmp/pi-portable-ui-wxWNSf/中文 portable root/data/electron/session",
+    "web": "/tmp/pi-portable-ui-wxWNSf/中文 portable root/data/web",
+    "agent": "/tmp/pi-portable-ui-wxWNSf/中文 portable root/data/agent",
+    "workspace": "/tmp/pi-portable-ui-wxWNSf/中文 portable root/data/workspace",
+    "portable": "1",
+    "home": "/tmp/pi-portable-ui-wxWNSf/中文 portable root/data/home"
+  },
+  "transcript": "/tmp/pi-portable-ui-wxWNSf/中文 portable root/data/agent/sessions/--private-tmp-pi-portable-ui-wxWNSf-中文 portable root-data-workspace--/2026-10-21T02-15-42-411Z_01a15c3e-324a-717f-a3ee-7d7e5018c4fe.jsonl",
+  "localRequests": 1
+}
