@@ -1,0 +1,20 @@
+[desktop] main started, waiting for app ready…
+[desktop] app ready
+[desktop] server entry: /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/Resources/app/dist/server/index.js
+[desktop] spawning server on 127.0.0.1:8790 (data: /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-native-picker-tBd1DI/desktop/data)
+[server] [mcp] 目录监视不可用，mcp.json 热加载回落到 2000ms 轮询
+[server] 
+[server]   ⚡ pi-web-ui — web chat for the pi coding agent
+[server]     http://localhost:8790
+[server]     workspace   : /Users/liyingjun/Downloads
+[server]     session dir : /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-native-picker-tBd1DI/desktop/agent/sessions
+[server]     pi SDK      : v1.1.0
+[server]     bind        : 127.0.0.1:8790
+[server] 
+[server] [control] socket error: listen EINVAL: invalid argument /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-native-picker-tBd1DI/desktop/data/pi-web-ui.sock
+[desktop] server 就绪：http://127.0.0.1:8790
+[desktop] opening window: http://127.0.0.1:8790
+[desktop] window loaded
+[server] 
+[server] shutting down…
+[desktop] server 提前退出（code=0 signal=null），请看上方 server 日志

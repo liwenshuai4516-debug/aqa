@@ -54,3 +54,5 @@ T34 / T08、A13/A14：实际安装应用副本使用原更新器、preload 和�
 T35 / T07、A13：实际 DMG 安装应用的 renderer 隔离、危险弹窗协议、外部同帧导航/token 隔离、同源 iframe、合法主窗口调用和其他窗口原 preload 的真实 IPC 拒绝，共 12 检查通过。4 文件/16 单测、类型和源目录/受保护哈希门禁通过。shell.openExternal 仅在测试中记录派发，不冒充系统浏览器实际打开；失败三轮保留。无生产改动或付费请求，详见 T35-security-boundary.md。
 
 T36 / A05：实际包原下载按钮返回原生 FileSystemFileHandle，中文名及写入后的 22 字节 ZIP 内容经独立核对通过，用户确认已保存。预设宿主路径不存在，实际完整路径仍未确定，不计指定中文目录或跨进程重开 PASS。新增原始 CDP 导航观察/稳定等待及被动事件记录；早期 AbortError 与其原因仍保留。3 文件/15 PASS/5 Windows SKIP、类型及源码门禁通过，无生产变更或付费请求，详见 T36-native-save-observation.md。
+
+T37 / T03：实际包原生取消专项在 15 分钟内未观察到正常取消退出，结果 FAIL/未验证。测试已仅清理自建 PID，独立确认进程不存在；旧窗口无需再操作。新增 --cancel/--output 验收入口，2 文件/8 单测、类型及源码门禁通过，无生产改动或模型请求，详见 T37-native-cancel.md。

@@ -1,0 +1,7 @@
+{
+  "ownedTestPid": 73526,
+  "live": false,
+  "status": "STOPPED",
+  "nativeCancellation": "NOT_VERIFIED",
+  "reason": "15 minute bounded wait expired; runner terminated only its owned test application"
+}

@@ -1,0 +1,13 @@
+NATIVE_CANCEL_REQUIRED: owned process 73526
+{
+  "fixture": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-native-picker-tBd1DI",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "realModelRequests": 0,
+  "instrumentation": "Original installed executable; unmodified native directory chooser; human cancellation; process exit, sidecar log and startup-file checks",
+  "checks": [
+    {
+      "status": "FAIL",
+      "error": "AssertionError [ERR_ASSERTION]: Native cancellation exits normally within bounded wait\n\nnull !== 0\n\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/native-picker-run.mjs:55:10"
+    }
+  ]
+}
