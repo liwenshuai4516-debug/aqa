@@ -1,0 +1,23 @@
+{
+  "fixture": "/tmp/pi-session-ui-tUHfCG",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "PASS",
+  "realModelRequests": 0,
+  "checks": [
+    "Regular conversation provides real on-disk control transcript",
+    "Original ephemeral entry displays in-memory session banner",
+    "Temporary reply creates no transcript in the original SDK session directory",
+    "Original save button persists temporary conversation exactly once",
+    "Original history UI switches to regular conversation",
+    "Original history UI switches to saved temporary conversation",
+    "Second unsaved temporary conversation remains off disk",
+    "Unpersisted temporary history is absent after full application relaunch",
+    "Unsaved temporary conversation is absent from original history UI after relaunch",
+    "Saved temporary transcript opens after full application relaunch",
+    "Regular transcript opens after full application relaunch",
+    "History switches and relaunch trigger no extra local model request"
+  ],
+  "normalPath": "/tmp/pi-session-ui-tUHfCG/desktop/agent/sessions/--private-tmp-pi-session-ui-tUHfCG-中文 workspace--/2026-10-21T02-06-40-040Z_01a15c35-eba1-7549-9801-819031e059fc.jsonl",
+  "savedPath": "/tmp/pi-session-ui-tUHfCG/desktop/agent/sessions/--private-tmp-pi-session-ui-tUHfCG-中文 workspace--/2026-10-21T02-06-43-015Z_01a15c35-f60c-7549-9801-8197a6b034e5.jsonl",
+  "localRequests": 3
+}

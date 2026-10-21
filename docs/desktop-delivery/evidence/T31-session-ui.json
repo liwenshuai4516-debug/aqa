@@ -1,0 +1,12 @@
+{
+  "fixture": "/tmp/pi-session-ui-wzniaE",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "FAIL",
+  "realModelRequests": 0,
+  "checks": [
+    "Regular conversation provides real on-disk control transcript"
+  ],
+  "requests": [],
+  "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('menuitem', { name: /^(临时对话|Ephemeral chat)$/ })\u001b[22m\n\n    at ephemeral (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/session-ui-run.mjs:148:73)\n    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/session-ui-run.mjs:165:2",
+  "localRequests": 1
+}
