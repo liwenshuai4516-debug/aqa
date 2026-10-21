@@ -1,0 +1,64 @@
+{
+	"task": "P1-4",
+	"status": "skills-passed-actual-model-blocked",
+	"checks": [
+		{
+			"name": "isolated-project-has-no-personal-skills",
+			"status": "passed"
+		},
+		{
+			"name": "distributed-package-discovered-by-real-sdk-project-loader",
+			"status": "passed"
+		},
+		{
+			"name": "all-three-load-through-real-host-tool-without-truncation",
+			"status": "passed"
+		},
+		{
+			"name": "disabled-skill-body-not-exposed",
+			"status": "passed"
+		},
+		{
+			"name": "explicit-package-path-also-discoverable",
+			"status": "passed"
+		}
+	],
+	"environment": "isolated project and empty agentDir; actual SDK and host tool",
+	"actualModelCalls": 0,
+	"businessRequests": 0,
+	"modelBlocker": "User confirmed no dedicated model configuration is available",
+	"skills": [
+		{
+			"name": "api-test-analyze",
+			"bytes": 1748
+		},
+		{
+			"name": "api-test-review",
+			"bytes": 1753
+		},
+		{
+			"name": "api-test-workflow",
+			"bytes": 2337
+		}
+	],
+	"sourceHashes": {
+		"plugins/api-testing/skills/api-test-analyze/SKILL.md": "11b4cce28e2c5ed0d68f4aafe7a0d7aabe39bc1515dbc98b0b9f22a1d046a2eb",
+		"plugins/api-testing/skills/api-test-review/SKILL.md": "af73953a1a073dc77c9c1658f5c6836fb51b1af3f10dbf1178b8e7bdae7b42d7",
+		"plugins/api-testing/skills/api-test-workflow/SKILL.md": "3e449e40a0938a6722a8c298d5912075e2d6fe7c60b65fd63115ab5e24279939",
+		"tests/api-testing-skills-test.mjs": "fc2ba7d7beb13f922dc4c4e71ccb4dd3e3fd2eec5291e17633a6bdda944fa3b6"
+	},
+	"preservedEvidence": "tests/scratch/api-testing-p1-4/summary.json",
+	"validation": {
+		"skillCreator": {
+			"passed": 3
+		},
+		"typecheck": "passed",
+		"unitTests": {
+			"files": 3,
+			"passed": 18
+		},
+		"lint": "passed",
+		"protocol": "primary checks passed; tag heuristic skipped",
+		"diffCheck": "passed"
+	}
+}

@@ -51,3 +51,11 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 所有 action 绑定项目/原会话与总体预算（180 秒、3 次评审调用）；重启不恢复内存工作流。不要通过重建工作流规避预算。不可变草稿及批准副本、每次运行身份、结果、问题与 Markdown/JSON 报告保存在项目目录。修改套件版本不自动关闭旧版本问题，分类是确定性线索，不等于已确认业务根因。响应原文和断言实际值不落盘。
 
 复现：[P1-1](../../docs/api-testing-evidence/P1-1.md) 准备隔离依赖，然后运行 `node --import tsx tests/api-testing-workflow-test.mjs tests/scratch/api-testing-p1-1/runtime`。17 项工程验收及限制见 [P1-3](../../docs/api-testing-evidence/P1-3.md)。实际模型与真实业务未验收。
+
+## P1-4 技能分发与接入条件
+
+功能包内 `skills/` 包含 `api-test-workflow`、`api-test-review`、`api-test-analyze` 三个独立按需技能。仅安装插件不会自动扫描它的 skills 目录；在目标项目明确选择这三项目录，复制到该项目 `.pi/skills/`（保留同名目录结构，已有同名技能先核对，不覆盖），再刷新技能/会话目录。也可由 SDK 的显式 skillPaths 指向包内 skills 目录。不安装到个人全局目录。
+
+`node --import tsx tests/api-testing-skills-test.mjs` 将分发目录复制到临时项目，使用空 agentDir 验证真实 SDK 默认发现、宿主 skill 工具加载及禁用过滤。技能均小于 8192 bytes；它们不能替代宿主权限、评审与执行硬门禁。
+
+当前用户已确认没有专用模型配置，实际生成/独立评审验收 blocked。可写测试环境已登记，但未完成 OS 隔离、业务数据/规则/鉴权接入。完整清单及恢复条件见 [P1-4](../../docs/api-testing-evidence/P1-4.md)；不得把技能发现通过算成主流程业务验收。

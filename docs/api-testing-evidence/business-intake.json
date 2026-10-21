@@ -93,5 +93,9 @@
 		"业务测试数据、鉴权方式及明确业务规则尚未确认",
 		"契约响应媒体为 */*，不推定 JSON",
 		"运行器 OS 文件/网络隔离未证明，仅允许 fixture"
-	]
+	],
+	"dedicatedModel": {
+		"status": "unavailable",
+		"source": "用户明确回复 暂无"
+	}
 }
