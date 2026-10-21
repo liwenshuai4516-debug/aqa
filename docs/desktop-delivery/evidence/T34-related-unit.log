@@ -1,0 +1,9 @@
+
+ RUN  v5.0.1 /Users/liyingjun/Desktop/SW-QA/15-aqa
+
+
+ Test Files  2 passed (2)
+      Tests  11 passed (11)
+   Start at  10:53:13
+   Duration  259ms (tests 54%, transform 32%, import 7%, setup 5%, worker 2%)
+

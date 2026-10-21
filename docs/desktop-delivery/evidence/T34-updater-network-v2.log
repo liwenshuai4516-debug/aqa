@@ -1,0 +1,13 @@
+{
+  "fixture": "/tmp/pi-updater-network-eXe7hR",
+  "status": "FAIL",
+  "executablePath": "/tmp/pi-updater-network-eXe7hR/中文 updater installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "instrumentation": "Clone differs only in test feed/cache configuration; real original updater and preload. Ephemeral TLS trust matches loopback hostname AND generated certificate fingerprint. No update installation or signature bypass.",
+  "checks": [],
+  "requests": [],
+  "realModelRequests": 0,
+  "current": {
+    "error": "Error invoking remote method 'pi-desktop-updater:check': Error: net::ERR_CERT_AUTHORITY_INVALID"
+  },
+  "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(!current.error)\n\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/updater-network-run.mjs:171:2"
+}

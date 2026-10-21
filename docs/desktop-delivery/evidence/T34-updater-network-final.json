@@ -1,0 +1,93 @@
+{
+  "fixture": "/tmp/pi-updater-network-Oa9kMN",
+  "status": "PASS",
+  "executablePath": "/tmp/pi-updater-network-Oa9kMN/中文 updater installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "instrumentation": "Clone adds an instrumentation bootstrap before the byte-identical original main to install exact-certificate trust before the first updater request; test feed/cache configuration only. Real original updater and preload. Ephemeral TLS trust matches loopback hostname AND generated certificate fingerprint. No update installation or signature bypass.",
+  "checks": [
+    "Actual HTTPS feed reports installed version up to date",
+    "Metadata checks do not automatically download update",
+    "Higher version is announced through original preload events",
+    "Available update remains undownloaded until explicit action",
+    "Interrupted HTTPS download rejects through original bridge",
+    "Business service remains usable after interrupted update",
+    "Complete download with wrong SHA512 is rejected",
+    "Invalid update never emits downloaded state",
+    "Unavailable HTTPS channel reports an error without exiting",
+    "Project bytes and independent agent configuration remain unchanged",
+    "Same installed version starts after all update failures",
+    "Original desktop main remains byte-identical after update failures",
+    "Project content survives full application restart",
+    "Explicit updater cache stays in the independent fixture"
+  ],
+  "requests": [
+    {
+      "mode": "current",
+      "path": "/updates/latest-mac.yml",
+      "method": "GET"
+    },
+    {
+      "mode": "current",
+      "path": "/updates/latest-mac.yml",
+      "method": "GET"
+    },
+    {
+      "mode": "interrupted",
+      "path": "/updates/latest-mac.yml",
+      "method": "GET"
+    },
+    {
+      "mode": "interrupted",
+      "path": "/updates/test-update-arm64.zip",
+      "method": "GET"
+    },
+    {
+      "mode": "checksum",
+      "path": "/updates/latest-mac.yml",
+      "method": "GET"
+    },
+    {
+      "mode": "checksum",
+      "path": "/updates/test-update-arm64.zip",
+      "method": "GET"
+    },
+    {
+      "mode": "unavailable",
+      "path": "/updates/latest-mac.yml",
+      "method": "GET"
+    },
+    {
+      "mode": "current",
+      "path": "/updates/latest-mac.yml",
+      "method": "GET"
+    }
+  ],
+  "realModelRequests": 0,
+  "current": {
+    "ok": true
+  },
+  "interrupted": {
+    "error": "Error invoking remote method 'pi-desktop-updater:download': Error: net::ERR_CONTENT_LENGTH_MISMATCH"
+  },
+  "checksum": {
+    "error": "Error invoking remote method 'pi-desktop-updater:download': Error: sha512 checksum mismatch, expected AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==, got +9wZ7wXMVhbgp7Jq1ngJmETyenAwHOYLXNlmvW3NSZbxgGyBUHb8wheOhATPy6j6nTnU8gmyHcmp9T5qpP72NA=="
+  },
+  "unavailable": {
+    "error": "Error invoking remote method 'pi-desktop-updater:check': HttpError: 503 Service Unavailable\n\"method: GET url: https://127.0.0.1:55610/updates/latest-mac.yml?noCache=1k5e681kl\\n\\n          Data:\\n          Test channel unavailable\\n          \"\nHeaders: {\n  \"connection\": \"keep-alive\",\n  \"date\": \"Wed, 21 Oct 2026 02:57:01 GMT\",\n  \"keep-alive\": \"timeout=5\",\n  \"transfer-encoding\": \"chunked\"\n}"
+  },
+  "events": [
+    {
+      "state": "checking"
+    },
+    {
+      "state": "error",
+      "message": "503 Service Unavailable\n\"method: GET url: https://127.0.0.1:55610/updates/latest-mac.yml?noCache=1k5e681kl\\n\\n          Data:\\n          Test channel unavailable\\n          \"\nHeaders: {\n  \"connection\": \"keep-alive\",\n  \"date\": \"Wed, 21 Oct 2026 02:57:01 GMT\",\n  \"keep-alive\": \"timeout=5\",\n  \"transfer-encoding\": \"chunked\"\n}"
+    }
+  ],
+  "tlsDecisions": [
+    {
+      "hostname": "127.0.0.1",
+      "matched": true
+    }
+  ],
+  "actualUpdaterCache": "/tmp/pi-updater-network-Oa9kMN/updater-cache"
+}
