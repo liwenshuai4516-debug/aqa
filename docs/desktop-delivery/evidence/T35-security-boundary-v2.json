@@ -1,0 +1,44 @@
+{
+  "fixture": "/tmp/pi-security-boundary-3LQDe9",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "FAIL",
+  "realModelRequests": 0,
+  "checks": [
+    "Original renderer exposes no Node or general IPC access",
+    "Installed window keeps sandbox and context isolation with Node disabled",
+    "Dangerous popup schemes never reach system external dispatch",
+    "Blocked popups create no additional BrowserWindow",
+    "Allowed external navigation is dispatched once without service token",
+    "External navigation leaves original main document and service usable",
+    "Same-origin iframe has no desktop bridge or Node access",
+    "Original main frame can invoke original window bridge"
+  ],
+  "instrumentation": "Original installed executable and preload, isolated data. Test intercepts shell.openExternal only to record dispatch without opening external applications; creates disposable additional BrowserWindows using original preload to exercise real IPC sender rejection. No handler or policy replacement.",
+  "renderer": {
+    "require": "undefined",
+    "process": "undefined",
+    "ipc": "undefined",
+    "bridge": [
+      "isDesktop",
+      "onFullScreenChange",
+      "platform",
+      "setTitleBarOverlay",
+      "updater",
+      "window"
+    ]
+  },
+  "webPreferences": {
+    "sandbox": true,
+    "contextIsolation": true,
+    "nodeIntegration": false,
+    "nodeIntegrationInSubFrames": false
+  },
+  "externalDispatch": [
+    {
+      "origin": "https://example.invalid",
+      "pathname": "/pi-security-external",
+      "hasToken": false
+    }
+  ],
+  "error": "Error: {\"exceptionId\":1,\"text\":\"Uncaught (in promise) Error: Cannot read properties of undefined (reading 'window')\",\"lineNumber\":0,\"columnNumber\":0,\"exception\":{\"type\":\"object\",\"subtype\":\"error\",\"className\":\"Error\",\"description\":\"Error: Cannot read properties of undefined (reading 'window')\",\"objectId\":\"-2102941557081769773.1.1\"}}\n    at WebSocket.<anonymous> (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/native-app.mjs:58:18)\n    at WebSocket.emit (node:events:509:28)\n    at Receiver.receiverOnMessage (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/ws/lib/websocket.js:1239:20)\n    at Receiver.emit (node:events:509:28)\n    at Receiver.dataMessage (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/ws/lib/receiver.js:633:14)\n    at Receiver.getData (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/ws/lib/receiver.js:532:10)\n    at Receiver.startLoop (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/ws/lib/receiver.js:190:16)\n    at Receiver._write (/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/ws/lib/receiver.js:117:10)\n    at writeOrBuffer (node:internal/streams/writable:570:12)\n    at _write (node:internal/streams/writable:499:10)"
+}

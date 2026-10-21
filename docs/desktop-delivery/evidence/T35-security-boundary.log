@@ -1,0 +1,42 @@
+{
+  "fixture": "/tmp/pi-security-boundary-Ej6aHl",
+  "executablePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/pi-artifact-install-n9asgN/dmg 中文 installation/Pi Agent Desktop.app/Contents/MacOS/Pi Agent Desktop",
+  "status": "FAIL",
+  "realModelRequests": 0,
+  "checks": [
+    "Original renderer exposes no Node or general IPC access",
+    "Installed window keeps sandbox and context isolation with Node disabled",
+    "Dangerous popup schemes never reach system external dispatch",
+    "Blocked popups create no additional BrowserWindow",
+    "Allowed external navigation is dispatched once without service token",
+    "External navigation leaves original main document and service usable"
+  ],
+  "instrumentation": "Original installed executable and preload, isolated data. Test intercepts shell.openExternal only to record dispatch without opening external applications; creates disposable additional BrowserWindows using original preload to exercise real IPC sender rejection. No handler or policy replacement.",
+  "renderer": {
+    "require": "undefined",
+    "process": "undefined",
+    "ipc": "undefined",
+    "bridge": [
+      "isDesktop",
+      "onFullScreenChange",
+      "platform",
+      "setTitleBarOverlay",
+      "updater",
+      "window"
+    ]
+  },
+  "webPreferences": {
+    "sandbox": true,
+    "contextIsolation": true,
+    "nodeIntegration": false,
+    "nodeIntegrationInSubFrames": false
+  },
+  "externalDispatch": [
+    {
+      "origin": "https://example.invalid",
+      "pathname": "/pi-security-external",
+      "hasToken": false
+    }
+  ],
+  "error": "page.waitForSelector: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#security-frame') to be visible\u001b[22m\n\u001b[2m    - waiting for navigation to finish...\u001b[22m\n\n    at /Users/liyingjun/Desktop/SW-QA/15-aqa/tests/desktop/security-boundary-run.mjs:143:27"
+}
