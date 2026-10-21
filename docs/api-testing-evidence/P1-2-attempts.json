@@ -1,0 +1,17 @@
+[
+	{
+		"attempt": "01-controls",
+		"status": "passed-controls-model-stub-only",
+		"checks": 10
+	},
+	{
+		"attempt": "02-hardening",
+		"status": "passed-controls-model-stub-only",
+		"checks": 10
+	},
+	{
+		"attempt": "03-final-timeout",
+		"status": "passed-controls-model-stub-only",
+		"checks": 11
+	}
+]

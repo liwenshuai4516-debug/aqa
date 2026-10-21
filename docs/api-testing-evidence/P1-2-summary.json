@@ -1,0 +1,573 @@
+{
+	"schemaVersion": 1,
+	"task": "P1-2",
+	"environment": "explicit model stubs; no actual provider/model",
+	"startedAt": "2026-10-21T10:32:31.361Z",
+	"checks": [
+		{
+			"name": "deterministic-recompile-and-independent-structured-review-bind-exact-artifact",
+			"status": "passed"
+		},
+		{
+			"name": "semantic-return-correction-and-fresh-hash-pass-with-history-and-unknown-usage",
+			"status": "passed"
+		},
+		{
+			"name": "two-unchanged-rounds-stop-without-budget-reset",
+			"status": "passed"
+		},
+		{
+			"name": "tampered-script-even-with-rehashed-manifest-rejected-before-model",
+			"status": "passed"
+		},
+		{
+			"name": "missing-facts-block-instead-of-inventing-business-behavior",
+			"status": "passed"
+		},
+		{
+			"name": "invalid-truncated-and-wrong-hash-output-counted-and-not-approved",
+			"status": "passed"
+		},
+		{
+			"name": "absent-and-unavailable-models-exit-without-false-pass",
+			"status": "passed"
+		},
+		{
+			"name": "call-budget-covers-correction-rounds",
+			"status": "passed"
+		},
+		{
+			"name": "cancellation-prevents-late-approval",
+			"status": "passed"
+		},
+		{
+			"name": "insufficient-overall-budget-does-not-start-model",
+			"status": "passed"
+		},
+		{
+			"name": "started-model-timeout-exits-without-approval-or-retry",
+			"status": "passed"
+		}
+	],
+	"runs": [
+		{
+			"schemaVersion": 1,
+			"policyVersion": "1",
+			"verdict": "pass",
+			"reason": "independent-review-passed",
+			"attempts": [
+				{
+					"round": 1,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-1",
+					"verdict": "pass",
+					"findings": [],
+					"modelCalls": [
+						{
+							"model": "explicit-test-stub",
+							"status": "completed",
+							"usage": {
+								"input": 10,
+								"output": 5
+							},
+							"verdict": "pass"
+						}
+					],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				}
+			],
+			"budget": {
+				"calls": 1,
+				"inputTokens": 10,
+				"outputTokens": 5,
+				"usageKnown": true
+			},
+			"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+			"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c",
+			"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-1"
+		},
+		{
+			"schemaVersion": 1,
+			"policyVersion": "1",
+			"verdict": "pass",
+			"reason": "independent-review-passed",
+			"attempts": [
+				{
+					"round": 1,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-3",
+					"verdict": "revise",
+					"findings": [
+						{
+							"caseId": "normal",
+							"code": "FIXTURE_DATA",
+							"message": "Use fixture ID r-2"
+						}
+					],
+					"modelCalls": [
+						{
+							"model": "explicit-test-stub",
+							"status": "completed",
+							"usage": "unknown",
+							"verdict": "revise"
+						}
+					],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				},
+				{
+					"round": 2,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-2",
+					"verdict": "pass",
+					"findings": [],
+					"modelCalls": [
+						{
+							"model": "explicit-test-stub",
+							"status": "completed",
+							"usage": {
+								"input": 10,
+								"output": 5
+							},
+							"verdict": "pass"
+						}
+					],
+					"artifactHash": "eafe1f7cc7c64ea18ea9822d075aa5c09047800eacc740613a168a2d440ab5ec",
+					"suiteHash": "35bd4332cc45135449eaa4f8664f8ae8f8ab82ce460304a5c182a815e1cb0822"
+				}
+			],
+			"budget": {
+				"calls": 2,
+				"inputTokens": "unknown",
+				"outputTokens": "unknown",
+				"usageKnown": false
+			},
+			"artifactHash": "eafe1f7cc7c64ea18ea9822d075aa5c09047800eacc740613a168a2d440ab5ec",
+			"suiteHash": "35bd4332cc45135449eaa4f8664f8ae8f8ab82ce460304a5c182a815e1cb0822",
+			"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-2"
+		},
+		{
+			"schemaVersion": 1,
+			"policyVersion": "1",
+			"verdict": "blocked",
+			"reason": "two-rounds-without-improvement",
+			"attempts": [
+				{
+					"round": 1,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-4",
+					"verdict": "revise",
+					"findings": [
+						{
+							"caseId": "normal",
+							"code": "FIXTURE_DATA",
+							"message": "Use fixture ID r-2"
+						}
+					],
+					"modelCalls": [
+						{
+							"model": "explicit-test-stub",
+							"status": "completed",
+							"usage": "unknown",
+							"verdict": "revise"
+						}
+					],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				},
+				{
+					"round": 2,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-4",
+					"verdict": "revise",
+					"findings": [
+						{
+							"caseId": "normal",
+							"code": "FIXTURE_DATA",
+							"message": "Use fixture ID r-2"
+						}
+					],
+					"modelCalls": [
+						{
+							"model": "explicit-test-stub",
+							"status": "completed",
+							"usage": "unknown",
+							"verdict": "revise"
+						}
+					],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				},
+				{
+					"round": 3,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-4",
+					"verdict": "revise",
+					"findings": [],
+					"modelCalls": [],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				}
+			],
+			"budget": {
+				"calls": 2,
+				"inputTokens": "unknown",
+				"outputTokens": "unknown",
+				"usageKnown": false
+			}
+		},
+		{
+			"schemaVersion": 1,
+			"policyVersion": "1",
+			"verdict": "revise",
+			"reason": "correction-required",
+			"attempts": [
+				{
+					"round": 1,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-5",
+					"verdict": "revise",
+					"findings": [
+						{
+							"caseId": "suite",
+							"code": "DETERMINISTIC_CHECK",
+							"message": "Deterministic recompilation differs: collection.json"
+						}
+					],
+					"modelCalls": []
+				}
+			],
+			"budget": {
+				"calls": 0,
+				"inputTokens": 0,
+				"outputTokens": 0,
+				"usageKnown": true
+			}
+		},
+		{
+			"schemaVersion": 1,
+			"policyVersion": "1",
+			"verdict": "blocked",
+			"reason": "missing-business-facts",
+			"attempts": [
+				{
+					"round": 1,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-6",
+					"verdict": "blocked",
+					"findings": [
+						{
+							"caseId": "normal",
+							"code": "NEEDS_RULE",
+							"message": "Missing confirmed rule"
+						}
+					],
+					"modelCalls": [
+						{
+							"model": "host-default",
+							"status": "completed",
+							"usage": "unknown",
+							"verdict": "blocked"
+						}
+					],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				}
+			],
+			"budget": {
+				"calls": 1,
+				"inputTokens": "unknown",
+				"outputTokens": "unknown",
+				"usageKnown": false
+			}
+		},
+		{
+			"schemaVersion": 1,
+			"policyVersion": "1",
+			"verdict": "revise",
+			"reason": "correction-required",
+			"attempts": [
+				{
+					"round": 1,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-7",
+					"verdict": "revise",
+					"findings": [
+						{
+							"caseId": "normal",
+							"code": "INVALID_MODEL_OUTPUT",
+							"message": "Output was invalid, truncated or did not bind this artifact"
+						}
+					],
+					"modelCalls": [
+						{
+							"model": "host-default",
+							"status": "error",
+							"usage": "unknown",
+							"error": "INVALID_REVIEW_OUTPUT"
+						}
+					],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				}
+			],
+			"budget": {
+				"calls": 1,
+				"inputTokens": "unknown",
+				"outputTokens": "unknown",
+				"usageKnown": false
+			}
+		},
+		{
+			"schemaVersion": 1,
+			"policyVersion": "1",
+			"verdict": "revise",
+			"reason": "correction-required",
+			"attempts": [
+				{
+					"round": 1,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-8",
+					"verdict": "revise",
+					"findings": [
+						{
+							"caseId": "normal",
+							"code": "INVALID_MODEL_OUTPUT",
+							"message": "Output was invalid, truncated or did not bind this artifact"
+						}
+					],
+					"modelCalls": [
+						{
+							"model": "host-default",
+							"status": "error",
+							"usage": "unknown",
+							"error": "INVALID_REVIEW_OUTPUT"
+						}
+					],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				}
+			],
+			"budget": {
+				"calls": 1,
+				"inputTokens": "unknown",
+				"outputTokens": "unknown",
+				"usageKnown": false
+			}
+		},
+		{
+			"schemaVersion": 1,
+			"policyVersion": "1",
+			"verdict": "revise",
+			"reason": "correction-required",
+			"attempts": [
+				{
+					"round": 1,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-9",
+					"verdict": "revise",
+					"findings": [
+						{
+							"caseId": "normal",
+							"code": "INVALID_MODEL_OUTPUT",
+							"message": "Output was invalid, truncated or did not bind this artifact"
+						}
+					],
+					"modelCalls": [
+						{
+							"model": "host-default",
+							"status": "error",
+							"usage": "unknown",
+							"error": "INVALID_REVIEW_OUTPUT"
+						}
+					],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				}
+			],
+			"budget": {
+				"calls": 1,
+				"inputTokens": "unknown",
+				"outputTokens": "unknown",
+				"usageKnown": false
+			}
+		},
+		{
+			"schemaVersion": 1,
+			"policyVersion": "1",
+			"verdict": "blocked",
+			"reason": "model-unavailable",
+			"attempts": [
+				{
+					"round": 1,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-10",
+					"verdict": "revise",
+					"findings": [],
+					"modelCalls": [],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				}
+			],
+			"budget": {
+				"calls": 0,
+				"inputTokens": 0,
+				"outputTokens": 0,
+				"usageKnown": true
+			}
+		},
+		{
+			"schemaVersion": 1,
+			"policyVersion": "1",
+			"verdict": "blocked",
+			"reason": "model-unavailable",
+			"attempts": [
+				{
+					"round": 1,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-11",
+					"verdict": "pass",
+					"findings": [],
+					"modelCalls": [
+						{
+							"model": "host-default",
+							"status": "unavailable",
+							"usage": "unknown"
+						}
+					],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				}
+			],
+			"budget": {
+				"calls": 1,
+				"inputTokens": "unknown",
+				"outputTokens": "unknown",
+				"usageKnown": false
+			}
+		},
+		{
+			"schemaVersion": 1,
+			"policyVersion": "1",
+			"verdict": "blocked",
+			"reason": "model-call-budget",
+			"attempts": [
+				{
+					"round": 1,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-12",
+					"verdict": "revise",
+					"findings": [
+						{
+							"caseId": "normal",
+							"code": "FIXTURE_DATA",
+							"message": "Use fixture ID r-2"
+						}
+					],
+					"modelCalls": [
+						{
+							"model": "explicit-test-stub",
+							"status": "completed",
+							"usage": "unknown",
+							"verdict": "revise"
+						}
+					],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				},
+				{
+					"round": 2,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-13",
+					"verdict": "pass",
+					"findings": [],
+					"modelCalls": [],
+					"artifactHash": "87e03b0830b7f667bb8d8126fbfe834f17eb3a1fc67f049b289d1acb2dfd0734",
+					"suiteHash": "91b12b6d3366647fcaa3f8d2d4e4f047cec27a8cb0207f16f816c6cdaf25d7bc"
+				}
+			],
+			"budget": {
+				"calls": 1,
+				"inputTokens": "unknown",
+				"outputTokens": "unknown",
+				"usageKnown": false
+			}
+		},
+		{
+			"schemaVersion": 1,
+			"policyVersion": "1",
+			"verdict": "blocked",
+			"reason": "CANCELED",
+			"attempts": [
+				{
+					"round": 1,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-14",
+					"verdict": "pass",
+					"findings": [],
+					"modelCalls": [
+						{
+							"model": "host-default",
+							"status": "error",
+							"usage": "unknown",
+							"error": "MODEL_CALL_ERROR"
+						}
+					],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				}
+			],
+			"budget": {
+				"calls": 1,
+				"inputTokens": "unknown",
+				"outputTokens": "unknown",
+				"usageKnown": false
+			}
+		},
+		{
+			"schemaVersion": 1,
+			"policyVersion": "1",
+			"verdict": "blocked",
+			"reason": "overall-time-budget",
+			"attempts": [
+				{
+					"round": 1,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-15",
+					"verdict": "pass",
+					"findings": [],
+					"modelCalls": [],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				}
+			],
+			"budget": {
+				"calls": 0,
+				"inputTokens": 0,
+				"outputTokens": 0,
+				"usageKnown": true
+			}
+		},
+		{
+			"schemaVersion": 1,
+			"policyVersion": "1",
+			"verdict": "blocked",
+			"reason": "MODEL_TIMEOUT",
+			"attempts": [
+				{
+					"round": 1,
+					"bundlePath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-2-XtCqNN/project/draft-16",
+					"verdict": "pass",
+					"findings": [],
+					"modelCalls": [
+						{
+							"model": "host-default",
+							"status": "error",
+							"usage": "unknown",
+							"error": "MODEL_CALL_ERROR"
+						}
+					],
+					"artifactHash": "7c3d018fa3c0b07b44c323b0b333aa3c5d7f769acc2fac427653589d8aca811b",
+					"suiteHash": "598f58c3338d93447117296411220752e827105e92d422b0a24a1b52b7a3788c"
+				}
+			],
+			"budget": {
+				"calls": 1,
+				"inputTokens": "unknown",
+				"outputTokens": "unknown",
+				"usageKnown": false
+			}
+		}
+	],
+	"output": "tests/scratch/api-testing-p1-2/evidence/03-final-timeout",
+	"status": "passed-controls-model-stub-only",
+	"finishedAt": "2026-10-21T10:32:37.080Z",
+	"sources": {
+		"plugins/api-testing/review.mjs": "5dbaaa67879270df80e70001ae274a27ff756c70f72da16b877ae2db1699429c",
+		"tests/api-testing-review-test.mjs": "045822c532e4a6f8bc9fdc64e246e75d2a148aa36c38b438070f71e0fa8bbca7"
+	}
+}

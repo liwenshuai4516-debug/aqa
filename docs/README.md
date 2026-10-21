@@ -30,6 +30,7 @@
 
 ## 功能设计提案
 
+- [P1-2 评审控制工程验收](api-testing-evidence/P1-2.md)：确定性重编译、有界独立评审；模型替身不代表实际模型语义验收。
 - [P1-1 契约与固定模板验收](api-testing-evidence/P1-1.md)：本地 OAS 3.0、带依据候选、草稿包和真实文档只读接入限制。
 - [P0-2 受控宿主接线验收](api-testing-evidence/P0-2.md)：身份、权限、专属 runner 与取消收尾；仅自包含 fixture。
 - [P0-1 执行可行性验收](api-testing-evidence/P0-1.md)：真实 MCP/Newman fixture 结果、接入决定、隔离缺口与复现方式；不代表真实业务已接入。

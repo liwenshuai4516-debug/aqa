@@ -1,6 +1,6 @@
 # 接口自动化测试分阶段执行计划
 
-状态：2026-10-21 已完成 P0-1 的 fixture 可行性验证，真实目标因隔离缺口阻塞；P0-2 已实施受控 fixture 接线，详见下方执行记录；P1-1 已完成导入/编译模块验收；P1-2 及以后尚未验收。详细证据见 [P0-1 验收记录](api-testing-evidence/P0-1.md)。原设计复审不计作功能验收。
+状态：2026-10-21 已完成 P0-1 的 fixture 可行性验证，真实目标因隔离缺口阻塞；P0-2 已实施受控 fixture 接线，详见下方执行记录；P1-1 已完成导入/编译模块验收；P1-2 评审控制工程验收通过，实际模型待 P1-4；P1-3 及以后尚未验收。详细证据见 [P0-1 验收记录](api-testing-evidence/P0-1.md)。原设计复审不计作功能验收。
 
 [总体设计](api-testing-workflow-design.md) · [资产设计](api-testing-assets-design.md) · [模块规范](module-development.md) · [AGENTS.md](../AGENTS.md)
 
@@ -129,5 +129,7 @@ P1 工程验收通过后可以开展 P2 本地管理；没有用户真实环境�
 | P0-2 | fixture 接线已验收；真实目标阻塞 | macOS / Node v23.10.0；[验收记录](api-testing-evidence/P0-2.md)、[摘要](api-testing-evidence/P0-2-summary.json)、[历史](api-testing-evidence/P0-2-attempts.json) | 真实链路 15/15，相关单测 131/131；核心冒烟 21/22，脚手架失败在 063fb5d 隔离基线复现；真实业务/模型未执行 | 无真实目标沙箱证明；P1-1 仅本地 OAS 3.0 与 fixture；未安装个人插件或开放批准签发工具 |
 
 | P1-1 | 导入/候选/固定模板模块已验收，工作流组合待后续任务 | macOS / Node v23.10.0；[记录](api-testing-evidence/P1-1.md)、[摘要](api-testing-evidence/P1-1-summary.json)、[业务文档只读接入](api-testing-evidence/business-intake.json) | 10/10 工程检查、23/23 相关单测、P0-2 真实回归 15/15；实际模型与业务请求未执行 | 真实契约响应为 _/_ 且仅声明 200，未生成可执行 JSON/负向业务用例；下一步 P1-2 独立评审 |
+
+| P1-2 | 评审控制工程通过；实际模型未验收 | [记录](api-testing-evidence/P1-2.md)、[摘要](api-testing-evidence/P1-2-summary.json) | 11/11 控制检查（模型替身）、15/15 相关单测；取消/真实挂起调用时限已验证；未调用实际模型 | 宿主无模型取消信号，不能保证远端调用停止；下一步 P1-3 组合闭环，P1-4 必须补实际模型证据 |
 
 完成一个阶段的标准：对应任务有证据、关键失败路径验证、文档与代码一致、无冒充成功的 SKIP/unknown；未解决事项明确归属。不要用测试数量或提交数量代替业务验收。

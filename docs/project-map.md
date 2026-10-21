@@ -57,6 +57,8 @@ P0-2 的 `plugins/api-testing/` 提供最小执行工具；`server/plugin-mcp.ts
 
 P1-1 `plugins/api-testing/suite.mjs` 负责本地 OAS 3.0 解析、候选纲要、声明式断言与固定模板草稿；`tests/api-testing-suite-test.mjs` 和 `tests/fixtures/api-testing-workflow/contract.json` 验证。详见 [P1-1](api-testing-evidence/P1-1.md)，不包含实际模型或真实业务执行。
 
+P1-2 `plugins/api-testing/review.mjs` 负责确定性重编译与独立模型补全的有界评审，`tests/api-testing-review-test.mjs` 用明确模型替身验证控制。实际模型验收单列，见 [P1-2](api-testing-evidence/P1-2.md)。
+
 ## 状态应该放在哪里
 
 | 状态                         | 归属                                      | 例子/约束                                              |

@@ -31,3 +31,9 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 `suite.mjs` 导出 `importContract`、`designCandidates`、`compileSuite`、`saveDraft`，供后续工作流组合。候选仅是待补输入的纲要；确定性编译保留契约/规则依据，固定模板拒绝任意 JS。输出为带文件 hash 的 draft，review 为 pending，不取得执行权限。当前 API 不作为模型可直接调用的产品工具；完整接线与独立评审另按任务验收。
 
 支持矩阵、未覆盖关键字、源码净化限制、负向规则和复现见 [P1-1 验收](../../docs/api-testing-evidence/P1-1.md)。依赖新增固定 Swagger Parser 13.1.0 和 Ajv 8.17.1；均安装于隔离 runtime，未改项目根依赖或个人配置。
+
+## P1-2 独立评审模块
+
+`review.mjs` 在文件/hash 与确定性重编译检查后，通过传入的 `host.llm.complete` 做独立无工具评审；所有轮次共享调用/时间预算，批准绑定实际集合及包内内容 hash。模块返回评审结果，尚无面向模型的批准签发 API。
+
+[工程验收](../../docs/api-testing-evidence/P1-2.md)使用明确模型替身验证控制分支；实际模型语义评审未执行。宿主没有模型 AbortSignal，超时只保证模块停止后续步骤，不承诺供应商调用已经结束。
