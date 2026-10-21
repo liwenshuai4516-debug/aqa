@@ -1,0 +1,4384 @@
+{
+  "sourceRoot": "/Users/liyingjun/Desktop/SW-QA/pi-web-ui-main",
+  "currentRoot": "/Users/liyingjun/Desktop/SW-QA/15-aqa",
+  "comparison": {
+    "hashes": true,
+    "tools": true,
+    "coreTools": true,
+    "uiItems": true,
+    "settingsTabs": true,
+    "protocol": true,
+    "catalog": true,
+    "manifests": false
+  },
+  "source": {
+    "hashes": {
+      "server/tool-manager.ts": "6641f5e890bce89d939b655daa1f0055854ca9d6e021014b509efe6d03f71db7",
+      "server/protocol.ts": "dee48de0687c59b079262dacb4d8758ab588d04d8d4a65ed84f7465ea797a033",
+      "web/src/ui-slots.ts": "768c15df9f643aba98b546da05412347ec7482d3924428c2498762b6948803a1",
+      "web/src/components/SettingsModal.tsx": "a6edaf67953c468259c29d3a4c08ce3cc9e105d3f06e6f4a29f50fb6ded9bf6c",
+      "plugins/catalog.json": "a797bc4568df793078e60ffb27f7db0536d14cde330df0a716776f8b489b3c17"
+    },
+    "tools": [
+      {
+        "name": "terminal_create",
+        "group": "terminal",
+        "defaultOn": false,
+        "dshVisible": true
+      },
+      {
+        "name": "terminal_list",
+        "group": "terminal",
+        "defaultOn": false,
+        "dshVisible": true
+      },
+      {
+        "name": "terminal_close",
+        "group": "terminal",
+        "defaultOn": false,
+        "dshVisible": true
+      },
+      {
+        "name": "terminal_input",
+        "group": "terminal",
+        "defaultOn": false,
+        "dshVisible": true
+      },
+      {
+        "name": "terminal_key",
+        "group": "terminal",
+        "defaultOn": false,
+        "dshVisible": true
+      },
+      {
+        "name": "terminal_read",
+        "group": "terminal",
+        "defaultOn": false,
+        "dshVisible": true
+      },
+      {
+        "name": "terminal_wait",
+        "group": "terminal",
+        "defaultOn": false,
+        "dshVisible": true
+      },
+      {
+        "name": "subagent",
+        "group": "subagent",
+        "defaultOn": true,
+        "dshVisible": false
+      },
+      {
+        "name": "edit_soft",
+        "group": "other",
+        "defaultOn": false,
+        "dshVisible": false,
+        "descKey": "editSoftEnabledDesc",
+        "offHintKey": "editSoftOffHint"
+      },
+      {
+        "name": "delegate_task",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "delegateTaskEnabledDesc",
+        "offHintKey": "delegateTaskOffHint"
+      },
+      {
+        "name": "ask_user_question",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": true,
+        "descKey": "questionnaireEnabledDesc",
+        "offHintKey": "questionnaireOffHint"
+      },
+      {
+        "name": "browser_page",
+        "group": "other",
+        "defaultOn": false,
+        "dshVisible": false,
+        "descKey": "browserPageEnabledDesc",
+        "offHintKey": "browserPageOffHint"
+      },
+      {
+        "name": "conversation_read",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "conversationReadEnabledDesc",
+        "offHintKey": "conversationReadOffHint"
+      },
+      {
+        "name": "claim_files",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "claimFilesEnabledDesc",
+        "offHintKey": "claimFilesOffHint"
+      },
+      {
+        "name": "plan_update",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": true,
+        "descKey": "planUpdateEnabledDesc",
+        "offHintKey": "planUpdateOffHint"
+      },
+      {
+        "name": "patch",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "patchToolEnabledDesc",
+        "offHintKey": "patchToolOffHint"
+      },
+      {
+        "name": "lsp",
+        "group": "other",
+        "defaultOn": false,
+        "dshVisible": false,
+        "descKey": "lspToolEnabledDesc",
+        "offHintKey": "lspToolOffHint"
+      },
+      {
+        "name": "present_files",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "presentFilesEnabledDesc",
+        "offHintKey": "presentFilesOffHint"
+      },
+      {
+        "name": "skill",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "skillEnabledDesc",
+        "offHintKey": "skillOffHint"
+      },
+      {
+        "name": "eval",
+        "group": "other",
+        "defaultOn": false,
+        "dshVisible": false,
+        "descKey": "evalEnabledDesc",
+        "offHintKey": "evalOffHint"
+      },
+      {
+        "name": "codemode",
+        "group": "other",
+        "defaultOn": false,
+        "dshVisible": false,
+        "descKey": "codemodeEnabledDesc",
+        "offHintKey": "codemodeOffHint"
+      },
+      {
+        "name": "tool_search",
+        "group": "other",
+        "defaultOn": false,
+        "dshVisible": false,
+        "descKey": "toolSearchEnabledDesc",
+        "offHintKey": "toolSearchOffHint"
+      },
+      {
+        "name": "schedule",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "scheduleTaskEnabledDesc",
+        "offHintKey": "scheduleTaskOffHint"
+      },
+      {
+        "name": "compact_context",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "compactContextEnabledDesc",
+        "offHintKey": "compactContextOffHint"
+      },
+      {
+        "name": "mcp_manage",
+        "group": "other",
+        "defaultOn": false,
+        "dshVisible": false,
+        "descKey": "mcpManageEnabledDesc",
+        "offHintKey": "mcpManageOffHint"
+      },
+      {
+        "name": "sandbox",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "sandboxEnabledDesc",
+        "offHintKey": "sandboxOffHint"
+      },
+      {
+        "name": "worktree",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "toolsWorktreeDesc",
+        "offHintKey": "toolsWorktreeOffHint"
+      }
+    ],
+    "coreTools": [
+      "bash",
+      "read",
+      "edit",
+      "write",
+      "powershell",
+      "ls",
+      "grep",
+      "find"
+    ],
+    "uiItems": [
+      {
+        "id": "host:lp-projects",
+        "slot": "leftpanel.sections",
+        "labelKey": "recentProjects",
+        "icon": "folder",
+        "kind": "action",
+        "order": 10
+      },
+      {
+        "id": "host:lp-running",
+        "slot": "leftpanel.sections",
+        "labelKey": "runningConversations",
+        "icon": "activity",
+        "kind": "action",
+        "order": 20
+      },
+      {
+        "id": "host:lp-history",
+        "slot": "leftpanel.sections",
+        "labelKey": "historySessions",
+        "icon": "clock",
+        "kind": "action",
+        "order": 30
+      },
+      {
+        "id": "host:brand",
+        "slot": "topbar.primary",
+        "labelKey": "brand",
+        "kind": "badge",
+        "order": 1,
+        "group": "brand"
+      },
+      {
+        "id": "host:open-project",
+        "slot": "topbar.primary",
+        "labelKey": "openProject",
+        "icon": "folder",
+        "kind": "action",
+        "order": 3,
+        "group": "primary"
+      },
+      {
+        "id": "host:history",
+        "slot": "topbar.primary",
+        "labelKey": "openHistory",
+        "icon": "menu",
+        "kind": "action",
+        "order": 0,
+        "group": "panels"
+      },
+      {
+        "id": "host:files",
+        "slot": "topbar.primary",
+        "labelKey": "openFiles",
+        "icon": "folder",
+        "kind": "action",
+        "order": 97,
+        "group": "panels",
+        "align": "end"
+      },
+      {
+        "id": "host:new-chat",
+        "slot": "topbar.primary",
+        "labelKey": "newChat",
+        "icon": "plus",
+        "kind": "action",
+        "order": 96,
+        "group": "primary",
+        "align": "end"
+      },
+      {
+        "id": "host:new-ephemeral-chat",
+        "slot": "topbar.primary",
+        "labelKey": "newChatEphemeral",
+        "icon": "chat",
+        "kind": "action",
+        "order": 96.5,
+        "group": "primary",
+        "align": "end"
+      },
+      {
+        "id": "host:new-sandbox",
+        "slot": "topbar.primary",
+        "labelKey": "newSandbox",
+        "icon": "sandbox",
+        "kind": "action",
+        "order": 96.6,
+        "group": "primary",
+        "align": "end"
+      },
+      {
+        "id": "host:chat",
+        "slot": "topbar.primary",
+        "labelKey": "chat",
+        "icon": "chat",
+        "kind": "view",
+        "view": "chat",
+        "order": 20,
+        "group": "views",
+        "align": "end"
+      },
+      {
+        "id": "host:terminal",
+        "slot": "topbar.primary",
+        "labelKey": "terminal",
+        "icon": "terminal",
+        "kind": "view",
+        "view": "terminal",
+        "order": 21,
+        "group": "views",
+        "align": "end"
+      },
+      {
+        "id": "host:git",
+        "slot": "topbar.primary",
+        "labelKey": "scmTab",
+        "icon": "git",
+        "kind": "view",
+        "view": "git",
+        "order": 22,
+        "group": "views",
+        "align": "end"
+      },
+      {
+        "id": "host:plugins",
+        "slot": "topbar.primary",
+        "labelKey": "pluginMenuTitle",
+        "icon": "🧩",
+        "kind": "action",
+        "order": 24,
+        "group": "views",
+        "align": "end"
+      },
+      {
+        "id": "host:search",
+        "slot": "topbar.primary",
+        "labelKey": "searchGlobal",
+        "icon": "search",
+        "kind": "action",
+        "order": 40,
+        "group": "tools",
+        "align": "end"
+      },
+      {
+        "id": "host:browser",
+        "slot": "topbar.primary",
+        "labelKey": "browserControl",
+        "icon": "browser",
+        "kind": "action",
+        "order": 41,
+        "group": "tools",
+        "align": "end",
+        "hidden": true
+      },
+      {
+        "id": "host:tasks",
+        "slot": "topbar.primary",
+        "labelKey": "bgTasks",
+        "icon": "layers",
+        "kind": "action",
+        "order": 42,
+        "group": "tools",
+        "align": "end"
+      },
+      {
+        "id": "host:zen-mode",
+        "slot": "topbar.primary",
+        "labelKey": "zenMode",
+        "icon": "feather",
+        "kind": "action",
+        "order": 43,
+        "group": "tools",
+        "align": "end"
+      },
+      {
+        "id": "host:settings",
+        "slot": "topbar.primary",
+        "labelKey": "settingsTitle",
+        "icon": "settings",
+        "kind": "action",
+        "order": 60,
+        "group": "system",
+        "align": "end"
+      },
+      {
+        "id": "host:sound",
+        "slot": "topbar.primary",
+        "labelKey": "sound",
+        "icon": "sound",
+        "kind": "action",
+        "order": 70,
+        "group": "system",
+        "hidden": true,
+        "align": "end"
+      },
+      {
+        "id": "host:language",
+        "slot": "topbar.primary",
+        "labelKey": "language",
+        "icon": "globe",
+        "kind": "action",
+        "order": 80,
+        "group": "system",
+        "hidden": true,
+        "align": "end"
+      },
+      {
+        "id": "host:theme",
+        "slot": "topbar.primary",
+        "labelKey": "theme",
+        "icon": "sun",
+        "kind": "action",
+        "order": 82,
+        "group": "system",
+        "hidden": true,
+        "align": "end"
+      },
+      {
+        "id": "host:update",
+        "slot": "topbar.primary",
+        "labelKey": "update",
+        "icon": "download",
+        "kind": "action",
+        "order": 90,
+        "group": "system",
+        "align": "end",
+        "hidden": true
+      },
+      {
+        "id": "host:github",
+        "slot": "topbar.primary",
+        "labelKey": "githubRepo",
+        "icon": "github",
+        "kind": "action",
+        "order": 200,
+        "group": "system",
+        "align": "end",
+        "hidden": true
+      },
+      {
+        "id": "host:conn",
+        "slot": "bottombar",
+        "labelKey": "connected",
+        "icon": "dot",
+        "kind": "badge",
+        "order": 5,
+        "group": "status"
+      },
+      {
+        "id": "host:engine",
+        "slot": "bottombar",
+        "labelKey": "engineBadge",
+        "icon": "aperture",
+        "kind": "action",
+        "order": 6,
+        "group": "status"
+      },
+      {
+        "id": "host:ctx",
+        "slot": "bottombar",
+        "labelKey": "context",
+        "icon": "gauge",
+        "kind": "badge",
+        "order": 10,
+        "group": "usage"
+      },
+      {
+        "id": "host:cost",
+        "slot": "bottombar",
+        "labelKey": "cumulativeCost",
+        "icon": "coins",
+        "kind": "badge",
+        "order": 11,
+        "group": "usage"
+      },
+      {
+        "id": "host:cache",
+        "slot": "bottombar",
+        "labelKey": "cacheHit",
+        "icon": "database",
+        "kind": "badge",
+        "order": 12,
+        "group": "usage"
+      },
+      {
+        "id": "host:msg-count",
+        "slot": "bottombar",
+        "labelKey": "messages",
+        "icon": "message",
+        "kind": "badge",
+        "order": 13,
+        "group": "usage"
+      },
+      {
+        "id": "host:plugin-status",
+        "slot": "bottombar",
+        "labelKey": "pluginStatus",
+        "icon": "activity",
+        "kind": "badge",
+        "order": 14,
+        "group": "status"
+      },
+      {
+        "id": "host:working",
+        "slot": "bottombar",
+        "labelKey": "working",
+        "icon": "activity",
+        "kind": "badge",
+        "order": 15,
+        "group": "status"
+      },
+      {
+        "id": "host:status-delegate",
+        "slot": "bottombar",
+        "labelKey": "delegateModeBadge",
+        "icon": "eye",
+        "kind": "badge",
+        "order": 16,
+        "group": "status"
+      },
+      {
+        "id": "host:host-metrics",
+        "slot": "bottombar",
+        "labelKey": "hostResources",
+        "icon": "cpu",
+        "kind": "badge",
+        "order": 19,
+        "group": "host",
+        "align": "end"
+      },
+      {
+        "id": "host:cwd",
+        "slot": "bottombar",
+        "labelKey": "cwdTip",
+        "icon": "folder",
+        "kind": "action",
+        "order": 20,
+        "group": "context",
+        "align": "end"
+      },
+      {
+        "id": "host:msg-reask",
+        "slot": "message.actions",
+        "labelKey": "reaskDirectly",
+        "icon": "refresh",
+        "kind": "action",
+        "order": 9
+      },
+      {
+        "id": "host:msg-edit-reask",
+        "slot": "message.actions",
+        "labelKey": "editReask",
+        "icon": "edit",
+        "kind": "action",
+        "order": 10
+      },
+      {
+        "id": "host:msg-fork",
+        "slot": "message.actions",
+        "labelKey": "forkSession",
+        "icon": "branch",
+        "kind": "action",
+        "order": 15
+      },
+      {
+        "id": "host:msg-rollback",
+        "slot": "message.actions",
+        "labelKey": "rollbackSession",
+        "icon": "undo",
+        "kind": "action",
+        "order": 16
+      },
+      {
+        "id": "host:msg-copy",
+        "slot": "message.actions",
+        "labelKey": "copyMessage",
+        "icon": "copy",
+        "kind": "action",
+        "order": 20
+      },
+      {
+        "id": "host:msg-copy-text",
+        "slot": "message.actions",
+        "labelKey": "copyText",
+        "icon": "text",
+        "kind": "action",
+        "order": 21
+      },
+      {
+        "id": "host:msg-copy-markdown",
+        "slot": "message.actions",
+        "labelKey": "copyMarkdown",
+        "icon": "markdown",
+        "kind": "action",
+        "order": 22
+      },
+      {
+        "id": "host:msg-copy-image",
+        "slot": "message.actions",
+        "labelKey": "copyImage",
+        "icon": "image",
+        "kind": "action",
+        "order": 23
+      },
+      {
+        "id": "host:msg-speak",
+        "slot": "message.actions",
+        "labelKey": "speakMsg",
+        "icon": "volume",
+        "kind": "action",
+        "order": 24
+      },
+      {
+        "id": "host:composer-upload",
+        "slot": "composer.actions",
+        "labelKey": "uploadFile",
+        "icon": "upload",
+        "kind": "action",
+        "order": 10,
+        "align": "start"
+      },
+      {
+        "id": "host:composer-templates",
+        "slot": "composer.actions",
+        "labelKey": "tpl.openPicker",
+        "icon": "grid",
+        "kind": "action",
+        "order": 110,
+        "align": "start"
+      },
+      {
+        "id": "host:composer-model",
+        "slot": "composer.actions",
+        "labelKey": "selectModel",
+        "icon": "cpu",
+        "kind": "action",
+        "order": 120,
+        "align": "start"
+      },
+      {
+        "id": "host:composer-thinking",
+        "slot": "composer.actions",
+        "labelKey": "thinkingLevel",
+        "icon": "zap",
+        "kind": "action",
+        "order": 130,
+        "align": "start"
+      },
+      {
+        "id": "host:composer-dsh-perm",
+        "slot": "composer.actions",
+        "labelKey": "dshPerm",
+        "icon": "lock",
+        "kind": "action",
+        "order": 140,
+        "align": "start"
+      },
+      {
+        "id": "host:composer-dsh-preset",
+        "slot": "composer.actions",
+        "labelKey": "dshPreset",
+        "icon": "layers",
+        "kind": "action",
+        "order": 150,
+        "align": "start"
+      },
+      {
+        "id": "host:composer-send",
+        "slot": "composer.actions",
+        "labelKey": "sendTip",
+        "icon": "send",
+        "kind": "action",
+        "order": 200,
+        "align": "end"
+      },
+      {
+        "id": "host:fp-md",
+        "slot": "file.preview.toolbar",
+        "labelKey": "showMarkdownPreview",
+        "icon": "eye",
+        "kind": "action",
+        "order": 10
+      },
+      {
+        "id": "host:fp-toc",
+        "slot": "file.preview.toolbar",
+        "labelKey": "previewTocLabel",
+        "icon": "list",
+        "kind": "action",
+        "order": 15
+      },
+      {
+        "id": "host:fp-html",
+        "slot": "file.preview.toolbar",
+        "labelKey": "showHtmlPreview",
+        "icon": "code",
+        "kind": "action",
+        "order": 20
+      },
+      {
+        "id": "host:fp-edit",
+        "slot": "file.preview.toolbar",
+        "labelKey": "editFile",
+        "icon": "edit",
+        "kind": "action",
+        "order": 30
+      },
+      {
+        "id": "host:fp-wrap",
+        "slot": "file.preview.toolbar",
+        "labelKey": "enableWrap",
+        "icon": "wrap",
+        "kind": "action",
+        "order": 40
+      },
+      {
+        "id": "host:fp-zoom",
+        "slot": "file.preview.toolbar",
+        "labelKey": "zoomIn",
+        "icon": "zoom",
+        "kind": "action",
+        "order": 50
+      },
+      {
+        "id": "host:fp-ref",
+        "slot": "file.preview.toolbar",
+        "labelKey": "referenceTip",
+        "icon": "link",
+        "kind": "action",
+        "order": 70
+      },
+      {
+        "id": "host:fp-full",
+        "slot": "file.preview.toolbar",
+        "labelKey": "fullscreen",
+        "icon": "maximize",
+        "kind": "action",
+        "order": 80
+      },
+      {
+        "id": "host:fp-close",
+        "slot": "file.preview.toolbar",
+        "labelKey": "close",
+        "icon": "x",
+        "kind": "action",
+        "order": 90
+      },
+      {
+        "id": "host:goal-pill",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarTitle",
+        "icon": "target",
+        "kind": "action",
+        "order": 5
+      },
+      {
+        "id": "host:goal-set",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarSet",
+        "icon": "check",
+        "kind": "action",
+        "order": 10
+      },
+      {
+        "id": "host:goal-wizard",
+        "slot": "goalbar.actions",
+        "labelKey": "goalWizardBtn",
+        "icon": "search",
+        "kind": "action",
+        "order": 20
+      },
+      {
+        "id": "host:goal-lock",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarLocked",
+        "icon": "lock",
+        "kind": "action",
+        "order": 30
+      },
+      {
+        "id": "host:goal-plan",
+        "slot": "goalbar.actions",
+        "labelKey": "planMode",
+        "icon": "list",
+        "kind": "action",
+        "order": 25
+      },
+      {
+        "id": "host:goal-collapse",
+        "slot": "goalbar.actions",
+        "labelKey": "collapsePanel",
+        "icon": "chevron-up",
+        "kind": "action",
+        "order": 40
+      },
+      {
+        "id": "host:goal-model",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarReviewModel",
+        "icon": "cpu",
+        "kind": "action",
+        "order": 50
+      },
+      {
+        "id": "host:goal-rounds",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarMaxRounds",
+        "icon": "hash",
+        "kind": "action",
+        "order": 60
+      },
+      {
+        "id": "host:goal-execmodel",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarExecModel",
+        "icon": "cpu",
+        "kind": "action",
+        "order": 55
+      },
+      {
+        "id": "host:goal-openrole",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarOpenExec",
+        "icon": "search",
+        "kind": "action",
+        "order": 65
+      },
+      {
+        "id": "host:goal-clear",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarClear",
+        "icon": "x",
+        "kind": "action",
+        "order": 70
+      },
+      {
+        "id": "host:scm-changes",
+        "slot": "scm.toolbar",
+        "labelKey": "scmChanges",
+        "icon": "file",
+        "kind": "action",
+        "order": 10
+      },
+      {
+        "id": "host:scm-history",
+        "slot": "scm.toolbar",
+        "labelKey": "scmHistory",
+        "icon": "clock",
+        "kind": "action",
+        "order": 20
+      },
+      {
+        "id": "host:scm-refresh",
+        "slot": "scm.toolbar",
+        "labelKey": "scmRefreshTip",
+        "icon": "refresh",
+        "kind": "action",
+        "order": 30
+      },
+      {
+        "id": "host:scm-branch",
+        "slot": "scm.toolbar",
+        "labelKey": "scmSwitchBranch",
+        "icon": "git",
+        "kind": "action",
+        "order": 40
+      },
+      {
+        "id": "host:scm-switch",
+        "slot": "scm.toolbar",
+        "labelKey": "scmSwitch",
+        "icon": "git",
+        "kind": "action",
+        "order": 50
+      },
+      {
+        "id": "host:scm-push",
+        "slot": "scm.toolbar",
+        "labelKey": "scmPush",
+        "icon": "upload",
+        "kind": "action",
+        "order": 60
+      },
+      {
+        "id": "host:scm-pull",
+        "slot": "scm.toolbar",
+        "labelKey": "scmPull",
+        "icon": "download",
+        "kind": "action",
+        "order": 70
+      },
+      {
+        "id": "host:scm-input",
+        "slot": "scm.toolbar",
+        "labelKey": "scmCommitPlaceholder",
+        "icon": "edit",
+        "kind": "action",
+        "order": 80
+      },
+      {
+        "id": "host:scm-genmsg",
+        "slot": "scm.toolbar",
+        "labelKey": "scmGenMsg",
+        "icon": "cpu",
+        "kind": "action",
+        "order": 85
+      },
+      {
+        "id": "host:scm-commit",
+        "slot": "scm.toolbar",
+        "labelKey": "scmCommit",
+        "icon": "check",
+        "kind": "action",
+        "order": 90
+      },
+      {
+        "id": "host:scm-commit-all",
+        "slot": "scm.toolbar",
+        "labelKey": "scmCommitAll",
+        "icon": "check",
+        "kind": "action",
+        "order": 100
+      },
+      {
+        "id": "host:scm-term",
+        "slot": "scm.toolbar",
+        "labelKey": "terminal",
+        "icon": "terminal",
+        "kind": "action",
+        "order": 110
+      },
+      {
+        "id": "host:term-cmd-refresh",
+        "slot": "terminal.toolbar",
+        "labelKey": "rerun",
+        "icon": "refresh",
+        "kind": "action",
+        "order": 10
+      },
+      {
+        "id": "host:term-cmd-new",
+        "slot": "terminal.toolbar",
+        "labelKey": "newCommand",
+        "icon": "plus",
+        "kind": "action",
+        "order": 20
+      },
+      {
+        "id": "host:term-tab-new",
+        "slot": "terminal.toolbar",
+        "labelKey": "newTerminal",
+        "icon": "plus",
+        "kind": "action",
+        "order": 30
+      },
+      {
+        "id": "host:right-files",
+        "slot": "rightpanel.tabs",
+        "labelKey": "openFiles",
+        "icon": "folder",
+        "kind": "view",
+        "view": "files",
+        "order": 10
+      },
+      {
+        "id": "host:conv-rename",
+        "slot": "contextmenu.session",
+        "labelKey": "renameSession",
+        "icon": "edit",
+        "kind": "action",
+        "context": "session",
+        "order": 1
+      },
+      {
+        "id": "host:conv-pin",
+        "slot": "contextmenu.session",
+        "labelKey": "pinConversation",
+        "icon": "pin",
+        "kind": "action",
+        "context": "session",
+        "order": 2
+      },
+      {
+        "id": "host:conv-takeover",
+        "slot": "contextmenu.session",
+        "labelKey": "takeoverConversation",
+        "icon": "chat",
+        "kind": "action",
+        "context": "session",
+        "order": 5
+      },
+      {
+        "id": "host:conv-dismiss-subagents",
+        "slot": "contextmenu.session",
+        "labelKey": "dismissFinishedSubagents",
+        "icon": "x",
+        "kind": "action",
+        "context": "session",
+        "order": 10
+      },
+      {
+        "id": "host:conv-force-dismiss",
+        "slot": "contextmenu.session",
+        "labelKey": "forceDismissConversation",
+        "icon": "x",
+        "kind": "action",
+        "context": "session",
+        "order": 20
+      },
+      {
+        "id": "host:conv-persist",
+        "slot": "contextmenu.session",
+        "labelKey": "persistSubagent",
+        "icon": "save",
+        "kind": "action",
+        "context": "session",
+        "order": 25
+      },
+      {
+        "id": "host:conv-copy-id",
+        "slot": "contextmenu.session",
+        "labelKey": "copyConversationId",
+        "icon": "copy",
+        "kind": "action",
+        "context": "session",
+        "order": 30
+      },
+      {
+        "id": "host:conv-copy-path",
+        "slot": "contextmenu.session",
+        "labelKey": "copyConversationPath",
+        "icon": "copy",
+        "kind": "action",
+        "context": "session",
+        "order": 40
+      },
+      {
+        "id": "host:conv-copy-link",
+        "slot": "contextmenu.session",
+        "labelKey": "copyConversationLink",
+        "icon": "link",
+        "kind": "action",
+        "context": "session",
+        "order": 45
+      },
+      {
+        "id": "host:conv-quote",
+        "slot": "contextmenu.session",
+        "labelKey": "quoteConversation",
+        "icon": "chat",
+        "kind": "action",
+        "context": "session",
+        "order": 50
+      },
+      {
+        "id": "host:file-open",
+        "slot": "contextmenu.file",
+        "labelKey": "fileOpenPreview",
+        "icon": "open",
+        "kind": "action",
+        "context": "file",
+        "order": 11,
+        "group": "open"
+      },
+      {
+        "id": "host:file-enter",
+        "slot": "contextmenu.file",
+        "labelKey": "fileEnterDir",
+        "icon": "folder",
+        "kind": "action",
+        "context": "file",
+        "order": 12,
+        "group": "open"
+      },
+      {
+        "id": "host:file-download",
+        "slot": "contextmenu.file",
+        "labelKey": "downloadFile",
+        "icon": "download",
+        "kind": "action",
+        "context": "file",
+        "order": 13,
+        "group": "open"
+      },
+      {
+        "id": "host:file-compress",
+        "slot": "contextmenu.file",
+        "labelKey": "fileCompress",
+        "icon": "file",
+        "kind": "action",
+        "context": "file",
+        "order": 16,
+        "group": "archive"
+      },
+      {
+        "id": "host:file-extract",
+        "slot": "contextmenu.file",
+        "labelKey": "fileExtract",
+        "icon": "folder",
+        "kind": "action",
+        "context": "file",
+        "order": 17,
+        "group": "archive"
+      },
+      {
+        "id": "host:file-compress-download",
+        "slot": "contextmenu.file",
+        "labelKey": "fileCompressDownload",
+        "icon": "download",
+        "kind": "action",
+        "context": "file",
+        "order": 18,
+        "group": "archive"
+      },
+      {
+        "id": "host:file-upload-folder",
+        "slot": "contextmenu.file",
+        "labelKey": "fileUploadFolder",
+        "icon": "upload",
+        "kind": "action",
+        "context": "file",
+        "order": 25,
+        "group": "new"
+      },
+      {
+        "id": "host:file-open-project",
+        "slot": "contextmenu.file",
+        "labelKey": "openAsProject",
+        "icon": "folder",
+        "kind": "action",
+        "context": "file",
+        "order": 14,
+        "group": "open"
+      },
+      {
+        "id": "host:file-add-root",
+        "slot": "contextmenu.file",
+        "labelKey": "addWorkspaceRoot",
+        "icon": "folder",
+        "kind": "action",
+        "context": "file",
+        "order": 15,
+        "group": "open"
+      },
+      {
+        "id": "host:file-reveal",
+        "slot": "contextmenu.file",
+        "labelKey": "fileReveal",
+        "icon": "folder",
+        "kind": "action",
+        "context": "file",
+        "order": 16,
+        "group": "open"
+      },
+      {
+        "id": "host:file-open-default",
+        "slot": "contextmenu.file",
+        "labelKey": "fileOpenDefault",
+        "icon": "open",
+        "kind": "action",
+        "context": "file",
+        "order": 17,
+        "group": "open"
+      },
+      {
+        "id": "host:file-new-file",
+        "slot": "contextmenu.file",
+        "labelKey": "fileNewFile",
+        "icon": "file",
+        "kind": "action",
+        "context": "file",
+        "order": 21,
+        "group": "new"
+      },
+      {
+        "id": "host:file-new-dir",
+        "slot": "contextmenu.file",
+        "labelKey": "fileNewDir",
+        "icon": "folder",
+        "kind": "action",
+        "context": "file",
+        "order": 22,
+        "group": "new"
+      },
+      {
+        "id": "host:file-upload",
+        "slot": "contextmenu.file",
+        "labelKey": "uploadToFolder",
+        "icon": "upload",
+        "kind": "action",
+        "context": "file",
+        "order": 23,
+        "group": "new"
+      },
+      {
+        "id": "host:file-paste",
+        "slot": "contextmenu.file",
+        "labelKey": "filePaste",
+        "icon": "paste",
+        "kind": "action",
+        "context": "file",
+        "order": 24,
+        "group": "new"
+      },
+      {
+        "id": "host:file-attach-ref",
+        "slot": "contextmenu.file",
+        "labelKey": "referenceTip",
+        "icon": "link",
+        "kind": "action",
+        "context": "file",
+        "order": 32,
+        "group": "chat"
+      },
+      {
+        "id": "host:file-attach-folder",
+        "slot": "contextmenu.file",
+        "labelKey": "linkFolderTip",
+        "icon": "link",
+        "kind": "action",
+        "context": "file",
+        "order": 33,
+        "group": "chat"
+      },
+      {
+        "id": "host:file-rename",
+        "slot": "contextmenu.file",
+        "labelKey": "fileRename",
+        "icon": "edit",
+        "kind": "action",
+        "context": "file",
+        "order": 41,
+        "group": "edit"
+      },
+      {
+        "id": "host:file-duplicate",
+        "slot": "contextmenu.file",
+        "labelKey": "fileDuplicate",
+        "icon": "copy",
+        "kind": "action",
+        "context": "file",
+        "order": 42,
+        "group": "edit"
+      },
+      {
+        "id": "host:file-cut",
+        "slot": "contextmenu.file",
+        "labelKey": "fileCut",
+        "icon": "cut",
+        "kind": "action",
+        "context": "file",
+        "order": 43,
+        "group": "edit"
+      },
+      {
+        "id": "host:file-copy",
+        "slot": "contextmenu.file",
+        "labelKey": "fileCopyEntry",
+        "icon": "copy",
+        "kind": "action",
+        "context": "file",
+        "order": 44,
+        "group": "edit"
+      },
+      {
+        "id": "host:file-copy-name",
+        "slot": "contextmenu.file",
+        "labelKey": "copyName",
+        "icon": "copy",
+        "kind": "action",
+        "context": "file",
+        "order": 51,
+        "group": "clipboard"
+      },
+      {
+        "id": "host:file-copy-path",
+        "slot": "contextmenu.file",
+        "labelKey": "copyPath",
+        "icon": "copy",
+        "kind": "action",
+        "context": "file",
+        "order": 52,
+        "group": "clipboard"
+      },
+      {
+        "id": "host:file-copy-rel",
+        "slot": "contextmenu.file",
+        "labelKey": "fileCopyRelPath",
+        "icon": "copy",
+        "kind": "action",
+        "context": "file",
+        "order": 53,
+        "group": "clipboard"
+      },
+      {
+        "id": "host:file-refresh",
+        "slot": "contextmenu.file",
+        "labelKey": "fileRefresh",
+        "icon": "refresh",
+        "kind": "action",
+        "context": "file",
+        "order": 54,
+        "group": "clipboard"
+      },
+      {
+        "id": "host:file-delete",
+        "slot": "contextmenu.file",
+        "labelKey": "fileDelete",
+        "icon": "trash",
+        "kind": "action",
+        "context": "file",
+        "order": 61,
+        "group": "danger"
+      },
+      {
+        "id": "host:msg-ctx-copy-markdown",
+        "slot": "contextmenu.message",
+        "labelKey": "copyMarkdown",
+        "icon": "markdown",
+        "kind": "action",
+        "context": "message",
+        "order": 10,
+        "group": "copy"
+      },
+      {
+        "id": "host:msg-ctx-copy-text",
+        "slot": "contextmenu.message",
+        "labelKey": "copyText",
+        "icon": "text",
+        "kind": "action",
+        "context": "message",
+        "order": 11,
+        "group": "copy"
+      },
+      {
+        "id": "host:msg-ctx-copy-image",
+        "slot": "contextmenu.message",
+        "labelKey": "copyImage",
+        "icon": "image",
+        "kind": "action",
+        "context": "message",
+        "order": 12,
+        "group": "copy"
+      },
+      {
+        "id": "host:msg-ctx-copy-link",
+        "slot": "contextmenu.message",
+        "labelKey": "copyMessageLink",
+        "icon": "link",
+        "kind": "action",
+        "context": "message",
+        "order": 13,
+        "group": "copy"
+      },
+      {
+        "id": "host:msg-ctx-reask",
+        "slot": "contextmenu.message",
+        "labelKey": "reaskDirectly",
+        "icon": "refresh",
+        "kind": "action",
+        "context": "message",
+        "order": 19,
+        "group": "action"
+      },
+      {
+        "id": "host:msg-ctx-edit-reask",
+        "slot": "contextmenu.message",
+        "labelKey": "editReask",
+        "icon": "edit",
+        "kind": "action",
+        "context": "message",
+        "order": 20,
+        "group": "action"
+      },
+      {
+        "id": "host:msg-ctx-fork",
+        "slot": "contextmenu.message",
+        "labelKey": "forkSession",
+        "icon": "branch",
+        "kind": "action",
+        "context": "message",
+        "order": 21,
+        "group": "action"
+      },
+      {
+        "id": "host:msg-ctx-rollback",
+        "slot": "contextmenu.message",
+        "labelKey": "rollbackSession",
+        "icon": "undo",
+        "kind": "action",
+        "context": "message",
+        "order": 22,
+        "group": "action"
+      },
+      {
+        "id": "host:msg-ctx-speak",
+        "slot": "contextmenu.message",
+        "labelKey": "speakMsg",
+        "icon": "volume",
+        "kind": "action",
+        "context": "message",
+        "order": 23,
+        "group": "action"
+      },
+      {
+        "id": "host:tool-info",
+        "slot": "contextmenu.toolcall",
+        "labelKey": "toolInfoMenuLabel",
+        "icon": "info",
+        "kind": "action",
+        "context": "toolcall",
+        "order": 10
+      }
+    ],
+    "settingsTabs": [
+      "approval-rules",
+      "display",
+      "dsh-presets",
+      "extensions",
+      "layout",
+      "mcp",
+      "models",
+      "plugins",
+      "presets",
+      "prompt",
+      "prompt-history",
+      "question",
+      "quick",
+      "review",
+      "scheduler",
+      "skills",
+      "sound",
+      "subagent-templates",
+      "tools",
+      "vision"
+    ],
+    "protocol": {
+      "ClientMessage": [
+        "abort",
+        "abort_bash",
+        "abort_enrich_models",
+        "activate_provider_key",
+        "add_provider_key",
+        "append_builtin_model",
+        "apply_preset",
+        "apply_sandbox_to_source",
+        "check_engines",
+        "check_plugin_updates",
+        "check_update",
+        "check_updates_all",
+        "clean_bg_leftovers",
+        "clear_default_model",
+        "clear_goal",
+        "clear_provider_api_key",
+        "clone_provider",
+        "complete_path",
+        "create_sandbox",
+        "delete_approval_rule",
+        "delete_mcp_server",
+        "delete_model_config",
+        "delete_preset",
+        "delete_session",
+        "delete_subagent_template",
+        "destroy_sandbox",
+        "dialog_response",
+        "diff_sandbox",
+        "dismiss_conversation",
+        "dismiss_finished_subagents",
+        "draft_update",
+        "dsh_market_fetch",
+        "dsh_patch_delete",
+        "dsh_patch_install",
+        "dsh_patch_toggle",
+        "dsh_patches_list",
+        "dsh_patches_rescan",
+        "dsh_permission_default",
+        "dsh_permission_set",
+        "dsh_preset_default",
+        "dsh_preset_list",
+        "dsh_preset_select",
+        "edit_message",
+        "enrich_models",
+        "extensions_reload",
+        "fetch_mcp_market",
+        "fetch_models",
+        "fetch_skill_content",
+        "fetch_skill_market",
+        "file_copy",
+        "file_create",
+        "file_delete",
+        "file_open_default",
+        "file_rename",
+        "file_reveal",
+        "fork_session",
+        "get_commands",
+        "get_compacted_messages",
+        "get_settings",
+        "get_state",
+        "get_tool_info",
+        "get_tool_prompt",
+        "hello",
+        "install_pi_agent",
+        "install_skill",
+        "kill_background_server",
+        "kill_background_servers",
+        "list_bg_servers",
+        "list_commands",
+        "list_files",
+        "list_models",
+        "list_models_config",
+        "list_projects",
+        "list_provider_keys",
+        "list_provider_oauth_flows",
+        "list_providers",
+        "list_sessions",
+        "make_dir",
+        "new_chat",
+        "page_response",
+        "peek_elsewhere_question",
+        "persist_conversation",
+        "persist_sandbox",
+        "pin_conversation",
+        "pin_session",
+        "plan_clean_handoff",
+        "plan_step_add",
+        "plan_step_delete",
+        "plan_step_update",
+        "plan_update",
+        "plugin_api_catalog",
+        "plugin_catalog_add",
+        "plugin_catalog_remove",
+        "plugin_catalog_sync",
+        "plugin_dom_consent",
+        "plugin_dom_consent_response",
+        "plugin_install_inspect",
+        "plugin_job",
+        "plugin_job_cancel",
+        "plugin_message",
+        "plugin_path_response",
+        "plugin_path_revoke",
+        "plugin_permission_response",
+        "plugin_permission_revoke",
+        "plugin_settings",
+        "plugins_reload",
+        "preset_catalog",
+        "preset_export",
+        "preset_import",
+        "preset_import_url",
+        "preset_share",
+        "promote_sandbox",
+        "prompt",
+        "provider_oauth_cancel",
+        "provider_oauth_logout",
+        "provider_oauth_reply",
+        "provider_oauth_start",
+        "question_answer",
+        "queue_remove",
+        "read_file",
+        "refresh_builtin_models",
+        "refresh_provider_models",
+        "reload_mcp",
+        "reload_models_config",
+        "remote_ssh_delete_profile",
+        "remote_ssh_install_tools",
+        "remote_ssh_list_dir",
+        "remote_ssh_list_profiles",
+        "remote_ssh_probe",
+        "remove_project",
+        "remove_provider_key",
+        "remove_worktree",
+        "rename_conversation",
+        "rename_session",
+        "rename_terminal",
+        "reset_builtin_approval_rule",
+        "reset_sandbox",
+        "restart_service",
+        "retry_last",
+        "rollback_session",
+        "run_command",
+        "save_approval_rule",
+        "save_approval_rules",
+        "save_commands",
+        "save_mcp_server",
+        "save_model_config",
+        "save_preset",
+        "save_subagent_template",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_run",
+        "schedule_save",
+        "schedule_toggle",
+        "scm_commit",
+        "scm_commitmsg",
+        "scm_filediff",
+        "scm_history",
+        "scm_status",
+        "search_files",
+        "search_sessions",
+        "set_approval_policy",
+        "set_bg_keep",
+        "set_cwd",
+        "set_default_model",
+        "set_delegate_mode",
+        "set_goal",
+        "set_goal_prefs",
+        "set_locale",
+        "set_model",
+        "set_plan_mode",
+        "set_provider_api_key",
+        "set_settings",
+        "set_thinking",
+        "set_workspace_roots",
+        "start_goal_wizard",
+        "switch_conversation",
+        "switch_engine",
+        "switch_session",
+        "switch_worktree",
+        "take_over_conversation",
+        "terminal_create",
+        "terminal_input",
+        "terminal_kill",
+        "terminal_resize",
+        "test_model_connection",
+        "toggle_mcp_server",
+        "tool_approval_response",
+        "tui_overlay_cancel",
+        "tui_overlay_input",
+        "tui_overlay_resize",
+        "uninstall_skill",
+        "update_engine",
+        "upload_file",
+        "write_file"
+      ],
+      "ServerMessage": [
+        "append_builtin_result",
+        "bg_servers",
+        "clone_provider_result",
+        "commands",
+        "compacted_messages_result",
+        "conversations",
+        "default_model",
+        "dialog",
+        "dialog_closed",
+        "dsh_market_data",
+        "dsh_patches",
+        "dsh_permission",
+        "dsh_presets",
+        "elsewhere_question",
+        "engines_status",
+        "enrich_models_progress",
+        "enrich_models_result",
+        "fetch_models_result",
+        "file_changed",
+        "file_content",
+        "files",
+        "goal_status",
+        "heartbeat",
+        "install_result",
+        "mcp_market_result",
+        "mcp_servers",
+        "message_delta",
+        "models",
+        "models_config",
+        "notice",
+        "page_request",
+        "path_completions",
+        "plan_updated",
+        "plugin_api_catalog_result",
+        "plugin_catalog",
+        "plugin_catalog_sync_result",
+        "plugin_data",
+        "plugin_dom_consent_request",
+        "plugin_grants",
+        "plugin_install_inspect_result",
+        "plugin_job",
+        "plugin_panel_items",
+        "plugin_path_request",
+        "plugin_permission_request",
+        "plugin_permission_resolved",
+        "plugin_permissions",
+        "plugin_updates",
+        "plugins",
+        "preset_catalog_result",
+        "preset_export_result",
+        "preset_import_result",
+        "preset_share_result",
+        "projects",
+        "provider_keys",
+        "provider_oauth_event",
+        "provider_oauth_flows",
+        "provider_oauth_logout_result",
+        "provider_oauth_prompt",
+        "provider_oauth_result",
+        "provider_oauth_started",
+        "providers_status",
+        "question_pending",
+        "question_retracted",
+        "ready",
+        "refresh_builtin_result",
+        "refresh_provider_result",
+        "remote_ssh_install_result",
+        "remote_ssh_list_dir_result",
+        "remote_ssh_probe_result",
+        "remote_ssh_profiles_result",
+        "sandbox_diff",
+        "scheduler_tasks",
+        "scm_changed",
+        "scm_data",
+        "search_files_result",
+        "session_search_results",
+        "sessions",
+        "settings_state",
+        "skill_content_result",
+        "skill_market_result",
+        "slash_commands",
+        "snapshot",
+        "snapshot_delta",
+        "statuses",
+        "subagent_handoff",
+        "terminal_exit",
+        "terminal_list",
+        "terminal_output",
+        "test_model_connection_result",
+        "tool_approval_pending",
+        "tool_approval_resolved",
+        "tool_delta",
+        "tool_info",
+        "tool_prompt",
+        "tool_status",
+        "transition_progress",
+        "tui_overlay_close",
+        "tui_overlay_open",
+        "tui_overlay_render",
+        "update_status",
+        "update_status_all",
+        "widgets"
+      ]
+    },
+    "catalog": [
+      {
+        "id": "webmail",
+        "name": "webmail",
+        "description": "网页邮箱：IMAP 收件 + SMTP 发信 + 新邮件通知，可开放给 AI 直接管理邮件。",
+        "source": "xing-shuyin/pi-web-ui/plugins/webmail"
+      },
+      {
+        "id": "db-client",
+        "name": "db-client",
+        "description": "数据库连接管理：MySQL / PostgreSQL / SQLite / SQL Server / MongoDB / Redis 的库表浏览、SQL 查询与数据编辑。",
+        "source": "xing-shuyin/pi-web-ui/plugins/db-client"
+      },
+      {
+        "id": "vscode-editor",
+        "name": "vscode-editor",
+        "description": "类 VSCode 工作台：多根文件树 + CodeMirror 编辑器 + 底部终端 + Remote-SSH 远程文件浏览与编辑。",
+        "source": "xing-shuyin/pi-web-ui/plugins/vscode-editor"
+      },
+      {
+        "id": "sftp",
+        "name": "sftp",
+        "description": "项目级 SFTP 同步：配置存项目 .pi/sftp.json（多环境 profile + .pi/sftp.local.json 本机覆盖），先算差异再传，扫描与传输按层/按文件并行且随时可停（面板「停止」或 action=cancel），支持 dry-run 预览与计划复用（预览完直接执行不重扫）、删除保护（进垃圾桶可回滚）、并发流式传输与原子落盘；打开远端命令执行后另有两条快通道（一次 find 完成远端扫描；一批小文件上行打成 tar 流、下行 tar -czf - 一次拉回，失败自动回落）；凭据走 ${env:} / ${secret:} / ${file:} 引用，明文永不进配置。面板里可直接手动上传/下载单个文件或整棵目录（永不动删除策略），也向 AI 注册**一个** action 式 sftp 工具（status/save/secret/test/plan/sync/cancel/ls/read/write/mkdir/mv/rm/search，可选 exec）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/sftp"
+      },
+      {
+        "id": "mermaid",
+        "name": "mermaid",
+        "description": "把对话里的 ```mermaid 围栏渲染成 SVG 图表（fenced-code 渲染插件，本地引擎离线优先）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/mermaid"
+      },
+      {
+        "id": "run-trace",
+        "name": "run-trace",
+        "description": "运行轨迹：任务 → 思考 → 工具 → 文件改动 → 结果的时间线聚合视图，支持回放与节点详情。",
+        "source": "xing-shuyin/pi-web-ui/plugins/run-trace"
+      },
+      {
+        "id": "legado-web",
+        "name": "legado-web",
+        "description": "Legado 阅读（文本源）：搜索 / 发现 / 详情 / 目录 / 正文，书源 JSON 与安卓版兼容，可导入、检测、删废源；内置跨域+GBK 代理与本地存储，并给 AI 配了修源接口（读规则、读书源文件、逐步诊断链路、试规则验证）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/legado-web"
+      },
+      {
+        "id": "wechat-ilink",
+        "name": "微信通道",
+        "description": "微信扫码登录（与腾讯 openclaw-weixin 同源的 ilink 协议）：出站长轮询收消息，微信里直接指挥 agent，无需公网 IP。",
+        "source": "xing-shuyin/pi-web-ui/plugins/wechat-ilink"
+      },
+      {
+        "id": "feishu",
+        "name": "飞书",
+        "description": "飞书工作台与机器人：飞书 Bot 双工对话（出站长连接 / 智能 Markdown 分块 / 多轮会话隔离）/ 群聊与单聊会话列表 / 消息收发、回复与撤回 / 自定义机器人 Webhook 卡片推送 / AI 飞书工具（密钥加密落盘，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/feishu"
+      },
+      {
+        "id": "dingtalk",
+        "name": "钉钉",
+        "description": "钉钉机器人与工作台：钉钉 Bot 双工对话（出站长连接 / 智能 Markdown 分块 / 多轮会话隔离）/ 群聊与单聊消息推送 / 自定义机器人 Webhook / AI 钉钉工具（密钥加密存储，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/dingtalk"
+      },
+      {
+        "id": "telegram",
+        "name": "Telegram",
+        "description": "Telegram 机器人：出站长轮询双工对话（零公网 IP / 智能 Markdown 分块 / 多轮会话隔离）/ 用户白名单准入 / AI telegram 工具（密钥加密存储，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/telegram"
+      },
+      {
+        "id": "wecom",
+        "name": "企业微信",
+        "description": "企业微信工作台与机器人：企微 Bot 双工对话（智能 Markdown 分块 / 多轮会话隔离）/ 群机器人 Webhook 卡片推送 / 自建应用消息 / AI wecom 工具（密钥加密存储，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/wecom"
+      },
+      {
+        "id": "discord",
+        "name": "Discord",
+        "description": "Discord 机器人：官方 Gateway 出站 WebSocket 双工长连接（零公网 IP / 智能 Markdown 分块 / 多轮会话隔离）/ 用户白名单准入 / AI discord 工具（密钥加密存储，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/discord"
+      },
+      {
+        "id": "whatsapp",
+        "name": "WhatsApp",
+        "description": "WhatsApp 机器人与工作台：WhatsApp Cloud API 与双工对话（智能 Markdown 分块 / 多轮会话隔离）/ 用户白名单准入 / AI whatsapp 工具（密钥加密存储，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/whatsapp"
+      },
+      {
+        "id": "slack",
+        "name": "Slack",
+        "description": "Slack 机器人：官方 Socket Mode 出站 WebSocket 双工长连接（零公网 IP / 智能 Markdown 分块 / 多轮会话隔离）/ 用户白名单准入 / AI slack 工具（密钥加密存储，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/slack"
+      },
+      {
+        "id": "qq",
+        "name": "QQ",
+        "description": "QQ 机器人：腾讯官方开放平台 QQBot 出站 WebSocket 双工长连接（零公网 IP / 智能 Markdown 分块 / 多轮会话隔离）/ 用户白名单准入 / AI qq 工具（密钥加密存储，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/qq"
+      },
+      {
+        "id": "imessage",
+        "name": "iMessage",
+        "description": "iMessage 机器人与工作台：Apple macOS 原生 iMessage 通道（零公网 IP / 苹果生态随身触达 / 多轮会话隔离）/ 用户白名单准入 / AI imessage 工具。",
+        "source": "xing-shuyin/pi-web-ui/plugins/imessage"
+      },
+      {
+        "id": "matrix",
+        "name": "Matrix",
+        "description": "Matrix 机器人与工作台 (实验功能)：开源去中心化通信协议 Matrix 出站长轮询双工对话（零公网 IP / 智能 Markdown 分块 / 多轮会话隔离）/ 用户白名单准入 / AI matrix 工具。",
+        "source": "xing-shuyin/pi-web-ui/plugins/matrix"
+      },
+      {
+        "id": "voice-input",
+        "name": "语音输入",
+        "description": "语音输入：输入框旁的麦克风按钮，浏览器语音识别直接听写进输入框；不支持/识别失败时自动降级为服务端转写（远端接口，或一键安装的本地 Whisper，免费不出网）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/voice-input"
+      },
+      {
+        "id": "live-preview",
+        "name": "live-preview",
+        "description": "Live Server 式预览：/liveserver 看 HTML（含相对资源与自动刷新），/md 看 Markdown 渲染；真服务只绑回环地址，经宿主通用代理对外只露同源前缀。",
+        "source": "xing-shuyin/pi-web-ui/plugins/live-preview"
+      },
+      {
+        "id": "image-toolkit",
+        "name": "图片工作台",
+        "description": "一体化 AI 生图与图像处理工作台：一套配置同时接入通义万相、FLUX、OpenAI、Google Imagen/Gemini、智谱 CogView、火山豆包、Stability 与 ComfyUI 等主流生图服务；集成压缩（目标体积二分逼近）、裁剪、缩放、格式转换、水印、滤镜调色与 EXIF 分析；生图与处理在同一工作台内无缝流转。提供 8 个 AI 工具，让 agent 自己生图、配置供应商、分析并加工工作区图片与精准像素取色（附带位置截图）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/image-toolkit"
+      },
+      {
+        "id": "notes",
+        "name": "笔记",
+        "description": "随手记：笔记 + 待办 + 日程提醒三合一。顶栏按钮打开可自由拖拽的全局浮窗（位置/尺寸记忆，设置也在浮窗里，无独立视图页）；提醒走服务端定时（重启不丢、错过补送），另有 5 个 AI 工具与 /note /todo /remind 快速捕获。",
+        "source": "xing-shuyin/pi-web-ui/plugins/notes"
+      },
+      {
+        "id": "desktop-use",
+        "name": "桌面控制",
+        "description": "让 AI 操作 Windows 桌面：按元素名查控件坐标（UI Automation，无需截图）→ 点击 / 输入（含中文粘贴）/ 按键 / 聚焦窗口。输入库缺失时自动安装，卸载时连带删除。",
+        "source": "xing-shuyin/pi-web-ui/plugins/desktop-use"
+      },
+      {
+        "id": "pi-web-multigit",
+        "name": "multi-git",
+        "description": "多仓库 Git 总览：工作区内每个仓库的变更、差异、历史、分支、贮藏、跨仓搜索与时间线，另有工作区分支聚合、Fetch/Pull 与内置终端（其余只读）。",
+        "source": "EinErste/pi-web-multigit"
+      },
+      {
+        "id": "codex-usage",
+        "name": "额度与成本",
+        "description": "会话级多模型账本：按 API 提供商和模型连续累计成本、显示 token 与有效单价；订阅明确不计费。",
+        "source": "xieweimo/pi-web-ui-contrib/plugins/codex-usage"
+      },
+      {
+        "id": "proxy-health",
+        "name": "代理健康",
+        "description": "探测可配置的 HTTPS 目标及代理链路；无代理时检测直连，失败时对比第二目标，谨慎提示网络问题。",
+        "source": "xieweimo/pi-web-ui-contrib/plugins/proxy-health"
+      },
+      {
+        "id": "reconnect",
+        "name": "重连",
+        "description": "断连恢复：查看网页服务与重启守护状态，一键重新连接或重启网页服务（支持单服务/全服务重启，配套可选独立守护进程）。",
+        "source": "xieweimo/pi-web-ui-contrib/plugins/reconnect"
+      },
+      {
+        "id": "sol-savings",
+        "name": "SoL-Pi 状态",
+        "description": "SoL-Pi 会话节省统计与规划底栏：实时追踪大工具输出打包（Observation Pack）节省的上下文 Token 与在线计划（Plan）进度，借鉴 pi-sol-plan-footer 在底栏显示。",
+        "source": "xing-shuyin/pi-web-ui/plugins/sol-savings"
+      },
+      {
+        "id": "session-migrate",
+        "name": "会话迁移",
+        "description": "扫描 ~/.omp/agent/sessions 与 ~/.pi/agent/sessions 的历史会话，只读预览后一键导入 pi 会话库（issue 286 Phase 1）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/session-migrate"
+      },
+      {
+        "id": "pm2-manager",
+        "name": "进程管家",
+        "description": "用 pm2 统一托管 AI 启动的后台任务：长期服务与调试实例交给 pm2 后有名字、有状态、有日志，顶栏「后台任务」面板与插件面板同一份列表，可看状态/CPU/内存/重启/日志、单独停止或删除；未装 pm2 时一键安装。不拦截 AI 的命令，管不管由模型和用户自行决定。",
+        "source": "xing-shuyin/pi-web-ui/plugins/pm2-manager"
+      },
+      {
+        "id": "md-chat",
+        "name": "聊天归档",
+        "description": "本地持久聊天归档：保留压缩前原文、按分支浏览历史、问题跳转与 Markdown 文件查看；不调用模型，不修改原会话。",
+        "source": "engharat/pi-web-ui-md-chat"
+      },
+      {
+        "id": "wallpaper-engine",
+        "name": "动态壁纸",
+        "description": "动态壁纸：自动扫描本机 Wallpaper Engine 创意工坊壁纸，支持视频壁纸播放、液态毛玻璃磨砂效果与壁纸库抽屉。",
+        "source": "xing-shuyin/pi-web-ui/plugins/wallpaper-engine"
+      },
+      {
+        "id": "response-speed",
+        "name": "响应速度",
+        "description": "AI 响应速度监控：实时统计并显示当前回答的 AI 首字响应耗时（TTFT，发送请求到首个响应的时间）以及底部状态栏的平均响应速度，支持点击底栏查看统计明细与历史趋势。",
+        "source": "xing-shuyin/pi-web-ui/plugins/response-speed"
+      },
+      {
+        "id": "browser-use",
+        "name": "browser-use",
+        "description": "常驻 Chrome 自动化：自动拉起或接管常驻浏览器窗口，支持多标签页切换、精简交互元素快照（极省 Token）、智能点击输入、反爬穿透与状态跨任务持久。",
+        "source": "xing-shuyin/pi-web-ui/plugins/browser-use"
+      },
+      {
+        "id": "tts",
+        "name": "语音合成 (TTS)",
+        "description": "多源通用语音合成插件，聚合豆包大模型语音与 DeepSeek 官方音色，支持浏览器扩展一键同步登录凭据并支持消息朗读与实时边打字边流式发声。",
+        "source": "xing-shuyin/pi-web-ui/plugins/tts"
+      },
+      {
+        "id": "tunnel",
+        "name": "网络隧道",
+        "description": "反向隧道：主人设备 CLI 主动连入（零公网暴露，穿 NAT），pi 经本机 SOCKS5 以主人所在网络为出口做巡检与访问（DNS 在主人侧解析）。面板展示隧道在线状态/连接数/令牌管理；注册 tunnel_fetch 工具供 AI 直接探测主人网络。",
+        "source": "xing-shuyin/pi-web-ui/plugins/tunnel"
+      },
+      {
+        "id": "approval-gate",
+        "name": "拍板",
+        "description": "定时任务拍板中心：待拍板项集中列表，点击跳转对应会话完成拍板；通用 CLI 供任意定时任务登记；顶栏拍板 tab 红点显示待拍板数。",
+        "source": "xing-shuyin/pi-web-ui/plugins/approval-gate"
+      }
+    ],
+    "manifests": [
+      {
+        "directory": "approval-gate",
+        "id": "approval-gate",
+        "name": "拍板",
+        "version": "0.2.1"
+      },
+      {
+        "directory": "browser-use",
+        "id": "browser-use",
+        "name": "browser-use",
+        "version": "0.9.0"
+      },
+      {
+        "directory": "db-client",
+        "id": "db-client",
+        "name": "数据库",
+        "version": "0.4.2"
+      },
+      {
+        "directory": "demo-mailbox",
+        "id": "demo-mailbox",
+        "name": "示例",
+        "version": "0.2.1"
+      },
+      {
+        "directory": "desktop-use",
+        "id": "desktop-use",
+        "name": "桌面控制",
+        "version": "0.3.1"
+      },
+      {
+        "directory": "dingtalk",
+        "name": "dingtalk",
+        "version": "0.1.3"
+      },
+      {
+        "directory": "discord",
+        "name": "discord",
+        "version": "0.1.3"
+      },
+      {
+        "directory": "feature-board",
+        "id": "feature-board",
+        "name": "需求与投票",
+        "version": "1.0.2"
+      },
+      {
+        "directory": "feishu",
+        "name": "feishu",
+        "version": "0.2.4"
+      },
+      {
+        "directory": "image-toolkit",
+        "id": "image-toolkit",
+        "name": "图片工作台",
+        "version": "0.2.3"
+      },
+      {
+        "directory": "imessage",
+        "name": "imessage",
+        "version": "0.1.4"
+      },
+      {
+        "directory": "legado-web",
+        "id": "legado-web",
+        "name": "阅读",
+        "version": "0.2.1"
+      },
+      {
+        "directory": "live-preview",
+        "id": "live-preview",
+        "name": "实时预览",
+        "version": "0.2.2"
+      },
+      {
+        "directory": "matrix",
+        "name": "matrix",
+        "version": "0.1.4"
+      },
+      {
+        "directory": "mermaid",
+        "id": "mermaid",
+        "name": "Mermaid 图表",
+        "version": "1.0.1"
+      },
+      {
+        "directory": "notes",
+        "id": "notes",
+        "name": "笔记",
+        "version": "0.3.0"
+      },
+      {
+        "directory": "office-preview",
+        "id": "office-preview",
+        "name": "Office 预览",
+        "version": "0.1.2"
+      },
+      {
+        "directory": "pm2-manager",
+        "id": "pm2-manager",
+        "name": "进程管家",
+        "version": "0.3.4"
+      },
+      {
+        "directory": "qq",
+        "name": "qq",
+        "version": "0.1.4"
+      },
+      {
+        "directory": "response-speed",
+        "id": "response-speed",
+        "name": "响应速度",
+        "version": "0.3.1"
+      },
+      {
+        "directory": "run-trace",
+        "id": "run-trace",
+        "name": "轨迹",
+        "version": "0.1.1"
+      },
+      {
+        "directory": "session-migrate",
+        "id": "session-migrate",
+        "name": "会话迁移",
+        "version": "0.4.2"
+      },
+      {
+        "directory": "sftp",
+        "id": "sftp",
+        "name": "SFTP 同步",
+        "version": "0.3.2"
+      },
+      {
+        "directory": "slack",
+        "name": "slack",
+        "version": "0.1.4"
+      },
+      {
+        "directory": "sol-savings",
+        "id": "sol-savings",
+        "name": "SoL-Pi 状态",
+        "version": "0.2.1"
+      },
+      {
+        "directory": "telegram",
+        "name": "telegram",
+        "version": "0.1.4"
+      },
+      {
+        "directory": "tts",
+        "id": "tts",
+        "name": "语音合成 (TTS)",
+        "version": "1.4.0"
+      },
+      {
+        "directory": "tunnel",
+        "id": "tunnel",
+        "name": "网络隧道",
+        "version": "1.1.0"
+      },
+      {
+        "directory": "voice-input",
+        "id": "voice-input",
+        "name": "语音与拍照输入",
+        "version": "0.4.2"
+      },
+      {
+        "directory": "vscode-editor",
+        "id": "vscode-editor",
+        "name": "编辑器",
+        "version": "0.5.1"
+      },
+      {
+        "directory": "wallpaper-engine",
+        "id": "wallpaper-engine",
+        "name": "动态壁纸",
+        "version": "0.3.64"
+      },
+      {
+        "directory": "webmail",
+        "name": "邮箱",
+        "version": "0.2.3"
+      },
+      {
+        "directory": "wechat-ilink",
+        "id": "wechat-ilink",
+        "name": "微信通道",
+        "version": "0.4.0"
+      },
+      {
+        "directory": "wecom",
+        "name": "wecom",
+        "version": "0.1.4"
+      },
+      {
+        "directory": "whatsapp",
+        "name": "whatsapp",
+        "version": "0.1.3"
+      }
+    ]
+  },
+  "current": {
+    "hashes": {
+      "server/tool-manager.ts": "6641f5e890bce89d939b655daa1f0055854ca9d6e021014b509efe6d03f71db7",
+      "server/protocol.ts": "dee48de0687c59b079262dacb4d8758ab588d04d8d4a65ed84f7465ea797a033",
+      "web/src/ui-slots.ts": "768c15df9f643aba98b546da05412347ec7482d3924428c2498762b6948803a1",
+      "web/src/components/SettingsModal.tsx": "a6edaf67953c468259c29d3a4c08ce3cc9e105d3f06e6f4a29f50fb6ded9bf6c",
+      "plugins/catalog.json": "a797bc4568df793078e60ffb27f7db0536d14cde330df0a716776f8b489b3c17"
+    },
+    "tools": [
+      {
+        "name": "terminal_create",
+        "group": "terminal",
+        "defaultOn": false,
+        "dshVisible": true
+      },
+      {
+        "name": "terminal_list",
+        "group": "terminal",
+        "defaultOn": false,
+        "dshVisible": true
+      },
+      {
+        "name": "terminal_close",
+        "group": "terminal",
+        "defaultOn": false,
+        "dshVisible": true
+      },
+      {
+        "name": "terminal_input",
+        "group": "terminal",
+        "defaultOn": false,
+        "dshVisible": true
+      },
+      {
+        "name": "terminal_key",
+        "group": "terminal",
+        "defaultOn": false,
+        "dshVisible": true
+      },
+      {
+        "name": "terminal_read",
+        "group": "terminal",
+        "defaultOn": false,
+        "dshVisible": true
+      },
+      {
+        "name": "terminal_wait",
+        "group": "terminal",
+        "defaultOn": false,
+        "dshVisible": true
+      },
+      {
+        "name": "subagent",
+        "group": "subagent",
+        "defaultOn": true,
+        "dshVisible": false
+      },
+      {
+        "name": "edit_soft",
+        "group": "other",
+        "defaultOn": false,
+        "dshVisible": false,
+        "descKey": "editSoftEnabledDesc",
+        "offHintKey": "editSoftOffHint"
+      },
+      {
+        "name": "delegate_task",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "delegateTaskEnabledDesc",
+        "offHintKey": "delegateTaskOffHint"
+      },
+      {
+        "name": "ask_user_question",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": true,
+        "descKey": "questionnaireEnabledDesc",
+        "offHintKey": "questionnaireOffHint"
+      },
+      {
+        "name": "browser_page",
+        "group": "other",
+        "defaultOn": false,
+        "dshVisible": false,
+        "descKey": "browserPageEnabledDesc",
+        "offHintKey": "browserPageOffHint"
+      },
+      {
+        "name": "conversation_read",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "conversationReadEnabledDesc",
+        "offHintKey": "conversationReadOffHint"
+      },
+      {
+        "name": "claim_files",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "claimFilesEnabledDesc",
+        "offHintKey": "claimFilesOffHint"
+      },
+      {
+        "name": "plan_update",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": true,
+        "descKey": "planUpdateEnabledDesc",
+        "offHintKey": "planUpdateOffHint"
+      },
+      {
+        "name": "patch",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "patchToolEnabledDesc",
+        "offHintKey": "patchToolOffHint"
+      },
+      {
+        "name": "lsp",
+        "group": "other",
+        "defaultOn": false,
+        "dshVisible": false,
+        "descKey": "lspToolEnabledDesc",
+        "offHintKey": "lspToolOffHint"
+      },
+      {
+        "name": "present_files",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "presentFilesEnabledDesc",
+        "offHintKey": "presentFilesOffHint"
+      },
+      {
+        "name": "skill",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "skillEnabledDesc",
+        "offHintKey": "skillOffHint"
+      },
+      {
+        "name": "eval",
+        "group": "other",
+        "defaultOn": false,
+        "dshVisible": false,
+        "descKey": "evalEnabledDesc",
+        "offHintKey": "evalOffHint"
+      },
+      {
+        "name": "codemode",
+        "group": "other",
+        "defaultOn": false,
+        "dshVisible": false,
+        "descKey": "codemodeEnabledDesc",
+        "offHintKey": "codemodeOffHint"
+      },
+      {
+        "name": "tool_search",
+        "group": "other",
+        "defaultOn": false,
+        "dshVisible": false,
+        "descKey": "toolSearchEnabledDesc",
+        "offHintKey": "toolSearchOffHint"
+      },
+      {
+        "name": "schedule",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "scheduleTaskEnabledDesc",
+        "offHintKey": "scheduleTaskOffHint"
+      },
+      {
+        "name": "compact_context",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "compactContextEnabledDesc",
+        "offHintKey": "compactContextOffHint"
+      },
+      {
+        "name": "mcp_manage",
+        "group": "other",
+        "defaultOn": false,
+        "dshVisible": false,
+        "descKey": "mcpManageEnabledDesc",
+        "offHintKey": "mcpManageOffHint"
+      },
+      {
+        "name": "sandbox",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "sandboxEnabledDesc",
+        "offHintKey": "sandboxOffHint"
+      },
+      {
+        "name": "worktree",
+        "group": "other",
+        "defaultOn": true,
+        "dshVisible": false,
+        "descKey": "toolsWorktreeDesc",
+        "offHintKey": "toolsWorktreeOffHint"
+      }
+    ],
+    "coreTools": [
+      "bash",
+      "read",
+      "edit",
+      "write",
+      "powershell",
+      "ls",
+      "grep",
+      "find"
+    ],
+    "uiItems": [
+      {
+        "id": "host:lp-projects",
+        "slot": "leftpanel.sections",
+        "labelKey": "recentProjects",
+        "icon": "folder",
+        "kind": "action",
+        "order": 10
+      },
+      {
+        "id": "host:lp-running",
+        "slot": "leftpanel.sections",
+        "labelKey": "runningConversations",
+        "icon": "activity",
+        "kind": "action",
+        "order": 20
+      },
+      {
+        "id": "host:lp-history",
+        "slot": "leftpanel.sections",
+        "labelKey": "historySessions",
+        "icon": "clock",
+        "kind": "action",
+        "order": 30
+      },
+      {
+        "id": "host:brand",
+        "slot": "topbar.primary",
+        "labelKey": "brand",
+        "kind": "badge",
+        "order": 1,
+        "group": "brand"
+      },
+      {
+        "id": "host:open-project",
+        "slot": "topbar.primary",
+        "labelKey": "openProject",
+        "icon": "folder",
+        "kind": "action",
+        "order": 3,
+        "group": "primary"
+      },
+      {
+        "id": "host:history",
+        "slot": "topbar.primary",
+        "labelKey": "openHistory",
+        "icon": "menu",
+        "kind": "action",
+        "order": 0,
+        "group": "panels"
+      },
+      {
+        "id": "host:files",
+        "slot": "topbar.primary",
+        "labelKey": "openFiles",
+        "icon": "folder",
+        "kind": "action",
+        "order": 97,
+        "group": "panels",
+        "align": "end"
+      },
+      {
+        "id": "host:new-chat",
+        "slot": "topbar.primary",
+        "labelKey": "newChat",
+        "icon": "plus",
+        "kind": "action",
+        "order": 96,
+        "group": "primary",
+        "align": "end"
+      },
+      {
+        "id": "host:new-ephemeral-chat",
+        "slot": "topbar.primary",
+        "labelKey": "newChatEphemeral",
+        "icon": "chat",
+        "kind": "action",
+        "order": 96.5,
+        "group": "primary",
+        "align": "end"
+      },
+      {
+        "id": "host:new-sandbox",
+        "slot": "topbar.primary",
+        "labelKey": "newSandbox",
+        "icon": "sandbox",
+        "kind": "action",
+        "order": 96.6,
+        "group": "primary",
+        "align": "end"
+      },
+      {
+        "id": "host:chat",
+        "slot": "topbar.primary",
+        "labelKey": "chat",
+        "icon": "chat",
+        "kind": "view",
+        "view": "chat",
+        "order": 20,
+        "group": "views",
+        "align": "end"
+      },
+      {
+        "id": "host:terminal",
+        "slot": "topbar.primary",
+        "labelKey": "terminal",
+        "icon": "terminal",
+        "kind": "view",
+        "view": "terminal",
+        "order": 21,
+        "group": "views",
+        "align": "end"
+      },
+      {
+        "id": "host:git",
+        "slot": "topbar.primary",
+        "labelKey": "scmTab",
+        "icon": "git",
+        "kind": "view",
+        "view": "git",
+        "order": 22,
+        "group": "views",
+        "align": "end"
+      },
+      {
+        "id": "host:plugins",
+        "slot": "topbar.primary",
+        "labelKey": "pluginMenuTitle",
+        "icon": "🧩",
+        "kind": "action",
+        "order": 24,
+        "group": "views",
+        "align": "end"
+      },
+      {
+        "id": "host:search",
+        "slot": "topbar.primary",
+        "labelKey": "searchGlobal",
+        "icon": "search",
+        "kind": "action",
+        "order": 40,
+        "group": "tools",
+        "align": "end"
+      },
+      {
+        "id": "host:browser",
+        "slot": "topbar.primary",
+        "labelKey": "browserControl",
+        "icon": "browser",
+        "kind": "action",
+        "order": 41,
+        "group": "tools",
+        "align": "end",
+        "hidden": true
+      },
+      {
+        "id": "host:tasks",
+        "slot": "topbar.primary",
+        "labelKey": "bgTasks",
+        "icon": "layers",
+        "kind": "action",
+        "order": 42,
+        "group": "tools",
+        "align": "end"
+      },
+      {
+        "id": "host:zen-mode",
+        "slot": "topbar.primary",
+        "labelKey": "zenMode",
+        "icon": "feather",
+        "kind": "action",
+        "order": 43,
+        "group": "tools",
+        "align": "end"
+      },
+      {
+        "id": "host:settings",
+        "slot": "topbar.primary",
+        "labelKey": "settingsTitle",
+        "icon": "settings",
+        "kind": "action",
+        "order": 60,
+        "group": "system",
+        "align": "end"
+      },
+      {
+        "id": "host:sound",
+        "slot": "topbar.primary",
+        "labelKey": "sound",
+        "icon": "sound",
+        "kind": "action",
+        "order": 70,
+        "group": "system",
+        "hidden": true,
+        "align": "end"
+      },
+      {
+        "id": "host:language",
+        "slot": "topbar.primary",
+        "labelKey": "language",
+        "icon": "globe",
+        "kind": "action",
+        "order": 80,
+        "group": "system",
+        "hidden": true,
+        "align": "end"
+      },
+      {
+        "id": "host:theme",
+        "slot": "topbar.primary",
+        "labelKey": "theme",
+        "icon": "sun",
+        "kind": "action",
+        "order": 82,
+        "group": "system",
+        "hidden": true,
+        "align": "end"
+      },
+      {
+        "id": "host:update",
+        "slot": "topbar.primary",
+        "labelKey": "update",
+        "icon": "download",
+        "kind": "action",
+        "order": 90,
+        "group": "system",
+        "align": "end",
+        "hidden": true
+      },
+      {
+        "id": "host:github",
+        "slot": "topbar.primary",
+        "labelKey": "githubRepo",
+        "icon": "github",
+        "kind": "action",
+        "order": 200,
+        "group": "system",
+        "align": "end",
+        "hidden": true
+      },
+      {
+        "id": "host:conn",
+        "slot": "bottombar",
+        "labelKey": "connected",
+        "icon": "dot",
+        "kind": "badge",
+        "order": 5,
+        "group": "status"
+      },
+      {
+        "id": "host:engine",
+        "slot": "bottombar",
+        "labelKey": "engineBadge",
+        "icon": "aperture",
+        "kind": "action",
+        "order": 6,
+        "group": "status"
+      },
+      {
+        "id": "host:ctx",
+        "slot": "bottombar",
+        "labelKey": "context",
+        "icon": "gauge",
+        "kind": "badge",
+        "order": 10,
+        "group": "usage"
+      },
+      {
+        "id": "host:cost",
+        "slot": "bottombar",
+        "labelKey": "cumulativeCost",
+        "icon": "coins",
+        "kind": "badge",
+        "order": 11,
+        "group": "usage"
+      },
+      {
+        "id": "host:cache",
+        "slot": "bottombar",
+        "labelKey": "cacheHit",
+        "icon": "database",
+        "kind": "badge",
+        "order": 12,
+        "group": "usage"
+      },
+      {
+        "id": "host:msg-count",
+        "slot": "bottombar",
+        "labelKey": "messages",
+        "icon": "message",
+        "kind": "badge",
+        "order": 13,
+        "group": "usage"
+      },
+      {
+        "id": "host:plugin-status",
+        "slot": "bottombar",
+        "labelKey": "pluginStatus",
+        "icon": "activity",
+        "kind": "badge",
+        "order": 14,
+        "group": "status"
+      },
+      {
+        "id": "host:working",
+        "slot": "bottombar",
+        "labelKey": "working",
+        "icon": "activity",
+        "kind": "badge",
+        "order": 15,
+        "group": "status"
+      },
+      {
+        "id": "host:status-delegate",
+        "slot": "bottombar",
+        "labelKey": "delegateModeBadge",
+        "icon": "eye",
+        "kind": "badge",
+        "order": 16,
+        "group": "status"
+      },
+      {
+        "id": "host:host-metrics",
+        "slot": "bottombar",
+        "labelKey": "hostResources",
+        "icon": "cpu",
+        "kind": "badge",
+        "order": 19,
+        "group": "host",
+        "align": "end"
+      },
+      {
+        "id": "host:cwd",
+        "slot": "bottombar",
+        "labelKey": "cwdTip",
+        "icon": "folder",
+        "kind": "action",
+        "order": 20,
+        "group": "context",
+        "align": "end"
+      },
+      {
+        "id": "host:msg-reask",
+        "slot": "message.actions",
+        "labelKey": "reaskDirectly",
+        "icon": "refresh",
+        "kind": "action",
+        "order": 9
+      },
+      {
+        "id": "host:msg-edit-reask",
+        "slot": "message.actions",
+        "labelKey": "editReask",
+        "icon": "edit",
+        "kind": "action",
+        "order": 10
+      },
+      {
+        "id": "host:msg-fork",
+        "slot": "message.actions",
+        "labelKey": "forkSession",
+        "icon": "branch",
+        "kind": "action",
+        "order": 15
+      },
+      {
+        "id": "host:msg-rollback",
+        "slot": "message.actions",
+        "labelKey": "rollbackSession",
+        "icon": "undo",
+        "kind": "action",
+        "order": 16
+      },
+      {
+        "id": "host:msg-copy",
+        "slot": "message.actions",
+        "labelKey": "copyMessage",
+        "icon": "copy",
+        "kind": "action",
+        "order": 20
+      },
+      {
+        "id": "host:msg-copy-text",
+        "slot": "message.actions",
+        "labelKey": "copyText",
+        "icon": "text",
+        "kind": "action",
+        "order": 21
+      },
+      {
+        "id": "host:msg-copy-markdown",
+        "slot": "message.actions",
+        "labelKey": "copyMarkdown",
+        "icon": "markdown",
+        "kind": "action",
+        "order": 22
+      },
+      {
+        "id": "host:msg-copy-image",
+        "slot": "message.actions",
+        "labelKey": "copyImage",
+        "icon": "image",
+        "kind": "action",
+        "order": 23
+      },
+      {
+        "id": "host:msg-speak",
+        "slot": "message.actions",
+        "labelKey": "speakMsg",
+        "icon": "volume",
+        "kind": "action",
+        "order": 24
+      },
+      {
+        "id": "host:composer-upload",
+        "slot": "composer.actions",
+        "labelKey": "uploadFile",
+        "icon": "upload",
+        "kind": "action",
+        "order": 10,
+        "align": "start"
+      },
+      {
+        "id": "host:composer-templates",
+        "slot": "composer.actions",
+        "labelKey": "tpl.openPicker",
+        "icon": "grid",
+        "kind": "action",
+        "order": 110,
+        "align": "start"
+      },
+      {
+        "id": "host:composer-model",
+        "slot": "composer.actions",
+        "labelKey": "selectModel",
+        "icon": "cpu",
+        "kind": "action",
+        "order": 120,
+        "align": "start"
+      },
+      {
+        "id": "host:composer-thinking",
+        "slot": "composer.actions",
+        "labelKey": "thinkingLevel",
+        "icon": "zap",
+        "kind": "action",
+        "order": 130,
+        "align": "start"
+      },
+      {
+        "id": "host:composer-dsh-perm",
+        "slot": "composer.actions",
+        "labelKey": "dshPerm",
+        "icon": "lock",
+        "kind": "action",
+        "order": 140,
+        "align": "start"
+      },
+      {
+        "id": "host:composer-dsh-preset",
+        "slot": "composer.actions",
+        "labelKey": "dshPreset",
+        "icon": "layers",
+        "kind": "action",
+        "order": 150,
+        "align": "start"
+      },
+      {
+        "id": "host:composer-send",
+        "slot": "composer.actions",
+        "labelKey": "sendTip",
+        "icon": "send",
+        "kind": "action",
+        "order": 200,
+        "align": "end"
+      },
+      {
+        "id": "host:fp-md",
+        "slot": "file.preview.toolbar",
+        "labelKey": "showMarkdownPreview",
+        "icon": "eye",
+        "kind": "action",
+        "order": 10
+      },
+      {
+        "id": "host:fp-toc",
+        "slot": "file.preview.toolbar",
+        "labelKey": "previewTocLabel",
+        "icon": "list",
+        "kind": "action",
+        "order": 15
+      },
+      {
+        "id": "host:fp-html",
+        "slot": "file.preview.toolbar",
+        "labelKey": "showHtmlPreview",
+        "icon": "code",
+        "kind": "action",
+        "order": 20
+      },
+      {
+        "id": "host:fp-edit",
+        "slot": "file.preview.toolbar",
+        "labelKey": "editFile",
+        "icon": "edit",
+        "kind": "action",
+        "order": 30
+      },
+      {
+        "id": "host:fp-wrap",
+        "slot": "file.preview.toolbar",
+        "labelKey": "enableWrap",
+        "icon": "wrap",
+        "kind": "action",
+        "order": 40
+      },
+      {
+        "id": "host:fp-zoom",
+        "slot": "file.preview.toolbar",
+        "labelKey": "zoomIn",
+        "icon": "zoom",
+        "kind": "action",
+        "order": 50
+      },
+      {
+        "id": "host:fp-ref",
+        "slot": "file.preview.toolbar",
+        "labelKey": "referenceTip",
+        "icon": "link",
+        "kind": "action",
+        "order": 70
+      },
+      {
+        "id": "host:fp-full",
+        "slot": "file.preview.toolbar",
+        "labelKey": "fullscreen",
+        "icon": "maximize",
+        "kind": "action",
+        "order": 80
+      },
+      {
+        "id": "host:fp-close",
+        "slot": "file.preview.toolbar",
+        "labelKey": "close",
+        "icon": "x",
+        "kind": "action",
+        "order": 90
+      },
+      {
+        "id": "host:goal-pill",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarTitle",
+        "icon": "target",
+        "kind": "action",
+        "order": 5
+      },
+      {
+        "id": "host:goal-set",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarSet",
+        "icon": "check",
+        "kind": "action",
+        "order": 10
+      },
+      {
+        "id": "host:goal-wizard",
+        "slot": "goalbar.actions",
+        "labelKey": "goalWizardBtn",
+        "icon": "search",
+        "kind": "action",
+        "order": 20
+      },
+      {
+        "id": "host:goal-lock",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarLocked",
+        "icon": "lock",
+        "kind": "action",
+        "order": 30
+      },
+      {
+        "id": "host:goal-plan",
+        "slot": "goalbar.actions",
+        "labelKey": "planMode",
+        "icon": "list",
+        "kind": "action",
+        "order": 25
+      },
+      {
+        "id": "host:goal-collapse",
+        "slot": "goalbar.actions",
+        "labelKey": "collapsePanel",
+        "icon": "chevron-up",
+        "kind": "action",
+        "order": 40
+      },
+      {
+        "id": "host:goal-model",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarReviewModel",
+        "icon": "cpu",
+        "kind": "action",
+        "order": 50
+      },
+      {
+        "id": "host:goal-rounds",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarMaxRounds",
+        "icon": "hash",
+        "kind": "action",
+        "order": 60
+      },
+      {
+        "id": "host:goal-execmodel",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarExecModel",
+        "icon": "cpu",
+        "kind": "action",
+        "order": 55
+      },
+      {
+        "id": "host:goal-openrole",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarOpenExec",
+        "icon": "search",
+        "kind": "action",
+        "order": 65
+      },
+      {
+        "id": "host:goal-clear",
+        "slot": "goalbar.actions",
+        "labelKey": "goalBarClear",
+        "icon": "x",
+        "kind": "action",
+        "order": 70
+      },
+      {
+        "id": "host:scm-changes",
+        "slot": "scm.toolbar",
+        "labelKey": "scmChanges",
+        "icon": "file",
+        "kind": "action",
+        "order": 10
+      },
+      {
+        "id": "host:scm-history",
+        "slot": "scm.toolbar",
+        "labelKey": "scmHistory",
+        "icon": "clock",
+        "kind": "action",
+        "order": 20
+      },
+      {
+        "id": "host:scm-refresh",
+        "slot": "scm.toolbar",
+        "labelKey": "scmRefreshTip",
+        "icon": "refresh",
+        "kind": "action",
+        "order": 30
+      },
+      {
+        "id": "host:scm-branch",
+        "slot": "scm.toolbar",
+        "labelKey": "scmSwitchBranch",
+        "icon": "git",
+        "kind": "action",
+        "order": 40
+      },
+      {
+        "id": "host:scm-switch",
+        "slot": "scm.toolbar",
+        "labelKey": "scmSwitch",
+        "icon": "git",
+        "kind": "action",
+        "order": 50
+      },
+      {
+        "id": "host:scm-push",
+        "slot": "scm.toolbar",
+        "labelKey": "scmPush",
+        "icon": "upload",
+        "kind": "action",
+        "order": 60
+      },
+      {
+        "id": "host:scm-pull",
+        "slot": "scm.toolbar",
+        "labelKey": "scmPull",
+        "icon": "download",
+        "kind": "action",
+        "order": 70
+      },
+      {
+        "id": "host:scm-input",
+        "slot": "scm.toolbar",
+        "labelKey": "scmCommitPlaceholder",
+        "icon": "edit",
+        "kind": "action",
+        "order": 80
+      },
+      {
+        "id": "host:scm-genmsg",
+        "slot": "scm.toolbar",
+        "labelKey": "scmGenMsg",
+        "icon": "cpu",
+        "kind": "action",
+        "order": 85
+      },
+      {
+        "id": "host:scm-commit",
+        "slot": "scm.toolbar",
+        "labelKey": "scmCommit",
+        "icon": "check",
+        "kind": "action",
+        "order": 90
+      },
+      {
+        "id": "host:scm-commit-all",
+        "slot": "scm.toolbar",
+        "labelKey": "scmCommitAll",
+        "icon": "check",
+        "kind": "action",
+        "order": 100
+      },
+      {
+        "id": "host:scm-term",
+        "slot": "scm.toolbar",
+        "labelKey": "terminal",
+        "icon": "terminal",
+        "kind": "action",
+        "order": 110
+      },
+      {
+        "id": "host:term-cmd-refresh",
+        "slot": "terminal.toolbar",
+        "labelKey": "rerun",
+        "icon": "refresh",
+        "kind": "action",
+        "order": 10
+      },
+      {
+        "id": "host:term-cmd-new",
+        "slot": "terminal.toolbar",
+        "labelKey": "newCommand",
+        "icon": "plus",
+        "kind": "action",
+        "order": 20
+      },
+      {
+        "id": "host:term-tab-new",
+        "slot": "terminal.toolbar",
+        "labelKey": "newTerminal",
+        "icon": "plus",
+        "kind": "action",
+        "order": 30
+      },
+      {
+        "id": "host:right-files",
+        "slot": "rightpanel.tabs",
+        "labelKey": "openFiles",
+        "icon": "folder",
+        "kind": "view",
+        "view": "files",
+        "order": 10
+      },
+      {
+        "id": "host:conv-rename",
+        "slot": "contextmenu.session",
+        "labelKey": "renameSession",
+        "icon": "edit",
+        "kind": "action",
+        "context": "session",
+        "order": 1
+      },
+      {
+        "id": "host:conv-pin",
+        "slot": "contextmenu.session",
+        "labelKey": "pinConversation",
+        "icon": "pin",
+        "kind": "action",
+        "context": "session",
+        "order": 2
+      },
+      {
+        "id": "host:conv-takeover",
+        "slot": "contextmenu.session",
+        "labelKey": "takeoverConversation",
+        "icon": "chat",
+        "kind": "action",
+        "context": "session",
+        "order": 5
+      },
+      {
+        "id": "host:conv-dismiss-subagents",
+        "slot": "contextmenu.session",
+        "labelKey": "dismissFinishedSubagents",
+        "icon": "x",
+        "kind": "action",
+        "context": "session",
+        "order": 10
+      },
+      {
+        "id": "host:conv-force-dismiss",
+        "slot": "contextmenu.session",
+        "labelKey": "forceDismissConversation",
+        "icon": "x",
+        "kind": "action",
+        "context": "session",
+        "order": 20
+      },
+      {
+        "id": "host:conv-persist",
+        "slot": "contextmenu.session",
+        "labelKey": "persistSubagent",
+        "icon": "save",
+        "kind": "action",
+        "context": "session",
+        "order": 25
+      },
+      {
+        "id": "host:conv-copy-id",
+        "slot": "contextmenu.session",
+        "labelKey": "copyConversationId",
+        "icon": "copy",
+        "kind": "action",
+        "context": "session",
+        "order": 30
+      },
+      {
+        "id": "host:conv-copy-path",
+        "slot": "contextmenu.session",
+        "labelKey": "copyConversationPath",
+        "icon": "copy",
+        "kind": "action",
+        "context": "session",
+        "order": 40
+      },
+      {
+        "id": "host:conv-copy-link",
+        "slot": "contextmenu.session",
+        "labelKey": "copyConversationLink",
+        "icon": "link",
+        "kind": "action",
+        "context": "session",
+        "order": 45
+      },
+      {
+        "id": "host:conv-quote",
+        "slot": "contextmenu.session",
+        "labelKey": "quoteConversation",
+        "icon": "chat",
+        "kind": "action",
+        "context": "session",
+        "order": 50
+      },
+      {
+        "id": "host:file-open",
+        "slot": "contextmenu.file",
+        "labelKey": "fileOpenPreview",
+        "icon": "open",
+        "kind": "action",
+        "context": "file",
+        "order": 11,
+        "group": "open"
+      },
+      {
+        "id": "host:file-enter",
+        "slot": "contextmenu.file",
+        "labelKey": "fileEnterDir",
+        "icon": "folder",
+        "kind": "action",
+        "context": "file",
+        "order": 12,
+        "group": "open"
+      },
+      {
+        "id": "host:file-download",
+        "slot": "contextmenu.file",
+        "labelKey": "downloadFile",
+        "icon": "download",
+        "kind": "action",
+        "context": "file",
+        "order": 13,
+        "group": "open"
+      },
+      {
+        "id": "host:file-compress",
+        "slot": "contextmenu.file",
+        "labelKey": "fileCompress",
+        "icon": "file",
+        "kind": "action",
+        "context": "file",
+        "order": 16,
+        "group": "archive"
+      },
+      {
+        "id": "host:file-extract",
+        "slot": "contextmenu.file",
+        "labelKey": "fileExtract",
+        "icon": "folder",
+        "kind": "action",
+        "context": "file",
+        "order": 17,
+        "group": "archive"
+      },
+      {
+        "id": "host:file-compress-download",
+        "slot": "contextmenu.file",
+        "labelKey": "fileCompressDownload",
+        "icon": "download",
+        "kind": "action",
+        "context": "file",
+        "order": 18,
+        "group": "archive"
+      },
+      {
+        "id": "host:file-upload-folder",
+        "slot": "contextmenu.file",
+        "labelKey": "fileUploadFolder",
+        "icon": "upload",
+        "kind": "action",
+        "context": "file",
+        "order": 25,
+        "group": "new"
+      },
+      {
+        "id": "host:file-open-project",
+        "slot": "contextmenu.file",
+        "labelKey": "openAsProject",
+        "icon": "folder",
+        "kind": "action",
+        "context": "file",
+        "order": 14,
+        "group": "open"
+      },
+      {
+        "id": "host:file-add-root",
+        "slot": "contextmenu.file",
+        "labelKey": "addWorkspaceRoot",
+        "icon": "folder",
+        "kind": "action",
+        "context": "file",
+        "order": 15,
+        "group": "open"
+      },
+      {
+        "id": "host:file-reveal",
+        "slot": "contextmenu.file",
+        "labelKey": "fileReveal",
+        "icon": "folder",
+        "kind": "action",
+        "context": "file",
+        "order": 16,
+        "group": "open"
+      },
+      {
+        "id": "host:file-open-default",
+        "slot": "contextmenu.file",
+        "labelKey": "fileOpenDefault",
+        "icon": "open",
+        "kind": "action",
+        "context": "file",
+        "order": 17,
+        "group": "open"
+      },
+      {
+        "id": "host:file-new-file",
+        "slot": "contextmenu.file",
+        "labelKey": "fileNewFile",
+        "icon": "file",
+        "kind": "action",
+        "context": "file",
+        "order": 21,
+        "group": "new"
+      },
+      {
+        "id": "host:file-new-dir",
+        "slot": "contextmenu.file",
+        "labelKey": "fileNewDir",
+        "icon": "folder",
+        "kind": "action",
+        "context": "file",
+        "order": 22,
+        "group": "new"
+      },
+      {
+        "id": "host:file-upload",
+        "slot": "contextmenu.file",
+        "labelKey": "uploadToFolder",
+        "icon": "upload",
+        "kind": "action",
+        "context": "file",
+        "order": 23,
+        "group": "new"
+      },
+      {
+        "id": "host:file-paste",
+        "slot": "contextmenu.file",
+        "labelKey": "filePaste",
+        "icon": "paste",
+        "kind": "action",
+        "context": "file",
+        "order": 24,
+        "group": "new"
+      },
+      {
+        "id": "host:file-attach-ref",
+        "slot": "contextmenu.file",
+        "labelKey": "referenceTip",
+        "icon": "link",
+        "kind": "action",
+        "context": "file",
+        "order": 32,
+        "group": "chat"
+      },
+      {
+        "id": "host:file-attach-folder",
+        "slot": "contextmenu.file",
+        "labelKey": "linkFolderTip",
+        "icon": "link",
+        "kind": "action",
+        "context": "file",
+        "order": 33,
+        "group": "chat"
+      },
+      {
+        "id": "host:file-rename",
+        "slot": "contextmenu.file",
+        "labelKey": "fileRename",
+        "icon": "edit",
+        "kind": "action",
+        "context": "file",
+        "order": 41,
+        "group": "edit"
+      },
+      {
+        "id": "host:file-duplicate",
+        "slot": "contextmenu.file",
+        "labelKey": "fileDuplicate",
+        "icon": "copy",
+        "kind": "action",
+        "context": "file",
+        "order": 42,
+        "group": "edit"
+      },
+      {
+        "id": "host:file-cut",
+        "slot": "contextmenu.file",
+        "labelKey": "fileCut",
+        "icon": "cut",
+        "kind": "action",
+        "context": "file",
+        "order": 43,
+        "group": "edit"
+      },
+      {
+        "id": "host:file-copy",
+        "slot": "contextmenu.file",
+        "labelKey": "fileCopyEntry",
+        "icon": "copy",
+        "kind": "action",
+        "context": "file",
+        "order": 44,
+        "group": "edit"
+      },
+      {
+        "id": "host:file-copy-name",
+        "slot": "contextmenu.file",
+        "labelKey": "copyName",
+        "icon": "copy",
+        "kind": "action",
+        "context": "file",
+        "order": 51,
+        "group": "clipboard"
+      },
+      {
+        "id": "host:file-copy-path",
+        "slot": "contextmenu.file",
+        "labelKey": "copyPath",
+        "icon": "copy",
+        "kind": "action",
+        "context": "file",
+        "order": 52,
+        "group": "clipboard"
+      },
+      {
+        "id": "host:file-copy-rel",
+        "slot": "contextmenu.file",
+        "labelKey": "fileCopyRelPath",
+        "icon": "copy",
+        "kind": "action",
+        "context": "file",
+        "order": 53,
+        "group": "clipboard"
+      },
+      {
+        "id": "host:file-refresh",
+        "slot": "contextmenu.file",
+        "labelKey": "fileRefresh",
+        "icon": "refresh",
+        "kind": "action",
+        "context": "file",
+        "order": 54,
+        "group": "clipboard"
+      },
+      {
+        "id": "host:file-delete",
+        "slot": "contextmenu.file",
+        "labelKey": "fileDelete",
+        "icon": "trash",
+        "kind": "action",
+        "context": "file",
+        "order": 61,
+        "group": "danger"
+      },
+      {
+        "id": "host:msg-ctx-copy-markdown",
+        "slot": "contextmenu.message",
+        "labelKey": "copyMarkdown",
+        "icon": "markdown",
+        "kind": "action",
+        "context": "message",
+        "order": 10,
+        "group": "copy"
+      },
+      {
+        "id": "host:msg-ctx-copy-text",
+        "slot": "contextmenu.message",
+        "labelKey": "copyText",
+        "icon": "text",
+        "kind": "action",
+        "context": "message",
+        "order": 11,
+        "group": "copy"
+      },
+      {
+        "id": "host:msg-ctx-copy-image",
+        "slot": "contextmenu.message",
+        "labelKey": "copyImage",
+        "icon": "image",
+        "kind": "action",
+        "context": "message",
+        "order": 12,
+        "group": "copy"
+      },
+      {
+        "id": "host:msg-ctx-copy-link",
+        "slot": "contextmenu.message",
+        "labelKey": "copyMessageLink",
+        "icon": "link",
+        "kind": "action",
+        "context": "message",
+        "order": 13,
+        "group": "copy"
+      },
+      {
+        "id": "host:msg-ctx-reask",
+        "slot": "contextmenu.message",
+        "labelKey": "reaskDirectly",
+        "icon": "refresh",
+        "kind": "action",
+        "context": "message",
+        "order": 19,
+        "group": "action"
+      },
+      {
+        "id": "host:msg-ctx-edit-reask",
+        "slot": "contextmenu.message",
+        "labelKey": "editReask",
+        "icon": "edit",
+        "kind": "action",
+        "context": "message",
+        "order": 20,
+        "group": "action"
+      },
+      {
+        "id": "host:msg-ctx-fork",
+        "slot": "contextmenu.message",
+        "labelKey": "forkSession",
+        "icon": "branch",
+        "kind": "action",
+        "context": "message",
+        "order": 21,
+        "group": "action"
+      },
+      {
+        "id": "host:msg-ctx-rollback",
+        "slot": "contextmenu.message",
+        "labelKey": "rollbackSession",
+        "icon": "undo",
+        "kind": "action",
+        "context": "message",
+        "order": 22,
+        "group": "action"
+      },
+      {
+        "id": "host:msg-ctx-speak",
+        "slot": "contextmenu.message",
+        "labelKey": "speakMsg",
+        "icon": "volume",
+        "kind": "action",
+        "context": "message",
+        "order": 23,
+        "group": "action"
+      },
+      {
+        "id": "host:tool-info",
+        "slot": "contextmenu.toolcall",
+        "labelKey": "toolInfoMenuLabel",
+        "icon": "info",
+        "kind": "action",
+        "context": "toolcall",
+        "order": 10
+      }
+    ],
+    "settingsTabs": [
+      "approval-rules",
+      "display",
+      "dsh-presets",
+      "extensions",
+      "layout",
+      "mcp",
+      "models",
+      "plugins",
+      "presets",
+      "prompt",
+      "prompt-history",
+      "question",
+      "quick",
+      "review",
+      "scheduler",
+      "skills",
+      "sound",
+      "subagent-templates",
+      "tools",
+      "vision"
+    ],
+    "protocol": {
+      "ClientMessage": [
+        "abort",
+        "abort_bash",
+        "abort_enrich_models",
+        "activate_provider_key",
+        "add_provider_key",
+        "append_builtin_model",
+        "apply_preset",
+        "apply_sandbox_to_source",
+        "check_engines",
+        "check_plugin_updates",
+        "check_update",
+        "check_updates_all",
+        "clean_bg_leftovers",
+        "clear_default_model",
+        "clear_goal",
+        "clear_provider_api_key",
+        "clone_provider",
+        "complete_path",
+        "create_sandbox",
+        "delete_approval_rule",
+        "delete_mcp_server",
+        "delete_model_config",
+        "delete_preset",
+        "delete_session",
+        "delete_subagent_template",
+        "destroy_sandbox",
+        "dialog_response",
+        "diff_sandbox",
+        "dismiss_conversation",
+        "dismiss_finished_subagents",
+        "draft_update",
+        "dsh_market_fetch",
+        "dsh_patch_delete",
+        "dsh_patch_install",
+        "dsh_patch_toggle",
+        "dsh_patches_list",
+        "dsh_patches_rescan",
+        "dsh_permission_default",
+        "dsh_permission_set",
+        "dsh_preset_default",
+        "dsh_preset_list",
+        "dsh_preset_select",
+        "edit_message",
+        "enrich_models",
+        "extensions_reload",
+        "fetch_mcp_market",
+        "fetch_models",
+        "fetch_skill_content",
+        "fetch_skill_market",
+        "file_copy",
+        "file_create",
+        "file_delete",
+        "file_open_default",
+        "file_rename",
+        "file_reveal",
+        "fork_session",
+        "get_commands",
+        "get_compacted_messages",
+        "get_settings",
+        "get_state",
+        "get_tool_info",
+        "get_tool_prompt",
+        "hello",
+        "install_pi_agent",
+        "install_skill",
+        "kill_background_server",
+        "kill_background_servers",
+        "list_bg_servers",
+        "list_commands",
+        "list_files",
+        "list_models",
+        "list_models_config",
+        "list_projects",
+        "list_provider_keys",
+        "list_provider_oauth_flows",
+        "list_providers",
+        "list_sessions",
+        "make_dir",
+        "new_chat",
+        "page_response",
+        "peek_elsewhere_question",
+        "persist_conversation",
+        "persist_sandbox",
+        "pin_conversation",
+        "pin_session",
+        "plan_clean_handoff",
+        "plan_step_add",
+        "plan_step_delete",
+        "plan_step_update",
+        "plan_update",
+        "plugin_api_catalog",
+        "plugin_catalog_add",
+        "plugin_catalog_remove",
+        "plugin_catalog_sync",
+        "plugin_dom_consent",
+        "plugin_dom_consent_response",
+        "plugin_install_inspect",
+        "plugin_job",
+        "plugin_job_cancel",
+        "plugin_message",
+        "plugin_path_response",
+        "plugin_path_revoke",
+        "plugin_permission_response",
+        "plugin_permission_revoke",
+        "plugin_settings",
+        "plugins_reload",
+        "preset_catalog",
+        "preset_export",
+        "preset_import",
+        "preset_import_url",
+        "preset_share",
+        "promote_sandbox",
+        "prompt",
+        "provider_oauth_cancel",
+        "provider_oauth_logout",
+        "provider_oauth_reply",
+        "provider_oauth_start",
+        "question_answer",
+        "queue_remove",
+        "read_file",
+        "refresh_builtin_models",
+        "refresh_provider_models",
+        "reload_mcp",
+        "reload_models_config",
+        "remote_ssh_delete_profile",
+        "remote_ssh_install_tools",
+        "remote_ssh_list_dir",
+        "remote_ssh_list_profiles",
+        "remote_ssh_probe",
+        "remove_project",
+        "remove_provider_key",
+        "remove_worktree",
+        "rename_conversation",
+        "rename_session",
+        "rename_terminal",
+        "reset_builtin_approval_rule",
+        "reset_sandbox",
+        "restart_service",
+        "retry_last",
+        "rollback_session",
+        "run_command",
+        "save_approval_rule",
+        "save_approval_rules",
+        "save_commands",
+        "save_mcp_server",
+        "save_model_config",
+        "save_preset",
+        "save_subagent_template",
+        "schedule_delete",
+        "schedule_list",
+        "schedule_run",
+        "schedule_save",
+        "schedule_toggle",
+        "scm_commit",
+        "scm_commitmsg",
+        "scm_filediff",
+        "scm_history",
+        "scm_status",
+        "search_files",
+        "search_sessions",
+        "set_approval_policy",
+        "set_bg_keep",
+        "set_cwd",
+        "set_default_model",
+        "set_delegate_mode",
+        "set_goal",
+        "set_goal_prefs",
+        "set_locale",
+        "set_model",
+        "set_plan_mode",
+        "set_provider_api_key",
+        "set_settings",
+        "set_thinking",
+        "set_workspace_roots",
+        "start_goal_wizard",
+        "switch_conversation",
+        "switch_engine",
+        "switch_session",
+        "switch_worktree",
+        "take_over_conversation",
+        "terminal_create",
+        "terminal_input",
+        "terminal_kill",
+        "terminal_resize",
+        "test_model_connection",
+        "toggle_mcp_server",
+        "tool_approval_response",
+        "tui_overlay_cancel",
+        "tui_overlay_input",
+        "tui_overlay_resize",
+        "uninstall_skill",
+        "update_engine",
+        "upload_file",
+        "write_file"
+      ],
+      "ServerMessage": [
+        "append_builtin_result",
+        "bg_servers",
+        "clone_provider_result",
+        "commands",
+        "compacted_messages_result",
+        "conversations",
+        "default_model",
+        "dialog",
+        "dialog_closed",
+        "dsh_market_data",
+        "dsh_patches",
+        "dsh_permission",
+        "dsh_presets",
+        "elsewhere_question",
+        "engines_status",
+        "enrich_models_progress",
+        "enrich_models_result",
+        "fetch_models_result",
+        "file_changed",
+        "file_content",
+        "files",
+        "goal_status",
+        "heartbeat",
+        "install_result",
+        "mcp_market_result",
+        "mcp_servers",
+        "message_delta",
+        "models",
+        "models_config",
+        "notice",
+        "page_request",
+        "path_completions",
+        "plan_updated",
+        "plugin_api_catalog_result",
+        "plugin_catalog",
+        "plugin_catalog_sync_result",
+        "plugin_data",
+        "plugin_dom_consent_request",
+        "plugin_grants",
+        "plugin_install_inspect_result",
+        "plugin_job",
+        "plugin_panel_items",
+        "plugin_path_request",
+        "plugin_permission_request",
+        "plugin_permission_resolved",
+        "plugin_permissions",
+        "plugin_updates",
+        "plugins",
+        "preset_catalog_result",
+        "preset_export_result",
+        "preset_import_result",
+        "preset_share_result",
+        "projects",
+        "provider_keys",
+        "provider_oauth_event",
+        "provider_oauth_flows",
+        "provider_oauth_logout_result",
+        "provider_oauth_prompt",
+        "provider_oauth_result",
+        "provider_oauth_started",
+        "providers_status",
+        "question_pending",
+        "question_retracted",
+        "ready",
+        "refresh_builtin_result",
+        "refresh_provider_result",
+        "remote_ssh_install_result",
+        "remote_ssh_list_dir_result",
+        "remote_ssh_probe_result",
+        "remote_ssh_profiles_result",
+        "sandbox_diff",
+        "scheduler_tasks",
+        "scm_changed",
+        "scm_data",
+        "search_files_result",
+        "session_search_results",
+        "sessions",
+        "settings_state",
+        "skill_content_result",
+        "skill_market_result",
+        "slash_commands",
+        "snapshot",
+        "snapshot_delta",
+        "statuses",
+        "subagent_handoff",
+        "terminal_exit",
+        "terminal_list",
+        "terminal_output",
+        "test_model_connection_result",
+        "tool_approval_pending",
+        "tool_approval_resolved",
+        "tool_delta",
+        "tool_info",
+        "tool_prompt",
+        "tool_status",
+        "transition_progress",
+        "tui_overlay_close",
+        "tui_overlay_open",
+        "tui_overlay_render",
+        "update_status",
+        "update_status_all",
+        "widgets"
+      ]
+    },
+    "catalog": [
+      {
+        "id": "webmail",
+        "name": "webmail",
+        "description": "网页邮箱：IMAP 收件 + SMTP 发信 + 新邮件通知，可开放给 AI 直接管理邮件。",
+        "source": "xing-shuyin/pi-web-ui/plugins/webmail"
+      },
+      {
+        "id": "db-client",
+        "name": "db-client",
+        "description": "数据库连接管理：MySQL / PostgreSQL / SQLite / SQL Server / MongoDB / Redis 的库表浏览、SQL 查询与数据编辑。",
+        "source": "xing-shuyin/pi-web-ui/plugins/db-client"
+      },
+      {
+        "id": "vscode-editor",
+        "name": "vscode-editor",
+        "description": "类 VSCode 工作台：多根文件树 + CodeMirror 编辑器 + 底部终端 + Remote-SSH 远程文件浏览与编辑。",
+        "source": "xing-shuyin/pi-web-ui/plugins/vscode-editor"
+      },
+      {
+        "id": "sftp",
+        "name": "sftp",
+        "description": "项目级 SFTP 同步：配置存项目 .pi/sftp.json（多环境 profile + .pi/sftp.local.json 本机覆盖），先算差异再传，扫描与传输按层/按文件并行且随时可停（面板「停止」或 action=cancel），支持 dry-run 预览与计划复用（预览完直接执行不重扫）、删除保护（进垃圾桶可回滚）、并发流式传输与原子落盘；打开远端命令执行后另有两条快通道（一次 find 完成远端扫描；一批小文件上行打成 tar 流、下行 tar -czf - 一次拉回，失败自动回落）；凭据走 ${env:} / ${secret:} / ${file:} 引用，明文永不进配置。面板里可直接手动上传/下载单个文件或整棵目录（永不动删除策略），也向 AI 注册**一个** action 式 sftp 工具（status/save/secret/test/plan/sync/cancel/ls/read/write/mkdir/mv/rm/search，可选 exec）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/sftp"
+      },
+      {
+        "id": "mermaid",
+        "name": "mermaid",
+        "description": "把对话里的 ```mermaid 围栏渲染成 SVG 图表（fenced-code 渲染插件，本地引擎离线优先）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/mermaid"
+      },
+      {
+        "id": "run-trace",
+        "name": "run-trace",
+        "description": "运行轨迹：任务 → 思考 → 工具 → 文件改动 → 结果的时间线聚合视图，支持回放与节点详情。",
+        "source": "xing-shuyin/pi-web-ui/plugins/run-trace"
+      },
+      {
+        "id": "legado-web",
+        "name": "legado-web",
+        "description": "Legado 阅读（文本源）：搜索 / 发现 / 详情 / 目录 / 正文，书源 JSON 与安卓版兼容，可导入、检测、删废源；内置跨域+GBK 代理与本地存储，并给 AI 配了修源接口（读规则、读书源文件、逐步诊断链路、试规则验证）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/legado-web"
+      },
+      {
+        "id": "wechat-ilink",
+        "name": "微信通道",
+        "description": "微信扫码登录（与腾讯 openclaw-weixin 同源的 ilink 协议）：出站长轮询收消息，微信里直接指挥 agent，无需公网 IP。",
+        "source": "xing-shuyin/pi-web-ui/plugins/wechat-ilink"
+      },
+      {
+        "id": "feishu",
+        "name": "飞书",
+        "description": "飞书工作台与机器人：飞书 Bot 双工对话（出站长连接 / 智能 Markdown 分块 / 多轮会话隔离）/ 群聊与单聊会话列表 / 消息收发、回复与撤回 / 自定义机器人 Webhook 卡片推送 / AI 飞书工具（密钥加密落盘，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/feishu"
+      },
+      {
+        "id": "dingtalk",
+        "name": "钉钉",
+        "description": "钉钉机器人与工作台：钉钉 Bot 双工对话（出站长连接 / 智能 Markdown 分块 / 多轮会话隔离）/ 群聊与单聊消息推送 / 自定义机器人 Webhook / AI 钉钉工具（密钥加密存储，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/dingtalk"
+      },
+      {
+        "id": "telegram",
+        "name": "Telegram",
+        "description": "Telegram 机器人：出站长轮询双工对话（零公网 IP / 智能 Markdown 分块 / 多轮会话隔离）/ 用户白名单准入 / AI telegram 工具（密钥加密存储，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/telegram"
+      },
+      {
+        "id": "wecom",
+        "name": "企业微信",
+        "description": "企业微信工作台与机器人：企微 Bot 双工对话（智能 Markdown 分块 / 多轮会话隔离）/ 群机器人 Webhook 卡片推送 / 自建应用消息 / AI wecom 工具（密钥加密存储，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/wecom"
+      },
+      {
+        "id": "discord",
+        "name": "Discord",
+        "description": "Discord 机器人：官方 Gateway 出站 WebSocket 双工长连接（零公网 IP / 智能 Markdown 分块 / 多轮会话隔离）/ 用户白名单准入 / AI discord 工具（密钥加密存储，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/discord"
+      },
+      {
+        "id": "whatsapp",
+        "name": "WhatsApp",
+        "description": "WhatsApp 机器人与工作台：WhatsApp Cloud API 与双工对话（智能 Markdown 分块 / 多轮会话隔离）/ 用户白名单准入 / AI whatsapp 工具（密钥加密存储，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/whatsapp"
+      },
+      {
+        "id": "slack",
+        "name": "Slack",
+        "description": "Slack 机器人：官方 Socket Mode 出站 WebSocket 双工长连接（零公网 IP / 智能 Markdown 分块 / 多轮会话隔离）/ 用户白名单准入 / AI slack 工具（密钥加密存储，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/slack"
+      },
+      {
+        "id": "qq",
+        "name": "QQ",
+        "description": "QQ 机器人：腾讯官方开放平台 QQBot 出站 WebSocket 双工长连接（零公网 IP / 智能 Markdown 分块 / 多轮会话隔离）/ 用户白名单准入 / AI qq 工具（密钥加密存储，零外部依赖）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/qq"
+      },
+      {
+        "id": "imessage",
+        "name": "iMessage",
+        "description": "iMessage 机器人与工作台：Apple macOS 原生 iMessage 通道（零公网 IP / 苹果生态随身触达 / 多轮会话隔离）/ 用户白名单准入 / AI imessage 工具。",
+        "source": "xing-shuyin/pi-web-ui/plugins/imessage"
+      },
+      {
+        "id": "matrix",
+        "name": "Matrix",
+        "description": "Matrix 机器人与工作台 (实验功能)：开源去中心化通信协议 Matrix 出站长轮询双工对话（零公网 IP / 智能 Markdown 分块 / 多轮会话隔离）/ 用户白名单准入 / AI matrix 工具。",
+        "source": "xing-shuyin/pi-web-ui/plugins/matrix"
+      },
+      {
+        "id": "voice-input",
+        "name": "语音输入",
+        "description": "语音输入：输入框旁的麦克风按钮，浏览器语音识别直接听写进输入框；不支持/识别失败时自动降级为服务端转写（远端接口，或一键安装的本地 Whisper，免费不出网）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/voice-input"
+      },
+      {
+        "id": "live-preview",
+        "name": "live-preview",
+        "description": "Live Server 式预览：/liveserver 看 HTML（含相对资源与自动刷新），/md 看 Markdown 渲染；真服务只绑回环地址，经宿主通用代理对外只露同源前缀。",
+        "source": "xing-shuyin/pi-web-ui/plugins/live-preview"
+      },
+      {
+        "id": "image-toolkit",
+        "name": "图片工作台",
+        "description": "一体化 AI 生图与图像处理工作台：一套配置同时接入通义万相、FLUX、OpenAI、Google Imagen/Gemini、智谱 CogView、火山豆包、Stability 与 ComfyUI 等主流生图服务；集成压缩（目标体积二分逼近）、裁剪、缩放、格式转换、水印、滤镜调色与 EXIF 分析；生图与处理在同一工作台内无缝流转。提供 8 个 AI 工具，让 agent 自己生图、配置供应商、分析并加工工作区图片与精准像素取色（附带位置截图）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/image-toolkit"
+      },
+      {
+        "id": "notes",
+        "name": "笔记",
+        "description": "随手记：笔记 + 待办 + 日程提醒三合一。顶栏按钮打开可自由拖拽的全局浮窗（位置/尺寸记忆，设置也在浮窗里，无独立视图页）；提醒走服务端定时（重启不丢、错过补送），另有 5 个 AI 工具与 /note /todo /remind 快速捕获。",
+        "source": "xing-shuyin/pi-web-ui/plugins/notes"
+      },
+      {
+        "id": "desktop-use",
+        "name": "桌面控制",
+        "description": "让 AI 操作 Windows 桌面：按元素名查控件坐标（UI Automation，无需截图）→ 点击 / 输入（含中文粘贴）/ 按键 / 聚焦窗口。输入库缺失时自动安装，卸载时连带删除。",
+        "source": "xing-shuyin/pi-web-ui/plugins/desktop-use"
+      },
+      {
+        "id": "pi-web-multigit",
+        "name": "multi-git",
+        "description": "多仓库 Git 总览：工作区内每个仓库的变更、差异、历史、分支、贮藏、跨仓搜索与时间线，另有工作区分支聚合、Fetch/Pull 与内置终端（其余只读）。",
+        "source": "EinErste/pi-web-multigit"
+      },
+      {
+        "id": "codex-usage",
+        "name": "额度与成本",
+        "description": "会话级多模型账本：按 API 提供商和模型连续累计成本、显示 token 与有效单价；订阅明确不计费。",
+        "source": "xieweimo/pi-web-ui-contrib/plugins/codex-usage"
+      },
+      {
+        "id": "proxy-health",
+        "name": "代理健康",
+        "description": "探测可配置的 HTTPS 目标及代理链路；无代理时检测直连，失败时对比第二目标，谨慎提示网络问题。",
+        "source": "xieweimo/pi-web-ui-contrib/plugins/proxy-health"
+      },
+      {
+        "id": "reconnect",
+        "name": "重连",
+        "description": "断连恢复：查看网页服务与重启守护状态，一键重新连接或重启网页服务（支持单服务/全服务重启，配套可选独立守护进程）。",
+        "source": "xieweimo/pi-web-ui-contrib/plugins/reconnect"
+      },
+      {
+        "id": "sol-savings",
+        "name": "SoL-Pi 状态",
+        "description": "SoL-Pi 会话节省统计与规划底栏：实时追踪大工具输出打包（Observation Pack）节省的上下文 Token 与在线计划（Plan）进度，借鉴 pi-sol-plan-footer 在底栏显示。",
+        "source": "xing-shuyin/pi-web-ui/plugins/sol-savings"
+      },
+      {
+        "id": "session-migrate",
+        "name": "会话迁移",
+        "description": "扫描 ~/.omp/agent/sessions 与 ~/.pi/agent/sessions 的历史会话，只读预览后一键导入 pi 会话库（issue 286 Phase 1）。",
+        "source": "xing-shuyin/pi-web-ui/plugins/session-migrate"
+      },
+      {
+        "id": "pm2-manager",
+        "name": "进程管家",
+        "description": "用 pm2 统一托管 AI 启动的后台任务：长期服务与调试实例交给 pm2 后有名字、有状态、有日志，顶栏「后台任务」面板与插件面板同一份列表，可看状态/CPU/内存/重启/日志、单独停止或删除；未装 pm2 时一键安装。不拦截 AI 的命令，管不管由模型和用户自行决定。",
+        "source": "xing-shuyin/pi-web-ui/plugins/pm2-manager"
+      },
+      {
+        "id": "md-chat",
+        "name": "聊天归档",
+        "description": "本地持久聊天归档：保留压缩前原文、按分支浏览历史、问题跳转与 Markdown 文件查看；不调用模型，不修改原会话。",
+        "source": "engharat/pi-web-ui-md-chat"
+      },
+      {
+        "id": "wallpaper-engine",
+        "name": "动态壁纸",
+        "description": "动态壁纸：自动扫描本机 Wallpaper Engine 创意工坊壁纸，支持视频壁纸播放、液态毛玻璃磨砂效果与壁纸库抽屉。",
+        "source": "xing-shuyin/pi-web-ui/plugins/wallpaper-engine"
+      },
+      {
+        "id": "response-speed",
+        "name": "响应速度",
+        "description": "AI 响应速度监控：实时统计并显示当前回答的 AI 首字响应耗时（TTFT，发送请求到首个响应的时间）以及底部状态栏的平均响应速度，支持点击底栏查看统计明细与历史趋势。",
+        "source": "xing-shuyin/pi-web-ui/plugins/response-speed"
+      },
+      {
+        "id": "browser-use",
+        "name": "browser-use",
+        "description": "常驻 Chrome 自动化：自动拉起或接管常驻浏览器窗口，支持多标签页切换、精简交互元素快照（极省 Token）、智能点击输入、反爬穿透与状态跨任务持久。",
+        "source": "xing-shuyin/pi-web-ui/plugins/browser-use"
+      },
+      {
+        "id": "tts",
+        "name": "语音合成 (TTS)",
+        "description": "多源通用语音合成插件，聚合豆包大模型语音与 DeepSeek 官方音色，支持浏览器扩展一键同步登录凭据并支持消息朗读与实时边打字边流式发声。",
+        "source": "xing-shuyin/pi-web-ui/plugins/tts"
+      },
+      {
+        "id": "tunnel",
+        "name": "网络隧道",
+        "description": "反向隧道：主人设备 CLI 主动连入（零公网暴露，穿 NAT），pi 经本机 SOCKS5 以主人所在网络为出口做巡检与访问（DNS 在主人侧解析）。面板展示隧道在线状态/连接数/令牌管理；注册 tunnel_fetch 工具供 AI 直接探测主人网络。",
+        "source": "xing-shuyin/pi-web-ui/plugins/tunnel"
+      },
+      {
+        "id": "approval-gate",
+        "name": "拍板",
+        "description": "定时任务拍板中心：待拍板项集中列表，点击跳转对应会话完成拍板；通用 CLI 供任意定时任务登记；顶栏拍板 tab 红点显示待拍板数。",
+        "source": "xing-shuyin/pi-web-ui/plugins/approval-gate"
+      }
+    ],
+    "manifests": [
+      {
+        "directory": "approval-gate",
+        "id": "approval-gate",
+        "name": "拍板",
+        "version": "0.2.1"
+      },
+      {
+        "directory": "browser-use",
+        "id": "browser-use",
+        "name": "browser-use",
+        "version": "0.9.0"
+      },
+      {
+        "directory": "db-client",
+        "id": "db-client",
+        "name": "数据库",
+        "version": "0.4.2"
+      },
+      {
+        "directory": "demo-mailbox",
+        "id": "demo-mailbox",
+        "name": "示例",
+        "version": "0.2.1"
+      },
+      {
+        "directory": "desktop-use",
+        "id": "desktop-use",
+        "name": "桌面控制",
+        "version": "0.3.1"
+      },
+      {
+        "directory": "dingtalk",
+        "name": "dingtalk",
+        "version": "0.1.3"
+      },
+      {
+        "directory": "discord",
+        "name": "discord",
+        "version": "0.1.3"
+      },
+      {
+        "directory": "feature-board",
+        "id": "feature-board",
+        "name": "需求与投票",
+        "version": "1.0.2"
+      },
+      {
+        "directory": "feishu",
+        "name": "feishu",
+        "version": "0.2.4"
+      },
+      {
+        "directory": "image-toolkit",
+        "id": "image-toolkit",
+        "name": "图片工作台",
+        "version": "0.2.3"
+      },
+      {
+        "directory": "imessage",
+        "name": "imessage",
+        "version": "0.1.4"
+      },
+      {
+        "directory": "legado-web",
+        "id": "legado-web",
+        "name": "阅读",
+        "version": "0.2.1"
+      },
+      {
+        "directory": "live-preview",
+        "id": "live-preview",
+        "name": "实时预览",
+        "version": "0.2.2"
+      },
+      {
+        "directory": "matrix",
+        "name": "matrix",
+        "version": "0.1.4"
+      },
+      {
+        "directory": "mermaid",
+        "id": "mermaid",
+        "name": "Mermaid 图表",
+        "version": "1.0.1"
+      },
+      {
+        "directory": "notes",
+        "id": "notes",
+        "name": "笔记",
+        "version": "0.3.0"
+      },
+      {
+        "directory": "office-preview",
+        "id": "office-preview",
+        "name": "Office 预览",
+        "version": "0.1.2"
+      },
+      {
+        "directory": "pm2-manager",
+        "id": "pm2-manager",
+        "name": "进程管家",
+        "version": "0.3.4"
+      },
+      {
+        "directory": "qq",
+        "name": "qq",
+        "version": "0.1.4"
+      },
+      {
+        "directory": "response-speed",
+        "id": "response-speed",
+        "name": "响应速度",
+        "version": "0.3.1"
+      },
+      {
+        "directory": "run-trace",
+        "id": "run-trace",
+        "name": "轨迹",
+        "version": "0.1.1"
+      },
+      {
+        "directory": "session-migrate",
+        "id": "session-migrate",
+        "name": "会话迁移",
+        "version": "0.4.2"
+      },
+      {
+        "directory": "sftp",
+        "id": "sftp",
+        "name": "SFTP 同步",
+        "version": "0.3.2"
+      },
+      {
+        "directory": "slack",
+        "name": "slack",
+        "version": "0.1.4"
+      },
+      {
+        "directory": "sol-savings",
+        "id": "sol-savings",
+        "name": "SoL-Pi 状态",
+        "version": "0.2.1"
+      },
+      {
+        "directory": "telegram",
+        "name": "telegram",
+        "version": "0.1.4"
+      },
+      {
+        "directory": "tts",
+        "id": "tts",
+        "name": "语音合成 (TTS)",
+        "version": "1.4.0"
+      },
+      {
+        "directory": "tunnel",
+        "id": "tunnel",
+        "name": "网络隧道",
+        "version": "1.1.0"
+      },
+      {
+        "directory": "voice-input",
+        "id": "voice-input",
+        "name": "语音与拍照输入",
+        "version": "0.4.2"
+      },
+      {
+        "directory": "vscode-editor",
+        "id": "vscode-editor",
+        "name": "编辑器",
+        "version": "0.5.2"
+      },
+      {
+        "directory": "wallpaper-engine",
+        "id": "wallpaper-engine",
+        "name": "动态壁纸",
+        "version": "0.3.64"
+      },
+      {
+        "directory": "webmail",
+        "name": "邮箱",
+        "version": "0.2.3"
+      },
+      {
+        "directory": "wechat-ilink",
+        "id": "wechat-ilink",
+        "name": "微信通道",
+        "version": "0.4.0"
+      },
+      {
+        "directory": "wecom",
+        "name": "wecom",
+        "version": "0.1.4"
+      },
+      {
+        "directory": "whatsapp",
+        "name": "whatsapp",
+        "version": "0.1.3"
+      }
+    ]
+  }
+}

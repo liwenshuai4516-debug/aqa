@@ -1,5 +1,7 @@
 # macOS 内部测试交付状态
 
+> 当前状态（2026-10-21 / T39）：macOS arm64 内部安装包已交付，项目尚未全部完成。真实模型已用 18/18，禁止继续付费调用；T26 严格目标已通过，T38 已补官方 DSH 原工具与持久化的实际执行（本地模型）。原生保存句柄/字节已通过但宿主完整路径未知，原生取消超时未验。正式身份/签名/更新、真实 OAuth、中文工作区选择、通知/听感仍按 completion-audit 保留；用户暂缓项不重复催问。以下旧轮次状态保留历史，最新范围见 scope-decisions 与 T39-feature-inventory。
+
 当前目标尚未全部完成。本次交付仅支持已验证的 macOS arm64 内部测试；用户已要求暂不实施 Windows/Linux。版本 0.109.0，临时名称 Pi Agent Desktop，临时 App ID local.pi-agent.desktop。
 
 安装文件位于项目根目录 release/：

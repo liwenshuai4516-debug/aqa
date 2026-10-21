@@ -1,0 +1,10 @@
+file:///Users/liyingjun/Desktop/SW-QA/15-aqa/docs/desktop-delivery/evidence/T39-inventory.mjs:28
+  if (/^import\s/m.test(output)) throw new Error(`Unexpected runtime import: ${file}`);
+                                       ^
+
+Error: Unexpected runtime import: web/src/ui-slots.ts
+    at pureExports (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/docs/desktop-delivery/evidence/T39-inventory.mjs:28:40)
+    at inventory (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/docs/desktop-delivery/evidence/T39-inventory.mjs:55:20)
+    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/docs/desktop-delivery/evidence/T39-inventory.mjs:85:16
+
+Node.js v24.19.0

@@ -1,0 +1,28 @@
+{
+  "comparison": "PASS",
+  "manifestChanges": [
+    [
+      {
+        "directory": "vscode-editor",
+        "id": "vscode-editor",
+        "name": "编辑器",
+        "version": "0.5.1"
+      },
+      {
+        "directory": "vscode-editor",
+        "id": "vscode-editor",
+        "name": "编辑器",
+        "version": "0.5.2"
+      }
+    ]
+  ],
+  "credentialPatternScan": "PASS",
+  "unitTests": 105,
+  "typecheck": "PASS",
+  "lint": "PASS",
+  "sourceGate": "PASS",
+  "protectedGate": "PASS",
+  "productionChanges": false,
+  "paidRequests": 0,
+  "unknownTestDiffSha256": "64935581d71dab253c85596bb1c718b07b6a3a35c6879750abf218990fe64f0f"
+}

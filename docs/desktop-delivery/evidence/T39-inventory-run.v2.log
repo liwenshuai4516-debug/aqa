@@ -1,0 +1,3 @@
+{"comparison":{"hashes":true,"tools":true,"coreTools":true,"uiItems":true,"settingsTabs":true,"protocol":true,"catalog":true,"manifests":false},"counts":{"hashes":5,"tools":27,"coreTools":8,"uiItems":133,"settingsTabs":20,"protocol":2,"catalog":37,"manifests":35}}
+(node:79033) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
