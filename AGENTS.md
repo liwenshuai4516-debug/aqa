@@ -91,6 +91,14 @@ Playwright：Chrome 路径走 `tests/lib/chrome.mjs`（`PI_WEB_CHROME` 可覆盖
 
 > 详见 `docs/release.md`
 
+### 本项目代码备份与自动推送（用户要求，2026-10-21）
+
+- 本项目远端为 `https://github.com/liwenshuai4516-debug/aqa.git`（`origin`），当前主分支为 `master`。本节优先于下方原项目发布示例；日常更新不创建发布标签或发布软件包。
+- 后续每次完成代码、测试、配置或文档更新，按本文件要求验证后创建清晰、可回滚的 Git 提交，并立即推送到当前分支的 `origin` 同名分支；首次推送设置 upstream。用户已持续授权此流程，无需每次再次确认。
+- 只提交本次更新涉及的文件；既有未提交差异单独记录和处理，不使用无差别暂存。凭据、个人运行数据、依赖和构建产物仍遵守忽略规则。
+- 推送后核对远端分支提交与本地 HEAD 一致，再报告提交号。推送失败时保留本地提交，明确报告原因和未同步状态；不得声称已备份。
+- 保留提交历史，禁止为自动推送使用强制推送、重置远端或删除历史；回滚优先创建 `git revert` 提交并推送。
+
 ```bash
 npm run typecheck && npm run build
 npm run changelog:i18n   # 文案有增减必跑
