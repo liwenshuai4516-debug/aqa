@@ -1,185 +1,36 @@
 /**
- * data-space 服务端入口 —— 测试数据的唯一事实源。
+ * data-space 服务端入口 —— 测试资产（系统 / 模块 / 功能 / 用例 / 数据集）的唯一事实源。
  *
  * 分工：
  *   - 数据落 `<dataDir>/data-space/store.json`（原子写：临时文件 + rename）。**不放插件目录**：
  *     内置插件升级会整目录覆盖、卸载会删目录，用户数据必须活在外面。默认 `<dataDir>` = ~/.pi-web。
  *   - 全局一份，不按项目 cwd、不按会话隔离：切项目 / 换会话读到的是同一批数据。
+ *   - 层级用扁平父引用（systemId / moduleId / featureId）：搜索、移动、导入导出都简单。
  *   - 浏览器只走 HTTP：`GET /state` 取快照、`POST /save` 整份保存（带 revision 乐观并发）、
  *     `POST /reset` 回到示例数据。冲突时回 409 + 服务端最新快照，由页面决定重载。
+ *   - 0.1.0 的旧库（groups + datasets）在读取时自动迁移：分组 → 系统（code 留空），
+ *     数据集归属清空为「未归类」，原数据一条不丢；旧文件先备份为 store.json.v1-<时间戳>.bak。
  *   - 演示版本不注册 AI 工具：需要 AI 改数据时直接改 store.json 即可（页面里显示路径）。
  */
-import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { randomUUID } from "node:crypto";
-
-/** 单文件上限，防止一份畸形 store 把页面顶爆（演示版够用，真实数据量大再拆文件）。 */
-const MAX = { groups: 100, datasets: 500, records: 200, tags: 12 };
-const COLORS = new Set(["blue", "green", "amber", "purple", "gray"]);
-
-const now = () => new Date().toISOString();
-const str = (v, n) => (typeof v === "string" ? v.trim().slice(0, n) : "");
-const uid = () => randomUUID();
-
-/** 示例数据：首次打开时给一份可直接看的样例，用户可一键清空或恢复。 */
-function seedStore() {
-	const t = now();
-	const groups = [
-		{ id: "g-user", name: "用户与权限", color: "blue", note: "登录、账号、角色相关数据", createdAt: t },
-		{ id: "g-device", name: "设备与监测", color: "green", note: "设备台账、监测点位、实时数据", createdAt: t },
-		{ id: "g-order", name: "工单与调度", color: "amber", note: "工单创建、派发、回单", createdAt: t },
-	];
-	const datasets = [
-		{
-			id: "d-login-ok",
-			name: "登录成功-普通账号",
-			groupId: "g-user",
-			env: "测试环境",
-			tags: ["冒烟", "登录"],
-			note: "正常账号登录，断言返回 token 与角色。",
-			records: [
-				{ id: uid(), key: "username", value: "test_user", remark: "已授权普通账号" },
-				{ id: uid(), key: "password", value: "Abc@12345", remark: "测试专用，禁止复用生产口令" },
-				{ id: uid(), key: "expectCode", value: "200", remark: "" },
-				{ id: uid(), key: "expectRole", value: "operator", remark: "" },
-			],
-			createdAt: t,
-			updatedAt: t,
-		},
-		{
-			id: "d-login-bad",
-			name: "登录失败-密码错误",
-			groupId: "g-user",
-			env: "测试环境",
-			tags: ["异常", "登录"],
-			note: "错误口令应返回 401 且不返回 token。",
-			records: [
-				{ id: uid(), key: "username", value: "test_user", remark: "" },
-				{ id: uid(), key: "password", value: "wrong-pass", remark: "" },
-				{ id: uid(), key: "expectCode", value: "401", remark: "" },
-			],
-			createdAt: t,
-			updatedAt: t,
-		},
-		{
-			id: "d-device-list",
-			name: "设备列表查询参数",
-			groupId: "g-device",
-			env: "预发环境",
-			tags: ["查询", "分页"],
-			note: "按站点与状态过滤，校验分页总数。",
-			records: [
-				{ id: uid(), key: "stationId", value: "ST-001", remark: "" },
-				{ id: uid(), key: "status", value: "running", remark: "运行中" },
-				{ id: uid(), key: "page", value: "1", remark: "" },
-				{ id: uid(), key: "pageSize", value: "20", remark: "" },
-			],
-			createdAt: t,
-			updatedAt: t,
-		},
-		{
-			id: "d-order-create",
-			name: "工单创建-必填校验",
-			groupId: "g-order",
-			env: "本地",
-			tags: ["校验"],
-			note: "缺少必填项时应拒绝创建并给出字段级提示。",
-			records: [
-				{ id: uid(), key: "type", value: "repair", remark: "维修工单" },
-				{ id: uid(), key: "title", value: "", remark: "故意留空，触发必填校验" },
-				{ id: uid(), key: "expectCode", value: "400", remark: "" },
-			],
-			createdAt: t,
-			updatedAt: t,
-		},
-	];
-	return { version: 1, revision: 1, updatedAt: t, groups, datasets };
-}
-
-/** 收进来的任何东西都必须先过这里：丢掉未知字段、截断长度、补 id。 */
-function normalizeStore(raw, previous) {
-	const o = raw && typeof raw === "object" ? raw : {};
-	const prevById = new Map((previous?.datasets ?? []).map((d) => [d.id, d]));
-	const seenGroups = new Set();
-	const groups = (Array.isArray(o.groups) ? o.groups : [])
-		.slice(0, MAX.groups)
-		.map((g) => {
-			const go = g && typeof g === "object" ? g : {};
-			const id = str(go.id, 64) || uid();
-			return {
-				id,
-				name: str(go.name, 60) || "未命名分组",
-				color: COLORS.has(go.color) ? go.color : "blue",
-				note: str(go.note, 200),
-				createdAt: str(go.createdAt, 40) || now(),
-			};
-		})
-		.filter((g) => {
-			if (seenGroups.has(g.id)) return false;
-			seenGroups.add(g.id);
-			return true;
-		});
-	const groupIds = new Set(groups.map((g) => g.id));
-	const seenDatasets = new Set();
-	const datasets = (Array.isArray(o.datasets) ? o.datasets : [])
-		.slice(0, MAX.datasets)
-		.map((d) => {
-			const dobj = d && typeof d === "object" ? d : {};
-			const id = str(dobj.id, 64) || uid();
-			const records = (Array.isArray(dobj.records) ? dobj.records : [])
-				.slice(0, MAX.records)
-				.map((r) => {
-					const ro = r && typeof r === "object" ? r : {};
-					return {
-						id: str(ro.id, 64) || uid(),
-						key: str(ro.key, 80),
-						value: typeof ro.value === "string" ? ro.value.slice(0, 4000) : "",
-						remark: str(ro.remark, 200),
-					};
-				})
-				.filter((r) => r.key || r.value || r.remark);
-			const tags = (Array.isArray(dobj.tags) ? dobj.tags : [])
-				.map((x) => str(x, 24))
-				.filter(Boolean)
-				.slice(0, MAX.tags);
-			return {
-				id,
-				name: str(dobj.name, 80) || "未命名数据集",
-				groupId: groupIds.has(str(dobj.groupId, 64)) ? str(dobj.groupId, 64) : "",
-				env: str(dobj.env, 40),
-				tags: [...new Set(tags)],
-				note: str(dobj.note, 2000),
-				records,
-				createdAt: str(dobj.createdAt, 40) || prevById.get(id)?.createdAt || now(),
-				updatedAt: str(dobj.updatedAt, 40) || now(),
-			};
-		})
-		.filter((d) => {
-			if (seenDatasets.has(d.id)) return false;
-			seenDatasets.add(d.id);
-			return true;
-		});
-	return { groups, datasets };
-}
+import { MAX, migrateLegacy, normalizeStore, now, str } from "./model.mjs";
+import { seedStore } from "./seed.mjs";
 
 export default {
 	activate(host) {
 		const dir = join(host.dataDir, "data-space");
 		const file = join(dir, "store.json");
 
-		let store = load();
+		const loaded = load();
+		let store = loaded.store;
+		// 迁移结果立刻落盘，避免下次启动重复迁移（旧格式备份已在 load 里留好）。
+		if (loaded.migrated) persist();
 
 		function load() {
+			let parsed = null;
 			try {
-				const parsed = JSON.parse(readFileSync(file, "utf8"));
-				const { groups, datasets } = normalizeStore(parsed, null);
-				return {
-					version: 1,
-					revision: Number.isFinite(parsed?.revision) ? parsed.revision : 1,
-					updatedAt: str(parsed?.updatedAt, 40) || now(),
-					groups,
-					datasets,
-				};
+				parsed = JSON.parse(readFileSync(file, "utf8"));
 			} catch (err) {
 				if (existsSync(file)) {
 					// 读得出来但坏了（手改坏 / 半截写）：先挪走再当空库起，绝不静默覆盖用户数据。
@@ -191,9 +42,31 @@ export default {
 						host.log("error", "数据空间库解析失败且隔离失败，本次不写盘以免覆盖");
 					}
 				}
-				const seeded = seedStore();
-				return seeded;
+				return { store: seedStore(), migrated: false };
 			}
+
+			const isV2 = parsed && typeof parsed === "object" && Array.isArray(parsed.systems);
+			let migrated = null;
+			if (!isV2) {
+				migrated = migrateLegacy(parsed);
+				// 迁移前留一份旧格式备份，用户随时能翻回去。
+				try {
+					copyFileSync(file, `${file}.v1-${Date.now()}.bak`);
+				} catch (err) {
+					host.log("warn", "迁移备份旧数据文件失败，继续迁移", String(err));
+				}
+			}
+			const normalized = normalizeStore(migrated ?? parsed, null);
+			if (migrated) host.log("info", "数据空间：旧版分组数据已迁移为「系统」层级");
+			return {
+				store: {
+					version: 2,
+					revision: Number.isFinite(parsed?.revision) ? parsed.revision : 1,
+					updatedAt: str(parsed?.updatedAt, 40) || now(),
+					...normalized,
+				},
+				migrated: Boolean(migrated),
+			};
 		}
 
 		function persist() {
@@ -212,7 +85,11 @@ export default {
 				ok: true,
 				revision: store.revision,
 				updatedAt: store.updatedAt,
-				groups: store.groups,
+				migratedFrom: store.migratedFrom,
+				systems: store.systems,
+				modules: store.modules,
+				features: store.features,
+				cases: store.cases,
 				datasets: store.datasets,
 				dir,
 				file,
@@ -252,8 +129,13 @@ export default {
 				});
 				return;
 			}
-			const { groups, datasets } = normalizeStore(body, store);
-			store = { version: 1, revision: store.revision + 1, updatedAt: now(), groups, datasets };
+			const normalized = normalizeStore(body, store);
+			store = {
+				version: 2,
+				revision: store.revision + 1,
+				updatedAt: now(),
+				...normalized,
+			};
 			persist();
 			res.json(snapshot());
 		});
@@ -264,8 +146,7 @@ export default {
 				res.status(400).json({ ok: false, error: "需要 confirm:true 才能重置" });
 				return;
 			}
-			const seeded = seedStore();
-			store = { ...seeded, revision: store.revision + 1 };
+			store = { ...seedStore(), revision: store.revision + 1 };
 			persist();
 			res.json(snapshot());
 		});

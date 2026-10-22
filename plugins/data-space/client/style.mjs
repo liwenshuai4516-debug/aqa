@@ -44,8 +44,9 @@ export const CSS = `
 .dsp-chip { appearance: none; font: inherit; font-size: 12px; padding: 4px 10px; border-radius: 99px; border: 1px solid var(--border, #2c2f36); background: transparent; color: var(--text-dim, #a4a9b3); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
 .dsp-chip:hover { color: var(--text, #e6e6e6); background: var(--bg-elev2, #22242a); }
 .dsp-chip.on { color: var(--accent-contrast, #fff); background: var(--accent, #4f8cff); border-color: transparent; }
-.dsp-table-wrap { border: 1px solid var(--border, #2c2f36); border-radius: 11px; overflow: hidden; background: var(--bg-elev, var(--bg-elev2, #1d1f24)); }
-.dsp-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.dsp-table-wrap { border: 1px solid var(--border, #2c2f36); border-radius: 11px; overflow: auto; background: var(--bg-elev, var(--bg-elev2, #1d1f24)); }
+.dsp-table { width: 100%; min-width: 640px; border-collapse: collapse; table-layout: fixed; }
+.dsp-table.wide { min-width: 940px; }
 .dsp-table th { text-align: left; font-weight: 500; font-size: 11.5px; color: var(--text-faint, #8a8f98); padding: 9px 12px; border-bottom: 1px solid var(--border, #2c2f36); background: var(--bg-elev2, #22242a); }
 .dsp-table td { padding: 9px 12px; border-bottom: 1px solid var(--border-soft, var(--border, #2c2f36)); vertical-align: middle; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dsp-table tr:last-child td { border-bottom: 0; }
@@ -85,9 +86,9 @@ export const CSS = `
 .dsp-kv-head { font-size: 11.5px; color: var(--text-faint, #8a8f98); padding-bottom: 2px; }
 .dsp-kv textarea { min-height: 34px; }
 .dsp-overlay { position: fixed; inset: 0; z-index: 70; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; padding: 24px; }
-.dsp-modal { width: min(860px, 100%); max-height: 90vh; display: flex; flex-direction: column; background: var(--bg, #17181c); border: 1px solid var(--border, #2c2f36); border-radius: 13px; box-shadow: 0 24px 60px rgba(0,0,0,.4); overflow: hidden; }
+.dsp-modal { width: min(860px, 100%); max-height: 92vh; display: flex; flex-direction: column; background: var(--bg, #17181c); border: 1px solid var(--border, #2c2f36); border-radius: 13px; box-shadow: 0 24px 60px rgba(0,0,0,.4); overflow: hidden; }
 .dsp-modal-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 16px; border-bottom: 1px solid var(--border, #2c2f36); font-weight: 600; }
-.dsp-modal-body { padding: 14px 16px; overflow: auto; overscroll-behavior: contain; display: flex; flex-direction: column; gap: 12px; }
+.dsp-modal-body { padding: 14px 16px 18px; overflow: auto; overscroll-behavior: contain; display: flex; flex-direction: column; gap: 12px; }
 .dsp-modal-foot { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 11px 16px; border-top: 1px solid var(--border, #2c2f36); }
 .dsp-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
 .dsp-field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
@@ -100,4 +101,114 @@ export const CSS = `
 .dsp-stack { display: flex; flex-direction: column; gap: 12px; }
 .dsp-stack h4 { margin: 0 0 6px; font-size: 12.5px; }
 .dsp-inline { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+/* ---------------------------------------------------------- 用例库：左树右表 */
+.dsp-layout { display: grid; grid-template-columns: 268px minmax(0, 1fr); gap: 16px; align-items: start; }
+.dsp-content { min-width: 0; }
+.dsp-tree { position: sticky; top: 96px; max-height: calc(100vh - 140px); display: flex; flex-direction: column; border: 1px solid var(--border, #2c2f36); border-radius: 11px; background: var(--bg-elev, var(--bg-elev2, #1d1f24)); overflow: hidden; }
+.dsp-tree-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-bottom: 1px solid var(--border, #2c2f36); }
+.dsp-tree-title { font-size: 11.5px; color: var(--text-faint, #8a8f98); letter-spacing: .3px; }
+.dsp-tree-body { overflow: auto; padding: 6px; flex: 1; }
+.dsp-tree-row { display: flex; align-items: center; gap: 5px; padding: 4px 6px; border-radius: 7px; cursor: pointer; min-width: 0; }
+.dsp-tree-row:hover { background: var(--bg-elev2, #22242a); }
+.dsp-tree-row.on { background: color-mix(in srgb, var(--accent, #4f8cff) 18%, transparent); }
+.dsp-tree-row.lvl-sys { font-weight: 600; }
+.dsp-tree-row.lvl-mod { padding-left: 20px; font-weight: 500; }
+.dsp-tree-row.lvl-feat { padding-left: 38px; color: var(--text-dim, #a4a9b3); }
+.dsp-tree-row.lvl-all { font-weight: 500; margin-bottom: 4px; }
+.dsp-tree-row em { font-style: normal; font-weight: 400; font-size: 10px; color: var(--text-faint, #8a8f98); border: 1px solid var(--border, #2c2f36); border-radius: 4px; padding: 0 3px; margin-left: 4px; }
+.dsp-caret.open svg { transform: rotate(90deg); }
+.dsp-tree-bullet { width: 5px; height: 5px; border-radius: 99px; background: var(--text-faint, #8a8f98); flex: none; margin: 0 5px; opacity: .7; }
+.dsp-tree-empty { padding: 14px 8px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; color: var(--text-faint, #8a8f98); font-size: 12px; }
+.dsp-caret { width: 15px; flex: none; display: grid; place-items: center; color: var(--text-faint, #8a8f98); font-size: 9px; }
+.dsp-caret.blank { visibility: hidden; }
+.dsp-tree-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dsp-tree-row.selall { margin-bottom: 4px; font-weight: 500; }
+.dsp-cnt { font-size: 10.5px; color: var(--text-faint, #8a8f98); font-variant-numeric: tabular-nums; flex: none; }
+.dsp-cnt.zero { color: var(--amber, #e0a63c); border: 1px solid color-mix(in srgb, var(--amber, #e0a63c) 45%, transparent); border-radius: 99px; padding: 0 5px; }
+.dsp-tree-ops { display: none; gap: 1px; flex: none; }
+.dsp-tree-row:hover .dsp-tree-ops { display: flex; }
+.dsp-tree-row:hover .dsp-cnt { display: none; }
+.dsp-tree-ops .dsp-btn.icon { padding: 1px 4px; font-size: 11px; line-height: 1.4; }
+
+/* ---------------------------------------------------------- 页头 / 面包屑 / 工具条 */
+.dsp-page-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+.dsp-page-title { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.dsp-crumb { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--text-faint, #8a8f98); margin-bottom: 8px; flex-wrap: wrap; }
+.dsp-crumb button { appearance: none; border: 0; background: transparent; color: var(--text-dim, #a4a9b3); font: inherit; cursor: pointer; padding: 0; }
+.dsp-crumb button:hover { color: var(--accent, #4f8cff); text-decoration: underline; }
+.dsp-crumb-sep { opacity: .5; }
+.dsp-toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.dsp-toolbar .dsp-search { width: 240px; }
+
+/* ---------------------------------------------------------- 功能 / 模块卡片 + 覆盖率 */
+.dsp-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 12px; }
+.dsp-feature-card { border: 1px solid var(--border, #2c2f36); border-radius: 11px; background: var(--bg-elev, var(--bg-elev2, #1d1f24)); padding: 11px 13px; display: flex; flex-direction: column; gap: 7px; cursor: pointer; min-width: 0; }
+.dsp-feature-card:hover { border-color: var(--accent, #4f8cff); }
+.dsp-feature-top { display: flex; align-items: center; gap: 8px; justify-content: space-between; min-width: 0; }
+.dsp-feature-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dsp-feature-foot { display: flex; align-items: center; gap: 8px; justify-content: space-between; font-size: 11.5px; color: var(--text-faint, #8a8f98); }
+.dsp-progress { height: 5px; border-radius: 99px; background: var(--bg-elev2, #22242a); overflow: hidden; flex: 1; min-width: 40px; }
+.dsp-progress i { display: block; height: 100%; border-radius: 99px; background: var(--green, #3ecf8e); }
+.dsp-progress i.mid { background: var(--amber, #e0a63c); }
+.dsp-progress i.zero { background: var(--red, #e5484d); }
+.dsp-gap { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; cursor: pointer; min-width: 0; }
+.dsp-gap:hover { background: var(--bg-elev2, #22242a); }
+.dsp-gap-path { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dsp-gap b { flex: none; max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dsp-gap-go { color: var(--accent, #4f8cff); font-size: 11.5px; flex: none; }
+
+/* ---------------------------------------------------------- 徽章 */
+.dsp-prio { font-size: 10.5px; font-weight: 600; padding: 0 6px; border-radius: 5px; border: 1px solid var(--border, #2c2f36); color: var(--text-faint, #8a8f98); flex: none; }
+.dsp-prio.P0 { color: var(--red, #e5484d); border-color: color-mix(in srgb, var(--red, #e5484d) 45%, transparent); background: color-mix(in srgb, var(--red, #e5484d) 12%, transparent); }
+.dsp-prio.P1 { color: var(--amber, #e0a63c); border-color: color-mix(in srgb, var(--amber, #e0a63c) 45%, transparent); background: color-mix(in srgb, var(--amber, #e0a63c) 12%, transparent); }
+.dsp-prio.P2 { color: var(--accent, #4f8cff); border-color: color-mix(in srgb, var(--accent, #4f8cff) 45%, transparent); background: color-mix(in srgb, var(--accent, #4f8cff) 12%, transparent); }
+.dsp-status { font-size: 10.5px; padding: 0 6px; border-radius: 99px; background: var(--bg-elev2, #22242a); border: 1px solid var(--border, #2c2f36); color: var(--text-faint, #8a8f98); flex: none; }
+.dsp-status.待评审 { color: var(--amber, #e0a63c); }
+.dsp-status.已评审 { color: var(--green, #3ecf8e); }
+.dsp-status.已废弃 { color: var(--text-faint, #8a8f98); text-decoration: line-through; }
+.dsp-code-cell { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--text-dim, #a4a9b3); }
+.dsp-path-cell { font-size: 11px; color: var(--text-faint, #8a8f98); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---------------------------------------------------------- 弹窗内步骤 / 关联数据 / 三级选择 */
+.dsp-step { display: grid; grid-template-columns: 20px minmax(0, 1fr) minmax(0, 1fr) 28px; gap: 6px; align-items: start; margin-bottom: 6px; }
+.dsp-step-head { font-size: 11.5px; color: var(--text-faint, #8a8f98); margin-bottom: 4px; }
+.dsp-step-no { font-size: 11px; color: var(--text-faint, #8a8f98); text-align: center; padding-top: 8px; }
+.dsp-step textarea { min-height: 34px; }
+.dsp-linked { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 2px; max-height: 168px; overflow: auto; }
+.dsp-linked-item { display: grid; grid-template-columns: 14px minmax(0, 1fr); column-gap: 6px; align-items: center; padding: 3px 6px; border-radius: 7px; cursor: pointer; min-width: 0; }
+.dsp-linked-item:hover { background: var(--bg-elev2, #22242a); }
+.dsp-linked-item input { grid-row: 1 / span 2; }
+.dsp-linked-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dsp-linked-item .dsp-muted { font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dsp-path-selects { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.dsp-modal.narrow { width: min(520px, 100%); }
+.dsp-tips { display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: var(--text-dim, #a4a9b3); }
+.dsp-tips div::before { content: "·"; margin-right: 6px; color: var(--text-faint, #8a8f98); }
+.dsp-tip { border: 1px solid color-mix(in srgb, var(--amber, #e0a63c) 40%, transparent); background: color-mix(in srgb, var(--amber, #e0a63c) 10%, transparent); border-radius: 9px; padding: 7px 11px; font-size: 12px; margin-bottom: 12px; }
+.dsp-case-title { display: flex; align-items: center; gap: 6px; min-width: 0; cursor: pointer; }
+.dsp-case-title b { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dsp-case-title:hover b { color: var(--accent, #4f8cff); }
+.dsp-num-cell { font-variant-numeric: tabular-nums; color: var(--text-dim, #a4a9b3); text-align: right; }
+.dsp-meta-line { font-size: 11.5px; color: var(--text-faint, #8a8f98); margin-top: 3px; }
+.dsp-gap-list { display: flex; flex-direction: column; gap: 1px; }
+.dsp-tree-row, .dsp-gap, .dsp-feature-card { appearance: none; font: inherit; color: inherit; text-align: left; width: 100%; border-radius: 8px; }
+.dsp-notice { border: 1px solid color-mix(in srgb, var(--amber, #e0a63c) 40%, transparent); background: color-mix(in srgb, var(--amber, #e0a63c) 10%, transparent); color: var(--text, #e6e6e6); border-radius: 9px; padding: 8px 11px; font-size: 12px; }
+
+@media (max-width: 1000px) {
+	.dsp-layout { grid-template-columns: minmax(0, 1fr); }
+	.dsp-tree { position: static; max-height: 288px; }
+	.dsp-head { padding: 14px 14px 0; }
+	.dsp-body { padding: 14px 14px 0; }
+	.dsp-overlay { padding: 12px; }
+	.dsp-step { grid-template-columns: 18px minmax(0, 1fr) 26px; }
+	.dsp-step textarea[data-sf="expect"] { grid-column: 2 / 3; }
+	/* 窄屏先让位给名称与操作，标签/更新时间靠搜索与编辑弹窗查看 */
+	.dsp-table.ds col:nth-child(5), .dsp-table.ds col:nth-child(6),
+	.dsp-table.ds th:nth-child(5), .dsp-table.ds th:nth-child(6),
+	.dsp-table.ds td:nth-child(5), .dsp-table.ds td:nth-child(6) { display: none; }
+}
+@media (max-width: 620px) {
+	.dsp-table.ds col:nth-child(3), .dsp-table.ds th:nth-child(3), .dsp-table.ds td:nth-child(3) { display: none; }
+}
 `;
