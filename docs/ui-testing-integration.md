@@ -19,6 +19,25 @@
 
 ## 加载与使用
 
+### 桌面技能不可见修正（2026-10-22）
+
+用户截图中技能数为 0、输入 `/ui` 无候选。实际桌面服务已使用 SDK 1.2.0，但启动工作区为 `Downloads`；此前仅在本仓库 `.pi/settings.json` 登记资源，切到其他工作区自然不可见。日志同样记录了目录从 8 项变为 0 项。此前的 SDK/宿主目录验证没有覆盖该桌面配置，不能据此认定用户窗口已加载。
+
+本次给登记脚本增加显式 `--agent-dir`，已把本包、MCP 薄扩展及同名入口登记到本机桌面应用专用 `~/Library/Application Support/Pi Agent Desktop/agent/settings.json`；保留原有包与模型偏好，不修改认证、项目选择或宿主发现代码。项目登记继续有效。仅新增短 Skill `ui-testing-workflow` 转入原包 `ui-test-workflow`，共 9 个技能，不复制原包实现。MCP 的程序/配置从能力安装位置解析，测试目录按当前工作区定位。
+
+当前用户窗口执行一次 `/reload` 后，标准预设的技能页可列出同名入口与 8 个阶段技能；输入 `/ui` 选择入口会填入 `/skill:ui-testing-workflow `。能力经 SDK 包/扩展加载，Web UI 插件市场不额外创建一份插件。登记本身不使无依赖的 `Downloads` 成为正式测试项目，也不自动安装项目依赖。应用级登记使用安装仓库绝对路径，移动仓库后需重新登记；不是独立桌面分发包。
+
+本次运行真实 SDK/MCP 集成 10 项通过，能力安装目录与被测项目不同。另用隔离 Electron、空 agent 配置、不同工作区、端口 18975，在实际界面复现空列表/无候选，登记后通过 `/reload` 验证 9 个技能启用及 `/ui` 选中后填入原生技能指令。没有发送该技能提示给模型，没有业务请求。用户正在使用的窗口未被自动操作或重启；配置已写入，其当前内存目录仍需由 `/reload` 更新。可迁移结果见 [可见性验收](ui-testing-evidence/visibility-summary.json)，原始截图与结果位于忽略目录 `tests/scratch/ui-workflow-visibility/`。
+
+```sh
+npm run ui-testing:enable -- --agent-dir "$HOME/Library/Application Support/Pi Agent Desktop/agent"
+PI_WEB_SMOKE_PREBUILT=1 node tests/ui-testing-visibility-test.mjs
+```
+
+第二条须先有已构建的 server/web/desktop。测试只关闭自己启动的应用实例，不操作用户窗口。
+
+### 首次项目登记记录
+
 本机已执行 `npm run ui-testing:enable`，项目 `.pi/settings.json` 登记 `../node_modules/pi-ui-testing` 与 `../capabilities/ui-testing/mcp-extension.mjs`。该文件按既有规则忽略，保留个人配置及已有项目字段；重复执行不重复登记。新克隆按能力目录说明重新登记。
 
 原生 MCP 配置由能力扩展动态提供，只连接本服务，不再将它重复登记到宿主常规 `.pi/mcp.json`；否则会出现两套工具与浏览器实例。测试 MCP 使用 45 **秒**超时、当前项目 cwd，命令路径按项目定位。需要关闭该能力时，从 `.pi/settings.json` 移除上述两项再重载，保留测试资产和原始证据。

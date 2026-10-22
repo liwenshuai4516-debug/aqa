@@ -1,6 +1,6 @@
 /** Exercise package discovery and the real SDK/MCP binding without model or business requests. */
 import assert from "node:assert/strict";
-import { copyFile, mkdtemp, mkdir, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { cp, copyFile, mkdtemp, mkdir, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -18,6 +18,7 @@ import { enableUiTesting } from "../scripts/enable-ui-testing.mjs";
 const repo = fileURLToPath(new URL("..", import.meta.url));
 const temporary = await mkdtemp(join(tmpdir(), "ui-testing-integration-"));
 const project = join(temporary, "project");
+const target = join(temporary, "target");
 const agentDir = join(temporary, "agent");
 const checks = [];
 let session;
@@ -30,9 +31,16 @@ try {
 	for (const name of ["mcp-extension.mjs", "playwright.config.mjs"]) {
 		await copyFile(join(repo, "capabilities/ui-testing", name), join(project, "capabilities/ui-testing", name));
 	}
-	await mkdir(join(project, "qa/ui"), { recursive: true });
+	await cp(
+		join(repo, "capabilities/ui-testing/ui-testing-workflow"),
+		join(project, "capabilities/ui-testing/ui-testing-workflow"),
+		{ recursive: true },
+	);
+	await mkdir(target);
+	await symlink(join(repo, "node_modules"), join(target, "node_modules"), "junction");
+	await mkdir(join(target, "qa/ui"), { recursive: true });
 	await writeFile(
-		join(project, "qa/ui/seed.spec.ts"),
+		join(target, "qa/ui/seed.spec.ts"),
 		"import { test } from '@playwright/test';\ntest('integration seed', async ({ page }) => { await page.setContent('<button>Capability smoke</button>'); });\n",
 	);
 	await writeFile(join(project, ".pi/settings.json"), '{"theme":"light"}\n');
@@ -42,6 +50,13 @@ try {
 	assert.equal(await readFile(settingsPath, "utf8"), first);
 	assert.equal(JSON.parse(first).theme, "light");
 	checks.push("project registration preserves settings and is idempotent");
+	await writeFile(join(agentDir, "settings.json"), '{"theme":"light"}\n');
+	const appSettings = await enableUiTesting(project, agentDir);
+	const appFirst = await readFile(appSettings, "utf8");
+	await enableUiTesting(project, agentDir);
+	assert.equal(await readFile(appSettings, "utf8"), appFirst);
+	assert.equal(JSON.parse(appFirst).theme, "light");
+	checks.push("app registration preserves settings and is idempotent");
 
 	const nestedCalls = [];
 	const modelRuntime = await ModelRuntime.create({
@@ -51,10 +66,10 @@ try {
 		refreshOnCreate: false,
 	});
 	const services = await createAgentSessionServices({
-		cwd: project,
+		cwd: target,
 		agentDir,
 		modelRuntime,
-		settingsManager: SettingsManager.create(project, agentDir, { projectTrusted: true }),
+		settingsManager: SettingsManager.create(target, agentDir, { projectTrusted: true }),
 		resourceLoaderOptions: {
 			extensionFactories: [
 				(pi) => {
@@ -94,12 +109,13 @@ try {
 			"ui-result-review",
 			"ui-test-run",
 			"ui-test-workflow",
+			"ui-testing-workflow",
 		].sort(),
 	);
-	checks.push("all eight original skills discovered through project package registration");
+	checks.push("eight original skills and named entry discovered from app config in a different workspace");
 	({ session } = await createAgentSessionFromServices({
 		services,
-		sessionManager: SessionManager.create(project, join(agentDir, "sessions")),
+		sessionManager: SessionManager.create(target, join(agentDir, "sessions")),
 	}));
 	await session.bindExtensions({});
 	const expected = [
@@ -133,7 +149,7 @@ try {
 	assert.equal(catalog.output.assets.length, 0);
 	checks.push("bound workflow catalog executes against the isolated project");
 	const scope = JSON.parse(await readFile(join(repo, "node_modules/pi-ui-testing/examples/scope.valid.json"), "utf8"));
-	const scopeRef = await new ArtifactStore(project).put(scope);
+	const scopeRef = await new ArtifactStore(target).put(scope);
 	const started = JSON.parse(
 		(
 			await invoke("ui_test_workflow", {

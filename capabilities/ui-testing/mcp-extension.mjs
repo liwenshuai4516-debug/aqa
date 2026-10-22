@@ -1,5 +1,5 @@
 // Use the SDK pipeline so recording retains nested calls, hooks and cancellation.
-import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { createMcpExtension } from "@earendil-works/pi-coding-agent";
 
 export default createMcpExtension({
@@ -12,11 +12,11 @@ export default createMcpExtension({
 				config: {
 					command: process.execPath,
 					args: [
-						join(ctx.cwd, "node_modules/playwright/cli.js"),
+						fileURLToPath(new URL("../../node_modules/playwright/cli.js", import.meta.url)),
 						"run-test-mcp-server",
 						"--headless",
 						"-c",
-						join(ctx.cwd, "capabilities/ui-testing/playwright.config.mjs"),
+						fileURLToPath(new URL("./playwright.config.mjs", import.meta.url)),
 					],
 					cwd: ctx.cwd,
 					exposure: "direct",

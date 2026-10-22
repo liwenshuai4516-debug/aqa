@@ -1,7 +1,8 @@
 import { defineConfig } from "@playwright/test";
+import { join } from "node:path";
 
 export default defineConfig({
-	testDir: "../../qa/ui",
+	testDir: join(process.cwd(), "qa/ui"),
 	workers: 1,
 	retries: 0,
 	forbidOnly: true,

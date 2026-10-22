@@ -1,0 +1,53 @@
+{
+	"date": "2026-10-22",
+	"scope": "Pi capability discovery across desktop workspaces and slash picker visibility",
+	"environment": {
+		"platform": "macOS arm64",
+		"sdk": "1.2.0",
+		"playwrightTest": "1.62.1",
+		"port": 18975,
+		"isolation": "temporary desktop userData, agentDir and separate workspace; empty authentication"
+	},
+	"rootCause": [
+		"Capability was registered only in the repository project config; the live desktop workspace was Downloads",
+		"Runtime dispatcher was ui-test-workflow; the requested ui-testing-workflow entry was absent"
+	],
+	"sdkMcpIntegration": {
+		"status": "passed",
+		"checks": 10,
+		"differentInstallAndTargetDirectories": true,
+		"originalPhaseSkills": 8,
+		"entrySkills": 1,
+		"workflowTools": 10,
+		"recordingMcpTools": 7,
+		"realChromiumSyntheticPage": true,
+		"nestedCallIdentityAndCancellation": "passed"
+	},
+	"desktopUi": {
+		"status": "passed",
+		"checks": [
+			"Reproduced zero skills and no /ui candidates before app registration",
+			"Registered capability in isolated desktop agentDir and reloaded through actual composer",
+			"Settings displays ui-testing-workflow and all eight original phase skills enabled",
+			"/ui offers entry and selection fills /skill:ui-testing-workflow without sending it"
+		]
+	},
+	"liveDesktop": {
+		"configuration": "registered in application-specific agent settings; original entries preserved",
+		"activation": "user must run /reload in their current window; no automatic window interaction or restart"
+	},
+	"actualModelCalls": 0,
+	"businessRequests": 0,
+	"engineeringChecks": {
+		"typecheck": "all five configurations passed",
+		"relatedUnitTests": "four files, 31 tests passed",
+		"lint": "passed",
+		"format": "changed scripts, configs, skill and evidence passed",
+		"protocol": "three checks passed; git heuristic skipped because no tag is available",
+		"diffCheck": "passed"
+	},
+	"notExecuted": [
+		"business recording, independent model reviews, diagnostics or formal regression",
+		"standalone packaged desktop distribution"
+	]
+}
