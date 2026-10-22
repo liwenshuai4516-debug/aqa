@@ -169,8 +169,24 @@ export const CSS = `
 .dsp-status.待评审 { color: var(--amber, #e0a63c); }
 .dsp-status.已评审 { color: var(--green, #3ecf8e); }
 .dsp-status.已废弃 { color: var(--text-faint, #8a8f98); text-decoration: line-through; }
-.dsp-code-cell { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--text-dim, #a4a9b3); }
-.dsp-path-cell { font-size: 11px; color: var(--text-faint, #8a8f98); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* 执行结果：颜色只三档（通过/失败/阻塞），未执行用虚线弱化，过期降不透明度 */
+.dsp-result-cell { white-space: nowrap; }
+.dsp-result { appearance: none; font: inherit; font-size: 10.5px; line-height: 16px; padding: 0 6px; border-radius: 99px; border: 1px solid var(--border, #2c2f36); background: transparent; color: var(--text-faint, #8a8f98); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+.dsp-result:hover { background: var(--bg-elev2, #22242a); }
+.dsp-result.pass { color: var(--green, #3ecf8e); border-color: color-mix(in srgb, var(--green, #3ecf8e) 45%, transparent); }
+.dsp-result.fail { color: var(--red, #e5484d); border-color: color-mix(in srgb, var(--red, #e5484d) 45%, transparent); }
+.dsp-result.blocked { color: var(--amber, #e0a63c); border-color: color-mix(in srgb, var(--amber, #e0a63c) 45%, transparent); }
+.dsp-result.none { border-style: dashed; color: var(--text-faint, #8a8f98); }
+.dsp-result.stale { opacity: 0.6; }
+.dsp-result-time { font-size: 9.5px; color: var(--text-faint, #8a8f98); font-variant-numeric: tabular-nums; }
+.dsp-progress i.pass { background: var(--green, #3ecf8e); }
+.dsp-bar i.pass { background: var(--green, #3ecf8e); }
+.dsp-bar i.fail { background: var(--red, #e5484d); }
+.dsp-bar i.blocked { background: var(--amber, #e0a63c); }
+.dsp-bar i.none { background: var(--text-faint, #8a8f98); }
+.dsp-bad { color: var(--red, #e5484d); }
+.dsp-warn { color: var(--amber, #e0a63c); }
+.dsp-code-cell { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--text-dim, #a4a9b3); }.dsp-path-cell { font-size: 11px; color: var(--text-faint, #8a8f98); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dsp-cell-main { white-space: normal; }
 .dsp-type-cell { white-space: nowrap; }
 .dsp-case-path { font-size: 10.5px; color: var(--text-faint, #8a8f98); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px; }
@@ -227,8 +243,7 @@ export const CSS = `
 	/* 窄屏先让位给名称与操作，标签/更新时间靠搜索与编辑弹窗查看 */
 	.dsp-table.ds col:nth-child(5), .dsp-table.ds col:nth-child(6),
 	.dsp-table.ds th:nth-child(5), .dsp-table.ds th:nth-child(6),
-	.dsp-table.ds td:nth-child(5), .dsp-table.ds td:nth-child(6) { display: none; }
-}
+	.dsp-table.ds td:nth-child(5), .dsp-table.ds td:nth-child(6) { display: none; }}
 @media (max-width: 620px) {
 	.dsp-table.ds col:nth-child(3), .dsp-table.ds th:nth-child(3), .dsp-table.ds td:nth-child(3) { display: none; }
 }

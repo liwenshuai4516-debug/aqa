@@ -41,6 +41,8 @@ const CLIENT_FILES = [
 	"modal-dataset.mjs",
 	"brief.mjs",
 	"modal-brief.mjs",
+	"mention.mjs",
+	"modal-result.mjs",
 ];
 
 ensureBuild(repoRoot, "data-space-plugin-test");
@@ -340,6 +342,36 @@ try {
 		"数据集记录读回一致",
 	);
 
+	// -- 执行结果：POST /runs 回写 → 单独文件 → 重启后仍在 -------------------
+	check(Array.isArray(st?.runs) && (st?.runs?.length ?? -1) === 0, "初始快照带空的结果流水", st?.runs?.length);
+	check(typeof st?.runsRevision === "number", "快照带结果 revision", st?.runsRevision);
+	const runsFile = join(dataDir, "data-space", "runs.json");
+	let rr = await postJson("/runs", { code: "TST-001", verdict: "失败", note: "返回 500 而非 409" });
+	check(rr.status === 200 && rr.body?.recorded?.length === 1, "POST /runs 用编号登记结果", {
+		status: rr.status,
+		body: rr.body?.error,
+	});
+	check(rr.body?.recorded?.[0]?.verdict === "失败" && rr.body?.recorded?.[0]?.source === "manual", "登记来源为手工");
+	const runsRev1 = rr.body?.runsRevision;
+	check((runsRev1 ?? 0) >= 2, "结果 revision 递增", runsRev1);
+	rr = await postJson("/runs", { caseId: "probe-case", verdict: "通过" });
+	check(
+		rr.status === 200 && rr.body?.runsRevision > runsRev1 && rr.body?.recorded?.[0]?.verdict === "通过",
+		"同一用例可追加新结果（只追加不改历史）",
+		{ status: rr.status, rev: rr.body?.runsRevision },
+	);
+	rr = await postJson("/runs", { caseId: "probe-case", verdict: "不存在" });
+	check(rr.status === 400, "非法结论返回 400", rr.status);
+	rr = await postJson("/runs", { caseId: "no-such-case", verdict: "通过" });
+	check(rr.status === 400 && rr.body?.unknown?.[0] === "no-such-case", "未知用例返回 400 并回带未匹配项", rr.body);
+	check(existsSync(runsFile), "执行结果落在 <dataDir>/data-space/runs.json", runsFile);
+	const runsOnDisk = JSON.parse(readFileSync(runsFile, "utf8"));
+	check(runsOnDisk?.runs?.length === 2, "runs.json 保留两条记录", runsOnDisk?.runs?.length);
+	check(
+		JSON.parse(readFileSync(storeFile, "utf8"))?.revision === baseRevision + 1,
+		"回写结果不推进内容 revision（不抢页面保存）",
+	);
+
 	// -- 旧 revision：409 + 最新快照（不静默覆盖） ---------------------------
 	let r = await postJson("/save", {
 		baseRevision,
@@ -387,6 +419,10 @@ try {
 		st?.systems?.some((s) => s.id === "probe-system"),
 		"重启后系统层级仍在",
 	);
+	check((st?.runs?.length ?? 0) === 2 && (st?.runsRevision ?? 0) >= 2, "重启后执行结果仍在", {
+		runs: st?.runs?.length,
+		rev: st?.runsRevision,
+	});
 
 	// -- 0.1.0 旧库迁移：groups → systems，数据集归属清空 ---------------------
 	await stopServer(sock);

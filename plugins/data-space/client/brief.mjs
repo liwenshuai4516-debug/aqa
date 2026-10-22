@@ -1,9 +1,11 @@
 /**
- * 「把用例引入 AI 对话」的核心逻辑：选内容 → 两档格式 → 锚点 → 意图指令 → 注入输入框。
+ * 「把用例引入 AI 对话」的核心逻辑：选内容 → 三档格式 → 锚点 → 意图指令 → 注入输入框。
  *
  * 几条刻意的设计：
- *   - **两档格式按条数自动切**：≤3 条走卡片档（步骤、预期、关联数据全带上），
- *     更多走清单档（一行一条的表格）。一个功能 30 条全量贴进去，字数既是钱也是噪音。
+ *   - **三档格式**：卡片档（步骤、预期、关联数据全带上，≤3 条自动选）、清单档
+ *     （一行一条的表格）、**引用档**（只有编号 + 标题，明细让 AI 用 data_space_cases 现查）。
+ *     一个功能 30 条全量贴进去，字数既是钱也是噪音，所以批量场景走引用档 + 工具。
+ *   - **两档按条数自动切**：≤3 条走卡片档，更多走清单档。
  *   - **末尾一行机器可读锚点** `<!-- data-space: revision=49 cases=id1,id2 -->`：
  *     后续要做的「执行结果回写」靠它定位是哪几条用例、什么版本；也能用来去重。
  *   - **脱敏默认开**：口令 / 令牌这类键值在文本里打成 `***`，数据集只带名称不带取值。
@@ -21,6 +23,7 @@ export const FORMAT_CHOICES = [
 	{ id: "auto", label: "自动", hint: "≤3 条用卡片档，更多用清单档" },
 	{ id: "card", label: "卡片档", hint: "每条带步骤与预期，信息全但费上下文" },
 	{ id: "list", label: "清单档", hint: "一行一条的表格，省上下文" },
+	{ id: "ref", label: "引用档", hint: "只带编号与标题，明细让 AI 用 data_space_cases 查（最省）" },
 ];
 
 /** 引入后追加在末尾的指令（用户可改几个字再发）。 */
@@ -28,7 +31,7 @@ export const INTENT_CHOICES = [
 	{
 		id: "run",
 		label: "执行测试",
-		tail: "请按上述用例依次执行，逐条给出实际结果与通过 / 失败结论；失败时说明根因假设。",
+		tail: "请按上述用例依次执行，逐条给出实际结果与通过 / 失败结论；失败时说明根因假设。执行完把结论用 data_space_record_result 回写（可以把末尾锚点整段传进去定位这批用例）。",
 	},
 	{
 		id: "auto",
@@ -48,8 +51,8 @@ export const INTENT_CHOICES = [
 	{ id: "none", label: "不加指令", tail: "" },
 ];
 
-/** 上限：卡片档单条信息量大，超过 20 条基本不可读；清单档 200 条足够覆盖一个项目。 */
-export const BRIEF_LIMITS = { card: 20, list: 200, cardMax: 3 };
+/** 上限：卡片档单条信息量大，超过 20 条基本不可读；清单 / 引用档 200 条足够覆盖一个项目。 */
+export const BRIEF_LIMITS = { card: 20, list: 200, ref: 200, cardMax: 3 };
 
 export const BRIEF_DEFAULTS = { format: "auto", intent: "run", redact: true, skip: true };
 
@@ -72,12 +75,14 @@ export function maskSecrets(text) {
 
 /** 自动档按条数切；显式档位照用户选的来。 */
 export function resolveFormat(pref, count) {
-	if (pref === "card" || pref === "list") return pref;
+	if (pref === "card" || pref === "list" || pref === "ref") return pref;
 	return count <= BRIEF_LIMITS.cardMax ? "card" : "list";
 }
 
 export function formatLabel(format) {
-	return format === "card" ? "卡片档 · 每条含步骤与预期" : "清单档 · 一行一条";
+	if (format === "card") return "卡片档 · 每条含步骤与预期";
+	if (format === "ref") return "引用档 · 只带编号与标题，明细由 AI 查询";
+	return "清单档 · 一行一条";
 }
 
 export function intentOf(id) {
@@ -140,6 +145,25 @@ function listBlock(cases, redact) {
 	return out.join("\n");
 }
 
+/** 引用档：按功能分组，每条只留编号 + 标题（带类型 / 优先级），明细交给 AI 工具按编号拉。 */
+function refBlock(cases, redact) {
+	const groups = new Map();
+	for (const c of cases) {
+		const key = c.featureId || "";
+		if (!groups.has(key)) groups.set(key, []);
+		groups.get(key).push(c);
+	}
+	const out = [];
+	for (const [fid, items] of groups) {
+		out.push(`#### ${pathText(fid)}（${items.length} 条）`);
+		for (const c of items) {
+			const meta = [cell(c.type, redact) || "未分类", c.priority, c.status].filter(Boolean).join(" · ");
+			out.push(`- ${cell(c.code, redact) || "（无编号）"} · ${cell(c.title, redact)}（${meta}）`);
+		}
+	}
+	return out.join("\n");
+}
+
 /** 机器可读锚点：后续回写执行结果、判断是否同一批用例都靠它。 */
 function anchor(cases, revision) {
 	const ids = cases.map((c) => c.id).join(",");
@@ -173,11 +197,19 @@ export function buildBrief(opts = {}) {
 			rest > 0 ? ` / 其他 ${rest}` : ""
 		}`,
 		`- 数据版本：revision ${revision} · ${formatLabel(format)}`,
+		...(format === "ref"
+			? ["- 明细：步骤与预期用 data_space_cases 按编号查询（若工具未开启，请改用清单档或卡片档）"]
+			: []),
 	].join("\n");
 
 	if (!kept.length) return { text: "", format, count: 0, total: 0, cut: 0, chars: 0, intent: intent.id };
 
-	const body = format === "card" ? kept.map((c) => cardBlock(c, redact)).join("\n\n") : listBlock(kept, redact);
+	const body =
+		format === "card"
+			? kept.map((c) => cardBlock(c, redact)).join("\n\n")
+			: format === "ref"
+				? refBlock(kept, redact)
+				: listBlock(kept, redact);
 	const parts = [head, body, anchor(kept, revision)];
 	if (intent.tail) parts.push(intent.tail);
 	const text = `${parts.filter(Boolean).join("\n\n")}\n`;

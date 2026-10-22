@@ -17,6 +17,8 @@ import {
 	tabsList,
 } from "./views.mjs";
 import { briefModalHtml, composeBriefNow, openBrief } from "./modal-brief.mjs";
+import { openResultModal, resultModalHtml, saveResultNow } from "./modal-result.mjs";
+import { registerCaseMention } from "./mention.mjs";
 import { caseModalHtml, copyCase, deleteCase, openCaseModal, saveCase } from "./modal-case.mjs";
 import { deleteNode, nodeModalHtml, openNodeEdit, openNodeModal, saveNode } from "./modal-node.mjs";
 import { copyDataset, datasetModalHtml, deleteDataset, openDatasetModal, saveDataset } from "./modal-dataset.mjs";
@@ -77,7 +79,8 @@ function renderBody() {
 
 function renderOverlay() {
 	if (!S.nodes) return;
-	S.nodes.overlay.innerHTML = caseModalHtml() + nodeModalHtml() + datasetModalHtml() + briefModalHtml();
+	S.nodes.overlay.innerHTML =
+		caseModalHtml() + nodeModalHtml() + datasetModalHtml() + briefModalHtml() + resultModalHtml();
 }
 
 function render() {
@@ -118,12 +121,13 @@ function closeModals() {
 	S.nodeModal = null;
 	S.datasetModal = null;
 	S.brief = null;
+	S.resultModal = null;
 	renderOverlay();
 }
 
 /** 当前打开的是哪个弹窗（用来路由 data-f 输入）。 */
 function activeModal() {
-	return S.caseModal || S.datasetModal || S.nodeModal || null;
+	return S.caseModal || S.datasetModal || S.nodeModal || S.resultModal || null;
 }
 
 /* ------------------------------------------------------------------ 点击 */
@@ -200,6 +204,19 @@ function onClick(e) {
 	}
 	if (act === "compose-brief") {
 		void composeBriefNow();
+		return;
+	}
+	if (act === "record-result") {
+		openResultModal(id);
+		return;
+	}
+	if (act === "result-verdict" && S.resultModal) {
+		S.resultModal.verdict = id;
+		renderOverlay();
+		return;
+	}
+	if (act === "save-result") {
+		void saveResultNow();
 		return;
 	}
 	if (act === "reload") {
@@ -584,7 +601,7 @@ async function doReset() {
 /* ------------------------------------------------------------------ 挂载 */
 
 export default {
-	mount(el) {
+	mount(el, ctx) {
 		el.innerHTML = "";
 		const style = document.createElement("style");
 		style.textContent = CSS;
@@ -604,15 +621,33 @@ export default {
 		root.addEventListener("click", onClick);
 		root.addEventListener("input", onInput);
 		root.addEventListener("change", onChange);
+		// AI 回写结果 / 其他窗口登记 → 服务端广播，这里刷新一次（不改当前 tab 与筛选）
+		const offData = ctx?.onData?.((payload) => {
+			if (!payload || typeof payload !== "object") return;
+			if (payload.kind !== "runs") return;
+			if (Number(payload.revision) === S.runsRevision) return;
+			void load().then(() => {
+				if (S.nodes) render();
+			});
+		});
 		render();
 		void load().then(render);
 		return () => {
 			root.removeEventListener("click", onClick);
 			root.removeEventListener("input", onInput);
 			root.removeEventListener("change", onChange);
+			try {
+				offData?.();
+			} catch {
+				/* 已取消订阅 */
+			}
 			if (S.toastTimer) clearTimeout(S.toastTimer);
 			S.nodes = null;
 			el.innerHTML = "";
 		};
 	},
 };
+
+// 模块顶层就注册 `@` 提及提供者：插件 bundle 在进页时已统一加载，不必先打开数据空间页；
+// 宿主缺 composerProviders（旧版）时静默跳过，不影响页面本身。
+registerCaseMention();

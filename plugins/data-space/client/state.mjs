@@ -20,6 +20,8 @@ export const PRIORITIES = ["P0", "P1", "P2", "P3"];
 /** 当前只做接口 / UI 两类；追加类型时改服务端 model.mjs 的 CASE_TYPES，这里只是接口未就绪时的兜底。 */
 export const CASE_TYPES = ["接口", "UI"];
 export const CASE_STATUS = ["草稿", "待评审", "已评审", "已废弃"];
+/** 执行结果的三种结论（与服务端 runs.mjs 的 VERDICTS 同义；快照会下发，这里是接口未就绪时的兜底）。 */
+export const VERDICTS = ["通过", "失败", "阻塞"];
 export const COLORS = [
 	["blue", "蓝"],
 	["green", "绿"],
@@ -48,6 +50,14 @@ export const S = {
 	datasets: [],
 	/** 用例类型清单：服务端下发，追加新类型无需改页面。 */
 	caseTypes: [...CASE_TYPES],
+	/** 执行结果流水（服务端 runs.json）：只追加，按用例取最近一条。 */
+	runs: [],
+	runsRevision: 0,
+	verdicts: [...VERDICTS],
+	/** caseId → 最近一次执行结果；随 runs 变化重建（避免每行都扫一遍流水）。 */
+	runIndex: new Map(),
+	/** 手工登记结果的弹窗状态（见 modal-result.mjs）。 */
+	resultModal: null,
 	tab: "overview",
 	/** 项目列表选中：systemId 为空 = 全部用例；moduleId / featureId 为项目内筛选 */
 	sel: { systemId: "", moduleId: "", featureId: "" },
@@ -224,6 +234,77 @@ export function applyStore(data) {
 	S.cases = Array.isArray(data.cases) ? data.cases : [];
 	S.datasets = Array.isArray(data.datasets) ? data.datasets : [];
 	S.caseTypes = Array.isArray(data.caseTypes) && data.caseTypes.length ? data.caseTypes.map(String) : [...CASE_TYPES];
+	S.runs = Array.isArray(data.runs) ? data.runs : [];
+	S.runsRevision = Number(data.runsRevision) || 0;
+	S.verdicts = Array.isArray(data.verdicts) && data.verdicts.length ? data.verdicts.map(String) : [...VERDICTS];
+	S.runIndex = buildRunIndex(S.runs);
+}
+
+/* ------------------------------------------------------------------ 执行结果 */
+
+/** 流水 → 每条用例最近一条结果（时间晚的赢；同一秒按后写入的赢）。 */
+export function buildRunIndex(runs) {
+	const map = new Map();
+	for (const r of runs ?? []) {
+		if (!r?.caseId || !r.verdict) continue;
+		const prev = map.get(r.caseId);
+		if (!prev || String(r.at) >= String(prev.at)) map.set(r.caseId, r);
+	}
+	return map;
+}
+
+/** 用例后来改过 → 结果算过期（灰显并提示重跑，不当现行结论）。 */
+export function isRunStale(run, c) {
+	if (!run) return false;
+	const recorded = String(run.caseUpdatedAt ?? "");
+	const current = String(c?.updatedAt ?? "");
+	if (!recorded || !current) return false;
+	return current > recorded;
+}
+
+export function resultOf(c) {
+	const run = c ? (S.runIndex.get(c.id) ?? null) : null;
+	return run ? { run, stale: isRunStale(run, c) } : null;
+}
+
+/** 概览统计：未执行的不进分母（"通过率"只对已执行用例有意义）。 */
+export function resultStats() {
+	const counts = { 通过: 0, 失败: 0, 阻塞: 0 };
+	let stale = 0;
+	for (const c of S.cases) {
+		const hit = resultOf(c);
+		if (!hit) continue;
+		counts[hit.run.verdict] = (counts[hit.run.verdict] ?? 0) + 1;
+		if (hit.stale) stale += 1;
+	}
+	const executed = counts["通过"] + counts["失败"] + counts["阻塞"];
+	return {
+		total: S.cases.length,
+		executed,
+		untested: Math.max(0, S.cases.length - executed),
+		...counts,
+		stale,
+		passRate: executed ? Math.round((counts["通过"] / executed) * 100) : 0,
+	};
+}
+
+/** 页面上登记的最近结果（手工 / AI 都走同一条链）。 */
+export async function saveResult(caseId, verdict, note) {
+	try {
+		const r = await fetch(`${BASE}/runs`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ caseId, verdict, note }),
+		});
+		const d = await r.json().catch(() => null);
+		if (!d?.ok) return { ok: false, error: d?.error || "登记失败" };
+		S.runs = Array.isArray(d.runs) ? d.runs : S.runs;
+		S.runsRevision = Number(d.runsRevision) || S.runsRevision;
+		S.runIndex = buildRunIndex(S.runs);
+		return { ok: true, runsRevision: S.runsRevision };
+	} catch {
+		return { ok: false, error: "登记失败：无法连接插件服务" };
+	}
 }
 
 export async function load() {

@@ -96,9 +96,10 @@ describe("档位", () => {
 		expect(resolveFormat("card", 40)).toBe("card");
 	});
 
-	it("上限常量可被界面展示：卡片 20 / 清单 200", () => {
+	it("上限常量可被界面展示：卡片 20 / 清单 200 / 引用 200", () => {
 		expect(BRIEF_LIMITS.card).toBe(20);
 		expect(BRIEF_LIMITS.list).toBe(200);
+		expect(BRIEF_LIMITS.ref).toBe(200);
 	});
 });
 
@@ -125,6 +126,31 @@ describe("卡片档", () => {
 	it("多行前置条件压成一行，保持可读", () => {
 		const out = buildBrief({ cases: [makeCase(1, { preconditions: "已登录\n有合同新建权限" })] });
 		expect(out.text).toContain("- 前置条件：已登录；有合同新建权限");
+	});
+});
+
+describe("引用档", () => {
+	it("只带编号与标题，不带步骤，并指向工具取明细", () => {
+		const cases = [makeCase(1), makeCase(2)];
+		applyStore(store(cases));
+		S.introduced = new Map();
+		const out = buildBrief({ cases, format: "ref" });
+		expect(out.format).toBe("ref");
+		expect(out.text).toContain("引用档");
+		expect(out.text).toContain("#### 项目管理系统 / 合同管理 / 经营合同（2 条）");
+		expect(out.text).toContain("- PMS-001 · 用例标题 1（接口 · P1 · 已评审）");
+		expect(out.text).toContain("data_space_cases");
+		// 明细交给工具，正文不带步骤 / 关联数据取值
+		expect(out.text).not.toContain("预期 1");
+		expect(out.text).not.toContain("p@ssw0rd");
+		// 锚点仍然在，后续回写结果靠它
+		expect(out.text).toContain("<!-- data-space: revision=49 cases=");
+	});
+
+	it("空用例时返回空文本（不报错）", () => {
+		const out = buildBrief({ cases: [], format: "ref" });
+		expect(out.text).toBe("");
+		expect(out.count).toBe(0);
 	});
 });
 
@@ -163,7 +189,13 @@ describe("末尾指令与锚点", () => {
 	it("默认追加「执行测试」指令", () => {
 		const out = buildBrief({ cases: [makeCase(1)] });
 		expect(out.intent).toBe("run");
-		expect(out.text.trimEnd().endsWith("失败时说明根因假设。")).toBe(true);
+		expect(
+			out.text
+				.trimEnd()
+				.endsWith(
+					"失败时说明根因假设。执行完把结论用 data_space_record_result 回写（可以把末尾锚点整段传进去定位这批用例）。",
+				),
+		).toBe(true);
 	});
 
 	it("五种指令可切换，「不加指令」不留尾巴", () => {

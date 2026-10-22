@@ -12,6 +12,7 @@ import {
 	buildBrief,
 	composeBrief,
 	fmtChars,
+	formatLabel,
 	hostSupportsCompose,
 	introducedCount,
 	isIntroduced,
@@ -111,7 +112,7 @@ export function briefModalHtml() {
 			<div class="dsp-modal-foot">
 				<span class="dsp-muted dsp-brief-count">${
 					sel.length
-						? `${sel.length} 条 · ${preview.format === "card" ? "卡片档" : "清单档"} · 约 ${fmtChars(preview.chars)} 字`
+						? `${sel.length} 条 · ${formatLabel(preview.format).split(" · ")[0]} · 约 ${fmtChars(preview.chars)} 字`
 						: "0 条"
 				}${hostSupportsCompose() ? "" : " · 当前宿主不支持自动放入，将复制到剪贴板"}</span>
 				<button class="dsp-btn" data-act="close-modal">取消</button>
@@ -144,6 +145,6 @@ export async function composeBriefNow() {
 	S.brief = null;
 	hooks.renderOverlay();
 	hooks.render();
-	const brief = `${built.count} 条 · ${built.format === "card" ? "卡片档" : "清单档"} · 约 ${fmtChars(built.chars)} 字`;
+	const brief = `${built.count} 条 · ${formatLabel(built.format).split(" · ")[0]} · 约 ${fmtChars(built.chars)} 字`;
 	toast(res.via === "composer" ? `已放入对话框 · ${brief}` : `已复制到剪贴板 · ${brief}`);
 }

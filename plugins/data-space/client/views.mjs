@@ -19,6 +19,8 @@ import {
 	observedTypes,
 	pathOfFeature,
 	pathText,
+	resultOf,
+	resultStats,
 	systemOf,
 	typeCounts,
 } from "./state.mjs";
@@ -116,6 +118,19 @@ export function overviewHtml() {
 		.sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")))
 		.slice(0, 6);
 	const orphan = S.cases.filter((c) => !featureOf(c.featureId)).length;
+	const rs = resultStats();
+	const resultBars = [
+		["通过", rs["通过"], "pass"],
+		["失败", rs["失败"], "fail"],
+		["阻塞", rs["阻塞"], "blocked"],
+		["未执行", rs.untested, "none"],
+	];
+	const maxResult = Math.max(1, ...resultBars.map((b) => b[1]));
+	const nearEnd = [...S.cases]
+		.map((c) => ({ c, hit: resultOf(c) }))
+		.filter((x) => x.hit && x.hit.run.verdict !== "通过")
+		.sort((a, b) => String(b.hit.run.at).localeCompare(String(a.hit.run.at)))
+		.slice(0, 5);
 
 	return `
 	${S.migratedFrom ? `<div class="dsp-tip">已从 0.1.0 版数据迁移：原来的「分组」变成了「项目」，数据集归属已清空为「未归类」。原文件已备份，见「设置」。</div>` : ""}
@@ -125,6 +140,7 @@ export function overviewHtml() {
 		${statCard("功能", featureTotal, "用例的挂载点")}
 		${statCard("用例", S.cases.length, orphan ? `含 ${orphan} 条未归类` : "接口 / UI 两类")}
 		${statCard("数据集", S.datasets.length, "可被用例引用")}
+		${statCard("通过率", `${rs.passRate}%`, `已执行 ${rs.executed} / ${rs.total} 条用例`)}
 	</div>
 	<div class="dsp-cols">
 		<section class="dsp-card">
@@ -142,6 +158,15 @@ export function overviewHtml() {
 							.join("")
 					: `<div class="dsp-muted">还没有用例</div>`
 			}
+			<div class="dsp-card-head" style="margin-top:14px"><span>执行结果</span><span>${rs.executed} 条已执行${rs.stale ? ` · ${rs.stale} 条已过期` : ""}</span></div>
+			<div class="dsp-progress"><i class="pass" style="width:${rs.passRate}%"></i></div>
+			<div class="dsp-muted" style="margin:6px 0 10px">通过率 ${rs.passRate}% · 未执行 ${rs.untested} 条（不计入分母）</div>
+			${resultBars
+				.map(
+					([label, n, cls]) =>
+						`<div class="dsp-bar-row"><span class="dsp-bar-name">${label}</span><span class="dsp-bar"><i class="${cls}" style="width:${pct(n, maxResult)}%"></i></span><span class="dsp-bar-num">${n}</span></div>`,
+				)
+				.join("")}
 			<div class="dsp-card-head" style="margin-top:14px"><span>按项目分布</span><span>用例数</span></div>
 			${
 				bySystem.length
@@ -166,6 +191,17 @@ export function overviewHtml() {
 							})
 							.join("")}</div>`
 					: `<div class="dsp-empty-inline">每个功能都已有用例 👍</div>`
+			}
+			<div class="dsp-card-head" style="margin-top:16px"><span>需要跟进</span><span>最近未通过的 ${nearEnd.length} 条</span></div>
+			${
+				nearEnd.length
+					? `<div class="dsp-recent">${nearEnd
+							.map(
+								({ c, hit }) =>
+									`<div class="dsp-recent-row" data-act="record-result" data-id="${esc(c.id)}" title="${esc(hit.run.note || "点一下登记新结果")}"><span class="dsp-result ${hit.run.verdict === "失败" ? "fail" : "blocked"}${hit.stale ? " stale" : ""}">${esc(hit.run.verdict)}</span><span class="dsp-recent-name">${esc(c.code ? `${c.code} · ` : "")}${esc(c.title)}</span><span class="dsp-recent-time">${fmtTime(hit.run.at)}</span></div>`,
+							)
+							.join("")}</div>`
+					: `<div class="dsp-empty-inline">没有失败 / 阻塞的用例 👍</div>`
 			}
 			<div class="dsp-card-head" style="margin-top:16px"><span>最近更新</span><span></span></div>
 			${
@@ -198,6 +234,21 @@ export const tabsList = () => [
 
 const prioBadge = (p) => `<span class="dsp-prio ${esc(p)}">${esc(p)}</span>`;
 const statusBadge = (s) => `<span class="dsp-status ${esc(s)}">${esc(s)}</span>`;
+
+/** 执行结果徽章：通过 / 失败 / 阻塞 / 未执行；过期（用例改过）降不透明度并标注。 */
+function resultBadge(c) {
+	const hit = resultOf(c);
+	if (!hit) {
+		return `<button class="dsp-result none" data-act="record-result" data-id="${esc(c.id)}" title="还没执行过，点这里登记结果">未执行</button>`;
+	}
+	const cls = hit.run.verdict === "通过" ? "pass" : hit.run.verdict === "失败" ? "fail" : "blocked";
+	const when = fmtTime(hit.run.at);
+	const src = hit.run.source === "ai" ? "AI 回写" : "手工登记";
+	const title = `${hit.run.verdict} · ${when} · ${src}${hit.run.note ? ` · ${hit.run.note}` : ""}${
+		hit.stale ? " · 用例已更新，结果可能过期" : ""
+	}`;
+	return `<button class="dsp-result ${cls}${hit.stale ? " stale" : ""}" data-act="record-result" data-id="${esc(c.id)}" title="${esc(title)}">${esc(hit.run.verdict)}<span class="dsp-result-time">${esc(fmtTime(hit.run.at))}</span></button>`;
+}
 
 function crumb(parts) {
 	return `<div class="dsp-crumb">${parts
@@ -237,6 +288,7 @@ function caseRow(c, showPath) {
 		<td class="dsp-type-cell">${typeBadge(c.type)}</td>
 		<td>${prioBadge(c.priority)}</td>
 		<td>${statusBadge(c.status)}</td>
+		<td class="dsp-result-cell">${resultBadge(c)}</td>
 		<td class="dsp-num-cell">${steps}</td>
 		<td class="dsp-num-cell" title="${esc(linked.join("、"))}">${linked.length}</td>
 		<td class="dsp-num-cell">${fmtTime(c.updatedAt)}</td>
@@ -251,8 +303,8 @@ function caseRow(c, showPath) {
 
 function caseTable(list, showPath) {
 	return `<div class="dsp-table-wrap"><table class="dsp-table${showPath ? " wide" : ""}">
-		<colgroup><col style="width:86px"/><col style="width:auto"/><col style="width:82px"/><col style="width:64px"/><col style="width:74px"/><col style="width:52px"/><col style="width:52px"/><col style="width:104px"/><col style="width:136px"/></colgroup>
-		<thead><tr><th>编号</th><th>用例标题</th><th>类型</th><th>优先级</th><th>状态</th><th>步骤</th><th>数据</th><th>更新</th><th></th></tr></thead>
+		<colgroup><col style="width:86px"/><col style="width:auto"/><col style="width:82px"/><col style="width:64px"/><col style="width:74px"/><col style="width:104px"/><col style="width:52px"/><col style="width:52px"/><col style="width:104px"/><col style="width:136px"/></colgroup>
+		<thead><tr><th>编号</th><th>用例标题</th><th>类型</th><th>优先级</th><th>状态</th><th>最近结果</th><th>步骤</th><th>数据</th><th>更新</th><th></th></tr></thead>
 		<tbody>${list.map((c) => caseRow(c, showPath)).join("")}</tbody></table></div>`;
 }
 
