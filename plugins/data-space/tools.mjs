@@ -284,6 +284,7 @@ export function createDataSpaceTools(ctx) {
 				"Call data_space_record_result after actually running the cases, one entry per case, with a short note for failures (symptom + suspected cause).",
 				"If the user's message carries an anchor comment, pass it as `anchor` instead of retyping ids.",
 				"Do not record results you did not observe; if execution was skipped, say so instead of writing 通过.",
+				"Set `task` to a short name (e.g. 「经营合同 P0 回归」) when the run covers several cases, so the user can review the whole batch in the Execution Results tab.",
 			],
 			parameters: {
 				type: "object",
@@ -306,6 +307,11 @@ export function createDataSpaceTools(ctx) {
 						description:
 							"The `<!-- data-space: revision=… cases=… -->` line from the conversation; resolves the batch.",
 					},
+					task: {
+						type: "string",
+						description:
+							"Short name of this execution run (e.g. 「经营合同 P0 回归」). Results recorded in one call share a task, shown in the Execution Results tab.",
+					},
 				},
 			},
 			async execute(_id, params) {
@@ -327,8 +333,10 @@ export function createDataSpaceTools(ctx) {
 				}
 				const list = [...byKey.values()].filter(Boolean);
 				if (!list.length) return "没有可记录的结果：请给 results（每条含 case 与 verdict）。";
-				const out = ctx.record(list, "ai");
+				const out = ctx.record(list, "ai", { taskName: str(p.task, 80) });
 				const lines = [`已记录 ${out.recorded.length} 条执行结果（结果 revision ${out.runsRevision}）`];
+				if (out.recorded[0]?.taskName)
+					lines.push(`任务：「${out.recorded[0].taskName}」— 可在数据空间「执行结果」页按任务查看`);
 				for (const r of out.recorded)
 					lines.push(`- ${r.code || r.caseId} · ${r.verdict}${r.note ? ` — ${r.note}` : ""}`);
 				if (out.unknown?.length) lines.push(`未匹配（编号或 id 不存在）：${out.unknown.join("、")}`);

@@ -6,10 +6,12 @@
  *     两者混在一起会让页面保存和 AI 回写互相抢 revision。
  *   - 结果只追加、按用例取最近一条，单独文件好裁剪也好排障。
  *
- * 记录形状：{ id, caseId, code, verdict, note, at, source, caseUpdatedAt }
+ * 记录形状：{ id, caseId, code, verdict, note, at, source, caseUpdatedAt, taskId, taskName }
  *   - caseUpdatedAt：记录当时用例的 updatedAt。用例后来被改过就当「结果已过期」，
  *     页面显示为灰色并提示重跑，不会把旧结论当现行结论。
  *   - source：ai（对话里由工具回写）/ manual（页面里手工登记）。
+ *   - taskId / taskName：一次批量回写（AI 跑完一个功能 / 模块）归为同一个「测试任务」，
+ *     「执行结果」页可以按任务看整批结论；手工登记的单条没有任务，taskId 为空。
  *
  * 文件形状：{ version: 1, revision: N, runs: [...] }，最多保留 MAX_RUNS 条（丢最旧）。
  */
@@ -19,6 +21,12 @@ export const VERDICTS = ["通过", "失败", "阻塞"];
 export const MAX_RUNS = 800;
 
 const str = (v, n) => (typeof v === "string" ? v.trim().slice(0, n) : "");
+
+/** 任务名太长会把结果页撑破，统一截断；没有 taskId 的任务名没有意义，直接丢掉。 */
+const taskFields = (o) => {
+	const taskId = str(o.taskId, 64);
+	return { taskId, taskName: taskId ? str(o.taskName, 80) : "" };
+};
 const now = () => new Date().toISOString();
 
 export function normalizeVerdict(v) {
@@ -49,6 +57,7 @@ export function normalizeRun(raw, casesById) {
 		at: str(o.at, 40) || now(),
 		source: o.source === "manual" ? "manual" : "ai",
 		caseUpdatedAt: str(o.caseUpdatedAt, 40) || str(c.updatedAt, 40),
+		...taskFields(o),
 	};
 }
 

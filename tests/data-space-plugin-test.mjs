@@ -43,6 +43,7 @@ const CLIENT_FILES = [
 	"modal-brief.mjs",
 	"mention.mjs",
 	"modal-result.mjs",
+	"results.mjs",
 ];
 
 ensureBuild(repoRoot, "data-space-plugin-test");
@@ -424,6 +425,31 @@ try {
 		rev: st?.runsRevision,
 	});
 
+	// -- 执行任务：一次回写多条归一为一个任务（结果页「按任务」看整批） ------
+	const batch = await postJson("/runs", {
+		task: "经营合同 P0 回归",
+		results: [
+			{ case: "probe-case", verdict: "通过" },
+			{ case: "TST-001", verdict: "失败", note: "仍返回 500" },
+		],
+	});
+	check(batch.status === 200 && batch.body?.recorded?.length === 2, "POST /runs 支持一次回写多条", batch.body?.error);
+	const batchTaskIds = new Set((batch.body?.recorded ?? []).map((x) => x.taskId));
+	check(batchTaskIds.size === 1 && Boolean([...batchTaskIds][0]), "同一批回写归为同一个任务", [...batchTaskIds]);
+	check(
+		(batch.body?.recorded ?? []).every((x) => x.taskName === "经营合同 P0 回归"),
+		"任务名随记录落盘",
+		batch.body?.recorded?.map((x) => x.taskName),
+	);
+	const soloRun = await postJson("/runs", { caseId: "probe-case", verdict: "通过" });
+	check(!soloRun.body?.recorded?.[0]?.taskId, "单条回写不造任务", soloRun.body?.recorded?.[0]?.taskId);
+	const runsWithTask = JSON.parse(readFileSync(runsFile, "utf8"));
+	check(
+		runsWithTask?.runs?.filter((x) => x.taskId).length === 2,
+		"runs.json 保留任务归属（可重启后按任务回看）",
+		runsWithTask?.runs?.length,
+	);
+
 	// -- 0.1.0 旧库迁移：groups → systems，数据集归属清空 ---------------------
 	await stopServer(sock);
 	writeFileSync(
@@ -501,6 +527,16 @@ try {
 		{ status: r.status, systems: reset.systems?.length, datasets: reset.datasets?.length },
 	);
 	check((reset.migratedFrom ?? 0) === 0, "reset 后不再显示迁移提示", reset.migratedFrom);
+
+	// -- reset 同时清空执行记录（用例 id 全新，旧流水已对不上） ---------------
+	const sampleCase = (reset.cases ?? [])[0];
+	if (sampleCase) {
+		const rec = await postJson("/runs", { caseId: sampleCase.id, verdict: "通过", note: "reset 前登记" });
+		check(rec.status === 200 && (rec.body?.runs?.length ?? 0) >= 1, "示例数据上可登记执行结果", rec.body?.error);
+	}
+	r = await postJson("/reset", { confirm: true });
+	check((r.body?.runs?.length ?? -1) === 0, "reset 同时清空执行记录", r.body?.runs?.length);
+	check(JSON.parse(readFileSync(runsFile, "utf8"))?.runs?.length === 0, "runs.json 与内存同步清空（不留孤儿流水）");
 	sock.close();
 } catch (err) {
 	failures += 1;

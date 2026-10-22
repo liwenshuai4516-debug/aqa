@@ -6,13 +6,28 @@
  * 样式见 ./style.mjs（自包含，只吃宿主主题变量，深浅主题自动跟随）。
  */
 import { CSS } from "./style.mjs";
-import { BASE, S, applyStore, esc, hooks, load, moduleOf, newId, pathOfFeature, persist, toast } from "./state.mjs";
+import {
+	BASE,
+	S,
+	applyStore,
+	esc,
+	filteredRuns,
+	hooks,
+	load,
+	moduleOf,
+	newId,
+	pathOfFeature,
+	persist,
+	runsCsvText,
+	toast,
+} from "./state.mjs";
 import {
 	casesHtml,
 	currentCaseScope,
 	datasetsHtml,
 	overviewHtml,
 	projectListHtml,
+	runsHtml,
 	settingsHtml,
 	tabsList,
 } from "./views.mjs";
@@ -59,6 +74,7 @@ function bodyHtml() {
 	if (S.tab === "cases") {
 		return `<div class="dsp-layout">${projectListHtml()}<section class="dsp-content">${casesHtml()}</section></div>`;
 	}
+	if (S.tab === "runs") return runsHtml();
 	if (S.tab === "datasets") return datasetsHtml();
 	if (S.tab === "settings") return settingsHtml();
 	return overviewHtml();
@@ -175,6 +191,37 @@ function onClick(e) {
 	if (act === "type") {
 		S.caseType = id || "all";
 		renderBody();
+		return;
+	}
+	if (act === "runs-verdict") {
+		S.runsVerdict = id || "all";
+		renderBody();
+		return;
+	}
+	if (act === "runs-view") {
+		S.runsView = id === "task" ? "task" : "flat";
+		S.runsOpen = "";
+		renderBody();
+		return;
+	}
+	if (act === "toggle-runs-task") {
+		S.runsOpen = S.runsOpen === id ? "" : id;
+		renderBody();
+		return;
+	}
+	if (act === "goto-case") {
+		const c = S.cases.find((x) => x.id === id);
+		if (!c) return;
+		const { system, module } = pathOfFeature(c.featureId);
+		S.sel = { systemId: system?.id || "", moduleId: module?.id || "", featureId: c.featureId };
+		// 直接定位到这条用例：编号搜索在项目内唯一命中
+		S.caseQ = c.code || c.title;
+		S.tab = "cases";
+		render();
+		return;
+	}
+	if (act === "export-runs") {
+		doExportRuns();
 		return;
 	}
 	if (act === "prio") {
@@ -345,6 +392,11 @@ function onInput(e) {
 		renderBodyKeepFocus('[data-el="dataset-search"]');
 		return;
 	}
+	if (el.dataset.el === "runs-search") {
+		S.runsQ = el.value;
+		renderBodyKeepFocus('[data-el="runs-search"]');
+		return;
+	}
 	if (modal && el.dataset.f) {
 		modal[el.dataset.f] = el.value;
 		return;
@@ -380,6 +432,16 @@ function onChange(e) {
 	}
 	if (el.dataset.el === "case-status") {
 		S.status = el.value;
+		renderBody();
+		return;
+	}
+	if (el.dataset.el === "runs-source") {
+		S.runsSource = el.value;
+		renderBody();
+		return;
+	}
+	if (el.dataset.el === "runs-range") {
+		S.runsRange = el.value;
 		renderBody();
 		return;
 	}
@@ -464,6 +526,22 @@ function doExport() {
 	a.click();
 	setTimeout(() => URL.revokeObjectURL(a.href), 5000);
 	toast("已导出 JSON");
+}
+
+/** 执行记录导出：只导当前筛选结果，带 BOM 方便 Excel 识别中文。 */
+function doExportRuns() {
+	const rows = filteredRuns();
+	if (!rows.length) {
+		toast("当前筛选没有可导出的记录");
+		return;
+	}
+	const blob = new Blob([`\uFEFF${runsCsvText(rows)}`], { type: "text/csv;charset=utf-8" });
+	const a = document.createElement("a");
+	a.href = URL.createObjectURL(blob);
+	a.download = `data-space-runs-${new Date().toISOString().slice(0, 10)}.csv`;
+	a.click();
+	setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+	toast(`已导出 ${rows.length} 条执行记录`);
 }
 
 /** 兼容 0.1.0 的「分组 + 数据集」格式：分组 → 系统，数据集归属清空。 */

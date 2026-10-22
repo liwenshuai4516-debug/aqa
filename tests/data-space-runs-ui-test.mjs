@@ -8,13 +8,14 @@
  *   4. 用例表「最近结果」列点开可登记，保存后徽章变成「通过」，概览通过率随之变化；
  *   5. 刷新页面后结果仍在（落在 runs.json，不在内存）；
  *   6. 引入对话弹窗有三档格式（自动 / 卡片 / 清单 / 引用），引用档预览不含步骤正文；
- *   7. 900 宽窄屏下页面不横向溢出；
- *   8. 全程无 JS 报错。
+ *   8. 执行结果页：流水表、按任务聚合（批量任务一张卡、三态计数）、搜索空态、CSV 导出（表头 / BOM / 备注）；
+ *   9. 900 宽窄屏下页面不横向溢出；
+ *   10. 全程无 JS 报错。
  *
  * Run: npm run build && node tests/data-space-runs-ui-test.mjs
  */
 import { spawn } from "node:child_process";
-import { cpSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
@@ -210,6 +211,80 @@ try {
 	const rateCard = page.locator(".dsp-stat", { hasText: "通过率" }).first();
 	const rateText = (await rateCard.innerText()).replace(/\s+/g, " ");
 	check("概览通过率不再为 0%", !/\b0%/.test(rateText), rateText);
+
+	// -- 5b) 模拟 AI 一次回写多条：服务端应归为同一个任务 --------------------
+	const batchRes = await fetch(`${APP}/plugins-api/data-space/runs`, {
+		method: "POST",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify({
+			task: "E2E 批量回归",
+			results: [
+				{ case: "PMS-001", verdict: "通过" },
+				{ case: "PMS-002", verdict: "失败", note: "按钮不可点" },
+			],
+		}),
+	});
+	const batchBody = await batchRes.json().catch(() => null);
+	check(
+		"一次回写多条归为同一个任务",
+		batchBody?.recorded?.length === 2 && Boolean(batchBody?.taskId) && Boolean(batchBody?.recorded?.[1]?.taskName),
+		batchBody?.error ?? batchBody?.taskId,
+	);
+
+	// -- 5c) 「执行结果」页：流水 / 按任务 / 筛选 / 导出 ----------------------
+	await page.locator('.dsp-nav button[data-tab="runs"]').click();
+	await sleep(400);
+	check("执行结果页有统计卡", (await page.locator(".dsp-stat", { hasText: "执行记录" }).count()) >= 1);
+	const runRows = page.locator(".dsp-table.runs tbody tr");
+	const runRowCount = await runRows.count();
+	check("流水表列出刚登记的那条记录", runRowCount >= 1, `${runRowCount} 行`);
+	check("来源标为「手工登记」", (await page.locator(".dsp-source.manual").count()) >= 1);
+	check("备注跟着记录一起展示", (await page.locator(".dsp-run-note", { hasText: "E2E 登记" }).count()) >= 1);
+
+	await page.locator('button[data-act="runs-view"][data-id="task"]').click();
+	await sleep(350);
+	check(
+		"按任务视图把零散登记归到「单条登记」",
+		(await page.locator(".dsp-task", { hasText: "单条登记" }).count()) >= 1,
+	);
+	const batchTask = page.locator(".dsp-task", { hasText: "E2E 批量回归" }).first();
+	check("按任务视图列出批量任务", (await batchTask.count()) >= 1);
+	const batchText = (await batchTask.innerText()).replace(/\s+/g, " ");
+	check(
+		"批量任务卡带三态计数与条数",
+		/通过 1/.test(batchText) && /失败 1/.test(batchText) && /共 2 条/.test(batchText),
+		batchText.slice(0, 90),
+	);
+	check("任务卡内列出逐条明细", (await batchTask.locator(".dsp-task-row").count()) === 2);
+	await page.locator('button[data-act="runs-view"][data-id="flat"]').click();
+	await sleep(300);
+
+	await page.locator('[data-el="runs-search"]').fill("不存在的关键词zzz");
+	await sleep(350);
+	check("搜不到时给空态而不是空白", (await page.locator(".dsp-empty", { hasText: "没有匹配" }).count()) >= 1);
+	await page.locator('[data-el="runs-search"]').fill("");
+	await sleep(300);
+	check("清空搜索后记录回来", (await page.locator(".dsp-table.runs tbody tr").count()) >= 1);
+
+	const [download] = await Promise.all([
+		page.waitForEvent("download", { timeout: 10000 }).catch(() => null),
+		page.locator('button[data-act="export-runs"]').click(),
+	]);
+	if (download) {
+		const csvPath = await download.path();
+		const csv = csvPath ? readFileSync(csvPath, "utf8") : "";
+		check(
+			"导出 CSV：文件名带 data-space-runs",
+			/data-space-runs-\d{4}-\d{2}-\d{2}\.csv/.test(download.suggestedFilename()),
+		);
+		check(
+			"导出 CSV：带 UTF-8 BOM 与表头",
+			csv.charCodeAt(0) === 0xfeff && csv.includes("时间") && csv.includes("结论"),
+		);
+		check("导出 CSV：含刚登记的备注", csv.includes("E2E 登记"));
+	} else {
+		check("导出 CSV 触发下载", false);
+	}
 
 	// -- 6) 刷新后结果仍在（落盘而非内存） -----------------------------------
 	await page.reload();

@@ -22,6 +22,13 @@ import { MAX_RUNS, VERDICTS, normalizeRuns } from "./runs.mjs";
 import { seedStore } from "./seed.mjs";
 import { createDataSpaceTools } from "./tools.mjs";
 
+/** 默认任务名里的短时间戳（本地时区 MM-DD HH:mm）。 */
+const shortStamp = (iso) => {
+	const d = new Date(iso);
+	const p = (n) => String(n).padStart(2, "0");
+	return `${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+};
+
 export default {
 	activate(host) {
 		const dir = join(host.dataDir, "data-space");
@@ -121,13 +128,16 @@ export default {
 		/**
 		 * 记一批执行结果。entries: [{case(caseId/编号), verdict, note}]。
 		 * 编号 / id 都能定位；找不到的进 unknown，不静默丢。
+		 *
+		 * meta.taskName / meta.taskId：一次回写多条时自动归为一个「测试任务」（结果页按任务看整批结论）；
+		 * 单条回写不造任务，避免把流水拆成一堆只有一条的任务。
 		 */
-		function recordResults(entries, source) {
+		function recordResults(entries, source, meta = {}) {
 			const byId = new Map(store.cases.map((c) => [c.id, c]));
 			const byCode = new Map(store.cases.filter((c) => c.code).map((c) => [String(c.code).toUpperCase(), c]));
-			const recorded = [];
-			const unknown = [];
 			const at = now();
+			const resolved = [];
+			const unknown = [];
 			for (const entry of entries ?? []) {
 				const key = str(entry?.case, 64);
 				const verdict = str(entry?.verdict, 12);
@@ -137,15 +147,28 @@ export default {
 					unknown.push(key);
 					continue;
 				}
+				resolved.push({ c, verdict, note: str(entry?.note, 300) });
+			}
+
+			const wantTask =
+				str(meta.taskId, 64) ||
+				(resolved.length > 1 ? `task-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}` : "");
+			const taskId = resolved.length ? wantTask : "";
+			const taskName = taskId ? str(meta.taskName, 80) || `批量执行 ${shortStamp(at)}` : "";
+
+			const recorded = [];
+			for (const { c, verdict, note } of resolved) {
 				const run = {
 					id: `run-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
 					caseId: c.id,
 					code: c.code,
 					verdict,
-					note: str(entry?.note, 300),
+					note,
 					at,
 					source: source === "manual" ? "manual" : "ai",
 					caseUpdatedAt: c.updatedAt,
+					taskId,
+					taskName,
 				};
 				runs.runs.push(run);
 				recorded.push(run);
@@ -234,7 +257,7 @@ export default {
 			const entries = Array.isArray(body.results)
 				? body.results
 				: [{ case: body.caseId || body.code, verdict: body.verdict, note: body.note }];
-			const out = recordResults(entries, "manual");
+			const out = recordResults(entries, "manual", { taskName: str(body.task, 80) });
 			if (!out.recorded.length) {
 				res.status(400).json({ ok: false, error: "没有可记录的结果：确认用例存在且结果合法", unknown: out.unknown });
 				return;
@@ -244,6 +267,7 @@ export default {
 				recorded: out.recorded,
 				unknown: out.unknown,
 				runs: runs.runs,
+				taskId: out.recorded[0]?.taskId || "",
 				runsRevision: out.runsRevision,
 			});
 		});
@@ -256,6 +280,16 @@ export default {
 			}
 			store = { ...seedStore(), revision: store.revision + 1 };
 			persist();
+			// 示例数据的用例 id 全新，旧执行记录再也对不上；留着只会在结果页堆一批孤儿，直接清空。
+			if (runs.runs.length) {
+				runs = { version: 1, revision: runs.revision + 1, runs: [] };
+				persistRuns();
+				try {
+					host.broadcast({ kind: "runs", revision: runs.revision });
+				} catch {
+					/* 没有客户端在线 */
+				}
+			}
 			res.json(snapshot());
 		});
 

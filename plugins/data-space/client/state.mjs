@@ -2,6 +2,7 @@
  * 数据空间视图的共享状态与小工具：读写快照、层级查询、编号生成。
  * 页面渲染（views.mjs）与弹窗（modals.mjs）都从这里取数据，事件绑定在 entry.mjs。
  */
+import { filterRuns, groupRuns, runStats, runsCsv, sortRunsDesc } from "./results.mjs";
 
 function appRoot() {
 	try {
@@ -58,6 +59,14 @@ export const S = {
 	runIndex: new Map(),
 	/** 手工登记结果的弹窗状态（见 modal-result.mjs）。 */
 	resultModal: null,
+	/** 「执行结果」页的视图（flat 流水 / task 按任务）与筛选条件。 */
+	runsView: "flat",
+	runsQ: "",
+	runsVerdict: "all",
+	runsSource: "all",
+	runsRange: "all",
+	/** 「按任务」视图里展开的任务 key（空 = 全部收起）。 */
+	runsOpen: "",
 	tab: "overview",
 	/** 项目列表选中：systemId 为空 = 全部用例；moduleId / featureId 为项目内筛选 */
 	sel: { systemId: "", moduleId: "", featureId: "" },
@@ -265,6 +274,47 @@ export function isRunStale(run, c) {
 export function resultOf(c) {
 	const run = c ? (S.runIndex.get(c.id) ?? null) : null;
 	return run ? { run, stale: isRunStale(run, c) } : null;
+}
+
+/* ------------------------------------------------------------------ 执行结果页 */
+
+export const caseById = (id) => S.cases.find((c) => c.id === id) ?? null;
+
+/** 用例 → 「项目 / 模块 / 功能」；搜索与 CSV 都用它，避免每个调用点自己拼。 */
+const casePath = (c) => (c ? pathText(c.featureId) : "");
+
+/** 当前筛选下的执行流水（时间倒序）：「执行结果」页与 CSV 导出共用一个口径。 */
+export function filteredRuns() {
+	const casesById = new Map(S.cases.map((c) => [c.id, c]));
+	return sortRunsDesc(
+		filterRuns(S.runs, {
+			q: S.runsQ,
+			verdict: S.runsVerdict,
+			source: S.runsSource,
+			range: S.runsRange,
+			casesById,
+			pathOf: casePath,
+		}),
+	);
+}
+
+/** 流水统计：记录数、覆盖用例数、通过率、过期条数。 */
+export function runsSummary(rows) {
+	return runStats(rows, { casesById: new Map(S.cases.map((c) => [c.id, c])), isStale: isRunStale });
+}
+
+/** 按任务聚合（没有 taskId 的记录各自成组）。 */
+export function runsGroups(rows) {
+	return groupRuns(rows, { casesById: new Map(S.cases.map((c) => [c.id, c])), isStale: isRunStale });
+}
+
+/** 导出 CSV 文本（调用方负责加 BOM 与下载）。 */
+export function runsCsvText(rows) {
+	return runsCsv(rows, {
+		casesById: new Map(S.cases.map((c) => [c.id, c])),
+		pathOf: casePath,
+		isStale: isRunStale,
+	});
 }
 
 /** 概览统计：未执行的不进分母（"通过率"只对已执行用例有意义）。 */

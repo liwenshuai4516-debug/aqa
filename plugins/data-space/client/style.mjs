@@ -178,6 +178,31 @@ export const CSS = `
 .dsp-result.blocked { color: var(--amber, #e0a63c); border-color: color-mix(in srgb, var(--amber, #e0a63c) 45%, transparent); }
 .dsp-result.none { border-style: dashed; color: var(--text-faint, #8a8f98); }
 .dsp-result.stale { opacity: 0.6; }
+/* 执行结果页：来源徽章、流水表、任务卡片 */
+.dsp-source { font-size: 10.5px; line-height: 17px; padding: 0 6px; border-radius: 99px; border: 1px solid var(--border, #2c2f36); color: var(--text-faint, #8a8f98); flex: none; white-space: nowrap; }
+.dsp-source.ai { color: var(--purple, #a78bfa); border-color: color-mix(in srgb, var(--purple, #a78bfa) 45%, transparent); background: color-mix(in srgb, var(--purple, #a78bfa) 12%, transparent); }
+.dsp-source.manual { color: var(--text-dim, #a4a9b3); }
+.dsp-table.runs { min-width: 900px; }
+.dsp-table.runs .dsp-result { cursor: default; }
+.dsp-runs-time { font-variant-numeric: tabular-nums; color: var(--text-dim, #a4a9b3); white-space: nowrap; }
+.dsp-run-case { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.dsp-run-case b { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dsp-run-note { color: var(--text-faint, #8a8f98); font-size: 12px; }
+.dsp-task-list { display: flex; flex-direction: column; gap: 10px; }
+.dsp-task { border: 1px solid var(--border, #2c2f36); border-radius: 11px; background: var(--bg-elev, var(--bg-elev2, #1d1f24)); overflow: hidden; }
+.dsp-task-head { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--border, #2c2f36); flex-wrap: wrap; }
+.dsp-task-name { font-weight: 600; min-width: 0; max-width: 44%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dsp-task-when { font-size: 11px; color: var(--text-faint, #8a8f98); font-variant-numeric: tabular-nums; flex: none; }
+.dsp-task-sum { margin-left: auto; font-size: 11.5px; color: var(--text-faint, #8a8f98); }
+.dsp-task-bar { width: 66px; height: 5px; border-radius: 99px; background: var(--bg-elev2, #22242a); overflow: hidden; flex: none; }
+.dsp-task-bar i { display: block; height: 100%; border-radius: 99px; background: var(--green, #3ecf8e); }
+.dsp-task-row { appearance: none; font: inherit; color: inherit; text-align: left; display: grid; grid-template-columns: 66px 78px minmax(0, 1fr) minmax(0, 1fr) 84px; gap: 8px; align-items: center; padding: 6px 12px; border: 0; border-bottom: 1px solid var(--border-soft, var(--border, #2c2f36)); background: transparent; cursor: pointer; min-width: 0; width: 100%; }
+.dsp-task-row:hover { background: var(--bg-elev2, #22242a); }
+.dsp-task-row:last-child { border-bottom: 0; }
+.dsp-task-code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--text-dim, #a4a9b3); }
+.dsp-task-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dsp-task-note { font-size: 11.5px; color: var(--text-faint, #8a8f98); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dsp-task-more { margin: 0 12px 8px; }
 .dsp-result-time { font-size: 9.5px; color: var(--text-faint, #8a8f98); font-variant-numeric: tabular-nums; }
 .dsp-progress i.pass { background: var(--green, #3ecf8e); }
 .dsp-bar i.pass { background: var(--green, #3ecf8e); }
@@ -240,6 +265,11 @@ export const CSS = `
 	.dsp-overlay { padding: 12px; }
 	.dsp-step { grid-template-columns: 18px minmax(0, 1fr) 26px; }
 	.dsp-step textarea[data-sf="expect"] { grid-column: 2 / 3; }
+	/* 执行结果窄屏：先保住时间 / 结论 / 用例 / 来源，路径与任务靠搜索与展开看 */
+	.dsp-table.runs col:nth-child(4), .dsp-table.runs th:nth-child(4), .dsp-table.runs td:nth-child(4),
+	.dsp-table.runs col:nth-child(6), .dsp-table.runs th:nth-child(6), .dsp-table.runs td:nth-child(6) { display: none; }
+	.dsp-task-row { grid-template-columns: 60px minmax(0, 1fr) 76px; }
+	.dsp-task-note { display: none; }
 	/* 窄屏先让位给名称与操作，标签/更新时间靠搜索与编辑弹窗查看 */
 	.dsp-table.ds col:nth-child(5), .dsp-table.ds col:nth-child(6),
 	.dsp-table.ds th:nth-child(5), .dsp-table.ds th:nth-child(6),

@@ -13,7 +13,9 @@ import {
 	esc,
 	featureOf,
 	featuresOf,
+	filteredRuns,
 	fmtTime,
+	isRunStale,
 	moduleOf,
 	modulesOf,
 	observedTypes,
@@ -21,9 +23,12 @@ import {
 	pathText,
 	resultOf,
 	resultStats,
+	runsGroups,
+	runsSummary,
 	systemOf,
 	typeCounts,
 } from "./state.mjs";
+import { RUN_RANGES, RUN_SOURCES, sourceLabel, stampText, verdictClass } from "./results.mjs";
 
 import { isIntroduced } from "./brief.mjs";
 
@@ -158,7 +163,7 @@ export function overviewHtml() {
 							.join("")
 					: `<div class="dsp-muted">还没有用例</div>`
 			}
-			<div class="dsp-card-head" style="margin-top:14px"><span>执行结果</span><span>${rs.executed} 条已执行${rs.stale ? ` · ${rs.stale} 条已过期` : ""}</span></div>
+			<div class="dsp-card-head" style="margin-top:14px"><span>执行结果</span><span class="dsp-inline"><span>${rs.executed} 条已执行${rs.stale ? ` · ${rs.stale} 条已过期` : ""}</span><button class="dsp-btn" data-act="tab" data-tab="runs">查看记录 →</button></span></div>
 			<div class="dsp-progress"><i class="pass" style="width:${rs.passRate}%"></i></div>
 			<div class="dsp-muted" style="margin:6px 0 10px">通过率 ${rs.passRate}% · 未执行 ${rs.untested} 条（不计入分母）</div>
 			${resultBars
@@ -226,6 +231,7 @@ export function footHtml() {
 export const tabsList = () => [
 	["overview", "概览", null],
 	["cases", "用例库", S.cases.length],
+	["runs", "执行结果", S.runs.length],
 	["datasets", "数据集", S.datasets.length],
 	["settings", "设置", null],
 ];
@@ -534,6 +540,172 @@ export function currentCaseScope() {
 			: casesOfSystem(s.id);
 	const label = [s.name, activeModule?.name, activeFeature?.name].filter(Boolean).join(" / ");
 	return pack(label, base);
+}
+
+/* ------------------------------------------------------------------ 执行结果 */
+
+const sourceBadge = (source) =>
+	`<span class="dsp-source ${source === "ai" ? "ai" : "manual"}">${esc(sourceLabel(source))}</span>`;
+
+const verdictBadge = (v, stale) =>
+	`<span class="dsp-result ${verdictClass(v)}${stale ? " stale" : ""}">${esc(v)}</span>`;
+
+/** 用例被删后流水仍可能短暂存在（内存里刚删）：如实显示，不静默丢行。 */
+function runCaseLabel(r, c, stale) {
+	return `<div class="dsp-run-case"><b>${esc(r.code || c?.code || "未编号")} · ${esc(c?.title || "用例已删除")}</b>${
+		stale ? `<span class="dsp-warn">可能过期</span>` : ""
+	}</div>`;
+}
+
+function runRow(r) {
+	const c = S.cases.find((x) => x.id === r.caseId) ?? null;
+	const stale = isRunStale(r, c);
+	const path = c ? pathText(c.featureId) : "—";
+	const actions = c
+		? `<div class="dsp-row-actions">
+			<button class="dsp-btn icon" data-act="brief-case" data-id="${esc(c.id)}" title="引入到 AI 对话">${ICON.brief}</button>
+			<button class="dsp-btn" data-act="record-result" data-id="${esc(c.id)}" title="再登记一次结果（旧记录仍保留）">重新登记</button>
+		</div>`
+		: "";
+	return `<tr>
+		<td class="dsp-runs-time" title="${esc(stampText(r.at))}">${esc(fmtTime(r.at))}</td>
+		<td>${verdictBadge(r.verdict, stale)}</td>
+		<td class="dsp-cell-main">${runCaseLabel(r, c, stale)}</td>
+		<td class="dsp-path-cell" title="${esc(path)}">${esc(path)}</td>
+		<td>${sourceBadge(r.source)}</td>
+		<td class="dsp-muted" title="${esc(r.taskName || "")}">${esc(r.taskName || "—")}</td>
+		<td class="dsp-run-note" title="${esc(r.note || "")}">${esc(r.note || "—")}</td>
+		<td>${actions}</td>
+	</tr>`;
+}
+
+function runsTable(rows) {
+	return `<div class="dsp-table-wrap"><table class="dsp-table runs">
+		<colgroup><col style="width:88px"/><col style="width:66px"/><col style="width:auto"/><col style="width:164px"/><col style="width:82px"/><col style="width:128px"/><col style="width:196px"/><col style="width:132px"/></colgroup>
+		<thead><tr><th>时间</th><th>结论</th><th>用例</th><th>所属路径</th><th>来源</th><th>任务</th><th>备注</th><th></th></tr></thead>
+		<tbody>${rows.map(runRow).join("")}</tbody></table></div>`;
+}
+
+function taskRow(r) {
+	const c = S.cases.find((x) => x.id === r.caseId) ?? null;
+	const stale = isRunStale(r, c);
+	const title = c?.title || "用例已删除";
+	return `<button class="dsp-task-row" data-act="goto-case" data-id="${esc(r.caseId)}">
+		${verdictBadge(r.verdict, stale)}
+		<span class="dsp-task-code">${esc(r.code || c?.code || "—")}</span>
+		<span class="dsp-task-title" title="${esc(title)}">${esc(title)}</span>
+		<span class="dsp-task-note" title="${esc(r.note || "")}">${esc(r.note || "")}</span>
+		<span class="dsp-task-when">${esc(fmtTime(r.at))}</span>
+	</button>`;
+}
+
+const TASK_PREVIEW = 8;
+
+function taskCard(g) {
+	const long = g.rows.length > TASK_PREVIEW;
+	const open = S.runsOpen === g.key;
+	const shown = long && !open ? g.rows.slice(0, TASK_PREVIEW) : g.rows;
+	const pctPass = g.total ? Math.round((g.counts["通过"] / g.total) * 100) : 0;
+	return `<section class="dsp-task">
+		<div class="dsp-task-head">
+			<span class="dsp-task-name" title="${esc(g.name)}">${esc(g.name)}</span>
+			${sourceBadge(g.source)}
+			<span class="dsp-task-when" title="${esc(stampText(g.at))}">${esc(fmtTime(g.at))}</span>
+			<span class="dsp-task-sum">通过 ${g.counts["通过"]} · 失败 ${g.counts["失败"]} · 阻塞 ${g.counts["阻塞"]} · 共 ${g.total} 条${
+				g.stale ? ` · <span class="dsp-warn">${g.stale} 条过期</span>` : ""
+			}</span>
+			<span class="dsp-task-bar"><i style="width:${pctPass}%"></i></span>
+		</div>
+		<div class="dsp-task-rows">${shown.map(taskRow).join("")}</div>
+		${
+			long
+				? `<button class="dsp-btn dsp-task-more" data-act="toggle-runs-task" data-id="${esc(g.key)}">${
+						open ? "收起" : `展开其余 ${g.rows.length - shown.length} 条`
+					}</button>`
+				: ""
+		}
+	</section>`;
+}
+
+function runsToolbar(rows) {
+	const verdictChips = ["all", ...(S.verdicts.length ? S.verdicts : ["通过", "失败", "阻塞"])]
+		.map(
+			(v) =>
+				`<button class="dsp-chip ${S.runsVerdict === v ? "on" : ""}" data-act="runs-verdict" data-id="${esc(v)}">${
+					v === "all" ? "全部结论" : esc(v)
+				}</button>`,
+		)
+		.join("");
+	const viewChips = [
+		["flat", "流水"],
+		["task", "按任务"],
+	]
+		.map(
+			([v, l]) =>
+				`<button class="dsp-chip ${S.runsView === v ? "on" : ""}" data-act="runs-view" data-id="${v}">${l}</button>`,
+		)
+		.join("");
+	const sources = RUN_SOURCES.map(
+		([v, l]) => `<option value="${esc(v)}" ${S.runsSource === v ? "selected" : ""}>${esc(l)}</option>`,
+	).join("");
+	const ranges = RUN_RANGES.map(
+		([v, l]) => `<option value="${esc(v)}" ${S.runsRange === v ? "selected" : ""}>${esc(l)}</option>`,
+	).join("");
+	return `<div class="dsp-toolbar">
+		<input class="dsp-search" data-el="runs-search" value="${esc(S.runsQ)}" placeholder="搜索编号 / 标题 / 备注 / 任务 / 路径" />
+		<div class="dsp-chips" style="margin:0">${verdictChips}</div>
+		<select data-el="runs-source">${sources}</select>
+		<select data-el="runs-range">${ranges}</select>
+		<div class="dsp-chips dsp-chips-sep" style="margin:0">${viewChips}</div>
+		<span class="dsp-muted">${rows.length} / ${S.runs.length}</span>
+	</div>`;
+}
+
+/** 「执行结果」页：流水与按任务两种视图，共用一套筛选。 */
+export function runsHtml() {
+	const all = S.runs;
+	const rows = filteredRuns();
+	const st = runsSummary(rows);
+	const filtered = rows.length !== all.length;
+	const headSub = all.length
+		? `覆盖 ${st.cases} 条用例 · 通过 ${st["通过"]} / 失败 ${st["失败"]} / 阻塞 ${st["阻塞"]} · 通过率 ${st.passRate}%${
+				st.stale ? ` · ${st.stale} 条可能过期` : ""
+			}${filtered ? ` · 已筛出 ${rows.length} 条` : ""}`
+		: "在用例表登记结果，或在对话里执行后由 AI 回写；两类记录都汇总在这里。";
+	const needFollow = (st["失败"] ?? 0) + (st["阻塞"] ?? 0);
+
+	const head = `
+	<div class="dsp-page-head">
+		<div class="dsp-page-title-wrap">
+			<h3>执行结果<span class="dsp-num">${all.length} 条记录</span></h3>
+			<div class="dsp-page-sub">${headSub}</div>
+		</div>
+		<div class="dsp-inline">
+			<button class="dsp-btn" data-act="export-runs"${rows.length ? "" : " disabled"} title="导出当前筛选的流水为 CSV">导出 CSV</button>
+			<button class="dsp-btn" data-act="reload" title="重新读取服务端数据">刷新</button>
+		</div>
+	</div>`;
+
+	if (!all.length) {
+		return `${head}
+	<div class="dsp-empty"><b>还没有执行记录</b>在「用例库」点某条用例的「未执行」徽章就能登记；或在对话里执行后会由 AI 回写。<div style="margin-top:12px"><button class="dsp-btn" data-act="tab" data-tab="cases">去用例库登记</button></div></div>
+	${footHtml()}`;
+	}
+
+	const stats = `<div class="dsp-stats">
+		${statCard("执行记录", st.total, `覆盖 ${st.cases} 条用例 · ${st.tasks} 个任务`)}
+		${statCard("通过率", `${st.passRate}%`, `通过 ${st["通过"]} / ${st.total} 条记录`)}
+		${statCard("需要跟进", needFollow, `失败 ${st["失败"]} · 阻塞 ${st["阻塞"]}`)}
+		${statCard("最近执行", fmtTime(st.lastAt), st.stale ? `${st.stale} 条结论已过期，建议重跑` : "结果均为最新")}
+	</div>`;
+
+	const list = rows.length
+		? S.runsView === "task"
+			? `<div class="dsp-task-list">${runsGroups(rows).map(taskCard).join("")}</div>`
+			: runsTable(rows)
+		: `<div class="dsp-empty"><b>没有匹配的执行记录</b>换个关键词，或把结论 / 来源 / 时间改回「全部」。</div>`;
+
+	return `${head}${stats}${runsToolbar(rows)}${list}${footHtml()}`;
 }
 
 /* ------------------------------------------------------------------ 数据集 */
