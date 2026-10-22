@@ -1,0 +1,154 @@
+{
+	"schemaVersion": 1,
+	"date": "2026-10-22",
+	"status": "passed-engineering-synthetic-targets",
+	"environment": {
+		"platform": "macOS",
+		"node": "23.10.0",
+		"playwright": "1.62.1"
+	},
+	"limitations": [
+		"Independent review responses are explicit control stubs; no real-model/business acceptance claimed.",
+		"No personal installation or running user service changed.",
+		"Windows/Linux not executed."
+	],
+	"results": {
+		"unit": {
+			"files": 15,
+			"passed": 227,
+			"failed": 0,
+			"skipped": 0
+		},
+		"native": {
+			"status": "PASS",
+			"scope": "local synthetic targets; controlled review responses, real native runners, no real model assessment",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/data-space-native-BuTbmg",
+			"checks": [
+				"API actual Newman execution, original route, native evidence and idempotent sync",
+				"API actual failed assertion and successful retest retain parent lineage",
+				"API cancellation imports incomplete native run as unknown without replay",
+				"API changed frozen evidence is rejected",
+				"API cross-workspace result reference rejected",
+				"UI real design gate, positive/negative diagnosis and formal Playwright evidence sync (review response controlled)",
+				"restart imports missed native completion without replaying execution"
+			]
+		},
+		"browser": {
+			"out": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-browser/1792667652174",
+			"status": "PASS",
+			"checks": [
+				"registration is idempotent and preserves settings",
+				"skill appears in settings and /data completes the real skill command",
+				"skill disable persists after reload and can be restored",
+				"host plugin management supports disable, reload persistence and re-enable",
+				"all three plugin tools are manageable; tool disabling persists after reload",
+				"case automation association UI loads with project-scoped environments",
+				"invalid native asset is visibly rejected without saving an association",
+				"refresh keeps native UI stable without browser errors"
+			],
+			"actualModelCalls": 0,
+			"businessRequests": 0,
+			"cleanup": {
+				"id": "6611d49e-05bd-4c6c-9b0b-2883cdeb78e9",
+				"port": 59458,
+				"serverPid": 21274,
+				"records": [],
+				"residual": [],
+				"removed": true
+			}
+		},
+		"apiRegression": {
+			"status": "passed-fixture-persistence",
+			"checks": 15,
+			"evidence": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p2-1-7f0NSN/summary.json"
+		},
+		"uiGuardRegression": {
+			"status": "PASS",
+			"checks": 9,
+			"evidence": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-guards/1792667481262"
+		},
+		"checks": ["full typecheck", "build", "lint", "protocol", "skill validation", "diff check"]
+	},
+	"archive": {
+		"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/native-evidence.tgz",
+		"bytes": 706524,
+		"sha256": "695e2bf5f3962277e3a803e2f3bc6ec80ef35285ce155a6bf0d6cc52b98f50fb"
+	},
+	"logs": [
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/api-regression.log",
+			"bytes": 249,
+			"sha256": "6f9acf49c33baffa406615d38ad745a147a72045ca5b2351d19f955bf5e6642c"
+		},
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/browser.log",
+			"bytes": 829,
+			"sha256": "ca67f863923038223a2607afbc439d423a73a59c2944067b44e919f79dd41366"
+		},
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/build.log",
+			"bytes": 6101,
+			"sha256": "34fbba357e35f00fe3ca127c7203bbbff4e8a18f4f59c3e09246df161dda7f37"
+		},
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/clean.log",
+			"bytes": 609,
+			"sha256": "11edff7f359e5c0ad036bad6ca5caf7ef19274615efa33463fcabe76958226e5"
+		},
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/current-unit.log",
+			"bytes": 466,
+			"sha256": "c0d8757818e4e6e40ead303d31571d32d2095e29547ef07c6f344faeb33c9025"
+		},
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/final-unit.log",
+			"bytes": 458,
+			"sha256": "c9f5c07f1d333fd1398bebe3c87911624f2adc45f795e508e20563b253227006"
+		},
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/format.log",
+			"bytes": 1868,
+			"sha256": "5ab44a70c01d3766d99ab0ca593d1fdf76ba22443ed77e61477fba3d37a0f001"
+		},
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/guards.log",
+			"bytes": 189,
+			"sha256": "b1257e9e78d95a279b0cad4b71dc12f100ad0ced0d79c17fd46bcd5d81270331"
+		},
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/host.log",
+			"bytes": 182,
+			"sha256": "745a4cae020ed3d9b34586a3acebc3eb83b65ad04130ba1530bae2aed832de42"
+		},
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/lint.log",
+			"bytes": 88,
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+		},
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/native.log",
+			"bytes": 1361,
+			"sha256": "cdcbe10b049a6f0dd9ee47367da54c15a0e584cdf9de16fb60f1209eba8dabaa"
+		},
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/probes.log",
+			"bytes": 697,
+			"sha256": "fc1c761bf9c2e4fb8a11d8a3ec7ba5d66b9595483841bab8a6f48e7128173c39"
+		},
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/protocol.log",
+			"bytes": 360,
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+		},
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/typecheck.log",
+			"bytes": 251,
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+		},
+		{
+			"path": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-review-20261022/ui-guards.log",
+			"bytes": 118,
+			"sha256": "af5c5d09c3fb06c485d9f9c2cf3cbeabdcd00e1e2594487d43378f7ed825d7cb"
+		}
+	]
+}

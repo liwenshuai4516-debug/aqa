@@ -180,3 +180,9 @@ export default definePlugin({
 `host.mcp.call(context, { serverId, toolName, runRef, input? }, signal)` 要求 `tools` 能力及宿主安装的受控调用提供者。它不是任意 MCP 调用 API：当前仅 `api-testing/workflow` 的受控 action 及 `api-testing/runApprovedSuite` 的一次性 fixture 引用可用。workflow 的模型补全经原宿主 llm 权限/模型范围包装，不直接取得供应商接口。权限和原会话状态在执行前、执行中及返回时复核；插件停用会取消本调用，原始 MCP 工具不进入模型工具列表。没有该上下文或提供者的引擎明确报不可用；mock 默认拒绝执行。原有 list/check/install/promptInstall 的管理语义不变。
 
 完整的 fixture 范围、批准来源和复现命令见 [接口测试插件](../plugins/api-testing/README.md)。不要把此接缝视作文件/网络沙箱或真实业务授权。
+
+### 原生测试证据（宿主 `host.testing`）
+
+需要 `tools` 权限。`inspect(engine, workspace, reference)` 只读返回原生资产版本、用例 ID 与环境；`read(...)` 返回核验后的批次/父批次、逐实例状态、证据引用与完整性；`list(engine, workspace)` 枚举可读取的批次引用。`engine` 为 `ui` 或 `api`，UI 引用为 `{path, sha256}`，API 为资产摘要或 run UUID。缺少执行依赖、证据变化、工作区不符时拒绝；不批准或启动测试，不改写原生结果。
+
+`onToolEvent` 的结束事件可带 `cwd`、`testRun: {engine, reference}`。它只是一条同步提示，消费方仍须调用 `host.testing.read` 核验磁盘证据，不得凭通知认定通过。详见 `docs/data-space-integration.md`。

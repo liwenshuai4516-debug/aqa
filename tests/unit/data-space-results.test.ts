@@ -219,7 +219,7 @@ describe("CSV 导出", () => {
 		expect(lines[0]).toBe('"时间","结论","环境","编号","用例标题","所属路径","来源","任务","过期","备注"');
 		expect(lines).toHaveLength(4);
 		expect(lines[1]).toContain('"PMS-004"');
-		expect(lines[1]).toContain('"AI 回写"');
+		expect(lines[1]).toContain('"AI 登记（未核验）"');
 		expect(lines[1]).toContain('"经营合同 P0 回归"');
 	});
 

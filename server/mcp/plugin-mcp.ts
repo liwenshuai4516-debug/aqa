@@ -48,6 +48,8 @@ export function createPluginInvocation(
 	verify: () => void,
 	signal?: AbortSignal,
 ): PluginInvocationScope {
+	verify();
+	signal?.throwIfAborted();
 	const context = Object.freeze({ ...identity });
 	invocations.set(context, { verify, signal });
 	return { context, dispose: () => invocations.delete(context) };

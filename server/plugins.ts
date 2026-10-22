@@ -1,3 +1,4 @@
+import { TestAssetReader, type TestEngine } from "./test-asset-reader.js";
 /**
  * pi-web-ui 插件管理器 —— 可选界面组件的加载与桥接。
  *
@@ -119,6 +120,9 @@ const ID_RE = /^[A-Za-z0-9_-]+$/;
 
 /** 插件收到的工具执行事件（agent-service 的 SDK tool_execution_start/end 转发）。 */
 export interface PluginToolEvent {
+	cwd?: string;
+	/** Native completion reference only; verdicts must be re-read from native evidence. */
+	testRun?: { engine: TestEngine; reference: unknown };
 	phase: "start" | "end";
 	toolName: string;
 	/** 事件所属对话（会话未就绪时可能为空）。 */
@@ -370,6 +374,8 @@ export function isPluginLogsRequest(p: unknown): p is PluginLogsWireUp {
 
 /** 插件服务端入口拿到的宿主接口。 */
 export interface PluginHost {
+	/** Read-only native test adapters. No runner execution or approval bypass. */
+	testing: Pick<TestAssetReader, "inspect" | "read" | "list">;
 	/** 向所有已连接的浏览器广播一条本插件的消息（plugin_data）。 */
 	broadcast(payload: unknown): void;
 	/** 发一条系统通知条（notice）给所有已连接的浏览器。 */
@@ -3826,6 +3832,20 @@ export class PluginManager {
 			onClientModelChanged: (h) => {
 				modelChangeHandlers.add(h);
 				return () => modelChangeHandlers.delete(h);
+			},
+			testing: {
+				list: (engine, cwd) => {
+					if (!can("tools")) throw new Error("Testing tools permission denied");
+					return new TestAssetReader(self.dataDir).list(engine, cwd);
+				},
+				inspect: (engine, cwd, ref) => {
+					if (!can("tools")) throw new Error("Testing tools permission denied");
+					return new TestAssetReader(self.dataDir).inspect(engine, cwd, ref);
+				},
+				read: (engine, cwd, ref) => {
+					if (!can("tools")) throw new Error("Testing tools permission denied");
+					return new TestAssetReader(self.dataDir).read(engine, cwd, ref);
+				},
 			},
 			getActiveConversation: (opts) => self.getActiveConversation(opts),
 			chat: (req) => sendChat(req),

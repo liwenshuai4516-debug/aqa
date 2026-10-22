@@ -92,7 +92,7 @@ export function buildDemoRuns(store, opts = {}) {
 			verdict,
 			note: extra.note ?? pickNote(verdict, seq),
 			at: iso,
-			source: extra.source === "manual" ? "manual" : "ai",
+			source: "demo",
 			// 只有「当前用例版本确实晚于这次执行」才记旧版本，避免把不过期的记录标成过期
 			caseUpdatedAt: extra.stale && current > iso ? iso : current,
 			taskId: extra.taskId || "",

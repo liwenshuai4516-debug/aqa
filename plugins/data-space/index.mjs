@@ -18,12 +18,14 @@
  *   - AI 工具只做两件事：按项目/模块/功能/编号查用例（省上下文）与回写执行结果；
  *     工具结果里带项目默认环境（名称 + 地址），不涉及任何口令。写盘后 broadcast 让页面自动刷新。
  */
-import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, readFileSync, realpathSync, renameSync } from "node:fs";
+import { atomicJson } from "./durable.mjs";
 import { basename, join } from "node:path";
 import { buildDemoRuns } from "./demo-runs.mjs";
 import { CASE_TYPES, MAX, migrateLegacy, normalizeStore, now, str } from "./model.mjs";
-import { MAX_RUNS, VERDICTS, normalizeRuns } from "./runs.mjs";
+import { VERDICTS, normalizeRuns } from "./runs.mjs";
 import { seedStore } from "./seed.mjs";
+import { createAutomation } from "./automation.mjs";
 import { createDataSpaceTools } from "./tools.mjs";
 
 /** 默认任务名里的短时间戳（本地时区 MM-DD HH:mm）。 */
@@ -45,15 +47,15 @@ export default {
 		// 迁移 / 清理结果立即落盘：下次启动不必重复判断，备份也只留一份。
 		if (loaded.changed) persist();
 
-		/** 结构变更前留一份原文件；返回备份文件名（失败返回空串，不阻断启动）。 */
+		/** 结构变更前留一份原文件；返回备份文件名（失败停止迁移）。 */
 		function backup(tag) {
 			const name = `${basename(file)}.${tag}-${Date.now()}.bak`;
 			try {
 				copyFileSync(file, join(dir, name));
 				return name;
 			} catch (err) {
-				host.log("warn", "备份旧数据文件失败，继续迁移", String(err));
-				return "";
+				host.log("error", "备份旧数据文件失败，停止迁移", String(err));
+				throw err;
 			}
 		}
 
@@ -62,6 +64,7 @@ export default {
 			try {
 				parsed = JSON.parse(readFileSync(file, "utf8"));
 			} catch (err) {
+				if (!(err instanceof SyntaxError) && err.code !== "ENOENT") throw err;
 				if (existsSync(file)) {
 					// 读得出来但坏了（手改坏 / 半截写）：先挪走再当空库起，绝不静默覆盖用户数据。
 					const quarantine = `${file}.corrupt-${Date.now()}`;
@@ -69,13 +72,14 @@ export default {
 						renameSync(file, quarantine);
 						host.log("error", `数据空间库解析失败，原文件已隔离为 ${quarantine}`, String(err));
 					} catch {
-						host.log("error", "数据空间库解析失败且隔离失败，本次不写盘以免覆盖");
+						throw new Error("数据空间库解析失败且无法隔离，拒绝覆盖原文件");
 					}
 				}
 				return { store: seedStore(), changed: false };
 			}
 
 			const o = parsed && typeof parsed === "object" ? parsed : {};
+			if (Number(o.version) > 3) throw new Error("数据版本高于当前支持版本，拒绝降级覆盖");
 			const isCurrent = Array.isArray(o.systems);
 			const oldDatasets = Array.isArray(o.datasets) ? o.datasets.length : 0;
 			const linkedCases = Array.isArray(o.cases)
@@ -123,15 +127,13 @@ export default {
 			};
 		}
 
-		function persist() {
-			try {
-				mkdirSync(dir, { recursive: true });
-				const tmp = `${file}.tmp.${process.pid}`;
-				writeFileSync(tmp, JSON.stringify(store, null, "\t"), "utf8");
-				renameSync(tmp, file);
-			} catch (err) {
-				host.log("error", "写入数据空间库失败：", err instanceof Error ? err.message : String(err));
-			}
+		function persist(next = store) {
+			atomicJson(file, next);
+		}
+		function commitStore(next) {
+			persist(next);
+			store = next;
+			host.broadcast({ kind: "store", revision: store.revision });
 		}
 
 		/** 执行结果：单独文件；坏了不静默覆盖（隔离后在空表上继续）。 */
@@ -140,29 +142,29 @@ export default {
 			try {
 				parsed = JSON.parse(readFileSync(runsFile, "utf8"));
 			} catch (err) {
+				if (!(err instanceof SyntaxError) && err.code !== "ENOENT") throw err;
 				if (existsSync(runsFile)) {
 					const quarantine = `${runsFile}.corrupt-${Date.now()}`;
 					try {
 						renameSync(runsFile, quarantine);
 						host.log("error", `执行结果文件解析失败，已隔离为 ${quarantine}`, String(err));
 					} catch {
-						host.log("error", "执行结果文件解析失败且隔离失败，本次不写盘以免覆盖");
+						throw new Error("执行结果文件解析失败且无法隔离，拒绝覆盖原文件");
 					}
 				}
 				return { version: 1, revision: 1, runs: [] };
 			}
+			if (Number(parsed?.version) > 1) throw new Error("执行记录版本高于当前支持版本");
 			return normalizeRuns(parsed, store.cases);
 		}
 
-		function persistRuns() {
-			try {
-				mkdirSync(dir, { recursive: true });
-				const tmp = `${runsFile}.tmp.${process.pid}`;
-				writeFileSync(tmp, JSON.stringify(runs, null, "\t"), "utf8");
-				renameSync(tmp, runsFile);
-			} catch (err) {
-				host.log("error", "写入执行结果失败：", err instanceof Error ? err.message : String(err));
-			}
+		function persistRuns(next = runs) {
+			atomicJson(runsFile, next);
+		}
+		function commitRuns(next) {
+			persistRuns(next);
+			runs = next;
+			broadcastRuns();
 		}
 
 		/** 结果变了就让打开着的页面自己刷新（不关闭的窗口也能看到）。 */
@@ -176,13 +178,18 @@ export default {
 
 		/**
 		 * 结果上的环境：页面 / 工具传环境 id 或名称都认（大小写不敏感）。
-		 * 认不出就按用户原样写的名字留着，不编造也不丢信息。
+		 * 无法匹配或不属于当前项目时拒绝登记。
 		 */
-		function resolveEnv(value) {
+		function resolveEnv(value, c) {
 			const key = str(value, 64);
 			if (!key) return { env: "", envId: "" };
 			const lower = key.toLowerCase();
-			const hit = store.envs.find((e) => e.id === key) ?? store.envs.find((e) => e.name.toLowerCase() === lower);
+			const feature = store.features.find((f) => f.id === c.featureId);
+			const systemId = store.modules.find((m) => m.id === feature?.moduleId)?.systemId;
+			const scoped = store.envs.filter((e) => e.systemId === systemId);
+			const names = scoped.filter((e) => e.name.toLowerCase() === lower);
+			const hit = scoped.find((e) => e.id === key) ?? (names.length === 1 ? names[0] : null);
+			if (!hit) throw new Error("环境不存在或不属于用例项目，请使用明确的环境 id");
 			return hit ? { env: hit.name, envId: hit.id } : { env: str(key, 60), envId: "" };
 		}
 
@@ -204,7 +211,8 @@ export default {
 				const key = str(entry?.case, 64);
 				const verdict = str(entry?.verdict, 12);
 				if (!key || !VERDICTS.includes(verdict)) continue;
-				const c = byId.get(key) ?? byCode.get(key.toUpperCase());
+				const matches = store.cases.filter((c) => c.code?.toUpperCase() === key.toUpperCase());
+				const c = byId.get(key) ?? (matches.length === 1 ? byCode.get(key.toUpperCase()) : null);
 				if (!c) {
 					unknown.push(key);
 					continue;
@@ -220,7 +228,7 @@ export default {
 
 			const recorded = [];
 			for (const { c, verdict, note, env } of resolved) {
-				const envHit = resolveEnv(env || meta.env);
+				const envHit = resolveEnv(env || meta.env, c);
 				const run = {
 					id: `run-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
 					caseId: c.id,
@@ -235,21 +243,20 @@ export default {
 					env: envHit.env,
 					envId: envHit.envId,
 				};
-				runs.runs.push(run);
 				recorded.push(run);
 			}
 			if (recorded.length) {
-				runs.runs = runs.runs.slice(-MAX_RUNS);
-				runs.revision += 1;
-				persistRuns();
-				broadcastRuns();
+				commitRuns({ ...runs, runs: [...runs.runs, ...recorded], revision: runs.revision + 1 });
 			}
 			return { ok: true, recorded, unknown, runsRevision: runs.revision };
 		}
 
+		const automation = createAutomation({ host, store: () => store, runs: () => runs, commitStore, commitRuns });
 		function snapshot() {
 			return {
 				ok: true,
+				automationSync: automation.status(),
+				workspace: host.cwd,
 				runs: runs.runs,
 				runsRevision: runs.revision,
 				verdicts: VERDICTS,
@@ -275,7 +282,10 @@ export default {
 			offs.push(
 				host.route(method, path, (req, res) => {
 					try {
-						handler(req, res);
+						Promise.resolve(handler(req, res)).catch((err) => {
+							host.log("error", "数据空间异步请求失败", String(err));
+							if (!res.headersSent) res.status(400).json({ ok: false, error: String(err.message || err) });
+						});
 					} catch (err) {
 						host.log("error", `数据空间 http ${method} ${path} 失败：`, String(err));
 						if (!res.headersSent) res.status(500).json({ ok: false, error: "服务端处理失败" });
@@ -283,6 +293,13 @@ export default {
 				}),
 			);
 		};
+
+		route("POST", "/automation", async (req, res) => {
+			const input = req.body ?? {};
+			if (!input.workspace || realpathSync(input.workspace) !== realpathSync(host.cwd))
+				throw new Error("工作区已切换，请刷新数据空间后重试");
+			res.json(await automation.call(input.workspace, input));
+		});
 
 		route("GET", "/state", (_req, res) => res.json(snapshot()));
 
@@ -303,7 +320,7 @@ export default {
 				return;
 			}
 			const normalized = normalizeStore(body, store);
-			store = {
+			const next = {
 				version: 3,
 				revision: store.revision + 1,
 				updatedAt: now(),
@@ -311,7 +328,7 @@ export default {
 				// 清理记录属于「这台机器上发生过什么」，不当作用户内容随保存一起改掉。
 				...(store.purged ? { purged: store.purged } : {}),
 			};
-			persist();
+			commitStore(next);
 			res.json(snapshot());
 		});
 
@@ -357,10 +374,8 @@ export default {
 				res.status(400).json({ ok: false, error: "还没有用例，先建用例再载入示例记录" });
 				return;
 			}
-			// 走一遍 normalizeRuns：只留下真实存在的用例，顺带排好序
-			runs = normalizeRuns({ revision: runs.revision + 1, runs: demo }, store.cases);
-			persistRuns();
-			broadcastRuns();
+			// 走一遍 normalizeRuns，校验形状并排好序
+			commitRuns(normalizeRuns({ revision: runs.revision + 1, runs: demo }, store.cases));
 			res.json({ ok: true, runs: runs.runs, runsRevision: runs.revision });
 		});
 
@@ -373,9 +388,7 @@ export default {
 			}
 			const removed = runs.runs.length;
 			if (removed) {
-				runs = { version: 1, revision: runs.revision + 1, runs: [] };
-				persistRuns();
-				broadcastRuns();
+				commitRuns({ version: 1, revision: runs.revision + 1, runs: [] });
 			}
 			res.json({ ok: true, removed, runs: runs.runs, runsRevision: runs.revision });
 		});
@@ -386,15 +399,8 @@ export default {
 				res.status(400).json({ ok: false, error: "需要 confirm:true 才能重置" });
 				return;
 			}
-			store = { ...seedStore(), revision: store.revision + 1 };
-			// 恢复示例数据后旧库的「已清理数据集」记录没意义了，重新开始。
-			persist();
-			// 示例数据的用例 id 全新，旧执行记录再也对不上；留着只会在结果页堆一批孤儿，直接清空。
-			if (runs.runs.length) {
-				runs = { version: 1, revision: runs.revision + 1, runs: [] };
-				persistRuns();
-				broadcastRuns();
-			}
+			// Old runs remain an audit trail even after replacing the case library.
+			commitStore({ ...seedStore(), revision: store.revision + 1 });
 			res.json(snapshot());
 		});
 
@@ -405,7 +411,36 @@ export default {
 				const tools = createDataSpaceTools({
 					store: () => store,
 					runs: () => runs,
-					record: (entries, source) => recordResults(entries, source),
+					record: (entries, source, meta) => recordResults(entries, source, meta),
+				});
+				tools.push({
+					name: "data_space_automation",
+					label: "测试资产与原生结果关联",
+					description:
+						"Inspect or bind Data Space cases to native UI/API assets, route execution to existing workflows, or synchronize verified native runs. Does not grant approval or execute a runner.",
+					promptSnippet: "Connect catalog cases with native test assets and results.",
+					promptGuidelines: [
+						"Use route to obtain the original execution entry. Never replace native approval or preflight.",
+						"Use sync for an existing run after a synchronization error; do not replay execution.",
+					],
+					parameters: {
+						type: "object",
+						properties: {
+							action: { type: "string", enum: ["inspect", "bind", "unbind", "route", "sync"] },
+							caseId: { type: "string" },
+							engine: { type: "string", enum: ["ui", "api"] },
+							assetRef: { anyOf: [{ type: "string" }, { type: "object" }] },
+							runRef: { anyOf: [{ type: "string" }, { type: "object" }] },
+							nativeCaseId: { type: "string" },
+							envId: { type: "string" },
+						},
+						required: ["action"],
+					},
+					execute: async (_id, input, signal, _update, context) => {
+						if (!context?.cwd) throw new Error("当前引擎缺少绑定会话的工具上下文");
+						signal?.throwIfAborted();
+						return automation.call(context.cwd, input);
+					},
 				});
 				for (const tool of tools) toolOffs.push(host.registerAgentTool(tool));
 			}
@@ -421,6 +456,7 @@ export default {
 		if (!existsSync(file)) persist();
 
 		return () => {
+			automation.dispose();
 			for (const off of [...toolOffs, ...offs]) {
 				try {
 					off?.();

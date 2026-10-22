@@ -46,3 +46,5 @@ Pi SDK 默认发现当前项目 `.pi/skills/`；本项目的非 Pi 磁盘发现�
 | 可选依赖与体积管理                             | [项目精简](project-slimming.md)                                                                     |
 
 UI 技能目录只维护一份调度入口和配套资源；八个阶段技能仍以原分发包为事实源。历史证据保留原路径，不作为当前导航。
+
+数据空间测试技能入口：`.pi/skills/data-space-testing/SKILL.md`，实现仍在 `plugins/data-space/`；`npm run data-space:enable -- --agent-dir <目录> --data-dir <目录>` 显式登记，保留禁用设置、不覆盖其他安装。

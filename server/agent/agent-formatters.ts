@@ -125,7 +125,7 @@ export function conversationTitle(session: AgentSession): string {
  */
 export function pluginToolToDefinition(
 	tool: PluginAgentTool,
-	invocation?: (signal?: AbortSignal) => PluginInvocationScope,
+	invocation?: (signal?: AbortSignal, params?: Record<string, unknown>) => PluginInvocationScope,
 ): ToolDefinition {
 	const normalize = (
 		result: unknown,
@@ -158,7 +158,7 @@ export function pluginToolToDefinition(
 			signal: AbortSignal | undefined,
 			onUpdate: ((partial: unknown) => void) | undefined,
 		) => {
-			const scope = invocation?.(signal);
+			const scope = invocation?.(signal, params);
 			try {
 				const raw = await tool.execute(
 					toolCallId,

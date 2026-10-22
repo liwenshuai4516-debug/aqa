@@ -19,8 +19,10 @@ export const RUN_RANGES = [
 
 export const RUN_SOURCES = [
 	["all", "全部来源"],
-	["ai", "AI 回写"],
+	["ai", "AI 登记（未核验）"],
 	["manual", "手工登记"],
+	["automation", "原生证据同步"],
+	["demo", "示例（非实际执行）"],
 ];
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -36,7 +38,10 @@ export function envOptions(runs) {
 }
 
 export function sourceLabel(source) {
-	return source === "ai" ? "AI 回写" : "手工登记";
+	return (
+		{ ai: "AI 登记（未核验）", manual: "手工登记", automation: "原生证据同步", demo: "示例（非实际执行）" }[source] ||
+		"未知来源"
+	);
 }
 
 /** 结论 → 页面上的颜色类名（未执行不在流水里，兜底 none）。 */
@@ -94,7 +99,7 @@ export function filterRuns(runs, opts = {}) {
 	return (runs ?? []).filter((r) => {
 		if (!r || !r.caseId) return false;
 		if (opts.verdict && opts.verdict !== "all" && r.verdict !== opts.verdict) return false;
-		if (opts.source && opts.source !== "all" && (r.source === "ai" ? "ai" : "manual") !== opts.source) return false;
+		if (opts.source && opts.source !== "all" && r.source !== opts.source) return false;
 		if (opts.env && opts.env !== "all" && String(r.env ?? "") !== opts.env) return false;
 		if (!inRange(r.at, opts.range ?? "all", now)) return false;
 		if (!q) return true;
@@ -123,8 +128,14 @@ export function runStats(rows, opts = {}) {
 	const caseIds = new Set();
 	const taskIds = new Set();
 	let stale = 0;
+	let eligible = 0,
+		passed = 0;
 	let lastAt = "";
 	for (const r of rows ?? []) {
+		if (r.source !== "demo" && !isStale(r, casesById.get(r.caseId))) {
+			eligible++;
+			if (r.verdict === "通过") passed++;
+		}
 		counts[r.verdict] = (counts[r.verdict] ?? 0) + 1;
 		caseIds.add(r.caseId);
 		if (r.taskId) taskIds.add(r.taskId);
@@ -138,8 +149,11 @@ export function runStats(rows, opts = {}) {
 		tasks: taskIds.size,
 		...counts,
 		stale,
+		eligible,
+		currentPassed: passed,
+		demo: (rows ?? []).filter((r) => r.source === "demo").length,
 		lastAt,
-		passRate: total ? Math.round((counts["通过"] / total) * 100) : 0,
+		passRate: eligible ? Math.round((passed / eligible) * 100) : 0,
 	};
 }
 
@@ -187,7 +201,8 @@ export function groupRuns(rows, opts = {}) {
 
 /** CSV 单元格：双引号包裹 + 内部双引号翻倍；空值留空。 */
 function cell(v) {
-	const s = String(v ?? "");
+	const raw = String(v ?? "");
+	const s = /^[=+@\-\t\r\n]/.test(raw) ? "\'" + raw : raw;
 	return `"${s.replace(/"/g, '""')}"`;
 }
 

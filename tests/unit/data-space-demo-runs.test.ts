@@ -61,7 +61,7 @@ describe("buildDemoRuns", () => {
 		expect(demo.length).toBe(11);
 		const taskIds = new Set(demo.filter((r) => r.taskId).map((r) => r.taskId));
 		expect(taskIds.size).toBe(3);
-		const manual = demo.filter((r) => r.source === "manual");
+		const manual = demo.filter((r) => !r.taskId);
 		expect(manual.length).toBe(2);
 		expect(manual.every((r) => !r.taskId && !r.taskName)).toBe(true);
 	});
@@ -106,7 +106,8 @@ describe("buildDemoRuns", () => {
 		// 批内第 3 条被判失败，批末追加一条复测通过
 		const records = demo.filter((r) => r.caseId === "c3");
 		expect(records.map((r) => r.verdict)).toEqual(["失败", "通过"]);
-		expect(latest.get("c3")!.verdict).toBe("通过");
+		expect(latest.size).toBe(0);
+		expect(demo.every((r) => r.source === "demo")).toBe(true);
 	});
 
 	it("恰好一条标了旧版本（演示「可能过期」），其余都用当前版本", () => {
@@ -133,9 +134,9 @@ describe("buildDemoRuns", () => {
 		expect(normalized.runs.length).toBe(demo.length);
 		const stats = summarize(normalized.runs, store.cases);
 		// 覆盖 10 条用例（c11 没被编到），未执行单独计数、不进分母
-		expect(stats.executed).toBe(10);
-		expect(stats.untested).toBe(1);
-		expect(stats.passRate).toBe(80);
+		expect(stats.executed).toBe(0);
+		expect(stats.untested).toBe(11);
+		expect(stats.passRate).toBe(0);
 	});
 
 	it("用例很少时退化但不报错", () => {

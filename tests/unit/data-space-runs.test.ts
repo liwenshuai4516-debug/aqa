@@ -124,14 +124,14 @@ describe("结论归一与流水收紧", () => {
 		expect(normalizeVerdict("pass")).toBe("通过");
 		expect(normalizeVerdict("FAILED")).toBe("失败");
 		expect(normalizeVerdict("blocked")).toBe("阻塞");
-		expect(normalizeVerdict("跳过")).toBe("阻塞");
+		expect(normalizeVerdict("跳过")).toBe("跳过");
 		expect(normalizeVerdict("大概可以")).toBe("");
 	});
 
 	it("normalizeRun 需要用例存在且结论合法", () => {
 		const cases = new Map([["c1", { id: "c1", code: "PMS-004", updatedAt: stamp }]]);
 		expect(normalizeRun({ caseId: "c1", verdict: "通过" }, cases)?.code).toBe("PMS-004");
-		expect(normalizeRun({ caseId: "c9", verdict: "通过" }, cases)).toBeNull();
+		expect(normalizeRun({ caseId: "c9", verdict: "通过" }, cases)).toMatchObject({ caseId: "c9", verdict: "通过" });
 		expect(normalizeRun({ caseId: "c1", verdict: "跑了一下" }, cases)).toBeNull();
 	});
 
@@ -142,10 +142,11 @@ describe("结论归一与流水收紧", () => {
 		);
 		const kept = normalizeRuns({ version: 1, revision: 7, runs: [...many, run("ghost", "通过", stamp)] }, cases);
 		expect(kept.revision).toBe(7);
-		expect(kept.runs).toHaveLength(MAX_RUNS);
-		expect((kept.runs as Row[]).every((r) => r.caseId === "c1")).toBe(true);
+		expect(kept.runs).toHaveLength(MAX_RUNS + 6);
+		expect((kept.runs as Row[]).some((r) => r.caseId === "ghost")).toBe(true);
 		// 裁掉的是最旧的：末尾应是最新时间
-		expect(kept.runs.at(-1)?.at).toBe(many.at(-1)?.at);
+		expect(kept.runs[0]?.at).toBe(many[0]?.at);
+		expect(kept.runs.at(-1)?.at).toBe(stamp);
 	});
 
 	it("同一用例取时间最晚的一条；坏输入不炸", () => {

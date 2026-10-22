@@ -6,7 +6,7 @@
  *   envs(systemId)  每个项目自己的地址簿（测试 / 预发 / 生产…），同项目恰好一个默认
  * 层级一律扁平父引用：搜索、移动、导入导出都比嵌套树简单，悬空引用在清洗时统一处理。
  */
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 
 /** 单文件上限，防止一份畸形 store 把页面顶爆（演示版够用，真实数据量大再拆文件）。 */
 export const MAX = {
@@ -164,11 +164,26 @@ export function normalizeStore(raw, previous) {
 				preconditions: typeof co.preconditions === "string" ? co.preconditions.slice(0, 2000) : "",
 				steps,
 				note: typeof co.note === "string" ? co.note.slice(0, 2000) : "",
-				createdAt: str(co.createdAt, 40) || prevCases.get(id)?.createdAt || now(),
+				automation: previous
+					? (prevCases.get(co.id)?.automation ?? null)
+					: co.automation && typeof co.automation === "object"
+						? structuredClone(co.automation)
+						: null,
+				createdAt: prevCases.get(id)?.createdAt || str(co.createdAt, 40) || now(),
 				updatedAt: str(co.updatedAt, 40) || now(),
 			};
 		})
 		.filter((c) => dedupe(`c:${c.id}`));
+
+	// Content changes always advance server-owned timestamps; unchanged content keeps its version.
+	for (const c of cases) {
+		const previousCase = prevCases.get(c.id);
+		if (previousCase)
+			c.updatedAt =
+				caseFingerprint(c) === caseFingerprint(previousCase)
+					? previousCase.updatedAt
+					: new Date(Math.max(Date.now(), Date.parse(previousCase.updatedAt) + 1 || 0)).toISOString();
+	}
 
 	// 环境：项目自己的地址簿。悬空 systemId 丢掉；同项目恰好一个默认（先到先得，没标就把第一条设为默认）。
 	const envs = (Array.isArray(o.envs) ? o.envs : [])
@@ -211,4 +226,11 @@ export function normalizeStore(raw, previous) {
 		envs,
 		migratedFrom: Number(o.migratedFrom) || 0,
 	};
+}
+
+/** Stable content identity; UI timestamps and automation associations are not approval. */
+export function caseFingerprint(c) {
+	return createHash("sha256")
+		.update(JSON.stringify([c.featureId, c.code, c.title, c.type, c.preconditions, c.steps, c.note]))
+		.digest("hex");
 }

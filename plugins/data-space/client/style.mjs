@@ -43,6 +43,7 @@ export const CSS = `
 .dsp-table-wrap { border: 1px solid var(--border, #2c2f36); border-radius: 11px; overflow: auto; background: var(--bg-elev, var(--bg-elev2, #1d1f24)); }
 .dsp-table { width: 100%; min-width: 640px; border-collapse: collapse; table-layout: fixed; }
 .dsp-table.wide { min-width: 940px; }
+.dsp-table.case-table { min-width: 1120px; }
 .dsp-table th { text-align: left; font-weight: 500; font-size: 11.5px; color: var(--text-faint, #8a8f98); padding: 7px 11px; border-bottom: 1px solid var(--border, #2c2f36); background: var(--bg-elev2, #22242a); }
 .dsp-table td { padding: 7px 11px; border-bottom: 1px solid var(--border-soft, var(--border, #2c2f36)); vertical-align: middle; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dsp-table tr:last-child td { border-bottom: 0; }

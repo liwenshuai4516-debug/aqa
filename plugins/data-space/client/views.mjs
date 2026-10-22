@@ -308,6 +308,7 @@ function caseRow(c, showPath) {
 		<td class="dsp-num-cell">${fmtTime(c.updatedAt)}</td>
 		<td><div class="dsp-row-actions">
 			<button class="dsp-btn icon" data-act="brief-case" data-id="${esc(c.id)}" title="引入到 AI 对话">${ICON.brief}</button>
+			<button class="dsp-btn" data-act="automation-open" data-id="${esc(c.id)}" title="关联原生资产、执行及查看证据">${c.automation ? "已关联" : "自动化"}</button>
 			<button class="dsp-btn icon" data-act="edit-case" data-id="${esc(c.id)}" title="编辑">${ICON.edit}</button>
 			<button class="dsp-btn icon" data-act="copy-case" data-id="${esc(c.id)}" title="复制到同功能">${ICON.copy}</button>
 			<button class="dsp-btn icon danger" data-act="del-case" data-id="${esc(c.id)}" title="删除">${ICON.trash}</button>
@@ -316,8 +317,8 @@ function caseRow(c, showPath) {
 }
 
 function caseTable(list, showPath) {
-	return `<div class="dsp-table-wrap"><table class="dsp-table${showPath ? " wide" : ""}">
-		<colgroup><col style="width:86px"/><col style="width:auto"/><col style="width:82px"/><col style="width:64px"/><col style="width:74px"/><col style="width:104px"/><col style="width:52px"/><col style="width:104px"/><col style="width:136px"/></colgroup>
+	return `<div class="dsp-table-wrap"><table class="dsp-table case-table${showPath ? " wide" : ""}">
+		<colgroup><col style="width:86px"/><col style="width:auto"/><col style="width:82px"/><col style="width:64px"/><col style="width:74px"/><col style="width:104px"/><col style="width:52px"/><col style="width:104px"/><col style="width:196px"/></colgroup>
 		<thead><tr><th>编号</th><th>用例标题</th><th>类型</th><th>优先级</th><th>状态</th><th>最近结果</th><th>步骤</th><th>更新</th><th></th></tr></thead>
 		<tbody>${list.map((c) => caseRow(c, showPath)).join("")}</tbody></table></div>`;
 }
@@ -718,7 +719,7 @@ export function runsHtml() {
 
 	const stats = `<div class="dsp-stats">
 		${statCard("执行记录", st.total, `覆盖 ${st.cases} 条用例 · ${st.tasks} 个任务`)}
-		${statCard("通过率", `${st.passRate}%`, `通过 ${st["通过"]} / ${st.total} 条记录`)}
+		${statCard("通过率", `${st.passRate}%`, `有效非示例记录：通过 ${st.currentPassed} / ${st.eligible}；示例 ${st.demo}`)}
 		${statCard("需要跟进", needFollow, `失败 ${st["失败"]} · 阻塞 ${st["阻塞"]}`)}
 		${statCard("最近执行", fmtTime(st.lastAt), st.stale ? `${st.stale} 条结论已过期，建议重跑` : "结果均为最新")}
 	</div>`;

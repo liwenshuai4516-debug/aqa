@@ -13,6 +13,12 @@ const QUERIES: Record<string, readonly string[]> = {
 	ui_test_workflow: ["catalog", "status"],
 };
 export function extensionToolEffect(name: string, params: unknown): ExtensionToolEffect | undefined {
+	const action = params && typeof params === "object" ? (params as { action?: unknown }).action : undefined;
+	if (name === "data_space_cases")
+		return action === undefined || ["list", "get", "stats"].includes(action as string) ? "query" : "asset-write";
+	if (name === "data_space_record_result") return "asset-write";
+	if (name === "data_space_automation")
+		return ["inspect", "route"].includes(action as string) ? "query" : "asset-write";
 	if (name === "ui_validate_artifact") return "query";
 	if (name.startsWith("mcp__")) return "browser-action";
 	if (!name.startsWith("ui_")) return undefined;

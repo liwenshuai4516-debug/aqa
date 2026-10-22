@@ -150,6 +150,7 @@ export async function saveCase() {
 		.map((s) => ({ id: s.id || newId(), action: s.action.trim(), expect: s.expect.trim() }));
 	const item = {
 		id: m.id,
+		automation: S.cases.find((c) => c.id === m.id)?.automation || null,
 		featureId: m.featureId,
 		code,
 		title,
@@ -196,6 +197,7 @@ export async function copyCase(id) {
 	const { system } = pathOfFeature(c.featureId);
 	S.cases.push({
 		...c,
+		automation: null,
 		id: newId(),
 		code: nextCaseCode(system?.id || ""),
 		title: `${c.title} 副本`,

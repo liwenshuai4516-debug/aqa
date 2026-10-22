@@ -1,3 +1,4 @@
+import { automationModalHtml, openAutomation, automationAction } from "./modal-automation.mjs";
 /**
  * 数据空间客户端视图入口 —— 纯 DOM，无框架；读写只走 /plugins-api/data-space。
  *
@@ -96,12 +97,14 @@ function renderBody() {
 
 function renderOverlay() {
 	if (!S.nodes) return;
-	S.nodes.overlay.innerHTML = caseModalHtml() + nodeModalHtml() + envModalHtml() + briefModalHtml() + resultModalHtml();
+	S.nodes.overlay.innerHTML =
+		caseModalHtml() + nodeModalHtml() + envModalHtml() + briefModalHtml() + resultModalHtml() + automationModalHtml();
 }
 
 function render() {
 	if (!S.nodes) return;
 	renderHead();
+	if (S.automationSync?.error) toast(`自动化同步待处理：${S.automationSync.error}`);
 	renderNav();
 	S.nodes.body.innerHTML = bodyHtml();
 	renderOverlay();
@@ -138,12 +141,13 @@ function closeModals() {
 	S.envModal = null;
 	S.brief = null;
 	S.resultModal = null;
+	S.automationModal = null;
 	renderOverlay();
 }
 
 /** 当前打开的是哪个弹窗（用来路由 data-f 输入）。 */
 function activeModal() {
-	return S.caseModal || S.envModal || S.nodeModal || S.resultModal || null;
+	return S.caseModal || S.envModal || S.nodeModal || S.resultModal || S.automationModal || null;
 }
 
 /* ------------------------------------------------------------------ 点击 */
@@ -153,6 +157,14 @@ function onClick(e) {
 	if (!hit || !S.nodes?.root.contains(hit)) return;
 	const act = hit.dataset.act;
 	const id = hit.dataset.id;
+	if (act === "automation-open") {
+		openAutomation(id);
+		return;
+	}
+	if (act.startsWith("automation-")) {
+		void automationAction(act.slice(11));
+		return;
+	}
 
 	if (act === "overlay") {
 		if (e.target === hit) closeModals();
@@ -415,6 +427,10 @@ function onChange(e) {
 	const el = e.target;
 	if (!el || !S.nodes) return;
 
+	if (S.automationModal && el.dataset.f) {
+		S.automationModal[el.dataset.f] = el.value;
+		return;
+	}
 	if (el.dataset.el === "import-file") {
 		void doImport(el);
 		return;
@@ -715,8 +731,12 @@ export default {
 		// AI 回写结果 / 其他窗口登记 → 服务端广播，这里刷新一次（不改当前 tab 与筛选）
 		const offData = ctx?.onData?.((payload) => {
 			if (!payload || typeof payload !== "object") return;
-			if (payload.kind !== "runs") return;
-			if (Number(payload.revision) === S.runsRevision) return;
+			if (payload.kind === "sync-error") {
+				toast(payload.error);
+				return;
+			}
+			if (!["runs", "store"].includes(payload.kind)) return;
+			if (payload.kind === "runs" && Number(payload.revision) === S.runsRevision) return;
 			void load().then(() => {
 				if (S.nodes) render();
 			});

@@ -23,7 +23,7 @@ export const ENV_PRESETS = ["本地", "测试环境", "预发环境", "生产"];
 export const CASE_TYPES = ["接口", "UI"];
 export const CASE_STATUS = ["草稿", "待评审", "已评审", "已废弃"];
 /** 执行结果的三种结论（与服务端 runs.mjs 的 VERDICTS 同义；快照会下发，这里是接口未就绪时的兜底）。 */
-export const VERDICTS = ["通过", "失败", "阻塞"];
+export const VERDICTS = ["通过", "失败", "阻塞", "跳过", "取消", "未执行", "不稳定", "未知"];
 export const COLORS = [
 	["blue", "蓝"],
 	["green", "绿"],
@@ -38,6 +38,9 @@ export const COLORS = [
 export const hooks = { render: () => {}, renderOverlay: () => {} };
 
 export const S = {
+	automationModal: null,
+	automationSync: null,
+	workspace: "",
 	loaded: false,
 	error: "",
 	revision: 0,
@@ -257,6 +260,8 @@ export function typeCounts() {
 
 export function applyStore(data) {
 	S.loaded = true;
+	S.automationSync = data.automationSync ?? null;
+	S.workspace = data.workspace ?? "";
 	S.error = "";
 	S.revision = Number(data.revision) || 0;
 	S.updatedAt = data.updatedAt || "";
@@ -292,7 +297,7 @@ export function applyRuns(data) {
 export function buildRunIndex(runs) {
 	const map = new Map();
 	for (const r of runs ?? []) {
-		if (!r?.caseId || !r.verdict) continue;
+		if (!r?.caseId || !r.verdict || r.source === "demo") continue;
 		const prev = map.get(r.caseId);
 		if (!prev || String(r.at) >= String(prev.at)) map.set(r.caseId, r);
 	}
@@ -357,15 +362,20 @@ export function runsCsvText(rows) {
 
 /** 概览统计：未执行的不进分母（"通过率"只对已执行用例有意义）。 */
 export function resultStats() {
-	const counts = { 通过: 0, 失败: 0, 阻塞: 0 };
+	const counts = Object.fromEntries(VERDICTS.map((v) => [v, 0]));
 	let stale = 0;
 	for (const c of S.cases) {
 		const hit = resultOf(c);
 		if (!hit) continue;
+		if (hit.stale) {
+			stale += 1;
+			continue;
+		}
 		counts[hit.run.verdict] = (counts[hit.run.verdict] ?? 0) + 1;
-		if (hit.stale) stale += 1;
 	}
-	const executed = counts["通过"] + counts["失败"] + counts["阻塞"];
+	const executed = Object.entries(counts)
+		.filter(([key]) => key !== "未执行")
+		.reduce((sum, [, n]) => sum + n, 0);
 	return {
 		total: S.cases.length,
 		executed,

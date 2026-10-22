@@ -1,3 +1,4 @@
+import { maskSecrets } from "./client/brief.mjs";
 /**
  * 数据空间的 AI 工具（v2/v3）：查询用例 & 回写执行结果。
  *
@@ -13,7 +14,7 @@
 import { isStale, latestByCase, normalizeVerdict, parseAnchor, summarize } from "./runs.mjs";
 
 const str = (v, n = 200) => (typeof v === "string" ? v.trim().slice(0, n) : "");
-const oneline = (v) => str(v, 400).replace(/\s*\n+\s*/g, "；");
+const oneline = (v) => maskSecrets(str(v, 400)).replace(/\s*\n+\s*/g, "；");
 
 /** 功能 → 「项目 / 模块 / 功能」；未归类返回空串。 */
 export function featurePath(store, featureId) {
@@ -282,7 +283,7 @@ export function createDataSpaceTools(ctx) {
 						? formatCaseCards(store, shown, runsByCase)
 						: formatCaseLines(store, shown, runsByCase);
 				const tail = missing.length ? `\n\n未找到：${missing.join("、")}` : "";
-				return `${head}\n\n${body || "（没有匹配的用例）"}${tail}`;
+				return maskSecrets(`${head}\n\n${body || "（没有匹配的用例）"}${tail}`);
 			},
 		},
 		{
@@ -295,7 +296,7 @@ export function createDataSpaceTools(ctx) {
 				"Call data_space_record_result after actually running the cases, one entry per case, with a short note for failures (symptom + suspected cause).",
 				"If the user's message carries an anchor comment, pass it as `anchor` instead of retyping ids.",
 				"Do not record results you did not observe; if execution was skipped, say so instead of writing 通过.",
-				"Set `task` to a short name (e.g. 「经营合同 P0 回归」) when the run covers several cases, so the user can review the whole batch in the Execution Results tab.",
+				"Set task to a short batch name when recording several cases.",
 				"Pass `env` (environment name or id) when you executed against a specific environment, so the result records where it ran.",
 			],
 			parameters: {
@@ -365,7 +366,7 @@ export function createDataSpaceTools(ctx) {
 					);
 				if (out.unknown?.length) lines.push(`未匹配（编号或 id 不存在）：${out.unknown.join("、")}`);
 				lines.push(anchorNote ? `提示：${anchorNote}` : "");
-				return lines.filter(Boolean).join("\n");
+				return maskSecrets(lines.filter(Boolean).join("\n"));
 			},
 		},
 	];

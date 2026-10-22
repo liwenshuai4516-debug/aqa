@@ -4,7 +4,7 @@
  * 为什么单独一个文件、不进 store.json：
  *   - store.json 是「用户编辑的内容」，整份保存 + revision 乐观并发；执行结果是流水，
  *     两者混在一起会让页面保存和 AI 回写互相抢 revision。
- *   - 结果只追加、按用例取最近一条，单独文件好裁剪也好排障。
+ *   - 结果只追加、按用例取最近一条，单独文件便于排障与导出。
  *
  * 记录形状：{ id, caseId, code, verdict, note, at, source, caseUpdatedAt, taskId, taskName, env, envId }
  *   - caseUpdatedAt：记录当时用例的 updatedAt。用例后来被改过就当「结果已过期」，
@@ -15,11 +15,13 @@
  *   - env / envId：这一条跑在哪个环境。envId 指向 store.envs，环境被删后 envId 置空、
  *     env 仍保留当时的名字，历史记录不会因为删环境就变成一条空白。
  *
- * 文件形状：{ version: 1, revision: N, runs: [...] }，最多保留 MAX_RUNS 条（丢最旧）。
+ * 文件形状：{ version: 1, revision: N, runs: [...] }，不静默删除历史。
  */
 import { randomUUID } from "node:crypto";
 
-export const VERDICTS = ["通过", "失败", "阻塞"];
+export const VERDICTS = ["通过", "失败", "阻塞", "跳过", "取消", "未执行", "不稳定", "未知"];
+
+// Compatibility export; no longer a silent retention limit.
 export const MAX_RUNS = 800;
 
 const str = (v, n) => (typeof v === "string" ? v.trim().slice(0, n) : "");
@@ -44,40 +46,53 @@ export function normalizeVerdict(v) {
 	const low = s.toLowerCase();
 	if (["pass", "passed", "ok", "success", "通过", "成功"].includes(low)) return "通过";
 	if (["fail", "failed", "error", "失败", "不通过"].includes(low)) return "失败";
-	if (["block", "blocked", "skip", "skipped", "阻塞", "跳过"].includes(low)) return "阻塞";
+	const native = {
+		blocked: "阻塞",
+		skip: "跳过",
+		skipped: "跳过",
+		cancelled: "取消",
+		"not-run": "未执行",
+		flaky: "不稳定",
+		unknown: "未知",
+	};
+	if (native[low]) return native[low];
 	return "";
 }
 
-/** 任意输入 → 干净的一条执行记录；用例不存在则返回 null（由调用方登记为未匹配）。 */
+/** 任意输入 → 干净的一条执行记录；保留已删除用例的历史；新登记的未知用例由入口拒绝。 */
 export function normalizeRun(raw, casesById) {
 	const o = raw && typeof raw === "object" ? raw : {};
 	const caseId = str(o.caseId, 64);
 	const verdict = normalizeVerdict(o.verdict);
 	if (!caseId || !verdict) return null;
 	const c = casesById?.get?.(caseId) ?? null;
-	if (!c) return null;
+
 	return {
 		id: str(o.id, 64) || randomUUID(),
 		caseId,
-		code: str(o.code, 24) || str(c.code, 24),
+		code: str(o.code, 24) || str(c?.code, 24),
 		verdict,
 		note: str(o.note, 300),
 		at: str(o.at, 40) || now(),
-		source: o.source === "manual" ? "manual" : "ai",
-		caseUpdatedAt: str(o.caseUpdatedAt, 40) || str(c.updatedAt, 40),
+		source: ["manual", "demo", "automation"].includes(o.source) ? o.source : "ai",
+		caseUpdatedAt: str(o.caseUpdatedAt, 40) || str(c?.updatedAt, 40),
+		automation:
+			o.source === "automation" && o.automation && typeof o.automation === "object"
+				? structuredClone(o.automation)
+				: null,
 		...taskFields(o),
 		...envFields(o),
 	};
 }
 
-/** 收紧一整份 runs 文件：坏记录丢弃、用例已删的记录丢弃、超量裁掉最旧的。 */
+/** 收紧一整份 runs 文件：坏记录丢弃、时间排序，保留全部有效历史。 */
 export function normalizeRuns(raw, cases) {
 	const casesById = new Map((cases ?? []).map((c) => [c.id, c]));
 	const list = (Array.isArray(raw?.runs) ? raw.runs : [])
 		.map((r) => normalizeRun(r, casesById))
 		.filter(Boolean)
 		.sort((a, b) => String(a.at).localeCompare(String(b.at)));
-	const kept = list.slice(-MAX_RUNS);
+	const kept = list; // History is never silently discarded; explicit clear is separate.
 	return {
 		version: 1,
 		revision: Number.isFinite(Number(raw?.revision)) ? Number(raw.revision) : 1,
@@ -89,6 +104,7 @@ export function normalizeRuns(raw, cases) {
 export function latestByCase(runs) {
 	const map = new Map();
 	for (const r of runs ?? []) {
+		if (r.source === "demo") continue;
 		const prev = map.get(r.caseId);
 		if (!prev || String(r.at) >= String(prev.at)) map.set(r.caseId, r);
 	}
@@ -111,15 +127,20 @@ export function isStale(run, c) {
 export function summarize(runs, cases) {
 	const latest = latestByCase(runs);
 	const byId = new Map((cases ?? []).map((c) => [c.id, c]));
-	const counts = { 通过: 0, 失败: 0, 阻塞: 0 };
+	const counts = Object.fromEntries(VERDICTS.map((v) => [v, 0]));
 	let stale = 0;
 	for (const [caseId, run] of latest) {
 		const c = byId.get(caseId);
 		if (!c) continue;
+		if (isStale(run, c)) {
+			stale += 1;
+			continue;
+		}
 		counts[run.verdict] = (counts[run.verdict] ?? 0) + 1;
-		if (isStale(run, c)) stale += 1;
 	}
-	const executed = counts["通过"] + counts["失败"] + counts["阻塞"];
+	const executed = Object.entries(counts)
+		.filter(([key]) => key !== "未执行")
+		.reduce((sum, [, n]) => sum + n, 0);
 	const total = (cases ?? []).length;
 	return {
 		total,

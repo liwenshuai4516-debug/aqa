@@ -16,6 +16,8 @@
 import "../patch-remote-catalog.js";
 import "../patch-turn-end-boundary.js";
 import { createExtensionToolGate } from "../extension-tool-gate.js";
+import { extensionToolEffect } from "../extension-tool-policy.js";
+import { nativeTestCompletion } from "../test-execution-notice.js";
 import { skillBlock, isUiTestingExtension, isUiTestingDisabled } from "../skill/skill-presentation.js";
 import { spawn } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
@@ -4346,7 +4348,7 @@ export class ClientSession {
 				if (event.toolName === "bash") {
 					this.bg.snapshotBefore();
 				}
-				if (event.toolName === "update_plan") {
+				if (["update_plan", "ui_test_run", "api_test_execute"].includes(event.toolName)) {
 					conv.toolPendingArgs.set(event.toolCallId, event.args);
 				}
 				// 看门狗豁免：ask_user_question 阻塞等的是「人类回答」，不是挂死的工具
@@ -4391,9 +4393,12 @@ export class ClientSession {
 				// ports, then diff against the pre-run snapshot and record them.
 				if (event.toolName === "bash") void this.bg.trackAfterBash();
 				const durationMs = startedAt !== undefined ? Date.now() - startedAt : undefined;
+				const completion = nativeTestCompletion(event.toolName, pendingArgs, event.result, event.isError);
 				// 插件扩展点：工具结束执行（带耗时与错误标志）。
 				this.onToolEvent?.({
 					phase: "end",
+					cwd: conv.cwd,
+					...(completion ? { testRun: completion } : {}),
 					toolName: event.toolName,
 					conversationId: conv.id,
 					toolCallId: event.toolCallId,
@@ -8220,7 +8225,7 @@ export class ClientSession {
 				pluginToolToDefinition(
 					tool,
 					tool.pluginId
-						? (signal) => {
+						? (signal, params) => {
 								const conversation = ownerId ? this.convs.get(ownerId) : undefined;
 								if (!conversation || !tool.pluginId) throw new Error("Plugin tool has no bound conversation");
 								const session = conversation.session;
@@ -8237,7 +8242,10 @@ export class ClientSession {
 										const current = this.convs.get(conversation.id);
 										if (!current || current.session !== session || current.cwd !== cwd)
 											throw new Error("Plugin conversation changed");
-										if (current.planMode || current.delegateMode || this.goalReviewTurnOf(conversation.id))
+										if (
+											(current.planMode || current.delegateMode || this.goalReviewTurnOf(conversation.id)) &&
+											extensionToolEffect(tool.name, params) !== "query"
+										)
 											throw new Error("Plugin execution is blocked in this conversation mode");
 										if (!presetAllowsPluginTools(current.agentPreset) || current.subagentBarsPluginTools)
 											throw new Error("Plugin tools are unavailable in this preset");

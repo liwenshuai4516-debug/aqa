@@ -84,3 +84,5 @@ UI 测试能力接入见 [Pi UI workflow 接入与验收](ui-testing-integration
 项目精简与分组依赖见 [项目精简](project-slimming.md)；按改动主题读取 [开发约束](development-constraints.md)，新增能力先读 [能力交付规则](capability-delivery.md)。
 
 UI 测试日常修改、安装与升级统一从 [技能维护入口](../.pi/skills/ui-testing-workflow/references/maintenance.md) 开始，旧接入记录用于追溯。
+
+- [数据空间与 UI/API 自动化接入](data-space-integration.md)：边界、维护入口、验收状态与证据。

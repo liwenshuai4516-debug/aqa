@@ -43,7 +43,7 @@
  * tests/unit/plugin-sdk-mock.test.ts 锁定）。脚手架拷贝 sdk/index.mjs 时连版本号
  * 一起带走；已装插件用 `pi-web-ui plugin upgrade-sdk` 刷新拷贝。
  */
-export const SDK_VERSION = "0.1.2";
+export const SDK_VERSION = "0.1.3";
 
 /** 服务端入口校验 + 原样返回（拼错 activate / 忘写 deactivate 在加载期就报错）。 */
 export function definePlugin(def) {
@@ -297,6 +297,17 @@ export function createMockHost(overrides) {
 		onClientModelChanged: sub("onClientModelChanged"),
 		chat: async () => okFalse("chatProvider（无头调用未接入）"),
 		chatWait: async () => ({ ok: false, error: "mock：未注入 chatProvider（不等 run_end）" }),
+		testing: {
+			inspect: async (...args) => {
+				throw new Error("No native test asset configured in mock");
+			},
+			read: async (...args) => {
+				throw new Error("No native test run configured in mock");
+			},
+			list: async (...args) => {
+				return [];
+			},
+		},
 		llm: {
 			complete: async () => okFalse("llmProvider（LLM 直调未接入）"),
 		},
@@ -552,6 +563,7 @@ export function createMockHost(overrides) {
 	// （命名空间键 fs/ui/llm/… 传对象 = 按子键合并覆盖）。替换后的方法仍进 calls 记录。
 	const namespaces = [
 		"llm",
+		"testing",
 		"conversations",
 		"ui",
 		"leftPanel",
