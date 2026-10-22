@@ -17,6 +17,26 @@
 
 同时：delta 活跃期（1.5s 内有增量）snapshot 降为**事件驱动检查点**——agent_end / tool_execution_end 立即 flush，其余事件走 2s 兜底定时器（增量负责流畅度、快照只做边界校准）。单测：`tests/unit/message-delta.test.ts`。
 
+### 对话过程与模型耗时
+
+- `UiMessage.durationMs` 透传 SDK 的模型请求开始至响应结束耗时，含网络等待和生成，不代表纯推理时间；旧记录或不提供该字段的引擎不估算、不补零。流式期间依据消息 timestamp 显示当前请求已用时间，结束后采用 SDK 测量值。
+- `web/src/chat-presentation.ts` 仅生成聊天展示投影：回合成功结束且存在最终文本回答时，移除中间助手消息和最终消息的 thinking 块，将各次模型 durationMs 汇总到结果上；不加工具时间。任一次缺少耗时则不显示不完整的总计。失败、中断、工具错误或无最终回答保留现场。
+- 原始消息、会话文件和 trace 不修改；搜索、图片导出查看原始过程。`ModelTiming.tsx` 负责耗时显示及流式计时器清理；显示开关仅控制执行中的思考/工具展开。回归：`tests/unit/chat-presentation.test.ts`、`tests/unit/model-timing.test.ts`、`tests/chat-presentation-test.mjs`（固定消息、隔离浏览器，无真实模型调用）。
+
+本轮验收（2026-10-22）：
+
+- 依据：用户要求执行完成后仅展示结果，并显示模型耗时；本轮仅修改聊天投影与耗时传递，不修改原始记录或 trace 的历史耗时算法。
+- 环境：macOS、Node v23.10.0、隔离 Vite 8996 + Chromium；使用固定消息，无真实模型、业务接口或个人数据操作。
+- 浏览器设计/执行/通过 7 项，失败 0、阻塞 0、未执行 0：运行过程、完成投影、窄屏、搜索、导出入口、失败保留、刷新恢复。另执行相关单测及静态检查，结果见提交交付说明。
+- 未覆盖：真实供应商推理分段时间、其他引擎/操作系统端到端验收、个人桌面窗口重启验收；旧数据无 SDK 耗时则不展示秒数。原始截图留本地隔离证据目录，主仓仅保留以下校验索引。
+
+| 本地证据路径                                                         | SHA-256                                                            |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `tests/scratch/chat-presentation/1792661364461/result.json`          | `04febc7316cb1520ecfe5a138f3385c2ef985ca84e928914f865e832167eeeeb` |
+| `tests/scratch/chat-presentation/1792661364461/running.png`          | `46f3ce0b894d2ffe7ae7e417bd56e9c92dc3ba25ab7e4d3d58ad574c2a59276c` |
+| `tests/scratch/chat-presentation/1792661364461/completed.png`        | `052a1315bef763b4075c4785ab516042809358d10c7c1126352bae5fd496c5f3` |
+| `tests/scratch/chat-presentation/1792661364461/completed-mobile.png` | `3b3dbf743d28b99be0e6856f877a0c51e6418cc604da46f29efe7ff77f660a90` |
+
 ### `tool_delta` 同协议
 
 也带 `conversationId` + `seq`，与 message_delta 共享同一每对话单调序列（`conv.deltaSeq`）；前端按对话 Map 追踪 seq，仅活动对话缺口触发重同步（后台对话切回时 snapshot 收敛）。

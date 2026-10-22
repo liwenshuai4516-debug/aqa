@@ -1,3 +1,4 @@
+import { ModelTiming } from "./ModelTiming";
 import { Fragment, memo, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import {
 	FiArchive,
@@ -1035,6 +1036,9 @@ export const Message = memo(function Message({
 				)}
 			</div>
 			<div className="msg-body">
+				{message.role === "assistant" && !message.customType && (
+					<ModelTiming durationMs={message.durationMs} timestamp={message.timestamp} streaming={streaming} />
+				)}
 				{editing ? (
 					<div
 						className={`msg-editor${editDragOver ? " drag-over" : ""}`}

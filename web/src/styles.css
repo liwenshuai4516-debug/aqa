@@ -24414,3 +24414,11 @@ a.set-uninstall:hover {
 	font-size: 13px;
 	flex-shrink: 0;
 }
+
+/* Model request timing, separate from tool execution time. */
+.model-timing {
+	color: var(--text-faint);
+	font-size: 12px;
+	margin-bottom: 8px;
+	font-variant-numeric: tabular-nums;
+}

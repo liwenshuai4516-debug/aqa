@@ -1169,6 +1169,9 @@ export const zh = {
 
 	/* thinking block */
 	thinkingNow: "思考中",
+	modelTimingLive: "思考与响应中 · {seconds}s",
+	modelTimingDone: "思考与响应耗时 {seconds}s",
+	modelTimingHint: "模型请求及响应生成耗时，含网络等待，不含工具执行；不是纯推理时间。",
 	thinkingPreview: "思考：{preview}",
 
 	/* terminal panel */
@@ -1573,9 +1576,9 @@ export const zh = {
 	settingsMessageDisplay: "对话",
 	thinkingWrap: "完整显示思考",
 	thinkingWrapDesc:
-		"开启：思考内容始终完整展开并自动换行（流式推理过程也实时可见）；关闭：折叠成一行摘要，流式中一行实时显示最新文本",
+		"执行中：开启完整展开思考，关闭显示单行摘要。成功完成后仅显示结果和模型耗时；搜索或导出时可查看原始过程。",
 	toolsWrap: "完整显示工具",
-	toolsWrapDesc: "开启：工具调用始终完整展开显示参数和输出；关闭：默认折叠，点击展开",
+	toolsWrapDesc: "执行中：开启展开工具参数和输出，关闭默认折叠。成功完成后过程移至 trace，搜索或导出时仍可查看。",
 	toolImages: "直接显示工具结果图片",
 	toolImagesDesc: "开启：截图这类工具结果图片在卡片里直接显示、点击放大；关闭：不显示图片",
 	keepRecent: "常驻渲染预热条数",
@@ -3482,6 +3485,10 @@ export const en: Record<keyof typeof zh, string> = {
 
 	/* thinking block */
 	thinkingNow: "Thinking",
+	modelTimingLive: "Thinking and responding · {seconds}s",
+	modelTimingDone: "Thinking and response time {seconds}s",
+	modelTimingHint:
+		"Model request and generation time, including network wait, excluding tool execution; not pure reasoning time.",
 	thinkingPreview: "Thinking: {preview}",
 
 	/* terminal panel */
@@ -3913,10 +3920,10 @@ export const en: Record<keyof typeof zh, string> = {
 	settingsMessageDisplay: "Conversation",
 	thinkingWrap: "Show full thinking",
 	thinkingWrapDesc:
-		"On: thinking always expands fully and wraps (live reasoning visible while streaming); Off: collapses to a one-line summary with the latest text shown live while streaming",
+		"During execution: expand full thinking when on, or show a one-line preview when off. Successful runs show only the result and model timing; search or export can reveal the original process.",
 	toolsWrap: "Show full tools",
 	toolsWrapDesc:
-		"On: tool calls always expand fully showing arguments and output; Off: collapsed by default, click to expand",
+		"During execution: expand tool arguments and output when on, or collapse when off. Successful runs retain the process in trace, search and export.",
 	toolImages: "Show tool result images inline",
 	toolImagesDesc: "On: image tool results (e.g. screenshots) render in the card, click to zoom; Off: images are hidden",
 	keepRecent: "Messages kept in full",

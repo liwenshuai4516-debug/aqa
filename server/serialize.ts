@@ -352,6 +352,10 @@ export function serializeMessage(m: AgentMessage, seq: number): UiMessage | null
 				role: "assistant",
 				content: serializeAssistantContent(m.content),
 				timestamp: m.timestamp,
+				durationMs:
+					typeof m.durationMs === "number" && Number.isFinite(m.durationMs) && m.durationMs >= 0
+						? m.durationMs
+						: undefined,
 				model: m.model,
 				provider: m.provider,
 				usageCost: typeof m.usage?.cost?.total === "number" ? m.usage.cost.total : undefined,

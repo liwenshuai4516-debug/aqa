@@ -5,6 +5,7 @@ import type { CSSProperties } from "react";
 import { FiArrowDown } from "react-icons/fi";
 import type { PromptAttachment, ToolStatus, UiMessage, UiState } from "../types";
 import { Message, asText } from "./Message";
+import { presentChatMessages } from "../chat-presentation";
 import { Markdown } from "./Markdown";
 
 import { collectQuestionAttachments } from "../question-attachments";
@@ -561,7 +562,14 @@ export function MessageList({
 	alwaysRef.current = alwaysSet;
 
 	// 同一任务回合内的连续中间工具与思考消息聚类为单行流式排布单元（向上分页时只聚类可见切片）
-	const clusteredItems = useMemo(() => clusterMessages(visibleMessages), [visibleMessages]);
+	const presentation = useMemo(
+		() => (searchOpen || exportImage.open ? messages : presentChatMessages(messages, state.isStreaming)),
+		[messages, state.isStreaming, searchOpen, exportImage.open],
+	);
+	const clusteredItems = useMemo(() => {
+		const visibleIds = new Set(visibleMessages.map((m) => m.id));
+		return clusterMessages(presentation.filter((m) => visibleIds.has(m.id)));
+	}, [presentation, visibleMessages]);
 	const streamKeyTrackerRef = useRef<StreamKeyTracker>({
 		convKey,
 		pending: null,

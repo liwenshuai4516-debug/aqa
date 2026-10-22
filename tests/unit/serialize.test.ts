@@ -244,3 +244,17 @@ describe("serializeMessage: assistant thinking 与 custom details 的体积闸�
 		expect(okMsg?.details).toEqual(details);
 	});
 });
+
+describe("assistant model timing", () => {
+	it.each([14393, 0, undefined, -1, NaN, Infinity])("serializes valid SDK duration only: %s", (durationMs) => {
+		const message = {
+			role: "assistant",
+			content: [{ type: "text", text: "answer" }],
+			timestamp: 1000,
+			durationMs,
+		} as unknown as Parameters<typeof serializeMessage>[0];
+		expect(serializeMessage(message, 0)?.durationMs).toBe(
+			typeof durationMs === "number" && Number.isFinite(durationMs) && durationMs >= 0 ? durationMs : undefined,
+		);
+	});
+});

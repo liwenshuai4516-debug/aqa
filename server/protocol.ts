@@ -52,6 +52,8 @@ export interface UiMessage {
 	role: string;
 	content: UiContentBlock[];
 	timestamp?: number;
+	/** SDK model request + generation duration; absent for legacy/unsupported engines. */
+	durationMs?: number;
 	model?: string;
 	provider?: string;
 	/** Assistant message usage cost in USD (from SDK usage.cost.total).
