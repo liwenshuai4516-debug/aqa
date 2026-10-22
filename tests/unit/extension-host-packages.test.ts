@@ -43,6 +43,7 @@ const lock = JSON.parse(readFileSync(new URL("../../package-lock.json", import.m
 			dependencies?: Record<string, string>;
 			optionalDependencies?: Record<string, string>;
 			optional?: boolean;
+			devOptional?: boolean;
 		}
 	>;
 };
@@ -73,8 +74,10 @@ describe("扩展宿主提供包（issue #553）", () => {
 			expect(root.dependencies?.[name]).toBeUndefined();
 			expect(root.optionalDependencies?.[name]).toBeTruthy();
 		}
-		// 已安装的那两份必须是 optional 身份：可选依赖装失败只跳过这一条，不连累整棵树安装。
-		expect(lock.packages["node_modules/typebox"]?.optional).toBe(true);
-		expect(lock.packages["node_modules/@earendil-works/pi-coding-agent"]?.optional).toBe(true);
+		// 测试能力包复用这些 peer 时，npm 用 devOptional 表示生产可选、开发必需。
+		for (const name of USED) {
+			const installed = lock.packages[`node_modules/${name}`];
+			expect(installed?.optional === true || installed?.devOptional === true).toBe(true);
+		}
 	});
 });

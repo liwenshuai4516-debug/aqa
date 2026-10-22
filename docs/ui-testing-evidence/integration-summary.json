@@ -1,0 +1,242 @@
+{
+	"date": "2026-10-22",
+	"status": "capability-integration-verified",
+	"full_suite_status": "failed",
+	"scope": "Project-local Pi agent capability integration; no business test acceptance",
+	"environment": {
+		"platform": "macOS arm64",
+		"node": "v23.10.0",
+		"pi_sdk": "1.2.0",
+		"typebox": "1.3.27",
+		"playwright_test": "1.62.1",
+		"project_configuration": ".pi/settings.json (locally registered, ignored)"
+	},
+	"source": {
+		"bundle": "/Users/liyingjun/Desktop/SW-QA/13-pi/agent-client/release/ui-testing-workflow",
+		"source_commit": "44df50bb383a8e27185290e75c47095f176e764b",
+		"manifest_files_verified": 101,
+		"manifest_mismatches": 0,
+		"codex_skill_copy_mismatches": 0,
+		"runtime_package": "capabilities/ui-testing/pi-ui-testing-0.1.0.tgz",
+		"runtime_sha256": "3557ed20d2c81ba331981aa06668a0275a867f24c8da540f09c83eff6877e6ef",
+		"runtime_modified": false
+	},
+	"doctor": {
+		"status": "passed",
+		"checks": [
+			{
+				"name": "Node.js",
+				"status": "passed",
+				"detail": "v23.10.0"
+			},
+			{
+				"name": "project",
+				"status": "passed",
+				"detail": "/Users/liyingjun/Desktop/SW-QA/15-aqa"
+			},
+			{
+				"name": "pi-ui-testing",
+				"status": "passed",
+				"detail": "0.1.0"
+			},
+			{
+				"name": "@earendil-works/pi-coding-agent",
+				"status": "passed",
+				"detail": "1.2.0"
+			},
+			{
+				"name": "@earendil-works/pi-agent-core",
+				"status": "passed",
+				"detail": "1.2.0"
+			},
+			{
+				"name": "typebox",
+				"status": "passed",
+				"detail": "1.3.27"
+			},
+			{
+				"name": "@earendil-works/pi-ai",
+				"status": "passed",
+				"detail": "1.2.0"
+			},
+			{
+				"name": "@earendil-works/pi-mcp",
+				"status": "passed",
+				"detail": "1.2.0"
+			},
+			{
+				"name": "@earendil-works/pi-codemode",
+				"status": "passed",
+				"detail": "1.2.0"
+			},
+			{
+				"name": "@earendil-works/pi-telemetry",
+				"status": "passed",
+				"detail": "1.2.0"
+			},
+			{
+				"name": "@earendil-works/pi-tui",
+				"status": "passed",
+				"detail": "1.2.0"
+			},
+			{
+				"name": "@playwright/test",
+				"status": "passed",
+				"detail": "1.62.1"
+			},
+			{
+				"name": "playwright",
+				"status": "passed",
+				"detail": "1.62.1"
+			},
+			{
+				"name": "runtime resources and tool definitions",
+				"status": "passed",
+				"detail": "8 个阶段 Skills、2 套评估规则、10 个工具定义可加载；不是宿主接线验证"
+			},
+			{
+				"name": "contract and storage",
+				"status": "passed",
+				"detail": "有效产物、未知版本拒绝、跨实例存储读取、CLI schema"
+			},
+			{
+				"name": "Chromium",
+				"status": "passed",
+				"detail": "真实启动/关闭、本地 DOM 读取；未访问业务站点"
+			}
+		],
+		"not_checked": ["宿主扩展及 MCP 实际连接", "模型认证和独立评估", "业务环境/身份/数据规则", "业务测试闭环"]
+	},
+	"sdk_mcp_integration": {
+		"status": "passed",
+		"checks": [
+			"project registration preserves settings and is idempotent",
+			"all eight original skills discovered through project package registration",
+			"all ten original workflow tools registered in a real SDK session",
+			"bound workflow catalog executes against the isolated project",
+			"source workflow start validates the real skill catalog and SDK version",
+			"real Playwright test MCP exposes all seven required recording tools",
+			"test MCP opens a real Chromium page from an isolated synthetic seed",
+			"real nested MCP call retains parent call identity through SDK hooks",
+			"cancelled nested MCP request does not report success"
+		],
+		"actualModelCalls": 0,
+		"businessRequests": 0,
+		"notExecuted": ["independent model reviews", "business recording, diagnostics and formal regression"]
+	},
+	"engineering": {
+		"format": "passed",
+		"typecheck": {
+			"status": "passed",
+			"configurations": 5
+		},
+		"related_unit": {
+			"status": "passed",
+			"files": 4,
+			"passed": 64,
+			"failed": 0,
+			"skipped": 0
+		},
+		"host_smoke": {
+			"status": "passed",
+			"passed": 2,
+			"failed": 0,
+			"tests": ["slash-commands-test", "tool-info-test"],
+			"discovered_stage_skills": 8
+		},
+		"lint": "passed",
+		"adapter_lint": "passed",
+		"protocol": {
+			"checks_passed": 3,
+			"git_heuristic": "skipped: no available tag"
+		},
+		"lockfile_dry_run": "passed",
+		"diff_check": "passed"
+	},
+	"full_unit": {
+		"command": "npm test",
+		"files": 463,
+		"files_passed": 459,
+		"files_failed": 4,
+		"passed": 5156,
+		"failed": 5,
+		"skipped": 9,
+		"failures": [
+			" tests/unit/link-plugins.test.ts > scripts/link-plugins > links plugin from repoDir to targetDir and preserves source",
+			" tests/unit/plugin-icon-dom.test.ts > 内置插件统一线条图标 > 每个内置插件都声明了 iconSvg（不再只靠 emoji）",
+			" tests/unit/plugin-icon-dom.test.ts > 内置插件统一线条图标 > 每个 iconSvg 都过服务端校验，且 sanitize 后带 viewBox + 是线条风格",
+			" tests/unit/plugin-manifest-icons.test.ts > plugin manifest icons > 每个插件 manifest 都有非空顶层 icon",
+			" tests/unit/plugin-sdk-mock.test.ts > plugin-sdk 版本 > SDK_VERSION 与 package.json 一致（单源：改版本两处同步）"
+		]
+	},
+	"baseline_comparison": {
+		"ref": "2e997fb08b536c6762d18f317f7615b7bdd0d25c",
+		"exit_code": 1,
+		"dependency_tree": "shared installed dependencies; unchanged HEAD source and manifests",
+		"personal_credentials": false,
+		"files_failed": 4,
+		"failed": 5,
+		"passed": 30,
+		"skipped": 0,
+		"same_failure_names": true,
+		"scope_note": "Unchanged HEAD source/manifests with the current dependency tree; not a clean reinstall of the old dependency tree."
+	},
+	"activation": {
+		"registration_completed": true,
+		"fresh_sdk_session_verified": true,
+		"old_running_service_restarted": false,
+		"next_step": "Restart a service that imported SDK 1.1.0, then create a conversation or /reload in the trusted project."
+	},
+	"not_executed": [
+		"Actual model design/result review or model calibration",
+		"Business recording, positive/negative diagnostics and formal regression",
+		"Existing live user session restart",
+		"DSH, SSH, other platforms, parallel workers or other browsers"
+	],
+	"local_evidence": [
+		{
+			"path": "tests/scratch/ui-workflow-integration/typecheck.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+		},
+		{
+			"path": "tests/scratch/ui-workflow-integration/unit.log",
+			"sha256": "98bb728bb9184606481241b93559e8f367a114ba891742a43650201113c59ff4"
+		},
+		{
+			"path": "tests/scratch/ui-workflow-integration/unit-all.log",
+			"sha256": "db91c8b165c4223995b8fef04ad64710ba1a634fb85aecdeaaafdb49352483c7"
+		},
+		{
+			"path": "tests/scratch/ui-workflow-integration/host-smoke.log",
+			"sha256": "bd35a75b5b9daae7a059e59fffb368ed11f148bd7c4efd1654f2963f41eb8cc5"
+		},
+		{
+			"path": "tests/scratch/ui-workflow-integration/integration.log",
+			"sha256": "dfe77dedb6d8554e91a63b5d223f28fa03abe34826e61a4c810fe513b50d7cc9"
+		},
+		{
+			"path": "tests/scratch/ui-workflow-integration/doctor.json",
+			"sha256": "6b4b25c9d77402d1012177a540db99e82db90b7843b728e5b7b574e5bbd83e44"
+		},
+		{
+			"path": "tests/scratch/ui-workflow-integration/lint.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+		},
+		{
+			"path": "tests/scratch/ui-workflow-integration/adapter-lint.log",
+			"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+		},
+		{
+			"path": "tests/scratch/ui-workflow-integration/protocol.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+		},
+		{
+			"path": "tests/scratch/ui-workflow-integration/lock-verify.log",
+			"sha256": "b127641464ad1d75fb03b855116b245596cb881a8d7c8477a0f2b281da9e42d7"
+		},
+		{
+			"path": "tests/scratch/ui-workflow-integration/baseline-failures.log",
+			"sha256": "ff5b74b2f095bfa9463389dd32cecec2fefde9da0171e041aa57621bd270adeb"
+		}
+	]
+}

@@ -19,6 +19,9 @@ pi-web-ui/
 │   ├── electron-builder.yml    # 打包配置（win nsis / mac dmg / linux AppImage；npmRebuild:false）
 │   └── README.md               # 桌面版说明：跑起来 / 约定 / 发布 / 签名（SignPath）
 ├── deploy/                     # 部署示例：launchd plist / systemd unit / Windows 任务 XML
+├── capabilities/ui-testing/    # 原版 UI workflow 分发包、原生 MCP 薄接入及 Playwright 配置
+├── scripts/enable-ui-testing.mjs # 合并项目级 Pi 包/扩展登记，不写个人配置
+├── tests/ui-testing-integration-test.mjs # 真实 SDK/测试 MCP/Chromium 接线，临时项目零模型请求
 ├── themes/                     # 内置主题（完整样式表：:root 变量 + 任意选择器/布局覆盖皆可，styles.css 只是共享基线）
 ├── make-light-theme.mjs        # 主题生成器（从 styles.css 的 :root 变量清单生成纯调色板）
 ├── plugins/api-testing/        # P0-2 最小受控 fixture 工具与专属 MCP runner（未上市场）
