@@ -1,13 +1,13 @@
 /**
  * 数据空间客户端视图入口 —— 纯 DOM，无框架；读写只走 /plugins-api/data-space。
  *
- * 结构：顶部品牌 + 一级导航（概览 / 用例库 / 数据集 / 设置）；
+ * 结构：顶部一级导航（概览 / 用例库 / 数据集 / 设置）+ 右侧一行状态信息；
  * 用例库左侧是「项目列表」（可搜索），右侧是项目内的模块 / 功能筛选与用例；
  * 样式见 ./style.mjs（自包含，只吃宿主主题变量，深浅主题自动跟随）。
  */
 import { CSS } from "./style.mjs";
 import { BASE, S, applyStore, esc, hooks, load, moduleOf, newId, pathOfFeature, persist, toast } from "./state.mjs";
-import { ICON, casesHtml, datasetsHtml, overviewHtml, projectListHtml, settingsHtml, tabsList } from "./views.mjs";
+import { casesHtml, datasetsHtml, overviewHtml, projectListHtml, settingsHtml, tabsList } from "./views.mjs";
 import { caseModalHtml, copyCase, deleteCase, openCaseModal, saveCase } from "./modal-case.mjs";
 import { deleteNode, nodeModalHtml, openNodeEdit, openNodeModal, saveNode } from "./modal-node.mjs";
 import { copyDataset, datasetModalHtml, deleteDataset, openDatasetModal, saveDataset } from "./modal-dataset.mjs";
@@ -18,17 +18,8 @@ import { refreshPathSelects } from "./path-select.mjs";
 function shellHtml() {
 	return `
 	<header class="dsp-head">
-		<div class="dsp-head-row">
-			<div class="dsp-brand">
-				<span class="dsp-brand-icon">${ICON.db}</span>
-				<div>
-					<div class="dsp-brand-name">数据空间</div>
-					<div class="dsp-brand-sub" data-el="sub">项目 / 模块 / 功能 / 用例 · 本机全局共享</div>
-				</div>
-			</div>
-			<div class="dsp-head-right" data-el="head-right"></div>
-		</div>
 		<nav class="dsp-nav" data-el="nav"></nav>
+		<div class="dsp-head-hint" data-el="head-hint"></div>
 	</header>
 	<main class="dsp-body" data-el="body"></main>
 	<div class="dsp-toast" data-el="toast"></div>
@@ -63,11 +54,10 @@ function bodyHtml() {
 }
 
 function renderHead() {
-	if (!S.nodes) return;
-	S.nodes.sub.textContent = S.error
+	if (!S.nodes?.headHint) return;
+	S.nodes.headHint.textContent = S.error
 		? "读取失败"
-		: `revision ${S.revision} · 保存于 ${new Date(S.updatedAt || 0).toLocaleString("zh-CN", { hour12: false }) || "—"}`;
-	S.nodes.headRight.innerHTML = `<div class="dsp-head-hint">${S.systems.length} 个项目 · ${S.features.length} 个功能 · ${S.cases.length} 条用例</div>`;
+		: `${S.systems.length} 个项目 · ${S.features.length} 个功能 · ${S.cases.length} 条用例 · revision ${S.revision}`;
 }
 
 function renderBody() {
@@ -565,8 +555,7 @@ export default {
 			body: root.querySelector('[data-el="body"]'),
 			toast: root.querySelector('[data-el="toast"]'),
 			overlay: root.querySelector('[data-el="overlay"]'),
-			sub: root.querySelector('[data-el="sub"]'),
-			headRight: root.querySelector('[data-el="head-right"]'),
+			headHint: root.querySelector('[data-el="head-hint"]'),
 		};
 		root.addEventListener("click", onClick);
 		root.addEventListener("input", onInput);

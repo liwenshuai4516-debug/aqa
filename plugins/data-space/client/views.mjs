@@ -384,13 +384,14 @@ function projectView(systemId) {
 		? `<div class="dsp-empty"><b>没有匹配的用例</b>换个关键词或筛选条件试试。</div>`
 		: emptyCases(activeFeature ? "这个功能还没有用例" : "这个范围还没有用例", activeFeature?.id);
 
+	const sub = [head.note ? esc(head.note) : "", meta].filter(Boolean).join(" · ");
+
 	return `
-	${crumb(crumbParts)}
+	${crumbParts.length > 1 ? crumb(crumbParts) : ""}
 	<div class="dsp-page-head">
-		<div>
+		<div class="dsp-page-title-wrap">
 			<h3>${esc(head.title)}${head.kind === "system" && s.code ? `<span class="dsp-code">${esc(s.code)}</span>` : ""}<span class="dsp-num">${scopeCases.length} 条用例</span></h3>
-			<div class="dsp-muted">${esc(head.note || `没有填写${head.label}说明`)}</div>
-			<div class="dsp-meta-line">${meta}</div>
+			<div class="dsp-page-sub">${sub}</div>
 		</div>
 		<div class="dsp-inline">
 			<button class="dsp-btn" data-act="edit-node" data-kind="${head.kind}" data-id="${esc(head.id)}">编辑${head.label}</button>
@@ -420,7 +421,7 @@ function allView() {
 	if (!S.systems.length) {
 		return `
 	<div class="dsp-page-head">
-		<div><h3>全部用例<span class="dsp-num">0 条</span></h3><div class="dsp-muted">先建一个项目（例如「项目管理系统」），再往下加模块、功能与用例。</div></div>
+		<div><h3>全部用例<span class="dsp-num">0 条</span></h3><div class="dsp-page-sub">先建一个项目（例如「项目管理系统」），再往下加模块、功能与用例。</div></div>
 		<button class="dsp-btn primary" data-act="new-system">＋ 新建项目</button>
 	</div>
 	<div class="dsp-empty"><b>还没有项目</b>左侧列表按项目组织用例，项目多了也能搜索定位。<button class="dsp-btn primary" data-act="new-system">＋ 新建项目</button></div>
@@ -428,7 +429,7 @@ function allView() {
 	}
 	return `
 	<div class="dsp-page-head">
-		<div><h3>全部用例<span class="dsp-num">${S.cases.length} 条</span></h3><div class="dsp-muted">跨项目查看；左侧点项目进入项目内管理，标题下方是所属项目 / 模块 / 功能。</div></div>
+		<div><h3>全部用例<span class="dsp-num">${S.cases.length} 条</span></h3><div class="dsp-page-sub">跨项目查看；左侧点项目进入项目内管理，标题下方是所属项目 / 模块 / 功能。</div></div>
 		<div class="dsp-inline">
 			<button class="dsp-btn" data-act="new-system">＋ 新建项目</button>
 			<button class="dsp-btn primary" data-act="new-case">＋ 新建用例</button>
@@ -500,7 +501,7 @@ export function datasetsHtml() {
 	const featOptions = [["", "全部功能"], ...(moduleId ? featuresOf(moduleId).map((f) => [f.id, f.name]) : [])];
 	return `
 	<div class="dsp-page-head">
-		<div><h3>数据集<span class="dsp-num">${S.datasets.length} 份</span></h3><div class="dsp-muted">键值记录按功能归类；用例编辑时可直接勾选引用，避免同一份账号、参数反复抄写。</div></div>
+		<div><h3>数据集<span class="dsp-num">${S.datasets.length} 份</span></h3><div class="dsp-page-sub">键值记录按功能归类；用例编辑时可直接勾选引用，避免同一份账号、参数反复抄写。</div></div>
 		<button class="dsp-btn primary" data-act="new-dataset">＋ 新建数据集</button>
 	</div>
 	<div class="dsp-toolbar">

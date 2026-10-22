@@ -3,7 +3,7 @@
 	"id": "data-space",
 	"name": "数据空间",
 	"nameEn": "Data Space",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"icon": "🗃️",
 	"iconSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><ellipse cx=\"12\" cy=\"5\" rx=\"8\" ry=\"3\"/><path d=\"M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5\"/><path d=\"M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6\"/></svg>",
 	"description": "测试资产工作台：左侧项目列表（可搜索），进入项目后按「模块 → 功能」组织用例与数据集；用例分接口 / UI 两类，含步骤、预期、优先级、状态与关联数据。数据存在本机数据目录，跨会话与项目共用同一份。",
