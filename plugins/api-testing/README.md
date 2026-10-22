@@ -100,6 +100,12 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 
 ## 手动配置目标（0.4.0）
 
-启动宿主前设置 `PI_API_TEST_HTTP_TARGET` 为一个不带路径、用户名、密码或尾部斜杠的 HTTP 数值 IPv4 origin（例如 `http://192.0.2.1:8238`）。这是占位示例地址，不是本机实际配置。目标绑定启动时的项目根，模型只能选择该目标或原有本机 fixture，不能配置新目标；默认空值继续阻塞远端。无 DNS/TLS、运行时鉴权注入或真实无人值守授权；本轮没有修改个人配置或启用真实业务目标。
+启动宿主前设置 `PI_API_TEST_HTTP_TARGET` 为一个不带路径、用户名、密码或尾部斜杠的 HTTP 数值 IPv4 origin（例如 `http://192.0.2.1:8238`）。这是占位示例地址，不是本机实际配置。目标绑定启动时的项目根，模型只能选择该目标或原有本机 fixture，不能配置新目标；默认空值继续阻塞远端。无 DNS/TLS 或真实无人值守授权；未修改个人配置或持久启用真实业务目标。专用测试 token 引用见下节。
 
 原获批集合不改写；宿主为每个 run 建立固定目标 TCP relay，将执行副本映射到唯一的本机端口，保留原 Host。`transport.json` 记录逻辑目标、有效地址、原集合及执行副本 hash；配置/策略进入持久资产指纹。取消/撤权关闭本 run 的 relay、上下游连接与专属进程；未知请求不重发。配置目标即使指向 loopback 也不能创建或恢复定时任务。见 [接线验收](../../docs/api-testing-evidence/target-host.md)。
+
+## 专用测试凭据引用（0.4.1）
+
+可在启动宿主时配置 `PI_API_TEST_TOKEN_FILE`，其文件权限、绑定字段和到期规则见 [环境变量](../../docs/env-vars.md)。仅支持当前业务的 `token` 请求头：宿主通过私有 MCP 管道交付，在执行内存添加，原批准集合及文件证据不包含值。过期、文件改变或撤销会停止当前执行；显式下次执行才能读取轮换后的 token。不要把凭据传给模型或工具参数。
+
+19 项合成验证通过；未取得真实专用凭据。实际测试环境已执行一次无凭据的只读列表诊断，HTTP 200/JSON，4 条断言失败 2 条，不能记为业务验收通过。见 [凭据记录](../../docs/api-testing-evidence/credential-host.md) 和 [只读诊断](../../docs/api-testing-evidence/business-readonly-summary.json)。

@@ -92,7 +92,7 @@
 		"Dedicated test authentication reference and valid isolated department/user/contract IDs unavailable; public client code is not a credential or proof that backend anonymous access works",
 		"Contract and public-client rules now recorded; exact server success/created-ID/cleanup mapping still requires trustworthy environment evidence",
 		"Contract response media */* remains unsupported by initial JSON-only importer; observed frontend JSON consumer is not a changed contract",
-		"Host fixed HTTP numeric IPv4 relay and OS port boundary now verified; DNS/TLS and runtime credential injection remain unsupported"
+		"Host fixed HTTP numeric IPv4 relay, OS port boundary and dedicated runtime token-file injection verified; DNS/TLS unsupported; no actual dedicated business credential available"
 	],
 	"dedicatedModel": {
 		"status": "unavailable",
@@ -166,5 +166,22 @@
 		"access": "Real host/plugin/MCP GET supplied public Swagger page with explicit process-start target and project binding; no business requests",
 		"productionDefault": "no remote target configured; no personal config changed",
 		"remaining": "Dedicated authentication/data references, server success/created-ID/cleanup mapping, and wildcard response-media rule unresolved"
+	},
+	"followup20261022Credential": {
+		"version": "0.4.1",
+		"evidence": "credential-host-summary.json",
+		"status": "passed-synthetic-only",
+		"actualDedicatedCredentialAvailable": false
+	},
+	"followup20261022ReadOnly": {
+		"evidence": "business-readonly-summary.json",
+		"requests": 1,
+		"writes": 0,
+		"status": "failed-diagnostic-not-business-acceptance",
+		"httpStatus": 200,
+		"jsonValid": true,
+		"assertions": 4,
+		"failedAssertions": 2,
+		"finding": "Login/token-message absence and observed frontend-success predicate both failed; exact body/code not retained. No automatic login, guessed IDs, writes or retries."
 	}
 }

@@ -3,6 +3,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, realpathSync, writeFileSync, symlinkSync, existsSync } from "node:fs";
 import { isAbsolute, join, relative, resolve } from "node:path";
 import { API_FIXTURE_ISOLATION_POLICY, prepareApiFixtureIsolation } from "./api-testing-isolation.js";
+import { loadApiTestCredential } from "./api-testing-credential.js";
 import {
 	API_TARGET_RELAY_POLICY,
 	fixedApiHttpOrigin,
@@ -28,7 +29,7 @@ interface FixtureApproval {
 }
 
 export class ApiTestingRunner {
-	private readonly target: Readonly<{ origin: string; projectRoot: string }> | undefined;
+	private readonly target: Readonly<{ origin: string; projectRoot: string; tokenFile?: string }> | undefined;
 	private workflow: Promise<any> | undefined;
 	private scheduler: PluginApiScheduleHost | undefined;
 	readonly attachScheduler = async (host: PluginApiScheduleHost): Promise<void> => {
@@ -43,10 +44,14 @@ export class ApiTestingRunner {
 	constructor(
 		private readonly outputRoot: string,
 		private readonly pluginRoot: string,
-		target?: { origin: string; projectRoot: string },
+		target?: { origin: string; projectRoot: string; tokenFile?: string },
 	) {
 		this.target = target
-			? Object.freeze({ origin: fixedApiHttpOrigin(target.origin), projectRoot: realpathSync(target.projectRoot) })
+			? Object.freeze({
+					origin: fixedApiHttpOrigin(target.origin),
+					projectRoot: realpathSync(target.projectRoot),
+					...(target.tokenFile ? { tokenFile: resolve(target.tokenFile) } : {}),
+				})
 			: undefined;
 	}
 
@@ -260,6 +265,10 @@ export class ApiTestingRunner {
 		const configuredTarget = this.validateOrigin(approval.fixtureOrigin, identity.cwd);
 		if (configuredTarget && identity.clientId === "host-schedule")
 			throw new Error("Configured HTTP targets require manual execution; unattended execution is not authorized");
+		const credential =
+			configuredTarget && this.target?.tokenFile
+				? loadApiTestCredential(this.target.tokenFile, approval.fixtureOrigin, approval.identity.cwd)
+				: undefined;
 		if (process.platform !== "darwin") throw new Error("Fixture OS isolation is only verified on macOS");
 		this.attempted.add(request.runRef);
 		this.activeProjects.add(approval.identity.cwd);
@@ -270,6 +279,7 @@ export class ApiTestingRunner {
 			identity,
 			collectionHash: approval.collectionHash,
 			isolationPolicy: API_FIXTURE_ISOLATION_POLICY,
+			credentialMode: credential ? "dedicated-token-reference" : "anonymous",
 			targetOrigin: approval.fixtureOrigin,
 			status: "running",
 			executionVerdict: "unknown",
@@ -280,19 +290,35 @@ export class ApiTestingRunner {
 		let outcome: unknown;
 		let failure: unknown;
 		let failed = false;
-		const stop = AbortSignal.any([signal, AbortSignal.timeout(approval.timeoutMs)]);
+		const stop = AbortSignal.any([
+			signal,
+			AbortSignal.timeout(
+				Math.min(approval.timeoutMs, Math.max(0, credential ? credential.expiresAt - Date.now() : approval.timeoutMs)),
+			),
+		]);
+		const revoke = new AbortController();
+		const executionStop = AbortSignal.any([stop, revoke.signal]);
+		const credentialGuard = credential
+			? setInterval(() => {
+					try {
+						credential.verify();
+					} catch {
+						revoke.abort(new Error("Dedicated API test credential expired or changed"));
+					}
+				}, 50)
+			: undefined;
 		const onStop = (): void => {
 			client?.close();
 			void relay?.close();
 		};
-		stop.addEventListener("abort", onStop, { once: true });
+		executionStop.addEventListener("abort", onStop, { once: true });
 		try {
 			mkdirSync(runRoot, { recursive: true, mode: 0o700 });
 			const save = (name: string, value: unknown): void =>
 				writeFileSync(join(runRoot, name), JSON.stringify(value, null, 2), { mode: 0o600 });
 			save("run.json", state); // durable run identity BEFORE the first request
-			stop.throwIfAborted();
-			if (configuredTarget) relay = await startApiTargetRelay(approval.fixtureOrigin, stop);
+			executionStop.throwIfAborted();
+			if (configuredTarget) relay = await startApiTargetRelay(approval.fixtureOrigin, executionStop);
 			const transportOrigin = relay?.origin ?? approval.fixtureOrigin;
 			const effectiveCollection = relay
 				? relayApiCollection(JSON.parse(collection.toString()), approval.fixtureOrigin, transportOrigin)
@@ -330,12 +356,18 @@ export class ApiTestingRunner {
 				],
 				cwd: runRoot,
 			});
-			stop.throwIfAborted();
+			executionStop.throwIfAborted();
 			await client.start();
 			if (client.getTools().length !== 1 || client.getTools()[0].name !== "runApprovedSuite")
 				throw new Error("Unexpected private runner tool list");
-			const result = (await client.call("runApprovedSuite", {}, approval.timeoutMs, stop)) as Record<string, any>;
-			stop.throwIfAborted();
+			credential?.verify();
+			const result = (await client.call(
+				"runApprovedSuite",
+				credential ? { credential: { token: credential.token, expiresAt: credential.expiresAt } } : {},
+				approval.timeoutMs,
+				executionStop,
+			)) as Record<string, any>;
+			executionStop.throwIfAborted();
 			if (
 				result.runId !== request.runRef ||
 				!["passed", "failed", "error", "blocked"].includes(result.executionVerdict)
@@ -353,7 +385,7 @@ export class ApiTestingRunner {
 				scope: configuredTarget ? "configured-http-target" : "fixture",
 			};
 		} catch (error) {
-			state.status = stop.aborted ? "canceled" : "error";
+			state.status = executionStop.aborted ? "canceled" : "error";
 			// Preserve partial results independently; interruption cannot prove a rollback.
 			try {
 				writeFileSync(join(runRoot, "run.json"), JSON.stringify(state, null, 2));
@@ -363,7 +395,8 @@ export class ApiTestingRunner {
 			failure = error;
 			failed = true;
 		}
-		stop.removeEventListener("abort", onStop);
+		if (credentialGuard) clearInterval(credentialGuard);
+		executionStop.removeEventListener("abort", onStop);
 		const relayClosed = relay?.close();
 		try {
 			try {

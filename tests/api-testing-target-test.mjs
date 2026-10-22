@@ -2,8 +2,19 @@
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import { connect } from "node:net";
-import { createHash } from "node:crypto";
-import { mkdtempSync, mkdirSync, cpSync, symlinkSync, writeFileSync, readFileSync } from "node:fs";
+import { createHash, randomUUID } from "node:crypto";
+import {
+	mkdtempSync,
+	mkdirSync,
+	cpSync,
+	symlinkSync,
+	writeFileSync,
+	readFileSync,
+	rmSync,
+	chmodSync,
+	readdirSync,
+	lstatSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -69,7 +80,7 @@ const closed = async (origin) => {
 		});
 	});
 };
-async function boot(name, origin) {
+async function boot(name, origin, credential) {
 	const base = join(output, name),
 		project = join(base, "project"),
 		data = join(base, "data"),
@@ -83,8 +94,28 @@ async function boot(name, origin) {
 		project,
 		data,
 		plugin,
-		runner: new ApiTestingRunner(join(data, "api-testing/runs"), plugin, { origin, projectRoot: project }),
+		runner: new ApiTestingRunner(join(data, "api-testing/runs"), plugin, {
+			origin,
+			projectRoot: project,
+			...(credential ? { tokenFile: join(base, "credential.json") } : {}),
+		}),
 	};
+	if (credential) {
+		h.tokenFile = join(base, "credential.json");
+		h.writeCredential = (overrides) =>
+			writeFileSync(
+				h.tokenFile,
+				JSON.stringify({
+					token: credential,
+					origin,
+					projectRoot: project,
+					expiresAt: new Date(Date.now() + 60000).toISOString(),
+					...overrides,
+				}),
+				{ mode: 0o600 },
+			);
+		h.writeCredential();
+	}
 	h.manager = new PluginManager(data, project);
 	h.manager.mcpCaller = (...a) => h.runner.call(...a);
 	h.manager.apiScheduleProvider = (host) => h.runner.attachScheduler(host);
@@ -124,7 +155,7 @@ async function boot(name, origin) {
 	return h;
 }
 let serial = 0;
-function approve(h, origin, path = "/ok", expected = 200) {
+function approve(h, origin, path = "/ok", expected = 200, script) {
 	const bundle = join(h.project, "bundle-" + ++serial);
 	mkdirSync(bundle);
 	const collection = {
@@ -141,7 +172,7 @@ function approve(h, origin, path = "/ok", expected = 200) {
 						listen: "test",
 						script: {
 							type: "text/javascript",
-							exec: [`pm.test("explicit status",()=>pm.response.to.have.status(${expected}));`],
+							exec: [script ?? `pm.test("explicit status",()=>pm.response.to.have.status(${expected}));`],
 						},
 					},
 				],
@@ -315,6 +346,145 @@ try {
 		/policy|approval|changed/i,
 	);
 	check("changed-host-target-invalidates-persistent-asset-approval");
+	const canaries = ["aqa-token-" + randomUUID(), "aqa-token-" + randomUUID()];
+	let expectedToken = canaries[0];
+	const authOrigin = await listen(
+		createServer((req, res) => {
+			hits.push({ target: "authenticated-synthetic", url: req.url, matched: req.headers.token === expectedToken });
+			opened.set(req.url, req.socket);
+			req.socket.once("close", () => opened.delete(req.url));
+			if (req.url === "/hold-token") return;
+			res.setHeader("content-type", "application/json");
+			if (req.url === "/reflect-redirect")
+				res.writeHead(302, { Location: `http://${req.headers.token}.invalid/blocked` });
+			else if (req.headers.token !== expectedToken) res.statusCode = 401;
+			res.end(JSON.stringify({ id: "r-2", echo: req.url === "/echo" ? req.headers.token : "public" }));
+		}),
+	);
+	const auth = await boot("credential", authOrigin, canaries[0]);
+	let secured = approve(auth, authOrigin, "/requires-token");
+	assert.equal((await auth.invoke({ runRef: secured.ref })).executionVerdict, "passed");
+	assert.equal(json(join(auth.data, "api-testing/runs", secured.ref, "result.json")).credentialUsed, true);
+	check("dedicated-token-injected-over-private-MCP-only");
+	const initialHits = hits.length;
+	for (const bad of [
+		{ expiresAt: new Date(0).toISOString() },
+		{ projectRoot: output },
+		{ origin: deniedOrigin },
+		{ token: "bad\ntoken" },
+	]) {
+		auth.writeCredential(bad);
+		const p = approve(auth, authOrigin);
+		await assert.rejects(() => auth.invoke({ runRef: p.ref }), /credential/);
+	}
+	auth.writeCredential();
+	chmodSync(auth.tokenFile, 0o644);
+	await assert.rejects(() => auth.invoke({ runRef: approve(auth, authOrigin).ref }), /credential/);
+	chmodSync(auth.tokenFile, 0o600);
+	writeFileSync(auth.tokenFile, '{"token":"' + canaries[0]);
+	await assert.rejects(
+		() => auth.invoke({ runRef: approve(auth, authOrigin).ref }),
+		(e) => {
+			assert(!String(e).includes(canaries[0]));
+			return /credential/.test(String(e));
+		},
+	);
+	assert.equal(hits.length, initialHits);
+	check("expired-mismatched-unsafe-or-malformed-reference-never-sends-and-errors-are-redacted");
+	auth.writeCredential();
+	const echoed = approve(
+		auth,
+		authOrigin,
+		"/echo",
+		200,
+		'pm.test("redacted failure",()=>pm.expect(pm.response.json().echo).to.eql("public-marker"));',
+	);
+	assert.equal((await auth.invoke({ runRef: echoed.ref })).executionVerdict, "failed");
+	check("reflected-token-assertion-error-preserves-failure-without-raw-values");
+	auth.writeCredential();
+	const reflected = approve(auth, authOrigin, "/reflect-redirect");
+	await assert.rejects(() => auth.invoke({ runRef: reflected.ref }));
+	assert.equal(auth.state(reflected.ref).executionVerdict, "unknown");
+	await closed(auth.transport(reflected.ref).transportOrigin);
+	check("reflected-token-in-rejected-redirect-host-is-not-logged-or-forwarded");
+	auth.writeCredential({ expiresAt: new Date(Date.now() + 600).toISOString() });
+	const expiring = approve(auth, authOrigin);
+	await assert.rejects(() => auth.invoke({ runRef: expiring.ref }));
+	assert.equal(auth.state(expiring.ref).executionVerdict, "unknown");
+	check("credential-lease-expiry-cancels-pending-run");
+	auth.writeCredential();
+	const revokedToken = approve(auth, authOrigin, "/hold-token"),
+		pendingToken = auth.invoke({ runRef: revokedToken.ref }).then(
+			() => null,
+			(e) => e,
+		);
+	await until(() => opened.has("/hold-token"));
+	rmSync(auth.tokenFile);
+	assert(await pendingToken);
+	await until(() => !opened.has("/hold-token"));
+	await closed(auth.transport(revokedToken.ref).transportOrigin);
+	assert.equal(auth.state(revokedToken.ref).executionVerdict, "unknown");
+	check("credential-removal-revokes-active-relay-and-MCP-without-retry");
+	expectedToken = canaries[1];
+	auth.writeCredential({ token: expectedToken });
+	secured = approve(auth, authOrigin, "/requires-token");
+	assert.equal((await auth.invoke({ runRef: secured.ref })).executionVerdict, "passed");
+	check("next-explicit-run-uses-rotated-reference-value");
+	let promptChecks = 0;
+	auth.manager.llmProvider = async (_id, req) => {
+		assert(!canaries.some((c) => req.prompt.includes(c)));
+		promptChecks++;
+		return {
+			ok: true,
+			model: "explicit-credential-review-control-stub",
+			text: JSON.stringify({ verdict: "pass", artifactHash: JSON.parse(req.prompt).artifactHash, findings: [] }),
+		};
+	};
+	const authDraft = await auth.invoke({
+		action: "prepare",
+		sourcePath: "source.json",
+		operationIds: ["getRecord"],
+		baseUrl: authOrigin,
+		outputPath: "auth-draft",
+		cases: [
+			{
+				id: "record",
+				operationId: "getRecord",
+				request: { path: { id: "r-2" } },
+				status: 200,
+				checks: [{ kind: "type", pointer: "/id", value: "string" }],
+			},
+		],
+	});
+	const authApproved = await auth.invoke({ action: "review", runRef: authDraft.workflowRef });
+	assert.equal(
+		(await auth.invoke({ action: "asset_run", assetRef: authApproved.assetRef })).executionVerdict,
+		"passed",
+	);
+	assert.equal(promptChecks, 1);
+	check("credential-stays-out-of-independent-review-input-and-persisted-workflow");
+	let scannedFiles = 0;
+	const scan = (dir) => {
+		for (const name of readdirSync(dir)) {
+			const path = join(dir, name),
+				info = lstatSync(path);
+			if (info.isSymbolicLink() || path === auth.tokenFile) continue;
+			if (info.isDirectory()) scan(path);
+			else {
+				const text = readFileSync(path).toString("utf8").toLowerCase();
+				assert(
+					!canaries.some((c) => text.includes(c.toLowerCase())),
+					"Runtime token leaked outside dedicated reference",
+				);
+				scannedFiles++;
+			}
+		}
+	};
+	scan(output);
+	check("collections-inputs-reports-network-diagnostics-and-runtime-snapshots-contain-no-token", {
+		scannedFiles,
+		excluded: "dedicated synthetic reference only",
+	});
 	if (process.argv.includes("--public-docs")) {
 		const docs = await boot("docs", "http://192.168.90.224:18168"),
 			p = approve(docs, "http://192.168.90.224:18168", "/doc.html");

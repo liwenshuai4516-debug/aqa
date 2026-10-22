@@ -9,6 +9,7 @@ const require = createRequire(join(process.env.PI_API_TEST_RUNTIME, "package.jso
 const load = (name) => import(pathToFileURL(require.resolve(name)).href);
 const { McpServer } = await load("@modelcontextprotocol/sdk/server/mcp.js");
 const { StdioServerTransport } = await load("@modelcontextprotocol/sdk/server/stdio.js");
+const { z } = await load("zod");
 // Import the pinned upstream executor directly; deliberately bypass cloud fetch/upload.
 const upstream = dirname(require.resolve("@postman/postman-mcp-server"));
 const { executeCollection } = await import(pathToFileURL(join(upstream, "tools/runner/executor.js")).href);
@@ -17,71 +18,101 @@ writeFileSync(join(runRoot, "pid"), String(process.pid));
 const save = (value) => writeFileSync(join(runRoot, "result.json"), JSON.stringify(value, null, 2));
 let started = false;
 const server = new McpServer({ name: "api-testing-dedicated-runner", version: "0.1.0" });
-server.registerTool("runApprovedSuite", { description: "Run the single host-approved suite snapshot." }, async () => {
-	if (started) throw new Error("This process is single-use; do not resend unknown requests.");
-	started = true;
-	const identity = {
-		runId: manifest.runId,
-		status: "running",
-		executionVerdict: "unknown",
-		pid: process.pid,
-		cloudKeyPresent: !!process.env.POSTMAN_API_KEY,
-		parentCanaryPresent: !!process.env.P0_PARENT_CANARY,
-	};
-	save(identity);
-	const result = await executeCollection({
-		collection: { json: manifest.collection, name: manifest.collection.info.name, id: manifest.runId },
-		params: { collectionId: manifest.runId, requestTimeout: manifest.requestTimeout ?? 1000, scriptTimeout: 500 },
-	});
-	// Deliberately narrow evidence projection for these supported suites; never serialize raw summary.
-	const validJson = (response) => {
-		try {
-			response.json();
-			return true;
-		} catch {
-			return false;
-		}
-	};
-	const executions = result.summary.run.executions.map((execution) => ({
-		caseId: execution.item.name,
-		method: execution.request.method,
-
-		status: execution.response?.code ?? null,
-		response: execution.response ? { jsonValid: validJson(execution.response) } : null,
-		requestError: execution.requestError ? { code: execution.requestError.code ?? "REQUEST_ERROR" } : null,
-		assertions: (execution.assertions ?? []).map((a) => ({
-			name: a.assertion,
-			passed: !a.error,
-			skipped: !!a.skipped,
-			error: a.error
-				? {
-						name: a.error.name,
-						message: "Assertion did not match its frozen expectation; raw values omitted",
+server.registerTool(
+	"runApprovedSuite",
+	{
+		description: "Run the single host-approved suite snapshot.",
+		inputSchema: {
+			credential: z.object({ token: z.string().min(1).max(8192), expiresAt: z.number().finite() }).optional(),
+		},
+	},
+	async ({ credential }) => {
+		if (started) throw new Error("This process is single-use; do not resend unknown requests.");
+		started = true;
+		if (credential) {
+			if (Date.now() >= credential.expiresAt || /[^\x20-\x7e]/.test(credential.token))
+				throw new Error("Credential expired or invalid");
+			const inject = (items) => {
+				for (const item of items) {
+					if (item.item) inject(item.item);
+					else {
+						const headers = item.request.header ?? [];
+						if (headers.some((h) => h.key?.toLowerCase() === "token")) throw new Error("Credential header conflict");
+						item.request.header = [...headers, { key: "token", value: credential.token }];
 					}
-				: null,
-		})),
-	}));
-	const stats = result.summary.run.stats;
-	const failures = result.summary.run.failures.length;
-	const verdict = stats.requests.failed
-		? "error"
-		: failures
-			? "failed"
-			: !stats.assertions.total || stats.assertions.pending
-				? "blocked"
-				: "passed";
-	const evidence = {
-		...identity,
-		status: "completed",
-		executionVerdict: verdict,
-		requests: stats.requests,
-		assertions: stats.assertions,
-		failures,
-		executions,
-		durationMs: result.durationMs,
-		evidenceProjection: "allowlist projection; headers/body fields omitted",
-	};
-	save(evidence);
-	return { content: [{ type: "text", text: verdict }], structuredContent: evidence };
-});
+				}
+			};
+			inject(manifest.collection.item);
+		}
+		const identity = {
+			runId: manifest.runId,
+			status: "running",
+			executionVerdict: "unknown",
+			pid: process.pid,
+			cloudKeyPresent: !!process.env.POSTMAN_API_KEY,
+			parentCanaryPresent: !!process.env.P0_PARENT_CANARY,
+			credentialUsed: !!credential,
+		};
+		save(identity);
+		let result;
+		try {
+			result = await executeCollection({
+				collection: { json: manifest.collection, name: manifest.collection.info.name, id: manifest.runId },
+				params: { collectionId: manifest.runId, requestTimeout: manifest.requestTimeout ?? 1000, scriptTimeout: 500 },
+			});
+		} catch {
+			throw new Error("API execution failed; raw diagnostic values omitted");
+		}
+		// Deliberately narrow evidence projection for these supported suites; never serialize raw summary.
+		const validJson = (response) => {
+			try {
+				response.json();
+				return true;
+			} catch {
+				return false;
+			}
+		};
+		const executions = result.summary.run.executions.map((execution) => ({
+			caseId: execution.item.name,
+			method: execution.request.method,
+
+			status: execution.response?.code ?? null,
+			response: execution.response ? { jsonValid: validJson(execution.response) } : null,
+			requestError: execution.requestError ? { code: execution.requestError.code ?? "REQUEST_ERROR" } : null,
+			assertions: (execution.assertions ?? []).map((a) => ({
+				name: a.assertion,
+				passed: !a.error,
+				skipped: !!a.skipped,
+				error: a.error
+					? {
+							name: a.error.name,
+							message: "Assertion did not match its frozen expectation; raw values omitted",
+						}
+					: null,
+			})),
+		}));
+		const stats = result.summary.run.stats;
+		const failures = result.summary.run.failures.length;
+		const verdict = stats.requests.failed
+			? "error"
+			: failures
+				? "failed"
+				: !stats.assertions.total || stats.assertions.pending
+					? "blocked"
+					: "passed";
+		const evidence = {
+			...identity,
+			status: "completed",
+			executionVerdict: verdict,
+			requests: stats.requests,
+			assertions: stats.assertions,
+			failures,
+			executions,
+			durationMs: result.durationMs,
+			evidenceProjection: "allowlist projection; headers/body fields omitted",
+		};
+		save(evidence);
+		return { content: [{ type: "text", text: verdict }], structuredContent: evidence };
+	},
+);
 await server.connect(new StdioServerTransport());

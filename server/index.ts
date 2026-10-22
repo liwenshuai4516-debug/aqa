@@ -2150,7 +2150,13 @@ function pushNoticeToAll(level: "info" | "warning" | "error", text: string, text
 const apiTestingRunner = new ApiTestingRunner(
 	join(DATA_DIR, "api-testing", "runs"),
 	join(DATA_DIR, "plugins", "api-testing"),
-	process.env.PI_API_TEST_HTTP_TARGET ? { origin: process.env.PI_API_TEST_HTTP_TARGET, projectRoot: CWD } : undefined,
+	process.env.PI_API_TEST_HTTP_TARGET
+		? {
+				origin: process.env.PI_API_TEST_HTTP_TARGET,
+				projectRoot: CWD,
+				...(process.env.PI_API_TEST_TOKEN_FILE ? { tokenFile: process.env.PI_API_TEST_TOKEN_FILE } : {}),
+			}
+		: undefined,
 );
 pluginMgr.mcpCaller = apiTestingRunner.call;
 pluginMgr.apiScheduleProvider = apiTestingRunner.attachScheduler;

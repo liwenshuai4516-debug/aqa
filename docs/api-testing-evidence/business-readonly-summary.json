@@ -1,0 +1,123 @@
+{
+	"startedAt": "2026-10-22T01:34:51.521Z",
+	"scope": "One read-only access diagnostic, not P1-4 business acceptance; no credentials, model or writes",
+	"origin": "http://192.168.90.224:8238",
+	"path": "/api/project-management-backend/v1/web/proj-reserve/reserve-proj-list/page",
+	"query": {
+		"pageNum": 1,
+		"pageSize": 1,
+		"bizName": "unique synthetic nonmatching probe filter"
+	},
+	"headers": ["x-parent-client-code: pms", "x-client-code: pms"],
+	"source": "OAS page operation + public frontend gateway and client headers",
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-business-readonly-2MesUw",
+	"requestsPlanned": 1,
+	"credentialsUsed": false,
+	"runId": "87e01a9c-e91d-4cbc-802d-150b2fdec254",
+	"hostResult": {
+		"runId": "87e01a9c-e91d-4cbc-802d-150b2fdec254",
+		"executionVerdict": "failed",
+		"requests": {
+			"total": 1,
+			"pending": 0,
+			"failed": 0
+		},
+		"assertions": {
+			"total": 4,
+			"pending": 0,
+			"failed": 2
+		},
+		"evidencePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-business-readonly-2MesUw/data/api-testing/runs/87e01a9c-e91d-4cbc-802d-150b2fdec254/result.json",
+		"scope": "configured-http-target"
+	},
+	"nativeResult": {
+		"runId": "87e01a9c-e91d-4cbc-802d-150b2fdec254",
+		"status": "completed",
+		"executionVerdict": "failed",
+		"pid": 28158,
+		"cloudKeyPresent": false,
+		"parentCanaryPresent": false,
+		"requests": {
+			"total": 1,
+			"pending": 0,
+			"failed": 0
+		},
+		"assertions": {
+			"total": 4,
+			"pending": 0,
+			"failed": 2
+		},
+		"failures": 2,
+		"executions": [
+			{
+				"caseId": "read-only-page-diagnostic",
+				"method": "GET",
+				"status": 200,
+				"response": {
+					"jsonValid": true
+				},
+				"requestError": null,
+				"assertions": [
+					{
+						"name": "diagnostic.http-no-standard-auth-challenge",
+						"passed": true,
+						"skipped": false,
+						"error": null
+					},
+					{
+						"name": "diagnostic.frontend-json-envelope",
+						"passed": true,
+						"skipped": false,
+						"error": null
+					},
+					{
+						"name": "diagnostic.no-login-or-token-message",
+						"passed": false,
+						"skipped": false,
+						"error": {
+							"name": "AssertionError",
+							"message": "Assertion did not match its frozen expectation; raw values omitted"
+						}
+					},
+					{
+						"name": "diagnostic.observed-frontend-success-policy",
+						"passed": false,
+						"skipped": false,
+						"error": {
+							"name": "AssertionError",
+							"message": "Assertion did not match its frozen expectation; raw values omitted"
+						}
+					}
+				]
+			}
+		],
+		"durationMs": 1168,
+		"evidenceProjection": "allowlist projection; headers/body fields omitted"
+	},
+	"hostState": {
+		"schemaVersion": 1,
+		"runId": "87e01a9c-e91d-4cbc-802d-150b2fdec254",
+		"identity": {
+			"clientId": "readonly-probe",
+			"conversationId": "diagnostic",
+			"cwd": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-business-readonly-2MesUw/project",
+			"pluginId": "api-testing",
+			"toolName": "api_test_execute"
+		},
+		"collectionHash": "68bd9bf9b64f623490dd20974969625f255398aad2614824f95cc726b88497d7",
+		"isolationPolicy": "darwin-seatbelt-loopback-v1",
+		"targetOrigin": "http://192.168.90.224:8238",
+		"status": "completed",
+		"executionVerdict": "failed",
+		"evidencePath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-business-readonly-2MesUw/data/api-testing/runs/87e01a9c-e91d-4cbc-802d-150b2fdec254/result.json"
+	},
+	"transport": {
+		"policy": "fixed-ipv4-http-relay-v1",
+		"logicalOrigin": "http://192.168.90.224:8238",
+		"transportOrigin": "http://127.0.0.1:56481",
+		"approvedCollectionHash": "68bd9bf9b64f623490dd20974969625f255398aad2614824f95cc726b88497d7",
+		"effectiveCollectionHash": "8f0fb0bb56c357e6a99eebca2170cfa6a5339b458816a9bfc43017ea91044b76"
+	},
+	"status": "diagnostic-completed-not-business-acceptance",
+	"finishedAt": "2026-10-22T01:34:53.462Z"
+}
