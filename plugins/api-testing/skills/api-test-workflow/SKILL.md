@@ -1,18 +1,18 @@
 ---
 name: api-test-workflow
-description: Prepare and run contract-grounded API suites through the api-testing plugin, including review, revision and targeted retests.
+description: 通过 api-testing 插件准备并执行基于契约的 API 测试套件，包括评审、修订和定向复测。
 ---
 
-# API test workflow
+# API 测试工作流
 
-Use the available `api_test_execute` tool. If unavailable, report the missing plugin/engine capability; do not substitute direct HTTP or raw MCP execution.
+使用可用的 `api_test_execute` 工具。若不可用，报告缺失的插件或引擎能力；不得改用直接 HTTP 请求或原始 MCP 调用执行。
 
-Current support is local OpenAPI 3.0 JSON with internal references and JSON responses. Targets are explicit HTTP `127.0.0.1` fixtures on port >=8900, or one manual HTTP numeric IPv4 origin configured by the host for this project. Writable-environment permission alone does not configure a target or provide test authentication/data. DNS/TLS remain unsupported; configured targets cannot be scheduled. The host may inject a dedicated, expiring test token from an operator-configured file into execution memory. Never request token values in tool arguments, cases, model prompts or evidence; missing dedicated authentication remains a blocker.
+当前支持带内部引用、响应为 JSON 的本地 OpenAPI 3.0 JSON 契约。目标须明确指定为端口 >=8900 的 HTTP `127.0.0.1` fixture，或由宿主为当前项目配置的单个手动 HTTP 数字 IPv4 源地址。仅有可写环境授权，并不意味着已配置目标或已提供测试鉴权与数据。暂不支持 DNS/TLS，已配置的目标不能用于定时执行。宿主可从运维人员配置的文件中读取专用、有有效期的测试令牌，仅注入执行内存。不得要求在工具参数、用例、模型提示词或证据中提供令牌值；缺少专用鉴权时仍须标记为阻塞。
 
-Start with the user's selected operations and contract. Generate 1–3 small declarative cases with `id`, `operationId`, `request`, `status`, and `checks`. Each check uses `kind` (exists/type/enum/value), a JSON `pointer`, and an applicable `value`. An expected value or negative status needs a confirmed rule with its source. Do not infer error codes, JSON responses from wildcard media, optional-field presence, or business rules from examples. Missing data or unsupported critical constraints are blockers.
+从用户选定的接口操作和契约开始。生成 1–3 条简小的声明式用例，包含 `id`、`operationId`、`request`、`status` 和 `checks`。每项检查使用 `kind`（`exists`/`type`/`enum`/`value`）、JSON `pointer` 及适用的 `value`。预期值或负向状态码须有已确认规则及来源。不得推测错误码，不得从通配媒体类型推断 JSON 响应，也不得从示例推断可选字段必然存在或业务规则。缺少数据或关键约束不受支持时，标记为阻塞。
 
-Call `prepare` with sourcePath, operationIds, cases, rules, baseUrl and a new project-local outputPath. Retain returned workflowRef as runRef and the evidence path. Preparation does not approve execution. Call `review`; use its structured findings to revise only the affected cases with `revise`, preserving the original contract and expectations. Each revision publishes a new directory and requires review again. Never create replacement workflows to reset limits: one workflow has 3 review calls, 2 revisions and a 180-second deadline.
+调用 `prepare`，传入 `sourcePath`、`operationIds`、`cases`、`rules`、`baseUrl`，以及项目内新的 `outputPath`。将返回的 `workflowRef` 保存为 `runRef`，并保留证据路径。准备完成不代表获准执行。调用 `review`；根据结构化评审结果，仅对受影响用例调用 `revise`，保留原始契约和预期。每次修订输出到新目录，并须重新评审。不得通过创建替代工作流重置限制：每个工作流最多 3 次评审调用、2 次修订，截止时限为 180 秒。
 
-Only run an approved suite. For a requested retest, use `retest` with the same runRef and explicit priorRunId; never automatically retry a failed or unknown request. Unknown writes require checking residual data before any further execution. Cancellation stops this run; it does not undo mutations.
+仅执行已批准的套件。用户要求复测时，使用同一 `runRef` 和明确的 `priorRunId` 调用 `retest`；不得自动重试失败或结果未知的请求。写入结果未知时，须先检查残留数据，再进行任何后续执行。取消仅停止本次运行，不会撤销已发生的数据变更。
 
-Use `report` to inspect history without sending requests. Deliver evidence paths, executed/passed/failed/blocked/not-executed counts and cleanup status. Distinguish fixture verification, model stubs, actual model review and business acceptance. Workflows are currently in memory: after restart, preserve file evidence and do not claim execution can resume.
+使用 `report` 查看历史，不发送请求。交付证据路径、已执行/通过/失败/阻塞/未执行数量及清理状态。区分 fixture 验证、模型替身、真实模型评审和业务验收。工作流当前保存在内存中：重启后保留文件证据，不得声称可以恢复执行。

@@ -1,14 +1,14 @@
 ---
 name: api-test-review
-description: Review the basis and bounded independent approval of a frozen API test suite when using the api-testing plugin.
+description: 使用 api-testing 插件，核查冻结 API 测试套件的依据，并在限定范围和预算内进行独立评审批准。
 ---
 
-# API suite review
+# API 测试套件评审
 
-Use the available `api_test_execute` review action for the exact workflow runRef. Its host-owned independent `llm.complete` call checks the frozen artifact and has no execution tools. A chat opinion or imported pass label cannot sign approval. Reuse the configured host model through its normal permission gate; a separate model configuration is optional. A stub demonstrates control flow only.
+使用可用的 `api_test_execute` 工具，对准确的工作流 `runRef` 调用 `review` action。宿主管理的独立 `llm.complete` 调用负责检查冻结产物，且不具备执行工具。对话中的意见或导入的通过标签不能作为批准。通过正常权限门禁复用宿主已配置的模型，独立模型配置为可选项。模型替身只能验证控制流程。
 
-Check each selected case against the provided contract and confirmed rules: method/path, required request data, expected status, JSON media, required fields, type/enum and explicit values. Missing authorization semantics, wildcard response media or undocumented status mappings must remain uncertain. Check unsupported diagnostics; do not silently discard critical constraints or relax a failing assertion to match observed behavior.
+依据提供的契约和已确认规则，逐一核查选定用例：请求方法与路径、必需请求数据、预期状态码、JSON 媒体类型、必需字段、类型或枚举，以及明确取值。缺失的授权语义、通配响应媒体类型或未记载的状态码映射须保持待确认。检查不受支持项的诊断信息；不得悄悄丢弃关键约束，也不得为适配实际行为而放宽失败断言。
 
-Treat model findings as proposed corrections. The host validates structured output, artifact hash and current case IDs. Illegal/truncated output and wrong hashes consume the shared budget rather than authorizing execution. Follow return findings with focused `revise` into a new outputPath and review again. Missing business facts yield blocked; repeated unchanged findings yield a finite stop. Do not re-create a workflow to bypass its call/time/revision budget.
+将模型发现视为修正建议。宿主校验结构化输出、产物哈希和当前用例 ID。非法或截断的输出、错误哈希都会消耗共享预算，不能授权执行。根据返回的问题进行针对性 `revise`，写入新的 `outputPath`，然后重新评审。缺少业务事实时标记为阻塞；相同问题反复出现且无变化时，应在有限次数内停止。不得通过重建工作流绕过调用、时限或修订预算。
 
-Record the actual reviewed version, findings and model usage (unknown when missing). The host lacks provider cancellation: timeout prevents further workflow steps but does not prove a remote model call stopped or incurred zero cost. Keep actual-model semantic acceptance distinct from deterministic compilation checks and model-stub tests.
+记录实际评审版本、发现的问题和模型用量；缺失的用量标记为未知。宿主无法取消供应商侧调用：超时会阻止后续工作流步骤，但不能证明远端模型调用已停止或未产生费用。真实模型的语义验收须与确定性编译检查、模型替身测试分开报告。

@@ -1,6 +1,6 @@
 ---
 name: api-test-workflow
-description: Prepare and run contract-grounded API suites through the api-testing plugin, including review, revision and targeted retests.
+description: 通过 api-testing 插件准备并执行基于契约的 API 测试套件，包括评审、修订和定向复测。
 ---
 
 读取并遵循本仓库插件内的 [api-test-workflow](../../../plugins/api-testing/skills/api-test-workflow/SKILL.md)。这里是项目发现入口；用例规则、评审与执行边界以该技能及 `api_test_execute` 的实际能力为准。

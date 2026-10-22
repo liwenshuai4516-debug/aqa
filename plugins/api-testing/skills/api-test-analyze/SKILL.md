@@ -1,18 +1,18 @@
 ---
 name: api-test-analyze
-description: Interpret API test reports, retained findings, cleanup outcomes and targeted retest evidence without silently rerunning requests.
+description: 解读 API 测试报告、留存问题、清理结果与定向复测证据，不擅自重新发送请求。
 ---
 
-# API result analysis
+# API 测试结果分析
 
-Read an existing report using `api_test_execute`: action report with runRef/optional runId for a live workflow, or asset_report with runId for stored history. Historical analysis sends no requests and uses no model in the deterministic reporting path. Do not run or retest solely to obtain a cleaner report.
+使用 `api_test_execute` 读取已有报告：内存中的工作流使用 `report` action，传入 `runRef` 和可选的 `runId`；持久化历史使用 `asset_report`，传入 `runId`。历史分析不发送请求，确定性报告生成路径也不调用模型。不得仅为获得更好看的报告而执行或复测。
 
-Distinguish assertion failures (suspected API defects), environment errors, testcase/script errors, cleanup failures and unknown/insufficient evidence. These categories are evidence-based clues, not proven root causes. Do not infer actual response values: raw bodies and assertion actual values are intentionally omitted from persisted output. Missing evidence stays unknown.
+区分断言失败（疑似 API 缺陷）、环境错误、用例或脚本错误、清理失败，以及未知或证据不足。这些分类只是基于证据的线索，并非已证实的根因。不得推测实际响应值：持久化输出有意省略原始响应体和断言实际值。缺失的证据保持未知。
 
-Preserve the first failure and every attempt. An unfixed retest remains open. Closing a finding requires a recorded priorRunId and a passing same-case result on the same suite hash; stored execution defaults to the latest same-version history, or accepts an explicit priorRunId. Changing a testcase requires fresh independent review and does not establish that the old business defect was fixed. Report old-version findings separately when a revised suite passes.
+保留首次失败和每次尝试。复测未修复的问题继续保持未关闭状态。关闭问题须记录 `priorRunId`，且同一套件哈希下的同一用例通过。持久化执行默认关联同版本的最近历史，也可显式传入 `priorRunId`。修改用例后须重新独立评审，不能据此证明原业务缺陷已修复。修订套件通过时，单独报告旧版本的问题。
 
-For explicit reanalysis, use asset_analyze with runId and optional model. It appends a report revision, consumes at most one model call per attempt, and permits at most three attempts per run. It never sends interface requests. Failed, truncated or unavailable analysis remains a failed revision; do not rerun requests to repair it. Scheduled fixture execution analyzes only new/changed failure evidence, skips repeated known failures and emits station notices on change/recovery. Hypotheses stay unconfirmed and never become execution instructions or cached proven root causes.
+用户明确要求重新分析时，使用 `asset_analyze`，传入 `runId` 和可选的 `model`。该操作追加报告修订，每次尝试最多调用一次模型，每个运行最多尝试三次，且不会发送接口请求。分析失败、输出截断或模型不可用时，保留失败修订；不得通过重新发送请求来修复分析。定时 fixture 执行仅分析新增或变化的失败证据，跳过重复的已知失败，并在变化或恢复时发出站内通知。假设始终标记为未确认，不得变成执行指令或缓存中的已证实根因。
 
-Report cleanup as passed, failed, not-required, not-defined or residuals-unknown according to evidence. A failed/unknown write or cleanup can leave test data behind; do not automatically resend, delete data or repair business code. Obtain the missing facts or applicable authorization before corrective actions.
+根据证据将清理状态报告为 `passed`（通过）、`failed`（失败）、`not-required`（不需要）、`not-defined`（未定义）或 `residuals-unknown`（残留未知）。写入或清理失败、结果未知时，可能遗留测试数据；不得自动重发请求、删除数据或修复业务代码。采取纠正措施前，补齐缺失事实或取得相应授权。
 
-Deliver counts and evidence links with fixture versus business scope and stub versus actual model scope. Report skips, blockers and unexecuted checks explicitly; neither a successful MCP transport nor an approved suite proves that its cases passed.
+交付统计数量和证据链接，区分 fixture 与业务验收范围、模型替身与真实模型范围。明确报告跳过、阻塞和未执行项；MCP 通信成功或套件获批均不能证明用例已通过。

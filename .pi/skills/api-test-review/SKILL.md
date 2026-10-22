@@ -1,6 +1,6 @@
 ---
 name: api-test-review
-description: Review the basis and bounded independent approval of a frozen API test suite when using the api-testing plugin.
+description: 使用 api-testing 插件，核查冻结 API 测试套件的依据，并在限定范围和预算内进行独立评审批准。
 ---
 
 读取并遵循本仓库插件内的 [api-test-review](../../../plugins/api-testing/skills/api-test-review/SKILL.md)。这里是项目发现入口；用例规则、评审与执行边界以该技能及 `api_test_execute` 的实际能力为准。
