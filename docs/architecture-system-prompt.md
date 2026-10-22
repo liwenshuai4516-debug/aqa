@@ -110,6 +110,8 @@
 
 ## 七、设置 UI（SettingsModal → 「系统提示词」页）
 
+测试工程师角色的精简正文见 [测试角色提示词](examples/prompts/testing-engineer.md)，包含 UI/API 技能路由与长任务看板约定。应用时只替换 `soul`（角色）来源，保留默认组合模板及动态工具、项目上下文和技能目录；文件本身不会自动修改应用设置。详细测试与看板规则继续由项目 `AGENTS.md` 和阶段技能维护。
+
     组合模板编辑框（{{token}} 可任意排序/穿插文字；placeholder = 默认模板）
     一键插入 token 的 chips
     每来源覆盖行：token + 说明 + 覆盖输入框（留空 = 自动）
