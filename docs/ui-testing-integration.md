@@ -36,6 +36,14 @@ PI_WEB_SMOKE_PREBUILT=1 node tests/ui-testing-visibility-test.mjs
 
 第二条须先有已构建的 server/web/desktop。测试只关闭自己启动的应用实例，不操作用户窗口。
 
+### MCP 连接补验（2026-10-22）
+
+用户随后看到 `ui-playwright-test: failed: MCP connection closed`，但在取得完整 `/mcp` 错误前确认“现在不报错了”。此次未重现该连接失败，不能据此认定具体根因，也没有修改运行配置或加入自动重试来掩盖它。此前可见性验证只覆盖技能与菜单，未验证桌面 MCP 连接，覆盖确实不足。
+
+已扩展原界面回归：通过真实 `/mcp` 回执确认 `connected, 87 tools (direct)`，再验证连续 3 次 `/reload` 和显式 `/mcp reconnect ui-playwright-test` 后的连接。每条命令都等待其后的新 WS 通知，不用旧 toast 判断成功。同时用 Electron 的 Node 模式执行原 SDK/MCP 集成，10 项通过，包括工作流要求的 7 个录制工具、真实合成页面、嵌套调用与取消。87 是测试 MCP 的全部工具，7 是工作流要求的子集。零模型调用、零业务请求。
+
+若再次出现，先执行 `/mcp` 保留完整状态与错误；需要恢复连接时可执行已验证的 `/mcp reconnect ui-playwright-test`，再用 `/mcp` 确认 connected。重连验证不代表中断的业务动作可以重放，仍按原包的恢复规则核对已有证据和副作用。
+
 ### 首次项目登记记录
 
 本机已执行 `npm run ui-testing:enable`，项目 `.pi/settings.json` 登记 `../node_modules/pi-ui-testing` 与 `../capabilities/ui-testing/mcp-extension.mjs`。该文件按既有规则忽略，保留个人配置及已有项目字段；重复执行不重复登记。新克隆按能力目录说明重新登记。

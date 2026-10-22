@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { mkdtemp, mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { setTimeout as delay } from "node:timers/promises";
 import { fileURLToPath } from "node:url";
 import electron from "electron";
 import { ensureBuild } from "./lib/ensure-build.mjs";
@@ -50,11 +51,34 @@ for (const key of Object.keys(env)) {
 const result = { status: "FAIL", checks: [], actualModelCalls: 0, businessRequests: 0 };
 let app;
 let page;
+const notices = [];
 try {
 	app = await launchNativeApp({ executablePath: electron, packaged: false, env });
 	page = await app.firstWindow();
+	page.on("websocket", (socket) =>
+		socket.on("framereceived", ({ payload }) => {
+			try {
+				const message = JSON.parse(String(payload));
+				if (message.type === "notice") notices.push(message.text);
+			} catch {
+				/* Ignore non-JSON frames. */
+			}
+		}),
+	);
+	await page.reload();
 	await page.waitForSelector(".app");
 	const input = page.locator("textarea").first();
+	const command = async (text, expected) => {
+		const after = notices.length;
+		await input.fill(text);
+		await input.press("Escape");
+		await input.press("Enter");
+		const deadline = Date.now() + 30_000;
+		while (!notices.slice(after).some((notice) => expected.test(notice)) && Date.now() < deadline) await delay(50);
+		const notice = notices.slice(after).find((notice) => expected.test(notice));
+		assert.ok(notice, `No fresh response to ${text}: ${JSON.stringify(notices.slice(after))}`);
+		return notice;
+	};
 	await input.waitFor({ state: "visible" });
 	await input.fill("/ui");
 	assert.equal(await page.locator(".slash-menu .slash-item").count(), 0);
@@ -65,13 +89,7 @@ try {
 	result.checks.push("reproduced empty skills and no /ui candidates in a different desktop workspace");
 	await page.locator(".set-close-btn").click();
 	await enableUiTesting(repo, agentDir);
-	await input.fill("/reload");
-	await input.press("Escape");
-	await input.press("Enter");
-	await page
-		.getByText(/已重新加载|Reloaded extensions/)
-		.first()
-		.waitFor();
+	await command("/reload", /已重新加载|Reloaded extensions/);
 	await page.getByRole("button", { name: /^(设置|Settings)$/ }).click();
 	await page.locator('.settings-tab[data-tab="skills"]').click();
 	const row = page
@@ -108,6 +126,20 @@ try {
 	result.checks.push(
 		"/ui offers ui-testing-workflow and selection inserts the SDK skill shortcut without sending a model request",
 	);
+	result.mcpStatus = await command("/mcp", /^ui-playwright-test:/);
+	await page.screenshot({ path: join(output, "mcp-status.png") });
+	assert.match(result.mcpStatus, /^ui-playwright-test: connected, \d+ tools \(direct\)$/);
+	result.checks.push("desktop MCP reports connected with direct tools");
+	for (let round = 1; round <= 3; round++) {
+		await command("/reload", /已重新加载|Reloaded extensions/);
+		const status = await command("/mcp", /^ui-playwright-test:/);
+		assert.match(status, /^ui-playwright-test: connected, \d+ tools \(direct\)$/);
+	}
+	result.checks.push("three further desktop reloads reconnect the test MCP");
+	await command("/mcp reconnect ui-playwright-test", /Reconnected to MCP server "ui-playwright-test" \(connected/);
+	const reconnected = await command("/mcp", /^ui-playwright-test:/);
+	assert.match(reconnected, /^ui-playwright-test: connected, \d+ tools \(direct\)$/);
+	result.checks.push("explicit MCP reconnect restores a connected tool catalog without running business tests");
 	result.status = "PASS";
 } catch (error) {
 	result.error = error.stack;

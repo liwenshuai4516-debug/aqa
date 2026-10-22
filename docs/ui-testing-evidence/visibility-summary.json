@@ -4,6 +4,7 @@
 	"environment": {
 		"platform": "macOS arm64",
 		"sdk": "1.2.0",
+		"electron": "44.4.2",
 		"playwrightTest": "1.62.1",
 		"port": 18975,
 		"isolation": "temporary desktop userData, agentDir and separate workspace; empty authentication"
@@ -19,22 +20,34 @@
 		"originalPhaseSkills": 8,
 		"entrySkills": 1,
 		"workflowTools": 10,
-		"recordingMcpTools": 7,
+		"requiredRecordingMcpTools": 7,
+		"runtimes": ["Node", "Electron Node mode"],
 		"realChromiumSyntheticPage": true,
 		"nestedCallIdentityAndCancellation": "passed"
 	},
 	"desktopUi": {
 		"status": "passed",
+		"mcpStatus": "ui-playwright-test: connected, 87 tools (direct)",
 		"checks": [
 			"Reproduced zero skills and no /ui candidates before app registration",
 			"Registered capability in isolated desktop agentDir and reloaded through actual composer",
 			"Settings displays ui-testing-workflow and all eight original phase skills enabled",
-			"/ui offers entry and selection fills /skill:ui-testing-workflow without sending it"
+			"/ui offers entry and selection fills /skill:ui-testing-workflow without sending it",
+			"/mcp confirms connection with direct tools",
+			"Three further /reload commands each produce a fresh connected /mcp response",
+			"Explicit /mcp reconnect ui-playwright-test restores connected status without business execution"
 		]
+	},
+	"reportedConnectionFailure": {
+		"symptom": "MCP connection closed",
+		"userFollowUp": "User confirmed the error had disappeared before the full status was obtained",
+		"reproduced": false,
+		"rootCause": "unknown",
+		"runtimeChanges": "none"
 	},
 	"liveDesktop": {
 		"configuration": "registered in application-specific agent settings; original entries preserved",
-		"activation": "user must run /reload in their current window; no automatic window interaction or restart"
+		"activation": "user reported the startup error had disappeared; full live /mcp status was not obtained; no automatic window interaction or restart"
 	},
 	"actualModelCalls": 0,
 	"businessRequests": 0,
