@@ -1,0 +1,561 @@
+{
+	"date": "2026-10-22T01:13:05.984893+00:00",
+	"baseCommit": "9464d149bd1b61282040605f563208a44bc39a46",
+	"scope": "Fixed TCP relay feasibility only; real MCP/Newman; read-only supplied Swagger page; no business acceptance",
+	"attempts": [
+		{
+			"name": "scratch attempt 1",
+			"status": "failed-unhandled-fixture-error",
+			"reason": "Synthetic HTTP server wrote Content-Type after writeHead; no structured completion summary",
+			"log": "node:_http_outgoing:699\n    throw new ERR_HTTP_HEADERS_SENT('set');\n    ^\n\nError [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client\n    at ServerResponse.setHeader (node:_http_outgoing:699:11)\n    at Server.<anonymous> (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/api-testing-relay-probe/probe.mjs:38:7)\n    at Server.emit (node:events:507:28)\n    at parserOnIncoming (node:_http_server:1153:12)\n    at HTTPParser.parserOnHeadersComplete (node:_http_common:117:17) {\n  code: 'ERR_HTTP_HEADERS_SENT'\n}\n\nNode.js v23.10.0\n"
+		},
+		{
+			"name": "scratch attempt 2",
+			"status": "passed-feasibility-only",
+			"summary": {
+				"startedAt": "2026-10-22T01:10:47.381Z",
+				"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-relay-probe-YEramx",
+				"scope": "fixed TCP relay feasibility; not host integration or business acceptance",
+				"checks": [
+					{
+						"name": "actual-MCP-Newman-through-fixed-relay",
+						"result": {
+							"runId": "local-positive",
+							"status": "completed",
+							"executionVerdict": "passed",
+							"pid": 13804,
+							"cloudKeyPresent": false,
+							"parentCanaryPresent": false,
+							"requests": {
+								"total": 1,
+								"pending": 0,
+								"failed": 0
+							},
+							"assertions": {
+								"total": 1,
+								"pending": 0,
+								"failed": 0
+							},
+							"failures": 0,
+							"executions": [
+								{
+									"caseId": "local-positive",
+									"method": "GET",
+									"status": 200,
+									"response": {
+										"jsonValid": true
+									},
+									"requestError": null,
+									"assertions": [
+										{
+											"name": "status",
+											"passed": true,
+											"skipped": false,
+											"error": null
+										}
+									]
+								}
+							],
+							"durationMs": 1149,
+							"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+						}
+					},
+					{
+						"name": "redirect-cannot-reach-other-port",
+						"result": {
+							"runId": "local-redirect",
+							"status": "completed",
+							"executionVerdict": "error",
+							"pid": 13828,
+							"cloudKeyPresent": false,
+							"parentCanaryPresent": false,
+							"requests": {
+								"total": 1,
+								"pending": 0,
+								"failed": 1
+							},
+							"assertions": {
+								"total": 1,
+								"pending": 0,
+								"failed": 1
+							},
+							"failures": 2,
+							"executions": [
+								{
+									"caseId": "local-redirect",
+									"method": "GET",
+									"status": null,
+									"response": null,
+									"requestError": {
+										"code": "EPERM"
+									},
+									"assertions": [
+										{
+											"name": "status",
+											"passed": false,
+											"skipped": false,
+											"error": {
+												"name": "AssertionError",
+												"message": "Assertion did not match its frozen expectation; raw values omitted"
+											}
+										}
+									]
+								}
+							],
+							"durationMs": 1163,
+							"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+						}
+					},
+					{
+						"name": "fixed-private-IP-public-Swagger-page",
+						"result": {
+							"runId": "public-docs",
+							"status": "completed",
+							"executionVerdict": "passed",
+							"pid": 13837,
+							"cloudKeyPresent": false,
+							"parentCanaryPresent": false,
+							"requests": {
+								"total": 1,
+								"pending": 0,
+								"failed": 0
+							},
+							"assertions": {
+								"total": 1,
+								"pending": 0,
+								"failed": 0
+							},
+							"failures": 0,
+							"executions": [
+								{
+									"caseId": "public-docs",
+									"method": "GET",
+									"status": 200,
+									"response": {
+										"jsonValid": false
+									},
+									"requestError": null,
+									"assertions": [
+										{
+											"name": "public Swagger page",
+											"passed": true,
+											"skipped": false,
+											"error": null
+										}
+									]
+								}
+							],
+							"durationMs": 1160,
+							"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+						}
+					}
+				],
+				"requests": [
+					{
+						"target": "fixed",
+						"path": "/ok"
+					},
+					{
+						"target": "fixed",
+						"path": "/redirect"
+					}
+				],
+				"status": "passed-feasibility-only",
+				"finishedAt": "2026-10-22T01:10:52.353Z"
+			}
+		},
+		{
+			"name": "tracked acceptance --public-docs",
+			"summary": {
+				"startedAt": "2026-10-22T01:11:47.333Z",
+				"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-relay-probe-yyP0Hw",
+				"scope": "fixed TCP relay feasibility; not host integration or business acceptance",
+				"checks": [
+					{
+						"name": "actual-MCP-Newman-through-fixed-relay",
+						"result": {
+							"runId": "local-positive",
+							"status": "completed",
+							"executionVerdict": "passed",
+							"pid": 13988,
+							"cloudKeyPresent": false,
+							"parentCanaryPresent": false,
+							"requests": {
+								"total": 1,
+								"pending": 0,
+								"failed": 0
+							},
+							"assertions": {
+								"total": 1,
+								"pending": 0,
+								"failed": 0
+							},
+							"failures": 0,
+							"executions": [
+								{
+									"caseId": "local-positive",
+									"method": "GET",
+									"status": 200,
+									"response": {
+										"jsonValid": true
+									},
+									"requestError": null,
+									"assertions": [
+										{
+											"name": "status",
+											"passed": true,
+											"skipped": false,
+											"error": null
+										}
+									]
+								}
+							],
+							"durationMs": 1174,
+							"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+						}
+					},
+					{
+						"name": "OS-denies-direct-upstream-connect",
+						"result": {
+							"runId": "direct-upstream-denied",
+							"status": "completed",
+							"executionVerdict": "error",
+							"pid": 14024,
+							"cloudKeyPresent": false,
+							"parentCanaryPresent": false,
+							"requests": {
+								"total": 1,
+								"pending": 0,
+								"failed": 1
+							},
+							"assertions": {
+								"total": 1,
+								"pending": 0,
+								"failed": 1
+							},
+							"failures": 2,
+							"executions": [
+								{
+									"caseId": "direct-upstream-denied",
+									"method": "GET",
+									"status": null,
+									"response": null,
+									"requestError": {
+										"code": "EPERM"
+									},
+									"assertions": [
+										{
+											"name": "status",
+											"passed": false,
+											"skipped": false,
+											"error": {
+												"name": "AssertionError",
+												"message": "Assertion did not match its frozen expectation; raw values omitted"
+											}
+										}
+									]
+								}
+							],
+							"durationMs": 1151,
+							"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+						}
+					},
+					{
+						"name": "redirect-cannot-reach-other-port",
+						"result": {
+							"runId": "local-redirect",
+							"status": "completed",
+							"executionVerdict": "error",
+							"pid": 14033,
+							"cloudKeyPresent": false,
+							"parentCanaryPresent": false,
+							"requests": {
+								"total": 1,
+								"pending": 0,
+								"failed": 1
+							},
+							"assertions": {
+								"total": 1,
+								"pending": 0,
+								"failed": 1
+							},
+							"failures": 2,
+							"executions": [
+								{
+									"caseId": "local-redirect",
+									"method": "GET",
+									"status": null,
+									"response": null,
+									"requestError": {
+										"code": "EPERM"
+									},
+									"assertions": [
+										{
+											"name": "status",
+											"passed": false,
+											"skipped": false,
+											"error": {
+												"name": "AssertionError",
+												"message": "Assertion did not match its frozen expectation; raw values omitted"
+											}
+										}
+									]
+								}
+							],
+							"durationMs": 1159,
+							"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+						}
+					},
+					{
+						"name": "fixed-private-IP-public-Swagger-page",
+						"result": {
+							"runId": "public-docs",
+							"status": "completed",
+							"executionVerdict": "passed",
+							"pid": 14034,
+							"cloudKeyPresent": false,
+							"parentCanaryPresent": false,
+							"requests": {
+								"total": 1,
+								"pending": 0,
+								"failed": 0
+							},
+							"assertions": {
+								"total": 1,
+								"pending": 0,
+								"failed": 0
+							},
+							"failures": 0,
+							"executions": [
+								{
+									"caseId": "public-docs",
+									"method": "GET",
+									"status": 200,
+									"response": {
+										"jsonValid": false
+									},
+									"requestError": null,
+									"assertions": [
+										{
+											"name": "public Swagger page",
+											"passed": true,
+											"skipped": false,
+											"error": null
+										}
+									]
+								}
+							],
+							"durationMs": 1169,
+							"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+						}
+					}
+				],
+				"requests": [
+					{
+						"target": "fixed",
+						"path": "/ok"
+					},
+					{
+						"target": "fixed",
+						"path": "/redirect"
+					}
+				],
+				"publicDocsRequested": true,
+				"status": "passed-feasibility-only",
+				"finishedAt": "2026-10-22T01:11:53.925Z"
+			}
+		},
+		{
+			"name": "tracked acceptance without live network flag",
+			"summary": {
+				"startedAt": "2026-10-22T01:12:40.269Z",
+				"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-relay-probe-Bl98KJ",
+				"scope": "fixed TCP relay feasibility; not host integration or business acceptance",
+				"checks": [
+					{
+						"name": "actual-MCP-Newman-through-fixed-relay",
+						"result": {
+							"runId": "local-positive",
+							"status": "completed",
+							"executionVerdict": "passed",
+							"pid": 14196,
+							"cloudKeyPresent": false,
+							"parentCanaryPresent": false,
+							"requests": {
+								"total": 1,
+								"pending": 0,
+								"failed": 0
+							},
+							"assertions": {
+								"total": 1,
+								"pending": 0,
+								"failed": 0
+							},
+							"failures": 0,
+							"executions": [
+								{
+									"caseId": "local-positive",
+									"method": "GET",
+									"status": 200,
+									"response": {
+										"jsonValid": true
+									},
+									"requestError": null,
+									"assertions": [
+										{
+											"name": "status",
+											"passed": true,
+											"skipped": false,
+											"error": null
+										}
+									]
+								}
+							],
+							"durationMs": 1186,
+							"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+						}
+					},
+					{
+						"name": "OS-denies-direct-upstream-connect",
+						"result": {
+							"runId": "direct-upstream-denied",
+							"status": "completed",
+							"executionVerdict": "error",
+							"pid": 14227,
+							"cloudKeyPresent": false,
+							"parentCanaryPresent": false,
+							"requests": {
+								"total": 1,
+								"pending": 0,
+								"failed": 1
+							},
+							"assertions": {
+								"total": 1,
+								"pending": 0,
+								"failed": 1
+							},
+							"failures": 2,
+							"executions": [
+								{
+									"caseId": "direct-upstream-denied",
+									"method": "GET",
+									"status": null,
+									"response": null,
+									"requestError": {
+										"code": "EPERM"
+									},
+									"assertions": [
+										{
+											"name": "status",
+											"passed": false,
+											"skipped": false,
+											"error": {
+												"name": "AssertionError",
+												"message": "Assertion did not match its frozen expectation; raw values omitted"
+											}
+										}
+									]
+								}
+							],
+							"durationMs": 1166,
+							"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+						}
+					},
+					{
+						"name": "redirect-cannot-reach-other-port",
+						"result": {
+							"runId": "local-redirect",
+							"status": "completed",
+							"executionVerdict": "error",
+							"pid": 14236,
+							"cloudKeyPresent": false,
+							"parentCanaryPresent": false,
+							"requests": {
+								"total": 1,
+								"pending": 0,
+								"failed": 1
+							},
+							"assertions": {
+								"total": 1,
+								"pending": 0,
+								"failed": 1
+							},
+							"failures": 2,
+							"executions": [
+								{
+									"caseId": "local-redirect",
+									"method": "GET",
+									"status": null,
+									"response": null,
+									"requestError": {
+										"code": "EPERM"
+									},
+									"assertions": [
+										{
+											"name": "status",
+											"passed": false,
+											"skipped": false,
+											"error": {
+												"name": "AssertionError",
+												"message": "Assertion did not match its frozen expectation; raw values omitted"
+											}
+										}
+									]
+								}
+							],
+							"durationMs": 1138,
+							"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+						}
+					}
+				],
+				"requests": [
+					{
+						"target": "fixed",
+						"path": "/ok"
+					},
+					{
+						"target": "fixed",
+						"path": "/redirect"
+					}
+				],
+				"publicDocsRequested": false,
+				"status": "passed-feasibility-only",
+				"finishedAt": "2026-10-22T01:12:46.227Z"
+			}
+		}
+	],
+	"limitations": [
+		"Relay is test-local, not production-host target configuration or approval wiring",
+		"Only pinned numeric IPv4 HTTP transport demonstrated; no DNS/TLS or credential injection tested",
+		"No business/login/ID-allocation/creation request sent",
+		"Cancellation/revocation/socket ownership and logical-target-to-transport binding need host-level regression before enabling real targets",
+		"No unattended real business authorization"
+	],
+	"verification": {
+		"typecheck": "passed",
+		"unit": "41/41 passed",
+		"lint": "passed",
+		"protocol": "main checks passed; no-tag heuristic skipped",
+		"format": "explicit changed files passed",
+		"diff": "passed",
+		"buildAndCore": "not rerun: no product code change; prior core result preserved separately",
+		"logs": {
+			"typecheck": {
+				"path": "tests/scratch/api-testing-relay-probe/typecheck.log",
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			},
+			"unit": {
+				"path": "tests/scratch/api-testing-relay-probe/unit.log",
+				"sha256": "cc733b4f99d935cb9d8eff5bc91e1a1657e8f811976c774aa18f9a168f84d65e"
+			},
+			"lint": {
+				"path": "tests/scratch/api-testing-relay-probe/lint.log",
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			"protocol": {
+				"path": "tests/scratch/api-testing-relay-probe/protocol.log",
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			}
+		}
+	}
+}

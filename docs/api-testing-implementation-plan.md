@@ -155,3 +155,5 @@ P1 工程验收通过后可以开展 P2 本地管理；没有用户真实环境�
 2026-10-22 续查：本机 OS + 真实 MCP/Newman 隔离补验 8 项符合预期，见 [记录](api-testing-evidence/isolation-local-mcp.md)。仅证明本机端口/合成文件边界，未开放真实目标；契约/公开前端规则已补入业务清单，可用鉴权/关联测试数据与远端隔离仍未满足。
 
 2026-10-22 宿主接入：受控 MCP/Newman 执行强制加载 macOS fixture OS profile；其他平台或缺 sandbox-exec 拒绝执行，不降级。策略进入版本指纹，旧批准失效；真实地址仍阻塞。回归与限制见 [宿主接入记录](api-testing-evidence/isolation-host.md) 和 [摘要](api-testing-evidence/isolation-host-summary.json)。
+
+2026-10-22 远端方案补验：测试内固定 TCP relay + 现有 OS 端口限制，真实 MCP/Newman 读公开 Swagger 页面成功；绕过 relay 的直连及跨端口重定向被拒绝。带远端标记 4 项、默认本机 3 项符合预期。仅证明传输可行，未接入产品目标配置/审批/生命周期；真实业务仍未完成，见 [记录](api-testing-evidence/isolation-relay.md) 与 [尝试摘要](api-testing-evidence/isolation-relay-summary.json)。

@@ -151,5 +151,13 @@
 			}
 		],
 		"candidateStatus": "Contract-backed draft basis available; execution remains blocked by dedicated data/auth references, wildcard-media validation and unproven real-target isolation. No inferred status/error mapping."
+	},
+	"followup20261022Relay": {
+		"status": "passed-feasibility-only",
+		"evidence": "isolation-relay-summary.json",
+		"access": "Real MCP/Newman GET /doc.html through test-local relay pinned to 192.168.90.224:18168; HTTP 200 and explicit HTML assertion passed",
+		"businessRequests": 0,
+		"hostIntegration": "Loopback OS boundary already enforced; fixed remote relay not wired into production",
+		"remaining": "No usable dedicated authentication/data references; success/create-ID/cleanup mapping unverified; wildcard response media still not supported by JSON-only importer"
 	}
 }
