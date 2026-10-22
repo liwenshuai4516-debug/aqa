@@ -81,7 +81,8 @@ export function isUiTestingExtension(extension: { path: string; sourceInfo?: { s
 		path === "npm:pi-ui-testing" ||
 		path.includes("/node_modules/pi-ui-testing/") ||
 		path.endsWith("/node_modules/pi-ui-testing") ||
-		path.endsWith("/capabilities/ui-testing/mcp-extension.mjs")
+		path.endsWith("/capabilities/ui-testing/mcp-extension.mjs") ||
+		path.endsWith("/.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs")
 	);
 }
 

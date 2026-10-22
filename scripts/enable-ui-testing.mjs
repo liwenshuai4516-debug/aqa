@@ -16,14 +16,27 @@ export async function enableUiTesting(root, agentDir) {
 	const resources = {
 		packages: agentDir ? join(root, "node_modules/pi-ui-testing") : "../node_modules/pi-ui-testing",
 		extensions: agentDir
-			? join(root, "capabilities/ui-testing/mcp-extension.mjs")
-			: "../capabilities/ui-testing/mcp-extension.mjs",
-		skills: agentDir ? join(root, "capabilities/ui-testing/ui-testing-workflow") : "./skills/ui-testing-workflow",
+			? join(root, ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs")
+			: "../.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs",
+		skills: agentDir ? join(root, ".pi/skills/ui-testing-workflow") : "./skills/ui-testing-workflow",
 	};
 	for (const [field, resource] of Object.entries(resources)) {
 		const entries = settings[field] ?? [];
 		if (!Array.isArray(entries)) throw new Error(`Invalid ${field} in ${path}`);
-		if (!entries.some((entry) => (typeof entry === "string" ? entry : entry.source) === resource)) {
+		const legacy = {
+			extensions: agentDir
+				? join(root, "capabilities/ui-testing/mcp-extension.mjs")
+				: "../capabilities/ui-testing/mcp-extension.mjs",
+			skills: agentDir
+				? join(root, "capabilities/ui-testing/ui-testing-workflow")
+				: "../capabilities/ui-testing/ui-testing-workflow",
+		};
+		if (
+			!entries.some((entry) => {
+				const source = typeof entry === "string" ? entry : entry.source;
+				return source === resource || source === legacy[field];
+			})
+		) {
 			settings[field] = [...entries, resource];
 		}
 	}

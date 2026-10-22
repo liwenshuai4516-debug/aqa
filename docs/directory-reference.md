@@ -25,7 +25,8 @@ pi-web-ui/
 │   ├── electron-builder.yml    # 打包配置（win nsis / mac dmg / linux AppImage；npmRebuild:false）
 │   └── README.md               # 桌面版说明：跑起来 / 约定 / 发布 / 签名（SignPath）
 ├── deploy/                     # 部署示例：launchd plist / systemd unit / Windows 任务 XML
-├── capabilities/ui-testing/    # 原版 UI workflow 分发包、原生 MCP 薄接入及 Playwright 配置
+├── .pi/skills/ui-testing-workflow/ # UI 技能统一维护入口，assets/ 资源、references/ 维护说明
+├── capabilities/ui-testing/    # 旧应用路径兼容转接，无独立实现
 ├── scripts/enable-ui-testing.mjs # 默认项目级登记；显式 --agent-dir 可登记到应用专用 Pi 配置
 ├── scripts/clean-project.mjs    # 预览/回收白名单缓存及测试依赖，保留证据、跟踪文件和保留标记
 ├── tests/ui-testing-integration-test.mjs # 真实 SDK/测试 MCP/Chromium 接线，临时项目零模型请求

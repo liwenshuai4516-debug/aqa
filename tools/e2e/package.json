@@ -7,6 +7,6 @@
 		"@playwright/test": "1.62.1",
 		"playwright": "1.62.1",
 		"playwright-core": "1.63.0",
-		"pi-ui-testing": "file:../../capabilities/ui-testing/pi-ui-testing-0.1.0.tgz"
+		"pi-ui-testing": "file:../../.pi/skills/ui-testing-workflow/assets/pi-ui-testing-0.1.0.tgz"
 	}
 }

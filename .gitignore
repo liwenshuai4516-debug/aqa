@@ -39,7 +39,7 @@ tests/scratch/
 
 # 误落仓库根的临时包（npm pack / 手工下载的 tgz）
 *.tgz
-!capabilities/ui-testing/pi-ui-testing-0.1.0.tgz
+!.pi/skills/ui-testing-workflow/assets/pi-ui-testing-0.1.0.tgz
 
 # Python bytecode
 __pycache__/

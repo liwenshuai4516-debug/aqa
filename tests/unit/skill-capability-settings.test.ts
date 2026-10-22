@@ -32,7 +32,7 @@ function fixture() {
 	);
 	const extensions = [
 		join(dir, "node_modules/pi-ui-testing/dist/extension.js"),
-		join(dir, "capabilities/ui-testing/mcp-extension.mjs"),
+		join(dir, ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs"),
 	].map((path) => ({ path }));
 	const host: SettingsHost = {
 		clientId: "test",

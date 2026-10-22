@@ -16,11 +16,6 @@ mkdirSync(project);
 mkdirSync(agentDir);
 cpSync(join(repo, ".pi/skills"), join(project, ".pi/skills"), { recursive: true });
 cpSync(join(repo, "plugins/api-testing/skills"), join(project, "plugins/api-testing/skills"), { recursive: true });
-cpSync(
-	join(repo, "capabilities/ui-testing/ui-testing-workflow"),
-	join(project, "capabilities/ui-testing/ui-testing-workflow"),
-	{ recursive: true },
-);
 symlinkSync(join(repo, "node_modules"), join(project, "node_modules"), "junction");
 const expected = ["api-test-analyze", "api-test-review", "api-test-workflow", "ui-testing-workflow"];
 const checks = [];

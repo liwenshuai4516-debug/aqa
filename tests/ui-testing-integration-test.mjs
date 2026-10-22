@@ -29,20 +29,17 @@ try {
 	await mkdir(agentDir);
 	await writeFile(join(project, "package.json"), '{"type":"module"}\n');
 	await symlink(join(repo, "node_modules"), join(project, "node_modules"), "junction");
-	await mkdir(join(project, "capabilities/ui-testing"), { recursive: true });
-	for (const name of ["mcp-extension.mjs", "playwright.config.mjs"]) {
-		await copyFile(join(repo, "capabilities/ui-testing", name), join(project, "capabilities/ui-testing", name));
-	}
-	await cp(
-		join(repo, "capabilities/ui-testing/ui-testing-workflow"),
-		join(project, "capabilities/ui-testing/ui-testing-workflow"),
-		{ recursive: true },
-	);
 	await mkdir(target);
 	await symlink(join(repo, "node_modules"), join(target, "node_modules"), "junction");
 	await cp(join(repo, ".pi/skills/ui-testing-workflow"), join(project, ".pi/skills/ui-testing-workflow"), {
 		recursive: true,
 	});
+	for (const name of ["mcp-extension.mjs", "playwright.config.mjs"]) {
+		await copyFile(
+			join(repo, ".pi/skills/ui-testing-workflow/assets", name),
+			join(project, ".pi/skills/ui-testing-workflow/assets", name),
+		);
+	}
 	await mkdir(join(target, "qa/ui"), { recursive: true });
 	await writeFile(
 		join(target, "qa/ui/seed.spec.ts"),

@@ -22,7 +22,7 @@
 - 完整 UI/API 测试、多阶段或需持续等待验证的长任务，自动用 `plan_update` 创建任务链及验收标准；节点开始/完成即时更新，失败保留原因与证据，续跑复用看板。不因展示进度开启只规划模式。简单问答或少量明确修改不建看板。
 - 工具缺失或关闭时说明无法同步看板，用阶段进度继续；不擅自开启工具，不用虚假完成状态填满进度。
 - 新增/扩展 Agent 能力须同任务补齐技能加载、设置页管理、`/` 快捷发现及适用的插件/工具登记，验证禁用、启用和重载持久性。先读 [能力交付规则](docs/capability-delivery.md)、[能力维护](docs/capability-layout.md)。不覆盖个人安装，不把隔离发现通过当成实际应用已接入。
-- API/UI 技能入口仅引用原实现：API 在 `plugins/api-testing/skills/`，UI 在 `capabilities/ui-testing/`；不复制 runner 或业务规则。API 任务按 [实施计划](docs/api-testing-implementation-plan.md) 指定任务编号执行，设计不等于已实现。
+- API/UI 技能入口仅引用原实现：API 在 `plugins/api-testing/skills/`，UI 在 `.pi/skills/ui-testing-workflow/`（含资源与按需维护说明；旧 `capabilities/ui-testing/` 仅兼容）；不复制 runner 或业务规则。API 任务按 [实施计划](docs/api-testing-implementation-plan.md) 指定任务编号执行，设计不等于已实现。
 
 ## 必守架构边界
 

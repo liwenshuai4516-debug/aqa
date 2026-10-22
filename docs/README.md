@@ -77,3 +77,5 @@ UI 测试能力接入见 [Pi UI workflow 接入与验收](ui-testing-integration
 新增模块时更新地图与目录参考；新增专题时在本文登记。规范冲突先核对当前用户决定、`AGENTS.md` 和代码事实，修正文档，不把历史描述当作新需求。
 
 项目精简与分组依赖见 [项目精简](project-slimming.md)；按改动主题读取 [开发约束](development-constraints.md)，新增能力先读 [能力交付规则](capability-delivery.md)。
+
+UI 测试日常修改、安装与升级统一从 [技能维护入口](../.pi/skills/ui-testing-workflow/references/maintenance.md) 开始，旧接入记录用于追溯。

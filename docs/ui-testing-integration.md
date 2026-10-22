@@ -1,5 +1,7 @@
 # UI 测试 workflow 能力接入
 
+> 当前资源已归入 `.pi/skills/ui-testing-workflow/`，安装须先运行 `npm run install:e2e`。维护以 [统一入口](../.pi/skills/ui-testing-workflow/references/maintenance.md) 为准，以下保留历史接入和验收经过。
+
 2026-10-22。范围为将用户提供的 UI workflow 接入本仓库的 **Pi agent**。附件作为外部能力包评估，未将其历史验收或示例业务作为本项目的新需求。
 
 ## 兼容结论与改动
