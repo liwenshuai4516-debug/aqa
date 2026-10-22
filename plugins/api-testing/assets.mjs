@@ -51,7 +51,7 @@ const safeFile = (root, name) => {
 	return file;
 };
 
-export function createAssetStore({ root, policyHash, approve, execute }) {
+export function createAssetStore({ root, policyHash, approve, execute, manualOnlyOrigin }) {
 	let owner;
 	const running = new Set();
 	const lock = () => {
@@ -197,7 +197,15 @@ export function createAssetStore({ root, policyHash, approve, execute }) {
 		rebuild,
 		validateAnalyses: (p, id) => tracking.history(p, id),
 	});
-	const schedules = createSchedules({ project, load, histories, read, atomic, run: (...args) => store.call(...args) });
+	const schedules = createSchedules({
+		project,
+		load,
+		histories,
+		read,
+		atomic,
+		manualOnlyOrigin,
+		run: (...args) => store.call(...args),
+	});
 	const store = {
 		attachScheduler: (host) => schedules.attach(host),
 		publish,

@@ -1,4 +1,4 @@
-// Diagnostic hook, NOT an OS sandbox. Only synthetic local fixtures are allowed.
+// Diagnostic hook, NOT an OS sandbox. Only the host-selected loopback transport port is allowed.
 const net = require("node:net");
 const fs = require("node:fs");
 const original = net.Socket.prototype.connect;

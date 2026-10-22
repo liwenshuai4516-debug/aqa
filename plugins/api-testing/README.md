@@ -1,6 +1,6 @@
-# 接口测试插件：P3-2
+# 接口测试插件：P3-2 / 手动 HTTP 目标接入
 
-当前提供自包含 HTTP fixture 的导入、独立评审、受控执行、问题记录、复测与报告入口。macOS fixture 已接入 OS 文件/端口限制，真实目标仍因远端出口隔离及业务鉴权/数据缺口阻塞；已支持跨重启的整包持久化与重跑，已支持最小管理列表及仅限匿名 fixture 的宿主定时调度。
+当前提供自包含 HTTP fixture 的导入、独立评审、受控执行、问题记录、复测与报告入口。macOS 已接入 OS 文件/端口限制及固定 HTTP IPv4 转发；默认只运行 fixture，可由宿主显式配置单个手动目标；用户业务验收仍缺鉴权/数据与成功/清理映射；已支持跨重启的整包持久化与重跑，已支持最小管理列表及仅限匿名 fixture 的宿主定时调度。
 
 ## 实现与权限
 
@@ -58,7 +58,7 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 
 `node --import tsx tests/api-testing-skills-test.mjs` 将分发目录复制到临时项目，使用空 agentDir 验证真实 SDK 默认发现、宿主 skill 工具加载及禁用过滤。技能均小于 8192 bytes；它们不能替代宿主权限、评审与执行硬门禁。
 
-已复用系统配置的 GPT 完成实际生成/独立评审及真实 MCP fixture 验收，不要求额外专用配置。可写测试环境已登记，已接入 macOS fixture OS 隔离，尚未完成远端隔离、业务数据/鉴权及成功/清理映射接入。完整清单及恢复条件见 [P1-4](../../docs/api-testing-evidence/P1-4.md)；不得把技能发现通过算成主流程业务验收。
+已复用系统配置的 GPT 完成实际生成/独立评审及真实 MCP fixture 验收，不要求额外专用配置。可写测试环境已登记，已接入 macOS fixture OS 隔离，固定 HTTP IPv4 转发已验收，业务数据/鉴权及成功/清理映射尚未接入。完整清单及恢复条件见 [P1-4](../../docs/api-testing-evidence/P1-4.md)；不得把技能发现通过算成主流程业务验收。
 
 ## P2-1 持久化与零模型复用
 
@@ -97,3 +97,9 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 ## 宿主 OS 边界补验（2026-10-22）
 
 受控执行仅支持已验证的 macOS sandbox-exec，缺少该能力或其他平台均拒绝执行，无非隔离降级。读取限系统/依赖白名单和本 run，写入限本 run（及 /dev/null），网络限批准的 localhost 端口；仍非任意恶意原生代码沙箱。限制策略纳入资产指纹，旧批准须重新评审。真实业务和无人值守任务未开放；[接入证据](../../docs/api-testing-evidence/isolation-host.md)。
+
+## 手动配置目标（0.4.0）
+
+启动宿主前设置 `PI_API_TEST_HTTP_TARGET` 为一个不带路径、用户名、密码或尾部斜杠的 HTTP 数值 IPv4 origin（例如 `http://192.0.2.1:8238`）。这是占位示例地址，不是本机实际配置。目标绑定启动时的项目根，模型只能选择该目标或原有本机 fixture，不能配置新目标；默认空值继续阻塞远端。无 DNS/TLS、运行时鉴权注入或真实无人值守授权；本轮没有修改个人配置或启用真实业务目标。
+
+原获批集合不改写；宿主为每个 run 建立固定目标 TCP relay，将执行副本映射到唯一的本机端口，保留原 Host。`transport.json` 记录逻辑目标、有效地址、原集合及执行副本 hash；配置/策略进入持久资产指纹。取消/撤权关闭本 run 的 relay、上下游连接与专属进程；未知请求不重发。配置目标即使指向 loopback 也不能创建或恢复定时任务。见 [接线验收](../../docs/api-testing-evidence/target-host.md)。

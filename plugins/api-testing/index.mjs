@@ -5,8 +5,8 @@ export default {
 			name: "api_test_execute",
 			label: "API test workflow",
 			description:
-				"Prepare, independently review, run, retest or read reports for a frozen API suite. Only loopback fixtures are supported. Executable approval is issued by the host after review, never from an imported pass label.",
-			promptSnippet: "Build, review, run or inspect an API fixture suite.",
+				"Prepare, independently review, run, retest or read reports for a frozen API suite. Supports loopback fixtures or one host-configured manual HTTP IPv4 target. Executable approval is issued by the host after review, never from an imported pass label.",
+			promptSnippet: "Build, review, run or inspect an approved API suite.",
 			parameters: {
 				type: "object",
 				additionalProperties: false,

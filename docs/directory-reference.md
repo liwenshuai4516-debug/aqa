@@ -349,3 +349,5 @@ web/src/
 接口测试宿主隔离：`server/api-testing-isolation.ts` 生成 macOS fixture 的 sandbox-exec profile，`api-testing-runner.ts` 强制接入；OS 探针复用该生成器，仍无远端目标支持，见 [宿主隔离接入](api-testing-evidence/isolation-host.md)。
 
 远端传输可行性验收：`tests/api-testing-relay-isolation-test.mjs` 使用测试内固定 TCP relay 与真实 MCP/Newman；默认仅合成服务，显式 `--public-docs` 才读已提供的 Swagger 页面。它不是产品目标接线，见 [证据](api-testing-evidence/isolation-relay.md)。
+
+手动 HTTP 目标：`server/api-testing-relay.ts` 固定转发与执行副本映射，`server/api-testing-runner.ts` 绑定启动项目/目标、批准 hash 与取消清理；`tests/api-testing-target-test.mjs` 验证完整宿主路径，原 relay 隔离探针已改为复用产品转发模块。见 [接线验收](api-testing-evidence/target-host.md)。

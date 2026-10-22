@@ -1,8 +1,14 @@
-/** Dedicated fixture-only MCP execution, immutable approvals and one attempt per run reference. */
+/** Host-controlled MCP execution, immutable approvals and one attempt per run reference. */
 import { createHash, randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, realpathSync, writeFileSync, symlinkSync, existsSync } from "node:fs";
 import { isAbsolute, join, relative, resolve } from "node:path";
 import { API_FIXTURE_ISOLATION_POLICY, prepareApiFixtureIsolation } from "./api-testing-isolation.js";
+import {
+	API_TARGET_RELAY_POLICY,
+	fixedApiHttpOrigin,
+	relayApiCollection,
+	startApiTargetRelay,
+} from "./api-testing-relay.js";
 import { McpClient } from "./mcp-bridge.js";
 import { pathToFileURL } from "node:url";
 import type { PluginApiScheduleHost, PluginModelComplete, PluginMcpRequest, PluginToolContext } from "./plugin-mcp.js";
@@ -22,6 +28,7 @@ interface FixtureApproval {
 }
 
 export class ApiTestingRunner {
+	private readonly target: Readonly<{ origin: string; projectRoot: string }> | undefined;
 	private workflow: Promise<any> | undefined;
 	private scheduler: PluginApiScheduleHost | undefined;
 	readonly attachScheduler = async (host: PluginApiScheduleHost): Promise<void> => {
@@ -36,9 +43,26 @@ export class ApiTestingRunner {
 	constructor(
 		private readonly outputRoot: string,
 		private readonly pluginRoot: string,
-	) {}
+		target?: { origin: string; projectRoot: string },
+	) {
+		this.target = target
+			? Object.freeze({ origin: fixedApiHttpOrigin(target.origin), projectRoot: realpathSync(target.projectRoot) })
+			: undefined;
+	}
 
-	/** Trusted host API for the P0 hand-reviewed fixture. Not exposed to model/plugin tools. */
+	private validateOrigin(value: string, cwd: string): boolean {
+		const url = new URL(value);
+		if (value !== url.origin) throw new Error("An exact API origin without credentials or path is required");
+		if (this.target?.origin === value) {
+			if (this.target.projectRoot !== realpathSync(cwd))
+				throw new Error("Configured API target belongs to another project");
+			return true;
+		}
+		if (url.protocol === "http:" && url.hostname === "127.0.0.1" && Number(url.port) >= 8900) return false;
+		throw new Error("API target is not configured for this project; only explicit loopback fixtures are supported");
+	}
+
+	/** Trusted host approval API. A configured target is manual-only; never supplied by model arguments. */
 	approveFixture(input: {
 		identity: PluginToolContext;
 		bundleRoot: string;
@@ -50,8 +74,7 @@ export class ApiTestingRunner {
 		if (identity.pluginId !== "api-testing" || identity.toolName !== "api_test_execute")
 			throw new Error("API testing caller is not allowed");
 		const origin = new URL(input.fixtureOrigin);
-		if (origin.protocol !== "http:" || origin.hostname !== "127.0.0.1" || Number(origin.port) < 8900)
-			throw new Error("Only explicit loopback fixtures are supported; real targets remain blocked");
+		this.validateOrigin(input.fixtureOrigin, identity.cwd);
 		const bundleRoot = realpathSync(input.bundleRoot);
 		const path = relative(identity.cwd, bundleRoot);
 		if (isAbsolute(path) || path.startsWith("..")) {
@@ -119,7 +142,11 @@ export class ApiTestingRunner {
 			readFileSync(join(this.pluginRoot, name)),
 		);
 		const fingerprint = sha256(
-			Buffer.concat([...sources, ...executionSources, Buffer.from(API_FIXTURE_ISOLATION_POLICY)]),
+			Buffer.concat([
+				...sources,
+				...executionSources,
+				Buffer.from(JSON.stringify([API_FIXTURE_ISOLATION_POLICY, API_TARGET_RELAY_POLICY, this.target ?? null])),
+			]),
 		);
 		if (this.workflowFingerprint !== fingerprint) {
 			if (this.workflow) await (await this.workflow).dispose();
@@ -144,11 +171,19 @@ export class ApiTestingRunner {
 				const assets = createAssetStore({
 					root: assetRoot,
 					policyHash: fingerprint,
+					manualOnlyOrigin: this.target?.origin,
 					approve: (input: any) => this.approveFixture({ ...input, trustedAssetRoot: assetRoot }),
 					execute: this.call,
 				});
 				if (this.scheduler) await assets.attachScheduler(this.scheduler);
-				return createWorkflow({ approve: (input: any) => this.approveFixture(input), execute: this.call, assets });
+				return createWorkflow({
+					approve: (input: any) => this.approveFixture(input),
+					execute: this.call,
+					assets,
+					authorizeOrigin: (origin: string, cwd: string) => {
+						this.validateOrigin(origin, cwd);
+					},
+				});
 			})();
 			this.workflow.catch(() => {
 				this.workflow = undefined;
@@ -222,6 +257,9 @@ export class ApiTestingRunner {
 			throw new Error("Approved runner changed");
 		if (this.attempted.has(request.runRef)) throw new Error("Run was already attempted; never resend unknown writes");
 		if (this.activeProjects.has(approval.identity.cwd)) throw new Error("Project already has an active API test run");
+		const configuredTarget = this.validateOrigin(approval.fixtureOrigin, identity.cwd);
+		if (configuredTarget && identity.clientId === "host-schedule")
+			throw new Error("Configured HTTP targets require manual execution; unattended execution is not authorized");
 		if (process.platform !== "darwin") throw new Error("Fixture OS isolation is only verified on macOS");
 		this.attempted.add(request.runRef);
 		this.activeProjects.add(approval.identity.cwd);
@@ -232,24 +270,44 @@ export class ApiTestingRunner {
 			identity,
 			collectionHash: approval.collectionHash,
 			isolationPolicy: API_FIXTURE_ISOLATION_POLICY,
+			targetOrigin: approval.fixtureOrigin,
 			status: "running",
 			executionVerdict: "unknown",
 			evidencePath: join(runRoot, "result.json"),
 		};
 		let client: McpClient | undefined;
+		let relay: Awaited<ReturnType<typeof startApiTargetRelay>> | undefined;
 		let outcome: unknown;
 		let failure: unknown;
 		let failed = false;
 		const stop = AbortSignal.any([signal, AbortSignal.timeout(approval.timeoutMs)]);
-		const onStop = (): void => client?.close();
+		const onStop = (): void => {
+			client?.close();
+			void relay?.close();
+		};
+		stop.addEventListener("abort", onStop, { once: true });
 		try {
 			mkdirSync(runRoot, { recursive: true, mode: 0o700 });
 			const save = (name: string, value: unknown): void =>
 				writeFileSync(join(runRoot, name), JSON.stringify(value, null, 2), { mode: 0o600 });
 			save("run.json", state); // durable run identity BEFORE the first request
+			stop.throwIfAborted();
+			if (configuredTarget) relay = await startApiTargetRelay(approval.fixtureOrigin, stop);
+			const transportOrigin = relay?.origin ?? approval.fixtureOrigin;
+			const effectiveCollection = relay
+				? relayApiCollection(JSON.parse(collection.toString()), approval.fixtureOrigin, transportOrigin)
+				: JSON.parse(collection.toString());
+			if (relay)
+				save("transport.json", {
+					policy: API_TARGET_RELAY_POLICY,
+					logicalOrigin: approval.fixtureOrigin,
+					transportOrigin,
+					approvedCollectionHash: approval.collectionHash,
+					effectiveCollectionHash: sha256(JSON.stringify(effectiveCollection)),
+				});
 			save("input.json", {
 				runId: request.runRef,
-				collection: JSON.parse(collection.toString()),
+				collection: effectiveCollection,
 				requestTimeout: 1000,
 			});
 			writeFileSync(join(runRoot, "runner.mjs"), approval.runner);
@@ -262,9 +320,9 @@ export class ApiTestingRunner {
 					`TMPDIR=${runRoot}`,
 					`PI_API_TEST_RUNTIME=${this.pluginRoot}`,
 					`PI_API_TEST_RUN_ROOT=${runRoot}`,
-					`PI_API_TEST_FIXTURE_PORT=${new URL(approval.fixtureOrigin).port}`,
+					`PI_API_TEST_FIXTURE_PORT=${new URL(transportOrigin).port}`,
 					`PI_API_TEST_NETWORK_LOG=${join(runRoot, "network.jsonl")}`,
-					...prepareApiFixtureIsolation(runRoot, this.pluginRoot, Number(new URL(approval.fixtureOrigin).port)),
+					...prepareApiFixtureIsolation(runRoot, this.pluginRoot, Number(new URL(transportOrigin).port)),
 					process.execPath,
 					"--require",
 					join(runRoot, "network-guard.cjs"),
@@ -272,7 +330,6 @@ export class ApiTestingRunner {
 				],
 				cwd: runRoot,
 			});
-			stop.addEventListener("abort", onStop, { once: true });
 			stop.throwIfAborted();
 			await client.start();
 			if (client.getTools().length !== 1 || client.getTools()[0].name !== "runApprovedSuite")
@@ -293,7 +350,7 @@ export class ApiTestingRunner {
 				requests: result.requests,
 				assertions: result.assertions,
 				evidencePath: state.evidencePath,
-				scope: "fixture",
+				scope: configuredTarget ? "configured-http-target" : "fixture",
 			};
 		} catch (error) {
 			state.status = stop.aborted ? "canceled" : "error";
@@ -307,8 +364,13 @@ export class ApiTestingRunner {
 			failed = true;
 		}
 		stop.removeEventListener("abort", onStop);
+		const relayClosed = relay?.close();
 		try {
-			await client?.closeAndWait();
+			try {
+				await client?.closeAndWait();
+			} finally {
+				await relayClosed;
+			}
 		} catch (error) {
 			state.status = "unknown";
 			state.executionVerdict = "unknown";

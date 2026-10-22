@@ -3,7 +3,7 @@ import { mkdirSync, readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { randomUUID } from "node:crypto";
 
-export function createSchedules({ project, load, histories, read, atomic, run }) {
+export function createSchedules({ project, load, histories, read, atomic, run, manualOnlyOrigin }) {
 	let host;
 	const timers = new Map();
 	const identity = () => ({
@@ -37,6 +37,7 @@ export function createSchedules({ project, load, histories, read, atomic, run })
 		}
 	};
 	const arm = (p, record, restoring = false) => {
+		if (record.origin === manualOnlyOrigin) throw new Error("Configured HTTP targets are manual-only");
 		if (restoring) {
 			const declaration = host.declaration("api-" + record.id);
 			if (!declaration || declaration.spec !== String(record.intervalMs) || declaration.catchUp !== "skip")
@@ -229,7 +230,12 @@ export function createSchedules({ project, load, histories, read, atomic, run })
 				throw new Error("At most five fixture schedules per project");
 			const { metadata } = await load(p, input.assetRef);
 			const origin = new URL(metadata.origin);
-			if (origin.hostname !== "127.0.0.1" || origin.protocol !== "http:" || Number(origin.port) < 8900)
+			if (
+				metadata.origin === manualOnlyOrigin ||
+				origin.hostname !== "127.0.0.1" ||
+				origin.protocol !== "http:" ||
+				Number(origin.port) < 8900
+			)
 				throw new Error("Real unattended targets are not authorized");
 			if (!histories(p).some((r) => r.assetRef === input.assetRef && r.status === "passed"))
 				throw new Error("Same-version manual execution must pass first");

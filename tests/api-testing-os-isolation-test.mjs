@@ -240,7 +240,7 @@ try {
 		.digest("hex");
 	summary.remaining = [
 		"arbitrary remote-IP target restriction is not proven",
-		"host runner is restricted to macOS loopback fixtures; remote integration remains unverified",
+		"OS profile allows only loopback ports; configured HTTP targets require the separately verified host relay",
 		"real business authentication and test records are unavailable",
 		"system/runtime read roots and mach services are not a general hostile-native-code sandbox",
 	];

@@ -1,4 +1,4 @@
-/** Dedicated fixture-only runner. The host supplies a frozen, approved input. */
+/** Dedicated host-controlled runner. The host supplies a frozen, approved input. */
 import { createRequire } from "node:module";
 import { readFileSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -17,7 +17,7 @@ writeFileSync(join(runRoot, "pid"), String(process.pid));
 const save = (value) => writeFileSync(join(runRoot, "result.json"), JSON.stringify(value, null, 2));
 let started = false;
 const server = new McpServer({ name: "api-testing-dedicated-runner", version: "0.1.0" });
-server.registerTool("runApprovedSuite", { description: "Run the single host-approved fixture snapshot." }, async () => {
+server.registerTool("runApprovedSuite", { description: "Run the single host-approved suite snapshot." }, async () => {
 	if (started) throw new Error("This process is single-use; do not resend unknown requests.");
 	started = true;
 	const identity = {
@@ -33,7 +33,7 @@ server.registerTool("runApprovedSuite", { description: "Run the single host-appr
 		collection: { json: manifest.collection, name: manifest.collection.info.name, id: manifest.runId },
 		params: { collectionId: manifest.runId, requestTimeout: manifest.requestTimeout ?? 1000, scriptTimeout: 500 },
 	});
-	// Deliberately narrow evidence projection for these fixtures; never serialize raw summary.
+	// Deliberately narrow evidence projection for these supported suites; never serialize raw summary.
 	const validJson = (response) => {
 		try {
 			response.json();
@@ -79,7 +79,7 @@ server.registerTool("runApprovedSuite", { description: "Run the single host-appr
 		failures,
 		executions,
 		durationMs: result.durationMs,
-		evidenceProjection: "fixture allowlist; headers/body fields omitted",
+		evidenceProjection: "allowlist projection; headers/body fields omitted",
 	};
 	save(evidence);
 	return { content: [{ type: "text", text: verdict }], structuredContent: evidence };

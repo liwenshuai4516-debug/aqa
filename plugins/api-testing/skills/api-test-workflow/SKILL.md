@@ -1,13 +1,13 @@
 ---
 name: api-test-workflow
-description: Prepare and run contract-grounded API fixture suites through the api-testing plugin, including review, revision and targeted retests.
+description: Prepare and run contract-grounded API suites through the api-testing plugin, including review, revision and targeted retests.
 ---
 
 # API test workflow
 
 Use the available `api_test_execute` tool. If unavailable, report the missing plugin/engine capability; do not substitute direct HTTP or raw MCP execution.
 
-Current support is local OpenAPI 3.0 JSON with internal references and an explicit HTTP `127.0.0.1` origin on port >=8900. Real targets remain blocked pending runner isolation. A user supplying a writable test environment does not remove this implementation limitation.
+Current support is local OpenAPI 3.0 JSON with internal references and JSON responses. Targets are explicit HTTP `127.0.0.1` fixtures on port >=8900, or one manual HTTP numeric IPv4 origin configured by the host for this project. Writable-environment permission alone does not configure a target or provide test authentication/data. DNS/TLS and runtime credential injection remain unsupported; configured targets cannot be scheduled.
 
 Start with the user's selected operations and contract. Generate 1–3 small declarative cases with `id`, `operationId`, `request`, `status`, and `checks`. Each check uses `kind` (exists/type/enum/value), a JSON `pointer`, and an applicable `value`. An expected value or negative status needs a confirmed rule with its source. Do not infer error codes, JSON responses from wildcard media, optional-field presence, or business rules from examples. Missing data or unsupported critical constraints are blockers.
 

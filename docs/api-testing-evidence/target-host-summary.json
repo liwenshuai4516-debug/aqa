@@ -1,0 +1,1499 @@
+{
+	"date": "2026-10-22T01:30:41.127241+00:00",
+	"baseCommit": "659eff411f6f432b7a4443b516e77e09d92d0979",
+	"task": "goal followup: host-bound fixed HTTP IPv4 relay",
+	"pluginVersion": "0.4.0",
+	"scope": "actual host/plugin/MCP/Newman; configured-target transport only; explicit review stub; no business requests or actual model calls",
+	"tests": {
+		"targetLive": {
+			"scope": "host-configured manual HTTP target, real plugin/MCP/Newman; explicit review stub; no business requests",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-target-sgR35k",
+			"checks": [
+				{
+					"name": "non-HTTP-DNS-credentials-and-path-configs-rejected",
+					"status": "passed"
+				},
+				{
+					"name": "model-cannot-select-target-or-borrow-another-project-binding",
+					"status": "passed"
+				},
+				{
+					"name": "real-host-relay-preserves-approval-hash-Host-and-durable-transport-map",
+					"status": "passed",
+					"evidence": {
+						"runId": "b55a3f5c-4a30-4224-bd88-38f61a5e766e",
+						"transport": {
+							"policy": "fixed-ipv4-http-relay-v1",
+							"logicalOrigin": "http://127.0.0.1:51928",
+							"transportOrigin": "http://127.0.0.1:51933",
+							"approvedCollectionHash": "23b65f1f88988ead1d593cd39fce67e7fd82f70d479088c28c42e4e460565e3e",
+							"effectiveCollectionHash": "a4a4bcf24995aa71a725ebc66406614abe8909e5026568afc00a90014696d4ee"
+						}
+					}
+				},
+				{
+					"name": "configured-target-keeps-real-assertion-failure",
+					"status": "passed"
+				},
+				{
+					"name": "cross-origin-redirect-denied-with-unknown-no-resend-and-relay-closed",
+					"status": "passed"
+				},
+				{
+					"name": "cancel-closes-own-relay-and-upstream-without-killing-other-run",
+					"status": "passed"
+				},
+				{
+					"name": "live-mode-revocation-reaps-MCP-and-relay",
+					"status": "passed"
+				},
+				{
+					"name": "configured-origin-main-workflow-independent-review-control-and-asset-run",
+					"status": "passed"
+				},
+				{
+					"name": "configured-target-cannot-enable-unattended-schedule-even-when-loopback",
+					"status": "passed"
+				},
+				{
+					"name": "changed-host-target-invalidates-persistent-asset-approval",
+					"status": "passed"
+				},
+				{
+					"name": "configured-host-real-MCP-read-only-public-Swagger-page",
+					"status": "passed",
+					"evidence": {
+						"runId": "04e2cef7-b0a8-4c8e-845d-9370644fa09c"
+					}
+				}
+			],
+			"status": "passed-configured-target-transport-only",
+			"hits": [
+				{
+					"target": "allowed",
+					"url": "/ok",
+					"host": "127.0.0.1:51928"
+				},
+				{
+					"target": "allowed",
+					"url": "/ok",
+					"host": "127.0.0.1:51928"
+				},
+				{
+					"target": "allowed",
+					"url": "/redirect",
+					"host": "127.0.0.1:51928"
+				},
+				{
+					"target": "allowed",
+					"url": "/hold-a",
+					"host": "127.0.0.1:51928"
+				},
+				{
+					"target": "allowed",
+					"url": "/hold-b",
+					"host": "127.0.0.1:51928"
+				},
+				{
+					"target": "allowed",
+					"url": "/hold-revoked",
+					"host": "127.0.0.1:51928"
+				},
+				{
+					"target": "allowed",
+					"url": "/records/r-2",
+					"host": "127.0.0.1:51928"
+				}
+			],
+			"publicDocsRequested": true,
+			"finishedAt": "2026-10-22T01:23:20.850Z"
+		},
+		"targetOffline": {
+			"scope": "host-configured manual HTTP target, real plugin/MCP/Newman; explicit review stub; no business requests",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-target-HHIMx2",
+			"checks": [
+				{
+					"name": "non-HTTP-DNS-credentials-and-path-configs-rejected",
+					"status": "passed"
+				},
+				{
+					"name": "model-cannot-select-target-or-borrow-another-project-binding",
+					"status": "passed"
+				},
+				{
+					"name": "real-host-relay-preserves-approval-hash-Host-and-durable-transport-map",
+					"status": "passed",
+					"evidence": {
+						"runId": "ab5b52b4-6129-4bd8-8239-b3d1ccb4b615",
+						"transport": {
+							"policy": "fixed-ipv4-http-relay-v1",
+							"logicalOrigin": "http://127.0.0.1:52925",
+							"transportOrigin": "http://127.0.0.1:52928",
+							"approvedCollectionHash": "723a9b3732770b77ada9adb248134d5d93d0c644f638dad8e909e9d0c5cd1fb7",
+							"effectiveCollectionHash": "3818d4fec5f5c1901d677b97b8d2b359aa85f4a95a37a2ed0c167d147727225c"
+						}
+					}
+				},
+				{
+					"name": "configured-target-keeps-real-assertion-failure",
+					"status": "passed"
+				},
+				{
+					"name": "cross-origin-redirect-denied-with-unknown-no-resend-and-relay-closed",
+					"status": "passed"
+				},
+				{
+					"name": "cancel-closes-own-relay-and-upstream-without-killing-other-run",
+					"status": "passed"
+				},
+				{
+					"name": "live-mode-revocation-reaps-MCP-and-relay",
+					"status": "passed"
+				},
+				{
+					"name": "configured-origin-main-workflow-independent-review-control-and-asset-run",
+					"status": "passed"
+				},
+				{
+					"name": "configured-target-cannot-enable-unattended-schedule-even-when-loopback",
+					"status": "passed"
+				},
+				{
+					"name": "changed-host-target-invalidates-persistent-asset-approval",
+					"status": "passed"
+				}
+			],
+			"status": "passed-configured-target-transport-only",
+			"hits": [
+				{
+					"target": "allowed",
+					"url": "/ok",
+					"host": "127.0.0.1:52925"
+				},
+				{
+					"target": "allowed",
+					"url": "/ok",
+					"host": "127.0.0.1:52925"
+				},
+				{
+					"target": "allowed",
+					"url": "/redirect",
+					"host": "127.0.0.1:52925"
+				},
+				{
+					"target": "allowed",
+					"url": "/hold-b",
+					"host": "127.0.0.1:52925"
+				},
+				{
+					"target": "allowed",
+					"url": "/hold-a",
+					"host": "127.0.0.1:52925"
+				},
+				{
+					"target": "allowed",
+					"url": "/hold-revoked",
+					"host": "127.0.0.1:52925"
+				},
+				{
+					"target": "allowed",
+					"url": "/records/r-2",
+					"host": "127.0.0.1:52925"
+				}
+			],
+			"publicDocsRequested": false,
+			"finishedAt": "2026-10-22T01:25:19.438Z"
+		},
+		"productRelayOS": {
+			"startedAt": "2026-10-22T01:26:26.401Z",
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-relay-probe-Z735UT",
+			"scope": "fixed TCP relay feasibility; not host integration or business acceptance",
+			"checks": [
+				{
+					"name": "actual-MCP-Newman-through-fixed-relay",
+					"result": {
+						"runId": "local-positive",
+						"status": "completed",
+						"executionVerdict": "passed",
+						"pid": 25332,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false,
+						"requests": {
+							"total": 1,
+							"pending": 0,
+							"failed": 0
+						},
+						"assertions": {
+							"total": 1,
+							"pending": 0,
+							"failed": 0
+						},
+						"failures": 0,
+						"executions": [
+							{
+								"caseId": "local-positive",
+								"method": "GET",
+								"status": 200,
+								"response": {
+									"jsonValid": true
+								},
+								"requestError": null,
+								"assertions": [
+									{
+										"name": "status",
+										"passed": true,
+										"skipped": false,
+										"error": null
+									}
+								]
+							}
+						],
+						"durationMs": 1152,
+						"evidenceProjection": "allowlist projection; headers/body fields omitted"
+					}
+				},
+				{
+					"name": "OS-denies-direct-upstream-connect",
+					"result": {
+						"runId": "direct-upstream-denied",
+						"status": "completed",
+						"executionVerdict": "error",
+						"pid": 25342,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false,
+						"requests": {
+							"total": 1,
+							"pending": 0,
+							"failed": 1
+						},
+						"assertions": {
+							"total": 1,
+							"pending": 0,
+							"failed": 1
+						},
+						"failures": 2,
+						"executions": [
+							{
+								"caseId": "direct-upstream-denied",
+								"method": "GET",
+								"status": null,
+								"response": null,
+								"requestError": {
+									"code": "EPERM"
+								},
+								"assertions": [
+									{
+										"name": "status",
+										"passed": false,
+										"skipped": false,
+										"error": {
+											"name": "AssertionError",
+											"message": "Assertion did not match its frozen expectation; raw values omitted"
+										}
+									}
+								]
+							}
+						],
+						"durationMs": 1142,
+						"evidenceProjection": "allowlist projection; headers/body fields omitted"
+					}
+				},
+				{
+					"name": "redirect-cannot-reach-other-port",
+					"result": {
+						"runId": "local-redirect",
+						"status": "completed",
+						"executionVerdict": "error",
+						"pid": 25343,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false,
+						"requests": {
+							"total": 1,
+							"pending": 0,
+							"failed": 1
+						},
+						"assertions": {
+							"total": 1,
+							"pending": 0,
+							"failed": 1
+						},
+						"failures": 2,
+						"executions": [
+							{
+								"caseId": "local-redirect",
+								"method": "GET",
+								"status": null,
+								"response": null,
+								"requestError": {
+									"code": "EPERM"
+								},
+								"assertions": [
+									{
+										"name": "status",
+										"passed": false,
+										"skipped": false,
+										"error": {
+											"name": "AssertionError",
+											"message": "Assertion did not match its frozen expectation; raw values omitted"
+										}
+									}
+								]
+							}
+						],
+						"durationMs": 1146,
+						"evidenceProjection": "allowlist projection; headers/body fields omitted"
+					}
+				}
+			],
+			"requests": [
+				{
+					"target": "fixed",
+					"path": "/ok"
+				},
+				{
+					"target": "fixed",
+					"path": "/redirect"
+				}
+			],
+			"publicDocsRequested": false,
+			"status": "passed-feasibility-only",
+			"finishedAt": "2026-10-22T01:26:31.528Z"
+		},
+		"controlled": {
+			"schemaVersion": 1,
+			"task": "P0-2",
+			"startedAt": "2026-10-22T01:23:08.901Z",
+			"platform": "darwin",
+			"node": "v23.10.0",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p0-2-VX2gVe",
+			"checks": [
+				{
+					"name": "raw-MCP-tool-is-private",
+					"status": "passed",
+					"evidence": {}
+				},
+				{
+					"name": "unreviewed-and-unknown-refs-never-start",
+					"status": "passed",
+					"evidence": {}
+				},
+				{
+					"name": "changed-hash-never-starts",
+					"status": "passed",
+					"evidence": {}
+				},
+				{
+					"name": "plan-and-delegate-modes-block-before-network",
+					"status": "passed",
+					"evidence": {}
+				},
+				{
+					"name": "closed-plugin-or-tool-blocks-stale-definitions",
+					"status": "passed",
+					"evidence": {}
+				},
+				{
+					"name": "model-supplied-context-cannot-forge-identity",
+					"status": "passed",
+					"evidence": {}
+				},
+				{
+					"name": "approved-ref-bound-to-client-conversation-project",
+					"status": "passed",
+					"evidence": {}
+				},
+				{
+					"name": "real-MCP-Newman-success-keeps-origin-on-foreground-switch",
+					"status": "passed",
+					"evidence": {
+						"runId": "8d34703c-ca7f-4621-a0c9-bcf4f33b6bcc",
+						"assertions": {
+							"total": 1,
+							"pending": 0,
+							"failed": 0
+						}
+					}
+				},
+				{
+					"name": "duplicate-run-ref-never-resends",
+					"status": "passed",
+					"evidence": {}
+				},
+				{
+					"name": "stop-only-own-run-preserve-unknown-and-project-mutual-exclusion",
+					"status": "passed",
+					"evidence": {
+						"canceled": "4d979c7c-63ad-43ea-a93d-04a0376264c7",
+						"other": "c52c2280-783d-407b-9ec3-1c88b6caf8f9"
+					}
+				},
+				{
+					"name": "mode-revocation-stops-pending-dedicated-run",
+					"status": "passed",
+					"evidence": {}
+				},
+				{
+					"name": "replaced-origin-session-cancels-without-writing-another-conversation",
+					"status": "passed",
+					"evidence": {}
+				},
+				{
+					"name": "plugin-deactivation-stops-owned-runner-and-removes-workflow-tool",
+					"status": "passed",
+					"evidence": {}
+				},
+				{
+					"name": "whole-run-deadline-reaps-process-before-release",
+					"status": "passed",
+					"evidence": {}
+				},
+				{
+					"name": "new-run-works-after-cancellation-without-retrying-old-ref",
+					"status": "passed",
+					"evidence": {}
+				}
+			],
+			"status": "passed-fixture-only",
+			"finishedAt": "2026-10-22T01:23:20.972Z",
+			"fixtureRequests": [
+				"/ok",
+				"/hold-b",
+				"/hold-a",
+				"/hold-mode",
+				"/hold-session",
+				"/hold-unload",
+				"/hold-deadline",
+				"/ok"
+			]
+		},
+		"workflow": {
+			"schemaVersion": 1,
+			"task": "P1-3",
+			"environment": "macOS fixture; real private MCP/Newman, explicit model stub",
+			"startedAt": "2026-10-22T01:24:16.418Z",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-BWmjKt",
+			"checks": [
+				{
+					"name": "one-entry-prepare-freezes-draft-and-unreviewed-cannot-run",
+					"status": "passed"
+				},
+				{
+					"name": "semantic-return-correction-approval-only-from-live-independent-call",
+					"status": "passed"
+				},
+				{
+					"name": "actual-contract-defect-produces-open-finding-and-report",
+					"status": "passed"
+				},
+				{
+					"name": "unfixed-retest-retains-open-identity-and-new-evidence",
+					"status": "passed"
+				},
+				{
+					"name": "fixture-fix-retest-closes-finding-without-erasing-first-failure-or-model-recalls",
+					"status": "passed"
+				},
+				{
+					"name": "historical-report-never-requests-or-calls-model",
+					"status": "passed"
+				},
+				{
+					"name": "workflow-reference-bound-to-original-conversation",
+					"status": "passed"
+				},
+				{
+					"name": "business-target-still-blocked-despite-user-write-authorization",
+					"status": "passed"
+				},
+				{
+					"name": "changed-approved-package-cannot-execute",
+					"status": "passed"
+				},
+				{
+					"name": "actual-network-fault-separated-from-contract-defect",
+					"status": "passed"
+				},
+				{
+					"name": "actual-cleanup-response-failure-is-visible",
+					"status": "passed"
+				},
+				{
+					"name": "post-execution-case-revision-requires-new-review-and-retains-prior-version-finding",
+					"status": "passed"
+				},
+				{
+					"name": "concurrent-start-blocked-and-cancellation-preserves-unknown-report",
+					"status": "passed"
+				},
+				{
+					"name": "public-review-actions-share-no-improvement-and-model-call-budget",
+					"status": "passed"
+				},
+				{
+					"name": "unknown-write-blocks-new-requests-and-preserves-residual-record",
+					"status": "passed"
+				},
+				{
+					"name": "workflow-model-calls-obey-host-model-scope",
+					"status": "passed"
+				},
+				{
+					"name": "missing-real-model-does-not-fake-approval",
+					"status": "passed"
+				}
+			],
+			"runs": [
+				{
+					"workflowRef": "909544a4-1b57-48e0-8d69-33466304e41b",
+					"runId": "7e97e4fd-858e-409c-a898-927f7dee6f48",
+					"executionVerdict": "failed",
+					"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-BWmjKt/project/suite-1-evidence-909544a4-1b57-48e0-8d69-33466304e41b/7e97e4fd-858e-409c-a898-927f7dee6f48/report.md",
+					"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-BWmjKt/project/suite-1-evidence-909544a4-1b57-48e0-8d69-33466304e41b/7e97e4fd-858e-409c-a898-927f7dee6f48/findings.json",
+					"cleanup": "not-required",
+					"openFindings": 1
+				},
+				{
+					"workflowRef": "909544a4-1b57-48e0-8d69-33466304e41b",
+					"runId": "c1eaf7eb-23b6-4292-a357-6f41523c6af8",
+					"executionVerdict": "failed",
+					"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-BWmjKt/project/suite-1-evidence-909544a4-1b57-48e0-8d69-33466304e41b/c1eaf7eb-23b6-4292-a357-6f41523c6af8/report.md",
+					"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-BWmjKt/project/suite-1-evidence-909544a4-1b57-48e0-8d69-33466304e41b/c1eaf7eb-23b6-4292-a357-6f41523c6af8/findings.json",
+					"cleanup": "not-required",
+					"openFindings": 1
+				},
+				{
+					"workflowRef": "909544a4-1b57-48e0-8d69-33466304e41b",
+					"runId": "d4509ab9-de56-449d-9a21-659ee8b8eef4",
+					"executionVerdict": "passed",
+					"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-BWmjKt/project/suite-1-evidence-909544a4-1b57-48e0-8d69-33466304e41b/d4509ab9-de56-449d-9a21-659ee8b8eef4/report.md",
+					"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-BWmjKt/project/suite-1-evidence-909544a4-1b57-48e0-8d69-33466304e41b/d4509ab9-de56-449d-9a21-659ee8b8eef4/findings.json",
+					"cleanup": "not-required",
+					"openFindings": 0
+				},
+				{
+					"workflowRef": "662db76e-965c-4396-832d-f78d97c79de2",
+					"runId": "94b88112-ac42-4783-8c61-f6a3feee374d",
+					"executionVerdict": "error",
+					"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-BWmjKt/project/suite-3-evidence-662db76e-965c-4396-832d-f78d97c79de2/94b88112-ac42-4783-8c61-f6a3feee374d/report.md",
+					"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-BWmjKt/project/suite-3-evidence-662db76e-965c-4396-832d-f78d97c79de2/94b88112-ac42-4783-8c61-f6a3feee374d/findings.json",
+					"cleanup": "not-required",
+					"openFindings": 2
+				},
+				{
+					"workflowRef": "b4b2dfb2-2896-4f65-9610-0f1c8e9f8604",
+					"runId": "f6274664-9de5-43a2-ac40-629eebe0681b",
+					"executionVerdict": "failed",
+					"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-BWmjKt/project/suite-4-evidence-b4b2dfb2-2896-4f65-9610-0f1c8e9f8604/f6274664-9de5-43a2-ac40-629eebe0681b/report.md",
+					"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-BWmjKt/project/suite-4-evidence-b4b2dfb2-2896-4f65-9610-0f1c8e9f8604/f6274664-9de5-43a2-ac40-629eebe0681b/findings.json",
+					"cleanup": "failed",
+					"openFindings": 1
+				},
+				{
+					"workflowRef": "b4b2dfb2-2896-4f65-9610-0f1c8e9f8604",
+					"runId": "5a45328c-c9fd-4e80-b728-d2ecfc9728d0",
+					"executionVerdict": "failed",
+					"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-BWmjKt/project/suite-4-evidence-b4b2dfb2-2896-4f65-9610-0f1c8e9f8604/5a45328c-c9fd-4e80-b728-d2ecfc9728d0/report.md",
+					"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-BWmjKt/project/suite-4-evidence-b4b2dfb2-2896-4f65-9610-0f1c8e9f8604/5a45328c-c9fd-4e80-b728-d2ecfc9728d0/findings.json",
+					"cleanup": "failed",
+					"openFindings": 2
+				}
+			],
+			"status": "passed-fixture-model-stub-only",
+			"modelCalls": 9,
+			"fixtureRequests": [
+				{
+					"method": "GET",
+					"path": "/records/r-2"
+				},
+				{
+					"method": "GET",
+					"path": "/records/r-2"
+				},
+				{
+					"method": "GET",
+					"path": "/records/r-2"
+				},
+				{
+					"method": "GET",
+					"path": "/records/r-1"
+				},
+				{
+					"method": "DELETE",
+					"path": "/records/r-2"
+				},
+				{
+					"method": "DELETE",
+					"path": "/records/r-3"
+				},
+				{
+					"method": "GET",
+					"path": "/records/r-1"
+				},
+				{
+					"method": "DELETE",
+					"path": "/records/r-2"
+				}
+			],
+			"finishedAt": "2026-10-22T01:24:32.000Z"
+		},
+		"assets": {
+			"task": "P2-1",
+			"status": "passed-fixture-persistence",
+			"scope": "real MCP/Newman, explicit review stub; no business calls",
+			"checks": [
+				{
+					"name": "live-approved-P1-package-published-outside-removable-plugin",
+					"status": "passed"
+				},
+				{
+					"name": "P1-run-report-copied-with-hashes-and-original-preserved",
+					"status": "passed"
+				},
+				{
+					"name": "P1-import-exact-version-is-idempotent-and-keeps-source",
+					"status": "passed"
+				},
+				{
+					"name": "restart-reads-frozen-scripts-and-P1-history-without-model",
+					"status": "passed"
+				},
+				{
+					"name": "same-version-reexecution-creates-new-run-and-zero-model-calls",
+					"status": "passed"
+				},
+				{
+					"name": "corrupt-derived-index-rebuilt-from-verified-packages",
+					"status": "passed"
+				},
+				{
+					"name": "changed-or-half-published-package-cannot-send-requests",
+					"status": "passed"
+				},
+				{
+					"name": "rehashing-imported-pass-label-cannot-grant-execution",
+					"status": "passed"
+				},
+				{
+					"name": "second-store-owner-is-rejected",
+					"status": "passed"
+				},
+				{
+					"name": "asset-reference-cannot-cross-project-boundary",
+					"status": "passed"
+				},
+				{
+					"name": "concurrent-start-rejected-and-cancellation-persists-unknown",
+					"status": "passed"
+				},
+				{
+					"name": "unknown-write-survives-restart-and-blocks-further-requests",
+					"status": "passed"
+				},
+				{
+					"name": "changed-review-or-runner-policy-invalidates-old-executable-approval",
+					"status": "passed"
+				},
+				{
+					"name": "stale-writer-owner-blocks-new-requests-but-keeps-history-readable",
+					"status": "passed"
+				},
+				{
+					"name": "plugin-uninstall-does-not-delete-unique-asset-or-report",
+					"status": "passed"
+				}
+			],
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p2-1-Uj8DF7",
+			"modelCalls": 2,
+			"fixtureRequests": 5,
+			"assetRef": "382d5d87bb2631575e41be7800a1e20812e8cca53f374fa0c71bafa1fba36c2e"
+		},
+		"management": {
+			"task": "P2-2",
+			"scope": "isolated real controlled tool/MCP/Newman; explicit review stub; existing tool display",
+			"status": "passed-fixture-management",
+			"checks": [
+				{
+					"name": "empty-list-guides-user-through-existing-text-display-without-model-or-request",
+					"status": "passed"
+				},
+				{
+					"name": "asset-and-run-lists-are-bounded-and-use-existing-tool-display",
+					"status": "passed"
+				},
+				{
+					"name": "clone-is-new-draft-and-does-not-inherit-execution-approval",
+					"status": "passed"
+				},
+				{
+					"name": "archive-blocks-execution-and-retained-runs-prevent-deletion",
+					"status": "passed"
+				},
+				{
+					"name": "export-publishes-complete-hashed-backup-without-overwriting",
+					"status": "passed"
+				},
+				{
+					"name": "same-host-restore-recovers-exact-suite-and-run-hashes-after-loss",
+					"status": "passed"
+				},
+				{
+					"name": "duplicate-restore-is-idempotent-and-calls-no-model-or-interface",
+					"status": "passed"
+				},
+				{
+					"name": "tampered-backup-file-is-rejected-before-replacing-assets",
+					"status": "passed"
+				},
+				{
+					"name": "same-id-different-contents-conflict-never-overwrites",
+					"status": "passed"
+				},
+				{
+					"name": "copied-pass-label-or-forged-backup-cannot-grant-approval",
+					"status": "passed"
+				},
+				{
+					"name": "management-list-and-restore-stay-inside-bound-project",
+					"status": "passed"
+				},
+				{
+					"name": "backup-metadata-symlink-cannot-read-outside-project",
+					"status": "passed"
+				},
+				{
+					"name": "unreferenced-archived-clone-can-be-deleted-with-original-history-kept",
+					"status": "passed"
+				},
+				{
+					"name": "foreign-host-backup-does-not-silently-inherit-source-host-trust",
+					"status": "passed"
+				}
+			],
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p2-2-n3s6c7",
+			"modelCalls": 2,
+			"fixtureRequests": 1,
+			"assetRef": "524fdbba612eb277dacef7f46623797c6e71165c1ad103cb6787f1d8ff75d5d4"
+		},
+		"tracking": {
+			"task": "P3-2",
+			"status": "passed",
+			"scope": "real MCP/Newman, explicit review stub; no business calls",
+			"checks": [
+				{
+					"name": "live-approved-P1-package-published-outside-removable-plugin",
+					"status": "passed"
+				},
+				{
+					"name": "manual-new-failure-has-native-report-and-zero-implicit-model-calls",
+					"status": "passed"
+				},
+				{
+					"name": "model-unavailable-appends-failed-revision-without-rerunning-request",
+					"status": "passed"
+				},
+				{
+					"name": "invalid-output-cannot-confirm-root-cause-or-overwrite-native-verdict",
+					"status": "passed"
+				},
+				{
+					"name": "explicit-reanalysis-appends-validated-hypotheses-and-enforces-three-attempt-budget",
+					"status": "passed"
+				},
+				{
+					"name": "historical-report-preserves-original-evidence-and-all-analysis-revisions",
+					"status": "passed"
+				},
+				{
+					"name": "same-problem-keeps-new-evidence-open-and-first-failure-with-automatic-history-link",
+					"status": "passed"
+				},
+				{
+					"name": "unresponsive-analysis-exits-at-budget-without-rerunning-interface",
+					"status": "passed"
+				},
+				{
+					"name": "new-scheduled-failure-attempts-one-bounded-analysis-and-never-retries-request",
+					"status": "passed"
+				},
+				{
+					"name": "known-scheduled-failure-retains-evidence-with-zero-analysis-and-no-duplicate-notice",
+					"status": "passed"
+				},
+				{
+					"name": "changed-failure-evidence-gets-one-new-analysis-and-station-notice",
+					"status": "passed"
+				},
+				{
+					"name": "fix-retest-closes-linked-findings-notifies-recovery-and-preserves-original-failure",
+					"status": "passed"
+				},
+				{
+					"name": "verified-backup-restores-native-results-and-all-analysis-revisions",
+					"status": "passed"
+				},
+				{
+					"name": "tampered-analysis-is-visible-and-cannot-silently-replace-report",
+					"status": "passed"
+				}
+			],
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-2-X405D9",
+			"hits": 7,
+			"modelCalls": 7,
+			"actualModelCalls": 0,
+			"modelEvidence": [],
+			"notices": [
+				{
+					"event": "new-or-changed-failure",
+					"runId": "02581f89-84f1-43cb-86a7-412779b8cf00",
+					"openCount": 1
+				},
+				{
+					"event": "new-or-changed-failure",
+					"runId": "28888b87-d7f8-4b47-87fa-206e4eeb315c",
+					"openCount": 2
+				},
+				{
+					"event": "recovered",
+					"runId": "3b84918d-621f-401a-942d-549eae6d8244",
+					"openCount": 0
+				}
+			],
+			"timerScope": "Callbacks explicitly captured from actual host; manually invoked to isolate anomaly branches. Actual wall-clock timer evidence is P3-1."
+		},
+		"scheduleGuards": {
+			"task": "P3-1",
+			"status": "passed",
+			"scope": "explicit scheduler/executor doubles; no real timer or MCP in guard test",
+			"checks": [
+				{
+					"name": "duplicate-planned-time-claim-never-reexecutes",
+					"status": "passed"
+				},
+				{
+					"name": "missed-trigger-skipped-with-evidence",
+					"status": "passed"
+				},
+				{
+					"name": "overlap-skips-without-clearing-active-run",
+					"status": "passed"
+				},
+				{
+					"name": "claim-write-failure-sends-no-request-and-stops",
+					"status": "passed"
+				},
+				{
+					"name": "business-definition-write-failure-does-not-enable",
+					"status": "passed"
+				},
+				{
+					"name": "host-declaration-write-failure-pauses-business-definition",
+					"status": "passed"
+				},
+				{
+					"name": "permission-revocation-pauses-before-request",
+					"status": "passed"
+				},
+				{
+					"name": "unknown-writes-block-unattended-execution",
+					"status": "passed"
+				},
+				{
+					"name": "timezone-definition-change-pauses-instead-of-executing",
+					"status": "passed"
+				},
+				{
+					"name": "authorizationExpiresAt-definition-change-pauses-instead-of-executing",
+					"status": "passed"
+				},
+				{
+					"name": "assetRef-definition-change-pauses-instead-of-executing",
+					"status": "passed"
+				},
+				{
+					"name": "restart-missing-host-declaration-pauses-business-record",
+					"status": "passed"
+				},
+				{
+					"name": "authorization-lease-expiry-pauses-before-request",
+					"status": "passed"
+				},
+				{
+					"name": "live-server-timezone-change-pauses-before-request",
+					"status": "passed"
+				},
+				{
+					"name": "revocation-during-run-aborts-only-its-signal-and-preserves-unknown-run-link",
+					"status": "passed"
+				},
+				{
+					"name": "configured-manual-target-cannot-create-or-restore-a-timer",
+					"status": "passed"
+				}
+			],
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-guards-UBAkpY"
+		},
+		"realTimer": {
+			"task": "P3-1",
+			"status": "passed",
+			"scope": "real MCP/Newman, explicit review stub; no business calls",
+			"checks": [
+				{
+					"name": "live-approved-P1-package-published-outside-removable-plugin",
+					"status": "passed"
+				},
+				{
+					"name": "schedule-requires-same-version-manual-pass",
+					"status": "passed"
+				},
+				{
+					"name": "fixed-version-environment-expiring-fixture-lease-persisted-before-enable",
+					"status": "passed"
+				},
+				{
+					"name": "actual-host-persistent-timer-real-MCP-Newman-success-zero-model-calls",
+					"status": "passed"
+				},
+				{
+					"name": "planned-UTC-claim-links-new-run-and-report-with-history",
+					"status": "passed"
+				},
+				{
+					"name": "background-stop-persists-business-pause",
+					"status": "passed"
+				},
+				{
+					"name": "stopped-schedule-does-not-revive-after-new-host-and-runner",
+					"status": "passed"
+				},
+				{
+					"name": "enabled-definition-resumes-on-new-host-without-replaying-missed-requests",
+					"status": "passed"
+				}
+			],
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-1-Mab2hL",
+			"hits": 2,
+			"modelCalls": 1,
+			"completedTrigger": {
+				"schemaVersion": 1,
+				"projectId": "69cf3f05c84dbff3613acf2cd9a2f35d4198905be21364d0c747b8122cc9f09a",
+				"scheduleId": "afda53e2-6f89-47b2-b4ba-7c5758879841",
+				"revision": 1,
+				"dueAtUTC": "2026-10-22T01:26:31.926Z",
+				"firedAt": "2026-10-22T01:26:31.929Z",
+				"status": "completed",
+				"runId": "a8038a78-1483-4bb0-b23d-052b521783de",
+				"executionVerdict": "passed",
+				"modelCalls": {
+					"generation": 0,
+					"review": 0,
+					"analysis": 0
+				}
+			}
+		},
+		"skills": {
+			"task": "P1-4",
+			"status": "skills-discovery-passed",
+			"checks": [
+				{
+					"name": "isolated-project-has-no-personal-skills",
+					"status": "passed"
+				},
+				{
+					"name": "distributed-package-discovered-by-real-sdk-project-loader",
+					"status": "passed"
+				},
+				{
+					"name": "all-three-load-through-real-host-tool-without-truncation",
+					"status": "passed"
+				},
+				{
+					"name": "disabled-skill-body-not-exposed",
+					"status": "passed"
+				},
+				{
+					"name": "explicit-package-path-also-discoverable",
+					"status": "passed"
+				}
+			],
+			"environment": "isolated project and empty agentDir; actual SDK and host tool",
+			"actualModelCalls": 0,
+			"businessRequests": 0,
+			"modelAcceptance": "Not exercised by this discovery test; see api-testing-model-test.mjs",
+			"skills": [
+				{
+					"name": "api-test-analyze",
+					"bytes": 2491
+				},
+				{
+					"name": "api-test-review",
+					"bytes": 1812
+				},
+				{
+					"name": "api-test-workflow",
+					"bytes": 2501
+				}
+			]
+		},
+		"osFiles": {
+			"task": "real-target-isolation-followup",
+			"scope": "macOS restricted files and loopback port; actual MCP/Newman; no user business calls",
+			"status": "passed-local-OS-MCP-boundary-only",
+			"isolationPolicy": "darwin-seatbelt-loopback-v1",
+			"root": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-mcp-8S3TX5",
+			"checks": [
+				{
+					"name": "OS-denies-outside-file-symlink-write-and-inherited-child-read",
+					"status": "passed",
+					"evidence": [
+						{
+							"name": "inside-read",
+							"denied": false
+						},
+						{
+							"name": "outside-read",
+							"denied": true
+						},
+						{
+							"name": "symlink-read",
+							"denied": true
+						},
+						{
+							"name": "outside-write",
+							"denied": true
+						},
+						{
+							"name": "inside-write",
+							"denied": false
+						},
+						{
+							"name": "child-read",
+							"denied": true
+						}
+					]
+				},
+				{
+					"name": "actual-MCP-and-unmodified-pinned-Newman-pass-inside-OS-boundary",
+					"status": "passed",
+					"evidence": {
+						"runId": "positive",
+						"status": "completed",
+						"executionVerdict": "passed",
+						"pid": 18631,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false,
+						"requests": {
+							"total": 1,
+							"pending": 0,
+							"failed": 0
+						},
+						"assertions": {
+							"total": 1,
+							"pending": 0,
+							"failed": 0
+						},
+						"failures": 0,
+						"executions": [
+							{
+								"caseId": "probe",
+								"method": "GET",
+								"status": 200,
+								"response": {
+									"jsonValid": true
+								},
+								"requestError": null,
+								"assertions": [
+									{
+										"name": "200",
+										"passed": true,
+										"skipped": false,
+										"error": null
+									}
+								]
+							}
+						],
+						"durationMs": 1223,
+						"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+					}
+				},
+				{
+					"name": "actual-assertion-failure-is-retained",
+					"status": "passed",
+					"evidence": "failed"
+				},
+				{
+					"name": "OS-denies-other-port-without-JavaScript-network-guard",
+					"status": "passed",
+					"evidence": {
+						"runId": "denied-port",
+						"status": "completed",
+						"executionVerdict": "error",
+						"pid": 18894,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false,
+						"requests": {
+							"total": 1,
+							"pending": 0,
+							"failed": 1
+						},
+						"assertions": {
+							"total": 1,
+							"pending": 0,
+							"failed": 1
+						},
+						"failures": 2,
+						"executions": [
+							{
+								"caseId": "probe",
+								"method": "GET",
+								"status": null,
+								"response": null,
+								"requestError": {
+									"code": "EPERM"
+								},
+								"assertions": [
+									{
+										"name": "200",
+										"passed": false,
+										"skipped": false,
+										"error": {
+											"name": "AssertionError",
+											"message": "Assertion did not match its frozen expectation; raw values omitted"
+										}
+									}
+								]
+							}
+						],
+						"durationMs": 1284,
+						"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+					}
+				},
+				{
+					"name": "Newman-followed-redirect-cannot-reach-unapproved-port",
+					"status": "passed",
+					"evidence": {
+						"runId": "redirect",
+						"status": "completed",
+						"executionVerdict": "error",
+						"pid": 19128,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false,
+						"requests": {
+							"total": 1,
+							"pending": 0,
+							"failed": 1
+						},
+						"assertions": {
+							"total": 1,
+							"pending": 0,
+							"failed": 1
+						},
+						"failures": 2,
+						"executions": [
+							{
+								"caseId": "probe",
+								"method": "GET",
+								"status": null,
+								"response": null,
+								"requestError": {
+									"code": "EPERM"
+								},
+								"assertions": [
+									{
+										"name": "200",
+										"passed": false,
+										"skipped": false,
+										"error": {
+											"name": "AssertionError",
+											"message": "Assertion did not match its frozen expectation; raw values omitted"
+										}
+									}
+								]
+							}
+						],
+						"durationMs": 1230,
+						"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+					}
+				},
+				{
+					"name": "Newman-can-upload-explicit-inside-file-while-outside-remains-denied",
+					"status": "passed",
+					"evidence": {
+						"runId": "inside-file-body",
+						"status": "completed",
+						"executionVerdict": "passed",
+						"pid": 19593,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false,
+						"requests": {
+							"total": 1,
+							"pending": 0,
+							"failed": 0
+						},
+						"assertions": {
+							"total": 1,
+							"pending": 0,
+							"failed": 0
+						},
+						"failures": 0,
+						"executions": [
+							{
+								"caseId": "probe",
+								"method": "POST",
+								"status": 200,
+								"response": {
+									"jsonValid": true
+								},
+								"requestError": null,
+								"assertions": [
+									{
+										"name": "200",
+										"passed": true,
+										"skipped": false,
+										"error": null
+									}
+								]
+							}
+						],
+						"durationMs": 1160,
+						"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+					}
+				},
+				{
+					"name": "Newman-file-body-cannot-read-or-upload-outside-canary",
+					"status": "passed",
+					"evidence": {
+						"runId": "outside-file-body",
+						"status": "running",
+						"executionVerdict": "unknown",
+						"pid": 20047,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false
+					}
+				},
+				{
+					"name": "cancellation-exits-own-sandbox-process-and-retains-unknown-without-retry",
+					"status": "passed",
+					"evidence": {
+						"runId": "cancel",
+						"status": "running",
+						"executionVerdict": "unknown",
+						"pid": 20367,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false
+					}
+				}
+			],
+			"events": [
+				{
+					"target": "allowed",
+					"url": "/ok",
+					"bytes": 0,
+					"containsCanary": false
+				},
+				{
+					"target": "allowed",
+					"url": "/ok",
+					"bytes": 0,
+					"containsCanary": false
+				},
+				{
+					"target": "allowed",
+					"url": "/redirect",
+					"bytes": 0,
+					"containsCanary": false
+				},
+				{
+					"target": "allowed",
+					"url": "/inside-file",
+					"bytes": 17,
+					"containsCanary": false
+				},
+				{
+					"target": "allowed",
+					"url": "/slow",
+					"bytes": 0,
+					"containsCanary": false
+				}
+			],
+			"runnerSha256": "4dc40a3399835899088399abd7db1b82a298761b68a6a93f71abfee35029a2af",
+			"remaining": [
+				"arbitrary remote-IP target restriction is not proven",
+				"host runner is restricted to macOS loopback fixtures; remote integration remains unverified",
+				"real business authentication and test records are unavailable",
+				"system/runtime read roots and mach services are not a general hostile-native-code sandbox"
+			]
+		}
+	},
+	"failedAttempts": {
+		"targetWrongResultField": {
+			"scope": "host-configured manual HTTP target, real plugin/MCP/Newman; explicit review stub; no business requests",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-target-Y4FfyB",
+			"checks": [
+				{
+					"name": "non-HTTP-DNS-credentials-and-path-configs-rejected",
+					"status": "passed"
+				},
+				{
+					"name": "model-cannot-select-target-or-borrow-another-project-binding",
+					"status": "passed"
+				},
+				{
+					"name": "real-host-relay-preserves-approval-hash-Host-and-durable-transport-map",
+					"status": "passed",
+					"evidence": {
+						"runId": "1c17eeba-4105-4187-8557-bd7f6e92cc2e",
+						"transport": {
+							"policy": "fixed-ipv4-http-relay-v1",
+							"logicalOrigin": "http://127.0.0.1:51566",
+							"transportOrigin": "http://127.0.0.1:51567",
+							"approvedCollectionHash": "5b797fe946b3fdb869a6d5ed309975a0212138cbf0872ae3c5f4137554640587",
+							"effectiveCollectionHash": "12448a72e1b4458cf90d45d9519de012655c6f18c5b14035eaef8e468e3f61b0"
+						}
+					}
+				},
+				{
+					"name": "configured-target-keeps-real-assertion-failure",
+					"status": "passed"
+				},
+				{
+					"name": "cross-origin-redirect-denied-with-unknown-no-resend-and-relay-closed",
+					"status": "passed"
+				},
+				{
+					"name": "cancel-closes-own-relay-and-upstream-without-killing-other-run",
+					"status": "passed"
+				},
+				{
+					"name": "live-mode-revocation-reaps-MCP-and-relay",
+					"status": "passed"
+				}
+			],
+			"status": "failed",
+			"error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- 'passed'\n\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/api-testing-target-test.mjs:293:9\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)",
+			"finishedAt": "2026-10-22T01:22:13.228Z"
+		},
+		"workflowOldMessage": {
+			"schemaVersion": 1,
+			"task": "P1-3",
+			"environment": "macOS fixture; real private MCP/Newman, explicit model stub",
+			"startedAt": "2026-10-22T01:23:22.118Z",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-ZiNAqw",
+			"checks": [
+				{
+					"name": "one-entry-prepare-freezes-draft-and-unreviewed-cannot-run",
+					"status": "passed"
+				},
+				{
+					"name": "semantic-return-correction-approval-only-from-live-independent-call",
+					"status": "passed"
+				},
+				{
+					"name": "actual-contract-defect-produces-open-finding-and-report",
+					"status": "passed"
+				},
+				{
+					"name": "unfixed-retest-retains-open-identity-and-new-evidence",
+					"status": "passed"
+				},
+				{
+					"name": "fixture-fix-retest-closes-finding-without-erasing-first-failure-or-model-recalls",
+					"status": "passed"
+				},
+				{
+					"name": "historical-report-never-requests-or-calls-model",
+					"status": "passed"
+				},
+				{
+					"name": "workflow-reference-bound-to-original-conversation",
+					"status": "passed"
+				}
+			],
+			"runs": [
+				{
+					"workflowRef": "9cc4ccf9-6d2b-481e-85aa-7aba1826d631",
+					"runId": "ab9b2dba-f2d3-4b99-9be3-63bd90162810",
+					"executionVerdict": "failed",
+					"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-ZiNAqw/project/suite-1-evidence-9cc4ccf9-6d2b-481e-85aa-7aba1826d631/ab9b2dba-f2d3-4b99-9be3-63bd90162810/report.md",
+					"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-ZiNAqw/project/suite-1-evidence-9cc4ccf9-6d2b-481e-85aa-7aba1826d631/ab9b2dba-f2d3-4b99-9be3-63bd90162810/findings.json",
+					"cleanup": "not-required",
+					"openFindings": 1
+				},
+				{
+					"workflowRef": "9cc4ccf9-6d2b-481e-85aa-7aba1826d631",
+					"runId": "03cf7d1d-a90d-4b4e-b64a-98ba9681be44",
+					"executionVerdict": "failed",
+					"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-ZiNAqw/project/suite-1-evidence-9cc4ccf9-6d2b-481e-85aa-7aba1826d631/03cf7d1d-a90d-4b4e-b64a-98ba9681be44/report.md",
+					"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-ZiNAqw/project/suite-1-evidence-9cc4ccf9-6d2b-481e-85aa-7aba1826d631/03cf7d1d-a90d-4b4e-b64a-98ba9681be44/findings.json",
+					"cleanup": "not-required",
+					"openFindings": 1
+				},
+				{
+					"workflowRef": "9cc4ccf9-6d2b-481e-85aa-7aba1826d631",
+					"runId": "c1984fa0-ffb1-41d7-9c75-545b18742741",
+					"executionVerdict": "passed",
+					"reportPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-ZiNAqw/project/suite-1-evidence-9cc4ccf9-6d2b-481e-85aa-7aba1826d631/c1984fa0-ffb1-41d7-9c75-545b18742741/report.md",
+					"findingsPath": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p1-3-ZiNAqw/project/suite-1-evidence-9cc4ccf9-6d2b-481e-85aa-7aba1826d631/c1984fa0-ffb1-41d7-9c75-545b18742741/findings.json",
+					"cleanup": "not-required",
+					"openFindings": 0
+				}
+			],
+			"status": "failed",
+			"error": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Real targets/. Input:\n\n'Error: API target is not configured for this project; only explicit loopback fixtures are supported'\n\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/api-testing-workflow-test.mjs:185:2",
+			"finishedAt": "2026-10-22T01:23:27.427Z"
+		}
+	},
+	"checks": {
+		"typecheck": "passed",
+		"units": "57/57 passed",
+		"build": "passed",
+		"core": "22/22 passed",
+		"lint": "passed",
+		"protocol": "main checks passed; no-tag heuristic skipped",
+		"skillValidation": "passed",
+		"logs": {
+			"typecheck-last": {
+				"path": "tests/scratch/api-testing-relay-host/evidence/typecheck-last.log",
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			},
+			"unit": {
+				"path": "tests/scratch/api-testing-relay-host/evidence/unit.log",
+				"sha256": "0af99d65bb795132c82e1be30f5aba1ed6d9aa0d70dd0374021848d6f8484901"
+			},
+			"build": {
+				"path": "tests/scratch/api-testing-relay-host/evidence/build.log",
+				"sha256": "646ef81759f0863b424de5b8338a3d4e1d31e9278094cb270822cfd8f21cefac"
+			},
+			"core": {
+				"path": "tests/scratch/api-testing-relay-host/evidence/core.log",
+				"sha256": "8026b665acbb3d948188ccd448774a1ed129b4881e5271893cf9ae7e39fa57cf"
+			},
+			"lint": {
+				"path": "tests/scratch/api-testing-relay-host/evidence/lint.log",
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			"protocol": {
+				"path": "tests/scratch/api-testing-relay-host/evidence/protocol.log",
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"skill-validation": {
+				"path": "tests/scratch/api-testing-relay-host/evidence/skill-validation.log",
+				"sha256": "db349825903d66adffea3ecf1bd8e1803043e8a71cf1a051235dabc5371f5bb0"
+			}
+		}
+	},
+	"concurrentWorkspaceChangesExcluded": {
+		".gitignore": "8e41475e5a9a789351fecb5ca927e65c5fe5734f21ec332f8f4adf2db4f69c10",
+		"package.json": "65003ef89f0e8794ce99a1200a30c7b42f4aa750a4e76157a64730166eaf72ed",
+		"package-lock.json": "e0e4823c564486b60a19228ca8b7486fb9d343ddffc069a8a97fd4e1f9cd1590",
+		"tests/unit/extension-host-packages.test.ts": "701409cd453aa0538bf264cdbbf3ba1c0618bd3e9c6e19a143b904c3eba7caf9"
+	},
+	"otherExcludedPaths": ["capabilities/", "scripts/enable-ui-testing.mjs", "tests/ui-testing-integration-test.mjs"],
+	"limitations": [
+		"Default deployment does not configure a remote target",
+		"No DNS/TLS or runtime credential injection",
+		"Real business authentication/data and success/create-ID/cleanup mapping unavailable",
+		"Wildcard response media is not a JSON declaration",
+		"Configured targets cannot be scheduled; no unattended authorization",
+		"OS system/runtime read roots and mach services are not a hostile native-code sandbox"
+	]
+}

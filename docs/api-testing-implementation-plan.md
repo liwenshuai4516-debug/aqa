@@ -157,3 +157,5 @@ P1 工程验收通过后可以开展 P2 本地管理；没有用户真实环境�
 2026-10-22 宿主接入：受控 MCP/Newman 执行强制加载 macOS fixture OS profile；其他平台或缺 sandbox-exec 拒绝执行，不降级。策略进入版本指纹，旧批准失效；真实地址仍阻塞。回归与限制见 [宿主接入记录](api-testing-evidence/isolation-host.md) 和 [摘要](api-testing-evidence/isolation-host-summary.json)。
 
 2026-10-22 远端方案补验：测试内固定 TCP relay + 现有 OS 端口限制，真实 MCP/Newman 读公开 Swagger 页面成功；绕过 relay 的直连及跨端口重定向被拒绝。带远端标记 4 项、默认本机 3 项符合预期。仅证明传输可行，未接入产品目标配置/审批/生命周期；真实业务仍未完成，见 [记录](api-testing-evidence/isolation-relay.md) 与 [尝试摘要](api-testing-evidence/isolation-relay-summary.json)。
+
+2026-10-22 固定目标接线：插件 0.4.0，宿主可显式配置绑定启动项目的单个手动 HTTP IPv4 目标，默认不开放。原批准集合 hash 保留，执行副本与传输映射另存；取消/撤权关闭本 run relay，配置目标不能创建/恢复定时器。宿主验收含公开 Swagger 读取，用户业务仍未验收；[记录](api-testing-evidence/target-host.md)、[摘要](api-testing-evidence/target-host-summary.json)。

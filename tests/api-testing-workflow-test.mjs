@@ -182,7 +182,7 @@ try {
 	);
 	check("workflow-reference-bound-to-original-conversation");
 	const safeBefore = hits.length;
-	await assert.rejects(() => prepare({ baseUrl: "http://192.168.90.224:8238" }), /Real targets/);
+	await assert.rejects(() => prepare({ baseUrl: "http://192.168.90.224:8238" }), /not configured/);
 	assert.equal(hits.length, safeBefore);
 	check("business-target-still-blocked-despite-user-write-authorization");
 	const altered = read(join(approved.suitePath, "manifest.json"));

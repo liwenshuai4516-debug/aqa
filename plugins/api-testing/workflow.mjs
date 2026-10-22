@@ -22,7 +22,7 @@ const allowed = {
 	report: ["action", "runId"],
 };
 
-export function createWorkflow({ approve, execute, assets }) {
+export function createWorkflow({ approve, execute, assets, authorizeOrigin }) {
 	const workflows = new Map();
 	const inspect = async (state) => {
 		if (hash(readFileSync(join(state.bundlePath, "manifest.json"))) !== state.manifestHash)
@@ -66,12 +66,12 @@ export function createWorkflow({ approve, execute, assets }) {
 				if (!Array.isArray(input.cases) || input.cases.length > 3) fail("Select one to three small cases per workflow");
 				const base = new URL(input.baseUrl);
 				if (
-					base.protocol !== "http:" ||
-					base.hostname !== "127.0.0.1" ||
-					Number(base.port) < 8900 ||
+					(!authorizeOrigin &&
+						(base.protocol !== "http:" || base.hostname !== "127.0.0.1" || Number(base.port) < 8900)) ||
 					base.origin !== input.baseUrl
 				)
-					fail("Real targets remain blocked; use an explicit loopback fixture origin");
+					fail("Target requires a host-configured origin or an explicit loopback fixture origin");
+				authorizeOrigin?.(input.baseUrl, identity.cwd);
 				const imported = await importContract({
 					projectRoot: identity.cwd,
 					sourcePath: input.sourcePath,

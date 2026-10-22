@@ -1,12 +1,12 @@
-/** Fixed TCP relay experiment: real MCP/Newman and OS profile; not a production target gateway. */
+/** Product fixed TCP transport with real MCP/Newman and OS profile; no business acceptance. */
 import assert from "node:assert/strict";
-import { createServer as tcpServer, connect } from "node:net";
 import { createServer as httpServer } from "node:http";
 import { mkdtempSync, mkdirSync, writeFileSync, cpSync, realpathSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { McpClient } from "../server/mcp-bridge.ts";
 import { prepareApiFixtureIsolation } from "../server/api-testing-isolation.ts";
+import { startApiTargetRelay } from "../server/api-testing-relay.ts";
 const runtime = realpathSync(
 	resolve(process.argv.slice(2).find((a) => !a.startsWith("--")) ?? "tests/scratch/api-testing-p1-1/runtime"),
 );
@@ -21,7 +21,7 @@ const report = {
 };
 const servers = [],
 	clients = new Set(),
-	sockets = new Set();
+	relays = [];
 const listen = async (s) => {
 	servers.push(s);
 	await new Promise((ok, fail) => {
@@ -32,25 +32,9 @@ const listen = async (s) => {
 	return s.address().port;
 };
 async function relay(ip, port) {
-	assert(/^\d+\.\d+\.\d+\.\d+$/.test(ip));
-	const s = tcpServer((down) => {
-		const up = connect({ host: ip, port });
-		for (const socket of [down, up]) {
-			sockets.add(socket);
-			socket.once("close", () => sockets.delete(socket));
-			socket.on("error", () => {
-				up.destroy();
-				down.destroy();
-			});
-		}
-		up.setTimeout(5000, () => {
-			up.destroy();
-			down.destroy();
-		});
-		down.pipe(up);
-		up.pipe(down);
-	});
-	return await listen(s);
+	const transport = await startApiTargetRelay(`http://${ip}:${port}`, new AbortController().signal);
+	relays.push(transport);
+	return Number(new URL(transport.origin).port);
 }
 async function run(
 	name,
@@ -152,7 +136,7 @@ try {
 	process.exitCode = 1;
 } finally {
 	for (const c of clients) await c.closeAndWait();
-	for (const s of sockets) s.destroy();
+	for (const transport of relays) await transport.close();
 	for (const s of servers) await new Promise((ok) => s.close(ok));
 	report.finishedAt = new Date().toISOString();
 	writeFileSync(join(output, "summary.json"), JSON.stringify(report, null, 2));

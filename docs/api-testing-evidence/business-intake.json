@@ -92,7 +92,7 @@
 		"Dedicated test authentication reference and valid isolated department/user/contract IDs unavailable; public client code is not a credential or proof that backend anonymous access works",
 		"Contract and public-client rules now recorded; exact server success/created-ID/cleanup mapping still requires trustworthy environment evidence",
 		"Contract response media */* remains unsupported by initial JSON-only importer; observed frontend JSON consumer is not a changed contract",
-		"Local macOS OS/MCP file-and-port isolation follow-up passed; non-loopback target restriction and production integration remain unproven"
+		"Host fixed HTTP numeric IPv4 relay and OS port boundary now verified; DNS/TLS and runtime credential injection remain unsupported"
 	],
 	"dedicatedModel": {
 		"status": "unavailable",
@@ -159,5 +159,12 @@
 		"businessRequests": 0,
 		"hostIntegration": "Loopback OS boundary already enforced; fixed remote relay not wired into production",
 		"remaining": "No usable dedicated authentication/data references; success/create-ID/cleanup mapping unverified; wildcard response media still not supported by JSON-only importer"
+	},
+	"followup20261022HostTarget": {
+		"status": "passed-configured-target-transport-only",
+		"evidence": "target-host-summary.json",
+		"access": "Real host/plugin/MCP GET supplied public Swagger page with explicit process-start target and project binding; no business requests",
+		"productionDefault": "no remote target configured; no personal config changed",
+		"remaining": "Dedicated authentication/data references, server success/created-ID/cleanup mapping, and wildcard response-media rule unresolved"
 	}
 }

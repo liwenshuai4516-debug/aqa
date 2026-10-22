@@ -9,7 +9,7 @@ const checks = [];
 let executions = 0;
 const owner = { cwd: output },
 	assetRef = "a".repeat(64);
-const make = () => {
+const make = (manualOnlyOrigin) => {
 	const base = mkdtempSync(join(output, "project-"));
 	let allowed = true,
 		rejectSave = false,
@@ -40,6 +40,7 @@ const make = () => {
 		},
 	};
 	const schedules = createSchedules({
+		manualOnlyOrigin,
 		project: () => p,
 		load: async () => ({ metadata: { origin: "http://127.0.0.1:9876" } }),
 		histories: () => previous,
@@ -222,6 +223,25 @@ try {
 	assert.equal(revokedEvidence.triggers[0].status, "completed");
 	check("revocation-during-run-aborts-only-its-signal-and-preserves-unknown-run-link");
 
+	const manualOnly = make("http://127.0.0.1:9876");
+	await manualOnly.schedules.attach(manualOnly.host);
+	await assert.rejects(manualOnly.create(), /not authorized/);
+	assert.equal(manualOnly.callbacks.length, 0);
+	const source = make();
+	await source.schedules.attach(source.host);
+	const sourceSchedule = await source.create();
+	const savedManual = JSON.parse(readFileSync(join(source.p.base, "schedules", sourceSchedule.scheduleId + ".json")));
+	mkdirSync(join(manualOnly.p.base, "schedules"), { recursive: true });
+	writeFileSync(join(manualOnly.p.base, "schedules", savedManual.id + ".json"), JSON.stringify(savedManual));
+	manualOnly.declarations.set("api-" + savedManual.id, { spec: "60000", catchUp: "skip" });
+	const restartedManual = make("http://127.0.0.1:9876");
+	// Reuse the same scheduler's persisted project with a fresh host attachment.
+	manualOnly.stopped.abort();
+	await manualOnly.schedules.attach(restartedManual.host);
+	assert.equal(restartedManual.callbacks.length, 0);
+	assert.equal((await manualOnly.list()).schedules[0].state, "paused");
+	assert.match((await manualOnly.list()).schedules[0].reason, /manual-only/);
+	check("configured-manual-target-cannot-create-or-restore-a-timer");
 	const summary = {
 		task: "P3-1",
 		status: "passed",
