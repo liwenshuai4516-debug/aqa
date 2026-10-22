@@ -8,7 +8,7 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { PluginManager } from "../server/plugins.ts";
-import { ClientSession } from "../server/agent-service.ts";
+import { ClientSession } from "../server/agent/agent-service.ts";
 import { ApiTestingRunner } from "../server/api-testing-runner.ts";
 import { API_FIXTURE_ISOLATION_POLICY } from "../server/api-testing-isolation.ts";
 

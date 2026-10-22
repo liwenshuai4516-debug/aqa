@@ -26,7 +26,7 @@
  * 本模块不 import SDK / node：只依赖 `./protocol.js` 的 wire 类型，浏览器端也能复用
  * 归一化函数（`web/src/types.ts` 是 protocol 的 shim）。
  */
-import type { UiToolPromptOverride } from "./protocol.js";
+import type { UiToolPromptOverride } from "../protocol.js";
 
 /** 覆盖表（工具名 → 覆盖内容）。 */
 export type ToolPromptOverrideMap = Record<string, UiToolPromptOverride>;

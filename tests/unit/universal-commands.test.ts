@@ -23,7 +23,7 @@ import {
 	ClaudeCodeDriver,
 	DshAgentDriver,
 } from "../../server/universal/index.js";
-import { discoverDiskSkills, readSkillInstruction } from "../../server/skill-discovery.js";
+import { discoverDiskSkills, readSkillInstruction } from "../../server/skill/skill-discovery.js";
 import {
 	scanAtMentions,
 	createAttachmentUiMessages,

@@ -8,7 +8,7 @@ import { Modal } from "./Modal";
 /**
  * 逐工具文案编辑器（设置页「工具」区每个工具行的「编辑文案」入口）。
  *
- * 三个字段对应模型能看到的三处工具文案（见 server/tool-prompt-overrides.ts）：
+ * 三个字段对应模型能看到的三处工具文案（见 server/prompt/tool-prompt-overrides.ts）：
  *  - 描述        → tool schema 的 `description`（这是什么 / 有什么副作用）；
  *  - 提示词摘要  → 系统提示词 Available tools 列表里的一行；
  *  - 行为要点    → 系统提示词 Guidelines 段（每行一条）。

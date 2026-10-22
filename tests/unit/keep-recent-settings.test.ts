@@ -29,7 +29,9 @@ afterEach(() => {
 	for (const dir of roots.splice(0)) rmSync(dir, { recursive: true, force: true });
 });
 
-const templates = { list: () => [] } as unknown as import("../../server/subagent-templates.js").SubagentTemplatesStore;
+const templates = {
+	list: () => [],
+} as unknown as import("../../server/agent/subagent-templates.js").SubagentTemplatesStore;
 
 /** 最小可用 host：push() 里 getSession() 抛错被 catch，其余走存根。 */
 function makeHost(store: ClientStateStore): SettingsHost & { emitted: unknown[] } {

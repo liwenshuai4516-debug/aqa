@@ -55,7 +55,7 @@
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | 新增 WS 消息或状态字段  | `server/protocol.ts` → 服务端分发/领域处理器 → `web/src/use-chat.ts` → 消费组件；保持 `web/src/types.ts` 为 shim                                            | 输入校验、错误回执、快照/增量、刷新/重连；破坏兼容时核对协议版本机制    |
 | 新增设置/偏好           | 协议类型、`server/client-state.ts` 默认值与读取、`server/settings-service.ts`、设置 UI；如可分享则核对 `server/preset-fields.ts` / `server/preset-share.ts` | 作用域、旧配置缺字段、保存后刷新、敏感字段禁止导出                      |
-| 新增可开关内置工具      | 工具实现、`server/tool-manager.ts`、`server/agent-service.ts` 的注册路径、`tests/unit/tool-registration.test.ts`；按路径核对 host factory 和工具闸门        | 关闭时不可调用、审批/计划/委派限制、取消、纯英文提示词与结果大小预算    |
+| 新增可开关内置工具      | 工具实现、`server/tool-manager.ts`、`server/agent/agent-service.ts` 的注册路径、`tests/unit/tool-registration.test.ts`；按路径核对 host factory 和工具闸门  | 关闭时不可调用、审批/计划/委派限制、取消、纯英文提示词与结果大小预算    |
 | 覆盖 SDK 工具           | `server/tool-overrides.ts` 及现有单源提示词                                                                                                                 | 扩展实现优先、所有执行路径语义一致，不覆盖掉第三方同名工具              |
 | 新增插件或插件能力      | manifest、宿主 API/权限、客户端入口、版本、README；内置市场插件核对 `plugins/catalog.json`                                                                  | 激活/停用/重载、拒绝权限、卸载清理、客户端依赖位于可服务的 `client/` 内 |
 | 新增 UI/文案/样式       | 组件、`web/src/styles.css`、`web/src/i18n.tsx` 的 zh/en、`locales/`；如使用插槽则核对 `web/src/ui-slots.ts`                                                 | 明暗主题、窄屏、长文本、键盘/触控、加载/空/错误状态、词条顺序与占位符   |

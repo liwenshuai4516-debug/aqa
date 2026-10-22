@@ -6,7 +6,7 @@
  */
 
 import { describe, expect, it, vi } from "vitest";
-import { ClientSession } from "../../server/agent-service";
+import { ClientSession } from "../../server/agent/agent-service";
 import { DshClientSession } from "../../server/dsh/dsh-agent-service";
 import { UniversalSession } from "../../server/universal/universal-session";
 

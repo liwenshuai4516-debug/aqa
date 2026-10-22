@@ -8,10 +8,10 @@ import {
 	withSubagentOwner,
 	SUBAGENT_ACTIONS,
 	type SubagentToolHost,
-} from "../../server/subagents.js";
-import { MAX_SUBAGENTS, getMaxSubagents } from "../../server/agent-formatters.js";
-import { countActiveSubagents, isSubagentActive, toSubagentSnapshot } from "../../server/subagent-helpers.js";
-import type { Conversation } from "../../server/agent-service.js";
+} from "../../server/agent/subagents.js";
+import { MAX_SUBAGENTS, getMaxSubagents } from "../../server/agent/agent-formatters.js";
+import { countActiveSubagents, isSubagentActive, toSubagentSnapshot } from "../../server/agent/subagent-helpers.js";
+import type { Conversation } from "../../server/agent/agent-service.js";
 import { SUBAGENT_TOOL_NAMES } from "../../server/tool-manager.js";
 
 /** 一个假的 host，工具调用不会真正执行会话（只验证走通与参数透传）。 */

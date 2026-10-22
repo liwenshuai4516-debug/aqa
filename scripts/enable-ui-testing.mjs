@@ -18,9 +18,7 @@ export async function enableUiTesting(root, agentDir) {
 		extensions: agentDir
 			? join(root, "capabilities/ui-testing/mcp-extension.mjs")
 			: "../capabilities/ui-testing/mcp-extension.mjs",
-		skills: agentDir
-			? join(root, "capabilities/ui-testing/ui-testing-workflow")
-			: "../capabilities/ui-testing/ui-testing-workflow",
+		skills: agentDir ? join(root, "capabilities/ui-testing/ui-testing-workflow") : "./skills/ui-testing-workflow",
 	};
 	for (const [field, resource] of Object.entries(resources)) {
 		const entries = settings[field] ?? [];

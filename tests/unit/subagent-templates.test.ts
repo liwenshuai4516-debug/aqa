@@ -9,8 +9,8 @@ import {
 	canonicalizeTemplate,
 	localizeTemplate,
 	type SubagentTemplate,
-} from "../../server/subagent-templates.js";
-import { BUILTIN_TEMPLATES_HANT } from "../../server/subagent-templates-hant.js";
+} from "../../server/agent/subagent-templates.js";
+import { BUILTIN_TEMPLATES_HANT } from "../../server/agent/subagent-templates-hant.js";
 
 /** 每个用例一个临时目录，用后即焚。 */
 const dirs: string[] = [];

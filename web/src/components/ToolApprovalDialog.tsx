@@ -71,7 +71,7 @@ export function ToolApprovalDialog({ approval }: ToolApprovalDialogProps) {
 	const handleEditAndRun = () => {
 		try {
 			// 审查 #8：提交形态与显示形态一一对应。服务端把 editedParams 当 unknown
-			// 直接作为 effectiveParams 执行（server/agent-service.ts `res.editedParams ?? params`），
+			// 直接作为 effectiveParams 执行（server/agent/agent-service.ts `res.editedParams ?? params`），
 			// 字符串原样回传、空参数提交 {} 均兼容。
 			const p = approval.params;
 			let edited: unknown;

@@ -44,14 +44,14 @@ import { normalizeUiLayout, normalizeKeepRecentMessages, DEFAULT_KEEP_RECENT_MES
 import { PLAN_MODE_SYSTEM_PROMPT } from "../plan-mode.js";
 import { FilesService, workspacePath, desktopDirWire } from "../files-service.js";
 import { SandboxManager, isSameOrSubpath } from "../sandbox-service.js";
-import { QuiesceRejectedError } from "../agent-service.js";
+import { QuiesceRejectedError } from "../agent/agent-service.js";
 
 import { NATIVE_COMMANDS, parseSlash } from "../slash-commands.js";
-import { discoverDiskSkills, readSkillInstruction } from "../skill-discovery.js";
+import { discoverDiskSkills, readSkillInstruction } from "../skill/skill-discovery.js";
 import { scanAtMentions, formatPromptWithSkills } from "../universal/universal-attachments.js";
-import type { ProjectRunnerInfo, SessionOwnerInfo } from "../agent-service.js";
+import type { ProjectRunnerInfo, SessionOwnerInfo } from "../agent/agent-service.js";
 import { bilingual, pick, resolveServerLang, type ServerLang } from "../i18n.js";
-import { ModelAdminService } from "../model-admin.js";
+import { ModelAdminService } from "../model/model-admin.js";
 import { normalizeToolInfo, unsupportedToolInfo } from "../tool-info.js";
 import { TerminalManager, loadCommands, saveCommandsFile } from "../terminals.js";
 import { saveUpload } from "../uploads.js";
@@ -60,7 +60,7 @@ import { checkAll as checkAllUpdates, collectTargets, resolveNpmRegistry } from 
 import { collectInstalledEngineTargets } from "../engine-probe.js";
 import { previewKind } from "../text-sniff.js";
 import { removeQueuedByIndexOrText } from "../queue-utils.js";
-import { ensureCredentialFilePermissions } from "../model-admin.js";
+import { ensureCredentialFilePermissions } from "../model/model-admin.js";
 import type {
 	BgServer,
 	ClientMessage,
@@ -88,7 +88,7 @@ import {
 	resolveProviderCredential,
 	listCustomModelsFromConfig,
 	isModelProtocolSupportedByEngine,
-} from "../model-resolver.js";
+} from "../model/model-resolver.js";
 import { loadDshMarketData } from "./dsh-market-service.js";
 import { formatTextQuote, readTextQuote, messageTextWithQuotes } from "../text-quote.js";
 import { MarkerService } from "../marker-service.js";
@@ -121,7 +121,7 @@ import {
 	type PresetSharePort,
 } from "../preset-share.js";
 import { getAppVersion } from "../pkg-info.js";
-import { getMaxOpenConversations } from "../agent-formatters.js";
+import { getMaxOpenConversations } from "../agent/agent-formatters.js";
 
 const SNAPSHOT_INTERVAL_MS = 60;
 /** 用户主目录（wire 格式）：进程内不变，模块加载时求值一次（右栏 🏠）。 */

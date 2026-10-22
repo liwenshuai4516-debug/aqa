@@ -4,7 +4,7 @@ import {
 	withSubagentOwner,
 	type SubagentSnapshot,
 	type SubagentToolHost,
-} from "../../server/subagents.js";
+} from "../../server/agent/subagents.js";
 import { SUBAGENT_TOOL_NAMES } from "../../server/tool-manager.js";
 
 function makeMockHost(subagents: Record<string, SubagentSnapshot> = {}): SubagentToolHost {

@@ -7,7 +7,7 @@ import {
 	type ApprovalRule,
 } from "../../server/approval-rules.js";
 import { checkDangerousToolCall } from "../../server/tool-approval.js";
-import { withToolGuard } from "../../server/agent-service.js";
+import { withToolGuard } from "../../server/agent/agent-service.js";
 
 describe("Approval System Security Bypass & Path Traversal Fixes (#333)", () => {
 	const cwd = process.platform === "win32" ? "C:\\workspace\\project" : "/workspace/project";

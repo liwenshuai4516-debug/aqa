@@ -9,7 +9,13 @@ web/dist/
 .DS_Store
 
 # pi agent data
-.pi/
+.pi/*
+!.pi/skills/
+.pi/skills/*
+!.pi/skills/api-test-workflow/
+!.pi/skills/api-test-review/
+!.pi/skills/api-test-analyze/
+!.pi/skills/ui-testing-workflow/
 .pi-web/
 .pi-subagents/
 

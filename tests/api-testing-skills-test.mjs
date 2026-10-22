@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadSkills } from "@earendil-works/pi-coding-agent";
-import { makeSkillTool, SKILL_TOOL_FILE_CAP } from "../server/skill-tool.ts";
+import { makeSkillTool, SKILL_TOOL_FILE_CAP } from "../server/skill/skill-tool.ts";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
 const output = mkdtempSync(join(tmpdir(), "api-testing-p1-4-"));

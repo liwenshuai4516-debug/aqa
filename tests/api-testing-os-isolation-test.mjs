@@ -16,7 +16,7 @@ import { fileURLToPath } from "node:url";
 import { createServer } from "node:http";
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
-import { McpClient } from "../server/mcp-bridge.ts";
+import { McpClient } from "../server/mcp/mcp-bridge.ts";
 import { API_FIXTURE_ISOLATION_POLICY, prepareApiFixtureIsolation } from "../server/api-testing-isolation.ts";
 assert.equal(process.platform, "darwin", "This acceptance requires macOS; other platforms are not verified");
 assert(existsSync("/usr/bin/sandbox-exec"));

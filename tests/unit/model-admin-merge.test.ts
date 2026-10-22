@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { ModelRuntime } from "@earendil-works/pi-coding-agent";
 import { describe, expect, it } from "vitest";
-import { ModelAdminService, mergeProviderConfigEntry, type ModelAdminHost } from "../../server/model-admin.js";
+import { ModelAdminService, mergeProviderConfigEntry, type ModelAdminHost } from "../../server/model/model-admin.js";
 import type { ServerMessage, UiModelConfigEntry, UiProviderConfig } from "../../server/protocol.js";
 
 /** 表单带上的模型行（UI 只认识这几个字段）。 */

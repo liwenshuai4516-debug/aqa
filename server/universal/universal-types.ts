@@ -3,8 +3,8 @@
  */
 
 import type { UiMessage } from "../protocol.js";
-import type { SubagentState } from "../subagents.js";
-import type { SubagentTemplate } from "../subagent-templates.js";
+import type { SubagentState } from "../agent/subagents.js";
+import type { SubagentTemplate } from "../agent/subagent-templates.js";
 
 /** 会话级累计指标与上下文占用（用于驱动底栏上下文环、Token 计数、缓存命中率与累计成本） */
 export interface UniversalConversationStats {

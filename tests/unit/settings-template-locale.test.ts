@@ -9,8 +9,8 @@ import { join } from "node:path";
 import { ClientStateStore } from "../../server/client-state.js";
 import type { ServerMessage, UiSubagentTemplate } from "../../server/protocol.js";
 import { SettingsService, type SettingsHost } from "../../server/settings-service.js";
-import { DEFAULT_TEMPLATES, SubagentTemplatesStore } from "../../server/subagent-templates.js";
-import { BUILTIN_TEMPLATES_HANT } from "../../server/subagent-templates-hant.js";
+import { DEFAULT_TEMPLATES, SubagentTemplatesStore } from "../../server/agent/subagent-templates.js";
+import { BUILTIN_TEMPLATES_HANT } from "../../server/agent/subagent-templates-hant.js";
 
 let dir: string;
 let store: ClientStateStore;

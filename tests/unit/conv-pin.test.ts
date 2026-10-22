@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { ClientSession } from "../../server/agent-service.js";
+import { ClientSession } from "../../server/agent/agent-service.js";
 import { ClientStateStore } from "../../server/client-state.js";
 
 /* 钉住（常驻运行列表）只走两处接线：setConversationPinned 改标记，

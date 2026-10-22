@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { SettingsService, type SettingsHost } from "../../server/settings-service.js";
-import { DEFAULT_PROMPT_TEMPLATE } from "../../server/prompt-composer.js";
-import type { SubagentTemplatesStore } from "../../server/subagent-templates.js";
+import { DEFAULT_PROMPT_TEMPLATE } from "../../server/prompt/prompt-composer.js";
+import type { SubagentTemplatesStore } from "../../server/agent/subagent-templates.js";
 
 const mockTemplates = {
 	list: () => [],

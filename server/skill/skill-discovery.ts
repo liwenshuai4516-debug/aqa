@@ -22,7 +22,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { basename, join } from "node:path";
-import { decodeText } from "./text-sniff.js";
+import { decodeText } from "../text-sniff.js";
 
 export interface DiscoveredSkill {
 	name: string;

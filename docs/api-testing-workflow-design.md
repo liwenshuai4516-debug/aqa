@@ -200,18 +200,18 @@ Agent 决定下一项业务动作；插件只实现固定阶段转换与条件�
 
 拟定工具职责：导入/编译工具处理格式与产物，评审工具执行机器检查并调用独立模型，执行工具核验冻结清单并调 MCP，查询工具读取检查点/结果。人工与定时入口共用执行服务，定时器无需先唤醒 Agent；只有新异常或显式分析请求才按策略加载结果分析技能。具体工具名与 schema 在实现前固定；不让模型直接编辑权威评审记录或声明运行成功。
 
-| 现有能力（代码已核对）                              | 复用方式/边界                                                                     |
-| --------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `server/skill-tool.ts`、`server/skill-discovery.ts` | 技能目录和全文按需加载；个人 Codex 技能不会自动成为 Pi 产品技能                   |
-| `server/mcp-manager.ts`、`server/mcp-bridge.ts`     | 配置、stdio/HTTP 握手、调用超时、生命周期；不再实现 MCP 客户端协议                |
-| `host.registerAgentTool`、`host.llm.complete`       | 注入业务工具和独立、无工具评审；缺少模型 provider 时明确阻塞                      |
-| `host.storage`、`host.secrets`                      | 配置与小型索引、凭据引用；不在会话/报告中保存明文 token                           |
-| 插件 UI 插槽与消息通道                              | 首期使用已有设置页/报告视图，避免新建顶层工作台                                   |
-| 现有目标模式                                        | 保留已有执行/审查机制；本功能不修改 `goal-service.ts`、不叠加另一套自动续轮控制器 |
+| 现有能力（代码已核对）                                          | 复用方式/边界                                                                     |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `server/skill/skill-tool.ts`、`server/skill/skill-discovery.ts` | 技能目录和全文按需加载；个人 Codex 技能不会自动成为 Pi 产品技能                   |
+| `server/mcp/mcp-manager.ts`、`server/mcp/mcp-bridge.ts`         | 配置、stdio/HTTP 握手、调用超时、生命周期；不再实现 MCP 客户端协议                |
+| `host.registerAgentTool`、`host.llm.complete`                   | 注入业务工具和独立、无工具评审；缺少模型 provider 时明确阻塞                      |
+| `host.storage`、`host.secrets`                                  | 配置与小型索引、凭据引用；不在会话/报告中保存明文 token                           |
+| 插件 UI 插槽与消息通道                                          | 首期使用已有设置页/报告视图，避免新建顶层工作台                                   |
+| 现有目标模式                                                    | 保留已有执行/审查机制；本功能不修改 `goal-service.ts`、不叠加另一套自动续轮控制器 |
 
 **宿主接缝的实施状态**：P0-2 已增加绑定调用身份的 `host.mcp.call`，当前只接收一次性手工批准的 fixture 引用，原始 runner 工具不对模型开放。插件 pre/post 守卫仍不能替代执行侧门禁；真实目标隔离和后续业务工作流尚未验收。见 [P0-2 证据](api-testing-evidence/P0-2.md)。
 
-建议最小新增：宿主提供绑定调用身份、server/tool allowlist、AbortSignal 的内部 MCP 调用入口，并支持测试 runner 的内部可见性；由插件执行工具核验 snapshot 后调用。该 runner 的原始执行工具不另向模型直出，避免绕过评审；按 server ID + 原始 tool name 定位，不能只依赖清洗后的名字。权限、计划/委派限制和审计与现有工具路径一致。P0-2 涉及 `server/plugin-mcp.ts`、`server/api-testing-runner.ts`、`server/plugins.ts`、`server/mcp-bridge.ts` 和 SDK，对现有协议无新增消息；P1 的生成、评审、冻结包与真实目标门禁仍需按实施计划验收。
+建议最小新增：宿主提供绑定调用身份、server/tool allowlist、AbortSignal 的内部 MCP 调用入口，并支持测试 runner 的内部可见性；由插件执行工具核验 snapshot 后调用。该 runner 的原始执行工具不另向模型直出，避免绕过评审；按 server ID + 原始 tool name 定位，不能只依赖清洗后的名字。权限、计划/委派限制和审计与现有工具路径一致。P0-2 涉及 `server/mcp/plugin-mcp.ts`、`server/api-testing-runner.ts`、`server/plugins.ts`、`server/mcp/mcp-bridge.ts` 和 SDK，对现有协议无新增消息；P1 的生成、评审、冻结包与真实目标门禁仍需按实施计划验收。
 
 测试请求不经过 `host.net.fetch`，后者的白名单并不自动约束 Newman。执行网络与文件隔离必须有部署层实测依据，不能把模型评审或关键词过滤当作沙箱。P1 仅接受声明式用例，由固定模板生成断言和变量提取脚本；不执行用户导入或模型自由编写的 JavaScript，禁止任意 `pm.sendRequest`、动态目标主机、外部脚本包和越界文件读取。请求目标、重定向及执行路径须在 P0 验证；无法约束时仅可在隔离 fixture 环境试验，不开放真实目标。发现不支持脚本即阻塞，不能静默删除后执行。取消时仅停止本 run 的专属进程，不能关闭用户共享 MCP 服务。自由 bash/外部执行权限不属于本工作流可证明的沙箱边界。
 
@@ -285,6 +285,6 @@ P0 不通过不得把“选用了成熟 MCP”当作完成；尤其不能仅用�
 - [官方 OpenAPI → Postman 转换器](https://github.com/postmanlabs/openapi-to-postman)、[Redocly CLI](https://github.com/Redocly/redocly-cli)、[Swagger 2 → OpenAPI 3](https://github.com/Mermade/oas-kit)。
 - [Apifox MCP 公开文档](https://docs.apifox.com/apifox-mcp-server)、[社区 runner 审查基线](https://github.com/shannonlal/mcp-postman/blob/e732abfa2184b6efdfff4ccea5f16f1e89faf85b/src/newman/runner.ts)。
 
-本地依据：`server/plugins.ts` 的 PluginHost、`server/mcp-bridge.ts`、`server/plugin-tool-guard.ts`、`server/skill-tool.ts`、`server/skill-discovery.ts`、SDK 自带 `docs/packages.md`、现有 `openapi-test-case-design` 技能及候选结构。个人技能不是已入库产品依赖。
+本地依据：`server/plugins.ts` 的 PluginHost、`server/mcp/mcp-bridge.ts`、`server/plugin-tool-guard.ts`、`server/skill/skill-tool.ts`、`server/skill/skill-discovery.ts`、SDK 自带 `docs/packages.md`、现有 `openapi-test-case-design` 技能及候选结构。个人技能不是已入库产品依赖。
 
 本轮完成设计更新及相关源码核对；P0–P4 是待实施验收计划，持久化、回放和定时执行均未实现。不能将本文件、现有宿主单测或第三方 README 当作接口自动化已经可用的证据。

@@ -17,7 +17,7 @@ import {
 	splitExtensionWrap,
 	type PromptComposerInputs,
 	type PromptToken,
-} from "../../server/prompt-composer.js";
+} from "../../server/prompt/prompt-composer.js";
 
 const AGENTS_CONTENT = "# AGENTS.md — pi-web-ui 项目指南\n\n详细文档按主题分拆在 docs/ 目录下。";
 

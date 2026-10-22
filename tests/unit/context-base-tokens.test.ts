@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ClientSession } from "../../server/agent-service.js";
+import { ClientSession } from "../../server/agent/agent-service.js";
 
 /** 构造用于测试 buildLightState 的假 ClientSession 上下文 */
 function createFakeSessionContext(conv: any, baseTokensVal = 10000) {

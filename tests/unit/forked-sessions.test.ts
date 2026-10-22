@@ -2,7 +2,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ClientSession } from "../../server/agent-service.js";
+import { ClientSession } from "../../server/agent/agent-service.js";
 import { ClientStateStore } from "../../server/client-state.js";
 import { filterForkedParentSessions } from "../../server/session-parser.js";
 import { SettingsService, type SettingsHost } from "../../server/settings-service.js";
@@ -103,7 +103,7 @@ describe("Fork 会话历史过滤（filterForkedParentSessions）", () => {
 describe("showForkedParentSessions 设置持久化与联动（#621）", () => {
 	const templates = {
 		list: () => [],
-	} as unknown as import("../../server/subagent-templates.js").SubagentTemplatesStore;
+	} as unknown as import("../../server/agent/subagent-templates.js").SubagentTemplatesStore;
 
 	function makeHost(store: ClientStateStore): SettingsHost & { emitted: unknown[]; filterRefreshes: number } {
 		const emitted: unknown[] = [];

@@ -12,7 +12,7 @@ import {
 	normalizeToolPromptOverrides,
 	toolPromptOverrideOf,
 	type ToolPromptSessionLike,
-} from "../../server/tool-prompt-overrides.js";
+} from "../../server/prompt/tool-prompt-overrides.js";
 
 /** 造一个 SDK 会话结构子集：注册表 + 出厂定义 + snippet/guidelines 表。 */
 function fakeSession() {

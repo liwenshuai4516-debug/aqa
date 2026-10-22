@@ -2,7 +2,7 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { expect, it } from "vitest";
-import { McpBridge } from "../../server/mcp-bridge.js";
+import { McpBridge } from "../../server/mcp/mcp-bridge.js";
 
 it("notifies a subscribed session before each reload returns so it replaces closed MCP clients", async () => {
 	const root = mkdtempSync(join(tmpdir(), "desktop-mcp-reload-"));

@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import type { ModelRuntime } from "@earendil-works/pi-coding-agent";
-import type { ProviderOAuthEventPayload, ProviderOAuthPromptPayload, ServerMessage } from "./protocol.js";
+import type { ProviderOAuthEventPayload, ProviderOAuthPromptPayload, ServerMessage } from "../protocol.js";
 
 type AuthInteraction = Parameters<ModelRuntime["login"]>[2];
 type AuthPrompt = Parameters<AuthInteraction["prompt"]>[0];

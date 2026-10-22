@@ -20,7 +20,7 @@ import {
 	normalizePageCallTimeoutMs,
 	type PageCallRequest,
 	type PageCallResult,
-} from "../../server/agent-service.js";
+} from "../../server/agent/agent-service.js";
 import { AGENT_TOOL_CATALOG, BROWSER_PAGE_TOOL_NAME, defaultDisabledAgentTools } from "../../server/tool-manager.js";
 
 /** 页面调用桥的真实实现 + 只补最小私有字段（见文件头取舍说明）。 */

@@ -13,7 +13,12 @@ import {
 } from "@earendil-works/pi-coding-agent";
 import type { ServerLang } from "./i18n.js";
 import { applyHeadTail } from "./terminals.js";
-import { BASH_DESCRIPTION, BASH_PARAMETERS, BASH_PROMPT_GUIDELINES, BASH_PROMPT_SNIPPET } from "./tool-prompts.js";
+import {
+	BASH_DESCRIPTION,
+	BASH_PARAMETERS,
+	BASH_PROMPT_GUIDELINES,
+	BASH_PROMPT_SNIPPET,
+} from "./prompt/tool-prompts.js";
 import {
 	getGlobalRemoteSshService,
 	isRemoteWorkspaceUri,
@@ -103,7 +108,7 @@ export function makeKillableBashTool(
  * 关 = 原生 SDK bash（纯进程、不开终端）；开 = 终端接管 bash（persist 决定一次性/
  * 持久）。开关因此即时生效（customTools 固定于 runtime 创建，不能在创建时二选一）。
  *
- * 提示词不在此覆盖：两条路径共用 server/tool-prompts.ts 的那一份（单源），
+ * 提示词不在此覆盖：两条路径共用 server/prompt/tool-prompts.ts 的那一份（单源），
  * 覆盖 description 正是当年终端版文案被写死却不生效的成因。
  */
 export function makeAdaptiveBashTool(

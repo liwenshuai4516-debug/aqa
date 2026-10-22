@@ -9,7 +9,7 @@
  * 从 agent-service.ts 抽出为独立模块。
  */
 import { estimateTokens } from "@earendil-works/pi-coding-agent";
-import type { AgentMessage } from "./serialize.js";
+import type { AgentMessage } from "../serialize.js";
 import {
 	DEFAULT_PROMPT_TEMPLATE,
 	renderPromptTemplate,

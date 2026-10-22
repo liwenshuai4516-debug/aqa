@@ -131,7 +131,7 @@ import {
 	PROMPT_TOKENS,
 	estimatePromptTokens,
 	isReadonlyPromptSource,
-} from "../../../server/prompt-composer.js";
+} from "../../../server/prompt/prompt-composer.js";
 import {
 	AGENT_TOOL_CATALOG,
 	CORE_BUILTIN_TOOL_NAMES,

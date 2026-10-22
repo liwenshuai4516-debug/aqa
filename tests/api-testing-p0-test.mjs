@@ -9,7 +9,7 @@ import { join, resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 import { createHash } from "node:crypto";
-import { McpClient } from "../server/mcp-bridge.ts";
+import { McpClient } from "../server/mcp/mcp-bridge.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const fixture = join(root, "tests/fixtures/api-testing-p0");

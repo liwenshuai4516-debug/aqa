@@ -28,3 +28,5 @@ npm run ui-testing:enable -- --agent-dir "$HOME/Library/Application Support/Pi A
 登记后在 Pi 当前对话执行 `/reload`，标准预设的技能页应出现 `ui-testing-workflow` 和原包 8 个阶段技能。输入 `/ui` 可选中入口，实际快捷指令为 `/skill:ui-testing-workflow`。它通过 SDK 包/扩展机制加载，无需在 Web UI 插件市场重复安装。使用旧 SDK 的服务仍须先重启。
 
 应用级可发现不代表任意目录满足正式测试条件；目标项目仍须具备原包要求的 Playwright 依赖、来源和环境数据。此接入不随全局 npm 安装或 Electron 安装包自动分发。
+
+当前项目技能入口统一在 `.pi/skills/`，项目模式登记指向该目录；应用级原入口保留兼容。详见 [能力维护指南](../../docs/capability-layout.md)。

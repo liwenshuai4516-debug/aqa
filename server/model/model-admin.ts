@@ -13,7 +13,7 @@
  */
 import { chmodSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { writeJsonAtomicSync } from "./atomic-file.js";
+import { writeJsonAtomicSync } from "../atomic-file.js";
 import type { ModelRuntime } from "@earendil-works/pi-coding-agent";
 import type {
 	ServerMessage,
@@ -21,9 +21,9 @@ import type {
 	UiProviderConfig,
 	ProviderKeyInfo,
 	UiEnrichResult,
-} from "./protocol.js";
+} from "../protocol.js";
 import { enrichBatch, type EnrichLang } from "./model-enrich.js";
-import { pick, type ServerLang } from "./i18n.js";
+import { pick, type ServerLang } from "../i18n.js";
 import { ProviderOAuthFlowManager } from "./provider-oauth-flow.js";
 
 /** ClientSession 提供给本服务的宿主能力（窄接口）。 */

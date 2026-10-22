@@ -26,9 +26,9 @@
  * 文字还原成出厂简中，库里始终是出厂简中或用户自己的文字。
  */
 import { readFileSync } from "node:fs";
-import { writeJsonAtomicSync } from "./atomic-file.js";
-import type { PromptMode } from "./client-state.js";
-import { isTraditionalLocale, type ServerLang } from "./i18n.js";
+import { writeJsonAtomicSync } from "../atomic-file.js";
+import type { PromptMode } from "../client-state.js";
+import { isTraditionalLocale, type ServerLang } from "../i18n.js";
 import { BUILTIN_TEMPLATES_HANT } from "./subagent-templates-hant.js";
 
 /**

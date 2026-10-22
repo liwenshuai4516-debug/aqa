@@ -2998,7 +2998,7 @@ export interface UiMarkerInfo {
 
 /** 单个工具的用户覆盖文案（设置页「工具」区逐工具编辑；空字段/空串 = 用默认）。
  *  三项分别对应 tool schema 的 description、系统提示词 Available tools 的 snippet、
- *  Guidelines 段的要点（见 server/tool-prompt-overrides.ts）。 */
+ *  Guidelines 段的要点（见 server/prompt/tool-prompt-overrides.ts）。 */
 export interface UiToolPromptOverride {
 	description?: string;
 	promptSnippet?: string;
@@ -3009,7 +3009,7 @@ export interface UiToolPromptOverride {
 export interface UiSettingsState {
 	promptMode: "append" | "replace";
 	customSystemPrompt: string;
-	/** 组合模板 + 各来源覆盖（见 server/prompt-composer.ts）。主会话系统提示词
+	/** 组合模板 + 各来源覆盖（见 server/prompt/prompt-composer.ts）。主会话系统提示词
 	 *  = 模板里 {{token}} 展开各来源提示词；覆盖优先于自动内容。 */
 	promptTemplate: string;
 	promptOverrides: Record<string, string>;

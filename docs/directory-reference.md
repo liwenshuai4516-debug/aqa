@@ -11,7 +11,13 @@
 
 ```
 pi-web-ui/
-├── server/                     # 后端（Node ESM，编译到 dist/server/）
+├── server/                     # 后端（Node ESM，编译到 dist/server/；完整分组见 server/README.md）
+│   ├── agent/                  # Pi 会话、守护、子代理与模板
+│   ├── model/                  # 模型/服务商配置、解析与 OAuth
+│   ├── prompt/                 # 系统/工具提示词、persona 与覆盖
+│   ├── skill/                  # 技能发现、读取与内容填充
+│   └── mcp/                    # MCP 连接、管理、热加载、插件门禁
+├── .pi/skills/                 # 项目 API/UI 技能入口（其他 .pi 配置/运行数据继续忽略）
 ├── web/                        # 前端（React + Vite，编译到 web/dist/）
 ├── bin/pi-web-ui.mjs           # CLI：前台启动 / server install|uninstall|start|stop|restart|status
 ├── desktop/                    # Electron 桌面壳（sidecar：随机空闲口起 dist/server + BrowserWindow）
@@ -26,9 +32,9 @@ pi-web-ui/
 ├── themes/                     # 内置主题（完整样式表：:root 变量 + 任意选择器/布局覆盖皆可，styles.css 只是共享基线）
 ├── make-light-theme.mjs        # 主题生成器（从 styles.css 的 :root 变量清单生成纯调色板）
 ├── plugins/api-testing/        # P0-2 最小受控 fixture 工具与专属 MCP runner（未上市场）
-├── server/plugin-mcp.ts       # 插件工具短期调用身份和内部 MCP 门禁
+├── server/mcp/plugin-mcp.ts       # 插件工具短期调用身份和内部 MCP 门禁
 ├── server/api-testing-runner.ts # 手工批准 fixture、一次性引用与运行生命周期
-├── plugins/api-testing/skills/ # P1-4 分发工作流/评审/分析技能，需项目级安装
+├── plugins/api-testing/skills/ # P1-4 分发工作流/评审/分析技能，项目入口在 .pi/skills/
 ├── tests/api-testing-model-test.mjs # P1-4 按需真实模型验收，会消耗配置模型额度
 ├── tests/api-testing-skills-test.mjs # 真实 SDK 发现与宿主加载，隔离 agentDir
 ├── plugins/api-testing/tracking.mjs # P3-2 历史问题关联与分析修订
@@ -89,10 +95,39 @@ pi-web-ui/
 
 ```
 server/
+├── agent/
+│   ├── agent-service.ts # 核心：ClientSession（每客户端一个会话组，可并行多个对话）+ AgentService
+│   ├── agent-service-daemon.ts
+│   ├── agent-formatters.ts
+│   ├── subagents.ts # 第一方子代理：统一的 subagent 工具（spawn/get_result/steer/list/stop/templates/wait_all/handoff）+ 运行态快照
+│   ├── subagent-handoff.ts
+│   ├── subagent-helpers.ts
+│   ├── subagent-templates.ts # 子代理模板库（全局 <dataDir>/subagent-templates.json；白名单语义；可选模型/思考强度，空=跟随主对话；enabled=false 对 AI 不可见）
+│   └── subagent-templates-hant.ts # 内置子代理模板的繁中（台湾用语）文案；zh-TW/zh-HK/zh-Hant 共用，仅作展示/取用视图，不回写库
+├── model/
+│   ├── model-admin.ts # 模型/服务商配置管理（含内置服务商多密钥：provider-keys.json + add/activate/remove_provider_key，模型目录复用系统默认，不复制）
+│   ├── model-resolver.ts
+│   ├── model-enrich.ts # 用公开模型目录给自定义供应商的模型行补参数
+│   └── provider-oauth-flow.ts # 见文件头注释
+├── prompt/
+│   ├── prompt-assembler.ts
+│   ├── prompt-composer.ts # 主会话系统提示词自由组合模板（{{token}} 在每次 run 前展开）
+│   ├── persona-chain.ts
+│   ├── tool-prompts.ts # bash 工具模型可见文案（description/snippet/guidelines/参数 schema）的唯一事实源（三条执行路径共用）
+│   └── tool-prompt-overrides.ts # 逐工具文案覆盖（设置→工具区「编辑文案」）：归一化 + 给会话 _toolRegistry 打 description/snippet/guidelines 补丁（出厂定义永不动，可复原）
+├── skill/
+│   ├── skill-tool.ts # 让 AI 按名取技能全文（名录 + skill 工具）
+│   ├── skill-discovery.ts
+│   └── skill-content-filler.ts
+├── mcp/
+│   ├── mcp-bridge.ts # MCP 工具桥（外部 stdio MCP 服务器的工具接入 pi 会话）
+│   ├── mcp-manager.ts
+│   ├── mcp-hot-reload.ts # mcp.json 热加载（改完即生效，不重启）
+│   ├── mcp-agent-tool.ts
+│   └── plugin-mcp.ts
 ├── index.ts                # 入口：express 静态 + /ws 端点、消息分发、心跳、优雅停机
 ├── protocol.ts             # ★ 唯一事实源：wire 协议类型（client↔server 消息）
 ├── protocol-version.ts     # wire 协议版本（新旧端互斥时顶掉旧 tab）
-├── agent-service.ts        # 核心：ClientSession（每客户端一个会话组，可并行多个对话）+ AgentService
 ├── serialize.ts            # SDK 消息 → UiMessage 序列化
 ├── text-sniff.ts           # 文件预览纯函数（previewKind/looksLikeText/decodeText/sniffImageMime/hexDump/countLines）
 ├── queue-utils.ts          # 排队消息纯函数（removeFirstOccurrence：只移除第一条匹配，重复文本不连带删除）
@@ -117,7 +152,6 @@ server/
 ├── edit-soft-tool.ts       # 独立宽松编辑工具 edit_soft（行核心匹配，忽略缩进差异；开关走统一工具 tab）
 ├── read-tool.ts            # 覆盖内置 read：路径是目录时列目录条目（复用 SDK ls 的口径，其余原样转发内置；行为开关 readDirEnabled 在设置「工具」页，不入 AGENT_TOOL_CATALOG）
 ├── present-files-tool.ts   # ★ AI 展示文件（present_files）：只读探测 stat/未知扩展嗅探/文本摘录 → 结构化 items 走 toolResult 的 details → 前端预览卡片；不自动打开任何窗口
-├── skill-tool.ts           # 让 AI 按名取技能全文（名录 + skill 工具）
 ├── claim-files-tool.ts     # 文件认领（claim_files）：并行冲突的事前打招呼
 ├── claim-store.ts          # 文件认领表（claim store）+ 触碰 sidecar
 ├── conversation-read-tool.ts # 让 AI（含子代理）读取别的对话（list 看运行+历史，read 分页读）
@@ -131,18 +165,9 @@ server/
 ├── schedule-agent-tool.ts  # 把内置调度器暴露给 Agent（issue #193）
 ├── scheduler-tasks.ts      # 内置定时任务调度（issue #184）：任务 CRUD + cron/间隔触发 + 无头执行
 ├── tool-info.ts            # 工具定义说明（工具卡右键 → 显示工具详细信息）：按名现取 SDK / DSH 运行时的工具定义 → `tool_info`（定义是大对象，不进快照；DSH 拿不到时回 `unsupported`）
-├── tool-prompt-overrides.ts # 逐工具文案覆盖（设置→工具区「编辑文案」）：归一化 + 给会话 _toolRegistry 打 description/snippet/guidelines 补丁（出厂定义永不动，可复原）
 ├── load-tools-tool.ts      # 工具延迟加载入口（load_tools）：目录（名字 + 一行摘要）在系统提示词里，模型按需把参数 schema 拉进本对话
-├── tool-prompts.ts         # bash 工具模型可见文案（description/snippet/guidelines/参数 schema）的唯一事实源（三条执行路径共用）
-├── subagents.ts            # 第一方子代理：统一的 subagent 工具（spawn/get_result/steer/list/stop/templates/wait_all/handoff）+ 运行态快照
-├── subagent-templates.ts   # 子代理模板库（全局 <dataDir>/subagent-templates.json；白名单语义；可选模型/思考强度，空=跟随主对话；enabled=false 对 AI 不可见）
-├── subagent-templates-hant.ts # 内置子代理模板的繁中（台湾用语）文案；zh-TW/zh-HK/zh-Hant 共用，仅作展示/取用视图，不回写库
 ├── wait-subscription-scan.ts # 挂起 wake 订阅扫描（保留带 pending 子代理 wake 的对话）
 ├── slash-commands.ts       # 斜杠命令（NATIVE_COMMANDS 内置命令拦截执行 + 目录推送）
-├── prompt-composer.ts      # 主会话系统提示词自由组合模板（{{token}} 在每次 run 前展开）
-├── model-admin.ts          # 模型/服务商配置管理（含内置服务商多密钥：provider-keys.json + add/activate/remove_provider_key，模型目录复用系统默认，不复制）
-├── model-enrich.ts         # 用公开模型目录给自定义供应商的模型行补参数
-├── provider-oauth-flow.ts  # 见文件头注释
 ├── resolve-global-sdk.ts   # 优先用全局/祖先那份 pi SDK 的解析钩子（issue #260）
 ├── sdk-origin.ts           # 本进程实际加载的是哪份 pi SDK 及被遮蔽的副本（issue #260）
 ├── update-check.ts         # 全源更新检查（本体 / pi core / DIRECT 扩展）
@@ -173,8 +198,6 @@ server/
 ├── plugin-schedule.ts      # 插件定时任务的 cron 解析与持久化（host.schedule 的底层）
 ├── plugin-tool-guard.ts    # 插件工具拦截扩展点（pre + post，只覆盖已接管的 bash/read）
 ├── plugin-updater.ts       # 插件更新辅助（备份/回滚 + 远端 sha 对比）
-├── mcp-bridge.ts           # MCP 工具桥（外部 stdio MCP 服务器的工具接入 pi 会话）
-├── mcp-hot-reload.ts       # mcp.json 热加载（改完即生效，不重启）
 ├── icon-svg.ts             # 插件内联 SVG 图标（manifest `iconSvg`）校验与规范化
 ├── host-metrics.ts         # 见文件头注释
 ├── http-proxy.ts           # 代理设置透传（~/.pi/agent/settings.json + 环境变量）

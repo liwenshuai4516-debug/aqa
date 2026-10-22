@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { ClientSession } from "../../server/agent-service.js";
+import { ClientSession } from "../../server/agent/agent-service.js";
 
 describe("editMessage 纯附件提问支持（#443）", () => {
 	it("空文本且无附件：发出 warning notice 并提前返回", async () => {

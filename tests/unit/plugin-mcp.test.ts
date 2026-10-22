@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { callPluginMcp, createPluginInvocation, type PluginToolContext } from "../../server/plugin-mcp.js";
-import { pluginToolToDefinition } from "../../server/agent-formatters.js";
-import { ClientSession } from "../../server/agent-service.js";
+import { callPluginMcp, createPluginInvocation, type PluginToolContext } from "../../server/mcp/plugin-mcp.js";
+import { pluginToolToDefinition } from "../../server/agent/agent-formatters.js";
+import { ClientSession } from "../../server/agent/agent-service.js";
 
 const identity: PluginToolContext = {
 	clientId: "client",

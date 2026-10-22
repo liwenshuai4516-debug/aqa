@@ -4,7 +4,7 @@
  * 不给元数据；只增不减——端点明确给过的正信号保留，手填合并时只补缺。
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ModelAdminService } from "../../server/model-admin.js";
+import { ModelAdminService } from "../../server/model/model-admin.js";
 
 function stubModels(payload: unknown): void {
 	vi.stubGlobal(

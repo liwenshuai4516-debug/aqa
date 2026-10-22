@@ -8,10 +8,10 @@ import {
 	installMcpServer,
 	listAllMcpServers,
 	deleteMcpServer,
-} from "../../server/mcp-manager.js";
-import { makeMcpManageTool } from "../../server/mcp-agent-tool.js";
+} from "../../server/mcp/mcp-manager.js";
+import { makeMcpManageTool } from "../../server/mcp/mcp-agent-tool.js";
 import { PluginManager, type PluginHost } from "../../server/plugins.js";
-import type { McpBridge } from "../../server/mcp-bridge.js";
+import type { McpBridge } from "../../server/mcp/mcp-bridge.js";
 
 describe("deriveMcpServerName", () => {
 	it("从 npm 包名、URL 或命令推导合法名称", () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { ClientSession } from "../../server/agent-service.js";
+import { ClientSession } from "../../server/agent/agent-service.js";
 
 /* #579：用户显式 ✕ 移出「刚聊过、现已空闲」的对话不得被 promptedSinceActive
  * 拦下（那是 displaceActive 自动置换的保留依据，不是移出意图的否决）。

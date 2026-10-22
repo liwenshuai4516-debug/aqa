@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getMaxOpenConversations, MAX_OPEN_CONVERSATIONS } from "../../server/agent-formatters.js";
+import { getMaxOpenConversations, MAX_OPEN_CONVERSATIONS } from "../../server/agent/agent-formatters.js";
 
 describe("getMaxOpenConversations", () => {
 	it("默认返回 MAX_OPEN_CONVERSATIONS (8)，支持 PI_WEB_MAX_OPEN_CONVERSATIONS 覆盖", () => {

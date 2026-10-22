@@ -5,8 +5,8 @@
 > 事实源：SDK `dist/core/system-prompt.js`（`buildSystemPrompt`）、`dist/core/resource-loader.js`
 > （`discoverSystemPromptFile` / `loadProjectContextFiles` / override 重放）、
 > `dist/core/agent-session.js`（`_rebuildSystemPrompt`）、`dist/core/extensions/runner.js`
-> （`before_agent_start` 链式替换）；pi-web-ui 侧在 `server/prompt-composer.ts`（纯函数引擎）、
-> `server/agent-service.ts`（集成）、`web/src/components/SettingsModal.tsx`（设置 UI）。
+> （`before_agent_start` 链式替换）；pi-web-ui 侧在 `server/prompt/prompt-composer.ts`（纯函数引擎）、
+> `server/agent/agent-service.ts`（集成）、`web/src/components/SettingsModal.tsx`（设置 UI）。
 
 ## 一、总览：最终提示词的组装顺序
 
@@ -20,7 +20,7 @@
 
 ## 二、组合模板与来源 token
 
-    token 列表（server/prompt-composer.ts 的 PROMPT_TOKENS，默认顺序即自然拼装顺序）：
+    token 列表（server/prompt/prompt-composer.ts 的 PROMPT_TOKENS，默认顺序即自然拼装顺序）：
         {{soul}}        agent 人物设定（有 SYSTEM.md 时其内容，否则内置默认）
         {{tools}}       Available tools 列表 + “In addition…” 句
         {{guidelines}}  Guidelines：文件探索引导 + 各工具 promptGuidelines + 固定两行
@@ -55,7 +55,7 @@
     Pi 包路径（README.md / docs / examples）：随安装位置解析一次
         （require.resolve("@earendil-works/pi-coding-agent/package.json")）。
 
-## 四、引擎（server/prompt-composer.ts，纯函数、浏览器可复用）
+## 四、引擎（server/prompt/prompt-composer.ts，纯函数、浏览器可复用）
 
     resolveSectionTexts(inputs) → 每 token 的自动内容
     renderPromptTemplate(template, texts, overrides) → {{token}} 替换
@@ -65,7 +65,7 @@
     DEFAULT_PROMPT_TEMPLATE / PROMPT_TOKENS 供设置 UI（token 插入、恢复默认）。
     单测：tests/unit/prompt-composer.test.ts。
 
-## 五、运行时集成（server/agent-service.ts）
+## 五、运行时集成（server/agent/agent-service.ts）
 
     每个会话 runtime 注册隐藏内联扩展 <inline:pi-webui-persona>：
         before_agent_start（每个 agent run 前）—
@@ -125,13 +125,13 @@
     到该子代理的追加段。模板会话不套主会话组合模板（角色由模板定义）。主会话
     组合模板不影响模板派生的子代理。
     另外两个模板维度与提示词无关，在派发时（spawnSubagentConversation）套用：
-    model（provider/id）与 thinkingLevel（off…max，见 server/subagent-templates.ts
+    model（provider/id）与 thinkingLevel（off…max，见 server/agent/subagent-templates.ts
     的 THINKING_LEVELS）。优先级：显式 model 参数 > 模板 model > 设置面板子代理
     默认模型 > 跟随派发会话当前模型；thinkingLevel 无显式参数，模板空值 = 跟随
     派发会话当前强度（session.thinkingLevel）。两者都在换模型之后套用，
     setThinkingLevel 会按模型能力收敛（reasoning:false → off，xhigh/max 需
     thinkingLevelMap），不传 persist，只影响该子代理会话。
-    内置模板在 server/subagent-templates.ts 的 DEFAULT_TEMPLATES（含 oh-my-pi
+    内置模板在 server/agent/subagent-templates.ts 的 DEFAULT_TEMPLATES（含 oh-my-pi
     specialist 系列：oracle/librarian/explore/metis/momus/multimodal-looker/
     sisyphus-junior）；老用户已有文件时缺失的内置模板一次性补齐（sidecar
     subagent-templates.seeded.json 记已播种名单，删后不再复活）。
@@ -149,7 +149,7 @@
     设置（client-state.json / 协议 UiSettingsState）：
         delegate_task: 结构化派单工具（server/delegate-task.ts），六段必填 + 服务端校验
         skillsFullText: string[]        skill 全文注入名单（默认空 = 名录模式）
-    生效点（server/agent-service.ts）：
+    生效点（server/agent/agent-service.ts）：
         before_agent_start 主会话分支 — SDK 拼好的提示词（或组合模板渲染结果）
         delegate 六段拼装 + 校验打回（见 server/delegate-task.ts 的 validateDelegation）。
         composeInputs — skillsFullText 名单非空时 fillSkillContents() 最好努力读名单里
@@ -162,8 +162,8 @@
 
 ## 相关源码定位
 
-    - pi-web-ui：server/prompt-composer.ts（token/引擎/默认模板）、
-      server/agent-service.ts（override + 内联扩展 + 渲染预览）、
+    - pi-web-ui：server/prompt/prompt-composer.ts（token/引擎/默认模板）、
+      server/agent/agent-service.ts（override + 内联扩展 + 渲染预览）、
       server/settings-service.ts / client-state.ts（设置持久化与迁移）、
       server/protocol.ts（UiSettingsState 字段）、web/src/components/SettingsModal.tsx
     - SDK：dist/core/system-prompt.js（buildSystemPrompt 默认拼装）、

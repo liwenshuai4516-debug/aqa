@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { PlanManager } from "../../server/plan-manager.js";
 import type { PlanStep } from "../../server/protocol.js";
-import { makePlanUpdateTool } from "../../server/agent-service.js";
+import { makePlanUpdateTool } from "../../server/agent/agent-service.js";
 import { readPlanFromSession } from "../../server/permission-preset.js";
 
 describe("结构化任务计划状态机与看板管理 (PlanManager / Plan Mode)", () => {
@@ -135,7 +135,8 @@ describe("结构化任务计划状态机与看板管理 (PlanManager / Plan Mode
 						id: "step-2",
 						title: "修复并添加测试",
 						status: "in_progress",
-						description: "Files touched: server/agent-service.ts; Rollback: git checkout server/agent-service.ts",
+						description:
+							"Files touched: server/agent/agent-service.ts; Rollback: git checkout server/agent/agent-service.ts",
 					},
 				],
 			},

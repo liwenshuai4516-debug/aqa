@@ -13,9 +13,9 @@ import {
 	readProviderKeysJson,
 	resolveProviderCredential,
 	listCustomModelsFromConfig,
-} from "../../server/model-resolver.js";
+} from "../../server/model/model-resolver.js";
 import { ClaudeCodeDriver } from "../../server/universal/drivers/claude-code.js";
-import { ModelAdminService } from "../../server/model-admin.js";
+import { ModelAdminService } from "../../server/model/model-admin.js";
 
 describe("model-resolver", () => {
 	let testAgentDir: string;

@@ -4,7 +4,7 @@ import { createServer as httpServer } from "node:http";
 import { mkdtempSync, mkdirSync, writeFileSync, cpSync, realpathSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { McpClient } from "../server/mcp-bridge.ts";
+import { McpClient } from "../server/mcp/mcp-bridge.ts";
 import { prepareApiFixtureIsolation } from "../server/api-testing-isolation.ts";
 import { startApiTargetRelay } from "../server/api-testing-relay.ts";
 const runtime = realpathSync(

@@ -15,7 +15,7 @@ import {
 	readModelsJson,
 	resolveProviderCredential,
 	isProtocolSupportedByEngine,
-} from "../model-resolver.js";
+} from "../model/model-resolver.js";
 import { loadDurablePeerModule } from "./durable-loader.js";
 
 export interface DurableModelInfo {

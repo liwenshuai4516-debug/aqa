@@ -19,7 +19,7 @@
 import { createServer, createConnection, type Server, type Socket } from "node:net";
 import { chmodSync, existsSync, rmSync } from "node:fs";
 import { join } from "node:path";
-import type { AgentService } from "./agent-service.js";
+import type { AgentService } from "./agent/agent-service.js";
 import type { UiServiceInfo } from "./protocol.js";
 
 /** 探测既有 socket 的超时：活实例对 connect 的响应是内核级的，300ms 足够。 */

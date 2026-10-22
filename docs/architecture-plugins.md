@@ -67,7 +67,7 @@
 > 并行任务在 `server/plugins.ts` 加宿主方法本体、在 `web/` 加渲染（plugin-host v8、
 > 新 slot/kind、messageWidget）；本节只定「调什么、要什么权限、拿不到回什么」。
 > 接线位置：`server/index.ts`「插件扩展点 v2」块（`(pm as any).xxx` 防御性注入，
-> PluginManager 无该字段时赋值无害）+ `server/agent-service.ts` 的 `*ForPlugins`
+> PluginManager 无该字段时赋值无害）+ `server/agent/agent-service.ts` 的 `*ForPlugins`
 > 只读方法（复用现有逻辑组装数据，不 emit 不改状态）。DSH 引擎无这些方法，
 > 一律走「无注入回退」列，绝不抛错。
 
@@ -306,15 +306,15 @@ slot 框架的原则是「插件声明、宿主渲染」——插件碰不到宿
 设计取舍：限制的不是**能力**（授权后就是完整 DOM），而是**谁可以**——用户在设置面板
 点一次头。服务端 `index.mjs` 本来就是完整 Node 可信代码，不在此门禁内。
 
-## MCP 工具桥（server/mcp-bridge.ts）
+## MCP 工具桥（server/mcp/mcp-bridge.ts）
 
-受控内部执行接缝见 `server/plugin-mcp.ts`：pi 插件工具适配器注入短期身份，`host.mcp.call(context, request, signal)` 在工具权限、原会话模式及插件生命周期内调用私有提供者。当前有 `server/api-testing-runner.ts` 的受控 fixture 工作流与一次性批准路径（P1-3）；工作流评审经宿主 llm 权限/模型范围包装，不加入下述常规 MCP 注册表；不是任意 call 或 OS 沙箱。P2-1 资产位于宿主 `<dataDir>/api-testing/assets`，批准由受控工作流发布；存储根不对模型开放任意路径覆盖。取消后由 `McpClient.closeAndWait()` 观察实际退出才释放项目锁。详见 [P0-2 验收](api-testing-evidence/P0-2.md) 和 [SDK](../plugin-sdk/README.md)。
+受控内部执行接缝见 `server/mcp/plugin-mcp.ts`：pi 插件工具适配器注入短期身份，`host.mcp.call(context, request, signal)` 在工具权限、原会话模式及插件生命周期内调用私有提供者。当前有 `server/api-testing-runner.ts` 的受控 fixture 工作流与一次性批准路径（P1-3）；工作流评审经宿主 llm 权限/模型范围包装，不加入下述常规 MCP 注册表；不是任意 call 或 OS 沙箱。P2-1 资产位于宿主 `<dataDir>/api-testing/assets`，批准由受控工作流发布；存储根不对模型开放任意路径覆盖。取消后由 `McpClient.closeAndWait()` 观察实际退出才释放项目锁。详见 [P0-2 验收](api-testing-evidence/P0-2.md) 和 [SDK](../plugin-sdk/README.md)。
 
 读取 `<dataDir>/mcp.json` 启动外部 MCP 服务器（stdio、换行分隔 JSON-RPC，零三方依赖；`{servers:{名:{command,args,cwd,env}}}`），握手 initialize→initialized→tools/list→tools/call 后把每个远端工具适配成 PluginAgentTool（名字归一化 sanitizeToolName），并入 plugin.d.ts 的 pluginToolsProvider（与插件工具同一 customTools 管线）。单服务器失败隔离（rejectAll + 日志，不炸进程）；dispose 时 kill 子进程；请求按 id 匹配 + 超时看门狗。
 
 **子进程生命周期与自愈**：进程意外退出（OOM / 被外部 kill / 自己崩）后不永久失效 —— `McpClient.call()` 发现子进程已死就先**惰性重启**（重新 spawn + initialize 握手 + tools/list）再发调用；显式 `close()` 之后才永久停用（不复活）。惰性而非「退出即后台重启」是刻意的：配置写错的服务器只会在真被调用时试一次，不会空转拉进程（重启循环天然受调用频率约束）。三条不变量：并发调用共享同一次重连（`starting` promise；先判 `starting` 再判 `child`，否则第二个调用会抢在 initialize 应答前发 tools/call）、重启过程中被 close() 则回收刚启动的进程不留孤儿、启动/握手失败也回收半启动进程并让调用方拿到明确错误（`服务器进程已退出且自动重启失败：<根因>`，替代原来挂满超时的泛化报错）。重启后 `McpClient.tools` 重新拉取。
 
-**配置热加载（server/mcp-hot-reload.ts）**：保存 `<dataDir>/mcp.json` 即生效，不必再重启服务。启动时 `McpBridge.load()` 照旧只跑一次，之后由这条监视线接管（`index.ts` 装配：`reload → mcpBridge.reload()`、`onToolsChanged → service.applyPluginAgentTools()`，后者就是「Bridge 层工具列表热刷新」那一半 —— `syncPluginToolsIntoSession` 按名字差集注入/移除，已有会话与新建会话都跟得上）。四条不变量：①**内容没变就不动任何子进程** —— 指纹按规范化快照（`mcpServerSnapshot`：只看 command/args/cwd/env/protocolVersion，env 键序与服务器顺序无关），编辑器保存、重排键、改缩进都不触发重启；②**只换规格真变了的服务器** —— `McpBridge.reload()` 返回 `{kept, started, stopped, failed, servers, tools}`，规格没变的沿用原实例（改一个不连带重启其它服务器），被移除/替换的旧实例最后才 close，不留孤儿；③**新规格起不来就保留旧实例**，配置写坏不等于把还能用的工具一起下线；④**JSON 解析失败只记日志 + 一条 warning 提示、保留在跑的服务器**（保存过程中的半写状态很常见），而**删掉 `mcp.json` 是有意清空全部服务器**，照常应用 —— 两种「没有配置」的语义刻意分开。监视用 `fs.watch`（`persistent: false`，不吊住进程），目录还不存在 / 网络盘不支持时自动回落到 2s 轮询。
+**配置热加载（server/mcp/mcp-hot-reload.ts）**：保存 `<dataDir>/mcp.json` 即生效，不必再重启服务。启动时 `McpBridge.load()` 照旧只跑一次，之后由这条监视线接管（`index.ts` 装配：`reload → mcpBridge.reload()`、`onToolsChanged → service.applyPluginAgentTools()`，后者就是「Bridge 层工具列表热刷新」那一半 —— `syncPluginToolsIntoSession` 按名字差集注入/移除，已有会话与新建会话都跟得上）。四条不变量：①**内容没变就不动任何子进程** —— 指纹按规范化快照（`mcpServerSnapshot`：只看 command/args/cwd/env/protocolVersion，env 键序与服务器顺序无关），编辑器保存、重排键、改缩进都不触发重启；②**只换规格真变了的服务器** —— `McpBridge.reload()` 返回 `{kept, started, stopped, failed, servers, tools}`，规格没变的沿用原实例（改一个不连带重启其它服务器），被移除/替换的旧实例最后才 close，不留孤儿；③**新规格起不来就保留旧实例**，配置写坏不等于把还能用的工具一起下线；④**JSON 解析失败只记日志 + 一条 warning 提示、保留在跑的服务器**（保存过程中的半写状态很常见），而**删掉 `mcp.json` 是有意清空全部服务器**，照常应用 —— 两种「没有配置」的语义刻意分开。监视用 `fs.watch`（`persistent: false`，不吊住进程），目录还不存在 / 网络盘不支持时自动回落到 2s 轮询。
 
 **工具结果的 content 块按类型映射**（以前只拼 `type==="text"`，截图/图表类工具一律返回空串）：`image` 块原样透传为 SDK 的 `ImageContent`（`{type,data,mimeType}`，进会话后由 SDK 的 `normalizeToolResultImages` 统一缩放，超限图不会让 provider 整段报错）；文本型 `resource`（`resource.text`，filesystem 类 MCP 的 read_text_file 走这条）当文本透传；blob（PDF 等）与 audio 退化为「mimeType + 约 N 字节，无法内联」的提示（SDK 内容联合只有 text|image|thinking|toolCall，没有 blob 载体）；纯文本结果仍是拼接字符串（老形状不破坏既有调用方）。注意 Web UI 的工具卡按既有行为只渲染文本（工具结果里的图片在 `serialize.ts` 里是 `[image result]`），模型上下文不受影响。
 

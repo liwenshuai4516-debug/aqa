@@ -10,9 +10,14 @@ import {
 	relayApiCollection,
 	startApiTargetRelay,
 } from "./api-testing-relay.js";
-import { McpClient } from "./mcp-bridge.js";
+import { McpClient } from "./mcp/mcp-bridge.js";
 import { pathToFileURL } from "node:url";
-import type { PluginApiScheduleHost, PluginModelComplete, PluginMcpRequest, PluginToolContext } from "./plugin-mcp.js";
+import type {
+	PluginApiScheduleHost,
+	PluginModelComplete,
+	PluginMcpRequest,
+	PluginToolContext,
+} from "./mcp/plugin-mcp.js";
 
 const sha256 = (bytes: string | Buffer): string => createHash("sha256").update(bytes).digest("hex");
 const readJson = (path: string): Record<string, any> => JSON.parse(readFileSync(path, "utf8"));

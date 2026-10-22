@@ -8,7 +8,7 @@
  * （全字段 + reasoning 布尔值，4.7MB，懒加载 + 24h 缓存）。
  * 纯函数 + 可注入的抓取层（fetchFn/pageFetch），单测覆盖零网络。
  */
-import type { UiEnrichResult } from "./protocol.js";
+import type { UiEnrichResult } from "../protocol.js";
 
 /** 目录里归一化后的一个模型（已抹平两源字段差异）。 */
 export interface CatalogModel {

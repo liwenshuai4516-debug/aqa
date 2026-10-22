@@ -41,7 +41,7 @@ export interface DangerousCheckResult {
 	hits?: RuleHitDetail[];
 }
 
-/** 本对话的审批放行策略（仅内存；挂在 Conversation 上，见 server/agent-service.ts）。 */
+/** 本对话的审批放行策略（仅内存；挂在 Conversation 上，见 server/agent/agent-service.ts）。 */
 export interface ApprovalPolicy {
 	/** 本对话「全部允许审批」（后续高危操作不再询问）。 */
 	allowAll: boolean;

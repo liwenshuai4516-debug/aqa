@@ -26,7 +26,12 @@ import { spawn, type IPty } from "node-pty";
 import { defineTool, type ToolDefinition } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
 import type { CommandDef, ServerMessage, TerminalInfo } from "./protocol.js";
-import { BASH_DESCRIPTION, BASH_PARAMETERS, BASH_PROMPT_GUIDELINES, BASH_PROMPT_SNIPPET } from "./tool-prompts.js";
+import {
+	BASH_DESCRIPTION,
+	BASH_PARAMETERS,
+	BASH_PROMPT_GUIDELINES,
+	BASH_PROMPT_SNIPPET,
+} from "./prompt/tool-prompts.js";
 import { pick, type ServerLang } from "./i18n.js";
 import {
 	getGlobalRemoteSshService,

@@ -23,8 +23,8 @@ import {
 	resolveProviderCredential,
 	listCustomModelsFromConfig,
 	isModelProtocolSupportedByEngine,
-} from "../../model-resolver.js";
-import { discoverDiskSkills } from "../../skill-discovery.js";
+} from "../../model/model-resolver.js";
+import { discoverDiskSkills } from "../../skill/skill-discovery.js";
 
 export interface ClaudeCodeDriverOptions {
 	/** 自定义 claude 执行命令路径（默认 "claude"） */

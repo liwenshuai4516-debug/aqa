@@ -5,7 +5,7 @@
  *    post 合并与封顶 / 超时弃权 / 参数封存。
  * B. 宿主接线（真实 `PluginManager` + 临时 plugins 目录）：`tools` 能力门控、
  *    pre 首个阻断胜出 + 抛错弃权、post 脱敏合并 + 抛错跳过、反激活后守卫消失。
- * C. `withToolGuard` 包装（`server/agent-service.ts`）：deny 跳过真执行、
+ * C. `withToolGuard` 包装（`server/agent/agent-service.ts`）：deny 跳过真执行、
  *    post 换正文、无 hook 时直通。
  */
 import { describe, expect, it, beforeEach, afterEach, vi } from "vitest";
@@ -23,7 +23,7 @@ import {
 	GUARD_CONTEXT_CAP,
 } from "../../server/plugin-tool-guard.js";
 import { PluginManager, type PluginHost } from "../../server/plugins.js";
-import { withToolGuard } from "../../server/agent-service.js";
+import { withToolGuard } from "../../server/agent/agent-service.js";
 
 // ---------------------------------------------------------------------------
 // A. 纯函数

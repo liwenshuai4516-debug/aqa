@@ -18,8 +18,8 @@ import { spawn, type ChildProcess } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
-import type { PluginAgentTool } from "./plugins.js";
-import type { UiMcpToolInfo } from "./protocol.js";
+import type { PluginAgentTool } from "../plugins.js";
+import type { UiMcpToolInfo } from "../protocol.js";
 
 /** 展开字符串中的 ${VAR_NAME} 环境变量占位符。 */
 export function expandEnvVars(val: string): string {

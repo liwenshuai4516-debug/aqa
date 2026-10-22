@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { ClientSession } from "../../server/agent-service.js";
+import { ClientSession } from "../../server/agent/agent-service.js";
 import { DEFAULT_COMPACTION_RESERVE_TOKENS } from "../../server/soft-cap.js";
 
 /** 不起 server：伪造 settingsSvc + convs，直接调原型方法验覆盖逻辑。

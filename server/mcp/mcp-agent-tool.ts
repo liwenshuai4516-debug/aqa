@@ -10,10 +10,10 @@
 
 import { defineTool, type ToolDefinition } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
-import { pick, type ServerLang } from "./i18n.js";
-import { MCP_MANAGE_TOOL_NAME } from "./tool-manager.js";
+import { pick, type ServerLang } from "../i18n.js";
+import { MCP_MANAGE_TOOL_NAME } from "../tool-manager.js";
 import type { McpCheckResult, McpInstallResult, McpInstallSpec } from "./mcp-manager.js";
-import type { McpScope, UiMcpServer } from "./protocol.js";
+import type { McpScope, UiMcpServer } from "../protocol.js";
 
 export interface McpManageToolHost {
 	listServers(): { servers: UiMcpServer[]; globalPath: string; projectPath: string };

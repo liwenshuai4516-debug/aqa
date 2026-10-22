@@ -8,8 +8,8 @@
  * 从 agent-service.ts 抽出为独立模块。
  */
 import { readFileSync, statSync } from "node:fs";
-import { decodeText } from "./text-sniff.js";
-import { normalizeSkillList } from "./client-state.js";
+import { decodeText } from "../text-sniff.js";
+import { normalizeSkillList } from "../client-state.js";
 
 export function fillSkillContents(
 	skills: { name: string; description: string; filePath: string }[],

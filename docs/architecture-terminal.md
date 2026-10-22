@@ -66,7 +66,7 @@ bash 工具始终覆盖 SDK 内置 bash，并按设置开关 `terminalBash`（�
 
 > 注意：`persist`/`head`/`tail` 始终出现在 bash 工具的参数 schema 里（双实现共用一份），关时 `persist` 被忽略，`head`/`tail` 仍生效。
 >
-> **提示词单源**：description / promptSnippet / promptGuidelines / 参数说明不在这几条路径里各写一份 —— 唯一事实源是 `server/tool-prompts.ts`，由 `makeKillableBashTool`（同时也是参数 schema 的宿主）、`makeTerminalBashTool`、`makeAdaptiveBashTool` 共同取用。`makeAdaptiveBashTool` 只覆盖 `execute`（分流）。历史上它额外覆盖 description，于是终端那份文案整段写死却永不发送 —— 一份会持续漂移的死副本（“prefer head/tail over piping” 曾只写在它里面）。
+> **提示词单源**：description / promptSnippet / promptGuidelines / 参数说明不在这几条路径里各写一份 —— 唯一事实源是 `server/prompt/tool-prompts.ts`，由 `makeKillableBashTool`（同时也是参数 schema 的宿主）、`makeTerminalBashTool`、`makeAdaptiveBashTool` 共同取用。`makeAdaptiveBashTool` 只覆盖 `execute`（分流）。历史上它额外覆盖 description，于是终端那份文案整段写死却永不发送 —— 一份会持续漂移的死副本（“prefer head/tail over piping” 曾只写在它里面）。
 
 ### 设置开下的 `persist` 语义
 

@@ -8,7 +8,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { ExtensionContext } from "@earendil-works/pi-coding-agent";
-import { AgentService, sameCwd } from "../../server/agent-service.js";
+import { AgentService, sameCwd } from "../../server/agent/agent-service.js";
 import { SchedulerStore, sameSessionFile } from "../../server/scheduler-tasks.js";
 import { makeScheduleTool, parseScheduleSpec, type ScheduleToolHost } from "../../server/schedule-agent-tool.js";
 import { normalizeSchedulerInput } from "../../server/scheduler-tasks.js";

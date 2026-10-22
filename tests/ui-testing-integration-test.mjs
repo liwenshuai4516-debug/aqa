@@ -38,6 +38,9 @@ try {
 	);
 	await mkdir(target);
 	await symlink(join(repo, "node_modules"), join(target, "node_modules"), "junction");
+	await cp(join(repo, ".pi/skills/ui-testing-workflow"), join(project, ".pi/skills/ui-testing-workflow"), {
+		recursive: true,
+	});
 	await mkdir(join(target, "qa/ui"), { recursive: true });
 	await writeFile(
 		join(target, "qa/ui/seed.spec.ts"),

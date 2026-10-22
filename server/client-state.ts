@@ -12,7 +12,7 @@ import { dirname, isAbsolute, resolve } from "node:path";
 import { writeJsonAtomicSync } from "./atomic-file.js";
 import { normalizeSoftCapByModel, normalizeSoftCapTokens } from "./soft-cap.js";
 import { deriveLegacy, legacyToDisabled, normalizeDisabledAgentTools } from "./tool-manager.js";
-import { normalizeToolPromptOverrides, type ToolPromptOverrideMap } from "./tool-prompt-overrides.js";
+import { normalizeToolPromptOverrides, type ToolPromptOverrideMap } from "./prompt/tool-prompt-overrides.js";
 import { UI_SLOTS } from "./plugin-ui-slots.js";
 import type { EngineId, UiAlign, UiLayoutPrefs, UiSlotId } from "./protocol.js";
 
@@ -269,14 +269,14 @@ export function normalizeCodemodeInlineBudget(v: unknown): number {
 export interface ClientSettings {
 	promptMode: PromptMode;
 	customSystemPrompt: string;
-	/** 组合模板（主会话系统提示词 = 自由拼装 {{token}}，见 server/prompt-composer.ts）。
+	/** 组合模板（主会话系统提示词 = 自由拼装 {{token}}，见 server/prompt/prompt-composer.ts）。
 	 *  空 = 默认模板（全部自动段按自然顺序）；promptMode/customSystemPrompt 为
 	 *  遗留字段（旧存档迁移到 overrides，DSH 仍共用存储）。 */
 	promptTemplate: string;
 	/** 每个来源 token 的独立覆盖文本（空串/缺省 = 用该来源的自动内容）。 */
 	promptOverrides: Record<string, string>;
 	/** 逐工具文案覆盖（工具名 → description/promptSnippet/promptGuidelines；
-	 *  缺省 = 全部默认，见 server/tool-prompt-overrides.ts）。 */
+	 *  缺省 = 全部默认，见 server/prompt/tool-prompt-overrides.ts）。 */
 	toolPromptOverrides: ToolPromptOverrideMap;
 	disabledSkills: string[];
 	disabledExtensions: string[];

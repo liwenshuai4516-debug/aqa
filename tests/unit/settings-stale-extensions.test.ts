@@ -9,7 +9,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { ClientStateStore } from "../../server/client-state.js";
 import { SettingsService, type SettingsHost } from "../../server/settings-service.js";
-import { SubagentTemplatesStore } from "../../server/subagent-templates.js";
+import { SubagentTemplatesStore } from "../../server/agent/subagent-templates.js";
 import type { ServerMessage } from "../../server/protocol.js";
 
 let dir: string;

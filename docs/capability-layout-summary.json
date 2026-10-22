@@ -1,0 +1,517 @@
+{
+	"date": "2026-10-22",
+	"baselineCommit": "b791d7e966fe0327bf80d82b212ff55626274d4b",
+	"scope": "Directory and reference organization only; project testing skill discovery; no production/business/model execution",
+	"moves": {
+		"server/agent-service.ts": "server/agent/agent-service.ts",
+		"server/agent-service-daemon.ts": "server/agent/agent-service-daemon.ts",
+		"server/agent-formatters.ts": "server/agent/agent-formatters.ts",
+		"server/subagents.ts": "server/agent/subagents.ts",
+		"server/subagent-handoff.ts": "server/agent/subagent-handoff.ts",
+		"server/subagent-helpers.ts": "server/agent/subagent-helpers.ts",
+		"server/subagent-templates.ts": "server/agent/subagent-templates.ts",
+		"server/subagent-templates-hant.ts": "server/agent/subagent-templates-hant.ts",
+		"server/model-admin.ts": "server/model/model-admin.ts",
+		"server/model-resolver.ts": "server/model/model-resolver.ts",
+		"server/model-enrich.ts": "server/model/model-enrich.ts",
+		"server/provider-oauth-flow.ts": "server/model/provider-oauth-flow.ts",
+		"server/prompt-assembler.ts": "server/prompt/prompt-assembler.ts",
+		"server/prompt-composer.ts": "server/prompt/prompt-composer.ts",
+		"server/persona-chain.ts": "server/prompt/persona-chain.ts",
+		"server/tool-prompts.ts": "server/prompt/tool-prompts.ts",
+		"server/tool-prompt-overrides.ts": "server/prompt/tool-prompt-overrides.ts",
+		"server/skill-tool.ts": "server/skill/skill-tool.ts",
+		"server/skill-discovery.ts": "server/skill/skill-discovery.ts",
+		"server/skill-content-filler.ts": "server/skill/skill-content-filler.ts",
+		"server/mcp-bridge.ts": "server/mcp/mcp-bridge.ts",
+		"server/mcp-manager.ts": "server/mcp/mcp-manager.ts",
+		"server/mcp-hot-reload.ts": "server/mcp/mcp-hot-reload.ts",
+		"server/mcp-agent-tool.ts": "server/mcp/mcp-agent-tool.ts",
+		"server/plugin-mcp.ts": "server/mcp/plugin-mcp.ts"
+	},
+	"implementationEquivalence": {
+		"status": "passed",
+		"method": "Exact original/current source text equality after path canonicalization and identical formatting",
+		"files": [
+			{
+				"from": "server/agent-formatters.ts",
+				"to": "server/agent/agent-formatters.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/agent-service-daemon.ts",
+				"to": "server/agent/agent-service-daemon.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/agent-service.ts",
+				"to": "server/agent/agent-service.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/api-testing-runner.ts",
+				"to": "server/api-testing-runner.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/bash-tool.ts",
+				"to": "server/bash-tool.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/client-state.ts",
+				"to": "server/client-state.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/context-budget-runner.ts",
+				"to": "server/context-budget-runner.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/control-socket.ts",
+				"to": "server/control-socket.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/delegate-task.ts",
+				"to": "server/delegate-task.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/dsh/dsh-agent-service.ts",
+				"to": "server/dsh/dsh-agent-service.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/dsh/dsh-client.ts",
+				"to": "server/dsh/dsh-client.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/durable/durable-models.ts",
+				"to": "server/durable/durable-models.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/index.ts",
+				"to": "server/index.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/mcp-agent-tool.ts",
+				"to": "server/mcp/mcp-agent-tool.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/mcp-bridge.ts",
+				"to": "server/mcp/mcp-bridge.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/mcp-hot-reload.ts",
+				"to": "server/mcp/mcp-hot-reload.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/mcp-manager.ts",
+				"to": "server/mcp/mcp-manager.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/model-admin.ts",
+				"to": "server/model/model-admin.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/model-enrich.ts",
+				"to": "server/model/model-enrich.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/model-resolver.ts",
+				"to": "server/model/model-resolver.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/persona-chain.ts",
+				"to": "server/prompt/persona-chain.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/plugin-mcp.ts",
+				"to": "server/mcp/plugin-mcp.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/plugins.ts",
+				"to": "server/plugins.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/preset-share.ts",
+				"to": "server/preset-share.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/prompt-assembler.ts",
+				"to": "server/prompt/prompt-assembler.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/prompt-composer.ts",
+				"to": "server/prompt/prompt-composer.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/protocol.ts",
+				"to": "server/protocol.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/provider-oauth-flow.ts",
+				"to": "server/model/provider-oauth-flow.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/settings-service.ts",
+				"to": "server/settings-service.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/skill-content-filler.ts",
+				"to": "server/skill/skill-content-filler.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/skill-discovery.ts",
+				"to": "server/skill/skill-discovery.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/skill-tool.ts",
+				"to": "server/skill/skill-tool.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/subagent-handoff.ts",
+				"to": "server/agent/subagent-handoff.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/subagent-helpers.ts",
+				"to": "server/agent/subagent-helpers.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/subagent-templates-hant.ts",
+				"to": "server/agent/subagent-templates-hant.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/subagent-templates.ts",
+				"to": "server/agent/subagent-templates.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/subagents.ts",
+				"to": "server/agent/subagents.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/terminals.ts",
+				"to": "server/terminals.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/tool-approval.ts",
+				"to": "server/tool-approval.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/tool-host-factories.ts",
+				"to": "server/tool-host-factories.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/tool-prompt-overrides.ts",
+				"to": "server/prompt/tool-prompt-overrides.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/tool-prompts.ts",
+				"to": "server/prompt/tool-prompts.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/universal/drivers/claude-code.ts",
+				"to": "server/universal/drivers/claude-code.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/universal/drivers/dsh-driver.ts",
+				"to": "server/universal/drivers/dsh-driver.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/universal/universal-attachments.ts",
+				"to": "server/universal/universal-attachments.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/universal/universal-session.ts",
+				"to": "server/universal/universal-session.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "server/universal/universal-types.ts",
+				"to": "server/universal/universal-types.ts",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "web/src/components/ModelConfigModal.tsx",
+				"to": "web/src/components/ModelConfigModal.tsx",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "web/src/components/SettingsModal.tsx",
+				"to": "web/src/components/SettingsModal.tsx",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "web/src/components/ToolApprovalDialog.tsx",
+				"to": "web/src/components/ToolApprovalDialog.tsx",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "web/src/components/ToolPromptEditor.tsx",
+				"to": "web/src/components/ToolPromptEditor.tsx",
+				"implementationUnchanged": true
+			},
+			{
+				"from": "web/src/thinking-levels.ts",
+				"to": "web/src/thinking-levels.ts",
+				"implementationUnchanged": true
+			}
+		]
+	},
+	"sourceGuardCoverage": {
+		"status": "passed",
+		"originalRootModules": 163,
+		"currentModulesAfterReverseMapping": 163,
+		"sameFiles": true
+	},
+	"skillsIsolated": {
+		"status": "passed",
+		"checks": [
+			"real SDK discovers four project entry skills and eight original UI stages without conflicts",
+			"host project directory discovery finds all four entry skills without personal skills",
+			"host skill tool loads each entry and its original implementation skill reference resolves"
+		],
+		"skills": [
+			"api-test-analyze",
+			"api-test-review",
+			"api-test-workflow",
+			"ui-artifact-check",
+			"ui-case-design",
+			"ui-design-review",
+			"ui-discover-record",
+			"ui-result-analysis",
+			"ui-result-review",
+			"ui-test-run",
+			"ui-test-workflow",
+			"ui-testing-workflow"
+		],
+		"actualModelCalls": 0,
+		"businessRequests": 0,
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/capability-layout-4EP5I9"
+	},
+	"skillsCurrentProject": {
+		"status": "passed",
+		"expectedTestingSkills": [
+			"api-test-analyze",
+			"api-test-review",
+			"api-test-workflow",
+			"ui-artifact-check",
+			"ui-case-design",
+			"ui-design-review",
+			"ui-discover-record",
+			"ui-result-analysis",
+			"ui-result-review",
+			"ui-test-run",
+			"ui-test-workflow",
+			"ui-testing-workflow"
+		],
+		"totalDiscoveredSkills": 28,
+		"unrelatedSkillsPreserved": true,
+		"diagnostics": [],
+		"extensionErrors": [],
+		"actualModelCalls": 0,
+		"businessRequests": 0
+	},
+	"verification": {
+		"typecheck": "passed (5 configurations)",
+		"relatedUnit": {
+			"filesPassed": 70,
+			"testsPassed": 600,
+			"skipped": 1,
+			"failed": 0
+		},
+		"fullUnit": {
+			"filesPassed": 459,
+			"filesFailed": 4,
+			"testsPassed": 5156,
+			"testsFailed": 5,
+			"skipped": 9
+		},
+		"preexistingFullUnitBaseline": {
+			"separateHeadArchive": true,
+			"filesFailed": 4,
+			"testsFailed": 5,
+			"testsPassed": 30,
+			"failures": [
+				"link-plugins: directory handling",
+				"plugin-icon-dom: api-testing missing iconSvg (2)",
+				"plugin-manifest-icons: api-testing missing icon",
+				"plugin-sdk-mock: SDK_VERSION 0.1.2 vs package 0.1.3"
+			]
+		},
+		"build": "passed",
+		"coreSmoke": {
+			"passed": 21,
+			"failed": 1,
+			"failure": "plugin-scaffold activation log check; previously independently reproduced, see API credential-host record"
+		},
+		"apiTargetChecks": 19,
+		"apiSkillChecks": 5,
+		"uiIntegration": {
+			"status": "passed",
+			"checks": [
+				"project registration preserves settings and is idempotent",
+				"app registration preserves settings and is idempotent",
+				"eight original skills and named entry discovered from app config in a different workspace",
+				"all ten original workflow tools registered in a real SDK session",
+				"bound workflow catalog executes against the isolated project",
+				"source workflow start validates the real skill catalog and SDK version",
+				"real Playwright test MCP exposes all seven required recording tools",
+				"test MCP opens a real Chromium page from an isolated synthetic seed",
+				"real nested MCP call retains parent call identity through SDK hooks",
+				"cancelled nested MCP request does not report success"
+			],
+			"actualModelCalls": 0,
+			"businessRequests": 0,
+			"notExecuted": ["independent model reviews", "business recording, diagnostics and formal regression"]
+		},
+		"terminalBashChecks": 74,
+		"lint": "passed",
+		"protocol": "passed; git version heuristic skipped because no usable tag",
+		"skillValidator": "4/4 passed",
+		"diffCheck": "passed"
+	},
+	"attempts": [
+		{
+			"name": "initial API TypeScript scanner proof",
+			"result": "tooling error: installed TypeScript 7 exports version only; replaced with exact normalized-source comparison"
+		},
+		{
+			"name": "initial source guard recursive scan",
+			"result": "expanded into preexisting driver directories, failed; corrected to original file set plus moved locations; final inventory identical"
+		},
+		{
+			"name": "current-workspace exact skill-count assumption",
+			"result": "initial expected total 12 failed because 16 unrelated skills also existed; final verifies expected 12 present, no diagnostics and preserves unrelated skills"
+		},
+		{
+			"name": "UI project entry routed to canonical capability skill",
+			"result": "Isolated fixture initially omitted canonical capability skill; reference check failed. Copied original capability skill into fixture; final discovery/reference verification passed."
+		}
+	],
+	"notExecuted": [
+		"paid model calls",
+		"business API requests or writes",
+		"actual business UI regression",
+		"platforms other than current macOS"
+	],
+	"logs": {
+		"unit-final.log": {
+			"path": "tests/scratch/capability-layout/unit-final.log",
+			"sha256": "cbc143e047300a4e98467f47ebfd16577ca16ea1dc3700e39998c1821c51131c"
+		},
+		"project-registration.log": {
+			"path": "tests/scratch/capability-layout/project-registration.log",
+			"sha256": "b8b7e44ed525da8a8fa3281043130b065159c883513021b788a4a004f95946f3"
+		},
+		"api-skills.log": {
+			"path": "tests/scratch/capability-layout/api-skills.log",
+			"sha256": "7adf270b1435a282a4d9389c80d77cd8f084b59e7011f8a284cfc61b676d2278"
+		},
+		"project-discovery.log": {
+			"path": "tests/scratch/capability-layout/project-discovery.log",
+			"sha256": "5fa86f193ea1e60e01db88d2db84cbed09f53a716c3fb980a903cbc22dccc7e9"
+		},
+		"core.log": {
+			"path": "tests/scratch/capability-layout/core.log",
+			"sha256": "200638dbc71c6ebc68310ecd27843efa2f73fef7d540e4a086953112058f6e62"
+		},
+		"typecheck-final.log": {
+			"path": "tests/scratch/capability-layout/typecheck-final.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+		},
+		"format.log": {
+			"path": "tests/scratch/capability-layout/format.log",
+			"sha256": "4eea90510333dee495a432710decd2d7e3ddc4359ecb2d32b220f690a845d5a4"
+		},
+		"lint.log": {
+			"path": "tests/scratch/capability-layout/lint.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+		},
+		"baseline-unit.log": {
+			"path": "tests/scratch/capability-layout/baseline-unit.log",
+			"sha256": "af4582f6eac0083d9b408af29f481295438abc9b75c85648b11ada37209320b9"
+		},
+		"terminal-bash.log": {
+			"path": "tests/scratch/capability-layout/terminal-bash.log",
+			"sha256": "44c2324baf3db64e472545c97775e3d155b3cb0b28a5badf7f16b144638fcfab"
+		},
+		"skills-attempt1.log": {
+			"path": "tests/scratch/capability-layout/skills-attempt1.log",
+			"sha256": "80274cfda356d7c791ad477a1a55f7b88ad5ec77ff13fd4da5e31dc39a626af6"
+		},
+		"unit.log": {
+			"path": "tests/scratch/capability-layout/unit.log",
+			"sha256": "35c8292ff4fae9355ca1ea11fe064eb8233852f521977aa3ff3e33a83450e70b"
+		},
+		"api-target.log": {
+			"path": "tests/scratch/capability-layout/api-target.log",
+			"sha256": "0b19c7e8a31aecb9bddb425b61ab404f22fbcaf2a47b1e76620ca80e333f6d1f"
+		},
+		"typecheck-attempt1.log": {
+			"path": "tests/scratch/capability-layout/typecheck-attempt1.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+		},
+		"ui-integration.log": {
+			"path": "tests/scratch/capability-layout/ui-integration.log",
+			"sha256": "7b1747c415e5487ce9063a0081f8e7adec00ff0540fad76ebaac57a05ef8f3cb"
+		},
+		"related-unit.log": {
+			"path": "tests/scratch/capability-layout/related-unit.log",
+			"sha256": "3e42a9e01267bbf361bd3405e1af2e37cab59e98500766dce309a3b9c60f70f5"
+		},
+		"protocol.log": {
+			"path": "tests/scratch/capability-layout/protocol.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+		},
+		"skills-final.log": {
+			"path": "tests/scratch/capability-layout/skills-final.log",
+			"sha256": "486fcba2b95ac884286150cd4b9866c12dbbc34c13fe3ae5a6b1ddc560701a77"
+		},
+		"build.log": {
+			"path": "tests/scratch/capability-layout/build.log",
+			"sha256": "5b9a6bf58b3368eee2eed2b65e166b1a4859dec6fb39efa77ea7cb842cfbab81"
+		},
+		"skills-source-fixture-attempt.log": {
+			"path": "tests/scratch/capability-layout/skills-source-fixture-attempt.log",
+			"sha256": "d66899abac62a4b19530e60dd2e07e86e19a162e02305e286ccd2157b2858163"
+		}
+	}
+}

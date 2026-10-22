@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { AgentService, ClientSession } from "../../server/agent-service.js";
+import { AgentService, ClientSession } from "../../server/agent/agent-service.js";
 import { resolve } from "node:path";
 
 describe("elsewhere（「另一处」）排重与过户生命周期防护", () => {

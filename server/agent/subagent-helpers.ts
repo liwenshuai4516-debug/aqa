@@ -11,7 +11,7 @@
  * 从 agent-service.ts 抽出为独立模块。
  */
 import type { SubagentSnapshot, SubagentState } from "./subagents.js";
-import type { RoleWaitOutcome } from "./goal-service.js";
+import type { RoleWaitOutcome } from "../goal-service.js";
 import type { Conversation } from "./agent-service.js";
 import { SUBAGENT_PROMPT_SNAPSHOT_CAP } from "./agent-formatters.js";
 

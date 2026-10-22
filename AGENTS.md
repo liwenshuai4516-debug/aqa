@@ -47,6 +47,23 @@ pi-web-ui 是 pi 编码智能体（`@earendil-works/pi-coding-agent` SDK）的 W
 - **桌面验收记录**：
   `docs/desktop-delivery/scope-decisions.md`（当前范围与用户决定，优先于历史轮次）· `completion-audit.md`（完成条件与缺口）· `acceptance-matrix.md`（验收矩阵）· `delivery-status.md`（交付状态与历史证据）· `approved-changes.json`（受保护代码的已批准差异）。涉及桌面交付时先核对这些记录，不将内部安装包交付等同于项目全部完成；平台、费用、个人数据和受保护代码边界按当前有效决定执行。
 
+### 能力目录与项目技能（现行）
+
+| 能力                                 | 实现位置         |
+| ------------------------------------ | ---------------- |
+| Agent 会话、守护与子代理             | `server/agent/`  |
+| 模型、服务商与 OAuth                 | `server/model/`  |
+| 系统/工具提示词与 persona            | `server/prompt/` |
+| Skill 发现、加载与内容填充           | `server/skill/`  |
+| MCP 连接、管理、热加载与插件调用门禁 | `server/mcp/`    |
+| 项目 API/UI 测试技能入口             | `.pi/skills/`    |
+
+完整文件归属见 [服务端导航](server/README.md) 和 [能力维护指南](docs/capability-layout.md)。新模块按职责进入已有目录，不再平铺同类模块，不为整理引入第二份实现或重导出壳。模块搬迁仅同步路径；同时核对导入、动态源码读取、构建输出、测试扫描和文档引用，保持原实现与行为。
+
+项目技能为 `api-test-workflow`、`api-test-review`、`api-test-analyze`、`ui-testing-workflow`；API 复用 `plugins/api-testing/skills/` 原说明和插件工具，UI 复用 `capabilities/ui-testing/` 的原包与 8 个阶段技能。`.pi/skills/` 中仅维护发现入口，不复制 runner、规则或阶段实现。技能发现不能代替工具接入、授权或业务验收。规则或技能更新后在 Pi 对话执行 `/reload`。
+
+仅明确白名单中的项目技能进入版本管理；`.pi` 其他设置、认证、会话和运行数据继续忽略。模型/凭据文件保持原位置，禁止随目录整理搬入仓库。
+
 ## 4. 核心架构与设计索引
 
 详细文档位于 `docs/<主题>.md`，以下为各模块核心设计原则与事实源：
@@ -57,30 +74,30 @@ pi-web-ui 是 pi 编码智能体（`@earendil-works/pi-coding-agent` SDK）的 W
 
 `docs/` 索引（找详细文档先看这里，均为 `docs/<名>.md`）：**architecture-core** 快照驱动/协议单源/安全边界/主题/多对话并发 · **architecture-attachments** 附件/图片/视觉桥/上传预览下载 · **architecture-terminal** 终端 PTY/SCM/活力检测/bash 接管 · **architecture-plugins** 插件形态/协议/宿主扩展点/MCP 桥/多根工作区 · **architecture-system-prompt** 系统提示词组装链路与 override 钩子 · **tool-context-budget** 工具上下文预算（文案精简 / 逐工具覆盖 / **延迟加载** + 前缀缓存硬约束）· **dsh-engine** DSH 预设/问卷/底栏统计/工具桥 · **goal-conversation-design** 目标模式 2.0（把目标审查变成对话：执行对话干活 + 当前对话当审查者；**已实施且只剩这一条路径** —— v1 的隐藏隔离审查会话 + 自治标记路径已删除，轮次/熔断/代次全在服务端，见该文档 §4/§11）· **development** 开发工作流/CI/编码约定/测试规范 · **release** 发布流程 · **deployment** 部署 · **env-vars** 环境变量全表 · **preset-sharing** 预设导入/导出/社区共享仓库（交换格式 / 白名单净化 / 一键分享 / 浏览列表）· **antigravity-proxy** 反代接入 · **directory-reference** 完整注释版目录树
 
-| 主题                  | 文档                               | 一句话                                                                                                                                                                                                                        |
-| --------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 快照驱动              | `docs/architecture-core.md`        | 服务端唯一事实源，60ms 节流；`snapshot_delta` 增量 + `message_delta` 实时通道；`send()` 背压超阈丢 snapshot（幂等，250ms 重试）；`get_state`/`flushSnapshot` 立即推一次                                                       |
-| 协议单源              | 同上                               | 只改 `server/protocol.ts`，两端 switch 各加分支；`web/src/types.ts` 是 shim                                                                                                                                                   |
-| 全局运行态            | 同上                               | 整树共享放 `app-globals.ts`（`useAppField` 单字段订阅，组件不收 `send` prop 用 `appSend`）；快照流数据禁入 store                                                                                                              |
-| 安全边界              | 同上                               | 默认 loopback；WS Origin/Host 校验；quiesce 准入；provider headers 不下发浏览器                                                                                                                                               |
-| 主题                  | 同上                               | styles.css 是共享基线；主题=完整样式表可覆盖一切；终端跟随主题                                                                                                                                                                |
-| 多对话并发            | 同上                               | 每对话独立 runtime，上限 8/项目（子代理不计）；运行列表口径 listed ∪ 有内容的当前对话；clientId 存 sessionStorage，每标签页独立                                                                                               |
-| 附件/预览             | `docs/architecture-attachments.md` | 只给路径引用（`reference`/`lines`，内容不注入）；预览 512KB 上限+嗅探+GBK 回退；媒体走 HTTP Range；下载绕 Safe Browsing                                                                                                       |
-| 终端/SCM              | `docs/architecture-terminal.md`    | 每 Conversation 一个 TerminalManager；`terminalBash` 开关分流（`persist` 决定一次性/ai-bash 持久）；SCM 只读走 execFile，写操作走可见终端                                                                                     |
-| 工具开关/read 目录    | `docs/architecture-core.md`        | `AGENT_TOOL_CATALOG` 唯一事实源；`read` 覆盖目录走 ls 口径（`readDirEnabled` 是行为开关，不入目录；仅 pi 引擎）；`read`/`write`/`edit` 三处覆盖与第三方扩展同名工具的共存（基底 = 扩展实现优先）见 `server/tool-overrides.ts` |
-| 审批                  | `server/tool-approval.ts`          | 规则库 `<dataDir>/approval-rules.json`（ask/deny/allow）；三档放行：全局关→本对话全部允许→允许同类；记忆只在内存，随过户搬                                                                                                    |
-| 问卷/草稿进快照       | `docs/architecture-core.md`        | `UiState.pendingQuestion`（刷新恢复）+ `UiState.draft`（只跟全量快照，`draft_update` 自带 sessionId）                                                                                                                         |
-| 临时对话              | `server/agent-service.ts`          | `new_chat {ephemeral:true}`→内存不落盘；`UiState.isEphemeral` 恒存在于 light state；`persist_conversation` 一键转正（id 不变）                                                                                                |
-| 插件/UI 扩展点        | `docs/architecture-plugins.md`     | `<dataDir>/plugins/<id>/`；manifest `ui` 与 `host.ui.register()` 同一套别名+枚举；合并「宿主<插件<arrange<用户偏好」；插件不碰 DOM；`PLUGIN_API_VERSION=2`                                                                    |
-| 多根工作区            | 同上                               | `set_workspace_roots` 按项目 cwd 存（上限 8）；**额外根=工作区内**，插件读免授权；AI 只在主 cwd 干活                                                                                                                          |
-| 子代理模板            | `server/subagent-templates.ts`     | 全局共享；append/replace + 白名单 + 可选模型/强度（空=跟随）；停用对 AI 不可见                                                                                                                                                |
-| DSH                   | `docs/dsh-engine.md`               | 四预设 file: 克隆 mount；问卷/技能钩子挂 agent scope（host 收不到 scoped 事件）；底栏统计吃直播帧+usage（`dsh-usage.ts`）                                                                                                     |
-| 压缩软上限            | `server/soft-cap.ts`               | C→`reserveTokens=W−C` live 注入；关/非法回填 16384；pi 引擎独有                                                                                                                                                               |
-| 看门狗                | `docs/architecture-core.md`        | 20 分钟 abort 会话（不碰后台服务）；`ask_user_question` 豁免                                                                                                                                                                  |
-| present_files         | `server/present-files-tool.ts`     | 只读探测+摘录预算走 `details`；前端无 details 也能渲染（参数解析+合并）；远端本地打开报不支持                                                                                                                                 |
-| browser_page/对话引用 | `docs/architecture-core.md`        | 闸门在扩展侧；对话引用只发 `<conversation-ref>` aside，模型经 `conversation_read` 按需取                                                                                                                                      |
-| 计划模式              | `server/plan-mode.ts`              | 目标条展开行「只规划」触发；动态剔除写工具并施加硬闸门拦截；禁倾倒大段代码；必须通过计划看板「开始实施」退出；回归 `plan-mode-test`。                                                                                         |
-| 审查者模式            | `server/delegate-mode.ts`          | 开启后主会话只审不干，Prompt 自动投递常驻执行对话；硬闸门拦截一切写类与派发工具；计划模式优先级高于委派；回归 `delegate-mode-test`。                                                                                          |
+| 主题                  | 文档                                 | 一句话                                                                                                                                                                                                                        |
+| --------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 快照驱动              | `docs/architecture-core.md`          | 服务端唯一事实源，60ms 节流；`snapshot_delta` 增量 + `message_delta` 实时通道；`send()` 背压超阈丢 snapshot（幂等，250ms 重试）；`get_state`/`flushSnapshot` 立即推一次                                                       |
+| 协议单源              | 同上                                 | 只改 `server/protocol.ts`，两端 switch 各加分支；`web/src/types.ts` 是 shim                                                                                                                                                   |
+| 全局运行态            | 同上                                 | 整树共享放 `app-globals.ts`（`useAppField` 单字段订阅，组件不收 `send` prop 用 `appSend`）；快照流数据禁入 store                                                                                                              |
+| 安全边界              | 同上                                 | 默认 loopback；WS Origin/Host 校验；quiesce 准入；provider headers 不下发浏览器                                                                                                                                               |
+| 主题                  | 同上                                 | styles.css 是共享基线；主题=完整样式表可覆盖一切；终端跟随主题                                                                                                                                                                |
+| 多对话并发            | 同上                                 | 每对话独立 runtime，上限 8/项目（子代理不计）；运行列表口径 listed ∪ 有内容的当前对话；clientId 存 sessionStorage，每标签页独立                                                                                               |
+| 附件/预览             | `docs/architecture-attachments.md`   | 只给路径引用（`reference`/`lines`，内容不注入）；预览 512KB 上限+嗅探+GBK 回退；媒体走 HTTP Range；下载绕 Safe Browsing                                                                                                       |
+| 终端/SCM              | `docs/architecture-terminal.md`      | 每 Conversation 一个 TerminalManager；`terminalBash` 开关分流（`persist` 决定一次性/ai-bash 持久）；SCM 只读走 execFile，写操作走可见终端                                                                                     |
+| 工具开关/read 目录    | `docs/architecture-core.md`          | `AGENT_TOOL_CATALOG` 唯一事实源；`read` 覆盖目录走 ls 口径（`readDirEnabled` 是行为开关，不入目录；仅 pi 引擎）；`read`/`write`/`edit` 三处覆盖与第三方扩展同名工具的共存（基底 = 扩展实现优先）见 `server/tool-overrides.ts` |
+| 审批                  | `server/tool-approval.ts`            | 规则库 `<dataDir>/approval-rules.json`（ask/deny/allow）；三档放行：全局关→本对话全部允许→允许同类；记忆只在内存，随过户搬                                                                                                    |
+| 问卷/草稿进快照       | `docs/architecture-core.md`          | `UiState.pendingQuestion`（刷新恢复）+ `UiState.draft`（只跟全量快照，`draft_update` 自带 sessionId）                                                                                                                         |
+| 临时对话              | `server/agent/agent-service.ts`      | `new_chat {ephemeral:true}`→内存不落盘；`UiState.isEphemeral` 恒存在于 light state；`persist_conversation` 一键转正（id 不变）                                                                                                |
+| 插件/UI 扩展点        | `docs/architecture-plugins.md`       | `<dataDir>/plugins/<id>/`；manifest `ui` 与 `host.ui.register()` 同一套别名+枚举；合并「宿主<插件<arrange<用户偏好」；插件不碰 DOM；`PLUGIN_API_VERSION=2`                                                                    |
+| 多根工作区            | 同上                                 | `set_workspace_roots` 按项目 cwd 存（上限 8）；**额外根=工作区内**，插件读免授权；AI 只在主 cwd 干活                                                                                                                          |
+| 子代理模板            | `server/agent/subagent-templates.ts` | 全局共享；append/replace + 白名单 + 可选模型/强度（空=跟随）；停用对 AI 不可见                                                                                                                                                |
+| DSH                   | `docs/dsh-engine.md`                 | 四预设 file: 克隆 mount；问卷/技能钩子挂 agent scope（host 收不到 scoped 事件）；底栏统计吃直播帧+usage（`dsh-usage.ts`）                                                                                                     |
+| 压缩软上限            | `server/soft-cap.ts`                 | C→`reserveTokens=W−C` live 注入；关/非法回填 16384；pi 引擎独有                                                                                                                                                               |
+| 看门狗                | `docs/architecture-core.md`          | 20 分钟 abort 会话（不碰后台服务）；`ask_user_question` 豁免                                                                                                                                                                  |
+| present_files         | `server/present-files-tool.ts`       | 只读探测+摘录预算走 `details`；前端无 details 也能渲染（参数解析+合并）；远端本地打开报不支持                                                                                                                                 |
+| browser_page/对话引用 | `docs/architecture-core.md`          | 闸门在扩展侧；对话引用只发 `<conversation-ref>` aside，模型经 `conversation_read` 按需取                                                                                                                                      |
+| 计划模式              | `server/plan-mode.ts`                | 目标条展开行「只规划」触发；动态剔除写工具并施加硬闸门拦截；禁倾倒大段代码；必须通过计划看板「开始实施」退出；回归 `plan-mode-test`。                                                                                         |
+| 审查者模式            | `server/delegate-mode.ts`            | 开启后主会话只审不干，Prompt 自动投递常驻执行对话；硬闸门拦截一切写类与派发工具；计划模式优先级高于委派；回归 `delegate-mode-test`。                                                                                          |
 
 ## 5. 开发工作流
 
@@ -202,7 +219,7 @@ git ls-remote origin refs/heads/<当前分支>
      _必须使用精炼纯英文，违规会被守卫单测拦截_（守卫：`tests/unit/tool-prompt-hygiene.test.ts`）。`edit` 工具提示词亦归本项目单源覆盖（`agent-service.ts`）。
 - **工具延迟加载硬约束：绝不破坏前缀缓存**：
   供应商 Prompt Cache 依赖系统提示词前缀完全一致。系统提示词 `{{tools}}` 目录必须保持完整且不随已加载状态变化；新加载工具的要点随 `load_tools` 回执进入对话；注册表仅允许追加（`toolsAdded`），严禁就地修改或删除（守卫：`tests/lazy-tools-test.mjs`，文档：`docs/tool-context-budget.md`）。
-- **单工具多执行路径必须提示词单源**：以 bash 为例，原生、终端和自适应分流路径共用 `server/tool-prompts.ts`，禁止在 execute 覆盖实现中硬编码或复制描述。
+- **单工具多执行路径必须提示词单源**：以 bash 为例，原生、终端和自适应分流路径共用 `server/prompt/tool-prompts.ts`，禁止在 execute 覆盖实现中硬编码或复制描述。
 - **新增工具三处联动**：新增可开关工具必须同时登记到 `tool-manager.ts`（`AGENT_TOOL_CATALOG` 事实源）、`agent-service.ts`（`customTools` 列表）以及 `tests/unit/tool-registration.test.ts`；内置工具覆盖必须走 `tool-overrides.ts`。
 - **逐工具文案可编辑机制**：用户自定义文案仅作为偏好存入 `toolPromptOverrides`，新增可配置维度必须同步打补丁逻辑、wire 协议与设置页编辑器三处（守卫：`tests/unit/tool-prompt-overrides.test.ts`）。
 

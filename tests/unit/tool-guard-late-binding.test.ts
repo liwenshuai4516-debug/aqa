@@ -10,7 +10,7 @@
  * 与「直接传真实守卫」/「直通」一致。
  */
 import { describe, expect, it, vi } from "vitest";
-import { makeLateToolGuard, withToolGuard, type ToolGuardHook } from "../../server/agent-service.js";
+import { makeLateToolGuard, withToolGuard, type ToolGuardHook } from "../../server/agent/agent-service.js";
 
 const allowVerdict = { verdict: { decision: "allow" as const } };
 

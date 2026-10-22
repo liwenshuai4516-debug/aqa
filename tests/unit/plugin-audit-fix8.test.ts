@@ -15,7 +15,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { PluginManager, pluginNetFetch, type PluginNetFetchInit } from "../../server/plugins.js";
 import { WorkspaceFS, withFileRmwLock } from "../../server/plugin-facilities.js";
-import { McpClient } from "../../server/mcp-bridge.js";
+import { McpClient } from "../../server/mcp/mcp-bridge.js";
 import { readCatalog } from "../../server/plugin-catalog.js";
 
 const dirs: string[] = [];

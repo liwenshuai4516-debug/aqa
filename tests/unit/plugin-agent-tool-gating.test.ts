@@ -197,7 +197,7 @@ describe("禁用语义（会话同步层面）", () => {
 
 		const templates = {
 			list: () => [],
-		} as unknown as import("../../server/subagent-templates.js").SubagentTemplatesStore;
+		} as unknown as import("../../server/agent/subagent-templates.js").SubagentTemplatesStore;
 		const approvalRules = { list: () => [] } as unknown as import("../../server/approval-rules.js").ApprovalRulesStore;
 		const svc = new SettingsService(host, templates, approvalRules);
 		await svc.set({ disabledPlugins: ["vscode-editor"] });

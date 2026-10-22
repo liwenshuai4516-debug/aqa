@@ -21,9 +21,9 @@
 import { statSync, readFileSync } from "node:fs";
 import { defineTool, type ToolDefinition } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
-import { pick, type ServerLang } from "./i18n.js";
-import { SKILL_TOOL_NAME } from "./tool-manager.js";
-import { decodeText } from "./text-sniff.js";
+import { pick, type ServerLang } from "../i18n.js";
+import { SKILL_TOOL_NAME } from "../tool-manager.js";
+import { decodeText } from "../text-sniff.js";
 
 /** 技能名录行（agent-service 的 skillToolHost 从会话 loader 实时取）。 */
 export interface SkillCatalogEntry {

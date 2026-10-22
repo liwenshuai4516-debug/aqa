@@ -13,12 +13,12 @@
 // MUST be the first import: rewrites the SDK's installed remote-catalog
 // provider so built-in model lists follow the official pi.dev catalog
 // wholesale (no union merge / no stale built-in leftovers).
-import "./patch-remote-catalog.js";
-import "./patch-turn-end-boundary.js";
+import "../patch-remote-catalog.js";
+import "../patch-turn-end-boundary.js";
 import { spawn } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
 import * as fsPromises from "node:fs/promises";
-import { DEFAULT_PI_CAPABILITIES } from "./engine-capabilities.js";
+import { DEFAULT_PI_CAPABILITIES } from "../engine-capabilities.js";
 import {
 	appendFileSync,
 	existsSync,
@@ -53,7 +53,7 @@ import {
 	type SessionInfo,
 	type ToolDefinition,
 } from "@earendil-works/pi-coding-agent";
-import { BG_CLEANUP_FALLBACK_MIN, BgServerTracker } from "./bg-servers.js";
+import { BG_CLEANUP_FALLBACK_MIN, BgServerTracker } from "../bg-servers.js";
 import {
 	checkAll as checkAllUpdates,
 	collectTargets,
@@ -62,43 +62,43 @@ import {
 	resolveNpmRegistry,
 	sortUpdateItems,
 	type UpdateItem,
-} from "./update-check.js";
-import { collectInstalledEngineTargets } from "./engine-probe.js";
-import { checkPluginUpdates } from "./plugin-updater.js";
-import { getAppVersion } from "./pkg-info.js";
-import { isBundledInUse, sdkCopies } from "./sdk-origin.js";
+} from "../update-check.js";
+import { collectInstalledEngineTargets } from "../engine-probe.js";
+import { checkPluginUpdates } from "../plugin-updater.js";
+import { getAppVersion } from "../pkg-info.js";
+import { isBundledInUse, sdkCopies } from "../sdk-origin.js";
 import {
 	hasActiveSubagentRun,
 	hasPendingWaitSubscription,
 	hasRunningBackgroundTask,
 	shouldRetainActive,
-} from "./wait-subscription-scan.js";
+} from "../wait-subscription-scan.js";
 import {
 	COMPACTION_PENDING_TYPE,
 	looksLikeChainCorruption,
 	makeCompactionMarkerId,
 	repairSessionFile,
 	type SessionFileRepair,
-} from "./compaction-markers.js";
-import { calibrateSessionLeaf } from "./session-branch.js";
+} from "../compaction-markers.js";
+import { calibrateSessionLeaf } from "../session-branch.js";
 import {
 	danglingToolResultText,
 	findDanglingToolCalls,
 	healDanglingToolCallFile,
 	type DanglingCause,
-} from "./dangling-tools.js";
-import { removeQueuedByIndexOrText } from "./queue-utils.js";
+} from "../dangling-tools.js";
+import { removeQueuedByIndexOrText } from "../queue-utils.js";
 import type {
 	PluginAgentTool,
 	PluginCommandDef,
 	PluginConversationSnapshot,
 	PluginRunEvent,
 	PluginToolEvent,
-} from "./plugins.js";
-import { createPluginInvocation } from "./plugin-mcp.js";
-import { syncPluginToolsIntoSession } from "./plugins.js";
-import { modelChangeKey, pickClientConversation } from "./plugin-conversation-view.js";
-import { SettingsService } from "./settings-service.js";
+} from "../plugins.js";
+import { createPluginInvocation } from "../mcp/plugin-mcp.js";
+import { syncPluginToolsIntoSession } from "../plugins.js";
+import { modelChangeKey, pickClientConversation } from "../plugin-conversation-view.js";
+import { SettingsService } from "../settings-service.js";
 import {
 	GoalService,
 	buildDiffFingerprint,
@@ -106,12 +106,12 @@ import {
 	lastToolNameOfSession,
 	type GoalConversation,
 	type RoleWaitOutcome,
-} from "./goal-service.js";
-import { buildEvidenceDigest, sessionMessagesOf } from "./goal-evidence.js";
-import { MarkerService } from "./marker-service.js";
-import { SlashCommandsService, parseSlash } from "./slash-commands.js";
-import { ModelAdminService } from "./model-admin.js";
-import { FilesService, MACHINE_ROOT, desktopDirWire, workspacePath } from "./files-service.js";
+} from "../goal-service.js";
+import { buildEvidenceDigest, sessionMessagesOf } from "../goal-evidence.js";
+import { MarkerService } from "../marker-service.js";
+import { SlashCommandsService, parseSlash } from "../slash-commands.js";
+import { ModelAdminService } from "../model/model-admin.js";
+import { FilesService, MACHINE_ROOT, desktopDirWire, workspacePath } from "../files-service.js";
 import {
 	buildRemoteWorkspacePersona,
 	createRemoteSdkOperations,
@@ -122,7 +122,7 @@ import {
 	resolveWorkspaceSessionDir,
 	restoreWorkspaceUriFromSessionDir,
 	setGlobalRemoteSshService,
-} from "./remote-ssh-service.js";
+} from "../remote-ssh-service.js";
 import {
 	DEFAULT_TOOL_WATCHDOG_TIMEOUT_MS,
 	effectiveToolWatchdogMs,
@@ -136,18 +136,18 @@ import {
 	type ClientSettings,
 	type PromptMode,
 	ClientStateStore,
-} from "./client-state.js";
-import { isTraditionalLocale, pick, resolveServerLang, type ServerLang } from "./i18n.js";
+} from "../client-state.js";
+import { isTraditionalLocale, pick, resolveServerLang, type ServerLang } from "../i18n.js";
 import {
 	SubagentTemplatesStore,
 	localizeTemplate,
 	pickTemplatePrompt,
 	type SubagentTemplate,
 } from "./subagent-templates.js";
-import { ApprovalRulesStore } from "./approval-rules.js";
-import { ComposerDraftsStore } from "./composer-drafts.js";
-import { SandboxManager, evaluateSandboxJail, isSameOrSubpath, withSandboxJailGate } from "./sandbox-service.js";
-import { readPermissionFromSession } from "./permission-preset.js";
+import { ApprovalRulesStore } from "../approval-rules.js";
+import { ComposerDraftsStore } from "../composer-drafts.js";
+import { SandboxManager, evaluateSandboxJail, isSameOrSubpath, withSandboxJailGate } from "../sandbox-service.js";
+import { readPermissionFromSession } from "../permission-preset.js";
 import {
 	createWorkspaceSnapshot,
 	restoreWorkspaceSnapshot,
@@ -156,14 +156,14 @@ import {
 	appendWorkspaceSnapshotToSession,
 	withWorkspaceSnapshotGate,
 	type WorkspaceSnapshotRecord,
-} from "./workspace-snapshot.js";
+} from "../workspace-snapshot.js";
 import {
 	createScheduleToolHost,
 	createConversationReadHost,
 	createClaimToolHost,
 	createCompactContextHost,
 	createSkillToolHost,
-} from "./tool-host-factories.js";
+} from "../tool-host-factories.js";
 import {
 	toSubagentSnapshot,
 	listSubagentSnapshots,
@@ -171,11 +171,11 @@ import {
 	roleOutcomeOf,
 	countActiveSubagents,
 } from "./subagent-helpers.js";
-import { resolveUserMessageEntryId, resolveConversationMessageEntry } from "./message-entry-resolver.js";
-import { fillSkillContents } from "./skill-content-filler.js";
-import { estimateNonSystemTokens, renderMainCompose } from "./prompt-assembler.js";
+import { resolveUserMessageEntryId, resolveConversationMessageEntry } from "../message-entry-resolver.js";
+import { fillSkillContents } from "../skill/skill-content-filler.js";
+import { estimateNonSystemTokens, renderMainCompose } from "../prompt/prompt-assembler.js";
 import { formatSubagentHandoffMessage, recordSubagentHandoff, type SubagentHandoffRecord } from "./subagent-handoff.js";
-import { executeContextBudgetPruning } from "./context-budget-runner.js";
+import { executeContextBudgetPruning } from "../context-budget-runner.js";
 import {
 	approvalSuppressionReason,
 	checkDangerousToolCall,
@@ -183,15 +183,15 @@ import {
 	type ApprovalPolicy,
 	type PendingApprovalEntry,
 	type ToolApprovalResolution,
-} from "./tool-approval.js";
-import { PlanManager } from "./plan-manager.js";
-import { buildPlanModePrompt, planModeDenial, planModeNoticeText, PLAN_MODE_BLOCKED_TOOL_NAMES } from "./plan-mode.js";
-import { DELEGATION_SYSTEM_PROMPT, delegateNoticeText } from "./delegate-mode.js";
-import { goalReviewDenial, shouldDeferPromptForReview } from "./goal-review-gate.js";
-import { readPlanModeFromSession, readPlanFromSession } from "./permission-preset.js";
-import { readDelegateModeFromSession } from "./permission-preset.js";
+} from "../tool-approval.js";
+import { PlanManager } from "../plan-manager.js";
+import { buildPlanModePrompt, planModeDenial, planModeNoticeText, PLAN_MODE_BLOCKED_TOOL_NAMES } from "../plan-mode.js";
+import { DELEGATION_SYSTEM_PROMPT, delegateNoticeText } from "../delegate-mode.js";
+import { goalReviewDenial, shouldDeferPromptForReview } from "../goal-review-gate.js";
+import { readPlanModeFromSession, readPlanFromSession } from "../permission-preset.js";
+import { readDelegateModeFromSession } from "../permission-preset.js";
 
-import { makePersistentTerminalTools, makeTerminalBashTool, stripAnsi, TERMINAL_TOOLS_GUIDANCE } from "./terminals.js";
+import { makePersistentTerminalTools, makeTerminalBashTool, stripAnsi, TERMINAL_TOOLS_GUIDANCE } from "../terminals.js";
 import {
 	applyAgentToolsGating,
 	ASK_USER_QUESTION_TOOL_NAME,
@@ -209,24 +209,24 @@ import {
 	presetAllowsPluginTools,
 	presetHasQuestionnaire,
 	presetShowsSkillCatalog,
-} from "./tool-manager.js";
-import { makeLoadToolsTool, type LoadableToolInfo, type LoadToolsHost } from "./load-tools-tool.js";
-import { formatCompactSignature } from "./tool-signature.js";
-import { WebUIContext } from "./webui-context.js";
-import { DEFAULT_COMPACTION_RESERVE_TOKENS, effectiveSoftCap, softCapToReserve } from "./soft-cap.js";
-import { makeEditSoftTool } from "./edit-soft-tool.js";
+} from "../tool-manager.js";
+import { makeLoadToolsTool, type LoadableToolInfo, type LoadToolsHost } from "../load-tools-tool.js";
+import { formatCompactSignature } from "../tool-signature.js";
+import { WebUIContext } from "../webui-context.js";
+import { DEFAULT_COMPACTION_RESERVE_TOKENS, effectiveSoftCap, softCapToReserve } from "../soft-cap.js";
+import { makeEditSoftTool } from "../edit-soft-tool.js";
 // 覆盖 SDK 内置 read：路径是目录时列出目录条目（行为开关 readDirEnabled，默认开）。
 // 覆盖定义与「与扩展同名工具共存」的注入辅助分在两个文件（后者的依据见 tool-overrides.ts）。
-import { makeReadDirTool, withReadDirSupport, type ReadDirToolOptions } from "./read-tool.js";
+import { makeReadDirTool, withReadDirSupport, type ReadDirToolOptions } from "../read-tool.js";
 import {
 	installToolOverrides,
 	syncSubagentOverride,
 	type AnyToolDefinition,
 	type OverrideSessionLike,
 	type ToolOverrideSpec,
-} from "./tool-overrides.js";
+} from "../tool-overrides.js";
 // 展示文件给用户（present_files）：图片/视频内联、文本开预览弹窗、本地打开按钮。
-import { makePresentFilesTool } from "./present-files-tool.js";
+import { makePresentFilesTool } from "../present-files-tool.js";
 // 主动压缩上下文工具（compact_context）：AI 主动根据当前问题精简上下文并自主控制范围。
 import {
 	makeCompactContextTool,
@@ -234,18 +234,18 @@ import {
 	DEFAULT_KEEP_RECENT_TOKENS,
 	type CompactContextHost,
 	type PendingCompaction,
-} from "./compact-context-tool.js";
+} from "../compact-context-tool.js";
 // 持久代码求值沙箱（eval）：Python / Node.js 沙箱内核。
-import { disposeAllEvalKernels, disposeEvalSession, makeEvalTool } from "./eval-tool.js";
+import { disposeAllEvalKernels, disposeEvalSession, makeEvalTool } from "../eval-tool.js";
 // 工具定义说明的归一化（工具卡右键 → 「显示工具详细信息」，见 getToolInfo）。
-import { normalizeToolInfo, type RawToolDefinition } from "./tool-info.js";
+import { normalizeToolInfo, type RawToolDefinition } from "../tool-info.js";
 // 逐工具文案覆盖（设置页「工具」区可编辑 description/snippet/guidelines）。
 import {
 	applyToolPromptOverrides,
 	effectiveToolPrompt,
 	toolPromptOverrideOf,
 	type ToolPromptSessionLike,
-} from "./tool-prompt-overrides.js";
+} from "../prompt/tool-prompt-overrides.js";
 import {
 	collectSubagentDescendantIds,
 	makeSubagentTools,
@@ -254,32 +254,32 @@ import {
 	type SubagentSnapshot,
 	type SubagentToolHost,
 } from "./subagents.js";
-import { makeDelegateTaskTool } from "./delegate-task.js";
+import { makeDelegateTaskTool } from "../delegate-task.js";
 import {
 	makeConversationReadTool,
 	toTranscriptInput,
 	type ConversationReadHost,
 	type TranscriptInputMessage,
-} from "./conversation-read-tool.js";
-import { extractTouches, formatTouchesCompact, intersectTouches } from "./conversation-touches.js";
-import { ClaimStore, matchClaims, mergeTouchSidecar, removeTouchSidecar } from "./claim-store.js";
-import { makeClaimFilesTool, type ClaimFilesHost } from "./claim-files-tool.js";
-import { makeSkillTool, type SkillToolHost } from "./skill-tool.js";
-import { getCompactedMessages, type SessionManagerLike } from "./compacted-history.js";
-import { makeScheduleTool, type ScheduleToolHost } from "./schedule-agent-tool.js";
-import { makePatchTool } from "./patch-tool.js";
-import { makeLspTool } from "./lsp-tool.js";
-import { makeMcpManageTool, type McpManageToolHost } from "./mcp-agent-tool.js";
-import { makeSandboxTool } from "./sandbox-tool.js";
-import { makeWorktreeTool } from "./worktree-tool.js";
-import { getWorktreeContext, removeWorktree, normalizeWirePath } from "./worktree-service.js";
-import type { WorktreeInfo } from "./protocol.js";
-import { sameSessionFile, type SchedulerStore } from "./scheduler-tasks.js";
-import { buildAttachmentMessages, findTurnBaseEntryId, parseModelSpec } from "./attachments.js";
-import { scanAtMentions } from "./universal/universal-attachments.js";
-import { formatQuotedPrompt, formatStreamingPrompt, readTextQuote, splitQuotedPrompt } from "./text-quote.js";
-import { buildVisionBridgePrompt, findVisionModels, transcribeImages } from "./vision-bridge.js";
-import { generateScmCommitMessage } from "./scm-commitmsg.js";
+} from "../conversation-read-tool.js";
+import { extractTouches, formatTouchesCompact, intersectTouches } from "../conversation-touches.js";
+import { ClaimStore, matchClaims, mergeTouchSidecar, removeTouchSidecar } from "../claim-store.js";
+import { makeClaimFilesTool, type ClaimFilesHost } from "../claim-files-tool.js";
+import { makeSkillTool, type SkillToolHost } from "../skill/skill-tool.js";
+import { getCompactedMessages, type SessionManagerLike } from "../compacted-history.js";
+import { makeScheduleTool, type ScheduleToolHost } from "../schedule-agent-tool.js";
+import { makePatchTool } from "../patch-tool.js";
+import { makeLspTool } from "../lsp-tool.js";
+import { makeMcpManageTool, type McpManageToolHost } from "../mcp/mcp-agent-tool.js";
+import { makeSandboxTool } from "../sandbox-tool.js";
+import { makeWorktreeTool } from "../worktree-tool.js";
+import { getWorktreeContext, removeWorktree, normalizeWirePath } from "../worktree-service.js";
+import type { WorktreeInfo } from "../protocol.js";
+import { sameSessionFile, type SchedulerStore } from "../scheduler-tasks.js";
+import { buildAttachmentMessages, findTurnBaseEntryId, parseModelSpec } from "../attachments.js";
+import { scanAtMentions } from "../universal/universal-attachments.js";
+import { formatQuotedPrompt, formatStreamingPrompt, readTextQuote, splitQuotedPrompt } from "../text-quote.js";
+import { buildVisionBridgePrompt, findVisionModels, transcribeImages } from "../vision-bridge.js";
+import { generateScmCommitMessage } from "../scm-commitmsg.js";
 import {
 	BUILTIN_SOUL,
 	DEFAULT_PROMPT_TEMPLATE,
@@ -288,7 +288,7 @@ import {
 	renderPromptTemplate,
 	resolveSectionTexts,
 	type PromptComposerInputs,
-} from "./prompt-composer.js";
+} from "../prompt/prompt-composer.js";
 import type {
 	BgServer,
 	CommandDef,
@@ -312,7 +312,7 @@ import type {
 	AgentEngineCapabilities,
 	McpScope,
 	UiMcpServer,
-} from "./protocol.js";
+} from "../protocol.js";
 import {
 	listAllMcpServers,
 	checkMcpServer,
@@ -320,16 +320,16 @@ import {
 	saveMcpServer as saveMcpServerFile,
 	deleteMcpServer as deleteMcpServerFile,
 	toggleMcpServer as toggleMcpServerFile,
-} from "./mcp-manager.js";
-import { fetchRemoteMcpMarket, fetchRemoteSkillMarket, fetchRemoteSkillContent } from "./market-service.js";
-import type { McpBridge } from "./mcp-bridge.js";
+} from "../mcp/mcp-manager.js";
+import { fetchRemoteMcpMarket, fetchRemoteSkillMarket, fetchRemoteSkillContent } from "../market-service.js";
+import type { McpBridge } from "../mcp/mcp-bridge.js";
 import {
 	serializeMessage,
 	serializeStreamingMessage,
 	stripTransientRetryErrors,
 	type AgentMessage,
-} from "./serialize.js";
-import { loadCommands, saveCommandsFile, TerminalManager } from "./terminals.js";
+} from "../serialize.js";
+import { loadCommands, saveCommandsFile, TerminalManager } from "../terminals.js";
 
 const SNAPSHOT_INTERVAL_MS = 60;
 /** 服务进程所在机器的用户主目录（wire 格式）：进程内不变，模块加载时求值一次，
@@ -411,10 +411,10 @@ export class QuiesceRejectedError extends Error {
 // here but never read into the snapshot path.
 // ---------------------------------------------------------------------------
 
-import { splitAgentStartPrompt, PI_DOC_PATHS, WINDOWS_PERSONA } from "./persona-chain.js";
+import { splitAgentStartPrompt, PI_DOC_PATHS, WINDOWS_PERSONA } from "../prompt/persona-chain.js";
 export { splitAgentStartPrompt };
 
-import { makeKillableBashTool, makeAdaptiveBashTool } from "./bash-tool.js";
+import { makeKillableBashTool, makeAdaptiveBashTool } from "../bash-tool.js";
 export { makeKillableBashTool, makeAdaptiveBashTool };
 
 import {
@@ -432,7 +432,7 @@ import {
 	wrapEditToolWithPermission,
 	wrapEditSoftToolWithPermission,
 	wrapBashToolWithPermission,
-} from "./tool-guards.js";
+} from "../tool-guards.js";
 export {
 	type ToolGuardHook,
 	type AskApprovalFn,
@@ -450,10 +450,10 @@ export {
 	wrapBashToolWithPermission,
 };
 
-import { normalizeSolPlanToPlanSteps, makePlanUpdateTool } from "./plan-update-tool.js";
+import { normalizeSolPlanToPlanSteps, makePlanUpdateTool } from "../plan-update-tool.js";
 export { normalizeSolPlanToPlanSteps, makePlanUpdateTool };
 
-import { makeAskUserQuestionTool, shouldPopQuestion } from "./ask-user-question-tool.js";
+import { makeAskUserQuestionTool, shouldPopQuestion } from "../ask-user-question-tool.js";
 import {
 	type PageCallResult,
 	type PageCallRequest,
@@ -463,7 +463,7 @@ import {
 	formatBrowserPageError,
 	makeBrowserPageTool,
 	extractShotImage,
-} from "./browser-page-tool.js";
+} from "../browser-page-tool.js";
 export {
 	makeAskUserQuestionTool,
 	shouldPopQuestion,
@@ -691,7 +691,7 @@ import {
 	collectSessionAnchors,
 	piSessionsRoot,
 	isInsideSessionsDir,
-} from "./session-search.js";
+} from "../session-search.js";
 export { piSessionsRoot, isInsideSessionsDir };
 
 import {
@@ -699,7 +699,7 @@ import {
 	filterForkedParentSessions,
 	findMostRecentSessionFileFast,
 	parseSessionInfoFast,
-} from "./session-parser.js";
+} from "../session-parser.js";
 
 export interface SessionOwnerInfo {
 	clientId: string;
@@ -717,7 +717,7 @@ export interface ProjectRunnerInfo {
 	sessionFile?: string;
 }
 
-import { pickAdoptableOrphan, sameCwd, type OrphanCandidate } from "./orphan-manager.js";
+import { pickAdoptableOrphan, sameCwd, type OrphanCandidate } from "../orphan-manager.js";
 export { pickAdoptableOrphan, sameCwd, type OrphanCandidate };
 
 /** 手动过户时跟着对话一起搬走的等答复问卷（id 在目标会话重排）. */
@@ -758,7 +758,7 @@ export interface TakeoverPayload {
 	approvals: TakeoverApproval[];
 }
 
-import { processTreeKillPlan, resolveCwdTarget } from "./process-utils.js";
+import { processTreeKillPlan, resolveCwdTarget } from "../process-utils.js";
 export { processTreeKillPlan, resolveCwdTarget };
 
 export class ClientSession {
@@ -1862,7 +1862,7 @@ export class ClientSession {
 			const sess = conv.session;
 			const cwd = conv.cwd;
 			const active = sess.getActiveToolNames();
-			const schemaEntries: import("./prompt-composer.js").ToolSchemaEntry[] = [];
+			const schemaEntries: import("../prompt/prompt-composer.js").ToolSchemaEntry[] = [];
 			for (const name of active) {
 				const def = sess.getToolDefinition(name);
 				if (!def) continue;
@@ -3534,7 +3534,7 @@ export class ClientSession {
 							if (p.name === "plan_update") {
 								this.planManager.setPlan(
 									conv.id,
-									p.input.steps as import("./protocol.js").PlanStep[],
+									p.input.steps as import("../protocol.js").PlanStep[],
 									(p.input.activeStepId as string) ?? null,
 									sessionId,
 								);
@@ -5612,7 +5612,7 @@ export class ClientSession {
 		return null;
 	}
 
-	updatePlan(steps: import("./protocol.js").PlanStep[], activeStepId?: string | null, conversationId?: string): void {
+	updatePlan(steps: import("../protocol.js").PlanStep[], activeStepId?: string | null, conversationId?: string): void {
 		const convId = conversationId ?? this.activeId;
 		const conv = this.convs.get(convId);
 		const sessionId = conv?.session?.sessionId;
@@ -5633,7 +5633,7 @@ export class ClientSession {
 		this.flushSnapshot();
 	}
 
-	updatePlanStep(stepId: string, patch: Partial<import("./protocol.js").PlanStep>, conversationId?: string): void {
+	updatePlanStep(stepId: string, patch: Partial<import("../protocol.js").PlanStep>, conversationId?: string): void {
 		const convId = conversationId ?? this.activeId;
 		const plan = this.planManager.updateStep(convId, stepId, patch);
 		this.emit({
@@ -5655,7 +5655,7 @@ export class ClientSession {
 		this.flushSnapshot();
 	}
 
-	addPlanStep(step: import("./protocol.js").PlanStep, afterStepId?: string, conversationId?: string): void {
+	addPlanStep(step: import("../protocol.js").PlanStep, afterStepId?: string, conversationId?: string): void {
 		const convId = conversationId ?? this.activeId;
 		const plan = this.planManager.addStep(convId, step, afterStepId);
 		this.emit({
@@ -5696,7 +5696,7 @@ export class ClientSession {
 
 	/** 「✨ 净室执行（Clean-session Handoff）」：
 	 *  关闭源会话的计划闸门，新建隔离会话，在新会话中原子设置计划步骤、可选迁移目标，并触发实施轮 prompt。 */
-	async planCleanHandoff(steps: import("./protocol.js").PlanStep[], promptText: string): Promise<void> {
+	async planCleanHandoff(steps: import("../protocol.js").PlanStep[], promptText: string): Promise<void> {
 		const sourceConv = this.conv;
 		if (sourceConv?.planMode) {
 			await this.setPlanMode(false, sourceConv.id);
@@ -13701,7 +13701,7 @@ export class ClientSession {
 	}
 }
 
-import { checkPluginCwd, isPseudoClientId } from "./client-id-utils.js";
+import { checkPluginCwd, isPseudoClientId } from "../client-id-utils.js";
 export { checkPluginCwd, isPseudoClientId };
 
 import { AgentService } from "./agent-service-daemon.js";

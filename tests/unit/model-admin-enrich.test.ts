@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { ModelRuntime } from "@earendil-works/pi-coding-agent";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ModelAdminService, type ModelAdminHost } from "../../server/model-admin.js";
+import { ModelAdminService, type ModelAdminHost } from "../../server/model/model-admin.js";
 import type { ServerMessage } from "../../server/protocol.js";
 
 function makeHost(agentDir: string) {

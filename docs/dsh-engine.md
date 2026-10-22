@@ -405,7 +405,7 @@ E:/pi-web-ui/server/dsh/
 | `E:/pi-web-ui/server/index.ts`                           | 引擎分发（ENGINE/EngineService/DispatchSession）+ dispatch 表 + dsh_patches 分支               |
 | `E:/pi-web-ui/server/protocol.ts`                        | wire 协议唯一事实源（ready.engine + dsh_patches 消息）                                         |
 | `E:/pi-web-ui/scripts/copy-dsh-runtime.mjs`              | build:dsh-runtime（拷贝 .mjs/.yml 到 dist）                                                    |
-| `E:/pi-web-ui/server/agent-service.ts`                   | pi 引擎（协议对齐参照；QuiesceRejectedError 定义处）                                           |
+| `E:/pi-web-ui/server/agent/agent-service.ts`             | pi 引擎（协议对齐参照；QuiesceRejectedError 定义处）                                           |
 | `E:/pi-web-ui/server/files-service.ts`                   | 文件/SCM 服务（scmQuery 带 git-dir watcher，dsh 复用）                                         |
 | `E:/ds-web-ui/server/dsh-client.js` / `agent-service.js` | 移植源（JSONL 解码/事件适配参考）                                                              |
 

@@ -5,8 +5,8 @@
 > **延迟加载为什么不会打坏供应商的前缀缓存**（这是实现里最容易踩坏的一条）。
 >
 > 相关代码：`server/load-tools-tool.ts`（按需加载入口）、`server/tool-manager.ts`（门控 +
-> `lazyLoadingDisabledTools`）、`server/prompt-composer.ts`（提示词目录段）、
-> `server/tool-prompt-overrides.ts`（逐工具文案覆盖）、`server/agent-service.ts`
+> `lazyLoadingDisabledTools`）、`server/prompt/prompt-composer.ts`（提示词目录段）、
+> `server/prompt/tool-prompt-overrides.ts`（逐工具文案覆盖）、`server/agent/agent-service.ts`
 > 的 `applyToolGating` / `lazyToolCatalog` / `promptToolCatalog` / `loadLazyTools`。
 
 ## 1. 一块开销有多大
@@ -35,7 +35,7 @@
 设置 → 工具区「编辑文案」：`description` / `promptSnippet` / `promptGuidelines` 都能覆盖，
 留空 = 用出厂默认。存在 `ClientSettings.toolPromptOverrides`，打补丁落在 SDK 合并后的
 `_toolRegistry` 上（核心内置 / 本项目工具 / 插件 / MCP 一网打尽）。见
-`server/tool-prompt-overrides.ts`。
+`server/prompt/tool-prompt-overrides.ts`。
 
 ### 2.3 延迟加载（本机制，**默认关**，可开）
 

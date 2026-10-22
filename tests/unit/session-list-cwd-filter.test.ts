@@ -16,7 +16,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { SessionManager, type SessionInfo } from "@earendil-works/pi-coding-agent";
-import { ClientSession } from "../../server/agent-service.js";
+import { ClientSession } from "../../server/agent/agent-service.js";
 import { normalizePathKey } from "../../server/client-state.js";
 
 // private static 缓存：测试间必须隔离（30s TTL 缓存 + 文件缓存 + in-flight 去重）。

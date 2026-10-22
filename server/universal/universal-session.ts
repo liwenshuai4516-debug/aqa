@@ -37,21 +37,21 @@ import { TerminalManager, makePersistentTerminalTools } from "../terminals.js";
 import { TERMINAL_TOOL_NAMES } from "../tool-manager.js";
 import type { ToolDefinition } from "@earendil-works/pi-coding-agent";
 import { BgServerTracker } from "../bg-servers.js";
-import { ModelAdminService } from "../model-admin.js";
+import { ModelAdminService } from "../model/model-admin.js";
 import { WebUIContext } from "../webui-context.js";
 import type { BaseAgentDriver, AgentEventSink, AgentTurnMeta } from "./driver-base.js";
 import { ClaudeCodeDriver, probeClaudeCode } from "./drivers/claude-code.js";
 import type { UniversalSessionStore } from "./session-store.js";
 import type { UniversalConversation } from "./universal-types.js";
 import { type ClientStateStore, normalizeUiLayout, type ClientSettings, settingsPresetToUi } from "../client-state.js";
-import { readModelsJson } from "../model-resolver.js";
+import { readModelsJson } from "../model/model-resolver.js";
 import { DEFAULT_UNIVERSAL_CAPABILITIES } from "../engine-capabilities.js";
 import { unsupportedToolInfo } from "../tool-info.js";
 import { SandboxManager } from "../sandbox-service.js";
 import { getWorktreeContext, removeWorktree } from "../worktree-service.js";
 import { MarkerService } from "../marker-service.js";
 import { SlashCommandsService, parseSlash } from "../slash-commands.js";
-import { discoverDiskSkills, readSkillInstruction, type DiscoveredSkill } from "../skill-discovery.js";
+import { discoverDiskSkills, readSkillInstruction, type DiscoveredSkill } from "../skill/skill-discovery.js";
 import { scanAtMentions, createAttachmentUiMessages, formatPromptWithSkills } from "./universal-attachments.js";
 import type { PluginCommandDef } from "../plugins.js";
 import { scmCommitContext } from "../scm.js";
@@ -62,7 +62,7 @@ import {
 	DEFAULT_TEMPLATES,
 	type SubagentTemplate,
 	pickTemplatePrompt,
-} from "../subagent-templates.js";
+} from "../agent/subagent-templates.js";
 import {
 	type SubagentToolHost,
 	type SubagentSnapshot,
@@ -71,12 +71,12 @@ import {
 	isSubagentTerminal,
 	computeWaitCapMs,
 	makeSubagentTools,
-} from "../subagents.js";
+} from "../agent/subagents.js";
 import {
 	recordSubagentHandoff,
 	formatSubagentHandoffMessage,
 	type SubagentHandoffRecord,
-} from "../subagent-handoff.js";
+} from "../agent/subagent-handoff.js";
 import type { DriverFactory } from "./universal-service.js";
 import { pick, type ServerLang } from "../i18n.js";
 import { fetchRemoteSkillMarket, fetchRemoteSkillContent, fetchRemoteMcpMarket } from "../market-service.js";

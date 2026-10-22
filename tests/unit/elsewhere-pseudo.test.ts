@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { AgentService } from "../../server/agent-service.js";
+import { AgentService } from "../../server/agent/agent-service.js";
 import type { ElsewhereRunning } from "../../server/protocol.js";
 
 describe("ElsewhereRunning pseudo support (#426)", () => {

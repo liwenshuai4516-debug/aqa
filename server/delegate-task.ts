@@ -18,7 +18,7 @@ import { Type } from "typebox";
 import { defineTool, type ToolDefinition } from "@earendil-works/pi-coding-agent";
 import { pick, type ServerLang } from "./i18n.js";
 import { DELEGATE_TASK_TOOL_NAME } from "./tool-manager.js";
-import { subagentTitle, type SubagentToolHost } from "./subagents.js";
+import { subagentTitle, type SubagentToolHost } from "./agent/subagents.js";
 
 /** 工具名（唯一值在 tool-manager.ts；本别名保留：前端派单卡片与旧导入沿用它）。 */
 export const DELEGATE_TOOL_NAME = DELEGATE_TASK_TOOL_NAME;

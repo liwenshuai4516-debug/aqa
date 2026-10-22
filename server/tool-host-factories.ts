@@ -17,9 +17,9 @@ import type { ClaimFilesHost } from "./claim-files-tool.js";
 import type { ClaimStore } from "./claim-store.js";
 import { readTouchSidecar } from "./claim-store.js";
 import type { CompactContextHost, PendingCompaction } from "./compact-context-tool.js";
-import type { SkillToolHost } from "./skill-tool.js";
+import type { SkillToolHost } from "./skill/skill-tool.js";
 import type { AgentMessage } from "./serialize.js";
-import type { Conversation } from "./agent-service.js";
+import type { Conversation } from "./agent/agent-service.js";
 import { MAX_TRANSCRIPT_SCAN_BYTES, piSessionsRoot } from "./session-search.js";
 
 /** 创建 schedule_* 工具的数据宿主 */

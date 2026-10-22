@@ -20,8 +20,8 @@ import { BaseAgentDriver, type AgentCapabilities, type AgentEventSink, type Agen
 import type { PromptAttachment, SlashCommandInfo } from "../../protocol.js";
 import { DshRuntime } from "../../dsh/dsh-client.js";
 import { normalizeDshUsage } from "../../dsh/dsh-usage.js";
-import { listCustomModelsFromConfig } from "../../model-resolver.js";
-import { discoverDiskSkills } from "../../skill-discovery.js";
+import { listCustomModelsFromConfig } from "../../model/model-resolver.js";
+import { discoverDiskSkills } from "../../skill/skill-discovery.js";
 
 const DEFAULT_MODEL = "deepseek-v4-flash";
 

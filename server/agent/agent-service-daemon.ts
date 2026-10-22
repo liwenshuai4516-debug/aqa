@@ -15,17 +15,17 @@
 import { join, resolve } from "node:path";
 import { statSync } from "node:fs";
 import { VERSION, getAgentDir, type AgentSession } from "@earendil-works/pi-coding-agent";
-import { ClientStateStore } from "./client-state.js";
-import { ClaimStore } from "./claim-store.js";
-import { toServiceInfo, launchOrigin } from "./launch-origin.js";
-import { isPseudoClientId, checkPluginCwd } from "./client-id-utils.js";
-import { pickAdoptableOrphan, type OrphanCandidate } from "./orphan-manager.js";
-import { findMostRecentSessionFileFast } from "./session-parser.js";
-import { isRemoteWorkspaceUri, resolveWorkspaceSessionDir } from "./remote-ssh-service.js";
+import { ClientStateStore } from "../client-state.js";
+import { ClaimStore } from "../claim-store.js";
+import { toServiceInfo, launchOrigin } from "../launch-origin.js";
+import { isPseudoClientId, checkPluginCwd } from "../client-id-utils.js";
+import { pickAdoptableOrphan, type OrphanCandidate } from "../orphan-manager.js";
+import { findMostRecentSessionFileFast } from "../session-parser.js";
+import { isRemoteWorkspaceUri, resolveWorkspaceSessionDir } from "../remote-ssh-service.js";
 import { getMaxOpenConversations } from "./agent-formatters.js";
 import { collectSubagentDescendantIds } from "./subagents.js";
-import { pickLatestClientSnapshot } from "./plugin-conversation-view.js";
-import type { ToolGuardHook } from "./tool-guards.js";
+import { pickLatestClientSnapshot } from "../plugin-conversation-view.js";
+import type { ToolGuardHook } from "../tool-guards.js";
 import type {
 	ServerMessage,
 	UiServiceInfo,
@@ -33,8 +33,8 @@ import type {
 	ElsewhereRunning,
 	BgServer,
 	AgentEngineCapabilities,
-} from "./protocol.js";
-import { DEFAULT_PI_CAPABILITIES } from "./engine-capabilities.js";
+} from "../protocol.js";
+import { DEFAULT_PI_CAPABILITIES } from "../engine-capabilities.js";
 import type {
 	PluginToolEvent,
 	PluginRunEvent,
@@ -44,8 +44,8 @@ import type {
 	PluginConversationQuery,
 	PluginChatRequest,
 	PluginChatResult,
-} from "./plugins.js";
-import type { SchedulerStore } from "./scheduler-tasks.js";
+} from "../plugins.js";
+import type { SchedulerStore } from "../scheduler-tasks.js";
 import {
 	ClientSession,
 	QuiesceRejectedError,
@@ -769,7 +769,7 @@ export class AgentService {
 			} catch {
 				env = { cwd: this.cwd, agentDir };
 			}
-			const mod = await import("./plugin-llm.js");
+			const mod = await import("../plugin-llm.js");
 			const r = await mod.completeWithIsolatedSession(env, { ...req, prompt: String(req?.prompt ?? "") });
 			if (!r.ok) return r;
 			console.log(`[plugin:${pluginId}] llm.complete ok（模型 ${r.model}，输出 ${r.text.length} 字）`);

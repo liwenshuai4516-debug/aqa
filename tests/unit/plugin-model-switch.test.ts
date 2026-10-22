@@ -8,7 +8,7 @@
  * switchModelOrThrow 用「复核当前模型」把这条路径变成响亮失败。
  */
 import { describe, expect, it, vi } from "vitest";
-import { ClientSession } from "../../server/agent-service.js";
+import { ClientSession } from "../../server/agent/agent-service.js";
 
 /** 伪造 this：只用到 setModel 与 session.model 两处。 */
 function fakeCtx(setModel: (m: string) => Promise<void>, model: () => { provider: string; id: string } | null) {

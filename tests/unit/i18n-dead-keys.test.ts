@@ -17,7 +17,7 @@ import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { THINKING_VALUES } from "../../web/src/thinking-levels.js";
-import { PROMPT_TOKENS } from "../../server/prompt-composer.js";
+import { PROMPT_TOKENS } from "../../server/prompt/prompt-composer.js";
 
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const I18N = join(ROOT, "web/src/i18n.tsx");

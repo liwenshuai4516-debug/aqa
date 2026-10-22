@@ -7,7 +7,7 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { getAgentDir } from "@earendil-works/pi-coding-agent";
 import { PluginManager } from "../server/plugins.ts";
-import { ClientSession } from "../server/agent-service.ts";
+import { ClientSession } from "../server/agent/agent-service.ts";
 import { ApiTestingRunner } from "../server/api-testing-runner.ts";
 import { completeWithIsolatedSession } from "../server/plugin-llm.ts";
 

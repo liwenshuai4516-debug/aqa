@@ -7,7 +7,7 @@ import { join, resolve } from "node:path";
 import { once } from "node:events";
 import { fileURLToPath } from "node:url";
 import { PluginManager } from "../server/plugins.ts";
-import { ClientSession } from "../server/agent-service.ts";
+import { ClientSession } from "../server/agent/agent-service.ts";
 import { ApiTestingRunner } from "../server/api-testing-runner.ts";
 const repo = fileURLToPath(new URL("..", import.meta.url));
 const runtime = resolve(process.argv[2] ?? "tests/scratch/api-testing-p1-1/runtime");

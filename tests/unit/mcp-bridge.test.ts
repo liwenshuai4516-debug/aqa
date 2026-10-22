@@ -20,7 +20,7 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { McpBridge, McpClient, expandEnvVars, mcpServerSnapshot, parseMcpConfig } from "../../server/mcp-bridge.js";
+import { McpBridge, McpClient, expandEnvVars, mcpServerSnapshot, parseMcpConfig } from "../../server/mcp/mcp-bridge.js";
 import { createServer, type Server } from "node:http";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

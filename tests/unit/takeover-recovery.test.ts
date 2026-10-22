@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { ClientSession } from "../../server/agent-service.js";
+import { ClientSession } from "../../server/agent/agent-service.js";
 
 describe("过户后会话状态与自愈防护 (Takeover recovery and activeId self-healing)", () => {
 	it("当 activeId 悬空时，get conv 自动自愈回退到现存合法会话", () => {
@@ -61,7 +61,7 @@ describe("过户后会话状态与自愈防护 (Takeover recovery and activeId s
 		cs.makeConversation = makeConvMock;
 
 		// 模拟 dynamic import 的 createAgentSessionRuntime
-		vi.doMock("../../server/agent-service.js", async (importOriginal) => {
+		vi.doMock("../../server/agent/agent-service.js", async (importOriginal) => {
 			const mod = await importOriginal<any>();
 			return mod;
 		});

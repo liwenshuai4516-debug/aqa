@@ -13,7 +13,7 @@ import {
 	renderSkillContent,
 	suggestSkills,
 	type SkillCatalogEntry,
-} from "../../server/skill-tool.js";
+} from "../../server/skill/skill-tool.js";
 
 const SKILLS: SkillCatalogEntry[] = [
 	{ name: "code-review", description: "Review code changes", filePath: "/skills/code-review/SKILL.md" },

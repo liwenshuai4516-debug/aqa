@@ -3,7 +3,7 @@ import {
 	resolveModelProtocol,
 	isProtocolSupportedByEngine,
 	isModelProtocolSupportedByEngine,
-} from "../../server/model-resolver.js";
+} from "../../server/model/model-resolver.js";
 
 describe("多引擎实际协议类型（Protocol-Based）针对性过滤规范", () => {
 	it("resolveModelProtocol 准确解析实际协议，绝不依据名字猜测", () => {

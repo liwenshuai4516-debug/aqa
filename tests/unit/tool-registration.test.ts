@@ -41,7 +41,7 @@ import {
 	TOOL_SEARCH_TOOL_NAME,
 } from "../../server/tool-manager.js";
 
-const AGENT_SERVICE_SRC = readFileSync(join(__dirname, "..", "..", "server", "agent-service.ts"), "utf8");
+const AGENT_SERVICE_SRC = readFileSync(join(__dirname, "..", "..", "server", "agent", "agent-service.ts"), "utf8");
 
 /** 覆盖 SDK 内置的内核工具（与 write/edit 同走设置页「核心工具」区，不占目录行；
  *  目录行是 OTHER_AGENT_TOOLS 自动渲染的细粒度开关，核心四件套不在其中）。 */
@@ -135,7 +135,11 @@ describe("注册→目录", () => {
 	it("所有 Type.Unsafe 参数均显式声明 type（防 Moonshot 等严格端点 HTTP 400，#590）", () => {
 		const serverDir = join(__dirname, "..", "..", "server");
 		const missingType: string[] = [];
-		for (const file of readdirSync(serverDir).filter((f) => f.endsWith(".ts"))) {
+		for (const file of ["", "agent", "model", "prompt", "skill", "mcp"].flatMap((directory) =>
+			readdirSync(join(serverDir, directory))
+				.filter((f) => f.endsWith(".ts"))
+				.map((f) => join(directory, f)),
+		)) {
 			const src = readFileSync(join(serverDir, file), "utf8");
 			for (const m of src.matchAll(/Type\.Unsafe(?:<[^>]*>)?\(\s*\{([\s\S]*?)\}\s*\)/g)) {
 				const body = m[1];

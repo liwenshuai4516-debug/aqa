@@ -99,15 +99,15 @@ import {
 	type McpCheckResult,
 	type McpInstallSpec,
 	type McpInstallResult,
-} from "./mcp-manager.js";
+} from "./mcp/mcp-manager.js";
 import {
 	callPluginMcp,
 	type PluginApiScheduleHost,
 	type PluginMcpCaller,
 	type PluginMcpRequest,
 	type PluginToolContext,
-} from "./plugin-mcp.js";
-import type { McpBridge } from "./mcp-bridge.js";
+} from "./mcp/plugin-mcp.js";
+import type { McpBridge } from "./mcp/mcp-bridge.js";
 import type { UiMcpServer } from "./protocol.js";
 import type { Request, Response } from "express";
 import { createHash } from "node:crypto";

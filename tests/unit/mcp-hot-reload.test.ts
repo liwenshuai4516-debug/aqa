@@ -1,5 +1,5 @@
 /**
- * `mcp.json` 热加载单测（server/mcp-hot-reload.ts）：
+ * `mcp.json` 热加载单测（server/mcp/mcp-hot-reload.ts）：
  *  - 指纹策略（内容没变不重启 / 真变了才应用 / 坏配置保留在跑的服务器 / 删文件 = 清空）；
  *  - 真 fs 监视（fs.watch 命中；目录不存在 → 回落到轮询；dispose 后不再触发）；
  *  - 端到端一条：真 McpBridge + 真文件，改完 mcp.json 工具表跟着变，全程不重启服务。
@@ -9,8 +9,8 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { createMcpHotReload } from "../../server/mcp-hot-reload.js";
-import { McpBridge, type McpReloadSummary } from "../../server/mcp-bridge.js";
+import { createMcpHotReload } from "../../server/mcp/mcp-hot-reload.js";
+import { McpBridge, type McpReloadSummary } from "../../server/mcp/mcp-bridge.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const FIXTURE = resolve(__dirname, "../fixtures/mcp-echo-server.mjs");

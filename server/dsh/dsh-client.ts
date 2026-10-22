@@ -24,7 +24,7 @@ import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { bilingual } from "../i18n.js";
-import { resolveProviderCredential } from "../model-resolver.js";
+import { resolveProviderCredential } from "../model/model-resolver.js";
 
 /** 项目依赖解析（tsc 编译后 dist/server/dsh/ 里向上找 node_modules）。 */
 const require = createRequire(import.meta.url);

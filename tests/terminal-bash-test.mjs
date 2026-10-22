@@ -27,7 +27,7 @@ const {
 	terminalIdleNotifyLines,
 } = await import(pathToFileURL(join(REPO, "dist", "server", "terminals.js")).href);
 const { makeAdaptiveBashTool, makeKillableBashTool } = await import(
-	pathToFileURL(join(REPO, "dist", "server", "agent-service.js")).href
+	pathToFileURL(join(REPO, "dist", "server", "agent", "agent-service.js")).href
 );
 
 const workdir = mkdtempSync(join(tmpdir(), "piweb-tbash-"));

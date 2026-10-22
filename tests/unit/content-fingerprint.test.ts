@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { contentFingerprint } from "../../server/agent-formatters.js";
+import { contentFingerprint } from "../../server/agent/agent-formatters.js";
 
 type Msg = Parameters<typeof contentFingerprint>[0];
 const msg = (content: unknown[]): Msg => ({ role: "assistant", content }) as unknown as Msg;

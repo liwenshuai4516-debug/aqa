@@ -8,7 +8,7 @@ import {
 	ensureCredentialFilePermissions,
 	writeCredentialFile,
 	type ModelAdminHost,
-} from "../../server/model-admin.js";
+} from "../../server/model/model-admin.js";
 import type { ServerMessage } from "../../server/protocol.js";
 
 const isWin = process.platform === "win32";

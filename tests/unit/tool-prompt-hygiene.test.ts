@@ -59,9 +59,11 @@ const SNIPPET_DESC_JACCARD = 0.7;
 const CJK = /[\u4e00-\u9fff\u3040-\u30ff]/;
 
 function serverFiles(): string[] {
-	return readdirSync(join(ROOT, "server"))
-		.filter((f) => f.endsWith(".ts") && !f.endsWith(".d.ts"))
-		.map((f) => join(ROOT, "server", f));
+	return ["", "agent", "model", "prompt", "skill", "mcp"].flatMap((directory) =>
+		readdirSync(join(ROOT, "server", directory))
+			.filter((f) => f.endsWith(".ts") && !f.endsWith(".d.ts"))
+			.map((f) => join(ROOT, "server", directory, f)),
+	);
 }
 
 /** 解析一个「字符串表达式」（字面量按 + 拼接；返回 null 表示不是纯字符串）。 */

@@ -7,7 +7,7 @@
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
-import type { McpScope, UiMcpServer, UiMcpToolInfo } from "./protocol.js";
+import type { McpScope, UiMcpServer, UiMcpToolInfo } from "../protocol.js";
 import {
 	getGlobalMcpPath,
 	getProjectMcpPath,

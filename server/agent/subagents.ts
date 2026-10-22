@@ -28,7 +28,7 @@
 
 import { defineTool, type ToolDefinition } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
-import { pick, type ServerLang } from "./i18n.js";
+import { pick, type ServerLang } from "../i18n.js";
 
 /** 子代理的状态（由 conversation 派生的轻量视图）。 */
 export type SubagentState = "running" | "queued" | "done" | "canceled";

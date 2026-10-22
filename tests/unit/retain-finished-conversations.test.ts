@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { ClientSession } from "../../server/agent-service.js";
+import { ClientSession } from "../../server/agent/agent-service.js";
 
 type AnySession = Record<string, (...args: unknown[]) => unknown>;
 

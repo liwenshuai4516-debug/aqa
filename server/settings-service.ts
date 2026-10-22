@@ -41,10 +41,10 @@ import { normalizeSoftCapByModel, normalizeSoftCapTokens } from "./soft-cap.js";
 import { findVisionModels, SYSTEM_PROMPT } from "./vision-bridge.js";
 import { COMMITMSG_SYSTEM_PROMPT } from "./scm-commitmsg.js";
 import { PLAN_MODE_SYSTEM_PROMPT } from "./plan-mode.js";
-import { DEFAULT_TEMPLATES, localizeTemplate, type SubagentTemplatesStore } from "./subagent-templates.js";
+import { DEFAULT_TEMPLATES, localizeTemplate, type SubagentTemplatesStore } from "./agent/subagent-templates.js";
 import type { ApprovalRulesStore } from "./approval-rules.js";
 import { deriveLegacy, foldLegacyIntoDisabled, normalizeDisabledAgentTools } from "./tool-manager.js";
-import { normalizeToolPromptOverrides } from "./tool-prompt-overrides.js";
+import { normalizeToolPromptOverrides } from "./prompt/tool-prompt-overrides.js";
 import { resolveServerLang, type ServerLang } from "./i18n.js";
 import {
 	exportPresetVia,

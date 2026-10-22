@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { splitAgentStartPrompt } from "../../server/agent-service.js";
+import { splitAgentStartPrompt } from "../../server/agent/agent-service.js";
 
 /** 复刻 SDK runner 的 before_agent_start 事件契约（dist/core/extensions/runner.js）：
  *  systemPromptOptions 是整条链共享的可变对象，systemPrompt 是它的 getter；

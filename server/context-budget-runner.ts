@@ -6,10 +6,10 @@
  *
  * 从 agent-service.ts 抽出为独立模块。
  */
-import { contextWindowOf, modelKeyOf } from "./agent-formatters.js";
+import { contextWindowOf, modelKeyOf } from "./agent/agent-formatters.js";
 import { effectiveSoftCap, softCapToReserve, DEFAULT_COMPACTION_RESERVE_TOKENS } from "./soft-cap.js";
 import { pruneContextHierarchically } from "./context-budget.js";
-import type { Conversation } from "./agent-service.js";
+import type { Conversation } from "./agent/agent-service.js";
 
 export interface ContextPruningResult {
 	pruned: boolean;

@@ -26,7 +26,9 @@ afterEach(() => {
 	for (const dir of roots.splice(0)) rmSync(dir, { recursive: true, force: true });
 });
 
-const templates = { list: () => [] } as unknown as import("../../server/subagent-templates.js").SubagentTemplatesStore;
+const templates = {
+	list: () => [],
+} as unknown as import("../../server/agent/subagent-templates.js").SubagentTemplatesStore;
 
 function makeHost(store: ClientStateStore): SettingsHost & { emitted: unknown[] } {
 	const emitted: unknown[] = [];

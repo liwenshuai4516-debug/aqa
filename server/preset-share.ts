@@ -43,7 +43,7 @@ import {
 	resolveDisabledAgentToolsFromEnabled,
 	resolveEnabledAgentTools,
 } from "./tool-manager.js";
-import { normalizeToolPromptOverrides } from "./tool-prompt-overrides.js";
+import { normalizeToolPromptOverrides } from "./prompt/tool-prompt-overrides.js";
 import {
 	isBlockedHost,
 	isNativeGlobalFetch,

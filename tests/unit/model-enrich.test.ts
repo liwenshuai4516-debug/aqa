@@ -12,7 +12,7 @@ import {
 	parseOpenRouterCatalog,
 	stripTierSuffix,
 	type CatalogModel,
-} from "../../server/model-enrich.js";
+} from "../../server/model/model-enrich.js";
 
 const OR_FIXTURE = {
 	data: [

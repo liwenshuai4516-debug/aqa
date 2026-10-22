@@ -74,7 +74,9 @@ function makeHost(over: Partial<SettingsHost> & { emitted?: unknown[] } = {}): S
 	} as SettingsHost & { emitted: unknown[] };
 }
 
-const templates = { list: () => [] } as unknown as import("../../server/subagent-templates.js").SubagentTemplatesStore;
+const templates = {
+	list: () => [],
+} as unknown as import("../../server/agent/subagent-templates.js").SubagentTemplatesStore;
 
 let errSpy: ReturnType<typeof vi.spyOn>;
 

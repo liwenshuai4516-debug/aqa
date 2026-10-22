@@ -260,7 +260,7 @@ pi-web-ui 覆盖了 SDK 内置 `read` / `write` / `edit`（bash 覆盖是另一�
 **四段链路**，缺一段都不通：
 
 ```
-模型 ── browser_page 工具（server/agent-service.ts makeBrowserPageTool）
+模型 ── browser_page 工具（server/agent/agent-service.ts makeBrowserPageTool）
   │   参数：op（pages/read/click/type/scroll/goto/wait/eval）+ target/origin + 各动作参数
   ▼
 ClientSession.pageCall()  ── 发 page_request（带 id + timeoutMs，默认 30s/上限 120s，**有空闲超时**）

@@ -1,5 +1,5 @@
 /**
- * graduateOverlayModels 单测（server/model-admin.ts）。
+ * graduateOverlayModels 单测（server/model/model-admin.ts）。
  *
  * 手工 overlay 行在官方收录同 id 后会遮住官方元数据（applyModelsJson 按
  * definition 重建整行），转正是为了让官方 name/vision/limits 接管。
@@ -7,7 +7,7 @@
  * 自带 baseUrl 或异种 api 的是刻意定制，保留。纯函数、零网络零磁盘。
  */
 import { describe, expect, it } from "vitest";
-import { graduateOverlayModels } from "../../server/model-admin.js";
+import { graduateOverlayModels } from "../../server/model/model-admin.js";
 
 const official = {
 	opencode: { "union-alpha-free": "openai-completions", "kimi-k2.6": "anthropic-messages" },

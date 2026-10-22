@@ -12,7 +12,7 @@ import {
 	saveMcpServer,
 	toggleMcpServer,
 	writeMcpConfigFile,
-} from "../../server/mcp-manager.js";
+} from "../../server/mcp/mcp-manager.js";
 import type { UiMcpServer } from "../../server/protocol.js";
 
 function makeTempDir(prefix: string): string {

@@ -18,7 +18,7 @@
  * DEFAULT_PROMPT_TEMPLATE 与 token 元数据）。
  */
 
-import { getServerBlock, pick, type ServerLang } from "./i18n.js";
+import { getServerBlock, pick, type ServerLang } from "../i18n.js";
 
 /** 全部来源 token。默认模板顺序即此数组顺序。 */
 export const PROMPT_TOKENS = [

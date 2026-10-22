@@ -13,10 +13,10 @@
  * 从 agent-service.ts 抽出为独立模块。
  */
 import type { AgentSession, ToolDefinition } from "@earendil-works/pi-coding-agent";
-import type { AgentMessage } from "./serialize.js";
-import type { PluginAgentTool } from "./plugins.js";
-import type { PluginInvocationScope } from "./plugin-mcp.js";
-import { writeAtomicSync } from "./atomic-file.js";
+import type { AgentMessage } from "../serialize.js";
+import type { PluginAgentTool } from "../plugins.js";
+import type { PluginInvocationScope } from "../mcp/plugin-mcp.js";
+import { writeAtomicSync } from "../atomic-file.js";
 
 /** 轨迹事件 payload 封顶（可直接广播/持久化，不撑爆 storage.json）。 */
 export const RUN_TASK_CAP = 500;

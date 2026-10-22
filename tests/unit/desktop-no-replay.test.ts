@@ -2,8 +2,8 @@ import { mkdtempSync, mkdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { AgentService } from "../../server/agent-service-daemon.js";
-import { ClientSession } from "../../server/agent-service.js";
+import { AgentService } from "../../server/agent/agent-service-daemon.js";
+import { ClientSession } from "../../server/agent/agent-service.js";
 import { ClientStateStore } from "../../server/client-state.js";
 
 afterEach(() => {

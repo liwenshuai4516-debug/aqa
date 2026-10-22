@@ -10,7 +10,7 @@
  * 根顶层，默认子目录布局下顶层为空，历史对话/最近项目全丢（0.84.4 实测回归）。
  */
 import { afterEach, describe, expect, it } from "vitest";
-import { isInsideSessionsDir, piSessionsRoot } from "../../server/agent-service.js";
+import { isInsideSessionsDir, piSessionsRoot } from "../../server/agent/agent-service.js";
 
 const original = process.env.PI_CODING_AGENT_SESSION_DIR;
 afterEach(() => {

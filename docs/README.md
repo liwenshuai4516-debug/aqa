@@ -9,6 +9,8 @@
 3. [开发工作流](development.md)：运行、测试、格式和提交前验证。
 4. 按任务阅读下表中的专题；查具体文件时使用 [目录参考](directory-reference.md)。
 
+能力目录与项目 API/UI 技能维护见 [能力维护指南](capability-layout.md)。
+
 ## 按任务查找
 
 | 任务                                 | 文档                                                                                     |

@@ -507,7 +507,7 @@ export function ModelConfigModal({
 	const [addKeyNames, setAddKeyNames] = useState<Record<string, string>>({});
 	const [addKeyBusy, setAddKeyBusy] = useState<string | null>(null);
 	// 审查 #13：添加密钥改为事件驱动收尾 —— 服务端 addProviderKey 成功后会主动
-	// listProviders()/listProviderKeys()（见 server/model-admin.ts），providerKeys
+	// listProviders()/listProviderKeys()（见 server/model/model-admin.ts），providerKeys
 	// 回包里对应 provider 的键列表引用变化即视为确认；1.5s 盲刷既有竞态（慢时
 	// 提前收尾丢更新）也从不校验结果。定时器只作 10s 超时兜底（复位 busy、
 	// 保留输入供重试，重复密钥/失败时服务端不推新列表正好落到这里）。

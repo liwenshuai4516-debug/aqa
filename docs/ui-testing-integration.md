@@ -75,3 +75,5 @@ PI_WEB_SMOKE_PREBUILT=1 node tests/ui-testing-visibility-test.mjs
 - 业务录制、独立模型设计/结果评估、正反诊断、正式业务回归及重启后资产复用未执行，不计为业务通过。未来执行业务测试前仍需具体模块、目标部署、角色、初态和可清理数据规则。
 
 本次支持范围为本地 Pi agent、Chromium、单 worker、零自动重试。DSH/其他引擎、SSH 工作区、多浏览器、并行测试和桌面分发未验收；源包原项目的历史结果不作为本轮结果。
+
+当前项目技能入口统一在 `.pi/skills/`，项目模式登记指向该目录；应用级原入口保留兼容。详见 [能力维护指南](capability-layout.md)。
