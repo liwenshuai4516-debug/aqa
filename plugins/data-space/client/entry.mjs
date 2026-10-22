@@ -2,12 +2,12 @@
  * 数据空间客户端视图入口 —— 纯 DOM，无框架；读写只走 /plugins-api/data-space。
  *
  * 结构：顶部品牌 + 一级导航（概览 / 用例库 / 数据集 / 设置）；
- * 用例库左侧是「系统 → 模块 → 功能」树，右侧是对应层级的用例；
+ * 用例库左侧是「项目列表」（可搜索），右侧是项目内的模块 / 功能筛选与用例；
  * 样式见 ./style.mjs（自包含，只吃宿主主题变量，深浅主题自动跟随）。
  */
 import { CSS } from "./style.mjs";
-import { BASE, S, applyStore, esc, hooks, load, newId, pathOfFeature, persist, toast } from "./state.mjs";
-import { ICON, casesHtml, datasetsHtml, overviewHtml, settingsHtml, tabsList, treeHtml } from "./views.mjs";
+import { BASE, S, applyStore, esc, hooks, load, moduleOf, newId, pathOfFeature, persist, toast } from "./state.mjs";
+import { ICON, casesHtml, datasetsHtml, overviewHtml, projectListHtml, settingsHtml, tabsList } from "./views.mjs";
 import { caseModalHtml, copyCase, deleteCase, openCaseModal, saveCase } from "./modal-case.mjs";
 import { deleteNode, nodeModalHtml, openNodeEdit, openNodeModal, saveNode } from "./modal-node.mjs";
 import { copyDataset, datasetModalHtml, deleteDataset, openDatasetModal, saveDataset } from "./modal-dataset.mjs";
@@ -23,7 +23,7 @@ function shellHtml() {
 				<span class="dsp-brand-icon">${ICON.db}</span>
 				<div>
 					<div class="dsp-brand-name">数据空间</div>
-					<div class="dsp-brand-sub" data-el="sub">系统 / 模块 / 功能 / 用例 · 本机全局共享</div>
+					<div class="dsp-brand-sub" data-el="sub">项目 / 模块 / 功能 / 用例 · 本机全局共享</div>
 				</div>
 			</div>
 			<div class="dsp-head-right" data-el="head-right"></div>
@@ -55,7 +55,7 @@ function errorHtml() {
 function bodyHtml() {
 	if (S.error) return errorHtml();
 	if (S.tab === "cases") {
-		return `<div class="dsp-layout">${treeHtml()}<section class="dsp-content">${casesHtml()}</section></div>`;
+		return `<div class="dsp-layout">${projectListHtml()}<section class="dsp-content">${casesHtml()}</section></div>`;
 	}
 	if (S.tab === "datasets") return datasetsHtml();
 	if (S.tab === "settings") return settingsHtml();
@@ -67,7 +67,7 @@ function renderHead() {
 	S.nodes.sub.textContent = S.error
 		? "读取失败"
 		: `revision ${S.revision} · 保存于 ${new Date(S.updatedAt || 0).toLocaleString("zh-CN", { hour12: false }) || "—"}`;
-	S.nodes.headRight.innerHTML = `<div class="dsp-head-hint">${S.systems.length} 个系统 · ${S.features.length} 个功能 · ${S.cases.length} 条用例</div>`;
+	S.nodes.headRight.innerHTML = `<div class="dsp-head-hint">${S.systems.length} 个项目 · ${S.features.length} 个功能 · ${S.cases.length} 条用例</div>`;
 }
 
 function renderBody() {
@@ -148,14 +148,15 @@ function onClick(e) {
 		render();
 		return;
 	}
-	if (act === "sel-system") {
+	if (act === "sel-project") {
 		S.sel = { systemId: id, moduleId: "", featureId: "" };
 		S.tab = "cases";
 		render();
 		return;
 	}
 	if (act === "sel-module") {
-		S.sel = { systemId: hit.dataset.sid || "", moduleId: id, featureId: "" };
+		const sid = hit.dataset.sid || moduleOf(id)?.systemId || "";
+		S.sel = { systemId: sid, moduleId: id, featureId: "" };
 		S.tab = "cases";
 		render();
 		return;
@@ -163,16 +164,12 @@ function onClick(e) {
 	if (act === "sel-feature" || act === "goto-feature") {
 		const { system, module } = pathOfFeature(id);
 		S.sel = { systemId: system?.id || "", moduleId: module?.id || "", featureId: id };
-		S.collapsed.delete(`s:${system?.id}`);
-		S.collapsed.delete(`m:${module?.id}`);
 		S.tab = "cases";
 		render();
 		return;
 	}
-	if (act === "toggle") {
-		const key = hit.dataset.key;
-		if (S.collapsed.has(key)) S.collapsed.delete(key);
-		else S.collapsed.add(key);
+	if (act === "type") {
+		S.caseType = id || "all";
 		renderBody();
 		return;
 	}
@@ -292,6 +289,11 @@ function onInput(e) {
 	const el = e.target;
 	if (!el || !S.nodes) return;
 	const modal = activeModal();
+	if (el.dataset.el === "project-search") {
+		S.projectQ = el.value;
+		renderBodyKeepFocus('[data-el="project-search"]');
+		return;
+	}
 	if (el.dataset.el === "case-search") {
 		S.caseQ = el.value;
 		renderBodyKeepFocus('[data-el="case-search"]');
@@ -458,7 +460,7 @@ function normalizeImport(parsed) {
 		code: c?.code || "",
 		title: c?.title || "未命名用例",
 		priority: c?.priority || "P2",
-		type: c?.type || "功能",
+		type: c?.type || "接口",
 		status: c?.status || "草稿",
 		owner: c?.owner || "",
 		tags: Array.isArray(c?.tags) ? c.tags : [],
@@ -503,7 +505,8 @@ async function doImport(input) {
 		toast("文件格式不对：需要 systems / modules / features / cases / datasets");
 		return;
 	}
-	if (!window.confirm(`导入会替换当前全部数据（${S.systems.length} 系统 / ${S.cases.length} 用例），继续？`)) return;
+	if (!window.confirm(`导入会替换当前全部数据（${S.systems.length} 个项目 / ${S.cases.length} 条用例），继续？`))
+		return;
 	const next = normalizeImport(parsed);
 	S.systems = next.systems;
 	S.modules = next.modules;
@@ -517,7 +520,7 @@ async function doImport(input) {
 }
 
 async function doReset() {
-	if (!window.confirm("恢复示例数据会覆盖当前全部系统、功能、用例与数据集，继续？")) return;
+	if (!window.confirm("恢复示例数据会覆盖当前全部项目、功能、用例与数据集，继续？")) return;
 	try {
 		const r = await fetch(`${BASE}/reset`, {
 			method: "POST",
@@ -533,8 +536,10 @@ async function doReset() {
 		S.tab = "overview";
 		S.sel = { systemId: "", moduleId: "", featureId: "" };
 		S.caseQ = "";
+		S.projectQ = "";
 		S.priority = "all";
 		S.status = "all";
+		S.caseType = "all";
 		render();
 		toast("已恢复示例数据");
 	} catch {

@@ -3,7 +3,8 @@
  *
  * 覆盖：
  *   - 插件被宿主接受并激活（WS attach 触发扫描）；
- *   - GET /state 首次访问有内置示例（系统 / 模块 / 功能 / 用例 / 数据集）并已落盘；
+ *   - GET /state 首次访问有内置示例（项目 / 模块 / 功能 / 用例 / 数据集）并已落盘；
+ *   - 用例类型只支持接口 / UI 两类，快照下发 caseTypes；空类型补默认值，未知类型不清洗；
  *   - POST /save 带 baseRevision → revision+1，层级与用例内容可读回；
  *   - 悬空父引用被清洗：用例挂不存在的功能 → featureId 置空；模块挂不存在的系统 → 丢弃；
  *     用例引用不存在的数据集 → 从 datasetIds 里剔除；
@@ -148,11 +149,25 @@ try {
 	// -- 首次访问：内置示例（三层结构）+ 已落盘 ------------------------------
 	let { status, body: st } = await getState();
 	check(status === 200 && st?.ok === true, "GET /state 返回 200 + ok", { status, ok: st?.ok });
-	check((st?.systems?.length ?? 0) >= 3, "示例含 3 个以上系统", st?.systems?.length);
-	check((st?.modules?.length ?? 0) >= 5, "示例含 5 个以上模块", st?.modules?.length);
-	check((st?.features?.length ?? 0) >= 10, "示例含 10 个以上功能", st?.features?.length);
-	check((st?.cases?.length ?? 0) >= 14, "示例含 14 条以上用例", st?.cases?.length);
+	check((st?.systems?.length ?? 0) >= 5, "示例含 5 个以上项目", st?.systems?.length);
+	check((st?.modules?.length ?? 0) >= 7, "示例含 7 个以上模块", st?.modules?.length);
+	check((st?.features?.length ?? 0) >= 14, "示例含 14 个以上功能", st?.features?.length);
+	check((st?.cases?.length ?? 0) >= 18, "示例含 18 条以上用例", st?.cases?.length);
 	check((st?.datasets?.length ?? 0) >= 5, "示例含 5 份以上数据集", st?.datasets?.length);
+	check(
+		JSON.stringify(st?.caseTypes) === JSON.stringify(["接口", "UI"]),
+		"快照下发用例类型清单（接口 / UI）",
+		st?.caseTypes,
+	);
+	check(
+		(st?.cases ?? []).every((c) => ["接口", "UI"].includes(c.type)),
+		"示例用例类型都在接口 / UI 两类内",
+		[...new Set((st?.cases ?? []).map((c) => c.type))],
+	);
+	check(
+		(st?.systems ?? []).some((s) => s.id === "sys-cts") && (st?.systems ?? []).some((s) => s.id === "sys-bms"),
+		"示例新增客服热线 / 收费管理两个项目（用于演示列表与搜索）",
+	);
 	check(
 		(st?.features ?? []).every((f) => (st.modules ?? []).some((m) => m.id === f.moduleId)),
 		"每个功能都挂在已存在的模块下",
@@ -223,7 +238,7 @@ try {
 			code: "TST-001",
 			title: "探针用例-可保存",
 			priority: "P0",
-			type: "功能",
+			type: "UI",
 			status: "待评审",
 			owner: "测试",
 			tags: ["冒烟", "探针"],
@@ -254,6 +269,23 @@ try {
 			createdAt: stamp,
 			updatedAt: stamp,
 		},
+		{
+			id: "blank-type-case",
+			featureId,
+			code: "TST-002",
+			title: "空类型用例",
+			priority: "P2",
+			type: "   ",
+			status: "草稿",
+			owner: "",
+			tags: [],
+			preconditions: "",
+			steps: [],
+			datasetIds: [],
+			note: "",
+			createdAt: stamp,
+			updatedAt: stamp,
+		},
 	];
 	let saved = await postJson("/save", {
 		baseRevision,
@@ -274,10 +306,15 @@ try {
 		"步骤与预期读回一致",
 		probeCase?.steps?.length,
 	);
-	check(probeCase?.priority === "P0" && probeCase?.status === "待评审", "优先级 / 状态读回一致", {
-		priority: probeCase?.priority,
-		status: probeCase?.status,
-	});
+	check(
+		probeCase?.priority === "P0" && probeCase?.status === "待评审" && probeCase?.type === "UI",
+		"优先级 / 状态 / 类型读回一致",
+		{
+			priority: probeCase?.priority,
+			status: probeCase?.status,
+			type: probeCase?.type,
+		},
+	);
 	check(
 		JSON.stringify(probeCase?.datasetIds) === JSON.stringify(["probe-dataset"]),
 		"引用不存在的数据集被剔除",
@@ -292,10 +329,10 @@ try {
 	check(!(after.features ?? []).some((f) => f.id === "ghost-feature"), "父模块不存在的功能被丢弃");
 	const ghostCase = (after.cases ?? []).find((c) => c.id === "ghost-case");
 	check(ghostCase?.featureId === "", "用例挂不存在功能时 featureId 置空（变未归类）", ghostCase?.featureId);
-	check(ghostCase?.priority === "P2" && ghostCase?.type === "功能", "非法枚举回落到默认值", {
-		priority: ghostCase?.priority,
-		type: ghostCase?.type,
-	});
+	check(ghostCase?.priority === "P2", "非法优先级回落到默认值 P2", ghostCase?.priority);
+	check(ghostCase?.type === "不存在", "未知用例类型保留原值（开放词表，不清洗）", ghostCase?.type);
+	const blankType = (after.cases ?? []).find((c) => c.id === "blank-type-case");
+	check(blankType?.type === "接口", "空用例类型补默认值「接口」", blankType?.type);
 	check(
 		(after.datasets ?? []).find((d) => d.id === "probe-dataset")?.records?.[0]?.value === "probe_user",
 		"数据集记录读回一致",
@@ -421,7 +458,7 @@ try {
 	r = await postJson("/reset", { confirm: true });
 	const reset = r.body ?? {};
 	check(
-		r.status === 200 && (reset.systems?.length ?? 0) >= 3 && !(reset.datasets ?? []).some((d) => d.id === "d-legacy"),
+		r.status === 200 && (reset.systems?.length ?? 0) >= 5 && !(reset.datasets ?? []).some((d) => d.id === "d-legacy"),
 		"reset 恢复示例数据且移除旧库数据",
 		{ status: r.status, systems: reset.systems?.length, datasets: reset.datasets?.length },
 	);

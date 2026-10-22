@@ -1,5 +1,5 @@
 /**
- * 层级节点弹窗：新建 / 编辑 / 删除系统、模块、功能。
+ * 层级节点弹窗：新建 / 编辑 / 删除项目、模块、功能。
  * 删除只删层级本身，用例与数据集退回「未归类」，不会连带删除资产。
  */
 import {
@@ -18,7 +18,7 @@ import {
 	toast,
 } from "./state.mjs";
 
-const KIND_LABEL = { system: "系统", module: "模块", feature: "功能" };
+const KIND_LABEL = { system: "项目", module: "模块", feature: "功能" };
 const selOptions = (list, value) =>
 	list.map(([v, l]) => `<option value="${esc(v)}" ${value === v ? "selected" : ""}>${esc(l)}</option>`).join("");
 
@@ -30,7 +30,7 @@ export function nodeModalHtml() {
 		m.kind === "system" ? "例如「项目管理系统」" : m.kind === "module" ? "例如「合同管理」" : "例如「经营合同」";
 	const note =
 		m.kind === "system"
-			? "删除系统会同时删除其模块与功能；用例与数据集不会删除，会变成「未归类」。"
+			? "删除项目会同时删除其模块与功能；用例与数据集不会删除，会变成「未归类」。"
 			: m.kind === "module"
 				? "删除模块会同时删除其功能；用例与数据集不会删除，会变成「未归类」。"
 				: "删除功能后，其用例与数据集会变成「未归类」，不会被删除。";
@@ -72,7 +72,7 @@ export function openNodeModal(kind, parentId) {
 			code: "",
 			color: "blue",
 			note: "",
-			pathText: "顶层：一个系统 / 产品",
+			pathText: "顶层：一个项目 / 产品",
 		};
 	} else if (kind === "module") {
 		const s = S.systems.find((x) => x.id === parentId);
@@ -83,7 +83,7 @@ export function openNodeModal(kind, parentId) {
 			parentId,
 			name: "",
 			note: "",
-			pathText: `归属系统：${s?.name || "—"}`,
+			pathText: `归属项目：${s?.name || "—"}`,
 		};
 	} else {
 		const f = featureOf(parentId);
@@ -113,7 +113,7 @@ export function openNodeEdit(kind, id) {
 			code: s.code || "",
 			color: s.color || "blue",
 			note: s.note || "",
-			pathText: `系统 · ${s.name}`,
+			pathText: `项目 · ${s.name}`,
 		};
 	} else if (kind === "module") {
 		const m = moduleOf(id);
@@ -198,8 +198,6 @@ export async function saveNode() {
 			} else {
 				const mod = moduleOf(m.parentId);
 				S.sel = { systemId: mod?.systemId || "", moduleId: m.parentId, featureId: m.id };
-				S.collapsed.delete(`s:${mod?.systemId}`);
-				S.collapsed.delete(`m:${m.parentId}`);
 			}
 		}
 		S.nodeModal = null;
@@ -213,7 +211,7 @@ export async function deleteNode() {
 	if (m.kind === "system") {
 		const s = S.systems.find((x) => x.id === m.id);
 		if (!s) return;
-		if (!window.confirm(`删除系统「${s.name}」？其模块与功能会一并删除；用例与数据集不会被删除，会变成「未归类」。`))
+		if (!window.confirm(`删除项目「${s.name}」？其模块与功能会一并删除；用例与数据集不会被删除，会变成「未归类」。`))
 			return;
 		const mids = new Set(modulesOf(m.id).map((x) => x.id));
 		const fids = new Set(S.features.filter((f) => mids.has(f.moduleId)).map((f) => f.id));

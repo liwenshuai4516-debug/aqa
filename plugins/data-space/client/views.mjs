@@ -16,8 +16,11 @@ import {
 	fmtTime,
 	moduleOf,
 	modulesOf,
+	observedTypes,
 	pathOfFeature,
 	pathText,
+	systemOf,
+	typeCounts,
 } from "./state.mjs";
 
 export const ICON = {
@@ -27,89 +30,63 @@ export const ICON = {
 	copy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></svg>`,
 	trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M18.5 6l-1 14h-11l-1-14"/></svg>`,
 	case: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 10.5l2 2 4.5-4.5"/><path d="M8 17h8"/></svg>`,
-	chevron: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>`,
 };
 
 const pct = (n, d) => (d > 0 ? Math.round((n / d) * 100) : 0);
 
-/* ------------------------------------------------------------------ 左侧树 */
+/* ------------------------------------------------------------------ 左侧项目列表 */
 
-function sysRow(s) {
-	const on = S.sel.systemId === s.id && !S.sel.moduleId;
-	const open = !S.collapsed.has(`s:${s.id}`);
-	const total = casesOfSystem(s.id).length;
-	return `<div class="dsp-tree-row lvl-sys ${on ? "on" : ""}" data-act="sel-system" data-id="${esc(s.id)}">
-		<button class="dsp-caret ${open ? "open" : ""}" data-act="toggle" data-key="s:${esc(s.id)}" title="${open ? "收起" : "展开"}">${ICON.chevron}</button>
+function projectTypeSplit(systemId) {
+	const list = casesOfSystem(systemId);
+	const api = list.filter((c) => c.type === "接口").length;
+	return { total: list.length, api, ui: list.length - api };
+}
+
+function projectRow(s) {
+	const on = S.sel.systemId === s.id;
+	const mods = modulesOf(s.id);
+	const featTotal = S.features.filter((f) => mods.some((m) => m.id === f.moduleId)).length;
+	const { total, api, ui } = projectTypeSplit(s.id);
+	return `<button class="dsp-project ${on ? "on" : ""}" data-act="sel-project" data-id="${esc(s.id)}" title="${esc(s.name)}">
 		<span class="dsp-dot ${esc(s.color)}"></span>
-		<span class="dsp-tree-name" title="${esc(s.name)}">${esc(s.name)}${s.code ? `<em>${esc(s.code)}</em>` : ""}</span>
-		<span class="dsp-cnt">${total}</span>
-		<span class="dsp-tree-ops">
-			<button class="dsp-btn icon" data-act="new-module" data-id="${esc(s.id)}" title="在此系统下新建模块">${ICON.plus}</button>
-			<button class="dsp-btn icon" data-act="edit-node" data-kind="system" data-id="${esc(s.id)}" title="编辑系统">${ICON.edit}</button>
+		<span class="dsp-project-main">
+			<span class="dsp-project-name">${esc(s.name)}${s.code ? `<em>${esc(s.code)}</em>` : ""}</span>
+			<span class="dsp-project-meta">${mods.length} 模块 · ${featTotal} 功能 · 接口 ${api} / UI ${ui}</span>
 		</span>
-	</div>
-	${
-		open
-			? modulesOf(s.id)
-					.map((m) => modRow(m, s))
-					.join("")
-			: ""
-	}`;
+		<span class="dsp-cnt ${total ? "" : "zero"}">${total || "空"}</span>
+	</button>`;
 }
 
-function modRow(m, s) {
-	const on = S.sel.moduleId === m.id;
-	const open = !S.collapsed.has(`m:${m.id}`);
-	const total = casesOfModule(m.id).length;
-	return `<div class="dsp-tree-row lvl-mod ${on ? "on" : ""}" data-act="sel-module" data-id="${esc(m.id)}" data-sid="${esc(s.id)}">
-		<button class="dsp-caret ${open ? "open" : ""}" data-act="toggle" data-key="m:${esc(m.id)}" title="${open ? "收起" : "展开"}">${ICON.chevron}</button>
-		<span class="dsp-tree-name" title="${esc(m.name)}">${esc(m.name)}</span>
-		<span class="dsp-cnt">${total}</span>
-		<span class="dsp-tree-ops">
-			<button class="dsp-btn icon" data-act="new-feature" data-id="${esc(m.id)}" data-sid="${esc(s.id)}" title="在此模块下新建功能">${ICON.plus}</button>
-			<button class="dsp-btn icon" data-act="edit-node" data-kind="module" data-id="${esc(m.id)}" title="编辑模块">${ICON.edit}</button>
-		</span>
-	</div>
-	${
-		open
-			? featuresOf(m.id)
-					.map((f) => featRow(f, m, s))
-					.join("")
-			: ""
-	}`;
-}
-
-function featRow(f, m, s) {
-	const on = S.sel.featureId === f.id;
-	const n = casesOfFeature(f.id).length;
-	return `<div class="dsp-tree-row lvl-feat ${on ? "on" : ""}" data-act="sel-feature" data-id="${esc(f.id)}" data-mid="${esc(m.id)}" data-sid="${esc(s.id)}">
-		<span class="dsp-tree-bullet"></span>
-		<span class="dsp-tree-name" title="${esc(f.name)}">${esc(f.name)}</span>
-		<span class="dsp-cnt ${n ? "" : "zero"}">${n || "空"}</span>
-		<span class="dsp-tree-ops">
-			<button class="dsp-btn icon" data-act="new-case" data-id="${esc(f.id)}" title="在此功能下新建用例">${ICON.plus}</button>
-			<button class="dsp-btn icon" data-act="edit-node" data-kind="feature" data-id="${esc(f.id)}" title="编辑功能">${ICON.edit}</button>
-		</span>
-	</div>`;
-}
-
-export function treeHtml() {
-	const allSel = !S.sel.systemId && !S.sel.moduleId && !S.sel.featureId;
-	return `<aside class="dsp-tree">
-		<div class="dsp-tree-head">
-			<span>系统 / 模块 / 功能</span>
-			<button class="dsp-btn icon" data-act="new-system" title="新建系统">${ICON.plus}</button>
+/** 左栏只列项目（带搜索），三级层级收进项目内部，避免项目一多就拉出一条长树。 */
+export function projectListHtml() {
+	const q = S.projectQ.trim().toLowerCase();
+	const list = S.systems.filter((s) => !q || `${s.name} ${s.code} ${s.note}`.toLowerCase().includes(q));
+	const allOn = !S.sel.systemId;
+	return `<aside class="dsp-projects">
+		<div class="dsp-projects-head">
+			<span class="dsp-projects-title">项目</span>
+			<span class="dsp-cnt">${S.systems.length}</span>
+			<button class="dsp-btn icon" data-act="new-system" title="新建项目">${ICON.plus}</button>
 		</div>
-		<div class="dsp-tree-body">
-			<div class="dsp-tree-row lvl-all ${allSel ? "on" : ""}" data-act="sel-all">
-				${ICON.case}<span class="dsp-tree-name">全部用例</span><span class="dsp-cnt">${S.cases.length}</span>
-			</div>
+		<div class="dsp-projects-search">
+			<input data-el="project-search" value="${esc(S.projectQ)}" placeholder="搜索项目名称 / 编号" />
+		</div>
+		<div class="dsp-projects-body">
+			<button class="dsp-project all ${allOn ? "on" : ""}" data-act="sel-all">
+				${ICON.case}
+				<span class="dsp-project-main">
+					<span class="dsp-project-name">全部用例</span>
+					<span class="dsp-project-meta">跨项目检索与维护</span>
+				</span>
+				<span class="dsp-cnt">${S.cases.length}</span>
+			</button>
 			${
-				S.systems.length
-					? S.systems.map(sysRow).join("")
-					: `<div class="dsp-tree-empty">还没有系统。<button class="dsp-btn primary" data-act="new-system">＋ 新建系统</button><span class="dsp-muted">先建「项目管理系统」这类系统，再往下加模块与功能。</span></div>`
+				list.length
+					? list.map(projectRow).join("")
+					: `<div class="dsp-projects-empty">${S.systems.length ? "没有匹配的项目" : "还没有项目"}<button class="dsp-btn primary" data-act="new-system">＋ 新建项目</button></div>`
 			}
 		</div>
+		<div class="dsp-projects-foot">${list.length === S.systems.length ? `共 ${S.systems.length} 个项目 · 进项目内管理用例` : `筛选出 ${list.length} / ${S.systems.length} 个项目`}</div>
 	</aside>`;
 }
 
@@ -129,18 +106,21 @@ export function overviewHtml() {
 		features: S.features.filter((f) => pathOfFeature(f.id).system?.id === s.id).length,
 	}));
 	const maxCases = Math.max(1, ...bySystem.map((x) => x.cases));
+	const tCounts = typeCounts();
+	const typeRows = [...tCounts.entries()].sort((a, b) => b[1] - a[1]);
+	const maxType = Math.max(1, ...typeRows.map((r) => r[1]));
 	const recent = [...S.cases]
 		.sort((a, b) => String(b.updatedAt || "").localeCompare(String(a.updatedAt || "")))
 		.slice(0, 6);
 	const orphan = S.cases.filter((c) => !featureOf(c.featureId)).length;
 
 	return `
-	${S.migratedFrom ? `<div class="dsp-tip">已从 0.1.0 版数据迁移：原来的「分组」变成了「系统」，数据集归属已清空为「未归类」。原文件已备份，见「设置」。</div>` : ""}
+	${S.migratedFrom ? `<div class="dsp-tip">已从 0.1.0 版数据迁移：原来的「分组」变成了「项目」，数据集归属已清空为「未归类」。原文件已备份，见「设置」。</div>` : ""}
 	<div class="dsp-stats">
-		${statCard("系统", S.systems.length, "业务系统 / 产品")}
+		${statCard("项目", S.systems.length, "业务系统 / 产品")}
 		${statCard("模块", S.modules.length, "按业务模块划分")}
 		${statCard("功能", featureTotal, "用例的挂载点")}
-		${statCard("用例", S.cases.length, orphan ? `含 ${orphan} 条未归类` : "跨系统统一编号")}
+		${statCard("用例", S.cases.length, orphan ? `含 ${orphan} 条未归类` : "接口 / UI 两类")}
 		${statCard("数据集", S.datasets.length, "可被用例引用")}
 	</div>
 	<div class="dsp-cols">
@@ -148,7 +128,18 @@ export function overviewHtml() {
 			<div class="dsp-card-head"><span>用例覆盖</span><span>${covered}/${featureTotal} 个功能</span></div>
 			<div class="dsp-progress"><i style="width:${pct(covered, featureTotal)}%"></i></div>
 			<div class="dsp-muted" style="margin:6px 0 14px">功能覆盖率 ${pct(covered, featureTotal)}% · 未覆盖 ${gaps.length} 个功能</div>
-			<div class="dsp-card-head"><span>按系统分布</span><span>用例数</span></div>
+			<div class="dsp-card-head"><span>按类型分布</span><span>用例数</span></div>
+			${
+				typeRows.length
+					? typeRows
+							.map(
+								([t, n]) =>
+									`<div class="dsp-bar-row"><span class="dsp-bar-name">${typeBadge(t)}</span><span class="dsp-bar"><i style="width:${pct(n, maxType)}%"></i></span><span class="dsp-bar-num">${n}</span></div>`,
+							)
+							.join("")
+					: `<div class="dsp-muted">还没有用例</div>`
+			}
+			<div class="dsp-card-head" style="margin-top:14px"><span>按项目分布</span><span>用例数</span></div>
 			${
 				bySystem.length
 					? bySystem
@@ -157,7 +148,7 @@ export function overviewHtml() {
 									`<div class="dsp-bar-row"><span class="dsp-bar-name" title="${esc(x.s.name)}">${esc(x.s.name)}</span><span class="dsp-bar"><i style="width:${pct(x.cases, maxCases)}%"></i></span><span class="dsp-bar-num">${x.cases}</span></div>`,
 							)
 							.join("")
-					: `<div class="dsp-muted">还没有系统</div>`
+					: `<div class="dsp-muted">还没有项目</div>`
 			}
 		</section>
 		<section class="dsp-card">
@@ -190,7 +181,7 @@ export function overviewHtml() {
 }
 
 export function footHtml() {
-	return `<div class="dsp-foot">系统 ${S.systems.length} · 模块 ${S.modules.length} · 功能 ${S.features.length} · 用例 ${S.cases.length} · 数据集 ${S.datasets.length} · 上次保存 ${fmtTime(S.updatedAt)}</div>`;
+	return `<div class="dsp-foot">项目 ${S.systems.length} · 模块 ${S.modules.length} · 功能 ${S.features.length} · 用例 ${S.cases.length} · 数据集 ${S.datasets.length} · 上次保存 ${fmtTime(S.updatedAt)}</div>`;
 }
 
 export const tabsList = () => [
@@ -215,20 +206,29 @@ function crumb(parts) {
 		.join("")}</div>`;
 }
 
+const typeBadge = (t) => {
+	const name = String(t || "").trim() || "未分类";
+	const cls = name === "接口" ? "api" : name === "UI" ? "ui" : "other";
+	return `<span class="dsp-type ${cls}" title="用例类型">${esc(name)}</span>`;
+};
+
 function caseRow(c, showPath) {
 	const steps = c.steps?.length ?? 0;
 	const linked = datasetNames(c.datasetIds);
 	return `<tr>
 		<td class="dsp-code-cell">${esc(c.code || "—")}</td>
-		<td><div class="dsp-case-title" data-act="edit-case" data-id="${esc(c.id)}"><b title="${esc(c.title)}">${esc(c.title)}</b>${
-			(c.tags ?? []).length
-				? `<span class="dsp-tags">${c.tags
-						.slice(0, 2)
-						.map((t) => `<span class="dsp-tag">${esc(t)}</span>`)
-						.join("")}</span>`
-				: ""
-		}</div></td>
-		${showPath ? `<td class="dsp-muted" title="${esc(pathText(c.featureId, " / "))}">${esc(pathText(c.featureId, " / "))}</td>` : ""}
+		<td class="dsp-cell-main">
+			<div class="dsp-case-title" data-act="edit-case" data-id="${esc(c.id)}" title="${esc(c.title)}"><b>${esc(c.title)}</b>${
+				(c.tags ?? []).length
+					? `<span class="dsp-tags">${c.tags
+							.slice(0, 2)
+							.map((t) => `<span class="dsp-tag">${esc(t)}</span>`)
+							.join("")}</span>`
+					: ""
+			}</div>
+			${showPath ? `<div class="dsp-case-path">${esc(pathText(c.featureId, " / "))}</div>` : ""}
+		</td>
+		<td class="dsp-type-cell">${typeBadge(c.type)}</td>
 		<td>${prioBadge(c.priority)}</td>
 		<td>${statusBadge(c.status)}</td>
 		<td class="dsp-num-cell">${steps}</td>
@@ -244,8 +244,8 @@ function caseRow(c, showPath) {
 
 function caseTable(list, showPath) {
 	return `<div class="dsp-table-wrap"><table class="dsp-table${showPath ? " wide" : ""}">
-		<colgroup><col style="width:86px"/><col style="width:auto"/>${showPath ? `<col style="width:200px"/>` : ""}<col style="width:64px"/><col style="width:74px"/><col style="width:52px"/><col style="width:52px"/><col style="width:104px"/><col style="width:112px"/></colgroup>
-		<thead><tr><th>编号</th><th>用例标题</th>${showPath ? "<th>所属功能</th>" : ""}<th>优先级</th><th>状态</th><th>步骤</th><th>数据</th><th>更新</th><th></th></tr></thead>
+		<colgroup><col style="width:86px"/><col style="width:auto"/><col style="width:82px"/><col style="width:64px"/><col style="width:74px"/><col style="width:52px"/><col style="width:52px"/><col style="width:104px"/><col style="width:108px"/></colgroup>
+		<thead><tr><th>编号</th><th>用例标题</th><th>类型</th><th>优先级</th><th>状态</th><th>步骤</th><th>数据</th><th>更新</th><th></th></tr></thead>
 		<tbody>${list.map((c) => caseRow(c, showPath)).join("")}</tbody></table></div>`;
 }
 
@@ -256,10 +256,18 @@ function caseToolbar() {
 				`<button class="dsp-chip ${S.priority === p ? "on" : ""}" data-act="prio" data-id="${p}">${p === "all" ? "全部优先级" : p}</button>`,
 		)
 		.join("");
+	const counts = typeCounts();
+	const typeChips = [["all", "全部类型", S.cases.length], ...observedTypes().map((t) => [t, t, counts.get(t) ?? 0])]
+		.map(
+			([v, label, n]) =>
+				`<button class="dsp-chip ${S.caseType === v ? "on" : ""}" data-act="type" data-id="${esc(v)}">${esc(label)}<span class="dsp-chip-num">${n}</span></button>`,
+		)
+		.join("");
 	return `<div class="dsp-toolbar">
-		<input class="dsp-search" data-el="case-search" value="${esc(S.caseQ)}" placeholder="搜索编号 / 标题 / 标签 / 负责人" />
-		<div class="dsp-chips" style="margin:0">${chips}</div>
+		<input class="dsp-search" data-el="case-search" value="${esc(S.caseQ)}" placeholder="搜索编号 / 标题 / 类型 / 标签 / 负责人" />
 		<select data-el="case-status"><option value="all">全部状态</option>${CASE_STATUS.map((s) => `<option value="${esc(s)}" ${S.status === s ? "selected" : ""}>${esc(s)}</option>`).join("")}</select>
+		<div class="dsp-chips" style="margin:0">${chips}</div>
+		<div class="dsp-chips dsp-chips-sep" style="margin:0">${typeChips}</div>
 	</div>`;
 }
 
@@ -268,7 +276,8 @@ function visibleCases(base) {
 		(c) =>
 			caseMatches(c, S.caseQ) &&
 			(S.priority === "all" || c.priority === S.priority) &&
-			(S.status === "all" || c.status === S.status),
+			(S.status === "all" || c.status === S.status) &&
+			(S.caseType === "all" || String(c.type || "").trim() === S.caseType),
 	);
 }
 
@@ -276,111 +285,152 @@ function emptyCases(text, fid) {
 	return `<div class="dsp-empty"><b>${esc(text)}</b>把这一步的操作步骤、预期结果和数据都记下来，后面直接复用。<button class="dsp-btn primary" data-act="new-case"${fid ? ` data-id="${esc(fid)}"` : ""}>＋ 新建用例</button></div>`;
 }
 
-function featureView(featureId) {
-	const { feature, module, system } = pathOfFeature(featureId);
-	if (!feature)
-		return `<div class="dsp-empty"><b>这个功能已被删除</b><button class="dsp-btn" data-act="sel-all">回到全部用例</button></div>`;
-	const all = casesOfFeature(featureId);
-	const list = visibleCases(all);
-	const p0 = all.filter((c) => c.priority === "P0").length;
-	const datasets = S.datasets.filter((d) => d.featureId === featureId);
+function scopeChips(items) {
+	return items
+		.map(
+			({ label, count, act, id, sid, on, title }) =>
+				`<button class="dsp-chip ${on ? "on" : ""}" data-act="${act}"${id ? ` data-id="${esc(id)}"` : ""}${sid ? ` data-sid="${esc(sid)}"` : ""} title="${esc(title || label)}">${esc(label)}${
+					typeof count === "number" ? `<span class="dsp-chip-num">${count}</span>` : ""
+				}</button>`,
+		)
+		.join("");
+}
+
+/** 项目内视图：项目头 + 模块 / 功能两级筛选 + 用例表（层级不再往左栏里培）。 */
+function projectView(systemId) {
+	const s = systemOf(systemId);
+	if (!s)
+		return `<div class="dsp-empty"><b>这个项目已被删除</b><button class="dsp-btn" data-act="sel-all">回到全部用例</button></div>`;
+
+	const mods = modulesOf(s.id);
+	const activeModule = S.sel.moduleId ? moduleOf(S.sel.moduleId) : null;
+	const activeFeature = S.sel.featureId ? featureOf(S.sel.featureId) : null;
+	const moduleFeatures = activeModule ? featuresOf(activeModule.id) : [];
+	const scopeCases = activeFeature
+		? casesOfFeature(activeFeature.id)
+		: activeModule
+			? casesOfModule(activeModule.id)
+			: casesOfSystem(s.id);
+	const list = visibleCases(scopeCases);
+	const projectCases = casesOfSystem(s.id);
+	const api = projectCases.filter((c) => c.type === "接口").length;
+	const featureTotal = S.features.filter((f) => mods.some((m) => m.id === f.moduleId)).length;
+
+	const crumbParts = [[s.name, "sel-project", s.id]];
+	if (activeModule) crumbParts.push([activeModule.name, "sel-module", activeModule.id]);
+	if (activeFeature) crumbParts.push([activeFeature.name, "sel-feature", activeFeature.id]);
+
+	const head = activeFeature
+		? { title: activeFeature.name, note: activeFeature.note, kind: "feature", id: activeFeature.id, label: "功能" }
+		: activeModule
+			? { title: activeModule.name, note: activeModule.note, kind: "module", id: activeModule.id, label: "模块" }
+			: { title: s.name, note: s.note, kind: "system", id: s.id, label: "项目" };
+
+	const meta = activeFeature
+		? `所属模块 ${activeModule?.name || "—"} · 编号前缀 ${(s.code || "CASE").toUpperCase()} · 项目合计接口 ${api} / UI ${projectCases.length - api}`
+		: activeModule
+			? `${moduleFeatures.length} 个功能 · ${scopeCases.length} 条用例 · 项目合计接口 ${api} / UI ${projectCases.length - api}`
+			: `${mods.length} 个模块 · ${featureTotal} 个功能 · 接口 ${api} / UI ${projectCases.length - api}`;
+
+	const moduleChips = scopeChips([
+		{
+			label: "全部模块",
+			count: projectCases.length,
+			act: "sel-project",
+			id: s.id,
+			on: !activeModule,
+			title: "查看项目内全部用例",
+		},
+		...mods.map((m) => ({
+			label: m.name,
+			count: casesOfModule(m.id).length,
+			act: "sel-module",
+			id: m.id,
+			sid: s.id,
+			on: activeModule?.id === m.id,
+			title: m.note || m.name,
+		})),
+	]);
+	const featureChips = activeModule
+		? scopeChips([
+				{
+					label: "全部功能",
+					count: casesOfModule(activeModule.id).length,
+					act: "sel-module",
+					id: activeModule.id,
+					sid: s.id,
+					on: !activeFeature,
+					title: "查看模块内全部用例",
+				},
+				...moduleFeatures.map((f) => ({
+					label: f.name,
+					count: casesOfFeature(f.id).length,
+					act: "sel-feature",
+					id: f.id,
+					on: activeFeature?.id === f.id,
+					title: f.note || f.name,
+				})),
+			])
+		: "";
+
+	const hint =
+		!activeModule && !mods.length
+			? `<div class="dsp-empty"><b>这个项目还没有模块</b>例如「合同管理」「供应商管理」；模块下再建功能，用例挂在功能上。<button class="dsp-btn primary" data-act="new-module" data-id="${esc(s.id)}">＋ 新建模块</button></div>`
+			: activeModule && !moduleFeatures.length
+				? `<div class="dsp-empty"><b>这个模块还没有功能</b>功能是更细的业务入口，例如「经营合同」「合同变更」。<button class="dsp-btn primary" data-act="new-feature" data-id="${esc(activeModule.id)}" data-sid="${esc(s.id)}">＋ 新建功能</button></div>`
+				: "";
+
+	const emptyList = scopeCases.length
+		? `<div class="dsp-empty"><b>没有匹配的用例</b>换个关键词或筛选条件试试。</div>`
+		: emptyCases(activeFeature ? "这个功能还没有用例" : "这个范围还没有用例", activeFeature?.id);
+
 	return `
-	${crumb([
-		[system?.name, "sel-system", system?.id],
-		[module?.name, "sel-module", module?.id],
-		[feature.name, "sel-feature", feature.id],
-	])}
+	${crumb(crumbParts)}
 	<div class="dsp-page-head">
 		<div>
-			<h3>${esc(feature.name)}<span class="dsp-num">${all.length} 条用例</span></h3>
-			<div class="dsp-muted">${esc(feature.note || "没有填写功能说明")}</div>
-			<div class="dsp-meta-line">${p0 ? `P0 ${p0} 条 · ` : ""}数据集 ${datasets.length} 份 · 编号前缀 ${esc((system?.code || "CASE").toUpperCase())}</div>
+			<h3>${esc(head.title)}${head.kind === "system" && s.code ? `<span class="dsp-code">${esc(s.code)}</span>` : ""}<span class="dsp-num">${scopeCases.length} 条用例</span></h3>
+			<div class="dsp-muted">${esc(head.note || `没有填写${head.label}说明`)}</div>
+			<div class="dsp-meta-line">${meta}</div>
 		</div>
 		<div class="dsp-inline">
-			<button class="dsp-btn" data-act="edit-node" data-kind="feature" data-id="${esc(feature.id)}">编辑功能</button>
-			<button class="dsp-btn primary" data-act="new-case" data-id="${esc(feature.id)}">＋ 新建用例</button>
-		</div>
-	</div>
-	${caseToolbar()}
-	${list.length ? caseTable(list, false) : all.length ? `<div class="dsp-empty"><b>没有匹配的用例</b>换个关键词或筛选条件试试。</div>` : emptyCases("这个功能还没有用例", featureId)}
-	${footHtml()}`;
-}
-
-function moduleView(moduleId) {
-	const m = moduleOf(moduleId);
-	const s = m ? (S.systems.find((x) => x.id === m.systemId) ?? null) : null;
-	if (!m)
-		return `<div class="dsp-empty"><b>这个模块已被删除</b><button class="dsp-btn" data-act="sel-all">回到全部用例</button></div>`;
-	const feats = featuresOf(m.id);
-	const total = casesOfModule(m.id).length;
-	return `
-	${crumb([
-		[s?.name, "sel-system", s?.id],
-		[m.name, "sel-module", m.id],
-	])}
-	<div class="dsp-page-head">
-		<div><h3>${esc(m.name)}<span class="dsp-num">${feats.length} 个功能 · ${total} 条用例</span></h3><div class="dsp-muted">${esc(m.note || "没有填写模块说明")}</div></div>
-		<div class="dsp-inline">
-			<button class="dsp-btn" data-act="edit-node" data-kind="module" data-id="${esc(m.id)}">编辑模块</button>
-			<button class="dsp-btn primary" data-act="new-feature" data-id="${esc(m.id)}" data-sid="${esc(s?.id || "")}">＋ 新建功能</button>
-		</div>
-	</div>
-	${
-		feats.length
-			? `<div class="dsp-cards">${feats
-					.map((f) => {
-						const list = casesOfFeature(f.id);
-						const p0 = list.filter((c) => c.priority === "P0").length;
-						return `<button class="dsp-feature-card" data-act="sel-feature" data-id="${esc(f.id)}"><div class="dsp-feature-top"><b>${esc(f.name)}</b><span class="dsp-cnt ${list.length ? "" : "zero"}">${list.length || "空"}</span></div><div class="dsp-muted">${esc(f.note || "点击进入该功能")}</div><div class="dsp-feature-foot">${p0 ? `P0 ${p0} 条 · ` : ""}数据集 ${S.datasets.filter((d) => d.featureId === f.id).length} 份</div></button>`;
-					})
-					.join("")}</div>`
-			: `<div class="dsp-empty"><b>这个模块还没有功能</b>功能是用例的挂载点，例如「合同管理」下的「经营合同」。<button class="dsp-btn primary" data-act="new-feature" data-id="${esc(m.id)}" data-sid="${esc(s?.id || "")}">＋ 新建功能</button></div>`
-	}
-	${footHtml()}`;
-}
-
-function systemView(systemId) {
-	const s = S.systems.find((x) => x.id === systemId);
-	if (!s)
-		return `<div class="dsp-empty"><b>这个系统已被删除</b><button class="dsp-btn" data-act="sel-all">回到全部用例</button></div>`;
-	const mods = modulesOf(s.id);
-	const total = casesOfSystem(s.id).length;
-	return `
-	${crumb([[s.name, "sel-system", s.id]])}
-	<div class="dsp-page-head">
-		<div><h3>${esc(s.name)}${s.code ? `<span class="dsp-code">${esc(s.code)}</span>` : ""}<span class="dsp-num">${mods.length} 个模块 · ${total} 条用例</span></h3><div class="dsp-muted">${esc(s.note || "没有填写系统说明")}</div></div>
-		<div class="dsp-inline">
-			<button class="dsp-btn" data-act="edit-node" data-kind="system" data-id="${esc(s.id)}">编辑系统</button>
-			<button class="dsp-btn primary" data-act="new-module" data-id="${esc(s.id)}">＋ 新建模块</button>
+			<button class="dsp-btn" data-act="edit-node" data-kind="${head.kind}" data-id="${esc(head.id)}">编辑${head.label}</button>
+			${
+				activeModule
+					? `<button class="dsp-btn" data-act="new-feature" data-id="${esc(activeModule.id)}" data-sid="${esc(s.id)}">＋ 新建功能</button>`
+					: `<button class="dsp-btn" data-act="new-module" data-id="${esc(s.id)}">＋ 新建模块</button>`
+			}
+			<button class="dsp-btn primary" data-act="new-case">＋ 新建用例</button>
 		</div>
 	</div>
 	${
 		mods.length
-			? `<div class="dsp-cards">${mods
-					.map((m) => {
-						const fs_ = featuresOf(m.id);
-						const n = casesOfModule(m.id).length;
-						return `<button class="dsp-feature-card" data-act="sel-module" data-id="${esc(m.id)}" data-sid="${esc(s.id)}"><div class="dsp-feature-top"><b>${esc(m.name)}</b><span class="dsp-cnt ${n ? "" : "zero"}">${n}</span></div><div class="dsp-muted">${esc(m.note || "点击进入该模块")}</div><div class="dsp-feature-foot">${fs_.length} 个功能：${esc(
-							fs_
-								.slice(0, 3)
-								.map((f) => f.name)
-								.join("、") || "—",
-						)}${fs_.length > 3 ? "…" : ""}</div></button>`;
-					})
-					.join("")}</div>`
-			: `<div class="dsp-empty"><b>这个系统还没有模块</b>例如「合同管理」「供应商管理」。<button class="dsp-btn primary" data-act="new-module" data-id="${esc(s.id)}">＋ 新建模块</button></div>`
+			? `<div class="dsp-scope">
+		<div class="dsp-scope-line"><span class="dsp-scope-label">模块</span>${moduleChips}</div>
+		${activeModule ? `<div class="dsp-scope-line"><span class="dsp-scope-label">功能</span>${featureChips}</div>` : ""}
+	</div>`
+			: ""
 	}
+	${hint || `${caseToolbar()}${list.length ? caseTable(list, !activeFeature) : emptyList}`}
 	${footHtml()}`;
 }
 
 function allView() {
 	const list = visibleCases(S.cases);
 	const orphan = S.cases.filter((c) => !featureOf(c.featureId));
+	if (!S.systems.length) {
+		return `
+	<div class="dsp-page-head">
+		<div><h3>全部用例<span class="dsp-num">0 条</span></h3><div class="dsp-muted">先建一个项目（例如「项目管理系统」），再往下加模块、功能与用例。</div></div>
+		<button class="dsp-btn primary" data-act="new-system">＋ 新建项目</button>
+	</div>
+	<div class="dsp-empty"><b>还没有项目</b>左侧列表按项目组织用例，项目多了也能搜索定位。<button class="dsp-btn primary" data-act="new-system">＋ 新建项目</button></div>
+	${footHtml()}`;
+	}
 	return `
 	<div class="dsp-page-head">
-		<div><h3>全部用例<span class="dsp-num">${S.cases.length} 条</span></h3><div class="dsp-muted">跨系统查看，标题下方是所属功能路径；点标题可直接编辑。</div></div>
+		<div><h3>全部用例<span class="dsp-num">${S.cases.length} 条</span></h3><div class="dsp-muted">跨项目查看；左侧点项目进入项目内管理，标题下方是所属项目 / 模块 / 功能。</div></div>
 		<div class="dsp-inline">
-			<button class="dsp-btn" data-act="new-system">＋ 新建系统</button>
+			<button class="dsp-btn" data-act="new-system">＋ 新建项目</button>
 			<button class="dsp-btn primary" data-act="new-case">＋ 新建用例</button>
 		</div>
 	</div>
@@ -391,11 +441,8 @@ function allView() {
 }
 
 export function casesHtml() {
-	const { systemId, moduleId, featureId } = S.sel;
-	if (featureId) return featureView(featureId);
-	if (moduleId) return moduleView(moduleId);
-	if (systemId) return systemView(systemId);
-	return allView();
+	if (!S.sel.systemId) return allView();
+	return projectView(S.sel.systemId);
 }
 
 /* ------------------------------------------------------------------ 数据集 */
@@ -458,7 +505,7 @@ export function datasetsHtml() {
 	</div>
 	<div class="dsp-toolbar">
 		<input class="dsp-search" data-el="dataset-search" value="${esc(S.datasetQ)}" placeholder="搜索名称 / 标签 / 备注" />
-		${scopeSelect("ds-system", systemId, [["", "全部系统"], ...S.systems.map((s) => [s.id, s.name])])}
+		${scopeSelect("ds-system", systemId, [["", "全部项目"], ...S.systems.map((s) => [s.id, s.name])])}
 		${scopeSelect("ds-module", moduleId, modOptions)}
 		${scopeSelect("ds-feature", featureId, featOptions)}
 		<span class="dsp-muted">${list.length} / ${S.datasets.length}</span>
@@ -477,7 +524,7 @@ export function settingsHtml() {
 	const covered = S.features.filter((f) => casesOfFeature(f.id).length).length;
 	return `
 	<div class="dsp-stack">
-		${S.migratedFrom ? `<section class="dsp-card"><div class="dsp-card-head">数据已完成升级</div><div class="dsp-muted">检测到 0.1.0 版数据（分组 + 数据集），已自动升级为「系统 / 模块 / 功能 / 用例」结构：原分组变成系统，code 留空（可在系统编辑里补，例如 PMS），数据集归属清空为未归类。升级前的旧文件已备份在同一目录，文件名形如 <span class="dsp-code">store.json.v1-&lt;时间戳&gt;.bak</span>。</div></section>` : ""}
+		${S.migratedFrom ? `<section class="dsp-card"><div class="dsp-card-head">数据已完成升级</div><div class="dsp-muted">检测到 0.1.0 版数据（分组 + 数据集），已自动升级为「项目 / 模块 / 功能 / 用例」结构：原分组变成项目，code 留空（可在项目编辑里补，例如 PMS），数据集归属清空为未归类。升级前的旧文件已备份在同一目录，文件名形如 <span class="dsp-code">store.json.v1-&lt;时间戳&gt;.bak</span>。</div></section>` : ""}
 		<section class="dsp-card">
 			<div class="dsp-card-head">数据文件位置</div>
 			<div class="dsp-muted">数据存在本机数据目录，全局一份：不按项目、不按会话隔离，换会话 / 换项目读到的是同一批数据；插件升级或卸载都不会删它。</div>
@@ -496,13 +543,13 @@ export function settingsHtml() {
 		</section>
 		<section class="dsp-card">
 			<div class="dsp-card-head">当前状态</div>
-			<div class="dsp-muted">revision ${S.revision} · 上次保存 ${fmtTime(S.updatedAt)} · 系统 ${S.systems.length} · 模块 ${S.modules.length} · 功能 ${S.features.length} · 用例覆盖率 ${covered}/${S.features.length}</div>
+			<div class="dsp-muted">revision ${S.revision} · 上次保存 ${fmtTime(S.updatedAt)} · 项目 ${S.systems.length} · 模块 ${S.modules.length} · 功能 ${S.features.length} · 用例覆盖率 ${covered}/${S.features.length}</div>
 		</section>
 		<section class="dsp-card">
 			<div class="dsp-card-head">建议的维护方式</div>
 			<ul class="dsp-tips">
-				<li>系统用产品 / 项目名（项目管理系统），模块用业务域（合同管理），功能用一个可操作的入口（经营合同、合同变更）。</li>
-				<li>用例挂在功能下，标题写「场景-要点」，编号按系统 code 自动生成（PMS-004）；复制用例后编号会重新分配。</li>
+				<li>项目用产品 / 业务线名（项目管理系统），模块用业务域（合同管理），功能用一个可操作的入口（经营合同、合同变更）。</li>
+				<li>用例挂在功能下，标题写「场景-要点」，编号按项目 code 自动生成（PMS-004）；复制用例后编号会重新分配。</li>
 				<li>账号、参数、边界值放在数据集里，用例勾选引用，一份数据可被多条用例共用。</li>
 				<li>「概览」里的覆盖缺口就是还没有用例的功能，点一下直接跳过去补。</li>
 			</ul>

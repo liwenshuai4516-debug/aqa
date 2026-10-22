@@ -23,13 +23,17 @@ export const MAX = {
 
 export const COLORS = ["blue", "green", "amber", "purple", "gray", "teal", "red"];
 export const PRIORITIES = ["P0", "P1", "P2", "P3"];
-export const CASE_TYPES = ["功能", "接口", "UI", "性能", "兼容", "安全"];
+/**
+ * 用例类型：当前只做「接口 / UI」两类。
+ * 追加新类型（性能、兼容、安全……）时只改这一行，服务端会把清单下发给页面，
+ * 类型筛选、下拉与徽章都从这份清单取；旧数据里已有的其他类型不会被改写。
+ */
+export const CASE_TYPES = ["接口", "UI"];
 export const CASE_STATUS = ["草稿", "待评审", "已评审", "已废弃"];
 export const ENVS = ["本地", "测试环境", "预发环境", "生产"];
 
 const COLOR_SET = new Set(COLORS);
 const PRIORITY_SET = new Set(PRIORITIES);
-const TYPE_SET = new Set(CASE_TYPES);
 const STATUS_SET = new Set(CASE_STATUS);
 const ENV_SET = new Set(ENVS);
 
@@ -152,7 +156,8 @@ export function normalizeStore(raw, previous) {
 				code: str(co.code, 24),
 				title: str(co.title, 160) || "未命名用例",
 				priority: oneOf(co.priority, PRIORITY_SET, "P2"),
-				type: oneOf(co.type, TYPE_SET, "功能"),
+				// 类型是开放词表：只补默认值、不改写未知类型（后续加类型不丢历史数据）。
+				type: str(co.type, 20) || CASE_TYPES[0],
 				status: oneOf(co.status, STATUS_SET, "草稿"),
 				owner: str(co.owner, 40),
 				tags: strList(co.tags, MAX.tags, 24),

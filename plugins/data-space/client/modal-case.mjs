@@ -53,21 +53,21 @@ export function caseModalHtml() {
 			<div class="dsp-modal-head"><span>${editing ? `编辑用例 · ${esc(m.code || "未编号")}` : "新建用例"}</span><button class="dsp-btn icon" data-act="close-modal">✕</button></div>
 			<div class="dsp-modal-body">
 				<div class="dsp-field">
-					<span>所属功能 *（系统 / 模块 / 功能）</span>
+					<span>所属功能 *（项目 / 模块 / 功能）</span>
 					${pathSelects("case", m)}
-					${m.featureId ? `<span class="dsp-muted">当前路径：${esc(pathText(m.featureId))}</span>` : `<span class="dsp-muted">没有合适的层级？先回「用例库」左侧建系统、模块与功能。</span>`}
+					${m.featureId ? `<span class="dsp-muted">当前路径：${esc(pathText(m.featureId))}</span>` : `<span class="dsp-muted">没有合适的层级？先回「用例库」左侧建项目、模块与功能。</span>`}
 				</div>
 				<div class="dsp-grid2">
 					<label class="dsp-field"><span>用例标题 *</span><input data-f="title" value="${esc(m.title)}" placeholder="例如「新建经营合同-必填项完整可保存」" /></label>
-					<label class="dsp-field"><span>用例编号</span><input data-f="code" value="${esc(m.code)}" placeholder="留空则按系统 code 自动生成" /></label>
+					<label class="dsp-field"><span>用例编号</span><input data-f="code" value="${esc(m.code)}" placeholder="留空则按项目 code 自动生成" /></label>
 					<label class="dsp-field"><span>优先级</span><select data-f="priority">${selOptions(
 						PRIORITIES.map((p) => [p, p]),
 						m.priority,
 					)}</select></label>
 					<label class="dsp-field"><span>用例类型</span><select data-f="type">${selOptions(
-						CASE_TYPES.map((t) => [t, t]),
+						[...new Set([...S.caseTypes, String(m.type || "").trim()].filter(Boolean))].map((t) => [t, t]),
 						m.type,
-					)}</select></label>
+					)}</select><span class="dsp-muted">当前支持接口 / UI，其他类型后续追加</span></label>
 					<label class="dsp-field"><span>状态</span><select data-f="status">${selOptions(
 						CASE_STATUS.map((s) => [s, s]),
 						m.status,
@@ -106,7 +106,7 @@ export function openCaseModal(c) {
 			code: c.code || "",
 			title: c.title || "",
 			priority: c.priority || "P2",
-			type: c.type || "功能",
+			type: c.type || CASE_TYPES[0],
 			status: c.status || "草稿",
 			owner: c.owner || "",
 			tagsText: (c.tags ?? []).join(", "),
@@ -127,7 +127,7 @@ export function openCaseModal(c) {
 			code: "",
 			title: "",
 			priority: "P2",
-			type: "功能",
+			type: CASE_TYPES[0],
 			status: "草稿",
 			owner: "",
 			tagsText: "",

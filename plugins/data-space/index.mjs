@@ -14,7 +14,7 @@
  */
 import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { MAX, migrateLegacy, normalizeStore, now, str } from "./model.mjs";
+import { CASE_TYPES, MAX, migrateLegacy, normalizeStore, now, str } from "./model.mjs";
 import { seedStore } from "./seed.mjs";
 
 export default {
@@ -91,6 +91,7 @@ export default {
 				features: store.features,
 				cases: store.cases,
 				datasets: store.datasets,
+				caseTypes: CASE_TYPES,
 				dir,
 				file,
 				limits: MAX,

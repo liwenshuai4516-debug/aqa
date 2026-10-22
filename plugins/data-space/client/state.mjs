@@ -17,7 +17,8 @@ export const BASE = `${appRoot()}/plugins-api/data-space`;
 
 export const ENVS = ["本地", "测试环境", "预发环境", "生产"];
 export const PRIORITIES = ["P0", "P1", "P2", "P3"];
-export const CASE_TYPES = ["功能", "接口", "UI", "性能", "兼容", "安全"];
+/** 当前只做接口 / UI 两类；追加类型时改服务端 model.mjs 的 CASE_TYPES，这里只是接口未就绪时的兜底。 */
+export const CASE_TYPES = ["接口", "UI"];
 export const CASE_STATUS = ["草稿", "待评审", "已评审", "已废弃"];
 export const COLORS = [
 	["blue", "蓝"],
@@ -45,13 +46,17 @@ export const S = {
 	features: [],
 	cases: [],
 	datasets: [],
+	/** 用例类型清单：服务端下发，追加新类型无需改页面。 */
+	caseTypes: [...CASE_TYPES],
 	tab: "overview",
-	/** 树选中：三级同时为空 = 全部用例 */
+	/** 项目列表选中：systemId 为空 = 全部用例；moduleId / featureId 为项目内筛选 */
 	sel: { systemId: "", moduleId: "", featureId: "" },
-	collapsed: new Set(),
+	projectQ: "",
 	caseQ: "",
 	priority: "all",
 	status: "all",
+	/** 用例类型筛选：all | 具体类型 */
+	caseType: "all",
 	datasetQ: "",
 	datasetScope: { systemId: "", moduleId: "", featureId: "" },
 	caseModal: null,
@@ -125,7 +130,7 @@ export function casesOfSystem(systemId) {
 	return S.cases.filter((c) => fids.has(c.featureId));
 }
 
-/** 功能 → 所属模块 / 系统 / 路径文本。 */
+/** 功能 → 所属模块 / 项目 / 路径文本。 */
 export function pathOfFeature(featureId) {
 	const f = featureOf(featureId);
 	const m = f ? moduleOf(f.moduleId) : null;
@@ -158,7 +163,7 @@ export function datasetNames(ids) {
 	return (ids ?? []).map((id) => S.datasets.find((d) => d.id === id)?.name).filter(Boolean);
 }
 
-/** 用例编号：优先用系统 code，如 PMS-004；没有 code 用 CASE-004。 */
+/** 用例编号：优先用项目 code，如 PMS-004；没有 code 用 CASE-004。 */
 export function nextCaseCode(systemId) {
 	const sys = systemOf(systemId);
 	const prefix = (sys?.code || "CASE").toUpperCase();
@@ -174,8 +179,29 @@ export function nextCaseCode(systemId) {
 export function caseMatches(c, q) {
 	const s = q.trim().toLowerCase();
 	if (!s) return true;
-	const hay = [c.code, c.title, c.owner, c.note, ...(c.tags ?? []), pathText(c.featureId)].join(" ").toLowerCase();
+	const hay = [c.code, c.title, c.type, c.owner, c.note, ...(c.tags ?? []), pathText(c.featureId)]
+		.join(" ")
+		.toLowerCase();
 	return hay.includes(s);
+}
+
+/** 类型清单：已配置类型 + 数据里已存在的其他类型（旧数据不丢），保持稳定顺序。 */
+export function observedTypes() {
+	const out = [...S.caseTypes];
+	for (const c of S.cases) {
+		const t = String(c.type || "").trim();
+		if (t && !out.includes(t)) out.push(t);
+	}
+	return out;
+}
+
+export function typeCounts() {
+	const map = new Map();
+	for (const c of S.cases) {
+		const t = String(c.type || "").trim() || "未分类";
+		map.set(t, (map.get(t) ?? 0) + 1);
+	}
+	return map;
 }
 
 /* ------------------------------------------------------------------ 读写 */
@@ -193,6 +219,7 @@ export function applyStore(data) {
 	S.features = Array.isArray(data.features) ? data.features : [];
 	S.cases = Array.isArray(data.cases) ? data.cases : [];
 	S.datasets = Array.isArray(data.datasets) ? data.datasets : [];
+	S.caseTypes = Array.isArray(data.caseTypes) && data.caseTypes.length ? data.caseTypes.map(String) : [...CASE_TYPES];
 }
 
 export async function load() {
