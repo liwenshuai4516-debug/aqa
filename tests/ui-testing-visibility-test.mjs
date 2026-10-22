@@ -84,9 +84,9 @@ try {
 	assert.equal(await page.locator(".slash-menu .slash-item").count(), 0);
 	await page.getByRole("button", { name: /^(设置|Settings)$/ }).click();
 	await page.locator('.settings-tab[data-tab="skills"]').click();
-	await page.getByText(/^(暂无技能|No skills installed)$/).waitFor();
+	assert.equal(await page.locator('.set-row-name [title="ui-testing-workflow"]').count(), 0);
 	await page.screenshot({ path: join(output, "before-skills.png") });
-	result.checks.push("reproduced empty skills and no /ui candidates in a different desktop workspace");
+	result.checks.push("reproduced missing UI skills and no /ui candidates in a different desktop workspace");
 	await page.locator(".set-close-btn").click();
 	await enableUiTesting(repo, agentDir);
 	await command("/reload", /已重新加载|Reloaded extensions/);
@@ -94,7 +94,7 @@ try {
 	await page.locator('.settings-tab[data-tab="skills"]').click();
 	const row = page
 		.locator(".settings-modal .set-row")
-		.filter({ has: page.locator(".set-row-name", { hasText: /^ui-testing-workflow$/ }) });
+		.filter({ has: page.locator('.set-row-name [title="ui-testing-workflow"]') });
 	await row.waitFor();
 	assert.equal(await row.getByRole("switch").getAttribute("aria-checked"), "true");
 	for (const name of [
@@ -107,10 +107,7 @@ try {
 		"ui-result-review",
 		"ui-artifact-check",
 	]) {
-		await page
-			.locator(".settings-modal .set-row-name")
-			.filter({ hasText: new RegExp(`^${name}$`) })
-			.waitFor();
+		await page.locator(`.settings-modal .set-row-name [title="${name}"]`).waitFor();
 	}
 	await page.screenshot({ path: join(output, "after-skills.png") });
 	result.checks.push("/reload displays the named entry and eight original phase skills, enabled in desktop settings");
@@ -118,7 +115,7 @@ try {
 	await input.fill("/ui");
 	const candidate = page
 		.locator(".slash-item")
-		.filter({ has: page.locator(".slash-name", { hasText: /^\/skill:ui-testing-workflow$/ }) });
+		.filter({ has: page.locator('.slash-name[title="/skill:ui-testing-workflow"]') });
 	await candidate.waitFor();
 	await page.screenshot({ path: join(output, "slash-ui.png") });
 	await candidate.click();

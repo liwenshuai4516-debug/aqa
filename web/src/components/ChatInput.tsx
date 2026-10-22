@@ -843,7 +843,9 @@ export const ChatInput = memo(function ChatInput({
 				onMouseEnter={() => setMenuIndex(i)}
 				onClick={() => acceptMenu(c)}
 			>
-				<span className="slash-name">/{c.name}</span>
+				<span className="slash-name" title={`/${c.name}`}>
+					{isZhLocale(locale) && c.displayName ? c.displayName : `/${c.name}`}
+				</span>
 				<span className={`slash-source ${c.source}`}>{SOURCE_LABEL[c.source]}</span>
 				<span className="slash-desc">
 					{slashDesc(c)}
@@ -1745,7 +1747,9 @@ export const ChatInput = memo(function ChatInput({
 							) : (
 								slashCommands.map((c) => (
 									<div className="slash-help-row" key={c.name}>
-										<span className="slash-help-cmd">/{c.name}</span>
+										<span className="slash-help-cmd" title={`/${c.name}`}>
+											{isZhLocale(locale) && c.displayName ? c.displayName : `/${c.name}`}
+										</span>
 										<span className={`slash-source ${c.source}`}>{SOURCE_LABEL[c.source]}</span>
 										<span className="slash-help-desc">
 											{slashDesc(c)}

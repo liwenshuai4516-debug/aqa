@@ -9,7 +9,7 @@
 | `agent`  | `agent-service.ts`、`agent-service-daemon.ts`、`agent-formatters.ts`、`subagents.ts`、`subagent-handoff.ts`、`subagent-helpers.ts`、`subagent-templates.ts`、`subagent-templates-hant.ts` |
 | `model`  | `model-admin.ts`、`model-resolver.ts`、`model-enrich.ts`、`provider-oauth-flow.ts`                                                                                                        |
 | `prompt` | `prompt-assembler.ts`、`prompt-composer.ts`、`persona-chain.ts`、`tool-prompts.ts`、`tool-prompt-overrides.ts`                                                                            |
-| `skill`  | `skill-tool.ts`、`skill-discovery.ts`、`skill-content-filler.ts`                                                                                                                          |
+| `skill`  | `skill-tool.ts`、`skill-discovery.ts`、`skill-content-filler.ts`、`skill-presentation.ts`                                                                                                 |
 | `mcp`    | `mcp-bridge.ts`、`mcp-manager.ts`、`mcp-hot-reload.ts`、`mcp-agent-tool.ts`、`plugin-mcp.ts`                                                                                              |
 
 `index.ts` 继续作为服务入口，`protocol.ts` 继续作为跨端协议单源；`tool-manager.ts` 继续作为工具开关目录单源。`dsh/`、`durable/`、`universal/` 保持原有引擎边界；`plugins.ts` 与 `plugin-*` 仍负责宿主插件服务（MCP 门禁位于 `mcp/plugin-mcp.ts`）。跨目录依赖使用明确相对导入，不增设重导出兼容层或第二份实现。

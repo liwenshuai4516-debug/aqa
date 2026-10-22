@@ -120,6 +120,7 @@ server/
 ├── skill/
 │   ├── skill-tool.ts # 让 AI 按名取技能全文（名录 + skill 工具）
 │   ├── skill-discovery.ts
+│   ├── skill-presentation.ts # 中文展示元数据与技能所属能力门禁
 │   └── skill-content-filler.ts
 ├── mcp/
 │   ├── mcp-bridge.ts # MCP 工具桥（外部 stdio MCP 服务器的工具接入 pi 会话）

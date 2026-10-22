@@ -230,6 +230,7 @@ export function createCompactContextHost(ctx: {
 export function createSkillToolHost(ctx: {
 	resolveTarget: (ownerId?: string) => Conversation | undefined;
 	getDisabledSkills: () => string[];
+	isSkillBlocked?: (skill: { name: string; filePath?: string }) => boolean;
 	ownerId?: string;
 }): SkillToolHost {
 	return {
@@ -239,7 +240,7 @@ export function createSkillToolHost(ctx: {
 				const all = target?.session.resourceLoader.getSkills().skills ?? [];
 				const disabled = new Set(ctx.getDisabledSkills());
 				return all
-					.filter((s) => !disabled.has(s.name))
+					.filter((s) => !disabled.has(s.name) && !ctx.isSkillBlocked?.(s))
 					.map((s) => ({
 						name: s.name,
 						description: s.description ?? "",

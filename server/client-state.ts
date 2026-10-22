@@ -471,7 +471,10 @@ export function extensionKeyCandidates(e: {
 		const segs = norm.slice(idx + marker.length).split("/");
 		// Scoped package @scope/name spans two segments.
 		const name = segs[0]?.startsWith("@") && segs[1] ? `${segs[0]}/${segs[1]}` : segs[0];
-		if (name) keys.add(`npm:${name}`);
+		if (name) {
+			keys.add(`npm:${name}`);
+			keys.add(norm.slice(0, idx + marker.length) + name);
+		}
 	}
 	return [...keys];
 }

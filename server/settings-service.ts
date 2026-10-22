@@ -46,6 +46,7 @@ import type { ApprovalRulesStore } from "./approval-rules.js";
 import { deriveLegacy, foldLegacyIntoDisabled, normalizeDisabledAgentTools } from "./tool-manager.js";
 import { normalizeToolPromptOverrides } from "./prompt/tool-prompt-overrides.js";
 import { resolveServerLang, type ServerLang } from "./i18n.js";
+import { isUiTestingExtension, presentSkill, skillBlock } from "./skill/skill-presentation.js";
 import {
 	exportPresetVia,
 	importPresetFromUrlVia,
@@ -115,11 +116,33 @@ export interface SettingsHost {
 	getLocale?: () => string | undefined;
 }
 
+type SkillInventoryEntry = { name: string; description: string; filePath: string };
+type ExtensionInventory = {
+	extensions: Array<{
+		path: string;
+		hidden?: boolean;
+		sourceInfo?: { origin?: string; source?: string; path?: string };
+	}>;
+	errors: Array<{ path: string; error: string }>;
+};
+
 export class SettingsService {
 	private settings: ClientSettings;
 	private presets: SettingsPreset[];
 	private knownSkills = new Map<string, UiSkillInfo>();
 	private knownExtensions = new Map<string, UiExtensionInfo>();
+	private skillInventories = new Map<string, SkillInventoryEntry[]>();
+	private extensionInventories = new Map<string, ExtensionInventory>();
+
+	/** Capture SDK discovery before user filters, including after restart with an owner disabled. */
+	rememberSkills(cwd: string, skills: SkillInventoryEntry[]): void {
+		this.skillInventories.set(cwd, skills);
+	}
+
+	rememberExtensions(cwd: string, result: ExtensionInventory): void {
+		this.extensionInventories.set(cwd, result);
+	}
+
 	/** 流式中改了需要 reload 的设置 → agent_end 后延迟应用（防拆毁运行中 run）。 */
 	private pendingReload = false;
 
@@ -132,6 +155,11 @@ export class SettingsService {
 	) {
 		this.settings = host.stateStore.getSettings(host.clientId);
 		this.presets = host.stateStore.getPresets(host.clientId);
+	}
+
+	isSkillBlocked(name: string): boolean {
+		const skill = this.skillInventories.get(this.host.cwd())?.find((s) => s.name === name) ?? { name };
+		return !!skillBlock(skill, this.settings);
 	}
 
 	get current(): ClientSettings {
@@ -263,8 +291,11 @@ export class SettingsService {
 		let loadedSkillNames: Set<string> | null = null;
 		let loadedExtNames: Set<string> | null = null;
 		try {
-			const loadedSkills = this.host.getSession().resourceLoader.getSkills().skills;
-			const allLoadedExts = this.host.getSession().resourceLoader.getExtensions().extensions;
+			const session = this.host.getSession();
+			const loadedSkills = this.skillInventories.get(this.host.cwd()) ?? session.resourceLoader.getSkills().skills;
+			const extResult = session.resourceLoader.getExtensions();
+			const inventory = this.extensionInventories.get(this.host.cwd());
+			const allLoadedExts = inventory?.extensions ?? extResult.extensions;
 			const loadedExts = allLoadedExts.filter((e) => !isInternalExtension(e));
 			loadedSkillNames = new Set(loadedSkills.map((s) => s.name));
 			loadedExtNames = new Set(loadedExts.map((e) => extensionKey(e)));
@@ -287,7 +318,8 @@ export class SettingsService {
 			for (const s of loadedSkills) {
 				this.knownSkills.set(s.name, {
 					name: s.name,
-					description: s.description,
+					...presentSkill(s),
+					...skillBlock(s, this.settings),
 					enabled: true,
 				});
 			}
@@ -299,7 +331,20 @@ export class SettingsService {
 					name: e.sourceInfo?.origin === "package" && e.sourceInfo.source ? e.sourceInfo.source : basename(p),
 					path: p,
 					enabled: true,
+					loaded: extResult.extensions.some((loaded) => loaded.path === e.path),
 				});
+			}
+			for (const error of inventory?.errors ?? extResult.errors ?? []) {
+				if (isInternalExtension(error)) continue;
+				this.knownExtensions.set(error.path, {
+					id: error.path,
+					name: basename(error.path),
+					path: error.path,
+					enabled: true,
+					loaded: false,
+					error: error.error,
+				});
+				loadedExtNames.add(error.path);
 			}
 		} catch {
 			// Session not ready yet — keep whatever we already know.
@@ -349,7 +394,12 @@ export class SettingsService {
 		for (const name of this.settings.disabledSkills) {
 			if (this.knownSkills.has(name)) continue;
 			if (!this.skillStillOnDisk(name)) continue;
-			this.knownSkills.set(name, { name, description: "", enabled: false });
+			this.knownSkills.set(name, {
+				name,
+				...presentSkill({ name }),
+				...skillBlock({ name }, this.settings),
+				enabled: false,
+			});
 		}
 		// （上面的 stale 清理已把卸载项移出禁用记录；这里再按磁盘挡一次，
 		// session 未就绪跳过清理时也不复活幽灵。）
@@ -366,15 +416,29 @@ export class SettingsService {
 			}
 		}
 		const skills = [...this.knownSkills.values()]
-			.map((s) => ({ ...s, enabled: !disabledSkills.has(s.name) }))
-			.sort((a, b) => a.name.localeCompare(b.name));
+			.map((s) => ({ ...s, enabled: !s.blockedBy && !disabledSkills.has(s.name) }))
+			.sort((a, b) => Number(b.enabled) - Number(a.enabled) || a.name.localeCompare(b.name));
 		const reviewSkills = [...this.knownSkills.values()]
-			.map((s) => ({ ...s, enabled: !reviewDisabledSkills.has(s.name) }))
-			.sort((a, b) => a.name.localeCompare(b.name));
+			.map((s) => ({ ...s, enabled: !s.blockedBy && !reviewDisabledSkills.has(s.name) }))
+			.sort((a, b) => Number(b.enabled) - Number(a.enabled) || a.name.localeCompare(b.name));
 		const extensions = [...this.knownExtensions.values()]
 			.filter((e) => !isInternalExtension({ path: e.id }) && !isInternalExtension({ path: e.path }))
 			.map((e) => ({ ...e, enabled: !disabledExts.has(e.id) }))
-			.sort((a, b) => a.name.localeCompare(b.name));
+			.sort((a, b) => Number(b.enabled) - Number(a.enabled) || a.name.localeCompare(b.name));
+		const uiExtensions = extensions.filter((e) => isUiTestingExtension({ path: e.path || e.id }));
+		const agentCapabilities = uiExtensions.length
+			? [
+					{
+						id: "ui-testing",
+						name: "UI 自动化测试",
+						nameEn: "UI automation testing",
+						extensionIds: uiExtensions.map((e) => e.id),
+						enabled: uiExtensions.every((e) => e.enabled),
+						loaded: uiExtensions.every((e) => e.loaded),
+						error: uiExtensions.find((e) => e.error)?.error,
+					},
+				]
+			: [];
 		// 统一工具开关是单源（disabledAgentTools），遗留三开关推送时推导，保证面板一致。
 		const legacyTools = deriveLegacy(this.settings.disabledAgentTools ?? []);
 		// 当前会话提示词快照：完整生效文本 + 各来源默认（自动）内容（只读预览）。
@@ -431,6 +495,7 @@ export class SettingsService {
 				reviewPrompt: this.settings.reviewPrompt,
 				reviewDisabledSkills: [...this.settings.reviewDisabledSkills],
 				disabledPlugins: [...(this.settings.disabledPlugins ?? [])],
+				agentCapabilities,
 				uiLayout: normalizeUiLayout(this.settings.uiLayout),
 				skillsFullText: [...normalizeSkillList(this.settings.skillsFullText)],
 				// The composed system prompt actually in effect (read-only view).
@@ -595,9 +660,11 @@ export class SettingsService {
 			partial.promptTemplate !== undefined ||
 			partial.promptOverrides !== undefined ||
 			partial.disabledSkills !== undefined ||
+			partial.disabledPlugins !== undefined ||
 			partial.disabledExtensions !== undefined;
 		// 统一工具开关 live 生效（ActiveSet 加减，无需 reload），见末尾 applyToolGating。
 		const toolGatingChanged =
+			partial.disabledExtensions !== undefined ||
 			partial.disabledAgentTools !== undefined ||
 			partial.disabledPluginTools !== undefined ||
 			partial.disabledPlugins !== undefined ||
@@ -638,7 +705,7 @@ export class SettingsService {
 		if (partial.disabledExtensions !== undefined) {
 			this.settings.disabledExtensions = partial.disabledExtensions;
 		}
-		// 插件开关是纯 UI 隐藏（不进 needsReload——运行时无需重载）。
+		// Owner toggles also reload the SDK skill catalog; individual preferences stay intact.
 		if (partial.disabledPlugins !== undefined) {
 			this.settings.disabledPlugins = partial.disabledPlugins;
 		}

@@ -52,6 +52,13 @@ describe("extensionKeyCandidates", () => {
 });
 
 describe("isExtensionDisabled", () => {
+	it("本地包目录身份在 SDK 补 sourceInfo 之前同样生效", () => {
+		expect(
+			isExtensionDisabled({ path: "/project/node_modules/pi-ui-testing/dist/extension.js" }, [
+				"/project/node_modules/pi-ui-testing",
+			]),
+		).toBe(true);
+	});
 	it("面板 id（npm spec）能匹配无 sourceInfo 的包扩展 —— 回归：设置中关闭插件无效", () => {
 		const e = { path: "E:\\pi\\agent\\npm\\node_modules\\pi-powerline-footer\\dist\\index.js" };
 		expect(isExtensionDisabled(e, ["npm:pi-powerline-footer"])).toBe(true);

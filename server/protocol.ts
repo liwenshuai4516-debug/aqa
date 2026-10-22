@@ -381,6 +381,8 @@ export interface SlashCommandInfo {
 	 *  "skill:review", "templatename"). Extension collisions with builtin
 	 *  names are suffixed by the SDK ("new:2"), like the CLI. */
 	name: string;
+	/** Optional localized skill alias; invocation still uses name. */
+	displayName?: string;
 	description?: string;
 	descriptionEn?: string;
 	/** Argument placeholder shown in the picker (e.g. "<路径>", "[说明]"). */
@@ -2789,8 +2791,24 @@ export interface DshPermissionOption {
  *  excluded from the system prompt and from the /skill: command catalog. */
 export interface UiSkillInfo {
 	name: string;
+	displayName?: string;
 	description: string;
+	descriptionEn?: string;
+	/** Disabled capability dependency; individual preference is preserved. */
+	blockedBy?: string;
+	blockedByEn?: string;
 	enabled: boolean;
+}
+
+/** SDK capability shown beside Web plugins, without creating a duplicate plugin. */
+export interface UiAgentCapabilityInfo {
+	id: string;
+	name: string;
+	nameEn: string;
+	extensionIds: string[];
+	enabled: boolean;
+	loaded: boolean;
+	error?: string;
 }
 
 /** One loaded extension, with whether it is currently enabled. Disabled
@@ -2804,6 +2822,8 @@ export interface UiExtensionInfo {
 	/** Resolved entry path. */
 	path: string;
 	enabled: boolean;
+	loaded?: boolean;
+	error?: string;
 }
 
 /** A named combination of prompt (compose template + per-source overrides) +
@@ -3138,6 +3158,7 @@ export interface UiSettingsState {
 	/** Same skill catalog with enabled flags evaluated for the reviewer. */
 	reviewSkills: UiSkillInfo[];
 	extensions: UiExtensionInfo[];
+	agentCapabilities?: UiAgentCapabilityInfo[];
 	presets: UiSettingsPreset[];
 	/** 内置标记工具开关（全局 + 按 marker）。 */
 	markersEnabled: boolean;

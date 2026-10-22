@@ -31,11 +31,15 @@ export function slashCandidates(name: string, source: string): string[] {
  * `prefix` 为空即返回全部（组件用「结果为空」来决定收起菜单，所以这里必须返回
  * 新数组，不能用惰性视图）。
  */
-export function filterSlashCommands<T extends { name: string; source: string }>(
+export function filterSlashCommands<T extends { name: string; source: string; displayName?: string }>(
 	commands: readonly T[],
 	prefix: string,
 ): T[] {
 	const query = prefix.toLowerCase();
 	if (!query) return [...commands];
-	return commands.filter((c) => slashCandidates(c.name, c.source).some((n) => n.startsWith(query)));
+	return commands.filter(
+		(c) =>
+			slashCandidates(c.name, c.source).some((n) => n.startsWith(query)) ||
+			(c.source === "skill" && c.displayName?.toLowerCase().startsWith(query)),
+	);
 }

@@ -15,6 +15,7 @@
 import type { AgentSession } from "@earendil-works/pi-coding-agent";
 import type { ServerMessage, SlashCommandInfo } from "./protocol.js";
 import type { PluginCommandDef } from "./plugins.js";
+import { presentSkill } from "./skill/skill-presentation.js";
 
 /** ClientSession 提供给本服务的宿主能力（窄接口，便于独立测试）。 */
 export interface SlashHost {
@@ -23,6 +24,7 @@ export interface SlashHost {
 	cwd: () => string;
 	/** 活动对话的 session（Pi 引擎专有；其他通用引擎可留空）。 */
 	getSession?: () => AgentSession;
+	isSkillEnabled?: (name: string) => boolean;
 	/** 新建/切到一个空白对话。返回 false = 没能进入新对话（准入关闭 / 同项目
 	 *  对话数达上限 / runtime 创建失败）——此时 /new <prompt> 不能把首条提示发
 	 *  出去，否则会落进用户原本正在用的那个对话。不返回（void）视为成功。 */
@@ -191,11 +193,12 @@ export class SlashCommandsService {
 					}
 					// Skills: /skill:name args
 					for (const skill of s.resourceLoader?.getSkills?.()?.skills ?? []) {
+						if (this.host.isSkillEnabled?.(skill.name) === false) continue;
 						const name = `skill:${skill.name}`;
 						if (seen.has(name)) continue;
 						commands.push({
 							name,
-							description: skill.description,
+							...presentSkill(skill),
 							source: "skill",
 						});
 						seen.add(name);
@@ -210,11 +213,12 @@ export class SlashCommandsService {
 			try {
 				const skills = await this.host.getSkills();
 				for (const skill of skills) {
+					if (this.host.isSkillEnabled?.(skill.name.replace(/^skill:/, "")) === false) continue;
 					const name = skill.name.startsWith("skill:") ? skill.name : `skill:${skill.name}`;
 					if (seen.has(name)) continue;
 					commands.push({
 						name,
-						description: skill.description ?? `Skill ${skill.name}`,
+						...presentSkill(skill),
 						source: "skill",
 					});
 					seen.add(name);
@@ -255,6 +259,15 @@ export class SlashCommandsService {
 	/** Run a native slash command (see NATIVE_COMMANDS). Returns false when the
 	 *  name is not a native command (the prompt falls through to the SDK). */
 	async exec(name: string, args: string): Promise<boolean> {
+		if (name.startsWith("skill:") && this.host.isSkillEnabled?.(name.slice(6)) === false) {
+			this.host.emit({
+				type: "notice",
+				level: "warning",
+				text: "该技能或其所属能力已关闭，请先在设置中开启。",
+				textEn: "This skill or its owner capability is disabled. Enable it in settings first.",
+			});
+			return true;
+		}
 		switch (name) {
 			case "new": {
 				const first = args.trim();

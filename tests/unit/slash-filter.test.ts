@@ -17,6 +17,11 @@ const COMMANDS = [
 const names = (prefix: string) => filterSlashCommands(COMMANDS, prefix).map((c) => c.name);
 
 describe("filterSlashCommands", () => {
+	it("中文别名参与查找，仍返回原技能调用名", () => {
+		const commands = [{ name: "skill:api-test-workflow", source: "skill", displayName: "接口自动化测试" }];
+		expect(filterSlashCommands(commands, "接口")).toEqual(commands);
+		expect(filterSlashCommands(commands, "api")).toEqual(commands);
+	});
 	it("裸 skill 名命中带命名空间的 skill 条目", () => {
 		expect(names("review")).toEqual(["review", "skill:review"]);
 	});

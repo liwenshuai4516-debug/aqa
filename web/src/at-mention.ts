@@ -146,6 +146,7 @@ export function normalizeAtHits(providerId: string, providerLabel: string, raw: 
 /** 技能命令精简接口（同 SlashCommandInfo，避免循环依赖）。 */
 export interface SkillCommandLike {
 	name: string;
+	displayName?: string;
 	source: "builtin" | "extension" | "prompt" | "skill" | "plugin";
 	description?: string;
 	descriptionEn?: string;
@@ -183,14 +184,14 @@ export function mapSkillHits(
 		const hit: AtHit = {
 			providerId: "host:skills",
 			providerLabel,
-			title: bareName,
+			title: cmd.displayName ?? bareName,
 			hint: resolvedDesc || `Skill ${bareName}`,
 			text: `@skill:${bareName}`,
 		};
 
 		if (!cleanQ) {
 			nameHits.push(hit);
-		} else if (nameLower.includes(cleanQ)) {
+		} else if (nameLower.includes(cleanQ) || cmd.displayName?.toLowerCase().includes(cleanQ)) {
 			nameHits.push(hit);
 		} else if (searchDesc && (descLower.includes(cleanQ) || descEnLower.includes(cleanQ))) {
 			descHits.push(hit);

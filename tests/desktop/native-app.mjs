@@ -79,6 +79,7 @@ export async function launchNativeApp({
 		const context = browser.contexts()[0];
 		return {
 			evaluate,
+			getLogs: () => logs,
 			process: () => child,
 			context: () => context,
 			firstWindow: async () => context.pages()[0] ?? (await context.waitForEvent("page", { timeout: 30000 })),

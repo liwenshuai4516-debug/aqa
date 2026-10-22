@@ -51,6 +51,8 @@
 
 UI 测试能力接入见 [Pi UI workflow 接入与验收](ui-testing-integration.md)：复用原版运行包与阶段技能，仅对齐依赖并接入原生测试 MCP。
 
+技能中文别名、描述、插件联动及 UI 扩展加载状态见 [技能与能力管理](skill-capability-management.md)。
+
 ## 桌面交付记录
 
 `desktop-delivery/` 保存当前决定与历史验证证据，阅读顺序如下：

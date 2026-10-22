@@ -17382,6 +17382,10 @@ a.set-uninstall:hover {
 	padding: 0;
 	box-sizing: border-box;
 }
+.set-switch:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
 .set-switch:hover {
 	border-color: var(--border);
 }

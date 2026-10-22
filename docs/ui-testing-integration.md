@@ -17,6 +17,8 @@
 
 唯一分发包位于 [能力目录](../capabilities/ui-testing/README.md)，安装包内容未修改；文件摘要及来源提交记录在该目录。小型适配仅包含原生 MCP 配置、Playwright 配置和项目资源登记脚本。`package-lock.json` 固定本地包完整性与依赖版本。测试包复用 SDK peer 后，npm 用 `devOptional` 标注生产可选/开发必需依赖，现有宿主包守卫同步识别该标记，仍禁止将宿主包移入普通 dependencies。
 
+后续管理体验已补齐：UI 测试的原 SDK 扩展在宿主插件列表中统一展示加载状态和开关，未复制工作流或创建空壳插件。中文技能与依赖联动见 [技能与能力管理](skill-capability-management.md)。
+
 ## 加载与使用
 
 ### 桌面技能不可见修正（2026-10-22）

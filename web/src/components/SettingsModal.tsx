@@ -1379,7 +1379,7 @@ export function SettingsModal({
 			id: "plugins",
 			icon: <FiBox />,
 			label: t("settingsUiPlugins"),
-			count: chat.plugins.length,
+			count: chat.plugins.length + (settings?.agentCapabilities?.length ?? 0),
 			dot: hasBuiltinPluginUpdate || hasAnyPluginUpdate,
 		},
 		// MCP 服务器（仅 Pi 引擎原生支持）
@@ -1546,6 +1546,36 @@ export function SettingsModal({
 	};
 
 	const disabledPlugins = new Set(settings.disabledPlugins ?? []);
+	const agentCapabilities = settings.agentCapabilities ?? [];
+	const pluginEntries = [
+		...chat.plugins.map((plugin) => ({
+			kind: "plugin" as const,
+			plugin,
+			enabled: !disabledPlugins.has(plugin.id) && !plugin.error,
+		})),
+		...agentCapabilities.map((capability) => ({
+			kind: "capability" as const,
+			capability,
+			enabled: capability.enabled,
+		})),
+	].sort((a, b) => Number(b.enabled) - Number(a.enabled));
+	const inventoryPlugins = [
+		...chat.plugins,
+		...agentCapabilities.map((c) => ({ id: c.id, name: c.name, hasClient: false, active: c.loaded, error: c.error })),
+	];
+	const inventoryDisabled = new Set([
+		...disabledPlugins,
+		...agentCapabilities.filter((c) => !c.enabled).map((c) => c.id),
+	]);
+	const skillTitle = (skill: UiSkillInfo) => (
+		<span title={skill.name}>{isZhLocale(locale) ? (skill.displayName ?? skill.name) : skill.name}</span>
+	);
+	const skillDescription = (skill: UiSkillInfo) => {
+		const description = !isZhLocale(locale) && skill.descriptionEn ? skill.descriptionEn : skill.description;
+		return skill.blockedBy
+			? `${t("skillOwnerDisabled", { name: isZhLocale(locale) ? skill.blockedBy : (skill.blockedByEn ?? skill.blockedBy) })} · ${description}`
+			: description;
+	};
 	const installedPluginIds = new Set(chat.plugins.map((p) => p.id));
 	const togglePlugin = (p: UiPluginInfo) => {
 		const next = new Set(disabledPlugins);
@@ -4043,9 +4073,10 @@ export function SettingsModal({
 												{settings.skills.map((s) => (
 													<ToggleRow
 														key={s.name}
-														title={s.name}
-														subtitle={s.description}
+														title={skillTitle(s)}
+														subtitle={skillDescription(s)}
 														enabled={s.enabled}
+														disabled={!!s.blockedBy}
 														onToggle={() => toggleSkill(s)}
 														action={
 															<button
@@ -5034,7 +5065,7 @@ export function SettingsModal({
 								>
 									<FiBox />
 									{t("pluginListTab")}
-									<span className="set-count">{chat.plugins.length}</span>
+									<span className="set-count">{pluginEntries.length}</span>
 									{(hasBuiltinPluginUpdate || hasAnyPluginUpdate) && (
 										<span className="update-dot" style={{ marginLeft: 4 }} />
 									)}
@@ -5599,7 +5630,7 @@ export function SettingsModal({
 								<div className="set-section-title">
 									<FiBox className="set-section-icon" />
 									{t("pluginListTab")}
-									<span className="set-count">{chat.plugins.length}</span>
+									<span className="set-count">{pluginEntries.length}</span>
 									<a
 										href={OFFICIAL_PLUGINS_REPO_URL}
 										target="_blank"
@@ -5630,14 +5661,47 @@ export function SettingsModal({
 										{t("pluginRescan")}
 									</button>
 								</div>
-								{chat.plugins.length > 0 && (
-									<PluginInventoryStrip plugins={chat.plugins} disabledIds={disabledPlugins} />
+								{pluginEntries.length > 0 && (
+									<PluginInventoryStrip plugins={inventoryPlugins} disabledIds={inventoryDisabled} />
 								)}
-								{chat.plugins.length === 0 ? (
+								{pluginEntries.length === 0 ? (
 									<p className="set-empty">{t("noUiPlugins")}</p>
 								) : (
 									<div className="set-list set-list-flat">
-										{chat.plugins.map((p) => {
+										{pluginEntries.map((entry) => {
+											if (entry.kind === "capability") {
+												const c = entry.capability;
+												const phase = c.enabled ? (c.error ? "failed" : c.loaded ? "active" : "idle") : "disabled";
+												const status = !c.enabled
+													? t("settingsDisabled")
+													: c.error
+														? c.error
+														: c.loaded
+															? t("agentCapabilityLoaded")
+															: t("agentCapabilityPending");
+												return (
+													<ToggleRow
+														key={`capability:${c.id}`}
+														title={
+															<>
+																<InvDot phase={phase} label={status} />
+																<FiPackage /> {isZhLocale(locale) ? c.name : c.nameEn}
+															</>
+														}
+														subtitle={`${t("agentCapabilitySource")} · ${status}`}
+														enabled={c.enabled}
+														onToggle={() => {
+															const next = new Set(disabledExts);
+															for (const id of c.extensionIds) {
+																if (c.enabled) next.add(id);
+																else next.delete(id);
+															}
+															setPartial({ disabledExtensions: [...next] });
+														}}
+													/>
+												);
+											}
+											const p = entry.plugin;
 											const upd = chat.pluginUpdates?.[p.id];
 											const isUpdatable = upd?.updatable === true;
 											const isRunning = Boolean(jobFor(p.id) && jobFor(p.id)?.phase !== "done");
@@ -5895,9 +5959,10 @@ export function SettingsModal({
 										{settings.reviewSkills.map((s) => (
 											<ToggleRow
 												key={`review-${s.name}`}
-												title={s.name}
-												subtitle={s.description}
+												title={skillTitle(s)}
+												subtitle={skillDescription(s)}
 												enabled={s.enabled}
+												disabled={!!s.blockedBy}
 												onToggle={() => toggleReviewSkill(s)}
 											/>
 										))}

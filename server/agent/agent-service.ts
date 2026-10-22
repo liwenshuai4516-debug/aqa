@@ -15,6 +15,7 @@
 // wholesale (no union merge / no stale built-in leftovers).
 import "../patch-remote-catalog.js";
 import "../patch-turn-end-boundary.js";
+import { skillBlock, isUiTestingExtension, isUiTestingDisabled } from "../skill/skill-presentation.js";
 import { spawn } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
 import * as fsPromises from "node:fs/promises";
@@ -1546,12 +1547,28 @@ export class ClientSession {
 		}
 	}
 
+	/** Live extension gate, shared by execution and lazy-tool discovery. */
+	private disabledToolsForSession(session: AgentSession): Set<string> {
+		const settings = this.settingsSvc.current;
+		const disabled = new Set(effectiveDisabledAgentTools(settings));
+		for (const extension of session.resourceLoader.getExtensions().extensions) {
+			if (
+				isExtensionDisabled(extension, settings.disabledExtensions) ||
+				(isUiTestingExtension(extension) && isUiTestingDisabled(settings))
+			) {
+				for (const name of extension.tools.keys()) disabled.add(name);
+			}
+		}
+		return disabled;
+	}
+
 	/** 当前可用（未被用户禁用 / 未被预设屏蔽 / 未被当前模式闸门拦截）的工具名，注册表顺序。 */
 	private allowedToolNames(session: AgentSession, conv: Conversation | undefined): string[] {
 		const all = session.getAllTools().map((t) => t.name);
 		const preset = conv?.agentPreset ?? this.settingsSvc.current.defaultAgentPreset ?? "standard";
 		const allowed = new Set(filterToolsByPreset(all, preset));
-		const disabled = new Set(effectiveDisabledAgentTools(this.settingsSvc.current));
+		const disabled = this.disabledToolsForSession(session);
+
 		if (conv?.planMode === true) for (const n of PLAN_MODE_BLOCKED_TOOL_NAMES) disabled.add(n);
 		return all.filter((n) => allowed.has(n) && !disabled.has(n));
 	}
@@ -1645,7 +1662,7 @@ export class ClientSession {
 		const known = new Set(all);
 		const preset = conv?.agentPreset ?? this.settingsSvc.current.defaultAgentPreset ?? "standard";
 		const allowed = new Set(filterToolsByPreset(all, preset));
-		const disabled = new Set(effectiveDisabledAgentTools(this.settingsSvc.current));
+		const disabled = this.disabledToolsForSession(session);
 		if (conv?.planMode === true) for (const n of PLAN_MODE_BLOCKED_TOOL_NAMES) disabled.add(n);
 		const set = this.lazyLoadedFor(session, this.sessionHasTranscript(session));
 		// 「已加载集合」里有名字 ≠ 活跃集里有它：JIT 自动激活（见 autoActivateToolIfLoadable）
@@ -2247,6 +2264,7 @@ export class ClientSession {
 		return createSkillToolHost({
 			resolveTarget: (oid) => ((oid ?? "").trim() !== "" ? this.convs.get(oid!.trim()) : this.convs.get(this.activeId)),
 			getDisabledSkills: () => this.settingsSvc.current.disabledSkills,
+			isSkillBlocked: (skill) => !!skillBlock(skill, this.settingsSvc.current),
 			ownerId,
 		});
 	}
@@ -2436,16 +2454,16 @@ export class ClientSession {
 				getSession: () => this.session,
 				cwd: () => this.cwd,
 				agentDir: () => this.agentDir,
-				isStreaming: () => this.session.isStreaming,
+				isStreaming: () => [...this.convs.values()].some((c) => c.session.isStreaming),
 				reloadSession: async () => {
-					await this.session.reload();
+					for (const conv of this.convs.values()) await conv.session.reload();
 					// reload() 重读磁盘 settings.json，会丢掉内存 applyOverrides
 					// （含重试次数覆盖）——依次重放：重试覆盖 → 软上限覆盖 → 终端门控。
 					this.applyRetryOverrides();
 					this.applyCompactionOverrides();
 					this.applyCodemodeOverrides();
 					// reload() 会把 custom 工具重新加回活跃集——重放当前会话归属预设门控。
-					this.applyToolGating(this.session, this.conv?.agentPreset);
+					for (const conv of this.convs.values()) this.applyToolGating(conv.session, conv.agentPreset);
 					await this.pushSlashCommands();
 				},
 				applyRetryOverrides: () => this.applyRetryOverrides(),
@@ -2455,6 +2473,7 @@ export class ClientSession {
 					for (const conv of this.convs.values()) {
 						this.applyToolGating(conv.session, conv.agentPreset);
 					}
+					void this.pushSlashCommands();
 				},
 				promptSnapshot: () => this.promptSnapshot(),
 				getMarkerState: () => ({
@@ -2912,36 +2931,43 @@ export class ClientSession {
 					// 否则按主会话禁用集过滤。预设拿掉 skill 加载器时（minimal/code/ask）
 					// 名录同步隐藏——列出来但调不动只是噪音（见 tool-manager.ts 语义总表）。
 					skillsOverride: (res) => {
+						this.settingsSvc.rememberSkills(effectiveCwd, res.skills);
+						const available = res.skills.filter((s) => !skillBlock(s, this.settingsSvc.current));
 						if (apply && apply.enabledSkills.length > 0) {
 							const set = new Set(apply.enabledSkills);
-							return { ...res, skills: res.skills.filter((s) => set.has(s.name)) };
+							return { ...res, skills: available.filter((s) => set.has(s.name)) };
 						}
 						const preset =
 							this.convs.get(ownerId ?? "")?.agentPreset ?? this.settingsSvc.current.defaultAgentPreset ?? "standard";
 						if (!presetShowsSkillCatalog(preset)) return { ...res, skills: [] };
 						return {
 							...res,
-							skills: res.skills.filter((s) => !this.settingsSvc.current.disabledSkills.includes(s.name)),
+							skills: available.filter((s) => !this.settingsSvc.current.disabledSkills.includes(s.name)),
 						};
 					},
 					// 插件：模板非空扩展白名单时只加载白名单里的；否则按主会话禁用集过滤。
 					// 注意 SDK 在 extensionsOverride 之后才补 sourceInfo，包扩展此处只能靠路径
 					// 匹配 —— isExtensionDisabled / isExtensionEnabled 同时比对 npm:<pkg> 候选键。
 					extensionsOverride: (res) => {
+						this.settingsSvc.rememberExtensions(effectiveCwd, res);
 						// 内部基础设施扩展（codemode、tool-search、persona 等）不参与白名单/禁用过滤。
 						const keepOwn = (e: { path: string; hidden?: boolean }) => isInternalExtension(e);
+						const available = res.extensions.filter(
+							(e) =>
+								keepOwn(e) ||
+								(!isExtensionDisabled(e, this.settingsSvc.current.disabledExtensions) &&
+									!(isUiTestingExtension(e) && isUiTestingDisabled(this.settingsSvc.current))),
+						);
 						if (apply && apply.enabledExtensions.length > 0) {
 							const set = new Set(apply.enabledExtensions);
 							return {
 								...res,
-								extensions: res.extensions.filter((e) => keepOwn(e) || isExtensionEnabled(e, [...set])),
+								extensions: available.filter((e) => keepOwn(e) || isExtensionEnabled(e, [...set])),
 							};
 						}
 						return {
 							...res,
-							extensions: res.extensions.filter(
-								(e) => keepOwn(e) || !isExtensionDisabled(e, this.settingsSvc.current.disabledExtensions),
-							),
+							extensions: available,
 						};
 					},
 					// 组合模板渲染（主会话）+ 模板灵魂替换（子代理）：before_agent_start 在每个
@@ -6450,6 +6476,8 @@ export class ClientSession {
 		emit: (msg) => this.emit(msg),
 		cwd: () => this.cwd,
 		getSession: () => this.session,
+		isSkillEnabled: (name) =>
+			!this.settingsSvc.current.disabledSkills.includes(name) && !this.settingsSvc.isSkillBlocked(name),
 		newChat: () => this.newChat(),
 		// /new <prompt>: deliver the text as the new session's first prompt.
 		prompt: (text) => this.prompt(text),
@@ -7591,7 +7619,7 @@ export class ClientSession {
 			"standard";
 		this.syncPluginTools(session, targetPreset);
 		const isPlanMode = conv?.planMode === true;
-		const disabled = new Set(effectiveDisabledAgentTools(this.settingsSvc.current));
+		const disabled = this.disabledToolsForSession(session);
 		if (isPlanMode) {
 			for (const toolName of PLAN_MODE_BLOCKED_TOOL_NAMES) {
 				disabled.add(toolName);
