@@ -9,6 +9,7 @@ import { CSS } from "./style.mjs";
 import {
 	BASE,
 	S,
+	applyRuns,
 	applyStore,
 	esc,
 	filteredRuns,
@@ -268,6 +269,14 @@ function onClick(e) {
 	}
 	if (act === "reload") {
 		void load().then(render);
+		return;
+	}
+	if (act === "load-demo-runs") {
+		void loadDemoRuns();
+		return;
+	}
+	if (act === "clear-runs") {
+		void clearRuns();
 		return;
 	}
 	if (act === "new-system") {
@@ -646,6 +655,58 @@ async function doImport(input) {
 	S.datasetScope = { systemId: "", moduleId: "", featureId: "" };
 	await persist();
 	render();
+}
+
+/**
+ * 执行记录的两个局部操作（只动 runs，不动用例）：
+ *   - 载入示例记录：仅空台账可用，服务端也会拦住（防止假结论混进真实台账）；
+ *   - 清空执行记录：演示数据用完、或想重新从零跑一轮时用。
+ */
+async function loadDemoRuns() {
+	if (S.runs.length) {
+		toast("已有执行记录：示例记录只用于空台账预览");
+		return;
+	}
+	if (!window.confirm("载入一批示例执行记录（演示用，可随时在设置里清空），继续？")) return;
+	try {
+		const r = await fetch(`${BASE}/runs/demo`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ confirm: true }),
+		});
+		const d = await r.json();
+		if (!d?.ok) {
+			toast(d?.error || "载入示例记录失败");
+			return;
+		}
+		applyRuns(d);
+		render();
+		toast(`已载入 ${d.runs?.length ?? 0} 条示例记录`);
+	} catch {
+		toast("载入失败：无法连接插件服务");
+	}
+}
+
+async function clearRuns() {
+	if (!S.runs.length) return;
+	if (!window.confirm(`清空全部 ${S.runs.length} 条执行记录？用例与数据集不受影响，此操作不可撤销。`)) return;
+	try {
+		const r = await fetch(`${BASE}/runs/clear`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ confirm: true }),
+		});
+		const d = await r.json();
+		if (!d?.ok) {
+			toast(d?.error || "清空失败");
+			return;
+		}
+		applyRuns(d);
+		render();
+		toast(`已清空 ${d.removed ?? 0} 条执行记录`);
+	} catch {
+		toast("清空失败：无法连接插件服务");
+	}
 }
 
 async function doReset() {

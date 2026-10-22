@@ -581,7 +581,7 @@ function runRow(r) {
 
 function runsTable(rows) {
 	return `<div class="dsp-table-wrap"><table class="dsp-table runs">
-		<colgroup><col style="width:88px"/><col style="width:66px"/><col style="width:auto"/><col style="width:164px"/><col style="width:82px"/><col style="width:128px"/><col style="width:196px"/><col style="width:132px"/></colgroup>
+		<colgroup><col style="width:108px"/><col style="width:66px"/><col style="width:auto"/><col style="width:164px"/><col style="width:82px"/><col style="width:128px"/><col style="width:196px"/><col style="width:132px"/></colgroup>
 		<thead><tr><th>时间</th><th>结论</th><th>用例</th><th>所属路径</th><th>来源</th><th>任务</th><th>备注</th><th></th></tr></thead>
 		<tbody>${rows.map(runRow).join("")}</tbody></table></div>`;
 }
@@ -688,7 +688,7 @@ export function runsHtml() {
 
 	if (!all.length) {
 		return `${head}
-	<div class="dsp-empty"><b>还没有执行记录</b>在「用例库」点某条用例的「未执行」徽章就能登记；或在对话里执行后会由 AI 回写。<div style="margin-top:12px"><button class="dsp-btn" data-act="tab" data-tab="cases">去用例库登记</button></div></div>
+	<div class="dsp-empty"><b>还没有执行记录</b>在「用例库」点某条用例的「未执行」徽章就能登记；或在对话里执行后会由 AI 回写。<div class="dsp-inline" style="margin-top:12px"><button class="dsp-btn" data-act="tab" data-tab="cases">去用例库登记</button><button class="dsp-btn" data-act="load-demo-runs" title="生成一批演示用的执行记录，不会改动用例">载入示例记录</button></div><div class="dsp-muted" style="margin-top:8px">示例记录只用于预览页面效果，随时可在「设置」里清空。</div></div>
 	${footHtml()}`;
 	}
 
@@ -803,6 +803,15 @@ export function settingsHtml() {
 				<span class="dsp-muted">导入会整份替换当前数据（先导出备份更稳）；也接受 0.1.0 版「分组 + 数据集」格式，导入后自动升级。</span>
 			</div>
 			<input type="file" accept="application/json,.json" data-el="import-file" style="display:none" />
+		</section>
+		<section class="dsp-card">
+			<div class="dsp-card-head">执行记录</div>
+			<div class="dsp-muted">共 ${S.runs.length} 条 · 结果 revision ${S.runsRevision} · 单独落在 <span class="dsp-code">runs.json</span>，与用例数据分开保存，清空不会动用例。</div>
+			<div class="dsp-inline" style="margin-top:8px">
+				<button class="dsp-btn danger" data-act="clear-runs"${S.runs.length ? "" : " disabled"}>清空执行记录</button>
+				${S.runs.length ? "" : '<button class="dsp-btn" data-act="load-demo-runs">载入示例记录</button>'}
+				<span class="dsp-muted">「恢复示例数据」也会一并清空执行记录。</span>
+			</div>
 		</section>
 		<section class="dsp-card">
 			<div class="dsp-card-head">当前状态</div>

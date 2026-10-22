@@ -337,7 +337,44 @@ try {
 		await sleep(200);
 	}
 
-	// -- 8) 900 宽窄屏不横向溢出 ---------------------------------------------
+	// -- 10) 空台账 → 载入示例记录 → 看清全部形态 --------------------------
+	page.on("dialog", (d) => void d.accept());
+	await page.locator('.dsp-nav button[data-tab="settings"]').click();
+	await sleep(350);
+	const clearBtn = page.locator('button[data-act="clear-runs"]');
+	const clearCount = await clearBtn.count();
+	check("设置页有「清空执行记录」且可点", clearCount === 1 && (await clearBtn.isEnabled()), `${clearCount} 个`);
+	await clearBtn.click();
+	await sleep(900);
+
+	await page.locator('.dsp-nav button[data-tab="runs"]').click();
+	await sleep(450);
+	const demoBtn = page.locator('button[data-act="load-demo-runs"]');
+	check("空台账空态给出「载入示例记录」入口", (await demoBtn.count()) >= 1);
+	check("空台账不显示统计卡（还没数据）", (await page.locator(".dsp-stat").count()) === 0);
+	await demoBtn.first().click();
+	await sleep(1400);
+	const demoRows = await page.locator(".dsp-table.runs tbody tr").count();
+	check("载入示例记录后流水有 11 条", demoRows === 11, `${demoRows} 行`);
+	check(
+		"示例记录含三种结论",
+		(await page.locator(".dsp-result.pass").count()) > 0 &&
+			(await page.locator(".dsp-result.fail").count()) > 0 &&
+			(await page.locator(".dsp-result.blocked").count()) > 0,
+	);
+	check("示例记录里有「可能过期」的那条", (await page.locator(".dsp-warn", { hasText: "可能过期" }).count()) >= 1);
+	const demoRate = (await page.locator(".dsp-stat", { hasText: "通过率" }).first().innerText()).replace(/\s+/g, " ");
+	check("示例记录让通过率不是 0% 也不是 100%", /\d+%/.test(demoRate) && !/\b(0|100)%/.test(demoRate), demoRate);
+	await page.locator('button[data-act="runs-view"][data-id="task"]').click();
+	await sleep(350);
+	const taskNames = await page.locator(".dsp-task .dsp-task-name").allInnerTexts();
+	check(
+		"示例记录形成 3 个批量任务 + 单条登记",
+		taskNames.filter((t) => !t.includes("单条登记")).length === 3 && taskNames.includes("单条登记"),
+		taskNames.join(" / "),
+	);
+
+	// -- 11) 900 宽窄屏不横向溢出 ---------------------------------------------
 	await page.setViewportSize({ width: 900, height: 900 });
 	await sleep(500);
 	const overflow = await page.evaluate(() => {

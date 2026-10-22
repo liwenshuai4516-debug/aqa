@@ -249,6 +249,16 @@ export function applyStore(data) {
 	S.runIndex = buildRunIndex(S.runs);
 }
 
+/**
+ * 只更新执行结果（载入示例 / 清空后局部刷新）：不碰用例数据，
+ * 也不会把用户当前的 tab 与筛选重置掉。
+ */
+export function applyRuns(data) {
+	S.runs = Array.isArray(data?.runs) ? data.runs : [];
+	S.runsRevision = Number(data?.runsRevision) || S.runsRevision;
+	S.runIndex = buildRunIndex(S.runs);
+}
+
 /* ------------------------------------------------------------------ 执行结果 */
 
 /** 流水 → 每条用例最近一条结果（时间晚的赢；同一秒按后写入的赢）。 */

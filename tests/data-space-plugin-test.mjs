@@ -537,6 +537,50 @@ try {
 	r = await postJson("/reset", { confirm: true });
 	check((r.body?.runs?.length ?? -1) === 0, "reset 同时清空执行记录", r.body?.runs?.length);
 	check(JSON.parse(readFileSync(runsFile, "utf8"))?.runs?.length === 0, "runs.json 与内存同步清空（不留孤儿流水）");
+
+	// -- 示例执行记录：只能载入到空台账，用完可清空 --------------------------
+	r = await postJson("/runs/demo", {});
+	check(r.status === 400, "示例记录缺 confirm 返回 400", r.status);
+	r = await postJson("/runs/demo", { confirm: true });
+	const demoRuns = r.body?.runs ?? [];
+	const demoCaseIds = new Set((reset.cases ?? []).map((c) => c.id));
+	check(r.status === 200 && demoRuns.length === 11, "POST /runs/demo 生成 11 条示例记录", {
+		status: r.status,
+		runs: demoRuns.length,
+		error: r.body?.error,
+	});
+	check(
+		demoRuns.every((x) => demoCaseIds.has(x.caseId)),
+		"示例记录只指向真实用例",
+		demoRuns.filter((x) => !demoCaseIds.has(x.caseId)).length,
+	);
+	check(
+		new Set(demoRuns.filter((x) => x.taskId).map((x) => x.taskId)).size === 3 &&
+			demoRuns.some((x) => x.source === "manual"),
+		"示例记录含 3 个批量任务与手工单条",
+		new Set(demoRuns.filter((x) => x.taskId).map((x) => x.taskId)).size,
+	);
+	check(
+		JSON.parse(readFileSync(runsFile, "utf8"))?.runs?.length === 11,
+		"示例记录落在 runs.json",
+		JSON.parse(readFileSync(runsFile, "utf8"))?.runs?.length,
+	);
+	r = await postJson("/runs/demo", { confirm: true });
+	check(r.status === 409, "已有记录时拒绝再载入示例（不污染真实台账）", r.status);
+	r = await postJson("/runs/clear", {});
+	check(r.status === 400, "清空执行记录缺 confirm 返回 400", r.status);
+	r = await postJson("/runs/clear", { confirm: true });
+	check(r.status === 200 && r.body?.removed === 11 && (r.body?.runs?.length ?? -1) === 0, "POST /runs/clear 清空流水", {
+		status: r.status,
+		removed: r.body?.removed,
+	});
+	check(JSON.parse(readFileSync(runsFile, "utf8"))?.runs?.length === 0, "清空后 runs.json 也为空");
+	const stAfterClear = await (await fetch(`${API}/state`)).json();
+	check((stAfterClear?.cases?.length ?? -1) === (reset.cases?.length ?? -2), "清空只动流水，用例一条也不少", {
+		cases: stAfterClear?.cases?.length,
+		before: reset.cases?.length,
+	});
+	check((stAfterClear?.runs?.length ?? -1) === 0, "清空后快照不再带结果");
 	sock.close();
 } catch (err) {
 	failures += 1;

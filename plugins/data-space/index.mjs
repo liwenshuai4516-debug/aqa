@@ -17,6 +17,7 @@
  */
 import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { buildDemoRuns } from "./demo-runs.mjs";
 import { CASE_TYPES, MAX, migrateLegacy, normalizeStore, now, str } from "./model.mjs";
 import { MAX_RUNS, VERDICTS, normalizeRuns } from "./runs.mjs";
 import { seedStore } from "./seed.mjs";
@@ -125,6 +126,15 @@ export default {
 			}
 		}
 
+		/** 结果变了就让打开着的页面自己刷新（不关闭的窗口也能看到）。 */
+		function broadcastRuns() {
+			try {
+				host.broadcast({ kind: "runs", revision: runs.revision });
+			} catch {
+				/* 没有客户端在线 */
+			}
+		}
+
 		/**
 		 * 记一批执行结果。entries: [{case(caseId/编号), verdict, note}]。
 		 * 编号 / id 都能定位；找不到的进 unknown，不静默丢。
@@ -177,12 +187,7 @@ export default {
 				runs.runs = runs.runs.slice(-MAX_RUNS);
 				runs.revision += 1;
 				persistRuns();
-				// 页面开着就让表格自己刷新（不关闭的窗口也能看到结果）
-				try {
-					host.broadcast({ kind: "runs", revision: runs.revision });
-				} catch {
-					/* 没有客户端在线 */
-				}
+				broadcastRuns();
 			}
 			return { ok: true, recorded, unknown, runsRevision: runs.revision };
 		}
@@ -272,6 +277,50 @@ export default {
 			});
 		});
 
+		// 示例执行记录（演示用）：只允许在空台账上载入，避免假结论混进真实记录
+		route("POST", "/runs/demo", (req, res) => {
+			const body = req.body && typeof req.body === "object" ? req.body : {};
+			if (body.confirm !== true) {
+				res.status(400).json({ ok: false, error: "需要 confirm:true 才能载入示例记录" });
+				return;
+			}
+			if (runs.runs.length) {
+				res.status(409).json({
+					ok: false,
+					error: "已有执行记录：示例记录只用于空台账预览，请先清空",
+					runs: runs.runs,
+					runsRevision: runs.revision,
+				});
+				return;
+			}
+			const demo = buildDemoRuns(store);
+			if (!demo.length) {
+				res.status(400).json({ ok: false, error: "还没有用例，先建用例再载入示例记录" });
+				return;
+			}
+			// 走一遍 normalizeRuns：只留下真实存在的用例，顺带排好序
+			runs = normalizeRuns({ revision: runs.revision + 1, runs: demo }, store.cases);
+			persistRuns();
+			broadcastRuns();
+			res.json({ ok: true, runs: runs.runs, runsRevision: runs.revision });
+		});
+
+		// 清空执行记录（只删流水，不动用例）：演示数据用完、或想重新开始跑一轮时用
+		route("POST", "/runs/clear", (req, res) => {
+			const body = req.body && typeof req.body === "object" ? req.body : {};
+			if (body.confirm !== true) {
+				res.status(400).json({ ok: false, error: "需要 confirm:true 才能清空执行记录" });
+				return;
+			}
+			const removed = runs.runs.length;
+			if (removed) {
+				runs = { version: 1, revision: runs.revision + 1, runs: [] };
+				persistRuns();
+				broadcastRuns();
+			}
+			res.json({ ok: true, removed, runs: runs.runs, runsRevision: runs.revision });
+		});
+
 		route("POST", "/reset", (req, res) => {
 			const body = req.body && typeof req.body === "object" ? req.body : {};
 			if (body.confirm !== true) {
@@ -284,11 +333,7 @@ export default {
 			if (runs.runs.length) {
 				runs = { version: 1, revision: runs.revision + 1, runs: [] };
 				persistRuns();
-				try {
-					host.broadcast({ kind: "runs", revision: runs.revision });
-				} catch {
-					/* 没有客户端在线 */
-				}
+				broadcastRuns();
 			}
 			res.json(snapshot());
 		});
