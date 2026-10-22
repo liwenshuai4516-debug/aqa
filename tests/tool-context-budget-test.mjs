@@ -33,7 +33,12 @@ const properties = Object.fromEntries(
 const parameters = { type: "object", properties };
 await writeFile(
 	extension,
-	`export default function(pi) { for (const name of ["ui_budget_probe", "mcp_budget_probe"]) pi.registerTool({name,label:name,description:"Budget probe extension",parameters:${JSON.stringify(parameters)},execute:async()=>({content:[{type:"text",text:"ok"}]})}); }`,
+	`export default function(pi) {
+		const register = (name) => pi.registerTool({name,label:name,description:"Budget probe extension",parameters:${JSON.stringify(parameters)},execute:async()=>({content:[{type:"text",text:"ok"}]})});
+		register("ui_budget_probe");
+		// MCP can finish connecting during before_agent_start, after factory gating.
+		pi.on("before_agent_start", () => register("mcp_budget_probe"));
+	}`,
 );
 await writeFile(join(agent, "settings.json"), JSON.stringify({ extensions: [extension] }));
 await writeFile(join(agent, "auth.json"), JSON.stringify({ budget: { type: "api_key", key: "local-fixture-only" } }));
@@ -71,10 +76,11 @@ const mock = createServer((req, res) => {
 			model: body.model,
 			choices: [{ index: 0, delta, finish_reason }],
 		});
-		const call = (prompt.includes("load one") || prompt.includes("load plugin")) && !hasResult;
+		const call =
+			(prompt.includes("load one") || prompt.includes("load plugin") || prompt.includes("load late")) && !hasResult;
 		res.writeHead(200, { "content-type": "text/event-stream" });
 		res.write(
-			`data: ${JSON.stringify(chunk(call ? { tool_calls: [{ index: 0, id: "budget_load", type: "function", function: { name: "load_tools", arguments: JSON.stringify({ tools: [prompt.includes("load plugin") ? "api_budget_probe" : "ui_budget_probe"] }) } }] } : { content: "done" }))}\n\n`,
+			`data: ${JSON.stringify(chunk(call ? { tool_calls: [{ index: 0, id: "budget_load", type: "function", function: { name: "load_tools", arguments: JSON.stringify({ tools: [prompt.includes("load plugin") ? "api_budget_probe" : prompt.includes("load late") ? "mcp_budget_probe" : "ui_budget_probe"] }) } }] } : { content: "done" }))}\n\n`,
 		);
 		res.write(`data: ${JSON.stringify(chunk({}, "stop"))}\n\ndata: [DONE]\n\n`);
 		res.end();
@@ -233,6 +239,7 @@ try {
 		"new lazy session declares only five baseline tools",
 		names(first).length === 5 && core.every((n) => names(first).includes(n)),
 	);
+	check("late MCP registration is gated before the first model request", !names(first).includes("mcp_budget_probe"));
 	check(
 		"deferred tools remain discoverable",
 		["ui_budget_probe", "mcp_budget_probe", "api_budget_probe"].every((n) => system(first).includes(n)),
@@ -323,6 +330,20 @@ try {
 		"first-request schema reduced by at least 70% in large-schema fixture",
 		metric(first).schemaBytes < metric(eager).schemaBytes * 0.3,
 	);
+	await until(() => !state.isStreaming, "denied load complete");
+	await fresh();
+	const lateRequest = await prompt("load late");
+	await until(() => requests.length >= requests.indexOf(lateRequest) + 2, "late tool load continuation");
+	const lateLoaded = requests[requests.indexOf(lateRequest) + 1];
+	check(
+		"late-registered tool remains loadable with a stable system and tool prefix",
+		!names(lateRequest).includes("mcp_budget_probe") &&
+			names(lateLoaded).includes("mcp_budget_probe") &&
+			system(lateRequest) === system(lateLoaded) &&
+			JSON.stringify(lateRequest.tools) === JSON.stringify(lateLoaded.tools.slice(0, lateRequest.tools.length)),
+	);
+	const lateRetained = await prompt("late retained");
+	check("next run preserves the explicitly loaded late tool", names(lateRetained).includes("mcp_budget_probe"));
 	result.status = result.checks.every((x) => x.passed) ? "PASS" : "FAIL";
 	if (result.status !== "PASS") process.exitCode = 1;
 } catch (error) {

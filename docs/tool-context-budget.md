@@ -139,3 +139,51 @@ agent/data-dir，仅调用本地 mock，不使用个人凭据、不调用业务�
 
 启用方式仍为设置 → 工具 → 工具按需加载。部署新构建后需重启应用，再新建或重新打开会话；
 无需删除会话历史。运行中的旧进程不会自动获得源码修复。此机制适用 pi 引擎，DSH 不适用。
+
+## 6. 2026-10-22 首轮响应等待排查：延后注册的 MCP 工具
+
+用户截图对应的新会话已启用按需加载，但首个 system 记录仍声明 94 个工具，其中 87 个为
+UI 测试 MCP 工具；模型回报首轮输入 17,873 tokens，未命中输入缓存。该轮从请求对象创建到
+回复定稿约 23.6 秒，输出 79 tokens；这是完整响应耗时，不能当作首字耗时。记录中用户消息
+创建到请求对象创建约 85ms，**不包含**用户消息创建前的 SDK 前置处理，也不等于完整发送耗时。
+当前会话思考强度为 medium，存在没有公开思考文字的 thinking 块；空回复显示的“正在思考”
+只是界面占位，不能据此判断全部等待都用于推理。此次未发起真实模型或业务请求，不将历史
+模型用量算成本次测试结果，也不能从现有记录拆分网关排队、网络和模型计算各自的耗时。
+
+根因是生命周期顺序：工厂阶段执行 `applyToolGating()` 后，SDK 的 `session_start` / 较早的
+`before_agent_start` 处理器仍可注册工具，SDK 会默认激活这些新工具。原有静态注册 fixture
+没有覆盖这一窗口。现在在已有末尾 persona 处理器中重放同一门控，并同步本次
+`systemPromptOptions.selectedTools`，随后再组装提示词；不修改 SDK，不新增加载框架。
+按需加载关闭时仍按原设置提供工具，显式关闭、已加载和从历史恢复的工具继续走原规则。
+此处修复的是进入 run 前已完成的延后注册；run 已开始后才注册的工具仍属于 SDK 动态注册
+生命周期，本轮未宣称覆盖这类竞态。
+
+在原 `tests/tool-context-budget-test.mjs` 中将一个大型工具改为发送前注册，修复前复现
+5 个失败检查（首轮泄漏、追加顺序与恢复），修复后 16 项检查全部通过（含显式加载延后注册的
+工具、下一轮继续保持加载）。同一延后注册 fixture
+首轮从 6 个工具 / 25,097 schema 字节变为 5 个 / 4,253 字节（减少 83.1%）；system 文本
+保持 17,035 字节，加载后的 system 逐字节相同，原工具声明保持前缀。完整工具模式仍有
+30 个工具。此 fixture 数字不能换算成用户实际等待缩短秒数或生产 tokenizer 用量。
+
+前后证据：`tests/scratch/tool-context-budget/late-registration-before/` 和
+`late-registration-after/`。只使用临时 agent/data-dir、本地模拟模型和合成工具，未读取凭据、
+修改个人会话或调整用户模型/思考设置。重启客户端服务后修复才生效，新会话适合比较首轮
+负担；已有历史不用删除。
+
+本地 Chrome 探针复用原文件链接浏览器回归，记录实际发送、模拟模型收到请求、写出内容和
+DOM 出现内容四个时间点：即时响应为 69ms 本地准备 + 42ms 返回/上屏（总 113ms）；
+模拟模型延后 1500ms 时为 118ms + 1500ms + 31ms（总 1649ms）。使用合成请求、
+openai-completions SSE，不代表用户 openai-responses 网关的性能。证据分别位于
+`tests/scratch/file-link-preview/1792654542403-browser/` 和 `1792654587466-browser/` 的
+`timing.json`；诊断脚本仅在已忽略的 `tests/scratch/response-latency/` 中保留，不增加产品代码。
+隔离原生 Electron 同一探针为 105ms 本地准备 + 232ms 返回/上屏（总 338ms），证据位于
+`tests/scratch/file-link-preview/1792654907417-desktop/`。这些本地样本均未出现数秒的客户端
+固定等待，但不能据此给生产模型承诺相同首字时间。
+
+本次 7 文件、92 项相关单测，五个类型配置、lint、完整构建和协议单源检查通过（无 tag，协议
+版本 git 启发式按原逻辑跳过）。核心冒烟首次 20/22 通过，quiesce 与 plugin-scaffold 单独复测
+均通过，首次失败仍记录为不稳定，不能写成一次全绿。原 `lazy-tools-test.mjs` 的“关闭按需加载
+后 snapshot.tools 不含 load_tools”检查失败，其他检查通过；使用 `b27216a` 原实现、隔离模块加载
+钩子复跑同一脚本也出现相同失败，属于本次修改前已有的状态同步问题。本次没有跳过或修改
+该断言。对照日志见 `tests/scratch/response-latency/lazy-baseline.log`、`lazy-recheck.log`，
+核心复测见 `core-recheck.log`。生产网关的修复后首字耗时未测，Windows/Linux 客户端未测。

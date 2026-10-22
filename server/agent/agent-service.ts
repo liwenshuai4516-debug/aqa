@@ -2992,6 +2992,14 @@ export class ClientSession {
 							hidden: true,
 							factory: (pi) => {
 								pi.on("before_agent_start", (event) => {
+									const conv = this.convs.get(ownerId ?? this.activeId) ?? this.conv;
+									const sess = conv?.session;
+									if (sess) {
+										// MCP / session_start handlers may register tools after factory gating.
+										// Reuse the same gate after preceding start handlers, before SDK snapshots the loadout.
+										this.applyToolGating(sess, conv?.agentPreset);
+										event.systemPromptOptions.selectedTools = sess.getActiveToolNames();
+									}
 									// 我们是链上最后一个 handler：先把早前扩展的首尾增补摘出来（pre/post），
 									// 只在 SDK 原始提示词 core 上做事，最后原样套回去——否则返回 systemPrompt
 									// 会整体替换，把别的扩展注入的内容（如 <invoked_skill>）一起丢掉。
@@ -3016,8 +3024,6 @@ export class ClientSession {
 									// 延迟加载打开时，提示词内容刻意**不依赖已加载集合**（否则每次 load_tools
 									// 都会改系统提示词，供应商前缀缓存整段失效）：工具列表 = 完整目录，
 									// guidelines 只取基线；加载后的 schema 追加在 tools 数组里（前缀不变）。
-									const conv = this.convs.get(ownerId ?? this.activeId) ?? this.conv;
-									const sess = conv?.session;
 									const activeToolNames = sess ? sess.getActiveToolNames() : [];
 									const lazyOn = this.lazyLoadingOn();
 									const catalog =
