@@ -39,6 +39,8 @@ flowchart LR
 
 这是 WebSocket 主链路；文件媒体、上传下载等还有 HTTP 路由。跨端消息类型由 `server/protocol.ts` 定义，`web/src/types.ts` 只作导出桥接。定位问题时先确认是界面事件、消息路由、业务处理还是状态同步，再进入相应模块。
 
+聊天文件链接由 `web/src/file-link.ts` 识别规范化，经 `Markdown.tsx` → `file-preview-bridge.ts` → 原文件预览与读取链路；见 [附件与预览](architecture-attachments.md#文件预览协议)。
+
 ## 按功能定位模块
 
 下列路径相对仓库根目录；列出的是阅读起点，不是全部文件，也不表示这些文件都需要修改。

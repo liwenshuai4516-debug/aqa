@@ -264,6 +264,7 @@ web/src/
 ├── present-items.ts    # ★ present_files 卡片纯函数（参数解析/与 details 合并/能力判定/自动打开闸门），有单测
 ├── present-settings.ts # 卡片偏好：自动打开预览弹窗（localStorage，默认关）+ 已开过的 toolCallId 去重表
 ├── file-preview-bridge.ts # 工具卡片 → 文件预览弹窗的模块级 sink（App 注册 opener）
+├── file-link.ts           # Markdown 本地文件链接识别与路径规范化，复用预览桥
 ├── file-transfer.ts    # 文件传输前端逻辑（配 FileTransferDialog + file-transfer-routes）
 ├── tool-info-state.ts  # 工具定义弹窗的模块级 store（打开/关闭/应答 → 视图，纯函数 + 单测）
 ├── tool-prompt-state.ts # 逐工具文案编辑器的默认值 store（get_tool_prompt 应答 → 视图，纯函数）

@@ -1,6 +1,6 @@
 import { memo, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import type { JSX } from "react";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { defaultUrlTransform, type UrlTransform } from "react-markdown";
 import type { PluggableList } from "unified";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
@@ -9,7 +9,7 @@ import remarkBackslashMath from "../remark-backslash-math";
 import rehypeHighlight from "rehype-highlight";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import "katex/dist/katex.min.css";
 import { CopyButton } from "./copy-button";
 import { splitCodeLines } from "../code-lines";
@@ -26,6 +26,7 @@ import type { FenceRenderContext } from "../plugin-loader";
 import { isZhLocale, useLocale } from "../i18n";
 import { PluginFenceBlock } from "./PluginFenceBlock";
 import { openFilePreview } from "../file-preview-bridge";
+import { fileLinkPath } from "../file-link";
 
 interface MarkdownProps {
 	text: string;
@@ -52,6 +53,17 @@ const rehypePlugins: PluggableList = [
 	[rehypeKatex, { strict: false, throwOnError: false }],
 	[rehypeHighlight, { detect: true, ignoreMissing: true }],
 ];
+const fileLinkSchema = {
+	...defaultSchema,
+	protocols: { ...defaultSchema.protocols, href: [...(defaultSchema.protocols?.href ?? []), "pi-file", "file"] },
+};
+const markdownUrlTransform: UrlTransform = (url, key, node) => {
+	if (key === "href" && node.tagName === "a") {
+		const path = fileLinkPath(url);
+		if (path) return `pi-file://${encodeURIComponent(path)}`;
+	}
+	return defaultUrlTransform(url);
+};
 
 /**
  * 把正文中的 @file.ext 提及安全转换为 pi-file:// 链接，供 MdLink 渲染为小药丸微标。
@@ -89,13 +101,14 @@ export function MarkdownBody({
 	// 常用标签与 markdown 生成的结构（含 language-* 类名，KaTeX 的 language-math
 	// 走同一前缀）保留。sanitize 必须在 katex/highlight 之前：它们后续添加的
 	// class/元素不会被白名单误伤。非 rawHtml 路径本来就没有原始 HTML，不接 sanitize。
-	const rh: PluggableList = rawHtml ? [rehypeRaw, rehypeSanitize, ...rehypePlugins] : rehypePlugins;
+	const rh: PluggableList = rawHtml ? [rehypeRaw, [rehypeSanitize, fileLinkSchema], ...rehypePlugins] : rehypePlugins;
 	const processedText = useMemo(() => linkifyFileMentions(text), [text]);
 	return (
 		<ReactMarkdown
 			remarkPlugins={hardBreaks ? remarkPluginsHardBreaks : remarkPlugins}
 			rehypePlugins={rh}
 			components={{ pre: PreWithCopy, a: MdLink }}
+			urlTransform={markdownUrlTransform}
 		>
 			{processedText}
 		</ReactMarkdown>
@@ -116,8 +129,8 @@ export const Markdown = memo(function Markdown({ text, rawHtml = false, hardBrea
  * 两笔账都算得上：网页版里是「新标签页打开」这种更符合预期的行为（和界面里手写
  * 外链的写法一致）；桌面壳里 `target=_blank` 的点击走 `setWindowOpenHandler` 被
  * 转给系统浏览器 —— 而裸 `href` 会触发同帧导航把应用窗口带走（issue #154，
- * 桌面壳另有 `will-navigate` 守卫兜底脚本发起的跳转）。站内锚点（`#…`）与相对
- * 路径不动：它们本来就是应用内导航。 */
+ * 桌面壳另有 `will-navigate` 守卫兜底脚本发起的跳转）。本地文件交给预览桥；
+ * 站内锚点（`#…`）和其他应用内地址保持导航行为。 */
 function MdLink({ node: _node, href, children, ...rest }: JSX.IntrinsicElements["a"] & { node?: unknown }) {
 	// node 是 react-markdown 塞进 props 的内部 hast 节点（运行时存在、类型里没有），
 	// 必须在这里截下：透传给 <a> 会渲染成 node="[object Object]" 垃圾属性。
@@ -131,8 +144,7 @@ function MdLink({ node: _node, href, children, ...rest }: JSX.IntrinsicElements[
 		} catch {
 			filePath = rawPath;
 		}
-		const fileName =
-			typeof children === "string" && children.trim() ? children.trim() : (filePath.split("/").pop() ?? filePath);
+		const fileName = filePath.split("/").pop() ?? filePath;
 		return (
 			<button
 				type="button"
@@ -141,13 +153,13 @@ function MdLink({ node: _node, href, children, ...rest }: JSX.IntrinsicElements[
 				onClick={(e) => {
 					e.preventDefault();
 					e.stopPropagation();
-					openFilePreview({ path: filePath, name: fileName.replace(/^@/, "") });
+					openFilePreview({ path: filePath, name: fileName });
 				}}
 			>
 				<span className="file-pill-icon" aria-hidden="true">
 					📄
 				</span>
-				<span className="file-pill-name">{fileName}</span>
+				<span className="file-pill-name">{children || fileName}</span>
 			</button>
 		);
 	}
