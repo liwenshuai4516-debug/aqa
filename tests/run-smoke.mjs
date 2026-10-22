@@ -89,6 +89,8 @@ const ALL = [
 	"plugin-cron-overflow-test",
 	// 笔记插件（notes）：清单/HTTP 通道/长轮询推送/持久化（零 token，浏览器 E2E 另见 notes-ui-test）。
 	"notes-test",
+	// 数据空间插件（data-space）：示例播种 / 保存与乐观锁 409 / 视图 bundle 下发 / 重启后数据仍在。
+	"data-space-plugin-test",
 	"plugin-bgtask-test",
 	// 左栏「运行的对话」插件运行条目（P3）：登记推送 / attach 补发 / clear / 心跳过期整组清空。
 	"plugin-leftpanel-running-test",

@@ -391,5 +391,16 @@
 		"descriptionEn": "Approval gate: centralized pending-decision list from scheduled tasks; click an item to jump into its conversation; red-dot badge on the tab shows pending count. A generic CLI lets any cron job register items.",
 		"source": "xing-shuyin/pi-web-ui/plugins/approval-gate",
 		"homepage": "https://github.com/xing-shuyin/pi-web-ui/tree/main/plugins/approval-gate"
+	},
+	{
+		"id": "data-space",
+		"name": "数据空间",
+		"nameEn": "Data Space",
+		"icon": "🗃️",
+		"iconSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><ellipse cx=\"12\" cy=\"5\" rx=\"8\" ry=\"3\"/><path d=\"M4 5v6c1.7 1.7 13.5 1.7 16 0V5\"/><path d=\"M4 11v6c1.7 1.7 13.5 1.7 16 0v-6\"/></svg>",
+		"description": "测试数据的集中管理页：按分组区分业务模块、按数据集存放键值记录，顶栏一级入口，可在「设置 → 插件」随时开关；数据存本机数据目录，换会话/项目都读同一份。",
+		"descriptionEn": "A central place for test data: group datasets by business module and keep key/value records inside each one. Opens from the topbar and can be toggled in Settings > Plugins; the data lives in the local data dir and is shared across sessions and projects.",
+		"source": "xing-shuyin/pi-web-ui/plugins/data-space",
+		"homepage": "https://github.com/xing-shuyin/pi-web-ui/tree/main/plugins/data-space"
 	}
 ]
