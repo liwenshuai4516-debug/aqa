@@ -380,3 +380,5 @@ web/src/
 手动 HTTP 目标：`server/api-testing-relay.ts` 固定转发与执行副本映射，`server/api-testing-runner.ts` 绑定启动项目/目标、批准 hash 与取消清理；`tests/api-testing-target-test.mjs` 验证完整宿主路径，原 relay 隔离探针已改为复用产品转发模块。见 [接线验收](api-testing-evidence/target-host.md)。
 
 手动目标专用凭据：`server/api-testing-credential.ts` 读取并验证绑定项目/目标的短期测试 token 引用，`api-testing-runner.ts` 负责私有交付与撤销清理；`tests/api-testing-target-test.mjs` 使用合成凭据验证，见 [凭据验收](api-testing-evidence/credential-host.md)。
+
+API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配置技能与宿主插件，拒绝覆盖其他安装；`tests/unit/api-testing-registration.test.ts` 验证配置保留/冲突，`tests/api-testing-visibility-test.mjs` 验证桌面实际可见与快捷操作。见 [验收](api-testing-visibility.md)。

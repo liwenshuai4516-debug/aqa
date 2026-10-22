@@ -9,7 +9,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { AgentSession } from "@earendil-works/pi-coding-agent";
+import { loadSkills, type AgentSession } from "@earendil-works/pi-coding-agent";
 import type {
 	ClientMessage,
 	ServerMessage,
@@ -172,6 +172,23 @@ export class SettingsService {
 		// ① 用户区 <agentDir>/skills ② 项目 .pi/skills
 		if (check(join(agentDir, "skills"))) return true;
 		if (check(join(cwd, ".pi", "skills"))) return true;
+		// Explicit settings paths can point outside the current workspace. Reuse SDK
+		// discovery so disabled skills survive reload/restart, including file paths.
+		for (const base of [agentDir, join(cwd, ".pi")]) {
+			try {
+				const parsed = JSON.parse(readFileSync(join(base, "settings.json"), "utf8")) as { skills?: unknown };
+				if (!Array.isArray(parsed?.skills)) continue;
+				const skillPaths = parsed.skills.filter((entry): entry is string => typeof entry === "string");
+				if (
+					loadSkills({ cwd: base, agentDir, skillPaths, includeDefaults: false }).skills.some(
+						(skill) => skill.name === name,
+					)
+				)
+					return true;
+			} catch {
+				// Missing or invalid settings are not a skill source.
+			}
+		}
 		// ③ 祖先链 .agents/skills（SDK collectAncestorAgentsSkillDirs 语义，最多上溯 6 层）
 		let dir: string = cwd;
 		for (let i = 0; i < 6 && dir !== dirname(dir); i++, dir = dirname(dir)) {

@@ -92,7 +92,9 @@
 		"format": "prettier --write server/ web/src/ extensions/ scripts/ bin/ desktop/ tests/*.mjs tests/unit/ *.mjs",
 		"format:check": "prettier --check server/ web/src/ extensions/ scripts/ bin/ desktop/ tests/*.mjs tests/unit/ *.mjs",
 		"lint": "oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/",
-		"lint:fix": "oxlint --fix server/ web/src/ extensions/ scripts/ bin/ desktop/"
+		"lint:fix": "oxlint --fix server/ web/src/ extensions/ scripts/ bin/ desktop/",
+		"api-testing:enable": "node scripts/enable-api-testing.mjs",
+		"test:api:visibility": "node --import tsx tests/api-testing-visibility-test.mjs"
 	},
 	"dependencies": {
 		"@deepseek-ai/cordis": "4.0.2",

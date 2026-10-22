@@ -11,7 +11,7 @@
 - 执行前保存 run 身份；HOME/TMPDIR/输入为 run 专属目录，清空继承环境。结果按 fixture 字段白名单投影；取消保留 unknown，不承诺业务回滚。
 - 会话身份由 pi 的工具适配器注入第五个参数，跨会话/项目、失效上下文、计划/委派模式、工具关闭和插件停用均拒绝或取消。切换前台会话不会改变原 run 的归属。其他未提供该上下文的引擎明确拒绝。
 
-插件为开发中的本地包，未上市场，未安装到个人目录；工作流只有宿主独立评审通过后才能签发执行引用；模型不能导入 pass 标签绕过评审。
+插件为开发中的本地包，未上市场，不自动安装到个人通用配置目录；应用级接入见文末。工作流只有宿主独立评审通过后才能签发执行引用；模型不能导入 pass 标签绕过评审。
 
 ## 隔离验证
 
@@ -109,3 +109,15 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 可在启动宿主时配置 `PI_API_TEST_TOKEN_FILE`，其文件权限、绑定字段和到期规则见 [环境变量](../../docs/env-vars.md)。仅支持当前业务的 `token` 请求头：宿主通过私有 MCP 管道交付，在执行内存添加，原批准集合及文件证据不包含值。过期、文件改变或撤销会停止当前执行；显式下次执行才能读取轮换后的 token。不要把凭据传给模型或工具参数。
 
 19 项合成验证通过；未取得真实专用凭据。实际测试环境已执行一次无凭据的只读列表诊断，HTTP 200/JSON，4 条断言失败 2 条，不能记为业务验收通过。见 [凭据记录](../../docs/api-testing-evidence/credential-host.md) 和 [只读诊断](../../docs/api-testing-evidence/business-readonly-summary.json)。
+
+## 在应用中管理和快捷调用
+
+先安装固定依赖：`npm ci --ignore-scripts --prefix plugins/api-testing`。仅项目技能目录不足以让其他工作区中的桌面应用可见；需要向实际运行的 Pi agent 配置登记技能，并向宿主 dataDir 安装插件：
+
+```sh
+npm run api-testing:enable -- --agent-dir "$HOME/Library/Application Support/Pi Agent Desktop/agent" --data-dir "$HOME/Library/Application Support/Pi Agent Desktop/data"
+```
+
+上例是 macOS 源码桌面默认目录；使用其他实例/覆盖环境变量时应传其实际目录。仅当前项目技能登记可省略 `--agent-dir`，`--data-dir` 始终显式传入。脚本保留已有设置与禁用状态，重复运行不重复登记；遇到不同安装拒绝覆盖。原插件使用本仓库路径链接，移动仓库后需重新处理链接。依赖安装不等于对目标环境的测试授权。
+
+本次包含宿主代码修复，已经运行的旧桌面实例需重启一次以加载新代码；后续仅新增登记时，在已有 Pi 会话执行 `/reload`，在“界面插件 → 插件列表”点击“重新扫描”。设置 → 技能可管理 `api-test-workflow`、`api-test-review`、`api-test-analyze`；设置 → 插件可管理“接口自动化测试”，工具页可管理 `api_test_execute`。输入 `/api` 可选择和补全 `/skill:api-test-workflow` 等命令，不会仅因补全启动模型或发送接口请求。阶段规则和执行门禁保持原样。见 [接入验收](../../docs/api-testing-visibility.md)。

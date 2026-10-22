@@ -154,3 +154,34 @@ describe("disabledExtensions stale 剔除（issue #192）", () => {
 		expect(ids).not.toContain("<inline:pi-webui-persona>");
 	});
 });
+
+describe("explicit skill paths outside the workspace", () => {
+	it.each(["absolute", "relative", "file"])(
+		"preserves disabled %s skill across service restart, then prunes a deleted source",
+		(kind) => {
+			const source = join(dir, "external-skills", "api-test-workflow");
+			mkdirSync(source, { recursive: true });
+			writeFileSync(
+				join(source, "SKILL.md"),
+				"---\nname: api-test-workflow\ndescription: API workflow\n---\nTest workflow.\n",
+			);
+			const path =
+				kind === "relative"
+					? "../external-skills/api-test-workflow"
+					: kind === "file"
+						? join(source, "SKILL.md")
+						: source;
+			writeFileSync(join(agentDir, "settings.json"), JSON.stringify({ skills: [path] }));
+			store.saveSettings("test-client", { disabledSkills: ["api-test-workflow"] });
+			const create = () =>
+				new SettingsService(makeHost(makeSession([])), new SubagentTemplatesStore(join(dir, "templates.json")));
+			create().push();
+			expect(store.getSettings("test-client").disabledSkills).toEqual(["api-test-workflow"]);
+			create().push();
+			expect(store.getSettings("test-client").disabledSkills).toEqual(["api-test-workflow"]);
+			rmSync(source, { recursive: true });
+			create().push();
+			expect(store.getSettings("test-client").disabledSkills).toEqual([]);
+		},
+	);
+});

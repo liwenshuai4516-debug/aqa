@@ -1,0 +1,33 @@
+{
+	"status": "PASS",
+	"checks": [
+		"reproduced missing API skills, plugin and /api shortcut in a different desktop workspace",
+		"explicit API registration preserves existing settings and is idempotent",
+		"desktop skill management lists all three API skills enabled after reload",
+		"skill disable persists across reload, removes shortcut and can be re-enabled",
+		"/api lists API shortcuts; click and Tab complete without a model request",
+		"API plugin is visible, can be disabled/re-enabled and rescan preserves its state",
+		"API execution tool is exposed in tool management through the existing host plugin",
+		"subsequent reload retains API shortcuts with no business or model execution"
+	],
+	"actualModelCalls": 0,
+	"businessRequests": 0,
+	"environment": "macOS, native Electron, isolated agent/data, workspace different from repository",
+	"checksPassed": 8,
+	"actualApplicationRegistration": "Verified three absolute project skill paths and plugin symlink in the dedicated desktop application directory; existing running process has not been restarted.",
+	"validation": {
+		"unit": {
+			"passed": 115,
+			"failed": 0,
+			"files": 19
+		},
+		"coreSmoke": {
+			"passed": 22,
+			"failed": 0
+		},
+		"typecheck": "PASS",
+		"build": "PASS",
+		"lint": "PASS",
+		"protocol": "PASS"
+	}
+}
