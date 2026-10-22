@@ -16,8 +16,9 @@ function appRoot() {
 
 export const BASE = `${appRoot()}/plugins-api/data-space`;
 
-export const ENVS = ["本地", "测试环境", "预发环境", "生产"];
 export const PRIORITIES = ["P0", "P1", "P2", "P3"];
+/** 环境名的常用写法：只给新建弹窗做输入建议（datalist），不是限定词表，用户可写「UAT 环境」之类。 */
+export const ENV_PRESETS = ["本地", "测试环境", "预发环境", "生产"];
 /** 当前只做接口 / UI 两类；追加类型时改服务端 model.mjs 的 CASE_TYPES，这里只是接口未就绪时的兜底。 */
 export const CASE_TYPES = ["接口", "UI"];
 export const CASE_STATUS = ["草稿", "待评审", "已评审", "已废弃"];
@@ -48,7 +49,10 @@ export const S = {
 	modules: [],
 	features: [],
 	cases: [],
-	datasets: [],
+	/** 项目环境地址簿：{ id, systemId, name, baseUrl, note, isDefault }，同项目恰好一个默认。 */
+	envs: [],
+	/** 服务端清理旧数据集的记录（设置页提示用）：{ datasets, cases, backup, at } | null。 */
+	purged: null,
 	/** 用例类型清单：服务端下发，追加新类型无需改页面。 */
 	caseTypes: [...CASE_TYPES],
 	/** 执行结果流水（服务端 runs.json）：只追加，按用例取最近一条。 */
@@ -65,6 +69,8 @@ export const S = {
 	runsVerdict: "all",
 	runsSource: "all",
 	runsRange: "all",
+	/** 执行结果按环境筛选（"all" 或环境名）。 */
+	runsEnv: "all",
 	/** 「按任务」视图里展开的任务 key（空 = 全部收起）。 */
 	runsOpen: "",
 	tab: "overview",
@@ -76,11 +82,12 @@ export const S = {
 	status: "all",
 	/** 用例类型筛选：all | 具体类型 */
 	caseType: "all",
-	datasetQ: "",
-	datasetScope: { systemId: "", moduleId: "", featureId: "" },
+	envQ: "",
+	/** 环境页的项目筛选（systemId；空 = 全部项目）。 */
+	envScope: "",
 	caseModal: null,
 	nodeModal: null,
-	datasetModal: null,
+	envModal: null,
 	/** 「引入到 AI 对话」弹窗状态（见 modal-brief.mjs）。 */
 	brief: null,
 	/** 本轮已引入用例：caseId → { rev, at }；数据改过（revision 变）就不再算已引入。 */
@@ -182,8 +189,27 @@ export function featureOptions(filter = {}) {
 	);
 }
 
-export function datasetNames(ids) {
-	return (ids ?? []).map((id) => S.datasets.find((d) => d.id === id)?.name).filter(Boolean);
+export function envsOf(systemId) {
+	return S.envs.filter((e) => e.systemId === systemId);
+}
+
+export const envById = (id) => S.envs.find((e) => e.id === id) ?? null;
+
+/** 项目默认环境：同项目保证恰好一个（服务端清洗），这里再兜一层第一条。 */
+export function defaultEnvOf(systemId) {
+	const list = envsOf(systemId);
+	return list.find((e) => e.isDefault) ?? list[0] ?? null;
+}
+
+/** 用例所属项目的默认环境（没归类或没配环境的返回 null）。 */
+export function envOfCase(c) {
+	const { system } = pathOfFeature(c?.featureId);
+	return system ? defaultEnvOf(system.id) : null;
+}
+
+/** 环境的一行写法：名称 · 地址。 */
+export function envLabel(env) {
+	return env ? [env.name, env.baseUrl].filter(Boolean).join(" · ") : "";
 }
 
 /** 用例编号：优先用项目 code，如 PMS-004；没有 code 用 CASE-004。 */
@@ -241,7 +267,8 @@ export function applyStore(data) {
 	S.modules = Array.isArray(data.modules) ? data.modules : [];
 	S.features = Array.isArray(data.features) ? data.features : [];
 	S.cases = Array.isArray(data.cases) ? data.cases : [];
-	S.datasets = Array.isArray(data.datasets) ? data.datasets : [];
+	S.envs = Array.isArray(data.envs) ? data.envs : [];
+	S.purged = data.purged && typeof data.purged === "object" ? data.purged : null;
 	S.caseTypes = Array.isArray(data.caseTypes) && data.caseTypes.length ? data.caseTypes.map(String) : [...CASE_TYPES];
 	S.runs = Array.isArray(data.runs) ? data.runs : [];
 	S.runsRevision = Number(data.runsRevision) || 0;
@@ -302,6 +329,7 @@ export function filteredRuns() {
 			verdict: S.runsVerdict,
 			source: S.runsSource,
 			range: S.runsRange,
+			env: S.runsEnv,
 			casesById,
 			pathOf: casePath,
 		}),
@@ -348,13 +376,13 @@ export function resultStats() {
 	};
 }
 
-/** 页面上登记的最近结果（手工 / AI 都走同一条链）。 */
-export async function saveResult(caseId, verdict, note) {
+/** 页面上登记的最近结果（手工 / AI 都走同一条链）；env 可传环境名或 id。 */
+export async function saveResult(caseId, verdict, note, env = "") {
 	try {
 		const r = await fetch(`${BASE}/runs`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ caseId, verdict, note }),
+			body: JSON.stringify({ caseId, verdict, note, env }),
 		});
 		const d = await r.json().catch(() => null);
 		if (!d?.ok) return { ok: false, error: d?.error || "登记失败" };
@@ -384,7 +412,7 @@ export function payload() {
 		modules: S.modules,
 		features: S.features,
 		cases: S.cases,
-		datasets: S.datasets,
+		envs: S.envs,
 	};
 }
 

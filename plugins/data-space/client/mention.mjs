@@ -44,7 +44,7 @@ async function remoteStore() {
 						modules: d.modules ?? [],
 						features: d.features ?? [],
 						cases: d.cases ?? [],
-						datasets: d.datasets ?? [],
+						envs: d.envs ?? [],
 						runs: d.runs ?? [],
 						revision: d.revision ?? 0,
 					},

@@ -1,9 +1,9 @@
 /**
  * 数据空间的数据模型：常量、清洗、旧库迁移。
  *
- * 结构（version 2）：
- *   systems  -> modules(systemId) -> features(moduleId) -> cases(featureId)
- *   datasets(featureId?)  用例可用 datasetIds 引用数据集
+ * 结构（version 3）：
+ *   systems -> modules(systemId) -> features(moduleId) -> cases(featureId)
+ *   envs(systemId)  每个项目自己的地址簿（测试 / 预发 / 生产…），同项目恰好一个默认
  * 层级一律扁平父引用：搜索、移动、导入导出都比嵌套树简单，悬空引用在清洗时统一处理。
  */
 import { randomUUID } from "node:crypto";
@@ -14,11 +14,9 @@ export const MAX = {
 	modules: 240,
 	features: 720,
 	cases: 3000,
-	datasets: 500,
-	records: 200,
+	envs: 300,
 	steps: 60,
 	tags: 12,
-	linked: 20,
 };
 
 export const COLORS = ["blue", "green", "amber", "purple", "gray", "teal", "red"];
@@ -30,12 +28,10 @@ export const PRIORITIES = ["P0", "P1", "P2", "P3"];
  */
 export const CASE_TYPES = ["接口", "UI"];
 export const CASE_STATUS = ["草稿", "待评审", "已评审", "已废弃"];
-export const ENVS = ["本地", "测试环境", "预发环境", "生产"];
 
 const COLOR_SET = new Set(COLORS);
 const PRIORITY_SET = new Set(PRIORITIES);
 const STATUS_SET = new Set(CASE_STATUS);
-const ENV_SET = new Set(ENVS);
 
 export const now = () => new Date().toISOString();
 export const str = (v, n) => (typeof v === "string" ? v.trim().slice(0, n) : "");
@@ -50,10 +46,13 @@ function oneOf(v, set, fallback) {
 	return set.has(s) ? s : fallback;
 }
 
-/** 0.1.0 的 groups + datasets：分组升级为系统，数据集归属留空，原数据一条不丢。 */
+/**
+ * 0.1.0 的 groups + datasets：分组升级为系统。
+ * 0.8.0 起不再有数据集，旧库里的 datasets 由 index.mjs 先备份再丢弃，这里只报个数。
+ */
 export function migrateLegacy(parsed) {
 	const t = now();
-	const prevDatasets = Array.isArray(parsed?.datasets) ? parsed.datasets : [];
+	const droppedDatasets = Array.isArray(parsed?.datasets) ? parsed.datasets.length : 0;
 	const systems = (Array.isArray(parsed?.groups) ? parsed.groups : []).map((g) => {
 		const go = g && typeof g === "object" ? g : {};
 		return {
@@ -70,7 +69,8 @@ export function migrateLegacy(parsed) {
 		modules: [],
 		features: [],
 		cases: [],
-		datasets: prevDatasets.map((d) => ({ ...(d && typeof d === "object" ? d : {}), featureId: "" })),
+		envs: [],
+		droppedDatasets,
 		migratedFrom: 1,
 	};
 }
@@ -79,7 +79,7 @@ export function migrateLegacy(parsed) {
 export function normalizeStore(raw, previous) {
 	const o = raw && typeof raw === "object" ? raw : {};
 	const prevCases = new Map((previous?.cases ?? []).map((c) => [c.id, c]));
-	const prevDatasets = new Map((previous?.datasets ?? []).map((d) => [d.id, d]));
+	const prevEnvs = new Map((previous?.envs ?? []).map((e) => [e.id, e]));
 
 	const seen = new Set();
 	const dedupe = (id) => {
@@ -163,7 +163,6 @@ export function normalizeStore(raw, previous) {
 				tags: strList(co.tags, MAX.tags, 24),
 				preconditions: typeof co.preconditions === "string" ? co.preconditions.slice(0, 2000) : "",
 				steps,
-				datasetIds: strList(co.datasetIds, MAX.linked, 64),
 				note: typeof co.note === "string" ? co.note.slice(0, 2000) : "",
 				createdAt: str(co.createdAt, 40) || prevCases.get(id)?.createdAt || now(),
 				updatedAt: str(co.updatedAt, 40) || now(),
@@ -171,47 +170,45 @@ export function normalizeStore(raw, previous) {
 		})
 		.filter((c) => dedupe(`c:${c.id}`));
 
-	const datasets = (Array.isArray(o.datasets) ? o.datasets : [])
-		.slice(0, MAX.datasets)
-		.map((d) => {
-			const dobj = d && typeof d === "object" ? d : {};
-			const id = str(dobj.id, 64) || uid();
-			const records = (Array.isArray(dobj.records) ? dobj.records : [])
-				.slice(0, MAX.records)
-				.map((r) => {
-					const ro = r && typeof r === "object" ? r : {};
-					return {
-						id: str(ro.id, 64) || uid(),
-						key: str(ro.key, 80),
-						value: typeof ro.value === "string" ? ro.value.slice(0, 4000) : "",
-						remark: str(ro.remark, 200),
-					};
-				})
-				.filter((r) => r.key || r.value || r.remark);
+	// 环境：项目自己的地址簿。悬空 systemId 丢掉；同项目恰好一个默认（先到先得，没标就把第一条设为默认）。
+	const envs = (Array.isArray(o.envs) ? o.envs : [])
+		.slice(0, MAX.envs)
+		.map((e) => {
+			const eo = e && typeof e === "object" ? e : {};
+			const id = str(eo.id, 64) || uid();
 			return {
 				id,
-				featureId: featureIds.has(str(dobj.featureId, 64)) ? str(dobj.featureId, 64) : "",
-				name: str(dobj.name, 80) || "未命名数据集",
-				env: ENV_SET.has(str(dobj.env, 20)) ? str(dobj.env, 20) : "",
-				tags: strList(dobj.tags, MAX.tags, 24),
-				note: typeof dobj.note === "string" ? dobj.note.slice(0, 2000) : "",
-				records,
-				createdAt: str(dobj.createdAt, 40) || prevDatasets.get(id)?.createdAt || now(),
-				updatedAt: str(dobj.updatedAt, 40) || now(),
+				systemId: str(eo.systemId, 64),
+				name: str(eo.name, 60) || "未命名环境",
+				// 末尾多余的斜杠会让拼接出来的路径出现 `//`，存的时候就去掉。
+				baseUrl: str(eo.baseUrl, 300).replace(/\/+$/, ""),
+				note: str(eo.note, 300),
+				isDefault: eo.isDefault === true || eo.isDefault === "true" || eo.isDefault === 1,
+				createdAt: str(eo.createdAt, 40) || prevEnvs.get(id)?.createdAt || now(),
+				updatedAt: str(eo.updatedAt, 40) || now(),
 			};
 		})
-		.filter((d) => dedupe(`d:${d.id}`));
+		.filter((e) => systemIds.has(e.systemId) && dedupe(`e:${e.id}`));
 
-	// 用例引用的数据集必须真实存在（否则页面会显示空引用）。
-	const datasetIds = new Set(datasets.map((d) => d.id));
-	for (const c of cases) c.datasetIds = c.datasetIds.filter((id) => datasetIds.has(id));
+	// 每个项目只能有一个默认环境：同项目多个 isDefault 只认第一个，一个都没有就认第一条。
+	const defaultSystems = new Set();
+	for (const e of envs) {
+		if (!e.isDefault) continue;
+		if (defaultSystems.has(e.systemId)) e.isDefault = false;
+		else defaultSystems.add(e.systemId);
+	}
+	for (const e of envs) {
+		if (defaultSystems.has(e.systemId)) continue;
+		e.isDefault = true;
+		defaultSystems.add(e.systemId);
+	}
 
 	return {
 		systems,
 		modules,
 		features,
 		cases,
-		datasets,
+		envs,
 		migratedFrom: Number(o.migratedFrom) || 0,
 	};
 }

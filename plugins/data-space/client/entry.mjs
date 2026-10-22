@@ -1,7 +1,7 @@
 /**
  * 数据空间客户端视图入口 —— 纯 DOM，无框架；读写只走 /plugins-api/data-space。
  *
- * 结构：顶部一级导航（概览 / 用例库 / 数据集 / 设置）+ 右侧一行状态信息；
+ * 结构：顶部一级导航（概览 / 用例库 / 执行结果 / 环境 / 设置）+ 右侧一行状态信息；
  * 用例库左侧是「项目列表」（可搜索），右侧是项目内的模块 / 功能筛选与用例；
  * 样式见 ./style.mjs（自包含，只吃宿主主题变量，深浅主题自动跟随）。
  */
@@ -25,7 +25,7 @@ import {
 import {
 	casesHtml,
 	currentCaseScope,
-	datasetsHtml,
+	envsHtml,
 	overviewHtml,
 	projectListHtml,
 	runsHtml,
@@ -37,7 +37,7 @@ import { openResultModal, resultModalHtml, saveResultNow } from "./modal-result.
 import { registerCaseMention } from "./mention.mjs";
 import { caseModalHtml, copyCase, deleteCase, openCaseModal, saveCase } from "./modal-case.mjs";
 import { deleteNode, nodeModalHtml, openNodeEdit, openNodeModal, saveNode } from "./modal-node.mjs";
-import { copyDataset, datasetModalHtml, deleteDataset, openDatasetModal, saveDataset } from "./modal-dataset.mjs";
+import { copyEnv, deleteEnv, envModalHtml, openEnvModal, saveEnv } from "./modal-env.mjs";
 import { refreshPathSelects } from "./path-select.mjs";
 
 /* ------------------------------------------------------------------ 骨架 */
@@ -76,7 +76,7 @@ function bodyHtml() {
 		return `<div class="dsp-layout">${projectListHtml()}<section class="dsp-content">${casesHtml()}</section></div>`;
 	}
 	if (S.tab === "runs") return runsHtml();
-	if (S.tab === "datasets") return datasetsHtml();
+	if (S.tab === "envs") return envsHtml();
 	if (S.tab === "settings") return settingsHtml();
 	return overviewHtml();
 }
@@ -96,8 +96,7 @@ function renderBody() {
 
 function renderOverlay() {
 	if (!S.nodes) return;
-	S.nodes.overlay.innerHTML =
-		caseModalHtml() + nodeModalHtml() + datasetModalHtml() + briefModalHtml() + resultModalHtml();
+	S.nodes.overlay.innerHTML = caseModalHtml() + nodeModalHtml() + envModalHtml() + briefModalHtml() + resultModalHtml();
 }
 
 function render() {
@@ -136,7 +135,7 @@ hooks.renderOverlay = renderOverlay;
 function closeModals() {
 	S.caseModal = null;
 	S.nodeModal = null;
-	S.datasetModal = null;
+	S.envModal = null;
 	S.brief = null;
 	S.resultModal = null;
 	renderOverlay();
@@ -144,7 +143,7 @@ function closeModals() {
 
 /** 当前打开的是哪个弹窗（用来路由 data-f 输入）。 */
 function activeModal() {
-	return S.caseModal || S.datasetModal || S.nodeModal || S.resultModal || null;
+	return S.caseModal || S.envModal || S.nodeModal || S.resultModal || null;
 }
 
 /* ------------------------------------------------------------------ 点击 */
@@ -218,6 +217,12 @@ function onClick(e) {
 		// 直接定位到这条用例：编号搜索在项目内唯一命中
 		S.caseQ = c.code || c.title;
 		S.tab = "cases";
+		render();
+		return;
+	}
+	if (act === "goto-envs") {
+		S.envScope = id || "";
+		S.tab = "envs";
 		render();
 		return;
 	}
@@ -295,8 +300,8 @@ function onClick(e) {
 		openCaseModal(null);
 		return;
 	}
-	if (act === "new-dataset") {
-		openDatasetModal(null);
+	if (act === "new-env") {
+		openEnvModal(null);
 		return;
 	}
 	if (act === "edit-node") {
@@ -315,16 +320,16 @@ function onClick(e) {
 		void deleteCase(id);
 		return;
 	}
-	if (act === "edit-dataset") {
-		openDatasetModal(S.datasets.find((d) => d.id === id) || null);
+	if (act === "edit-env") {
+		openEnvModal(S.envs.find((e) => e.id === id) || null);
 		return;
 	}
-	if (act === "copy-dataset") {
-		void copyDataset(id);
+	if (act === "copy-env") {
+		void copyEnv(id);
 		return;
 	}
-	if (act === "del-dataset") {
-		void deleteDataset(id);
+	if (act === "del-env") {
+		void deleteEnv(id);
 		return;
 	}
 	if (act === "add-step") {
@@ -341,18 +346,8 @@ function onClick(e) {
 		void saveCase();
 		return;
 	}
-	if (act === "add-record") {
-		S.datasetModal?.records.push({ id: newId(), key: "", value: "", remark: "" });
-		renderOverlay();
-		return;
-	}
-	if (act === "del-record") {
-		S.datasetModal?.records.splice(Number(hit.dataset.ri), 1);
-		renderOverlay();
-		return;
-	}
-	if (act === "save-dataset") {
-		void saveDataset();
+	if (act === "save-env") {
+		void saveEnv();
 		return;
 	}
 	if (act === "save-node") {
@@ -396,9 +391,9 @@ function onInput(e) {
 		renderBodyKeepFocus('[data-el="case-search"]');
 		return;
 	}
-	if (el.dataset.el === "dataset-search") {
-		S.datasetQ = el.value;
-		renderBodyKeepFocus('[data-el="dataset-search"]');
+	if (el.dataset.el === "env-search") {
+		S.envQ = el.value;
+		renderBodyKeepFocus('[data-el="env-search"]');
 		return;
 	}
 	if (el.dataset.el === "runs-search") {
@@ -413,11 +408,6 @@ function onInput(e) {
 	if (S.caseModal && el.dataset.si !== undefined && el.dataset.sf) {
 		const step = S.caseModal.steps[Number(el.dataset.si)];
 		if (step) step[el.dataset.sf] = el.value;
-		return;
-	}
-	if (S.datasetModal && el.dataset.ri !== undefined && el.dataset.rf) {
-		const row = S.datasetModal.records[Number(el.dataset.ri)];
-		if (row) row[el.dataset.rf] = el.value;
 	}
 }
 
@@ -454,18 +444,13 @@ function onChange(e) {
 		renderBody();
 		return;
 	}
-	if (el.dataset.el === "ds-system") {
-		S.datasetScope = { systemId: el.value, moduleId: "", featureId: "" };
+	if (el.dataset.el === "runs-env") {
+		S.runsEnv = el.value || "all";
 		renderBody();
 		return;
 	}
-	if (el.dataset.el === "ds-module") {
-		S.datasetScope = { ...S.datasetScope, moduleId: el.value, featureId: "" };
-		renderBody();
-		return;
-	}
-	if (el.dataset.el === "ds-feature") {
-		S.datasetScope = { ...S.datasetScope, featureId: el.value };
+	if (el.dataset.el === "env-system") {
+		S.envScope = el.value;
 		renderBody();
 		return;
 	}
@@ -486,33 +471,6 @@ function onChange(e) {
 		S.caseModal.featureId = el.value;
 		return;
 	}
-	if (el.dataset.el === "dataset-system" && S.datasetModal) {
-		S.datasetModal.systemId = el.value;
-		S.datasetModal.moduleId = "";
-		S.datasetModal.featureId = "";
-		refreshPathSelects("dataset");
-		return;
-	}
-	if (el.dataset.el === "dataset-module" && S.datasetModal) {
-		S.datasetModal.moduleId = el.value;
-		S.datasetModal.featureId = "";
-		refreshPathSelects("dataset");
-		return;
-	}
-	if (el.dataset.el === "dataset-feature" && S.datasetModal) {
-		S.datasetModal.featureId = el.value;
-		return;
-	}
-	if (el.dataset.linked && S.caseModal) {
-		const set = new Set(S.caseModal.datasetIds ?? []);
-		if (el.checked) set.add(el.dataset.linked);
-		else set.delete(el.dataset.linked);
-		S.caseModal.datasetIds = [...set];
-		// 只改计数文字，不动 DOM 其余部分（保留滚动位置与勾选焦点）
-		const cnt = document.querySelector('[data-el="linked-count"]');
-		if (cnt) cnt.textContent = `关联数据集 · ${set.size} 份`;
-		return;
-	}
 	const modal = activeModal();
 	if (modal && el.dataset.f) modal[el.dataset.f] = el.value;
 }
@@ -525,7 +483,7 @@ function doExport() {
 		modules: S.modules,
 		features: S.features,
 		cases: S.cases,
-		datasets: S.datasets,
+		envs: S.envs,
 		exportedAt: new Date().toISOString(),
 	};
 	const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
@@ -553,7 +511,7 @@ function doExportRuns() {
 	toast(`已导出 ${rows.length} 条执行记录`);
 }
 
-/** 兼容 0.1.0 的「分组 + 数据集」格式：分组 → 系统，数据集归属清空。 */
+/** 兼容 0.1.0 的「分组 + 数据集」格式：分组 → 系统；旧数据集直接丢弃（不再使用）。 */
 function normalizeImport(parsed) {
 	const nowIso = new Date().toISOString();
 	const asArr = (v) => (Array.isArray(v) ? v : []);
@@ -604,28 +562,21 @@ function normalizeImport(parsed) {
 		tags: Array.isArray(c?.tags) ? c.tags : [],
 		preconditions: c?.preconditions || "",
 		steps: asArr(c?.steps).map((s) => ({ id: s?.id || newId(), action: s?.action || "", expect: s?.expect || "" })),
-		datasetIds: asArr(c?.datasetIds),
 		note: c?.note || "",
 		createdAt: c?.createdAt || nowIso,
 		updatedAt: c?.updatedAt || nowIso,
 	}));
-	const datasets = asArr(parsed?.datasets).map((d) => ({
-		id: d?.id || newId(),
-		featureId: legacy ? "" : d?.featureId || "",
-		name: d?.name || "未命名数据集",
-		env: d?.env || "",
-		tags: Array.isArray(d?.tags) ? d.tags : [],
-		note: d?.note || "",
-		records: asArr(d?.records).map((r) => ({
-			id: r?.id || newId(),
-			key: r?.key || "",
-			value: typeof r?.value === "string" ? r.value : "",
-			remark: r?.remark || "",
-		})),
-		createdAt: d?.createdAt || nowIso,
-		updatedAt: d?.updatedAt || nowIso,
+	const envs = asArr(parsed?.envs).map((e) => ({
+		id: e?.id || newId(),
+		systemId: e?.systemId || "",
+		name: e?.name || "未命名环境",
+		baseUrl: String(e?.baseUrl || "").replace(/\/+$/, ""),
+		note: e?.note || "",
+		isDefault: Boolean(e?.isDefault),
+		createdAt: e?.createdAt || nowIso,
+		updatedAt: e?.updatedAt || nowIso,
 	}));
-	return { systems, modules, features, cases, datasets };
+	return { systems, modules, features, cases, envs };
 }
 
 async function doImport(input) {
@@ -639,8 +590,8 @@ async function doImport(input) {
 		toast("导入失败：不是合法的 JSON");
 		return;
 	}
-	if (!Array.isArray(parsed?.systems) && !Array.isArray(parsed?.groups) && !Array.isArray(parsed?.datasets)) {
-		toast("文件格式不对：需要 systems / modules / features / cases / datasets");
+	if (!Array.isArray(parsed?.systems) && !Array.isArray(parsed?.groups) && !Array.isArray(parsed?.envs)) {
+		toast("文件格式不对：需要 systems / modules / features / cases / envs");
 		return;
 	}
 	if (!window.confirm(`导入会替换当前全部数据（${S.systems.length} 个项目 / ${S.cases.length} 条用例），继续？`))
@@ -650,9 +601,10 @@ async function doImport(input) {
 	S.modules = next.modules;
 	S.features = next.features;
 	S.cases = next.cases;
-	S.datasets = next.datasets;
+	S.envs = next.envs;
 	S.sel = { systemId: "", moduleId: "", featureId: "" };
-	S.datasetScope = { systemId: "", moduleId: "", featureId: "" };
+	S.envScope = "";
+	S.envQ = "";
 	await persist();
 	render();
 }
@@ -689,7 +641,7 @@ async function loadDemoRuns() {
 
 async function clearRuns() {
 	if (!S.runs.length) return;
-	if (!window.confirm(`清空全部 ${S.runs.length} 条执行记录？用例与数据集不受影响，此操作不可撤销。`)) return;
+	if (!window.confirm(`清空全部 ${S.runs.length} 条执行记录？用例与环境不受影响，此操作不可撤销。`)) return;
 	try {
 		const r = await fetch(`${BASE}/runs/clear`, {
 			method: "POST",
@@ -710,7 +662,7 @@ async function clearRuns() {
 }
 
 async function doReset() {
-	if (!window.confirm("恢复示例数据会覆盖当前全部项目、功能、用例与数据集，继续？")) return;
+	if (!window.confirm("恢复示例数据会覆盖当前全部项目、功能、用例与环境，继续？")) return;
 	try {
 		const r = await fetch(`${BASE}/reset`, {
 			method: "POST",

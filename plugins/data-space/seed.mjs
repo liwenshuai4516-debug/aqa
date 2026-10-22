@@ -1,5 +1,5 @@
 /**
- * 首次打开时的示例数据：三个系统、五个模块、十个功能、十四条用例、五份数据集。
+ * 首次打开时的示例数据：五个项目、五个模块、十个功能、十四条用例、九份环境。
  *
  * 故意留了「爆管告警」这个 0 用例功能，用来演示覆盖缺口；
  * 也留了草稿 / 待评审 / 已废弃等状态，方便看不同视觉反馈。
@@ -93,73 +93,79 @@ export function seedStore() {
 		{ id: "ft-bms-dun", moduleId: "mod-bms-bill", name: "欠费催缴", note: "", createdAt: t },
 	];
 
-	const datasets = [
+	// 每个项目一份地址簿：默认环境用 isDefault 标出，用例 / 结果都往默认环境上对。
+	const envs = [
 		row({
-			id: "ds-contract-create",
-			featureId: "ft-contract-biz",
-			name: "经营合同-新建参数",
-			env: "测试环境",
-			tags: ["冒烟", "合同"],
-			note: "普通经营合同新建所需字段，含测试账号。",
-			records: [
-				{ id: uid(), key: "username", value: "contract_editor", remark: "合同经办人" },
-				{ id: uid(), key: "contractType", value: "经营合同", remark: "" },
-				{ id: uid(), key: "amount", value: "128000.00", remark: "含税金额" },
-				{ id: uid(), key: "counterparty", value: "示例水务工程有限公司", remark: "" },
-			],
+			id: "env-pms-test",
+			systemId: "sys-pms",
+			name: "测试环境",
+			baseUrl: "https://pms-test.example.com",
+			note: "合同 / 供应商联调环境，数据每周重置。",
+			isDefault: true,
 		}),
 		row({
-			id: "ds-contract-amount",
-			featureId: "ft-contract-biz",
-			name: "经营合同-金额边界值",
-			env: "测试环境",
-			tags: ["边界"],
-			note: "金额下限 / 上限 / 越界三组值。",
-			records: [
-				{ id: uid(), key: "min", value: "0.01", remark: "最小可保存金额" },
-				{ id: uid(), key: "max", value: "999999999.99", remark: "最大可保存金额" },
-				{ id: uid(), key: "over", value: "1000000000.00", remark: "越界应提示" },
-			],
+			id: "env-pms-stg",
+			systemId: "sys-pms",
+			name: "预发环境",
+			baseUrl: "https://pms-stg.example.com",
+			note: "",
+			isDefault: false,
 		}),
 		row({
-			id: "ds-device-query",
-			featureId: "ft-device-ledger",
-			name: "设备台账-查询条件",
-			env: "预发环境",
-			tags: ["查询", "分页"],
-			note: "按站点与状态过滤，校验分页总数。",
-			records: [
-				{ id: uid(), key: "stationId", value: "ST-001", remark: "祥符水厂" },
-				{ id: uid(), key: "status", value: "running", remark: "运行中" },
-				{ id: uid(), key: "page", value: "1", remark: "" },
-				{ id: uid(), key: "pageSize", value: "20", remark: "" },
-			],
+			id: "env-wop-test",
+			systemId: "sys-wop",
+			name: "测试环境",
+			baseUrl: "http://wop-test.local:8080",
+			note: "设备与工单联调。",
+			isDefault: true,
 		}),
 		row({
-			id: "ds-order-dispatch",
-			featureId: "ft-order-dispatch",
-			name: "工单派发-受理人",
-			env: "测试环境",
-			tags: ["工单"],
-			note: "派发给值班班组，校验受理人与时限。",
-			records: [
-				{ id: uid(), key: "orderType", value: "repair", remark: "维修工单" },
-				{ id: uid(), key: "assignee", value: "运维一班", remark: "" },
-				{ id: uid(), key: "slaHours", value: "4", remark: "要求 4 小时内响应" },
-			],
+			id: "env-wop-prod",
+			systemId: "sys-wop",
+			name: "生产环境",
+			baseUrl: "https://wop.example.com",
+			note: "只读核对用，不在此环境造数据。",
+			isDefault: false,
 		}),
 		row({
-			id: "ds-pressure-threshold",
-			featureId: "ft-pipe-pressure",
-			name: "压力监测-阈值数据",
-			env: "本地",
-			tags: ["阈值", "告警"],
-			note: "低压 / 正常 / 高压三档，用于告警判定。",
-			records: [
-				{ id: uid(), key: "low", value: "0.18", remark: "MPa，低于触发低压告警" },
-				{ id: uid(), key: "normal", value: "0.32", remark: "" },
-				{ id: uid(), key: "high", value: "0.55", remark: "MPa，高于触发超压告警" },
-			],
+			id: "env-wds-local",
+			systemId: "sys-wds",
+			name: "本地",
+			baseUrl: "http://127.0.0.1:9000",
+			note: "调度服务本地起，点位数据靠模拟。",
+			isDefault: true,
+		}),
+		row({
+			id: "env-wds-test",
+			systemId: "sys-wds",
+			name: "测试环境",
+			baseUrl: "https://wds-test.example.com",
+			note: "",
+			isDefault: false,
+		}),
+		row({
+			id: "env-cts-test",
+			systemId: "sys-cts",
+			name: "测试环境",
+			baseUrl: "https://cts-test.example.com",
+			note: "",
+			isDefault: true,
+		}),
+		row({
+			id: "env-bms-test",
+			systemId: "sys-bms",
+			name: "测试环境",
+			baseUrl: "https://bms-test.example.com",
+			note: "账单与催缴联调。",
+			isDefault: true,
+		}),
+		row({
+			id: "env-bms-stg",
+			systemId: "sys-bms",
+			name: "预发环境",
+			baseUrl: "https://bms-stg.example.com",
+			note: "",
+			isDefault: false,
 		}),
 	];
 
@@ -180,7 +186,6 @@ export function seedStore() {
 				step("填写合同名称、对方单位、含税金额 128000.00", "字段校验通过"),
 				step("点击保存", "合同生成编号并进入「待审批」"),
 			],
-			datasetIds: ["ds-contract-create"],
 			note: "",
 		}),
 		row({
@@ -198,7 +203,6 @@ export function seedStore() {
 				step("新建合同，金额留空后保存", "提示「金额不能为空」，不生成合同"),
 				step("对方单位留空后保存", "提示「对方单位不能为空」"),
 			],
-			datasetIds: [],
 			note: "",
 		}),
 		row({
@@ -213,7 +217,6 @@ export function seedStore() {
 			tags: ["边界"],
 			preconditions: "接口鉴权 token 有效。",
 			steps: [step("提交金额 0.01", "保存成功"), step("提交金额 1000000000.00", "返回 400 与金额越界提示")],
-			datasetIds: ["ds-contract-amount"],
 			note: "越界提示文案待产品确认。",
 		}),
 		row({
@@ -231,7 +234,6 @@ export function seedStore() {
 				step("打开待审批合同，点击通过", "合同状态变为「已生效」"),
 				step("在合同详情查看审批记录", "显示审批人与审批时间"),
 			],
-			datasetIds: [],
 			note: "",
 		}),
 		row({
@@ -246,7 +248,6 @@ export function seedStore() {
 			tags: [],
 			preconditions: "合同已生效。",
 			steps: [step("在合同详情点击「发起变更」，修改金额后提交", "生成变更单，原合同进入变更中")],
-			datasetIds: [],
 			note: "变更单是否需要独立审批流待确认。",
 		}),
 		row({
@@ -261,7 +262,6 @@ export function seedStore() {
 			tags: ["结算"],
 			preconditions: "存在已生效合同。",
 			steps: [step("录入结算金额大于合同金额并保存", "提示超出合同金额，拒绝保存")],
-			datasetIds: [],
 			note: "",
 		}),
 		row({
@@ -276,7 +276,6 @@ export function seedStore() {
 			tags: ["供应商"],
 			preconditions: "已存在同一统一社会信用代码的供应商。",
 			steps: [step("再次提交相同信用代码的准入申请", "提示已存在，不允许重复准入")],
-			datasetIds: [],
 			note: "被「统一社会信用代码唯一校验」用例替代。",
 		}),
 		row({
@@ -294,7 +293,6 @@ export function seedStore() {
 				step("GET 设备列表，stationId=ST-001&status=running&page=1", "返回 200，total 与列表数量一致"),
 				step("pageSize 传 0", "返回 400 或回落默认值（待确认）"),
 			],
-			datasetIds: ["ds-device-query"],
 			note: "",
 		}),
 		row({
@@ -309,7 +307,6 @@ export function seedStore() {
 			tags: ["联动"],
 			preconditions: "存在已停用设备。",
 			steps: [step("对该设备创建维修工单", "提示设备已停用，不允许创建")],
-			datasetIds: [],
 			note: "",
 		}),
 		row({
@@ -324,7 +321,6 @@ export function seedStore() {
 			tags: ["定时任务"],
 			preconditions: "存在日巡检计划；可调整系统时间或使用测试时钟。",
 			steps: [step("跨过计划周期后查看任务列表", "自动生成当日巡检任务并指派班组")],
-			datasetIds: [],
 			note: "",
 		}),
 		row({
@@ -342,7 +338,6 @@ export function seedStore() {
 				step("新建维修工单，派发给运维一班", "工单状态变为「已派发」，受理人收到通知"),
 				step("查看响应时限", "显示 4 小时响应倒计时"),
 			],
-			datasetIds: ["ds-order-dispatch"],
 			note: "",
 		}),
 		row({
@@ -360,7 +355,6 @@ export function seedStore() {
 				step("处理结果留空直接回单", "提示必填，不关闭工单"),
 				step("填写处理结果并上传照片后回单", "工单关闭，记录处理人与时间"),
 			],
-			datasetIds: [],
 			note: "",
 		}),
 		row({
@@ -378,7 +372,6 @@ export function seedStore() {
 				step("上报压力 0.18 MPa", "生成低压告警，告警级别与阈值配置一致"),
 				step("上报压力 0.32 MPa", "不生成告警"),
 			],
-			datasetIds: ["ds-pressure-threshold"],
 			note: "",
 		}),
 		row({
@@ -393,7 +386,6 @@ export function seedStore() {
 			tags: ["告警"],
 			preconditions: "存在未恢复的低压告警。",
 			steps: [step("连续 3 个周期上报压力 0.32 MPa", "告警自动变为「已恢复」")],
-			datasetIds: [],
 			note: "连续周期数需与调度确认。",
 		}),
 		row({
@@ -411,7 +403,6 @@ export function seedStore() {
 				step("在「来电登记」输入已存在的手机号", "自动带出客户姓名与地址"),
 				step("输入未登记的手机号", "提示新客户，允许先登记再受理"),
 			],
-			datasetIds: [],
 			note: "",
 		}),
 		row({
@@ -426,7 +417,6 @@ export function seedStore() {
 			tags: ["提醒"],
 			preconditions: "存在超过承诺时限未回访的投诉工单。",
 			steps: [step("定时任务扫描超时工单", "生成回访提醒并推送给受理人")],
-			datasetIds: [],
 			note: "超时时长待客服确认。",
 		}),
 		row({
@@ -444,7 +434,6 @@ export function seedStore() {
 				step("按月批量生成账单", "返回户数与应收总额，与台账一致"),
 				step("重复生成同一账期", "提示已生成，不产生重复账单"),
 			],
-			datasetIds: [],
 			note: "",
 		}),
 		row({
@@ -459,13 +448,12 @@ export function seedStore() {
 			tags: ["模板"],
 			preconditions: "已配置催缴短信模板。",
 			steps: [step("对欠费户发起催缴", "短信内容含户号、欠费金额与缴费链接")],
-			datasetIds: [],
 			note: "",
 		}),
 	];
 
 	return {
-		version: 2,
+		version: 3,
 		revision: 1,
 		updatedAt: t,
 		migratedFrom: 0,
@@ -473,6 +461,6 @@ export function seedStore() {
 		modules,
 		features,
 		cases,
-		datasets,
+		envs,
 	};
 }

@@ -4,16 +4,30 @@
  * 与 AI 回写（data_space_record_result）写的是同一条记录链，区别只是 source。
  * 结果只追加不改历史：再登记一次就是最新结论，旧记录仍留在 runs.json 里可追溯。
  */
-import { S, esc, fmtTime, hooks, resultOf, saveResult, toast } from "./state.mjs";
+import {
+	S,
+	defaultEnvOf,
+	envLabel,
+	envsOf,
+	esc,
+	fmtTime,
+	hooks,
+	pathOfFeature,
+	resultOf,
+	saveResult,
+	toast,
+} from "./state.mjs";
 import { invalidateMentionCache } from "./mention.mjs";
 
 export function openResultModal(caseId) {
 	const c = S.cases.find((x) => x.id === caseId);
 	if (!c) return;
 	const last = resultOf(c);
+	const fallback = defaultEnvOf(pathOfFeature(c.featureId).system?.id || "");
 	S.resultModal = {
 		caseId,
 		verdict: last?.run.verdict || S.verdicts[0] || "通过",
+		env: last?.run.env || fallback?.name || "",
 		note: "",
 	};
 	hooks.renderOverlay();
@@ -25,6 +39,7 @@ export function resultModalHtml() {
 	const c = S.cases.find((x) => x.id === m.caseId);
 	if (!c) return "";
 	const last = resultOf(c);
+	const defaultEnv = defaultEnvOf(pathOfFeature(c.featureId).system?.id || "");
 	const verdicts = (S.verdicts.length ? S.verdicts : ["通过", "失败", "阻塞"])
 		.map(
 			(v) =>
@@ -34,10 +49,20 @@ export function resultModalHtml() {
 	const lastLine = last
 		? `上次：<b class="${last.run.verdict === "失败" ? "dsp-bad" : ""}">${esc(last.run.verdict)}</b> · ${esc(fmtTime(last.run.at))} · ${
 				last.run.source === "ai" ? "AI 回写" : "手工登记"
-			}${last.stale ? ` · <span class="dsp-warn">用例已更新，旧结果仅作参考</span>` : ""}${
+			}${last.run.env ? ` · ${esc(last.run.env)}` : ""}${last.stale ? ` · <span class="dsp-warn">用例已更新，旧结果仅作参考</span>` : ""}${
 				last.run.note ? `<br/><span class="dsp-muted">备注：${esc(last.run.note)}</span>` : ""
 			}`
 		: "还没有执行记录。";
+
+	// 环境候选 = 当前用例所属项目的环境 + 流水里出现过的名字（环境已删 / 换了项目也能补登）。
+	const envNames = [
+		...new Set([...envsOf(defaultEnv?.systemId || "").map((e) => e.name), ...S.runs.map((r) => r.env).filter(Boolean)]),
+	];
+	const envField = `<label class="dsp-field"><span>本次环境（选填）</span><select data-f="env"><option value="" ${m.env ? "" : "selected"}>未指定</option>${envNames
+		.map((v) => `<option value="${esc(v)}" ${m.env === v ? "selected" : ""}>${esc(v)}</option>`)
+		.join(
+			"",
+		)}</select>${defaultEnv ? `<span class="dsp-muted">项目默认环境：${esc(envLabel(defaultEnv))}</span>` : ""}</label>`;
 
 	return `<div class="dsp-overlay" data-act="overlay">
 		<div class="dsp-modal narrow" data-stop="1">
@@ -51,6 +76,7 @@ export function resultModalHtml() {
 					<span class="dsp-muted">${esc(c.type || "未分类")} · ${esc(c.priority)} · 数据 revision ${S.revision}</span>
 				</div>
 				<div class="dsp-field"><span>本次结论</span><div class="dsp-chips" style="margin:0">${verdicts}</div></div>
+				${envField}
 				<div class="dsp-field">
 					<span>备注（失败时写现象与初步判断，选填）</span>
 					<input class="dsp-input" data-f="note" value="${esc(m.note)}" maxlength="300" placeholder="例如：返回 500 而非 409，疑似唯一索引缺失" />
@@ -69,7 +95,7 @@ export function resultModalHtml() {
 export async function saveResultNow() {
 	const m = S.resultModal;
 	if (!m) return;
-	const res = await saveResult(m.caseId, m.verdict, m.note);
+	const res = await saveResult(m.caseId, m.verdict, m.note, m.env);
 	if (!res.ok) {
 		toast(res.error || "登记失败");
 		return;

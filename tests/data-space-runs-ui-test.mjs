@@ -5,7 +5,9 @@
  *   1. 插件 bundle 进页即注册 `@` 提及提供者（不必先打开数据空间页）；
  *   2. 输入 `@` 出现「数据空间用例」来源的命中，选中后写进输入框的是轻引用（不以 @ 开头）；
  *   3. 概览有「通过率」卡片与执行结果进度条，未执行显示且不计入分母；
- *   4. 用例表「最近结果」列点开可登记，保存后徽章变成「通过」，概览通过率随之变化；
+ *   3b. 环境页按项目列出环境（默认徽章、按名称搜索、新建后地址末尾斜杠收敛）；
+ *   4. 用例表「最近结果」列点开可登记（可顺带选定本次环境），保存后徽章变成「通过」，
+ *      概览通过率随之变化，执行结果页的「环境」列与筛选跟着生效；
  *   5. 刷新页面后结果仍在（落在 runs.json，不在内存）；
  *   6. 引入对话弹窗有三档格式（自动 / 卡片 / 清单 / 引用），引用档预览不含步骤正文；
  *   8. 执行结果页：流水表、按任务聚合（批量任务一张卡、三态计数）、搜索空态、CSV 导出（表头 / BOM / 备注）；
@@ -176,6 +178,41 @@ try {
 	check("概览有「执行结果」区块", resultSection >= 1, `${resultSection} 个`);
 	check("未执行单独计数、不混入通过率分母", await page.locator("text=未执行").first().isVisible());
 
+	// -- 3b) 环境页：每个项目一份地址簿 --------------------------------------
+	await page.locator('.dsp-nav button[data-tab="envs"]').click();
+	await sleep(400);
+	check("环境页标题带条目数", (await page.locator(".dsp-page-head", { hasText: "环境" }).count()) === 1);
+	const envRows = page.locator(".dsp-table.ds tbody tr");
+	const envRowCount = await envRows.count();
+	check("环境表列出示例环境", envRowCount >= 9, `${envRowCount} 行`);
+	check("默认环境有「默认」徽章", (await page.locator(".dsp-default").count()) >= 5);
+	await page.locator('[data-el="env-search"]').fill("预发环境");
+	await sleep(350);
+	const filteredEnv = await page.locator(".dsp-table.ds tbody tr").count();
+	check("按名称搜索能筛环境", filteredEnv > 0 && filteredEnv < envRowCount, `${filteredEnv} / ${envRowCount}`);
+	await page.locator('[data-el="env-search"]').fill("");
+	await sleep(300);
+
+	await page.locator('button[data-act="new-env"]').first().click();
+	const envModal = page.locator(".dsp-modal", { hasText: "新建环境" }).first();
+	const envModalOpen = await envModal
+		.waitFor({ timeout: 5000 })
+		.then(() => true)
+		.catch(() => false);
+	check("点「新建环境」打开弹窗", envModalOpen);
+	if (envModalOpen) {
+		await envModal.locator('select[data-f="systemId"]').selectOption({ index: 0 });
+		await envModal.locator('input[data-f="name"]').fill("E2E 环境");
+		await envModal.locator('input[data-f="baseUrl"]').fill("https://e2e.example.com/");
+		await envModal.locator('button[data-act="save-env"]').click();
+		await sleep(900);
+		check("保存后弹窗关闭", (await page.locator(".dsp-modal", { hasText: "新建环境" }).count()) === 0);
+		const newRow = page.locator(".dsp-table.ds tbody tr", { hasText: "E2E 环境" }).first();
+		check("新环境出现在表里", (await newRow.count()) === 1);
+		const urlCell = (await newRow.locator(".dsp-url-cell").innerText()).trim();
+		check("地址末尾斜杠已收敛", urlCell === "https://e2e.example.com", urlCell);
+	}
+
 	// -- 4) 用例表登记结果 → 徽章变化 ----------------------------------------
 	await page.locator('.dsp-nav button[data-tab="cases"]').click();
 	await sleep(400);
@@ -194,6 +231,9 @@ try {
 			"三个结论可选（通过 / 失败 / 阻塞）",
 			(await modal.locator('button[data-act="result-verdict"]').count()) === 3,
 		);
+		const envPick = modal.locator('select[data-f="env"]');
+		check("登记弹窗能选本次环境", (await envPick.count()) === 1);
+		await envPick.selectOption({ label: "测试环境" }).catch(() => {});
 		await modal.locator('button[data-act="result-verdict"]', { hasText: "通过" }).first().click();
 		await modal.locator('input[data-f="note"]').fill("E2E 登记");
 		await modal.locator('button[data-act="save-result"]').click();
@@ -240,6 +280,23 @@ try {
 	check("流水表列出刚登记的那条记录", runRowCount >= 1, `${runRowCount} 行`);
 	check("来源标为「手工登记」", (await page.locator(".dsp-source.manual").count()) >= 1);
 	check("备注跟着记录一起展示", (await page.locator(".dsp-run-note", { hasText: "E2E 登记" }).count()) >= 1);
+	check(
+		"流水表有「环境」列且记下这次跑的环境",
+		(await page.locator(".dsp-env-cell", { hasText: "测试环境" }).count()) >= 1,
+	);
+	const runsEnv = page.locator('select[data-el="runs-env"]');
+	check("工具栏有环境筛选下拉", (await runsEnv.count()) === 1 && (await runsEnv.isEnabled()));
+	await runsEnv.selectOption({ label: "测试环境" });
+	await sleep(400);
+	const envFilteredRows = await page.locator(".dsp-table.runs tbody tr").count();
+	check(
+		"按环境筛选后只剩该环境的记录",
+		envFilteredRows >= 1 && envFilteredRows <= runRowCount,
+		`${envFilteredRows} / ${runRowCount}`,
+	);
+	await runsEnv.selectOption("all");
+	await sleep(300);
+	check("恢复「全部环境」后记录回来", (await page.locator(".dsp-table.runs tbody tr").count()) === runRowCount);
 
 	await page.locator('button[data-act="runs-view"][data-id="task"]').click();
 	await sleep(350);
@@ -279,7 +336,7 @@ try {
 		);
 		check(
 			"导出 CSV：带 UTF-8 BOM 与表头",
-			csv.charCodeAt(0) === 0xfeff && csv.includes("时间") && csv.includes("结论"),
+			csv.charCodeAt(0) === 0xfeff && csv.includes("时间") && csv.includes("结论") && csv.includes("环境"),
 		);
 		check("导出 CSV：含刚登记的备注", csv.includes("E2E 登记"));
 	} else {

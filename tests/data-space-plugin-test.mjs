@@ -3,16 +3,18 @@
  *
  * 覆盖：
  *   - 插件被宿主接受并激活（WS attach 触发扫描）；
- *   - GET /state 首次访问有内置示例（项目 / 模块 / 功能 / 用例 / 数据集）并已落盘；
+ *   - GET /state 首次访问有内置示例（项目 / 模块 / 功能 / 用例 / 环境）并已落盘；
  *   - 用例类型只支持接口 / UI 两类，快照下发 caseTypes；空类型补默认值，未知类型不清洗；
  *   - POST /save 带 baseRevision → revision+1，层级与用例内容可读回；
  *   - 悬空父引用被清洗：用例挂不存在的功能 → featureId 置空；模块挂不存在的系统 → 丢弃；
- *     用例引用不存在的数据集 → 从 datasetIds 里剔除；
+ *     环境挂不存在的项目 → 丢弃；baseUrl 末尾斜杠收敛；同项目只留一个默认环境；
  *   - 旧 baseRevision → 409 conflict 且回带最新快照（不做静默覆盖）；缺 baseRevision → 400；
  *   - client/ 下的视图文件可被浏览器 import（Content-Type: text/javascript）；
  *   - 重启服务后数据仍在（落 <dataDir>/data-space/store.json，不在插件目录）；
- *   - 0.1.0 的 groups + datasets 旧库启动时自动迁移成 systems + datasets（featureId 空），
+ *   - 0.1.0 的 groups + datasets 旧库启动时自动迁移成 systems（数据集丢弃），
  *     并留下 store.json.v1-<时间戳>.bak 备份；
+ *   - 0.7.0 的 version 2 库（含 datasets / case.datasetIds）读取时备份 store.json.v2-*.bak，
+ *     数据写成 version 3、清理数量记在 purged 里；
  *   - POST /reset 需 confirm:true，确认后回到示例数据。
  *
  * 运行：node tests/data-space-plugin-test.mjs（单跑会先确保 dist 就绪）
@@ -38,7 +40,7 @@ const CLIENT_FILES = [
 	"path-select.mjs",
 	"modal-case.mjs",
 	"modal-node.mjs",
-	"modal-dataset.mjs",
+	"modal-env.mjs",
 	"brief.mjs",
 	"modal-brief.mjs",
 	"mention.mjs",
@@ -158,7 +160,18 @@ try {
 	check((st?.modules?.length ?? 0) >= 7, "示例含 7 个以上模块", st?.modules?.length);
 	check((st?.features?.length ?? 0) >= 14, "示例含 14 个以上功能", st?.features?.length);
 	check((st?.cases?.length ?? 0) >= 18, "示例含 18 条以上用例", st?.cases?.length);
-	check((st?.datasets?.length ?? 0) >= 5, "示例含 5 份以上数据集", st?.datasets?.length);
+	check((st?.envs?.length ?? 0) >= 9, "示例含 9 个以上环境（每个项目至少一套）", st?.envs?.length);
+	check(
+		(st?.systems ?? []).every((s0) => (st?.envs ?? []).some((e) => e.systemId === s0.id && e.isDefault)),
+		"每个示例项目都恰好有一个默认环境",
+		(st?.systems ?? [])
+			.filter((s0) => (st?.envs ?? []).filter((e) => e.systemId === s0.id).length !== 1)
+			.map((s0) => s0.id),
+	);
+	check(
+		(st?.envs ?? []).every((e) => String(e.baseUrl ?? "").length === 0 || !String(e.baseUrl).endsWith("/")),
+		"示例环境地址不带尾随斜杠",
+	);
 	check(
 		JSON.stringify(st?.caseTypes) === JSON.stringify(["接口", "UI"]),
 		"快照下发用例类型清单（接口 / UI）",
@@ -185,8 +198,8 @@ try {
 	check(typeof st?.dir === "string" && st?.file === storeFile, "快照回带数据文件路径", st?.file);
 	check(st?.limits?.cases >= 1000, "快照回带容量上限", st?.limits?.cases);
 	check(
-		Array.isArray(st?.systems) && JSON.parse(readFileSync(storeFile, "utf8")).version === 2,
-		"落盘文件为 version 2",
+		Array.isArray(st?.systems) && JSON.parse(readFileSync(storeFile, "utf8")).version === 3,
+		"落盘文件为 version 3",
 	);
 
 	// -- 视图文件可被浏览器 import -------------------------------------------
@@ -199,7 +212,7 @@ try {
 		);
 	}
 
-	// -- 保存：新增系统 / 模块 / 功能 / 用例 / 数据集 -------------------------
+	// -- 保存：新增系统 / 模块 / 功能 / 用例 / 环境 ---------------------------
 	const baseRevision = st.revision;
 	const systemId = "probe-system";
 	const moduleId = "probe-module";
@@ -221,16 +234,26 @@ try {
 		// 父模块不存在 → 应被丢弃
 		{ id: "ghost-feature", moduleId: "ghost-module", name: "悬空功能", note: "", createdAt: stamp },
 	];
-	const nextDatasets = [
-		...st.datasets,
+	const nextEnvs = [
+		...st.envs,
 		{
-			id: "probe-dataset",
-			featureId,
-			name: "探针数据集",
-			env: "测试环境",
-			tags: ["冒烟"],
+			id: "probe-env",
+			systemId,
+			name: "探针环境",
+			baseUrl: "https://probe.example.com///",
 			note: "测试用例创建",
-			records: [{ id: "probe-record", key: "account", value: "probe_user", remark: "" }],
+			isDefault: false,
+			createdAt: stamp,
+			updatedAt: stamp,
+		},
+		// 项目不存在 → 应被丢弃
+		{
+			id: "ghost-env",
+			systemId: "ghost-system",
+			name: "悬空环境",
+			baseUrl: "https://ghost.example.com",
+			note: "",
+			isDefault: true,
 			createdAt: stamp,
 			updatedAt: stamp,
 		},
@@ -252,7 +275,6 @@ try {
 				{ id: "s1", action: "打开列表", expect: "列表加载完成" },
 				{ id: "s2", action: "点击新建", expect: "弹出表单" },
 			],
-			datasetIds: ["probe-dataset", "ghost-dataset"],
 			note: "",
 			createdAt: stamp,
 			updatedAt: stamp,
@@ -269,7 +291,6 @@ try {
 			tags: [],
 			preconditions: "",
 			steps: [],
-			datasetIds: [],
 			note: "",
 			createdAt: stamp,
 			updatedAt: stamp,
@@ -286,7 +307,6 @@ try {
 			tags: [],
 			preconditions: "",
 			steps: [],
-			datasetIds: [],
 			note: "",
 			createdAt: stamp,
 			updatedAt: stamp,
@@ -298,7 +318,7 @@ try {
 		modules: nextModules,
 		features: nextFeatures,
 		cases: nextCases,
-		datasets: nextDatasets,
+		envs: nextEnvs,
 	});
 	check(saved.status === 200 && saved.body?.ok === true, "POST /save 保存成功", { status: saved.status });
 	check(saved.body?.revision === baseRevision + 1, "revision 递增 1", { from: baseRevision, to: saved.body?.revision });
@@ -321,9 +341,9 @@ try {
 		},
 	);
 	check(
-		JSON.stringify(probeCase?.datasetIds) === JSON.stringify(["probe-dataset"]),
-		"引用不存在的数据集被剔除",
-		probeCase?.datasetIds,
+		!Object.hasOwn(probeCase ?? {}, "datasetIds"),
+		"用例上不再有 datasetIds 字段（0.8.0 已移除数据集）",
+		Object.keys(probeCase ?? {}),
 	);
 	check(
 		(after.systems ?? []).find((s) => s.id === systemId)?.code === "TST",
@@ -338,10 +358,18 @@ try {
 	check(ghostCase?.type === "不存在", "未知用例类型保留原值（开放词表，不清洗）", ghostCase?.type);
 	const blankType = (after.cases ?? []).find((c) => c.id === "blank-type-case");
 	check(blankType?.type === "接口", "空用例类型补默认值「接口」", blankType?.type);
+	const probeEnv = (after.envs ?? []).find((e) => e.id === "probe-env");
 	check(
-		(after.datasets ?? []).find((d) => d.id === "probe-dataset")?.records?.[0]?.value === "probe_user",
-		"数据集记录读回一致",
+		probeEnv?.name === "探针环境" && probeEnv?.baseUrl === "https://probe.example.com",
+		"环境地址读回一致且末尾斜杠已收敛",
+		probeEnv,
 	);
+	check(
+		probeEnv?.isDefault === true,
+		"新项目下第一个环境自动成为默认",
+		after.envs?.filter((e) => e.systemId === systemId).map((e) => [e.id, e.isDefault]),
+	);
+	check(!(after.envs ?? []).some((e) => e.id === "ghost-env"), "项目不存在的环境被丢弃");
 
 	// -- 执行结果：POST /runs 回写 → 单独文件 → 重启后仍在 -------------------
 	check(Array.isArray(st?.runs) && (st?.runs?.length ?? -1) === 0, "初始快照带空的结果流水", st?.runs?.length);
@@ -355,7 +383,7 @@ try {
 	check(rr.body?.recorded?.[0]?.verdict === "失败" && rr.body?.recorded?.[0]?.source === "manual", "登记来源为手工");
 	const runsRev1 = rr.body?.runsRevision;
 	check((runsRev1 ?? 0) >= 2, "结果 revision 递增", runsRev1);
-	rr = await postJson("/runs", { caseId: "probe-case", verdict: "通过" });
+	rr = await postJson("/runs", { caseId: "probe-case", verdict: "通过", env: "探针环境" });
 	check(
 		rr.status === 200 && rr.body?.runsRevision > runsRev1 && rr.body?.recorded?.[0]?.verdict === "通过",
 		"同一用例可追加新结果（只追加不改历史）",
@@ -380,7 +408,7 @@ try {
 		modules: [],
 		features: [],
 		cases: [],
-		datasets: [],
+		envs: [],
 	});
 	check(r.status === 409 && r.body?.code === "conflict", "旧 baseRevision 返回 409 conflict", {
 		status: r.status,
@@ -394,7 +422,7 @@ try {
 
 	// -- 落盘内容与内存一致 ---------------------------------------------------
 	const onDisk = JSON.parse(readFileSync(storeFile, "utf8"));
-	check(onDisk?.version === 2 && onDisk.revision === baseRevision + 1, "store.json 版本与 revision 与内存一致", {
+	check(onDisk?.version === 3 && onDisk.revision === baseRevision + 1, "store.json 版本与 revision 与内存一致", {
 		version: onDisk?.version,
 		revision: onDisk?.revision,
 	});
@@ -450,7 +478,7 @@ try {
 		runsWithTask?.runs?.length,
 	);
 
-	// -- 0.1.0 旧库迁移：groups → systems，数据集归属清空 ---------------------
+	// -- 0.1.0 旧库迁移：groups → systems，数据集备份后丢弃 -------------------
 	await stopServer(sock);
 	writeFileSync(
 		storeFile,
@@ -495,13 +523,15 @@ try {
 	check(legacySystem?.name === "存量分组" && legacySystem?.color === "green", "迁移保留分组名称与颜色", legacySystem);
 	check((st?.systems ?? []).find((s) => s.id === "g-legacy-2")?.color === "blue", "非法颜色回落到默认值");
 	check(
-		(st?.datasets ?? []).find((d) => d.id === "d-legacy")?.featureId === "",
-		"旧数据集归属清空为未归类",
-		(st?.datasets ?? []).find((d) => d.id === "d-legacy")?.featureId,
+		!Object.hasOwn(st ?? {}, "datasets"),
+		"快照不再下发 datasets",
+		Object.keys(st ?? {}).filter((k) => k.includes("dataset")),
 	);
+	check((st?.envs?.length ?? -1) === 0, "旧库没有环境，快照给空数组而不是 undefined", st?.envs);
 	check(
-		(st?.datasets ?? []).find((d) => d.id === "d-legacy")?.records?.[0]?.value === "13800000000",
-		"旧数据集记录完整保留",
+		(st?.purged?.datasets ?? 0) === 1 && typeof st?.purged?.backup === "string" && st.purged.backup.includes(".bak"),
+		"丢弃数据集留下 purged 记录（份数 + 备份文件名）",
+		st?.purged,
 	);
 	check(st?.migratedFrom === 1, "快照标明从 v1 迁移", st?.migratedFrom);
 	check((st?.modules?.length ?? -1) === 0 && (st?.cases?.length ?? -1) === 0, "迁移后模块与用例为空", {
@@ -511,10 +541,91 @@ try {
 	const backups = readdirSync(join(dataDir, "data-space")).filter((n) => /^store\.json\.v1-\d+\.bak$/.test(n));
 	check(backups.length === 1, "迁移前留下 v1 备份文件", backups);
 	const migratedOnDisk = JSON.parse(readFileSync(storeFile, "utf8"));
-	check(migratedOnDisk?.version === 2 && migratedOnDisk?.systems?.length === 2, "迁移结果已立即落盘", {
+	check(migratedOnDisk?.version === 3 && migratedOnDisk?.systems?.length === 2, "迁移结果已立即落盘", {
 		version: migratedOnDisk?.version,
 		systems: migratedOnDisk?.systems?.length,
 	});
+
+	// -- 0.7.0（version 2）库：数据集备份后丢弃，改写成 version 3 --------------
+	await stopServer(sock);
+	writeFileSync(
+		storeFile,
+		JSON.stringify(
+			{
+				version: 2,
+				revision: 9,
+				updatedAt: "2026-10-10T02:00:00.000Z",
+				systems: [{ id: "s-v2", name: "旧项目", code: "OLD", color: "blue", note: "", createdAt: stamp }],
+				modules: [{ id: "m-v2", systemId: "s-v2", name: "旧模块", note: "", createdAt: stamp }],
+				features: [{ id: "f-v2", moduleId: "m-v2", name: "旧功能", note: "", createdAt: stamp }],
+				cases: [
+					{
+						id: "c-v2",
+						featureId: "f-v2",
+						code: "OLD-001",
+						title: "旧用例",
+						priority: "P1",
+						type: "接口",
+						status: "已评审",
+						owner: "",
+						tags: [],
+						preconditions: "",
+						steps: [],
+						datasetIds: ["d-v2", "d-gone"],
+						note: "",
+						createdAt: stamp,
+						updatedAt: stamp,
+					},
+				],
+				datasets: [
+					{
+						id: "d-v2",
+						featureId: "f-v2",
+						name: "旧数据集",
+						env: "测试环境",
+						tags: [],
+						note: "",
+						records: [{ id: "r-v2", key: "password", value: "p@ssw0rd", remark: "" }],
+						createdAt: stamp,
+						updatedAt: stamp,
+					},
+				],
+			},
+			null,
+			"\t",
+		),
+		"utf8",
+	);
+	sock = await bootServer("data-space-test-v2");
+	({ status, body: st } = await getState());
+	const oldCase = (st?.cases ?? []).find((c) => c.id === "c-v2");
+	check(status === 200 && Boolean(oldCase), "version 2 旧库仍能正常打开", { status, cases: st?.cases?.length });
+	check(st?.revision === 9, "清洗不推进内容 revision", st?.revision);
+	check(
+		(st?.purged?.datasets ?? 0) === 1 && (st?.purged?.cases ?? 0) === 1,
+		"purged 记下丢弃的数据集份数与关联用例数",
+		st?.purged,
+	);
+	check(
+		/^store\.json\.v2-\d+\.bak$/.test(String(st?.purged?.backup ?? "")),
+		"备份文件名为 store.json.v2-<时间戳>.bak",
+		st?.purged?.backup,
+	);
+	const v2Backups = readdirSync(join(dataDir, "data-space")).filter((n) => /^store\.json\.v2-\d+\.bak$/.test(n));
+	check(v2Backups.length === 1, "磁盘上确实留下了 v2 备份", v2Backups);
+	const v2OnDisk = JSON.parse(readFileSync(storeFile, "utf8"));
+	check(
+		v2OnDisk?.version === 3 && !Object.hasOwn(v2OnDisk, "datasets") && !Object.hasOwn(oldCase ?? {}, "datasetIds"),
+		"改写后的库是 version 3，数据集与引用都已消失",
+		{ version: v2OnDisk?.version, keys: Object.keys(v2OnDisk) },
+	);
+	check(v2OnDisk?.purged?.datasets === 1, "清理记录随保存保留在文件里", v2OnDisk?.purged);
+	await stopServer(sock);
+	sock = await bootServer("data-space-test-v2b");
+	({ status, body: st } = await getState());
+	check((st?.purged?.cases ?? 0) === 1, "重启后清理记录仍在（不会重复备份）", st?.purged);
+	const v2BackupsAgain = readdirSync(join(dataDir, "data-space")).filter((n) => /^store\.json\.v2-\d+\.bak$/.test(n));
+	check(v2BackupsAgain.length === 1, "只备份一次", v2BackupsAgain);
 
 	// -- reset 需确认，确认后回到示例 ----------------------------------------
 	r = await postJson("/reset", {});
@@ -522,10 +633,11 @@ try {
 	r = await postJson("/reset", { confirm: true });
 	const reset = r.body ?? {};
 	check(
-		r.status === 200 && (reset.systems?.length ?? 0) >= 5 && !(reset.datasets ?? []).some((d) => d.id === "d-legacy"),
-		"reset 恢复示例数据且移除旧库数据",
-		{ status: r.status, systems: reset.systems?.length, datasets: reset.datasets?.length },
+		r.status === 200 && (reset.systems?.length ?? 0) >= 5 && (reset.envs?.length ?? 0) >= 9,
+		"reset 恢复示例数据（含示例环境）且移除旧库数据",
+		{ status: r.status, systems: reset.systems?.length, envs: reset.envs?.length },
 	);
+	check(!(reset.purged ?? null), "reset 后不再保留上次的数据集清理记录", reset.purged);
 	check((reset.migratedFrom ?? 0) === 0, "reset 后不再显示迁移提示", reset.migratedFrom);
 
 	// -- reset 同时清空执行记录（用例 id 全新，旧流水已对不上） ---------------

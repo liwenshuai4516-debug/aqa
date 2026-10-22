@@ -211,7 +211,11 @@ export async function deleteNode() {
 	if (m.kind === "system") {
 		const s = S.systems.find((x) => x.id === m.id);
 		if (!s) return;
-		if (!window.confirm(`删除项目「${s.name}」？其模块与功能会一并删除；用例与数据集不会被删除，会变成「未归类」。`))
+		if (
+			!window.confirm(
+				`删除项目「${s.name}」？其模块与功能会一并删除；用例与环境不会被删除，会变成「未归类」/「无项目」。`,
+			)
+		)
 			return;
 		const mids = new Set(modulesOf(m.id).map((x) => x.id));
 		const fids = new Set(S.features.filter((f) => mids.has(f.moduleId)).map((f) => f.id));
@@ -219,25 +223,23 @@ export async function deleteNode() {
 		S.modules = S.modules.filter((x) => x.systemId !== m.id);
 		S.features = S.features.filter((f) => !fids.has(f.id));
 		S.cases = S.cases.map((c) => (fids.has(c.featureId) ? { ...c, featureId: "" } : c));
-		S.datasets = S.datasets.map((d) => (fids.has(d.featureId) ? { ...d, featureId: "" } : d));
+		// 项目删了，它的环境也没有归属了：一并移除（已登记的流水保留当时的名字）。
+		S.envs = S.envs.filter((e) => e.systemId !== m.id);
 	} else if (m.kind === "module") {
 		const mod = moduleOf(m.id);
 		if (!mod) return;
-		if (!window.confirm(`删除模块「${mod.name}」？其功能会一并删除；用例与数据集不会被删除，会变成「未归类」。`))
-			return;
+		if (!window.confirm(`删除模块「${mod.name}」？其功能会一并删除；用例不会被删除，会变成「未归类」。`)) return;
 		const fids = new Set(featuresOf(m.id).map((f) => f.id));
 		S.modules = S.modules.filter((x) => x.id !== m.id);
 		S.features = S.features.filter((f) => !fids.has(f.id));
 		S.cases = S.cases.map((c) => (fids.has(c.featureId) ? { ...c, featureId: "" } : c));
-		S.datasets = S.datasets.map((d) => (fids.has(d.featureId) ? { ...d, featureId: "" } : d));
 	} else {
 		const f = featureOf(m.id);
 		if (!f) return;
 		const n = casesOfFeature(f.id).length;
-		if (!window.confirm(`删除功能「${f.name}」？其 ${n} 条用例与数据集不会删除，会变成「未归类」。`)) return;
+		if (!window.confirm(`删除功能「${f.name}」？其 ${n} 条用例不会删除，会变成「未归类」。`)) return;
 		S.features = S.features.filter((x) => x.id !== m.id);
 		S.cases = S.cases.map((c) => (c.featureId === m.id ? { ...c, featureId: "" } : c));
-		S.datasets = S.datasets.map((d) => (d.featureId === m.id ? { ...d, featureId: "" } : d));
 	}
 	S.sel = { systemId: "", moduleId: "", featureId: "" };
 	S.nodeModal = null;

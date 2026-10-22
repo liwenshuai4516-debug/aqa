@@ -4,9 +4,10 @@
  * 为什么不写进 views.mjs：这些函数不碰 DOM，可以直接被 vitest 引用（与 brief.mjs 同一路数），
  * 筛选与分组的边界（空值、时间范围、任务缺失、过期记录）在单测里锁住，页面只负责画。
  *
- * 记录形状见 ../../runs.mjs：{ id, caseId, code, verdict, note, at, source, caseUpdatedAt, taskId, taskName }
+ * 记录形状见 ../../runs.mjs：{ id, caseId, code, verdict, note, at, source, caseUpdatedAt, taskId, taskName, env, envId }
  *   - taskId 由服务端在一次回写多条时生成（AI 批量执行）；页面手工登记的单条没有任务，
  *     在「按任务」视图里各自成为一条「单条登记」。
+ *   - env 是这轮跑的环境名；环境被删后仍保留当时的名字，所以筛选按名字做，不依赖 envId。
  */
 
 export const RUN_RANGES = [
@@ -23,6 +24,16 @@ export const RUN_SOURCES = [
 ];
 
 const DAY = 24 * 60 * 60 * 1000;
+
+/** 流水里出现过的环境名（去重、按名称排序），给筛选下拉用。 */
+export function envOptions(runs) {
+	const set = new Set();
+	for (const r of runs ?? []) {
+		const v = String(r?.env ?? "").trim();
+		if (v) set.add(v);
+	}
+	return [...set].sort((a, b) => a.localeCompare(b));
+}
 
 export function sourceLabel(source) {
 	return source === "ai" ? "AI 回写" : "手工登记";
@@ -68,7 +79,7 @@ export function inRange(iso, range, now = new Date()) {
 
 /**
  * 过滤流水。opts:
- *   q / verdict / source / range：页面筛选条件（"all" 或空 = 不过滤）
+ *   q / verdict / source / range / env：页面筛选条件（"all" 或空 = 不过滤）
  *   casesById：Map<caseId, case>，用于按标题、路径搜索
  *   pathOf(case)：返回「项目 / 模块 / 功能」，搜索路径用（可缺省）
  *   now：便于单测固定时间
@@ -84,10 +95,11 @@ export function filterRuns(runs, opts = {}) {
 		if (!r || !r.caseId) return false;
 		if (opts.verdict && opts.verdict !== "all" && r.verdict !== opts.verdict) return false;
 		if (opts.source && opts.source !== "all" && (r.source === "ai" ? "ai" : "manual") !== opts.source) return false;
+		if (opts.env && opts.env !== "all" && String(r.env ?? "") !== opts.env) return false;
 		if (!inRange(r.at, opts.range ?? "all", now)) return false;
 		if (!q) return true;
 		const c = casesById.get(r.caseId) ?? null;
-		const hay = [r.code, c?.code, c?.title, r.note, r.taskName, pathOf(c)].join(" ").toLowerCase();
+		const hay = [r.code, c?.code, c?.title, r.note, r.env, r.taskName, pathOf(c)].join(" ").toLowerCase();
 		return hay.includes(q);
 	});
 }
@@ -187,7 +199,7 @@ export function runsCsv(rows, opts = {}) {
 	const casesById = opts.casesById ?? new Map();
 	const pathOf = typeof opts.pathOf === "function" ? opts.pathOf : () => "";
 	const isStale = typeof opts.isStale === "function" ? opts.isStale : () => false;
-	const head = ["时间", "结论", "编号", "用例标题", "所属路径", "来源", "任务", "过期", "备注"];
+	const head = ["时间", "结论", "环境", "编号", "用例标题", "所属路径", "来源", "任务", "过期", "备注"];
 	const lines = [head.map(cell).join(",")];
 	for (const r of sortRunsDesc(rows)) {
 		const c = casesById.get(r.caseId) ?? null;
@@ -195,6 +207,7 @@ export function runsCsv(rows, opts = {}) {
 			[
 				stampText(r.at),
 				r.verdict,
+				r.env || "",
 				r.code || c?.code || "",
 				c?.title || "（用例已删除）",
 				pathOf(c),

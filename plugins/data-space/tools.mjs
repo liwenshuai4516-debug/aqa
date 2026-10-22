@@ -7,7 +7,7 @@
  *
  * 约束：
  *   - 只读工具不写盘；回写工具只追加执行记录（runs.json），不改用例内容。
- *   - 输出里不带数据集取值（只带名称），避免口令 / 生产地址经工具结果进上下文。
+ *   - 输出里只带项目的默认环境（名称 + 地址），不带任何账号 / 口令。
  *   - 文本给模型看，不追求好看；一条用例一行，字段用 · 分隔，超量时明确说「只给了前 N 条」。
  */
 import { isStale, latestByCase, normalizeVerdict, parseAnchor, summarize } from "./runs.mjs";
@@ -103,9 +103,16 @@ function describeScope(opts) {
 	return parts.join(" · ") || "全部用例";
 }
 
-function datasetNames(store, ids) {
-	return (ids ?? []).map((id) => (store.datasets ?? []).find((d) => d.id === id)?.name).filter(Boolean);
+function defaultEnvFor(store, featureId) {
+	const f = (store.features ?? []).find((x) => x.id === featureId);
+	const m = f ? (store.modules ?? []).find((x) => x.id === f.moduleId) : null;
+	if (!m) return null;
+	const list = (store.envs ?? []).filter((e) => e.systemId === m.systemId);
+	return list.find((e) => e.isDefault) ?? list[0] ?? null;
 }
+
+/** 环境的一行写法：名称 + 地址（地址可能为空）。 */
+const envText = (env) => (env ? [env.name, env.baseUrl].filter(Boolean).join(" · ") : "");
 
 function resultTag(runsByCase, c) {
 	const run = runsByCase.get(c.id);
@@ -119,7 +126,10 @@ export function formatCaseLines(store, cases, runsByCase) {
 	return cases
 		.map((c, i) => {
 			const path = featurePath(store, c.featureId) || "未归类";
-			const meta = [c.type || "未分类", c.priority, c.status, `最近 ${resultTag(runsByCase, c)}`].join(" · ");
+			const env = envText(defaultEnvFor(store, c.featureId));
+			const meta = [c.type || "未分类", c.priority, c.status, `最近 ${resultTag(runsByCase, c)}`]
+				.concat(env ? [`环境 ${env}`] : [])
+				.join(" · ");
 			return `${i + 1}. ${str(c.code, 24) || "（无编号）"} · ${oneline(c.title) || "未命名"}\n   路径：${path}\n   ${meta} · 步骤 ${(c.steps ?? []).length} 条`;
 		})
 		.join("\n");
@@ -145,8 +155,8 @@ export function formatCaseCards(store, cases, runsByCase) {
 					);
 				});
 			}
-			const data = datasetNames(store, c.datasetIds);
-			if (data.length) lines.push(`   关联数据（仅名称，取值按需现取）：${data.join("、")}`);
+			const data = envText(defaultEnvFor(store, c.featureId));
+			if (data) lines.push(`   环境：${data}`);
 			if (str(c.note)) lines.push(`   备注：${oneline(c.note)}`);
 			return lines.join("\n");
 		})
@@ -167,7 +177,8 @@ export function formatStats(store, runs) {
 		.map((c) => `${str(c.code, 24) || c.id} · ${oneline(c.title)}（${resultTag(latest, c)}）`);
 	return [
 		`数据空间概览（数据 revision ${store.revision ?? 0} · 结果 revision ${runs?.revision ?? 0}）`,
-		`- 项目 ${(store.systems ?? []).length} · 模块 ${(store.modules ?? []).length} · 功能 ${features.length} · 用例 ${(store.cases ?? []).length} · 数据集 ${(store.datasets ?? []).length}`,
+		`- 项目 ${(store.systems ?? []).length} · 模块 ${(store.modules ?? []).length} · 功能 ${features.length} · 用例 ${(store.cases ?? []).length} · 环境 ${(store.envs ?? []).length}`,
+		`- 环境分布：${(store.systems ?? []).filter((s) => (store.envs ?? []).some((e) => e.systemId === s.id)).length}/${(store.systems ?? []).length} 个项目已设地址`,
 		`- 类型：接口 ${api} / UI ${ui}${(store.cases ?? []).length - api - ui > 0 ? ` / 其他 ${(store.cases ?? []).length - api - ui}` : ""}`,
 		`- 覆盖：${covered}/${features.length} 个功能有用例${features.length ? `（${Math.round((covered / features.length) * 100)}%）` : ""}`,
 		`- 执行：已执行 ${s.executed} · 通过 ${s["通过"]} / 失败 ${s["失败"]} / 阻塞 ${s["阻塞"]} · 未执行 ${s.untested} · 通过率 ${s.passRate}%${s.stale ? ` · 其中 ${s.stale} 条结果已过期` : ""}`,
@@ -285,6 +296,7 @@ export function createDataSpaceTools(ctx) {
 				"If the user's message carries an anchor comment, pass it as `anchor` instead of retyping ids.",
 				"Do not record results you did not observe; if execution was skipped, say so instead of writing 通过.",
 				"Set `task` to a short name (e.g. 「经营合同 P0 回归」) when the run covers several cases, so the user can review the whole batch in the Execution Results tab.",
+				"Pass `env` (environment name or id) when you executed against a specific environment, so the result records where it ran.",
 			],
 			parameters: {
 				type: "object",
@@ -298,6 +310,11 @@ export function createDataSpaceTools(ctx) {
 								case: { type: "string", description: "Case code (PMS-004) or id." },
 								verdict: { type: "string", enum: ["通过", "失败", "阻塞"], description: "Observed outcome." },
 								note: { type: "string", description: "Short note, mainly for failures (symptom, suspected cause)." },
+								env: {
+									type: "string",
+									description:
+										"Environment name or id this case ran against (optional; defaults to the call-level env).",
+								},
 							},
 							required: ["case", "verdict"],
 						},
@@ -312,6 +329,11 @@ export function createDataSpaceTools(ctx) {
 						description:
 							"Short name of this execution run (e.g. 「经营合同 P0 回归」). Results recorded in one call share a task, shown in the Execution Results tab.",
 					},
+					env: {
+						type: "string",
+						description:
+							"Environment name or id for the whole batch (e.g. 测试环境). Omit if it ran locally or the environment is unknown.",
+					},
 				},
 			},
 			async execute(_id, params) {
@@ -323,7 +345,7 @@ export function createDataSpaceTools(ctx) {
 					if (!key) continue;
 					const verdict = normalizeVerdict(e?.verdict);
 					if (!verdict) continue;
-					byKey.set(key.toLowerCase(), { case: key, verdict, note: str(e?.note, 300) });
+					byKey.set(key.toLowerCase(), { case: key, verdict, note: str(e?.note, 300), env: str(e?.env, 64) });
 				}
 				let anchorNote = "";
 				if (str(p.anchor, 4000)) {
@@ -333,12 +355,14 @@ export function createDataSpaceTools(ctx) {
 				}
 				const list = [...byKey.values()].filter(Boolean);
 				if (!list.length) return "没有可记录的结果：请给 results（每条含 case 与 verdict）。";
-				const out = ctx.record(list, "ai", { taskName: str(p.task, 80) });
+				const out = ctx.record(list, "ai", { taskName: str(p.task, 80), env: str(p.env, 64) });
 				const lines = [`已记录 ${out.recorded.length} 条执行结果（结果 revision ${out.runsRevision}）`];
 				if (out.recorded[0]?.taskName)
 					lines.push(`任务：「${out.recorded[0].taskName}」— 可在数据空间「执行结果」页按任务查看`);
 				for (const r of out.recorded)
-					lines.push(`- ${r.code || r.caseId} · ${r.verdict}${r.note ? ` — ${r.note}` : ""}`);
+					lines.push(
+						`- ${r.code || r.caseId} · ${r.verdict}${r.env ? ` · ${r.env}` : ""}${r.note ? ` — ${r.note}` : ""}`,
+					);
 				if (out.unknown?.length) lines.push(`未匹配（编号或 id 不存在）：${out.unknown.join("、")}`);
 				lines.push(anchorNote ? `提示：${anchorNote}` : "");
 				return lines.filter(Boolean).join("\n");

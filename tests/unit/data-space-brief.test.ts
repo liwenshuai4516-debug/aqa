@@ -3,10 +3,10 @@
  *
  * 覆盖：
  *   - 档位自动切换（≤3 条卡片、更多清单）与手动档位优先；
- *   - 卡片档内容：路径 / 类型 / 优先级 / 前置条件 / 逐条「操作 → 预期」/ 关联数据；
+ *   - 卡片档内容：路径 / 类型 / 优先级 / 前置条件 / 逐条「操作 → 预期」/ 环境；
  *   - 清单档：按功能分组、标题里的 `|` 转义、条数上限与「其余请分批」提示；
  *   - 末尾指令五选一（「不加指令」不留尾巴）；
- *   - 脱敏：口令 / token 打成 ***，关掉后原样输出；数据集只带名称不带取值；
+ *   - 脱敏：口令 / token 打成 ***，关掉后原样输出；环境只带名称与地址；
  *   - 机器可读锚点带 revision 与用例 id；
  *   - 去重：markIntroduced 后同 revision 算已引入，revision 一变自动失效；
  *   - 注入：宿主 compose() 成功 → 走输入框并切到对话；不支持时退回剪贴板；都失败则如实返回。
@@ -40,15 +40,14 @@ const store = (cases: Case[]) => ({
 		{ id: "f2", moduleId: "m1", name: "合同变更", note: "", createdAt: stamp },
 	],
 	cases,
-	datasets: [
+	envs: [
 		{
-			id: "d1",
-			featureId: "f1",
-			name: "经营合同-新建参数",
-			env: "测试环境",
-			tags: [],
+			id: "e1",
+			systemId: "s1",
+			name: "测试环境",
+			baseUrl: "https://pm-test.example.com",
 			note: "",
-			records: [{ id: "r1", key: "password", value: "p@ssw0rd", remark: "" }],
+			isDefault: true,
 			createdAt: stamp,
 			updatedAt: stamp,
 		},
@@ -67,7 +66,6 @@ const makeCase = (i: number, over: Partial<Case> = {}): Case => ({
 	tags: [],
 	preconditions: "",
 	steps: [{ id: `st${i}`, action: `操作 ${i}`, expect: `预期 ${i}` }],
-	datasetIds: ["d1"],
 	note: "",
 	createdAt: stamp,
 	updatedAt: stamp,
@@ -115,7 +113,7 @@ describe("卡片档", () => {
 		expect(out.text).toContain("类型：接口 · 优先级：P1 · 状态：已评审 · 负责人：张工");
 		expect(out.text).toContain("  1. 操作 1");
 		expect(out.text).toContain("     - 预期：预期 1");
-		expect(out.text).toContain("- 关联数据：经营合同-新建参数");
+		expect(out.text).toContain("- 环境：测试环境 · https://pm-test.example.com");
 	});
 
 	it("没步骤时明确写「未填步骤」，不留空行", () => {
@@ -245,9 +243,9 @@ describe("脱敏", () => {
 		expect(buildBrief({ cases: [c], redact: false }).text).toContain("用 token: abc123 登录");
 	});
 
-	it("数据集只带名称，记录取值不进文本", () => {
+	it("环境只带名称与地址，口令不进文本", () => {
 		const out = buildBrief({ cases: [makeCase(1)] });
-		expect(out.text).toContain("经营合同-新建参数");
+		expect(out.text).toContain("环境：测试环境 · https://pm-test.example.com");
 		expect(out.text).not.toContain("p@ssw0rd");
 	});
 });

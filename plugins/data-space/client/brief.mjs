@@ -8,7 +8,7 @@
  *   - **两档按条数自动切**：≤3 条走卡片档，更多走清单档。
  *   - **末尾一行机器可读锚点** `<!-- data-space: revision=49 cases=id1,id2 -->`：
  *     后续要做的「执行结果回写」靠它定位是哪几条用例、什么版本；也能用来去重。
- *   - **脱敏默认开**：口令 / 令牌这类键值在文本里打成 `***`，数据集只带名称不带取值。
+ *   - **脱敏默认开**：口令 / 令牌这类键值在文本里打成 `***`；环境只带名称与地址，不代任何账号。
  *     （注入对话就进了模型上下文与历史记录，默认别带敏感值。）
  *   - **只入草稿不自动发送**：走宿主的 `compose()`，用户在输入框里补一句话再自己发。
  *     宿主没提供该能力时退回剪贴板，绝不静默丢内容。
@@ -16,7 +16,7 @@
  * 执行本身不在这里做：接口类交给接口自动化流程、UI 类交给 UI 测试流程，
  * 数据空间的定位是「提供上下文 + 接回结果」。
  */
-import { S, datasetNames, pathText } from "./state.mjs";
+import { S, defaultEnvOf, envOfCase, envLabel, pathText } from "./state.mjs";
 
 /** 格式档位（auto 按条数自动切）。 */
 export const FORMAT_CHOICES = [
@@ -94,6 +94,12 @@ const cell = (v, redact) => {
 	return redact ? maskSecrets(s) : s;
 };
 
+/** 一组用例共用的默认环境：同组是同一个环境才写，否则不写（免得误导）。 */
+function envNamesOf(items) {
+	const names = [...new Set((items ?? []).map((c) => envLabel(envOfCase(c))).filter(Boolean))];
+	return names.length === 1 ? names[0] : "";
+}
+
 /** 卡片档：一条用例一块，步骤保留「操作 → 预期」两列语义。 */
 function cardBlock(c, redact) {
 	const text = (v) => (redact ? maskSecrets(oneline(v)) : oneline(v));
@@ -115,8 +121,8 @@ function cardBlock(c, redact) {
 		});
 	}
 
-	const data = datasetNames(c.datasetIds);
-	if (data.length) lines.push(`- 关联数据：${data.join("、")}`);
+	const env = envOfCase(c);
+	if (env) lines.push(`- 环境：${envLabel(env)}`);
 	if (oneline(c.note)) lines.push(`- 备注：${text(c.note)}`);
 	return lines.join("\n");
 }
@@ -131,7 +137,8 @@ function listBlock(cases, redact) {
 	}
 	const out = [];
 	for (const [fid, items] of groups) {
-		out.push(`#### ${pathText(fid)}（${items.length} 条）`);
+		const env = envNamesOf(items);
+		out.push(`#### ${pathText(fid)}（${items.length} 条）${env ? ` · 环境 ${env}` : ""}`);
 		out.push("| 编号 | 用例标题 | 类型 | 优先级 | 状态 | 步骤 |");
 		out.push("| --- | --- | --- | --- | --- | --- |");
 		for (const c of items) {
@@ -155,7 +162,8 @@ function refBlock(cases, redact) {
 	}
 	const out = [];
 	for (const [fid, items] of groups) {
-		out.push(`#### ${pathText(fid)}（${items.length} 条）`);
+		const env = envNamesOf(items);
+		out.push(`#### ${pathText(fid)}（${items.length} 条）${env ? ` · 环境 ${env}` : ""}`);
 		for (const c of items) {
 			const meta = [cell(c.type, redact) || "未分类", c.priority, c.status].filter(Boolean).join(" · ");
 			out.push(`- ${cell(c.code, redact) || "（无编号）"} · ${cell(c.title, redact)}（${meta}）`);
@@ -189,6 +197,8 @@ export function buildBrief(opts = {}) {
 	const api = kept.filter((c) => oneline(c.type) === "接口").length;
 	const ui = kept.filter((c) => oneline(c.type) === "UI").length;
 	const rest = kept.length - api - ui;
+	/** 项目默认环境的名称（去重）：让 AI 知道这批判例默认打向哪里，又不把地址串成长串。 */
+	const envNames = [...new Set(kept.map((c) => defaultEnvOf(envOfCase(c)?.systemId)?.name).filter(Boolean))];
 
 	const head = [
 		"### 数据空间 · 用例引入",
@@ -197,6 +207,9 @@ export function buildBrief(opts = {}) {
 			rest > 0 ? ` / 其他 ${rest}` : ""
 		}`,
 		`- 数据版本：revision ${revision} · ${formatLabel(format)}`,
+		...(envNames.length
+			? [`- 环境：${envNames.slice(0, 4).join("、")}${envNames.length > 4 ? ` 等 ${envNames.length} 个` : ""}`]
+			: []),
 		...(format === "ref"
 			? ["- 明细：步骤与预期用 data_space_cases 按编号查询（若工具未开启，请改用清单档或卡片档）"]
 			: []),

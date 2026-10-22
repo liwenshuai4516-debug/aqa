@@ -3,7 +3,8 @@
  *
  * 覆盖：
  *   - 时间范围：今天 / 近 7 天 / 近 30 天 / 全部，滚动窗口以本地日界算；
- *   - 筛选：结论、来源、关键词（编号 / 标题 / 备注 / 任务名 / 路径）与组合；
+ *   - 筛选：结论、环境、来源、关键词（编号 / 标题 / 备注 / 任务名 / 环境 / 路径）与组合；
+ *   - 环境下拉候选：去重、排序、空值不列；
  *   - 统计：记录数、覆盖用例数、通过率、过期条数、最近时间；
  *   - 按任务分组：同 taskId 归组、无任务各自成组、按最近时间倒序、组内结论计数；
  *   - CSV：固定表头、引号 / 逗号 / 换行转义、过期列；
@@ -11,6 +12,7 @@
  */
 import { describe, expect, it } from "vitest";
 import {
+	envOptions,
 	filterRuns,
 	groupRuns,
 	inRange,
@@ -41,6 +43,7 @@ type Run = Partial<{
 	caseUpdatedAt: string;
 	taskId: string;
 	taskName: string;
+	env: string;
 }> & { id: string; at: string };
 type RunGroup = {
 	key: string;
@@ -74,6 +77,7 @@ const RUNS = [
 		caseUpdatedAt: CASES[0].updatedAt,
 		taskId: "t1",
 		taskName: "经营合同 P0 回归",
+		env: "测试环境",
 	},
 	{
 		id: "r2",
@@ -86,6 +90,7 @@ const RUNS = [
 		caseUpdatedAt: CASES[1].updatedAt,
 		taskId: "t1",
 		taskName: "经营合同 P0 回归",
+		env: "测试环境",
 	},
 	{
 		id: "r3",
@@ -96,6 +101,7 @@ const RUNS = [
 		at: daysAgo(10, 11),
 		source: "manual",
 		caseUpdatedAt: CASES[0].updatedAt,
+		env: "本地",
 	},
 ];
 
@@ -139,13 +145,21 @@ describe("执行记录筛选", () => {
 		expect(filterRuns(RUNS, { ...base, verdict: "all", source: "all" })).toHaveLength(3);
 	});
 
-	it("关键词覆盖编号 / 标题 / 备注 / 任务名 / 路径", () => {
+	it("关键词覆盖编号 / 标题 / 备注 / 任务名 / 环境 / 路径", () => {
 		expect(filterRuns(RUNS, { ...base, q: "PMS-005" }).map((r: Run) => r.id)).toEqual(["r2"]);
 		expect(filterRuns(RUNS, { ...base, q: "金额为负" }).map((r: Run) => r.id)).toEqual(["r2"]);
 		expect(filterRuns(RUNS, { ...base, q: "500" }).map((r: Run) => r.id)).toEqual(["r2"]);
 		expect(filterRuns(RUNS, { ...base, q: "回归" }).map((r: Run) => r.id)).toEqual(["r1", "r2"]);
 		expect(filterRuns(RUNS, { ...base, q: "合同校验" }).map((r: Run) => r.id)).toEqual(["r2"]);
 		expect(filterRuns(RUNS, { ...base, q: "环境未就绪" }).map((r: Run) => r.id)).toEqual(["r3"]);
+		expect(filterRuns(RUNS, { ...base, q: "测试环境" }).map((r: Run) => r.id)).toEqual(["r1", "r2"]);
+	});
+
+	it("按环境筛选，与环境候选下拉同源", () => {
+		expect(filterRuns(RUNS, { ...base, env: "测试环境" }).map((r: Run) => r.id)).toEqual(["r1", "r2"]);
+		expect(filterRuns(RUNS, { ...base, env: "本地" }).map((r: Run) => r.id)).toEqual(["r3"]);
+		expect(filterRuns(RUNS, { ...base, env: "all" })).toHaveLength(3);
+		expect(envOptions(RUNS)).toEqual(["本地", "测试环境"]);
 	});
 
 	it("时间范围与结论可以叠加", () => {
@@ -202,7 +216,7 @@ describe("CSV 导出", () => {
 	it("表头固定，按当前顺序导出", () => {
 		const csv = runsCsv(RUNS, { casesById, pathOf, isStale });
 		const lines = csv.split("\r\n");
-		expect(lines[0]).toBe('"时间","结论","编号","用例标题","所属路径","来源","任务","过期","备注"');
+		expect(lines[0]).toBe('"时间","结论","环境","编号","用例标题","所属路径","来源","任务","过期","备注"');
 		expect(lines).toHaveLength(4);
 		expect(lines[1]).toContain('"PMS-004"');
 		expect(lines[1]).toContain('"AI 回写"');

@@ -30,7 +30,7 @@ const stamp = "2026-10-20T02:00:00.000Z";
 type Row = Record<string, unknown>;
 
 const baseStore = (over: Row = {}) => ({
-	version: 2,
+	version: 3,
 	revision: 49,
 	updatedAt: stamp,
 	systems: [
@@ -62,7 +62,6 @@ const baseStore = (over: Row = {}) => ({
 				{ id: "s1", action: "POST /contracts", expect: "201 且返回合同号" },
 				{ id: "s2", action: "GET /contracts/{id}", expect: "字段与提交一致" },
 			],
-			datasetIds: ["d1"],
 			note: "",
 			createdAt: stamp,
 			updatedAt: stamp,
@@ -79,7 +78,6 @@ const baseStore = (over: Row = {}) => ({
 			tags: [],
 			preconditions: "",
 			steps: [{ id: "s1", action: "提交 amount=-1", expect: "400 参数错误" }],
-			datasetIds: [],
 			note: "",
 			createdAt: stamp,
 			updatedAt: stamp,
@@ -96,21 +94,19 @@ const baseStore = (over: Row = {}) => ({
 			tags: [],
 			preconditions: "",
 			steps: [{ id: "s1", action: "点击下发", expect: "列表状态变为已确认" }],
-			datasetIds: [],
 			note: "",
 			createdAt: "2026-10-21T00:00:00.000Z",
 			updatedAt: "2026-10-21T00:00:00.000Z",
 		},
 	],
-	datasets: [
+	envs: [
 		{
-			id: "d1",
-			featureId: "f1",
-			name: "经营合同-新建参数",
-			env: "测试环境",
-			tags: [],
+			id: "e1",
+			systemId: "s1",
+			name: "测试环境",
+			baseUrl: "https://pm-test.example.com",
 			note: "",
-			records: [{ id: "r1", key: "password", value: "p@ssw0rd", remark: "" }],
+			isDefault: true,
 			createdAt: stamp,
 			updatedAt: stamp,
 		},
@@ -245,9 +241,9 @@ describe("data_space_cases 工具", () => {
 		const card = await call({ action: "get", ids: ["pms-004", "PMS-999"], detail: "card" });
 		expect(card).toContain("PMS-004");
 		expect(card).toContain("1) POST /contracts → 预期：201 且返回合同号");
-		expect(card).toContain("关联数据（仅名称，取值按需现取）：经营合同-新建参数");
+		expect(card).toContain("环境：测试环境 · https://pm-test.example.com");
 		expect(card).toContain("未找到：PMS-999");
-		expect(card).not.toContain("p@ssw0rd"); // 数据集取值不进工具结果
+		expect(card).not.toContain("p@ssw0rd"); // 环境只有名称与地址，不带任何账号口令
 		expect(await call({ action: "get", ids: ["nope"] })).toContain("没有找到这些用例");
 	});
 
@@ -256,6 +252,7 @@ describe("data_space_cases 工具", () => {
 		expect(text).toContain("用例 3");
 		expect(text).toContain("覆盖：2/3 个功能有用例");
 		expect(text).toContain("通过率 100%");
+		expect(text).toContain("环境分布：1/2 个项目已设地址");
 	});
 
 	it("格式化函数单独可用（供别的视图复用）", () => {
@@ -268,14 +265,22 @@ describe("data_space_cases 工具", () => {
 describe("data_space_record_result 工具", () => {
 	const store = baseStore();
 	const recorded: Row[][] = [];
+	const metas: Row[] = [];
 	const ctx = {
 		store: () => store,
 		runs: () => ({ version: 1, revision: 3, runs: [] }),
-		record: (entries: Row[], source: string) => {
+		record: (entries: Row[], source: string, meta: Row = {}) => {
 			recorded.push(entries);
+			metas.push(meta);
 			return {
 				ok: true,
-				recorded: entries.map((e) => ({ code: String(e.case), verdict: e.verdict, note: e.note, caseId: "c1" })),
+				recorded: entries.map((e) => ({
+					code: String(e.case),
+					verdict: e.verdict,
+					note: e.note,
+					env: e.env,
+					caseId: "c1",
+				})),
 				unknown: [],
 				runsRevision: 4 + recorded.length,
 				source,
@@ -309,6 +314,24 @@ describe("data_space_record_result 工具", () => {
 		);
 		expect(recorded[0]).toHaveLength(1);
 		expect(text).toContain("锚点含 2 条用例");
+	});
+
+	it("环境：批次级 env 传下去，单条 env 也能覆盖自己那一条", async () => {
+		recorded.length = 0;
+		metas.length = 0;
+		const text = String(
+			await tool().execute("call-5", {
+				results: [
+					{ case: "PMS-004", verdict: "通过" },
+					{ case: "PMS-005", verdict: "失败", env: "预发环境" },
+				],
+				task: "经营合同 P0 回归",
+				env: "测试环境",
+			}),
+		);
+		expect(metas[0]).toMatchObject({ taskName: "经营合同 P0 回归", env: "测试环境" });
+		expect(recorded[0].map((e) => e.env)).toEqual(["", "预发环境"]);
+		expect(text).toContain("PMS-005 · 失败 · 预发环境");
 	});
 
 	it("没有可记录的内容时如实说明，不假装成功", async () => {

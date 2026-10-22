@@ -33,17 +33,6 @@ function stepRow(step, i) {
 	</div>`;
 }
 
-function linkedList(m) {
-	if (!S.datasets.length) return `<div class="dsp-empty-inline">还没有数据集，可先去「数据集」页建一份。</div>`;
-	const picked = new Set(m.datasetIds ?? []);
-	return `<div class="dsp-linked">${S.datasets
-		.map(
-			(d) =>
-				`<label class="dsp-linked-item"><input type="checkbox" data-linked="${esc(d.id)}" ${picked.has(d.id) ? "checked" : ""} /><span class="dsp-linked-name">${esc(d.name)}</span><span class="dsp-muted">${esc(pathText(d.featureId, " / "))}</span></label>`,
-		)
-		.join("")}</div>`;
-}
-
 export function caseModalHtml() {
 	const m = S.caseModal;
 	if (!m) return "";
@@ -81,10 +70,6 @@ export function caseModalHtml() {
 					<div class="dsp-step dsp-step-head"><span></span><span>操作步骤</span><span>预期结果</span><span></span></div>
 					${m.steps.map(stepRow).join("") || `<div class="dsp-empty-inline">还没有步骤，点「添加步骤」。</div>`}
 				</div>
-				<div class="dsp-section">
-					<div class="dsp-section-head"><span data-el="linked-count">关联数据集 · ${(m.datasetIds ?? []).length} 份</span><span class="dsp-muted">勾选后可在用例里直接看到所用数据</span></div>
-					${linkedList(m)}
-				</div>
 				<label class="dsp-field"><span>备注</span><textarea data-f="note" rows="2" placeholder="待确认事项、参考资料等">${esc(m.note)}</textarea></label>
 			</div>
 			<div class="dsp-modal-foot">
@@ -112,7 +97,6 @@ export function openCaseModal(c) {
 			tagsText: (c.tags ?? []).join(", "),
 			preconditions: c.preconditions || "",
 			steps: (c.steps ?? []).map((s) => ({ ...s })),
-			datasetIds: [...(c.datasetIds ?? [])],
 			note: c.note || "",
 			updatedAt: c.updatedAt || "",
 			systemId: system?.id || "",
@@ -133,7 +117,6 @@ export function openCaseModal(c) {
 			tagsText: "",
 			preconditions: "",
 			steps: [{ id: newId(), action: "", expect: "" }],
-			datasetIds: [],
 			note: "",
 			updatedAt: "",
 			systemId: system?.id || S.sel.systemId || S.systems[0]?.id || "",
@@ -184,7 +167,6 @@ export async function saveCase() {
 		].slice(0, 12),
 		preconditions: m.preconditions.trim(),
 		steps,
-		datasetIds: [...(m.datasetIds ?? [])],
 		note: m.note.trim(),
 		createdAt: S.cases.find((x) => x.id === m.id)?.createdAt || nowIso,
 		updatedAt: nowIso,

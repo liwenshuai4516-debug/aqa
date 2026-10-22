@@ -180,11 +180,17 @@ export const CSS = `
 .dsp-result.stale { opacity: 0.6; }
 /* 执行结果页：来源徽章、流水表、任务卡片 */
 .dsp-source { font-size: 10.5px; line-height: 17px; padding: 0 6px; border-radius: 99px; border: 1px solid var(--border, #2c2f36); color: var(--text-faint, #8a8f98); flex: none; white-space: nowrap; }
-.dsp-source.ai { color: var(--purple, #a78bfa); border-color: color-mix(in srgb, var(--purple, #a78bfa) 45%, transparent); background: color-mix(in srgb, var(--purple, #a78bfa) 12%, transparent); }
+.dsp-source.ai { color: var(--accent, #8b5cf6); border-color: color-mix(in srgb, var(--accent, #8b5cf6) 45%, transparent); background: color-mix(in srgb, var(--accent, #8b5cf6) 12%, transparent); }
 .dsp-source.manual { color: var(--text-dim, #a4a9b3); }
-.dsp-table.runs { min-width: 900px; }
+.dsp-table.runs { min-width: 960px; }
 .dsp-table.runs .dsp-result { cursor: default; }
 .dsp-runs-time { font-variant-numeric: tabular-nums; color: var(--text-dim, #a4a9b3); white-space: nowrap; }
+/* 环境列：一个短名字，过长截断，完整值在 title 里 */
+.dsp-env-cell { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 92px; }
+.dsp-task-env { font-size: 10.5px; line-height: 17px; padding: 0 6px; border-radius: 99px; border: 1px solid var(--border, #2c2f36); color: var(--text-dim, #a4a9b3); flex: none; white-space: nowrap; }
+.dsp-default { font-size: 10.5px; line-height: 16px; padding: 0 5px; border-radius: 4px; color: var(--blue, #4c9aff); border: 1px solid color-mix(in srgb, var(--blue, #4c9aff) 45%, transparent); flex: none; }
+.dsp-url-cell { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 320px; }
+.dsp-url-cell .dsp-code { font-size: 11.5px; }
 .dsp-run-case { display: flex; align-items: center; gap: 6px; min-width: 0; }
 .dsp-run-case b { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dsp-run-note { color: var(--text-faint, #8a8f98); font-size: 12px; }
@@ -216,8 +222,8 @@ export const CSS = `
 .dsp-type-cell { white-space: nowrap; }
 .dsp-case-path { font-size: 10.5px; color: var(--text-faint, #8a8f98); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px; }
 .dsp-type { display: inline-block; font-size: 10.5px; line-height: 17px; padding: 0 6px; border-radius: 5px; flex: none; white-space: nowrap; border: 1px solid var(--border, #2c2f36); color: var(--text-faint, #8a8f98); }
-.dsp-type.api { color: var(--accent, #4f8cff); border-color: color-mix(in srgb, var(--accent, #4f8cff) 45%, transparent); background: color-mix(in srgb, var(--accent, #4f8cff) 12%, transparent); }
-.dsp-type.ui { color: var(--purple, #a78bfa); border-color: color-mix(in srgb, var(--purple, #a78bfa) 45%, transparent); background: color-mix(in srgb, var(--purple, #a78bfa) 12%, transparent); }
+.dsp-type.api { color: var(--blue, #3b82f6); border-color: color-mix(in srgb, var(--blue, #3b82f6) 45%, transparent); background: color-mix(in srgb, var(--blue, #3b82f6) 12%, transparent); }
+.dsp-type.ui { color: var(--accent, #8b5cf6); border-color: color-mix(in srgb, var(--accent, #8b5cf6) 45%, transparent); background: color-mix(in srgb, var(--accent, #8b5cf6) 12%, transparent); }
 .dsp-type.other { color: var(--text-faint, #8a8f98); background: var(--bg-elev2, #22242a); }
 
 /* ---------------------------------------------------------- 弹窗内步骤 / 关联数据 / 三级选择 */
@@ -265,16 +271,16 @@ export const CSS = `
 	.dsp-overlay { padding: 12px; }
 	.dsp-step { grid-template-columns: 18px minmax(0, 1fr) 26px; }
 	.dsp-step textarea[data-sf="expect"] { grid-column: 2 / 3; }
-	/* 执行结果窄屏：先保住时间 / 结论 / 用例 / 来源，路径与任务靠搜索与展开看 */
-	.dsp-table.runs col:nth-child(4), .dsp-table.runs th:nth-child(4), .dsp-table.runs td:nth-child(4),
-	.dsp-table.runs col:nth-child(6), .dsp-table.runs th:nth-child(6), .dsp-table.runs td:nth-child(6) { display: none; }
+	/* 执行结果窄屏：先保住时间 / 结论 / 环境 / 用例，路径、来源与任务靠搜索与展开看 */
+	.dsp-table.runs col:nth-child(5), .dsp-table.runs th:nth-child(5), .dsp-table.runs td:nth-child(5),
+	.dsp-table.runs col:nth-child(7), .dsp-table.runs th:nth-child(7), .dsp-table.runs td:nth-child(7) { display: none; }
 	.dsp-task-row { grid-template-columns: 60px minmax(0, 1fr) 76px; }
 	.dsp-task-note { display: none; }
-	/* 窄屏先让位给名称与操作，标签/更新时间靠搜索与编辑弹窗查看 */
-	.dsp-table.ds col:nth-child(5), .dsp-table.ds col:nth-child(6),
-	.dsp-table.ds th:nth-child(5), .dsp-table.ds th:nth-child(6),
-	.dsp-table.ds td:nth-child(5), .dsp-table.ds td:nth-child(6) { display: none; }}
+	/* 窄屏先让位给名称与地址，备注/更新时间靠编辑弹窗查看 */
+	.dsp-table.ds col:nth-child(5), .dsp-table.ds th:nth-child(5), .dsp-table.ds td:nth-child(5) { display: none; }}
 @media (max-width: 620px) {
-	.dsp-table.ds col:nth-child(3), .dsp-table.ds th:nth-child(3), .dsp-table.ds td:nth-child(3) { display: none; }
+	/* 更窄时地址最要紧，让出所属项目与备注 */
+	.dsp-table.ds col:nth-child(2), .dsp-table.ds th:nth-child(2), .dsp-table.ds td:nth-child(2),
+	.dsp-table.ds col:nth-child(4), .dsp-table.ds th:nth-child(4), .dsp-table.ds td:nth-child(4) { display: none; }
 }
 `;

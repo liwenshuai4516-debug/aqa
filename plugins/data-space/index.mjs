@@ -1,5 +1,5 @@
 /**
- * data-space 服务端入口 —— 测试资产（系统 / 模块 / 功能 / 用例 / 数据集）的唯一事实源。
+ * data-space 服务端入口 —— 测试资产（项目 / 模块 / 功能 / 用例 / 环境）的唯一事实源。
  *
  * 分工：
  *   - 数据落 `<dataDir>/data-space/store.json`（原子写：临时文件 + rename）。**不放插件目录**：
@@ -8,15 +8,18 @@
  *   - 层级用扁平父引用（systemId / moduleId / featureId）：搜索、移动、导入导出都简单。
  *   - 浏览器只走 HTTP：`GET /state` 取快照、`POST /save` 整份保存（带 revision 乐观并发）、
  *     `POST /reset` 回到示例数据。冲突时回 409 + 服务端最新快照，由页面决定重载。
- *   - 0.1.0 的旧库（groups + datasets）在读取时自动迁移：分组 → 系统（code 留空），
- *     数据集归属清空为「未归类」，原数据一条不丢；旧文件先备份为 store.json.v1-<时间戳>.bak。
+ *   - 0.8.0 移除数据集，改为「项目环境」：旧库里的 datasets / case.datasetIds 在读取时
+ *     先备份原文件（store.json.v2-<时间戳>.bak）再丢弃，清理结果记在 store.purged 里给设置页展示；
+ *     备份只做一次，重复启动不会生成新备份。
+ *   - 0.1.0 的旧库（groups + datasets）在读取时自动迁移：分组 → 项目（code 留空），
+ *     旧文件先备份为 store.json.v1-<时间戳>.bak。
  *   - 执行结果（v3 回写）单独落 `<dataDir>/data-space/runs.json`：它是流水不是内容，
  *     和 store 混在一起会让「页面整份保存」与「AI 回写」互相抢 revision。
  *   - AI 工具只做两件事：按项目/模块/功能/编号查用例（省上下文）与回写执行结果；
- *     工具结果里只带数据集名称，不带取值。写盘后 broadcast 让打开着的页面自动刷新。
+ *     工具结果里带项目默认环境（名称 + 地址），不涉及任何口令。写盘后 broadcast 让页面自动刷新。
  */
 import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import { buildDemoRuns } from "./demo-runs.mjs";
 import { CASE_TYPES, MAX, migrateLegacy, normalizeStore, now, str } from "./model.mjs";
 import { MAX_RUNS, VERDICTS, normalizeRuns } from "./runs.mjs";
@@ -39,8 +42,20 @@ export default {
 		const loaded = load();
 		let store = loaded.store;
 		let runs = loadRuns();
-		// 迁移结果立刻落盘，避免下次启动重复迁移（旧格式备份已在 load 里留好）。
-		if (loaded.migrated) persist();
+		// 迁移 / 清理结果立即落盘：下次启动不必重复判断，备份也只留一份。
+		if (loaded.changed) persist();
+
+		/** 结构变更前留一份原文件；返回备份文件名（失败返回空串，不阻断启动）。 */
+		function backup(tag) {
+			const name = `${basename(file)}.${tag}-${Date.now()}.bak`;
+			try {
+				copyFileSync(file, join(dir, name));
+				return name;
+			} catch (err) {
+				host.log("warn", "备份旧数据文件失败，继续迁移", String(err));
+				return "";
+			}
+		}
 
 		function load() {
 			let parsed = null;
@@ -57,30 +72,54 @@ export default {
 						host.log("error", "数据空间库解析失败且隔离失败，本次不写盘以免覆盖");
 					}
 				}
-				return { store: seedStore(), migrated: false };
+				return { store: seedStore(), changed: false };
 			}
 
-			const isV2 = parsed && typeof parsed === "object" && Array.isArray(parsed.systems);
-			let migrated = null;
-			if (!isV2) {
-				migrated = migrateLegacy(parsed);
+			const o = parsed && typeof parsed === "object" ? parsed : {};
+			const isCurrent = Array.isArray(o.systems);
+			const oldDatasets = Array.isArray(o.datasets) ? o.datasets.length : 0;
+			const linkedCases = Array.isArray(o.cases)
+				? o.cases.filter((c) => Array.isArray(c?.datasetIds) && c.datasetIds.length).length
+				: 0;
+
+			let source = parsed;
+			let backupName = "";
+			if (!isCurrent) {
 				// 迁移前留一份旧格式备份，用户随时能翻回去。
-				try {
-					copyFileSync(file, `${file}.v1-${Date.now()}.bak`);
-				} catch (err) {
-					host.log("warn", "迁移备份旧数据文件失败，继续迁移", String(err));
-				}
+				source = migrateLegacy(parsed);
+				backupName = backup("v1");
 			}
-			const normalized = normalizeStore(migrated ?? parsed, null);
-			if (migrated) host.log("info", "数据空间：旧版分组数据已迁移为「系统」层级");
+
+			// 数据集已从模型中移除：只数个数、留备份，不再往新结构里搬。
+			const purged =
+				oldDatasets || linkedCases
+					? {
+							datasets: oldDatasets,
+							cases: linkedCases,
+							backup: backupName || backup(isCurrent ? "v2" : "v1"),
+							at: now(),
+						}
+					: o.purged && typeof o.purged === "object"
+						? o.purged
+						: null;
+
+			const normalized = normalizeStore(source, null);
+			if (!isCurrent) host.log("info", "数据空间：旧版分组数据已迁移为「项目」层级");
+			if (oldDatasets || linkedCases) {
+				host.log(
+					"info",
+					`数据空间：已按 0.8.0 结构移除 ${oldDatasets} 份数据集（${linkedCases} 条用例的引用一并清掉），原文件备份为 ${purged.backup || "（备份失败）"}`,
+				);
+			}
 			return {
 				store: {
-					version: 2,
-					revision: Number.isFinite(parsed?.revision) ? parsed.revision : 1,
-					updatedAt: str(parsed?.updatedAt, 40) || now(),
+					version: 3,
+					revision: Number.isFinite(o.revision) ? o.revision : 1,
+					updatedAt: str(o.updatedAt, 40) || now(),
 					...normalized,
+					...(purged ? { purged } : {}),
 				},
-				migrated: Boolean(migrated),
+				changed: Boolean(!isCurrent || oldDatasets || linkedCases),
 			};
 		}
 
@@ -136,10 +175,23 @@ export default {
 		}
 
 		/**
-		 * 记一批执行结果。entries: [{case(caseId/编号), verdict, note}]。
+		 * 结果上的环境：页面 / 工具传环境 id 或名称都认（大小写不敏感）。
+		 * 认不出就按用户原样写的名字留着，不编造也不丢信息。
+		 */
+		function resolveEnv(value) {
+			const key = str(value, 64);
+			if (!key) return { env: "", envId: "" };
+			const lower = key.toLowerCase();
+			const hit = store.envs.find((e) => e.id === key) ?? store.envs.find((e) => e.name.toLowerCase() === lower);
+			return hit ? { env: hit.name, envId: hit.id } : { env: str(key, 60), envId: "" };
+		}
+
+		/**
+		 * 记一批执行结果。entries: [{case(caseId/编号), verdict, note, env}]。
 		 * 编号 / id 都能定位；找不到的进 unknown，不静默丢。
 		 *
 		 * meta.taskName / meta.taskId：一次回写多条时自动归为一个「测试任务」（结果页按任务看整批结论）；
+		 * meta.env：这批结果跑在哪个环境（每条 entry 里写了 env 则以单条为准）。
 		 * 单条回写不造任务，避免把流水拆成一堆只有一条的任务。
 		 */
 		function recordResults(entries, source, meta = {}) {
@@ -157,7 +209,7 @@ export default {
 					unknown.push(key);
 					continue;
 				}
-				resolved.push({ c, verdict, note: str(entry?.note, 300) });
+				resolved.push({ c, verdict, note: str(entry?.note, 300), env: str(entry?.env, 64) });
 			}
 
 			const wantTask =
@@ -167,7 +219,8 @@ export default {
 			const taskName = taskId ? str(meta.taskName, 80) || `批量执行 ${shortStamp(at)}` : "";
 
 			const recorded = [];
-			for (const { c, verdict, note } of resolved) {
+			for (const { c, verdict, note, env } of resolved) {
+				const envHit = resolveEnv(env || meta.env);
 				const run = {
 					id: `run-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
 					caseId: c.id,
@@ -179,6 +232,8 @@ export default {
 					caseUpdatedAt: c.updatedAt,
 					taskId,
 					taskName,
+					env: envHit.env,
+					envId: envHit.envId,
 				};
 				runs.runs.push(run);
 				recorded.push(run);
@@ -205,7 +260,9 @@ export default {
 				modules: store.modules,
 				features: store.features,
 				cases: store.cases,
-				datasets: store.datasets,
+				envs: store.envs,
+				purged: store.purged ?? null,
+				storeVersion: store.version,
 				caseTypes: CASE_TYPES,
 				dir,
 				file,
@@ -247,10 +304,12 @@ export default {
 			}
 			const normalized = normalizeStore(body, store);
 			store = {
-				version: 2,
+				version: 3,
 				revision: store.revision + 1,
 				updatedAt: now(),
 				...normalized,
+				// 清理记录属于「这台机器上发生过什么」，不当作用户内容随保存一起改掉。
+				...(store.purged ? { purged: store.purged } : {}),
 			};
 			persist();
 			res.json(snapshot());
@@ -261,8 +320,8 @@ export default {
 			const body = req.body && typeof req.body === "object" ? req.body : {};
 			const entries = Array.isArray(body.results)
 				? body.results
-				: [{ case: body.caseId || body.code, verdict: body.verdict, note: body.note }];
-			const out = recordResults(entries, "manual", { taskName: str(body.task, 80) });
+				: [{ case: body.caseId || body.code, verdict: body.verdict, note: body.note, env: body.env }];
+			const out = recordResults(entries, "manual", { taskName: str(body.task, 80), env: body.env });
 			if (!out.recorded.length) {
 				res.status(400).json({ ok: false, error: "没有可记录的结果：确认用例存在且结果合法", unknown: out.unknown });
 				return;
@@ -328,6 +387,7 @@ export default {
 				return;
 			}
 			store = { ...seedStore(), revision: store.revision + 1 };
+			// 恢复示例数据后旧库的「已清理数据集」记录没意义了，重新开始。
 			persist();
 			// 示例数据的用例 id 全新，旧执行记录再也对不上；留着只会在结果页堆一批孤儿，直接清空。
 			if (runs.runs.length) {

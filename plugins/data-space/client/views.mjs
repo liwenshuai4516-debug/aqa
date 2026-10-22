@@ -1,5 +1,5 @@
 /**
- * 数据空间的页面渲染：左侧层级树、概览、用例库、数据集、设置。
+ * 数据空间的页面渲染：左侧层级树、概览、用例库、执行结果、环境、设置。
  * 只输出 HTML 字符串，不做事件绑定（见 entry.mjs）。
  */
 import {
@@ -9,10 +9,11 @@ import {
 	casesOfModule,
 	casesOfSystem,
 	caseMatches,
-	datasetNames,
+	defaultEnvOf,
+	envLabel,
+	envsOf,
 	esc,
 	featureOf,
-	featuresOf,
 	filteredRuns,
 	fmtTime,
 	isRunStale,
@@ -28,7 +29,7 @@ import {
 	systemOf,
 	typeCounts,
 } from "./state.mjs";
-import { RUN_RANGES, RUN_SOURCES, sourceLabel, stampText, verdictClass } from "./results.mjs";
+import { RUN_RANGES, RUN_SOURCES, envOptions, sourceLabel, stampText, verdictClass } from "./results.mjs";
 
 import { isIntroduced } from "./brief.mjs";
 
@@ -138,13 +139,13 @@ export function overviewHtml() {
 		.slice(0, 5);
 
 	return `
-	${S.migratedFrom ? `<div class="dsp-tip">已从 0.1.0 版数据迁移：原来的「分组」变成了「项目」，数据集归属已清空为「未归类」。原文件已备份，见「设置」。</div>` : ""}
+	${S.migratedFrom ? `<div class="dsp-tip">已从 0.1.0 版数据迁移：原来的「分组」变成了「项目」。原文件已备份，见「设置」。</div>` : ""}
 	<div class="dsp-stats">
 		${statCard("项目", S.systems.length, "业务系统 / 产品")}
 		${statCard("模块", S.modules.length, "按业务模块划分")}
 		${statCard("功能", featureTotal, "用例的挂载点")}
 		${statCard("用例", S.cases.length, orphan ? `含 ${orphan} 条未归类` : "接口 / UI 两类")}
-		${statCard("数据集", S.datasets.length, "可被用例引用")}
+		${statCard("环境", S.envs.length, envHint())}
 		${statCard("通过率", `${rs.passRate}%`, `已执行 ${rs.executed} / ${rs.total} 条用例`)}
 	</div>
 	<div class="dsp-cols">
@@ -225,14 +226,23 @@ export function overviewHtml() {
 }
 
 export function footHtml() {
-	return `<div class="dsp-foot">项目 ${S.systems.length} · 模块 ${S.modules.length} · 功能 ${S.features.length} · 用例 ${S.cases.length} · 数据集 ${S.datasets.length} · 上次保存 ${fmtTime(S.updatedAt)}</div>`;
+	return `<div class="dsp-foot">项目 ${S.systems.length} · 模块 ${S.modules.length} · 功能 ${S.features.length} · 用例 ${S.cases.length} · 环境 ${S.envs.length} · 上次保存 ${fmtTime(S.updatedAt)}</div>`;
+}
+
+/** 概览里的环境卡片提示：几个项目配了地址、有没有项目还没配。 */
+function envHint() {
+	if (!S.systems.length) return "给项目配上一套地址";
+	const withEnv = S.systems.filter((s) => defaultEnvOf(s.id)).length;
+	return withEnv === S.systems.length
+		? `${withEnv} 个项目都设了默认环境`
+		: `${withEnv}/${S.systems.length} 个项目已设默认环境`;
 }
 
 export const tabsList = () => [
 	["overview", "概览", null],
 	["cases", "用例库", S.cases.length],
 	["runs", "执行结果", S.runs.length],
-	["datasets", "数据集", S.datasets.length],
+	["envs", "环境", S.envs.length],
 	["settings", "设置", null],
 ];
 
@@ -274,7 +284,6 @@ const typeBadge = (t) => {
 
 function caseRow(c, showPath) {
 	const steps = c.steps?.length ?? 0;
-	const linked = datasetNames(c.datasetIds);
 	const briefed = isIntroduced(c);
 	return `<tr>
 		<td class="dsp-code-cell">${esc(c.code || "—")}</td>
@@ -296,7 +305,6 @@ function caseRow(c, showPath) {
 		<td>${statusBadge(c.status)}</td>
 		<td class="dsp-result-cell">${resultBadge(c)}</td>
 		<td class="dsp-num-cell">${steps}</td>
-		<td class="dsp-num-cell" title="${esc(linked.join("、"))}">${linked.length}</td>
 		<td class="dsp-num-cell">${fmtTime(c.updatedAt)}</td>
 		<td><div class="dsp-row-actions">
 			<button class="dsp-btn icon" data-act="brief-case" data-id="${esc(c.id)}" title="引入到 AI 对话">${ICON.brief}</button>
@@ -309,8 +317,8 @@ function caseRow(c, showPath) {
 
 function caseTable(list, showPath) {
 	return `<div class="dsp-table-wrap"><table class="dsp-table${showPath ? " wide" : ""}">
-		<colgroup><col style="width:86px"/><col style="width:auto"/><col style="width:82px"/><col style="width:64px"/><col style="width:74px"/><col style="width:104px"/><col style="width:52px"/><col style="width:52px"/><col style="width:104px"/><col style="width:136px"/></colgroup>
-		<thead><tr><th>编号</th><th>用例标题</th><th>类型</th><th>优先级</th><th>状态</th><th>最近结果</th><th>步骤</th><th>数据</th><th>更新</th><th></th></tr></thead>
+		<colgroup><col style="width:86px"/><col style="width:auto"/><col style="width:82px"/><col style="width:64px"/><col style="width:74px"/><col style="width:104px"/><col style="width:52px"/><col style="width:104px"/><col style="width:136px"/></colgroup>
+		<thead><tr><th>编号</th><th>用例标题</th><th>类型</th><th>优先级</th><th>状态</th><th>最近结果</th><th>步骤</th><th>更新</th><th></th></tr></thead>
 		<tbody>${list.map((c) => caseRow(c, showPath)).join("")}</tbody></table></div>`;
 }
 
@@ -449,7 +457,10 @@ function projectView(systemId) {
 		? `<div class="dsp-empty"><b>没有匹配的用例</b>换个关键词或筛选条件试试。</div>`
 		: emptyCases(activeFeature ? "这个功能还没有用例" : "这个范围还没有用例", activeFeature?.id);
 
-	const sub = [head.note ? esc(head.note) : "", meta].filter(Boolean).join(" · ");
+	const env = defaultEnvOf(s.id);
+	const sub = [head.note ? esc(head.note) : "", meta, env ? `默认环境 ${esc(envLabel(env))}` : ""]
+		.filter(Boolean)
+		.join(" · ");
 
 	return `
 	${crumbParts.length > 1 ? crumb(crumbParts) : ""}
@@ -459,6 +470,7 @@ function projectView(systemId) {
 			<div class="dsp-page-sub">${sub}</div>
 		</div>
 		<div class="dsp-inline">
+			<button class="dsp-btn" data-act="goto-envs" data-id="${esc(s.id)}" title="查看 / 维护这个项目的环境地址">环境 · ${envsOf(s.id).length}</button>
 			<button class="dsp-btn" data-act="brief-scope" title="把当前范围的 ${list.length} 条用例引入 AI 对话"${
 				list.length ? "" : " disabled"
 			}>${ICON.brief}引入对话${list.length ? ` · ${list.length}` : ""}</button>
@@ -570,6 +582,7 @@ function runRow(r) {
 	return `<tr>
 		<td class="dsp-runs-time" title="${esc(stampText(r.at))}">${esc(fmtTime(r.at))}</td>
 		<td>${verdictBadge(r.verdict, stale)}</td>
+		<td class="dsp-env-cell" title="${esc(r.env || "")}">${r.env ? esc(r.env) : `<span class="dsp-muted">—</span>`}</td>
 		<td class="dsp-cell-main">${runCaseLabel(r, c, stale)}</td>
 		<td class="dsp-path-cell" title="${esc(path)}">${esc(path)}</td>
 		<td>${sourceBadge(r.source)}</td>
@@ -581,8 +594,8 @@ function runRow(r) {
 
 function runsTable(rows) {
 	return `<div class="dsp-table-wrap"><table class="dsp-table runs">
-		<colgroup><col style="width:108px"/><col style="width:66px"/><col style="width:auto"/><col style="width:164px"/><col style="width:82px"/><col style="width:128px"/><col style="width:196px"/><col style="width:132px"/></colgroup>
-		<thead><tr><th>时间</th><th>结论</th><th>用例</th><th>所属路径</th><th>来源</th><th>任务</th><th>备注</th><th></th></tr></thead>
+		<colgroup><col style="width:108px"/><col style="width:66px"/><col style="width:92px"/><col style="width:auto"/><col style="width:164px"/><col style="width:82px"/><col style="width:128px"/><col style="width:180px"/><col style="width:132px"/></colgroup>
+		<thead><tr><th>时间</th><th>结论</th><th>环境</th><th>用例</th><th>所属路径</th><th>来源</th><th>任务</th><th>备注</th><th></th></tr></thead>
 		<tbody>${rows.map(runRow).join("")}</tbody></table></div>`;
 }
 
@@ -606,11 +619,15 @@ function taskCard(g) {
 	const open = S.runsOpen === g.key;
 	const shown = long && !open ? g.rows.slice(0, TASK_PREVIEW) : g.rows;
 	const pctPass = g.total ? Math.round((g.counts["通过"] / g.total) * 100) : 0;
+	/** 一整批跑的是同一个环境就写在任务头；混着跑就不写，免得误读。 */
+	const envs = [...new Set(g.rows.map((r) => String(r.env || "").trim()).filter(Boolean))];
+	const env = envs.length === 1 ? envs[0] : "";
 	return `<section class="dsp-task">
 		<div class="dsp-task-head">
 			<span class="dsp-task-name" title="${esc(g.name)}">${esc(g.name)}</span>
 			${sourceBadge(g.source)}
 			<span class="dsp-task-when" title="${esc(stampText(g.at))}">${esc(fmtTime(g.at))}</span>
+			${env ? `<span class="dsp-task-env" title="这轮跑的环境">${esc(env)}</span>` : ""}
 			<span class="dsp-task-sum">通过 ${g.counts["通过"]} · 失败 ${g.counts["失败"]} · 阻塞 ${g.counts["阻塞"]} · 共 ${g.total} 条${
 				g.stale ? ` · <span class="dsp-warn">${g.stale} 条过期</span>` : ""
 			}</span>
@@ -651,9 +668,16 @@ function runsToolbar(rows) {
 	const ranges = RUN_RANGES.map(
 		([v, l]) => `<option value="${esc(v)}" ${S.runsRange === v ? "selected" : ""}>${esc(l)}</option>`,
 	).join("");
+	const envs = envOptions(S.runs);
+	const envSelect = envs.length
+		? `<select data-el="runs-env" title="按环境筛选"><option value="all" ${S.runsEnv === "all" ? "selected" : ""}>全部环境</option>${envs
+				.map((v) => `<option value="${esc(v)}" ${S.runsEnv === v ? "selected" : ""}>${esc(v)}</option>`)
+				.join("")}</select>`
+		: `<select data-el="runs-env" disabled title="还没有带环境的记录"><option value="all">全部环境</option></select>`;
 	return `<div class="dsp-toolbar">
-		<input class="dsp-search" data-el="runs-search" value="${esc(S.runsQ)}" placeholder="搜索编号 / 标题 / 备注 / 任务 / 路径" />
+		<input class="dsp-search" data-el="runs-search" value="${esc(S.runsQ)}" placeholder="搜索编号 / 标题 / 备注 / 任务 / 环境 / 路径" />
 		<div class="dsp-chips" style="margin:0">${verdictChips}</div>
+		${envSelect}
 		<select data-el="runs-source">${sources}</select>
 		<select data-el="runs-range">${ranges}</select>
 		<div class="dsp-chips dsp-chips-sep" style="margin:0">${viewChips}</div>
@@ -703,80 +727,69 @@ export function runsHtml() {
 		? S.runsView === "task"
 			? `<div class="dsp-task-list">${runsGroups(rows).map(taskCard).join("")}</div>`
 			: runsTable(rows)
-		: `<div class="dsp-empty"><b>没有匹配的执行记录</b>换个关键词，或把结论 / 来源 / 时间改回「全部」。</div>`;
+		: `<div class="dsp-empty"><b>没有匹配的执行记录</b>换个关键词，或把结论 / 环境 / 来源 / 时间改回「全部」。</div>`;
 
 	return `${head}${stats}${runsToolbar(rows)}${list}${footHtml()}`;
 }
 
-/* ------------------------------------------------------------------ 数据集 */
+/* ------------------------------------------------------------------ 环境 */
 
 function scopeSelect(name, value, options) {
 	return `<select data-el="${name}">${options.map(([v, l]) => `<option value="${esc(v)}" ${value === v ? "selected" : ""}>${esc(l)}</option>`).join("")}</select>`;
 }
 
-function datasetRow(d) {
-	const { feature, module, system } = pathOfFeature(d.featureId);
-	const where = feature ? `${system?.name || "—"} / ${module?.name || "—"} / ${feature.name}` : "未归类";
+function envRow(e) {
+	const s = systemOf(e.systemId);
 	return `<tr>
-		<td><div class="dsp-name-cell" data-act="edit-dataset" data-id="${esc(d.id)}"><span class="dsp-dot ${esc(system?.color || "gray")}"></span><b title="${esc(d.name)}">${esc(d.name)}</b></div></td>
-		<td class="dsp-muted" title="${esc(where)}">${esc(where)}</td>
-		<td>${esc(d.env || "—")}</td>
-		<td class="dsp-num-cell">${d.records?.length || 0}</td>
-		<td><div class="dsp-tags">${
-			(d.tags ?? [])
-				.slice(0, 3)
-				.map((t) => `<span class="dsp-tag">${esc(t)}</span>`)
-				.join("") || `<span class="dsp-muted">—</span>`
+		<td><div class="dsp-name-cell" data-act="edit-env" data-id="${esc(e.id)}"><span class="dsp-dot ${esc(s?.color || "gray")}"></span><b title="${esc(e.name)}">${esc(e.name)}</b>${
+			e.isDefault ? `<span class="dsp-default" title="该项目的默认环境">默认</span>` : ""
 		}</div></td>
-		<td class="dsp-num-cell">${fmtTime(d.updatedAt)}</td>
+		<td class="dsp-muted" title="${esc(s?.name || "项目已删除")}">${esc(s?.name || "—")}</td>
+		<td class="dsp-url-cell" title="${esc(e.baseUrl || "")}">${
+			e.baseUrl ? `<span class="dsp-code">${esc(e.baseUrl)}</span>` : `<span class="dsp-muted">—</span>`
+		}</td>
+		<td class="dsp-muted" title="${esc(e.note || "")}">${esc(e.note || "—")}</td>
+		<td class="dsp-num-cell">${fmtTime(e.updatedAt)}</td>
 		<td><div class="dsp-row-actions">
-			<button class="dsp-btn icon" data-act="edit-dataset" data-id="${esc(d.id)}" title="编辑">${ICON.edit}</button>
-			<button class="dsp-btn icon" data-act="copy-dataset" data-id="${esc(d.id)}" title="复制">${ICON.copy}</button>
-			<button class="dsp-btn icon danger" data-act="del-dataset" data-id="${esc(d.id)}" title="删除">${ICON.trash}</button>
+			<button class="dsp-btn icon" data-act="edit-env" data-id="${esc(e.id)}" title="编辑">${ICON.edit}</button>
+			<button class="dsp-btn icon" data-act="copy-env" data-id="${esc(e.id)}" title="复制">${ICON.copy}</button>
+			<button class="dsp-btn icon danger" data-act="del-env" data-id="${esc(e.id)}" title="删除">${ICON.trash}</button>
 		</div></td>
 	</tr>`;
 }
 
-function scopedDatasets() {
-	const { systemId, moduleId, featureId } = S.datasetScope;
-	const q = S.datasetQ.trim().toLowerCase();
-	return S.datasets.filter((d) => {
-		if (featureId && d.featureId !== featureId) return false;
-		if (!featureId && moduleId) {
-			const fids = new Set(featuresOf(moduleId).map((f) => f.id));
-			if (!fids.has(d.featureId)) return false;
-		}
-		if (!featureId && !moduleId && systemId) {
-			const mids = new Set(modulesOf(systemId).map((m) => m.id));
-			const fids = new Set(S.features.filter((f) => mids.has(f.moduleId)).map((f) => f.id));
-			if (!fids.has(d.featureId)) return false;
-		}
+function scopedEnvs() {
+	const q = S.envQ.trim().toLowerCase();
+	return S.envs.filter((e) => {
+		if (S.envScope && e.systemId !== S.envScope) return false;
 		if (!q) return true;
-		return [d.name, d.env, d.note, ...(d.tags ?? []), pathText(d.featureId)].join(" ").toLowerCase().includes(q);
+		return [e.name, e.baseUrl, e.note, systemOf(e.systemId)?.name].join(" ").toLowerCase().includes(q);
 	});
 }
 
-export function datasetsHtml() {
-	const { systemId, moduleId, featureId } = S.datasetScope;
-	const list = scopedDatasets();
-	const modOptions = [["", "全部模块"], ...(systemId ? modulesOf(systemId).map((m) => [m.id, m.name]) : [])];
-	const featOptions = [["", "全部功能"], ...(moduleId ? featuresOf(moduleId).map((f) => [f.id, f.name]) : [])];
+export function envsHtml() {
+	const list = scopedEnvs();
+	const missing = S.systems.filter((s) => !defaultEnvOf(s.id));
 	return `
 	<div class="dsp-page-head">
-		<div><h3>数据集<span class="dsp-num">${S.datasets.length} 份</span></h3><div class="dsp-page-sub">键值记录按功能归类；用例编辑时可直接勾选引用，避免同一份账号、参数反复抄写。</div></div>
-		<button class="dsp-btn primary" data-act="new-dataset">＋ 新建数据集</button>
+		<div><h3>环境<span class="dsp-num">${S.envs.length} 个</span></h3><div class="dsp-page-sub">每个项目一份地址簿：测试、预发、生产各自是什么地址。登记执行结果时选环境，回看时能分清这轮跑的是哪。</div></div>
+		<button class="dsp-btn primary" data-act="new-env">＋ 新建环境</button>
 	</div>
 	<div class="dsp-toolbar">
-		<input class="dsp-search" data-el="dataset-search" value="${esc(S.datasetQ)}" placeholder="搜索名称 / 标签 / 备注" />
-		${scopeSelect("ds-system", systemId, [["", "全部项目"], ...S.systems.map((s) => [s.id, s.name])])}
-		${scopeSelect("ds-module", moduleId, modOptions)}
-		${scopeSelect("ds-feature", featureId, featOptions)}
-		<span class="dsp-muted">${list.length} / ${S.datasets.length}</span>
+		<input class="dsp-search" data-el="env-search" value="${esc(S.envQ)}" placeholder="搜索名称 / 地址 / 备注 / 项目" />
+		${scopeSelect("env-system", S.envScope, [["", "全部项目"], ...S.systems.map((s) => [s.id, s.name])])}
+		<span class="dsp-muted">${list.length} / ${S.envs.length}${missing.length ? ` · ${missing.length} 个项目还没配环境` : ""}</span>
 	</div>
 	${
 		list.length
-			? `<div class="dsp-table-wrap"><table class="dsp-table ds"><colgroup><col style="width:26%"/><col style="width:26%"/><col style="width:92px"/><col style="width:56px"/><col style="width:13%"/><col style="width:100px"/><col style="width:112px"/></colgroup><thead><tr><th>名称</th><th>所属功能</th><th>环境</th><th>记录</th><th>标签</th><th>更新时间</th><th></th></tr></thead><tbody>${list.map(datasetRow).join("")}</tbody></table></div>`
-			: `<div class="dsp-empty"><b>${S.datasets.length ? "没有匹配的数据集" : "还没有数据集"}</b>${S.datasets.length ? "换个筛选条件或清空搜索词试试。" : "把一份账号、参数或边界值建成数据集，挂在对应功能下。"}<button class="dsp-btn primary" data-act="new-dataset">＋ 新建数据集</button></div>`
+			? `<div class="dsp-table-wrap"><table class="dsp-table ds"><colgroup><col style="width:24%"/><col style="width:18%"/><col style="width:auto"/><col style="width:22%"/><col style="width:100px"/><col style="width:112px"/></colgroup><thead><tr><th>名称</th><th>所属项目</th><th>地址</th><th>备注</th><th>更新时间</th><th></th></tr></thead><tbody>${list
+					.map(envRow)
+					.join("")}</tbody></table></div>`
+			: `<div class="dsp-empty"><b>${S.envs.length ? "没有匹配的环境" : "还没有环境"}</b>${
+					S.envs.length
+						? "换个项目筛选或清空搜索词试试。"
+						: "给项目建一套环境（例如「测试环境」+ 地址），登记结果时就能选到它。"
+				}<button class="dsp-btn primary" data-act="new-env">＋ 新建环境</button></div>`
 	}
 	${footHtml()}`;
 }
@@ -787,12 +800,17 @@ export function settingsHtml() {
 	const covered = S.features.filter((f) => casesOfFeature(f.id).length).length;
 	return `
 	<div class="dsp-stack">
-		${S.migratedFrom ? `<section class="dsp-card"><div class="dsp-card-head">数据已完成升级</div><div class="dsp-muted">检测到 0.1.0 版数据（分组 + 数据集），已自动升级为「项目 / 模块 / 功能 / 用例」结构：原分组变成项目，code 留空（可在项目编辑里补，例如 PMS），数据集归属清空为未归类。升级前的旧文件已备份在同一目录，文件名形如 <span class="dsp-code">store.json.v1-&lt;时间戳&gt;.bak</span>。</div></section>` : ""}
+		${S.migratedFrom ? `<section class="dsp-card"><div class="dsp-card-head">数据已完成升级</div><div class="dsp-muted">检测到 0.1.0 版数据（分组 + 数据集），已自动升级为「项目 / 模块 / 功能 / 用例 / 环境」结构：原分组变成项目，code 留空（可在项目编辑里补，例如 PMS）。升级前的旧文件已备份在同一目录，文件名形如 <span class="dsp-code">store.json.v1-&lt;时间戳&gt;.bak</span>。</div></section>` : ""}
+		${
+			S.purged
+				? `<section class="dsp-card"><div class="dsp-card-head">已移除旧版本的数据集</div><div class="dsp-muted">旧版的数据集（含键值记录）已不再使用：清理了 <b>${S.purged.datasets ?? 0}</b> 份数据集、<b>${S.purged.cases ?? 0}</b> 条用例上的关联引用，改用「环境」式管理地址与配置。清理前已备份：<span class="dsp-code">${esc(S.purged.backup || "同目录 .bak 文件")}</span>（${esc(fmtTime(S.purged.at))}）。</div></section>`
+				: ""
+		}
 		<section class="dsp-card">
 			<div class="dsp-card-head">数据文件位置</div>
 			<div class="dsp-muted">数据存在本机数据目录，全局一份：不按项目、不按会话隔离，换会话 / 换项目读到的是同一批数据；插件升级或卸载都不会删它。</div>
 			<div style="margin-top:8px"><span class="dsp-code">${esc(S.file || "—")}</span></div>
-			<div class="dsp-muted" style="margin-top:8px">想用 AI 批量改数据，直接改这个文件即可（JSON：systems / modules / features / cases / datasets 五个数组），刷新页面就会读到。</div>
+			<div class="dsp-muted" style="margin-top:8px">想用 AI 批量改数据，直接改这个文件即可（JSON：systems / modules / features / cases / envs 五个数组），刷新页面就会读到。</div>
 		</section>
 		<section class="dsp-card">
 			<div class="dsp-card-head">导入 / 导出</div>
@@ -800,7 +818,7 @@ export function settingsHtml() {
 				<button class="dsp-btn" data-act="export">导出 JSON</button>
 				<button class="dsp-btn" data-act="import">导入 JSON</button>
 				<button class="dsp-btn danger" data-act="reset">恢复示例数据</button>
-				<span class="dsp-muted">导入会整份替换当前数据（先导出备份更稳）；也接受 0.1.0 版「分组 + 数据集」格式，导入后自动升级。</span>
+				<span class="dsp-muted">导入会整份替换当前数据（先导出备份更稳）；也接受 0.1.0 版「分组 + 数据集」格式，导入后自动升级（旧数据集不再使用）。</span>
 			</div>
 			<input type="file" accept="application/json,.json" data-el="import-file" style="display:none" />
 		</section>
@@ -815,14 +833,14 @@ export function settingsHtml() {
 		</section>
 		<section class="dsp-card">
 			<div class="dsp-card-head">当前状态</div>
-			<div class="dsp-muted">revision ${S.revision} · 上次保存 ${fmtTime(S.updatedAt)} · 项目 ${S.systems.length} · 模块 ${S.modules.length} · 功能 ${S.features.length} · 用例覆盖率 ${covered}/${S.features.length}</div>
+			<div class="dsp-muted">revision ${S.revision} · 上次保存 ${fmtTime(S.updatedAt)} · 项目 ${S.systems.length} · 模块 ${S.modules.length} · 功能 ${S.features.length} · 环境 ${S.envs.length} · 用例覆盖率 ${covered}/${S.features.length}</div>
 		</section>
 		<section class="dsp-card">
 			<div class="dsp-card-head">建议的维护方式</div>
 			<ul class="dsp-tips">
 				<li>项目用产品 / 业务线名（项目管理系统），模块用业务域（合同管理），功能用一个可操作的入口（经营合同、合同变更）。</li>
 				<li>用例挂在功能下，标题写「场景-要点」，编号按项目 code 自动生成（PMS-004）；复制用例后编号会重新分配。</li>
-				<li>账号、参数、边界值放在数据集里，用例勾选引用，一份数据可被多条用例共用。</li>
+				<li>每个项目建一套环境（本地 / 测试环境 / 预发环境 / 生产）并标一个默认，登记结果时选环境，回看能分清跑的是哪套；账号口令不要写进用例或环境备注。</li>
 				<li>「概览」里的覆盖缺口就是还没有用例的功能，点一下直接跳过去补。</li>
 			</ul>
 		</section>

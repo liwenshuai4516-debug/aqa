@@ -1,5 +1,5 @@
 /**
- * 项目 / 模块 / 功能三级选择器（用例弹窗与数据集弹窗共用）。
+ * 项目 / 模块 / 功能三级选择器（用例弹窗用）。
  * 联动时只重建 options，不重渲染整块弹窗，避免输入焦点丢失。
  */
 import { S, esc, featuresOf, modulesOf } from "./state.mjs";
@@ -31,7 +31,7 @@ export function pathSelects(prefix, val) {
 }
 
 export function refreshPathSelects(prefix) {
-	const val = prefix === "case" ? S.caseModal : S.datasetModal;
+	const val = prefix === "case" ? S.caseModal : null;
 	if (!val || !S.nodes) return;
 	const sys = S.nodes.overlay.querySelector(`[data-el="${prefix}-system"]`);
 	const mod = S.nodes.overlay.querySelector(`[data-el="${prefix}-module"]`);
