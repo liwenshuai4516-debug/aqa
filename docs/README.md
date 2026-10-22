@@ -26,6 +26,7 @@
 | 目标审查、执行对话、轮次管理         | [目标模式设计](goal-conversation-design.md)                                              |
 | 设置预设导入、导出与分享             | [预设分享](preset-sharing.md)                                                            |
 | 本地开发、测试、CI                   | [开发工作流](development.md)                                                             |
+| 大文件评估、缓存与临时依赖清理       | [项目体积维护](project-cleanup.md)                                                       |
 | 配置、部署、反向代理                 | [环境变量](env-vars.md)、[部署](deployment.md)、[Antigravity 反代](antigravity-proxy.md) |
 | 日常代码备份、正式发布               | [AGENTS.md §6](../AGENTS.md)、[发布说明](release.md)                                     |
 | Electron 开发、安装包与桌面验收      | [桌面说明](../desktop/README.md)、下方桌面交付记录                                       |

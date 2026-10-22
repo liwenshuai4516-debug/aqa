@@ -27,6 +27,7 @@ pi-web-ui/
 ├── deploy/                     # 部署示例：launchd plist / systemd unit / Windows 任务 XML
 ├── capabilities/ui-testing/    # 原版 UI workflow 分发包、原生 MCP 薄接入及 Playwright 配置
 ├── scripts/enable-ui-testing.mjs # 默认项目级登记；显式 --agent-dir 可登记到应用专用 Pi 配置
+├── scripts/clean-project.mjs    # 预览/回收白名单缓存及测试依赖，保留证据、跟踪文件和保留标记
 ├── tests/ui-testing-integration-test.mjs # 真实 SDK/测试 MCP/Chromium 接线，临时项目零模型请求
 ├── tests/ui-testing-visibility-test.mjs # 隔离 Electron 中复现工作区错位、验证技能页与 /ui 菜单
 ├── themes/                     # 内置主题（完整样式表：:root 变量 + 任意选择器/布局覆盖皆可，styles.css 只是共享基线）
@@ -84,6 +85,7 @@ pi-web-ui/
 │   ├── README.md               # ★ 阅读顺序、专题导航与维护分工
 │   ├── project-map.md          # 模块职责、请求路径、状态归属与目录管理
 │   ├── module-development.md   # 模块开发规范、联动检查表与设计/验收清单
+│   ├── project-cleanup.md      # 大文件评估、清理范围、保留期、复原与实测记录
 │   ├── api-testing-workflow-design.md # 接口自动化闭环设计提案（尚未实现）
 │   ├── api-testing-implementation-plan.md # 接口测试实施顺序、约束与验收计划
 │   ├── api-testing-evidence/    # 分任务验收、脱敏摘要与调试历史；真实目标仍阻塞
