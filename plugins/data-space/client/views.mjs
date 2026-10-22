@@ -23,6 +23,8 @@ import {
 	typeCounts,
 } from "./state.mjs";
 
+import { isIntroduced } from "./brief.mjs";
+
 export const ICON = {
 	db: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c1.7 1.7 13.5 1.7 16 0V5"/><path d="M4 11v6c1.7 1.7 13.5 1.7 16 0v-6"/></svg>`,
 	plus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>`,
@@ -30,6 +32,7 @@ export const ICON = {
 	copy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M6 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/></svg>`,
 	trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M18.5 6l-1 14h-11l-1-14"/></svg>`,
 	case: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 10.5l2 2 4.5-4.5"/><path d="M8 17h8"/></svg>`,
+	brief: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a7.5 7.5 0 0 1-7.5 7.5H8l-4 3v-9.5A7.5 7.5 0 0 1 11.5 5h2A7.5 7.5 0 0 1 21 11.5z"/><path d="M9.5 11.5h5"/><path d="M12 9v5"/></svg>`,
 };
 
 const pct = (n, d) => (d > 0 ? Math.round((n / d) * 100) : 0);
@@ -215,10 +218,13 @@ const typeBadge = (t) => {
 function caseRow(c, showPath) {
 	const steps = c.steps?.length ?? 0;
 	const linked = datasetNames(c.datasetIds);
+	const briefed = isIntroduced(c);
 	return `<tr>
 		<td class="dsp-code-cell">${esc(c.code || "—")}</td>
 		<td class="dsp-cell-main">
 			<div class="dsp-case-title" data-act="edit-case" data-id="${esc(c.id)}" title="${esc(c.title)}"><b>${esc(c.title)}</b>${
+				briefed ? `<span class="dsp-briefed" title="本轮已引入 AI 对话；数据改动后会自动消失">已引入</span>` : ""
+			}${
 				(c.tags ?? []).length
 					? `<span class="dsp-tags">${c.tags
 							.slice(0, 2)
@@ -235,6 +241,7 @@ function caseRow(c, showPath) {
 		<td class="dsp-num-cell" title="${esc(linked.join("、"))}">${linked.length}</td>
 		<td class="dsp-num-cell">${fmtTime(c.updatedAt)}</td>
 		<td><div class="dsp-row-actions">
+			<button class="dsp-btn icon" data-act="brief-case" data-id="${esc(c.id)}" title="引入到 AI 对话">${ICON.brief}</button>
 			<button class="dsp-btn icon" data-act="edit-case" data-id="${esc(c.id)}" title="编辑">${ICON.edit}</button>
 			<button class="dsp-btn icon" data-act="copy-case" data-id="${esc(c.id)}" title="复制到同功能">${ICON.copy}</button>
 			<button class="dsp-btn icon danger" data-act="del-case" data-id="${esc(c.id)}" title="删除">${ICON.trash}</button>
@@ -244,7 +251,7 @@ function caseRow(c, showPath) {
 
 function caseTable(list, showPath) {
 	return `<div class="dsp-table-wrap"><table class="dsp-table${showPath ? " wide" : ""}">
-		<colgroup><col style="width:86px"/><col style="width:auto"/><col style="width:82px"/><col style="width:64px"/><col style="width:74px"/><col style="width:52px"/><col style="width:52px"/><col style="width:104px"/><col style="width:108px"/></colgroup>
+		<colgroup><col style="width:86px"/><col style="width:auto"/><col style="width:82px"/><col style="width:64px"/><col style="width:74px"/><col style="width:52px"/><col style="width:52px"/><col style="width:104px"/><col style="width:136px"/></colgroup>
 		<thead><tr><th>编号</th><th>用例标题</th><th>类型</th><th>优先级</th><th>状态</th><th>步骤</th><th>数据</th><th>更新</th><th></th></tr></thead>
 		<tbody>${list.map((c) => caseRow(c, showPath)).join("")}</tbody></table></div>`;
 }
@@ -394,6 +401,9 @@ function projectView(systemId) {
 			<div class="dsp-page-sub">${sub}</div>
 		</div>
 		<div class="dsp-inline">
+			<button class="dsp-btn" data-act="brief-scope" title="把当前范围的 ${list.length} 条用例引入 AI 对话"${
+				list.length ? "" : " disabled"
+			}>${ICON.brief}引入对话${list.length ? ` · ${list.length}` : ""}</button>
 			<button class="dsp-btn" data-act="edit-node" data-kind="${head.kind}" data-id="${esc(head.id)}">编辑${head.label}</button>
 			${
 				activeModule
@@ -431,6 +441,9 @@ function allView() {
 	<div class="dsp-page-head">
 		<div><h3>全部用例<span class="dsp-num">${S.cases.length} 条</span></h3><div class="dsp-page-sub">跨项目查看；左侧点项目进入项目内管理，标题下方是所属项目 / 模块 / 功能。</div></div>
 		<div class="dsp-inline">
+			<button class="dsp-btn" data-act="brief-scope" title="把当前范围的 ${list.length} 条用例引入 AI 对话"${
+				list.length ? "" : " disabled"
+			}>${ICON.brief}引入对话${list.length ? ` · ${list.length}` : ""}</button>
 			<button class="dsp-btn" data-act="new-system">＋ 新建项目</button>
 			<button class="dsp-btn primary" data-act="new-case">＋ 新建用例</button>
 		</div>
@@ -444,6 +457,31 @@ function allView() {
 export function casesHtml() {
 	if (!S.sel.systemId) return allView();
 	return projectView(S.sel.systemId);
+}
+
+/**
+ * 当前可见范围的用例（跟随搜索 / 优先级 / 状态 / 类型筛选）——
+ * 「引入对话」引的就是用户眼前这一屏，所见即所引。
+ * @returns {{label: string, cases: object[], total: number, filtered: boolean}}
+ */
+export function currentCaseScope() {
+	const pack = (label, base) => {
+		const shown = visibleCases(base);
+		return { label, cases: shown, total: base.length, filtered: shown.length !== base.length };
+	};
+
+	if (!S.sel.systemId) return pack("全部用例", S.cases);
+	const s = systemOf(S.sel.systemId);
+	if (!s) return pack("用例", S.cases);
+	const activeModule = S.sel.moduleId ? moduleOf(S.sel.moduleId) : null;
+	const activeFeature = S.sel.featureId ? featureOf(S.sel.featureId) : null;
+	const base = activeFeature
+		? casesOfFeature(activeFeature.id)
+		: activeModule
+			? casesOfModule(activeModule.id)
+			: casesOfSystem(s.id);
+	const label = [s.name, activeModule?.name, activeFeature?.name].filter(Boolean).join(" / ");
+	return pack(label, base);
 }
 
 /* ------------------------------------------------------------------ 数据集 */

@@ -39,6 +39,8 @@ const CLIENT_FILES = [
 	"modal-case.mjs",
 	"modal-node.mjs",
 	"modal-dataset.mjs",
+	"brief.mjs",
+	"modal-brief.mjs",
 ];
 
 ensureBuild(repoRoot, "data-space-plugin-test");

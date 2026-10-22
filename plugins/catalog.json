@@ -398,8 +398,8 @@
 		"nameEn": "Data Space",
 		"icon": "🗃️",
 		"iconSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><ellipse cx=\"12\" cy=\"5\" rx=\"8\" ry=\"3\"/><path d=\"M4 5v6c1.7 1.7 13.5 1.7 16 0V5\"/><path d=\"M4 11v6c1.7 1.7 13.5 1.7 16 0v-6\"/></svg>",
-		"description": "测试资产工作台：左侧项目列表（可搜索），进入项目后按「模块 → 功能」组织用例与数据集；用例分接口 / UI 两类，含步骤、预期、优先级与关联数据，顶栏一级入口，可在「设置 → 插件」随时开关；数据存本机数据目录，换会话/项目都读同一份。",
-		"descriptionEn": "A test asset workspace: a searchable project list on the left, then module / feature scoping inside a project. Cases are typed API or UI, with steps, expectations, priority and linked data. Opens from the topbar and can be toggled in Settings > Plugins; the data lives in the local data dir and is shared across sessions and projects.",
+		"description": "测试资产工作台：左侧项目列表（可搜索），进入项目后按「模块 → 功能」组织用例与数据集；用例分接口 / UI 两类，含步骤、预期、优先级与关联数据；可按单条 / 功能 / 模块把用例引入 AI 对话（两档格式、末尾指令、脱敏与去重），顶栏一级入口，可在「设置 → 插件」随时开关；数据存本机数据目录，换会话/项目都读同一份。",
+		"descriptionEn": "A test asset workspace: a searchable project list on the left, then module / feature scoping inside a project. Cases are typed API or UI, with steps, expectations, priority and linked data. Cases can be pulled into an AI conversation per case / feature / module (two verbosity levels, trailing instruction, redaction and dedupe). Opens from the topbar and can be toggled in Settings > Plugins; the data lives in the local data dir and is shared across sessions and projects.",
 		"source": "xing-shuyin/pi-web-ui/plugins/data-space",
 		"homepage": "https://github.com/xing-shuyin/pi-web-ui/tree/main/plugins/data-space"
 	}

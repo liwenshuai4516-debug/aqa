@@ -62,6 +62,10 @@ export const S = {
 	caseModal: null,
 	nodeModal: null,
 	datasetModal: null,
+	/** 「引入到 AI 对话」弹窗状态（见 modal-brief.mjs）。 */
+	brief: null,
+	/** 本轮已引入用例：caseId → { rev, at }；数据改过（revision 变）就不再算已引入。 */
+	introduced: new Map(),
 	saving: false,
 	nodes: null,
 	toastTimer: null,

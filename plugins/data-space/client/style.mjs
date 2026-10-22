@@ -192,6 +192,17 @@ export const CSS = `
 .dsp-linked-item .dsp-muted { font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dsp-path-selects { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
 .dsp-modal.narrow { width: min(520px, 100%); }
+
+/* ---------------------------------------------------------- 引入到 AI 对话 */
+.dsp-modal.brief-modal { width: min(620px, 100%); }
+.dsp-brief-scope { display: flex; flex-direction: column; gap: 1px; border: 1px solid var(--border, #2c2f36); border-radius: 9px; padding: 7px 10px; background: var(--bg-elev, var(--bg-elev2, #1d1f24)); min-width: 0; }
+.dsp-brief-scope b { font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dsp-brief-preview { width: 100%; min-height: 210px; max-height: 42vh; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; line-height: 1.65; white-space: pre; overflow: auto; }
+.dsp-brief-note { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; }
+.dsp-check { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-dim, #a4a9b3); cursor: pointer; }
+.dsp-check input { width: 14px; height: 14px; padding: 0; }
+.dsp-brief-count { margin-right: auto; }
+.dsp-briefed { font-size: 10px; line-height: 16px; padding: 0 5px; border-radius: 5px; flex: none; white-space: nowrap; color: var(--green, #3ecf8e); border: 1px solid color-mix(in srgb, var(--green, #3ecf8e) 45%, transparent); background: color-mix(in srgb, var(--green, #3ecf8e) 12%, transparent); }
 .dsp-tips { display: flex; flex-direction: column; gap: 5px; font-size: 12px; color: var(--text-dim, #a4a9b3); }
 .dsp-tips div::before { content: "·"; margin-right: 6px; color: var(--text-faint, #8a8f98); }
 .dsp-tip { border: 1px solid color-mix(in srgb, var(--amber, #e0a63c) 40%, transparent); background: color-mix(in srgb, var(--amber, #e0a63c) 10%, transparent); border-radius: 9px; padding: 7px 11px; font-size: 12px; margin-bottom: 12px; }

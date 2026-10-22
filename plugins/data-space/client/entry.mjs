@@ -7,7 +7,16 @@
  */
 import { CSS } from "./style.mjs";
 import { BASE, S, applyStore, esc, hooks, load, moduleOf, newId, pathOfFeature, persist, toast } from "./state.mjs";
-import { casesHtml, datasetsHtml, overviewHtml, projectListHtml, settingsHtml, tabsList } from "./views.mjs";
+import {
+	casesHtml,
+	currentCaseScope,
+	datasetsHtml,
+	overviewHtml,
+	projectListHtml,
+	settingsHtml,
+	tabsList,
+} from "./views.mjs";
+import { briefModalHtml, composeBriefNow, openBrief } from "./modal-brief.mjs";
 import { caseModalHtml, copyCase, deleteCase, openCaseModal, saveCase } from "./modal-case.mjs";
 import { deleteNode, nodeModalHtml, openNodeEdit, openNodeModal, saveNode } from "./modal-node.mjs";
 import { copyDataset, datasetModalHtml, deleteDataset, openDatasetModal, saveDataset } from "./modal-dataset.mjs";
@@ -68,7 +77,7 @@ function renderBody() {
 
 function renderOverlay() {
 	if (!S.nodes) return;
-	S.nodes.overlay.innerHTML = caseModalHtml() + nodeModalHtml() + datasetModalHtml();
+	S.nodes.overlay.innerHTML = caseModalHtml() + nodeModalHtml() + datasetModalHtml() + briefModalHtml();
 }
 
 function render() {
@@ -108,6 +117,7 @@ function closeModals() {
 	S.caseModal = null;
 	S.nodeModal = null;
 	S.datasetModal = null;
+	S.brief = null;
 	renderOverlay();
 }
 
@@ -166,6 +176,30 @@ function onClick(e) {
 	if (act === "prio") {
 		S.priority = id;
 		renderBody();
+		return;
+	}
+	if (act === "brief-scope") {
+		openBrief(currentCaseScope());
+		return;
+	}
+	if (act === "brief-case") {
+		const c = S.cases.find((x) => x.id === id);
+		if (!c) return;
+		openBrief({ label: `${c.code || "未编号"} · ${c.title}`, cases: [c], skip: false });
+		return;
+	}
+	if (act === "brief-format" && S.brief) {
+		S.brief.format = id;
+		renderOverlay();
+		return;
+	}
+	if (act === "brief-intent" && S.brief) {
+		S.brief.intent = id;
+		renderOverlay();
+		return;
+	}
+	if (act === "compose-brief") {
+		void composeBriefNow();
 		return;
 	}
 	if (act === "reload") {
@@ -315,6 +349,16 @@ function onChange(e) {
 
 	if (el.dataset.el === "import-file") {
 		void doImport(el);
+		return;
+	}
+	if (el.dataset.el === "brief-redact" && S.brief) {
+		S.brief.redact = el.checked;
+		renderOverlay();
+		return;
+	}
+	if (el.dataset.el === "brief-skip" && S.brief) {
+		S.brief.skip = el.checked;
+		renderOverlay();
 		return;
 	}
 	if (el.dataset.el === "case-status") {
