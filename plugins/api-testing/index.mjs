@@ -24,6 +24,7 @@ export default {
 							"asset_inspect",
 							"asset_run",
 							"asset_report",
+							"asset_analyze",
 							"asset_list",
 							"asset_clone",
 							"asset_archive",

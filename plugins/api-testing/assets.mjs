@@ -14,6 +14,7 @@ import { randomUUID } from "node:crypto";
 import { hash } from "./suite.mjs";
 import { inspectDraft, REVIEW_POLICY } from "./review.mjs";
 import { buildReport } from "./report.mjs";
+import { createTracking } from "./tracking.mjs";
 import { createSchedules } from "./schedules.mjs";
 import { createAssetManagement } from "./asset-management.mjs";
 const json = (x) => JSON.stringify(x, null, 2) + "\n";
@@ -186,7 +187,16 @@ export function createAssetStore({ root, policyHash, approve, execute }) {
 			),
 		});
 	};
-	const management = createAssetManagement({ root, policyHash, project, load, histories, rebuild });
+	const tracking = createTracking({ read, safeFile, atomic, histories });
+	const management = createAssetManagement({
+		root,
+		policyHash,
+		project,
+		load,
+		histories,
+		rebuild,
+		validateAnalyses: (p, id) => tracking.history(p, id),
+	});
 	const schedules = createSchedules({ project, load, histories, read, atomic, run: (...args) => store.call(...args) });
 	const store = {
 		attachScheduler: (host) => schedules.attach(host),
@@ -204,19 +214,20 @@ export function createAssetStore({ root, policyHash, approve, execute }) {
 				owner = undefined;
 			}
 		},
-		async call(identity, input, signal) {
+		async call(identity, input, signal, runtime = {}) {
 			if (input.action?.startsWith("schedule_")) return schedules.call(identity, input);
 			if (management.handles(input.action)) return management.call(identity, input, signal);
 			const allowed = {
 				asset_import: ["action", "sourcePath"],
 				asset_inspect: ["action", "assetRef"],
 				asset_report: ["action", "runId"],
+				asset_analyze: ["action", "runId", "model"],
 				asset_run: ["action", "assetRef", "priorRunId"],
 			};
 			if (!allowed[input.action] || Object.keys(input).some((k) => !allowed[input.action].includes(k)))
 				fail("Unsupported asset action/argument");
 			signal.throwIfAborted();
-			const p = project(identity, input.action === "asset_run");
+			const p = project(identity, ["asset_run", "asset_analyze"].includes(input.action));
 			if (input.action === "asset_import") {
 				const source = realpathSync(resolve(identity.cwd, input.sourcePath));
 				const inspected = await inspectDraft(identity.cwd, source);
@@ -231,17 +242,30 @@ export function createAssetStore({ root, policyHash, approve, execute }) {
 				}
 				return { assetRef, duplicate: true, sourcePreserved: true };
 			}
+			if (input.action === "asset_analyze")
+				return tracking.analyze(p, input.runId, runtime.complete, signal, input.model);
 			if (input.action === "asset_report") {
 				const record = histories(p).find((r) => r.runId === input.runId) ?? fail("Unknown stored run");
 				const dir = join(p.base, "runs", runId(input.runId));
 				if (record.status === "unknown") return { record, scope: "historical; incomplete evidence; no requests" };
 				for (const [name, digest] of Object.entries(record.fileHashes ?? {}))
 					if (hash(read(safeFile(dir, name))) !== digest) fail("Stored run evidence changed");
-				return {
+				const result = {
 					record,
 					report: JSON.parse(read(safeFile(dir, "report.json"))),
 					reportPath: join(dir, "report.md"),
+					analyses: tracking.history(p, input.runId),
+					followup: existsSync(join(dir, "followup.json")) ? JSON.parse(read(safeFile(dir, "followup.json"))) : null,
 					scope: "historical; no requests or model calls",
+				};
+				if (json(result).length <= 48000) return result;
+				return {
+					record,
+					reportPath: result.reportPath,
+					reportExcerpt: json(result.report).slice(0, 16000),
+					analyses: result.analyses.map(({ result: _result, ...entry }) => entry),
+					truncated: true,
+					scope: "historical; full evidence retained at reportPath; no requests or model calls",
 				};
 			}
 			if (input.action === "asset_run") {
@@ -273,9 +297,14 @@ export function createAssetStore({ root, policyHash, approve, execute }) {
 				const prior = input.priorRunId
 					? (previousRuns.find((r) => r.runId === input.priorRunId && r.assetRef === input.assetRef) ??
 						fail("Retest needs a run of the same version"))
-					: undefined;
+					: previousRuns
+							.filter((r) => r.assetRef === input.assetRef && r.fileHashes)
+							.sort((a, b) => b.startedAt.localeCompare(a.startedAt))[0];
 				let previous = [];
 				if (prior?.fileHashes) {
+					for (const [name, digest] of Object.entries(prior.fileHashes))
+						if (hash(read(safeFile(join(p.base, "runs", prior.runId), name))) !== digest)
+							fail("Prior run evidence changed");
 					const bytes = read(safeFile(join(p.base, "runs", prior.runId), "findings.json"));
 					if (hash(bytes) !== prior.fileHashes["findings.json"]) fail("Prior findings changed");
 					previous = JSON.parse(bytes);
@@ -337,12 +366,14 @@ export function createAssetStore({ root, policyHash, approve, execute }) {
 					fileHashes: Object.fromEntries(Object.entries(files).map(([name, value]) => [name, hash(value)])),
 				});
 				await rebuild(p);
+				const followup = await tracking.followup(p, reference, { ...runtime, signal });
 				return {
+					followup,
 					runId: reference,
 					assetRef: input.assetRef,
 					executionVerdict: report.executionVerdict,
 					reportPath: join(dir, "report.md"),
-					modelCalls: record.modelCalls,
+					modelCalls: { ...record.modelCalls, analysis: followup.modelCalls },
 				};
 			} finally {
 				if (input.action === "asset_run") running.delete(p.projectId);

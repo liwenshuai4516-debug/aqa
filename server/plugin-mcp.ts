@@ -95,6 +95,8 @@ export async function callPluginMcp(
 export interface PluginApiScheduleHost {
 	readonly cwd: string;
 	readonly signal: AbortSignal;
+	complete?: PluginModelComplete;
+	notify?(event: { event: string; runId: string; openCount: number }): void;
 	declaration(id: string): { spec: string; catchUp: "skip" | "once" } | undefined;
 	verify(): void;
 	schedule(

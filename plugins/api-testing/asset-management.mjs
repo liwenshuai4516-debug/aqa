@@ -49,7 +49,7 @@ const atomic = (path, value) => {
 	writeFileSync(tmp, json(value), { flag: "wx", mode: 0o600 });
 	renameSync(tmp, path);
 };
-export function createAssetManagement({ root, policyHash, project, load, histories, rebuild }) {
+export function createAssetManagement({ root, policyHash, project, load, histories, rebuild, validateAnalyses }) {
 	const statePath = (p, ref) => join(p.base, "states", ref + ".json");
 	const state = (p, ref) => {
 		const path = statePath(p, ref);
@@ -257,6 +257,11 @@ export function createAssetManagement({ root, policyHash, project, load, histori
 					if (hash(bytes) !== digest) fail("Run evidence changed");
 					add(`runs/${run.runId}/${name}`, bytes);
 				}
+				validateAnalyses?.(p, run.runId);
+				for (const name of readdirSync(runRoot).filter((n) =>
+					/^(analysis-[1-3](\.pending|\.manifest)?\.json|analysis-[1-3]\.md|followup\.json)$/.test(n),
+				))
+					add(`runs/${run.runId}/${name}`, read(inside(runRoot, realpathSync(join(runRoot, name)))));
 			}
 			add("suite-state.json", Buffer.from(json(state(p, input.assetRef))));
 			const unsigned = {

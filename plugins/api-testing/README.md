@@ -1,4 +1,4 @@
-# 接口测试插件：P3-1
+# 接口测试插件：P3-2
 
 当前提供自包含 HTTP fixture 的导入、独立评审、受控执行、问题记录、复测与报告入口。真实目标仍因文件、重定向与操作系统出口隔离缺口阻塞；已支持跨重启的整包持久化与重跑，已支持最小管理列表及仅限匿名 fixture 的宿主定时调度。
 
@@ -64,7 +64,7 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 
 独立评审批准时自动发布完整不可变套件到 `<dataDir>/api-testing/assets/<projectHash>/suites/<assetRef>/`，并返回 `assetRef`。P1 运行的报告与证据会复制到该根的 runs；保留项目内原件。持久目录位于可卸载插件目录之外，不删除历史。
 
-同一工具新增 `asset_inspect`（assetRef）、`asset_run`（assetRef，可选同版本 priorRunId）、`asset_report`（runId）、`asset_import`（项目内 sourcePath）。回看/重跑不依赖原会话内存，也不调用模型；每次重跑新建 run 身份。项目绑定服务端真实路径，不能通过外来 assetRef 跨项目执行。
+同一工具新增 `asset_inspect`（assetRef）、`asset_run`（assetRef，可选同版本 priorRunId）、`asset_report`（runId）、`asset_import`（项目内 sourcePath）。回看/成功重跑不依赖原会话内存，也不调用模型；每次重跑新建 run 身份。项目绑定服务端真实路径，不能通过外来 assetRef 跨项目执行。
 
 `asset_import` 只复用已由宿主真实发布的精确 P1 包；未登记的历史包或外部 pass 标签须先用 prepare/review 重新独立评审，原件不覆盖。版本变化、编译/评审/执行器或依赖锁变化会使旧批准失效。半写包和文件 hash 不符拒绝执行；索引仅派生，损坏可重建。
 
@@ -85,3 +85,11 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 授权绑定版本、环境与本地时区，独立于聊天；宿主直接调用同一 asset_run 入口。业务定义先原子保存，宿主声明严格落盘后才启用。计划 UTC 时间先登记 claim；重复、重叠和漏跑跳过，运行中撤权/过期会取消该次请求。后台 Stop 同步持久暂停，重启不复活；正常反激活保留启用声明，重启不补跑。声明不符、时区变化、授权过期、未知运行/写入或残留 claim 均阻止继续自动发送。
 
 单实例所有权残留仍须人工核对，不自动抢锁或重放。仅提供毫秒间隔；复用宿主五字段 cron 的到点修复与分片，不扩展计划级 cron/时区配置。本期没有真实凭据接入，因此没有声称完成真实凭据过期验收。证据见 [P3-1](../../docs/api-testing-evidence/P3-1.md)。
+
+## P3-2 持续问题跟踪
+
+持久 asset_run 默认关联最新同版本报告，也可显式 priorRunId；问题 ID、首次失败和每次新证据保留，不自动跨版本关闭问题。每次请求均有新原始报告。人工重跑默认只做确定性统计；`asset_analyze`（runId，可选 model）只追加分析修订，每次最多一调用/20秒、每 run 最多三尝试；`asset_report` 同时回看原始报告和分析修订，无请求或模型调用。
+
+定时新/变化异常最多自动分析一次；已知重复失败不重调模型、不重复提示，恢复时给站内提示。模型只收到裁剪后的问题 ID、类别、断言名、状态码与 JSON 有效性，没有正文、凭据或任意请求权限。分析失败不重跑接口；假设不能确认根因或改写测试结论，不自动生成新套件。无外部消息或缺陷平台写入。
+
+分析保存 pending 预算认领、不可变 JSON/Markdown 修订及完成 hash manifest；原始结果不修改。中断尝试占额度，显式重分析不能无限重试。备份包含关联分析和 followup，恢复仍受同宿主签名/冲突规则限制。宿主模型接口未提供底层取消，20 秒本地退出不承诺供应商已停止计算。详见 [P3-2](../../docs/api-testing-evidence/P3-2.md)。

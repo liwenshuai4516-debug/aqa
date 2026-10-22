@@ -1,0 +1,44 @@
+[
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-2-m9QtXQ",
+		"status": "passed",
+		"checksPassed": 13,
+		"actualModelCalls": 0,
+		"error": null
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-2-W2YzYy",
+		"status": "failed",
+		"checksPassed": 0,
+		"actualModelCalls": 0,
+		"error": "TypeError: Cannot read properties of undefined (reading 'execute')\n    at invoke (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/api-testing-tracking-test.mjs:116:5)\n    at <anonymous> (/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/api-testing-tracking-test.mjs:141:25)"
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-2-aDeBmP",
+		"status": "passed",
+		"checksPassed": 13,
+		"actualModelCalls": 1,
+		"error": null
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-2-01P7Up",
+		"status": "passed",
+		"checksPassed": 14,
+		"actualModelCalls": 0,
+		"error": null
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-2-sPD5Gm",
+		"status": "passed",
+		"checksPassed": 14,
+		"actualModelCalls": 0,
+		"error": null
+	},
+	{
+		"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-p3-2-nkpXn5",
+		"status": "passed",
+		"checksPassed": 14,
+		"actualModelCalls": 0,
+		"error": null
+	}
+]

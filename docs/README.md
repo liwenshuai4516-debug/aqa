@@ -30,6 +30,7 @@
 
 ## 功能设计提案
 
+- [P3-2 持续问题跟踪](api-testing-evidence/P3-2.md)：历史关联、预算分析修订、已知异常零重复调用及站内变化提示。
 - [P3-1 宿主定时执行](api-testing-evidence/P3-1.md)：固定 fixture 授权、计划时间账本、严格保存和停止/恢复。
 - [P2-2 最小资产管理](api-testing-evidence/P2-2.md)：列表、草稿克隆、归档、引用检查及同宿主备份恢复。
 - [P2-1 持久化与复用](api-testing-evidence/P2-1.md)：重启回看、零模型重跑、文件校验与未知写入阻断；仍仅 fixture。

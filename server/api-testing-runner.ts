@@ -111,6 +111,7 @@ export class ApiTestingRunner {
 			"assets.mjs",
 			"asset-management.mjs",
 			"schedules.mjs",
+			"tracking.mjs",
 		];
 		const sources = names.map((name) => readFileSync(join(this.pluginRoot, name)));
 		const executionSources = ["runner.mjs", "network-guard.cjs", "package-lock.json"].map((name) =>

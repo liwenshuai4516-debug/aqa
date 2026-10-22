@@ -4952,6 +4952,15 @@ export class PluginManager {
 				await self.apiScheduleProvider({
 					cwd,
 					signal: stopped.signal,
+					complete: host.llm.complete,
+					notify: (event) => {
+						if (!can("notify")) return;
+						host.notify(
+							event.event === "recovered" ? "info" : "warning",
+							`接口 fixture ${event.event}：${event.openCount} 个未关闭问题，运行 ${event.runId}`,
+							`API fixture ${event.event}: ${event.openCount} open findings, run ${event.runId}`,
+						);
+					},
 					declaration: (id) => loadScheduleRecords(dir)[id],
 					verify() {
 						stopped.signal.throwIfAborted();

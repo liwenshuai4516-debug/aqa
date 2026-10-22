@@ -112,6 +112,7 @@ export function createSchedules({ project, load, histories, read, atomic, run })
 						identity(),
 						{ action: "asset_run", assetRef: record.assetRef, ...(prior ? { priorRunId: prior.runId } : {}) },
 						AbortSignal.any([host.signal, active.controller.signal]),
+						{ complete: host.complete, notify: host.notify, autoAnalyze: true },
 					);
 					atomic(file, {
 						...claim,

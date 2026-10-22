@@ -59,7 +59,7 @@ export function createWorkflow({ approve, execute, assets }) {
 			const input = structuredClone(request.input ?? {}),
 				action = input.action;
 			if (typeof action === "string" && (action.startsWith("asset_") || action.startsWith("schedule_")))
-				return assets.call(identity, input, signal);
+				return assets.call(identity, input, signal, { complete });
 			if (!allowed[action] || Object.keys(input).some((key) => !allowed[action].includes(key)))
 				fail("Unknown workflow action or argument");
 			if (action === "prepare") {

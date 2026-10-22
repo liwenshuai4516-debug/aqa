@@ -27,6 +27,7 @@ pi-web-ui/
 ├── plugins/api-testing/skills/ # P1-4 分发工作流/评审/分析技能，需项目级安装
 ├── tests/api-testing-model-test.mjs # P1-4 按需真实模型验收，会消耗配置模型额度
 ├── tests/api-testing-skills-test.mjs # 真实 SDK 发现与宿主加载，隔离 agentDir
+├── plugins/api-testing/tracking.mjs # P3-2 历史问题关联与分析修订
 ├── plugins/api-testing/schedules.mjs # P3-1 固定 fixture 授权与触发账本
 ├── plugins/api-testing/asset-management.mjs # P2-2 最小资产管理与受校验备份
 ├── tests/api-testing-asset-management-test.mjs # 管理入口/恢复冲突/引用与边界
