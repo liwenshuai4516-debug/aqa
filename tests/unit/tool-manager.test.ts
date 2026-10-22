@@ -230,6 +230,27 @@ describe("tool_manage 出入口", () => {
 		expect(s5.peek()).not.toContain("load_tools");
 	});
 
+	it("lazy gating defers plugin, MCP and extension schemas outside the built-in catalog", () => {
+		const all = [
+			"bash",
+			"read",
+			"edit",
+			"write",
+			...AGENT_TOOL_CATALOG.map((tool) => tool.name),
+			"load_tools",
+			"api_test_execute",
+			"ui_test_run",
+			"mcp_browser_snapshot",
+		];
+		const session = fakeSet(all);
+		applyAgentToolsGating(session, lazyLoadingDisabledTools(all, []), "standard", { forceActive: ["load_tools"] });
+		expect(session.peek()).toEqual(["bash", "read", "edit", "write", "load_tools"]);
+		applyAgentToolsGating(session, lazyLoadingDisabledTools(all, ["ui_test_run"]), "standard", {
+			forceActive: ["load_tools"],
+		});
+		expect(session.peek()).toEqual(["bash", "read", "edit", "write", "ui_test_run", "load_tools"]);
+	});
+
 	it("lazyLoadingDisabledTools：除核心/已加载/load_tools 外全部当临时禁用", () => {
 		const all = ["bash", "read", "edit", "write", "load_tools", "patch", "lsp"];
 		expect(lazyLoadingDisabledTools(all, [])).toEqual(["patch", "lsp"]);

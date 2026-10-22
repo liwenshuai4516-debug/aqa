@@ -97,6 +97,7 @@ import type {
 } from "../plugins.js";
 import { createPluginInvocation } from "../mcp/plugin-mcp.js";
 import { syncPluginToolsIntoSession } from "../plugins.js";
+import { restoreLazyToolNames } from "./lazy-tools-state.js";
 import { modelChangeKey, pickClientConversation } from "../plugin-conversation-view.js";
 import { SettingsService } from "../settings-service.js";
 import {
@@ -1457,7 +1458,7 @@ export class ClientSession {
 	}
 
 	/** 会话是否已有转录内容 —— 区分「刚建的新会话」（种子为空）与「从转录恢复的会话」
-	 *  （种子 = 当时活跃的非核心工具，保证上次加载过什么就还是什么）。 */
+	 *  （种子仅取真实调用与 load_tools 成功回执，避免把 SDK 默认全集当成已加载）。 */
 	private sessionHasTranscript(session: AgentSession): boolean {
 		try {
 			return (session.state?.messages?.length ?? 0) > 0;
@@ -1467,19 +1468,12 @@ export class ClientSession {
 	}
 
 	/** 取（必要时建立）某 session 的已加载集合。 */
-	private lazyLoadedFor(session: AgentSession, seedFromActive: boolean): Set<string> {
+	private lazyLoadedFor(session: AgentSession, seedFromHistory: boolean): Set<string> {
 		const existing = this.lazyLoadedBySession.get(session);
 		if (existing) return existing;
-		const seed: string[] = [];
-		if (seedFromActive) {
-			const core = new Set<string>([...LAZY_CORE_TOOL_NAMES, LOAD_TOOLS_TOOL_NAME]);
-			try {
-				for (const n of session.getActiveToolNames()) if (!core.has(n)) seed.push(n);
-			} catch {
-				/* session 未就绪：空集 = 只用核心工具 */
-			}
-		}
-		const set = new Set(seed);
+		// SDK starts restored sessions with default-active tools. That is not evidence
+		// that the conversation loaded them; use its actual tool history instead.
+		const set = seedFromHistory ? restoreLazyToolNames(session.state?.messages ?? []) : new Set<string>();
 		this.lazyLoadedBySession.set(session, set);
 		return set;
 	}
@@ -1895,7 +1889,8 @@ export class ClientSession {
 				const def = sess.getToolDefinition(name);
 				if (!def) continue;
 				const eff = effectiveToolPrompt(def, toolPromptOverrideOf(this.settingsSvc.current.toolPromptOverrides, name));
-				if (eff.promptSnippet && eff.promptSnippet.trim()) snippets[name] = eff.promptSnippet.trim();
+				const snippet = lazyOn ? this.toolSnippetOf(def) : eff.promptSnippet;
+				if (snippet?.trim()) snippets[name] = snippet.trim();
 				if (baseSet.has(name) && eff.promptGuidelines) guidelines.push(...eff.promptGuidelines);
 			}
 			const texts = resolveSectionTexts(
@@ -3020,9 +3015,8 @@ export class ClientSession {
 												def,
 												toolPromptOverrideOf(this.settingsSvc.current.toolPromptOverrides, name),
 											);
-											if (eff.promptSnippet && eff.promptSnippet.trim()) {
-												activeSnippets[name] = eff.promptSnippet.trim();
-											}
+											const snippet = lazyOn ? this.toolSnippetOf(def) : eff.promptSnippet;
+											if (snippet?.trim()) activeSnippets[name] = snippet.trim();
 											if (baseSet.has(name) && eff.promptGuidelines) {
 												activeGuidelines.push(...eff.promptGuidelines);
 											}
@@ -7595,6 +7589,7 @@ export class ClientSession {
 			this.presetOfSession(session) ??
 			this.settingsSvc.current.defaultAgentPreset ??
 			"standard";
+		this.syncPluginTools(session, targetPreset);
 		const isPlanMode = conv?.planMode === true;
 		const disabled = new Set(effectiveDisabledAgentTools(this.settingsSvc.current));
 		if (isPlanMode) {
@@ -7630,7 +7625,6 @@ export class ClientSession {
 				? makeSubagentTools(withSubagentOwner(this.subagentHost, ownerId), undefined, ownerId)[0]
 				: makeSubagentTools(this.subagentHost)[0],
 		);
-		this.syncPluginTools(session, targetPreset);
 		// 逐工具文案覆盖（设置页「工具」区）：在插件 sync / 工具刷新之后重放——
 		// `_refreshToolRegistry()` 会用出厂定义重建注册表，覆盖必须重新打上去。
 		// 只改模型可见的 description / snippet / guidelines，不碰执行体。
@@ -8235,7 +8229,7 @@ export class ClientSession {
 
 	/** index.ts 经 pluginMgr.onAgentToolsChanged 触发：把插件 AI 工具推入全部会话。 */
 	refreshPluginTools(): void {
-		for (const conv of this.convs.values()) this.syncPluginTools(conv.session);
+		for (const conv of this.convs.values()) this.applyToolGating(conv.session, conv.agentPreset);
 	}
 
 	private async applySettingsReload(): Promise<void> {

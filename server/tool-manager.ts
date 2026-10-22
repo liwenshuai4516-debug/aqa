@@ -433,7 +433,7 @@ export function setAgentToolsEnabled(session: ActiveToolSet, names: readonly str
 /**
  * 全量重放（创建会话 / reload 后 / 设置变更后调）：按禁用名单把目录内工具与
  * 核心内置工具（bash/read/edit/write，禁用名单接受它们）逐个加回或剔除；
- * 基线之外的工具（插件工具等）原样不动。
+ * 插件/扩展工具同样服从显式禁用与延迟加载名单，未禁用时仍可发现。
  * 支持传入 preset（预设 id），按预设白名单做二次过滤。
  * 复原基线取 session.getAllTools()（全集，含被禁用的）——基线里没有的工具不会凭空发明。
  * Session 未就绪时静默跳过（下次创建/reload 会再应用）。
@@ -451,7 +451,7 @@ export function applyAgentToolsGating(
 	try {
 		const off = new Set(disabled);
 		const allNames = session.getAllTools().map((t) => t.name);
-		const names = new Set(allNames);
+		const names = new Set(allNames.filter((name) => !off.has(name)));
 		for (const t of AGENT_TOOL_CATALOG) {
 			if (off.has(t.name)) {
 				// issue #481: 若第三方扩展注册了同名工具（如 nicobailon/pi-subagents 的 subagent），
@@ -468,9 +468,8 @@ export function applyAgentToolsGating(
 							?.getAllRegisteredTools?.()
 							?.some((tool) => tool.definition?.name === t.name),
 					);
-				if (!hasExtensionTool) {
-					names.delete(t.name);
-				}
+				if (hasExtensionTool) names.add(t.name);
+				else names.delete(t.name);
 			} else {
 				names.add(t.name);
 			}

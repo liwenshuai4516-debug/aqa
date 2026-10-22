@@ -1,0 +1,211 @@
+{
+	"status": "FAIL",
+	"checks": [
+		{
+			"label": "eager fixture contains extension and plugin schemas",
+			"passed": true
+		},
+		{
+			"label": "new lazy session declares only five baseline tools",
+			"passed": false
+		},
+		{
+			"label": "deferred tools remain discoverable",
+			"passed": false
+		},
+		{
+			"label": "load adds only the requested extension",
+			"passed": false
+		},
+		{
+			"label": "system prefix remains byte-identical",
+			"passed": true
+		},
+		{
+			"label": "wire tools append without changing previous declarations",
+			"passed": true
+		},
+		{
+			"label": "plugin rescan preserves lazy loadout",
+			"passed": false
+		},
+		{
+			"label": "disabled plugin is absent from schemas and catalog",
+			"passed": true
+		},
+		{
+			"label": "restart restores used/loaded extension without loading the registry",
+			"passed": false
+		},
+		{
+			"label": "ordinary history does not seed all SDK default-active tools",
+			"passed": false
+		},
+		{
+			"label": "first-request schema reduced by at least 70% in large-schema fixture",
+			"passed": false
+		}
+	],
+	"requests": [
+		{
+			"phase": "eager",
+			"toolCount": 30,
+			"toolNames": [
+				"read",
+				"bash",
+				"powershell",
+				"edit",
+				"write",
+				"grep",
+				"find",
+				"ls",
+				"ui_budget_probe",
+				"mcp_budget_probe",
+				"codemode",
+				"tool_search",
+				"subagent",
+				"delegate_task",
+				"plan_update",
+				"ask_user_question",
+				"browser_page",
+				"conversation_read",
+				"claim_files",
+				"present_files",
+				"skill",
+				"compact_context",
+				"schedule",
+				"eval",
+				"patch",
+				"lsp",
+				"mcp_manage",
+				"sandbox",
+				"worktree",
+				"api_budget_probe"
+			],
+			"schemaBytes": 97266,
+			"systemBytes": 19569,
+			"schemaEstimate": 24304
+		},
+		{
+			"phase": "lazy first",
+			"toolCount": 8,
+			"toolNames": [
+				"read",
+				"bash",
+				"edit",
+				"write",
+				"ui_budget_probe",
+				"mcp_budget_probe",
+				"api_budget_probe",
+				"load_tools"
+			],
+			"schemaBytes": 66781,
+			"systemBytes": 19219,
+			"schemaEstimate": 16695
+		},
+		{
+			"phase": "lazy one loaded",
+			"toolCount": 8,
+			"toolNames": [
+				"read",
+				"bash",
+				"edit",
+				"write",
+				"ui_budget_probe",
+				"mcp_budget_probe",
+				"api_budget_probe",
+				"load_tools"
+			],
+			"schemaBytes": 66781,
+			"systemBytes": 19219,
+			"schemaEstimate": 16695
+		},
+		{
+			"phase": "after rescan",
+			"toolCount": 8,
+			"toolNames": [
+				"read",
+				"bash",
+				"edit",
+				"write",
+				"ui_budget_probe",
+				"mcp_budget_probe",
+				"api_budget_probe",
+				"load_tools"
+			],
+			"schemaBytes": 66781,
+			"systemBytes": 19219,
+			"schemaEstimate": 16695
+		},
+		{
+			"phase": "restored",
+			"toolCount": 25,
+			"toolNames": [
+				"read",
+				"bash",
+				"edit",
+				"write",
+				"ui_budget_probe",
+				"mcp_budget_probe",
+				"load_tools",
+				"subagent",
+				"delegate_task",
+				"plan_update",
+				"ask_user_question",
+				"browser_page",
+				"conversation_read",
+				"claim_files",
+				"present_files",
+				"skill",
+				"compact_context",
+				"schedule",
+				"eval",
+				"patch",
+				"lsp",
+				"mcp_manage",
+				"sandbox",
+				"worktree",
+				"api_budget_probe"
+			],
+			"schemaBytes": 91116,
+			"systemBytes": 19219,
+			"schemaEstimate": 22767
+		},
+		{
+			"phase": "plain restored",
+			"toolCount": 25,
+			"toolNames": [
+				"read",
+				"bash",
+				"edit",
+				"write",
+				"ui_budget_probe",
+				"mcp_budget_probe",
+				"api_budget_probe",
+				"load_tools",
+				"subagent",
+				"delegate_task",
+				"plan_update",
+				"ask_user_question",
+				"browser_page",
+				"conversation_read",
+				"claim_files",
+				"present_files",
+				"skill",
+				"compact_context",
+				"schedule",
+				"eval",
+				"patch",
+				"lsp",
+				"mcp_manage",
+				"sandbox",
+				"worktree"
+			],
+			"schemaBytes": 91116,
+			"systemBytes": 19219,
+			"schemaEstimate": 22767
+		}
+	],
+	"actualPaidModelCalls": 0,
+	"businessRequests": 0
+}

@@ -54,6 +54,8 @@ pi-web-ui/
 ├── tests/api-testing-controlled-test.mjs # P0-2 真实插件/适配器/MCP/Newman 集成验收
 ├── tests/api-testing-p0-test.mjs # P0-1 真实 MCP/Newman 验证（手动运行，需隔离依赖）
 ├── tests/fixtures/api-testing-p0/ # P0-1 专用依赖锁、本地执行入口、网络诊断钩子
+├── server/agent/lazy-tools-state.ts # 仅按真实工具调用/成功加载回执恢复延迟工具名单
+├── tests/tool-context-budget-test.mjs # 真实宿主/SDK 出站 Schema 预算与插件/恢复回归（本地 mock）
 ├── tests/                      # 单测与集成/UI 测试；自包含用例独立端口 ≥8900 + 临时 data-dir，外部依赖用例见 development.md
 │   ├── run-smoke.mjs           # 零 token 协议冒烟聚合跑器（ALL 列表；插件后台作业/目录同步 plugin-jobs-test、多根工作区
 │   │                           #   workspace-roots-test 都在里面）

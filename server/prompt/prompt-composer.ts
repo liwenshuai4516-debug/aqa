@@ -302,7 +302,7 @@ function buildToolsText(inputs: PromptComposerInputs, lang: ServerLang): string 
 		visible.length > 0
 			? visible
 					.map((n) => {
-						const sig = inputs.toolSignatures?.[n] ? ` ${inputs.toolSignatures[n]}` : "";
+						const sig = !inputs.lazy && inputs.toolSignatures?.[n] ? ` ${inputs.toolSignatures[n]}` : "";
 						return `- ${n}:${sig} ${inputs.toolSnippets[n]}`;
 					})
 					.join("\n")

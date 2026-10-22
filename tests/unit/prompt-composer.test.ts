@@ -114,6 +114,12 @@ describe("resolveSectionTexts — 各来源自动内容", () => {
 		expect(zhAuto.tools).toContain("调用前先用 `load_tools` 附加上完整参数");
 	});
 
+	it("lazy tool directory omits parameter signatures; eager mode retains them", () => {
+		const source = inputs({ toolSignatures: { read: "(path: string, offset?: number)" } });
+		expect(resolveSectionTexts({ ...source, lazy: true }).tools).not.toContain("offset?");
+		expect(resolveSectionTexts(source).tools).toContain("offset?");
+	});
+
 	it("guidelines：探索引导 + 工具引导去重 + 固定两行", () => {
 		const auto = resolveSectionTexts(inputs());
 		expect(auto.guidelines).toContain("Guidelines:\n- Use bash for file operations like ls, rg, find");
