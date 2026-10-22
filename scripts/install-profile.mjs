@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /** Install optional locked tools; preserve existing non-profile dependency directories. */
 import { spawnSync } from "node:child_process";
-import { existsSync, lstatSync, mkdirSync, readlinkSync, symlinkSync, unlinkSync } from "node:fs";
+import { existsSync, lstatSync, mkdirSync, readFileSync, readlinkSync, symlinkSync, unlinkSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -20,14 +20,23 @@ export function linkProfile(root, name) {
 	// Validate every link before making changes. Never replace an installed package.
 	for (const { source, target } of links) {
 		if (!existsSync(join(source, "package.json"))) throw new Error(`Missing profile package: ${source}`);
+		const sourcePackage = JSON.parse(readFileSync(join(source, "package.json"), "utf8"));
 		let stat;
 		try {
 			stat = lstatSync(target);
 		} catch (error) {
 			if (error.code !== "ENOENT") throw error;
 		}
-		if (stat && (!stat.isSymbolicLink() || resolve(dirname(target), readlinkSync(target)) !== resolve(source)))
-			throw new Error(`Existing dependency is not owned by this profile: ${target}. Use a clean npm ci first.`);
+		if (stat && (!stat.isSymbolicLink() || resolve(dirname(target), readlinkSync(target)) !== resolve(source))) {
+			let installedPackage;
+			try {
+				installedPackage = JSON.parse(readFileSync(join(target, "package.json"), "utf8"));
+			} catch {
+				// Preserve the existing path and report the conflict below.
+			}
+			if (installedPackage?.name !== sourcePackage.name || installedPackage?.version !== sourcePackage.version)
+				throw new Error(`Existing dependency is not owned by this profile: ${target}. Use a clean npm ci first.`);
+		}
 	}
 	for (const { source, target } of links) {
 		if (existsSync(target)) continue;

@@ -22,15 +22,33 @@ afterEach(() => {
 describe("optional dependency compatibility links", () => {
 	it("restores imports from a profile and supports repeated linking", () => {
 		const root = temp();
-		for (const name of ["electron", "electron-builder"])
-			file(root, `desktop/node_modules/${name}/package.json`, JSON.stringify({ name }));
+		for (const [name, version] of [
+			["electron", "44.4.2"],
+			["electron-builder", "26.15.3"],
+		])
+			file(root, `desktop/node_modules/${name}/package.json`, JSON.stringify({ name, version }));
 		linkProfile(root, "desktop");
 		linkProfile(root, "desktop");
 		expect(JSON.parse(readFileSync(join(root, "node_modules/electron/package.json"), "utf8")).name).toBe("electron");
 	});
+	it("reuses exact-version root dependencies without replacing them", () => {
+		const root = temp();
+		for (const [name, version] of [
+			["electron", "44.4.2"],
+			["electron-builder", "26.15.3"],
+		]) {
+			const content = JSON.stringify({ name, version });
+			file(root, `desktop/node_modules/${name}/package.json`, content);
+			file(root, `node_modules/${name}/package.json`, content);
+		}
+		linkProfile(root, "desktop");
+		expect(readFileSync(join(root, "node_modules/electron/package.json"), "utf8")).toContain('"version":"44.4.2"');
+		expect(existsSync(join(root, "node_modules/electron"))).toBe(true);
+	});
 	it("refuses to overwrite unrelated installed dependencies without partial linking", () => {
 		const root = temp();
-		for (const name of ["electron", "electron-builder"]) file(root, `desktop/node_modules/${name}/package.json`);
+		for (const name of ["electron", "electron-builder"])
+			file(root, `desktop/node_modules/${name}/package.json`, JSON.stringify({ name, version: "44.4.2" }));
 		file(root, "node_modules/electron-builder/package.json", '{"untouched":true}');
 		expect(() => linkProfile(root, "desktop")).toThrow("not owned");
 		expect(existsSync(join(root, "node_modules/electron"))).toBe(false);
