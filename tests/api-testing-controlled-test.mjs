@@ -10,6 +10,7 @@ import { fileURLToPath } from "node:url";
 import { PluginManager } from "../server/plugins.ts";
 import { ClientSession } from "../server/agent-service.ts";
 import { ApiTestingRunner } from "../server/api-testing-runner.ts";
+import { API_FIXTURE_ISOLATION_POLICY } from "../server/api-testing-isolation.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const runtime = resolve(process.argv[2] ?? join(root, "tests/scratch/api-testing-p0-1/reproduce"));
@@ -195,6 +196,8 @@ try {
 	const success = JSON.parse((await bound.execute(ready)).content[0].text);
 	assert.equal(success.executionVerdict, "passed");
 	assert.equal(state(ready).identity.conversationId, "origin");
+	assert.equal(state(ready).isolationPolicy, API_FIXTURE_ISOLATION_POLICY);
+	assert(existsSync(join(data, "api-testing/runs", ready, "isolation.sb")));
 	assert(!alive(pid(ready)));
 	assert.equal(success.scope, "fixture");
 	await rejectedWithoutRequest(() => bound.execute(ready), /already attempted/);

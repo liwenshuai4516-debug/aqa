@@ -153,3 +153,5 @@ P1 工程验收通过后可以开展 P2 本地管理；没有用户真实环境�
 当前逐项完成审计见 [completion-audit.md](api-testing-evidence/completion-audit.md)。真实业务验收仍未完成，不将当前工程交付记为 goal 全部完成；OS 能力探测的失败记录见 isolation-followup.json。
 
 2026-10-22 续查：本机 OS + 真实 MCP/Newman 隔离补验 8 项符合预期，见 [记录](api-testing-evidence/isolation-local-mcp.md)。仅证明本机端口/合成文件边界，未开放真实目标；契约/公开前端规则已补入业务清单，可用鉴权/关联测试数据与远端隔离仍未满足。
+
+2026-10-22 宿主接入：受控 MCP/Newman 执行强制加载 macOS fixture OS profile；其他平台或缺 sandbox-exec 拒绝执行，不降级。策略进入版本指纹，旧批准失效；真实地址仍阻塞。回归与限制见 [宿主接入记录](api-testing-evidence/isolation-host.md) 和 [摘要](api-testing-evidence/isolation-host-summary.json)。

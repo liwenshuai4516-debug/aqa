@@ -1,6 +1,6 @@
 # 接口测试插件：P3-2
 
-当前提供自包含 HTTP fixture 的导入、独立评审、受控执行、问题记录、复测与报告入口。真实目标仍因文件、重定向与操作系统出口隔离缺口阻塞；已支持跨重启的整包持久化与重跑，已支持最小管理列表及仅限匿名 fixture 的宿主定时调度。
+当前提供自包含 HTTP fixture 的导入、独立评审、受控执行、问题记录、复测与报告入口。macOS fixture 已接入 OS 文件/端口限制，真实目标仍因远端出口隔离及业务鉴权/数据缺口阻塞；已支持跨重启的整包持久化与重跑，已支持最小管理列表及仅限匿名 fixture 的宿主定时调度。
 
 ## 实现与权限
 
@@ -58,7 +58,7 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 
 `node --import tsx tests/api-testing-skills-test.mjs` 将分发目录复制到临时项目，使用空 agentDir 验证真实 SDK 默认发现、宿主 skill 工具加载及禁用过滤。技能均小于 8192 bytes；它们不能替代宿主权限、评审与执行硬门禁。
 
-已复用系统配置的 GPT 完成实际生成/独立评审及真实 MCP fixture 验收，不要求额外专用配置。可写测试环境已登记，但未完成 OS 隔离、业务数据/规则/鉴权接入。完整清单及恢复条件见 [P1-4](../../docs/api-testing-evidence/P1-4.md)；不得把技能发现通过算成主流程业务验收。
+已复用系统配置的 GPT 完成实际生成/独立评审及真实 MCP fixture 验收，不要求额外专用配置。可写测试环境已登记，已接入 macOS fixture OS 隔离，尚未完成远端隔离、业务数据/鉴权及成功/清理映射接入。完整清单及恢复条件见 [P1-4](../../docs/api-testing-evidence/P1-4.md)；不得把技能发现通过算成主流程业务验收。
 
 ## P2-1 持久化与零模型复用
 
@@ -93,3 +93,7 @@ node --import tsx tests/api-testing-controlled-test.mjs tests/scratch/api-testin
 定时新/变化异常最多自动分析一次；已知重复失败不重调模型、不重复提示，恢复时给站内提示。模型只收到裁剪后的问题 ID、类别、断言名、状态码与 JSON 有效性，没有正文、凭据或任意请求权限。分析失败不重跑接口；假设不能确认根因或改写测试结论，不自动生成新套件。无外部消息或缺陷平台写入。
 
 分析保存 pending 预算认领、不可变 JSON/Markdown 修订及完成 hash manifest；原始结果不修改。中断尝试占额度，显式重分析不能无限重试。备份包含关联分析和 followup，恢复仍受同宿主签名/冲突规则限制。宿主模型接口未提供底层取消，20 秒本地退出不承诺供应商已停止计算。详见 [P3-2](../../docs/api-testing-evidence/P3-2.md)。
+
+## 宿主 OS 边界补验（2026-10-22）
+
+受控执行仅支持已验证的 macOS sandbox-exec，缺少该能力或其他平台均拒绝执行，无非隔离降级。读取限系统/依赖白名单和本 run，写入限本 run（及 /dev/null），网络限批准的 localhost 端口；仍非任意恶意原生代码沙箱。限制策略纳入资产指纹，旧批准须重新评审。真实业务和无人值守任务未开放；[接入证据](../../docs/api-testing-evidence/isolation-host.md)。

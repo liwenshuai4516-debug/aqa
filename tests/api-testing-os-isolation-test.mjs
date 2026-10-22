@@ -17,6 +17,7 @@ import { createServer } from "node:http";
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { McpClient } from "../server/mcp-bridge.ts";
+import { API_FIXTURE_ISOLATION_POLICY, prepareApiFixtureIsolation } from "../server/api-testing-isolation.ts";
 assert.equal(process.platform, "darwin", "This acceptance requires macOS; other platforms are not verified");
 assert(existsSync("/usr/bin/sandbox-exec"));
 const repo = fileURLToPath(new URL("..", import.meta.url));
@@ -30,6 +31,7 @@ const summary = {
 	task: "real-target-isolation-followup",
 	scope: "macOS restricted files and loopback port; actual MCP/Newman; no user business calls",
 	status: "running",
+	isolationPolicy: API_FIXTURE_ISOLATION_POLICY,
 	root,
 	checks,
 	events,
@@ -64,21 +66,10 @@ const listen = async (s) => {
 	assert(s.address().port >= 8900);
 };
 const active = new Set();
-const profile = (run) => `(version 1)
-(deny default)
-(allow process* sysctl-read mach-lookup signal file-map-executable)
-(allow file-read-metadata)
-(allow file-read* (literal "/") (literal "/private") (literal "/private/var") (literal "/opt")
- (subpath "/System") (subpath "/usr") (subpath "/private/preboot") (subpath "/private/var/db/dyld")
- (subpath "/private/var/db/timezone") (subpath "/private/etc") (subpath "/Library/Apple") (subpath "/dev")
- (subpath "/opt/homebrew") (subpath ${JSON.stringify(run)}) (subpath ${JSON.stringify(runtime)}))
-(allow file-write* (subpath ${JSON.stringify(run)}) (literal "/dev/null"))
-(allow network-outbound (remote ip "localhost:${allowed.address().port}"))
-`;
 function directory(name) {
 	const run = join(root, name);
 	mkdirSync(run);
-	writeFileSync(join(run, "profile.sb"), profile(run));
+	prepareApiFixtureIsolation(run, runtime, allowed.address().port);
 	return run;
 }
 const baseCollection = (url, script = 'pm.test("200",()=>pm.response.to.have.status(200));', extra = {}) => ({
@@ -131,7 +122,7 @@ async function run(name, collection, { cancel = false, expectFileDenial = false,
 				`PI_API_TEST_RUNTIME=${runtime}`,
 				"/usr/bin/sandbox-exec",
 				"-f",
-				join(dir, "profile.sb"),
+				join(dir, "isolation.sb"),
 				process.execPath,
 				join(dir, "runner.mjs"),
 			],
@@ -182,10 +173,14 @@ try {
 	writeFileSync(join(p, "inside"), "SYNTHETIC_INSIDE");
 	const code = `const f=require('fs'),c=require('child_process'),checks=[];function access(name,fn){try{fn();checks.push({name,denied:false});}catch(e){checks.push({name,denied:e.code==='EPERM'});}}access('inside-read',()=>f.readFileSync(${JSON.stringify(join(p, "inside"))}));access('outside-read',()=>f.readFileSync(${JSON.stringify(outside)}));access('symlink-read',()=>f.readFileSync(${JSON.stringify(join(p, "outside-link"))}));access('outside-write',()=>f.writeFileSync(${JSON.stringify(join(root, "outside-written"))},'synthetic'));access('inside-write',()=>f.writeFileSync(${JSON.stringify(join(p, "written"))},'synthetic'));const r=c.spawnSync(process.execPath,['-e',${JSON.stringify(`require('fs').readFileSync(${JSON.stringify(outside)})`)}],{encoding:'utf8'});checks.push({name:'child-read',denied:r.status===1&&r.stderr.includes('EPERM')});console.log(JSON.stringify(checks));`;
 	writeFileSync(join(p, "probe.cjs"), code);
-	const child = spawn("/usr/bin/sandbox-exec", ["-f", join(p, "profile.sb"), process.execPath, join(p, "probe.cjs")], {
-		cwd: p,
-		env: { HOME: p, TMPDIR: p },
-	});
+	const child = spawn(
+		"/usr/bin/sandbox-exec",
+		["-f", join(p, "isolation.sb"), process.execPath, join(p, "probe.cjs")],
+		{
+			cwd: p,
+			env: { HOME: p, TMPDIR: p },
+		},
+	);
 	let output = "",
 		errors = "";
 	child.stdout.on("data", (b) => (output += b));
@@ -245,7 +240,7 @@ try {
 		.digest("hex");
 	summary.remaining = [
 		"arbitrary remote-IP target restriction is not proven",
-		"production runner does not use this exploratory OS profile",
+		"host runner is restricted to macOS loopback fixtures; remote integration remains unverified",
 		"real business authentication and test records are unavailable",
 		"system/runtime read roots and mach services are not a general hostile-native-code sandbox",
 	];

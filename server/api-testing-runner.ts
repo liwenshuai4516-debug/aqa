@@ -2,6 +2,7 @@
 import { createHash, randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, realpathSync, writeFileSync, symlinkSync, existsSync } from "node:fs";
 import { isAbsolute, join, relative, resolve } from "node:path";
+import { API_FIXTURE_ISOLATION_POLICY, prepareApiFixtureIsolation } from "./api-testing-isolation.js";
 import { McpClient } from "./mcp-bridge.js";
 import { pathToFileURL } from "node:url";
 import type { PluginApiScheduleHost, PluginModelComplete, PluginMcpRequest, PluginToolContext } from "./plugin-mcp.js";
@@ -117,7 +118,9 @@ export class ApiTestingRunner {
 		const executionSources = ["runner.mjs", "network-guard.cjs", "package-lock.json"].map((name) =>
 			readFileSync(join(this.pluginRoot, name)),
 		);
-		const fingerprint = sha256(Buffer.concat([...sources, ...executionSources]));
+		const fingerprint = sha256(
+			Buffer.concat([...sources, ...executionSources, Buffer.from(API_FIXTURE_ISOLATION_POLICY)]),
+		);
 		if (this.workflowFingerprint !== fingerprint) {
 			if (this.workflow) await (await this.workflow).dispose();
 			this.workflow = undefined;
@@ -219,7 +222,7 @@ export class ApiTestingRunner {
 			throw new Error("Approved runner changed");
 		if (this.attempted.has(request.runRef)) throw new Error("Run was already attempted; never resend unknown writes");
 		if (this.activeProjects.has(approval.identity.cwd)) throw new Error("Project already has an active API test run");
-		if (process.platform === "win32") throw new Error("Fixture runner isolation is not verified on Windows");
+		if (process.platform !== "darwin") throw new Error("Fixture OS isolation is only verified on macOS");
 		this.attempted.add(request.runRef);
 		this.activeProjects.add(approval.identity.cwd);
 		const runRoot = resolve(this.outputRoot, request.runRef);
@@ -228,6 +231,7 @@ export class ApiTestingRunner {
 			runId: request.runRef,
 			identity,
 			collectionHash: approval.collectionHash,
+			isolationPolicy: API_FIXTURE_ISOLATION_POLICY,
 			status: "running",
 			executionVerdict: "unknown",
 			evidencePath: join(runRoot, "result.json"),
@@ -260,6 +264,7 @@ export class ApiTestingRunner {
 					`PI_API_TEST_RUN_ROOT=${runRoot}`,
 					`PI_API_TEST_FIXTURE_PORT=${new URL(approval.fixtureOrigin).port}`,
 					`PI_API_TEST_NETWORK_LOG=${join(runRoot, "network.jsonl")}`,
+					...prepareApiFixtureIsolation(runRoot, this.pluginRoot, Number(new URL(approval.fixtureOrigin).port)),
 					process.execPath,
 					"--require",
 					join(runRoot, "network-guard.cjs"),
