@@ -1,6 +1,6 @@
 {
 	"date": "2026-10-22",
-	"status": "not-proven",
+	"status": "local-OS-MCP-boundary-passed; real-target-unproven",
 	"scope": "macOS built-in isolation capability probe; no Newman or business requests",
 	"attempts": [
 		{
@@ -54,11 +54,471 @@
 			"deniedHits": 0,
 			"stdout": "",
 			"stderr": ""
+		},
+		{
+			"date": "2026-10-22T00:51:23.661Z",
+			"mode": "broad-read",
+			"scope": "OS probe only, synthetic canaries/local ports; not Newman or business acceptance",
+			"root": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-isolation-2yAWPI",
+			"node": "/opt/homebrew/Cellar/node/23.10.0_1/bin/node",
+			"exitCode": 0,
+			"termination": {
+				"code": 0,
+				"signal": null
+			},
+			"allowedHits": 2,
+			"deniedHits": 0,
+			"stdout": "[{\"name\":\"inside-read\",\"result\":\"allowed\",\"value\":\"synthetic-inside-content\"},{\"name\":\"outside-read\",\"result\":\"allowed\",\"value\":\"synthetic-outside-content\"},{\"name\":\"symlink-outside-read\",\"result\":\"allowed\",\"value\":\"synthetic-outside-content\"},{\"name\":\"outside-write\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"inside-write\",\"result\":\"allowed\"},{\"name\":\"child-outside-read\",\"result\":\"allowed\",\"value\":{\"status\":0,\"denied\":false}},{\"name\":\"allowed-http\",\"result\":\"allowed\"},{\"name\":\"denied-http\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"redirect-denied-port\",\"result\":\"denied\",\"code\":\"EPERM\"}]\n",
+			"stderr": ""
+		},
+		{
+			"date": "2026-10-22T00:51:23.748Z",
+			"mode": "broad-write",
+			"scope": "OS probe only, synthetic canaries/local ports; not Newman or business acceptance",
+			"root": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-isolation-r9oLjo",
+			"node": "/opt/homebrew/Cellar/node/23.10.0_1/bin/node",
+			"exitCode": null,
+			"termination": {
+				"code": null,
+				"signal": "SIGABRT"
+			},
+			"allowedHits": 0,
+			"deniedHits": 0,
+			"stdout": "",
+			"stderr": ""
+		},
+		{
+			"date": "2026-10-22T00:51:53.444Z",
+			"mode": "restricted",
+			"scope": "OS probe only, synthetic canaries/local ports; not Newman or business acceptance",
+			"root": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-isolation-2xDTqG",
+			"node": "/opt/homebrew/Cellar/node/23.10.0_1/bin/node",
+			"exitCode": null,
+			"termination": {
+				"code": null,
+				"signal": "SIGABRT"
+			},
+			"allowedHits": 0,
+			"deniedHits": 0,
+			"stdout": "",
+			"stderr": ""
+		},
+		{
+			"date": "2026-10-22T00:52:16.909Z",
+			"mode": "restricted",
+			"scope": "OS probe only, synthetic canaries/local ports; not Newman or business acceptance",
+			"root": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-isolation-8FlEr8",
+			"node": "/opt/homebrew/Cellar/node/23.10.0_1/bin/node",
+			"exitCode": 0,
+			"termination": {
+				"code": 0,
+				"signal": null
+			},
+			"allowedHits": 2,
+			"deniedHits": 0,
+			"stdout": "[{\"name\":\"inside-read\",\"result\":\"allowed\",\"value\":\"synthetic-inside-content\"},{\"name\":\"outside-read\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"symlink-outside-read\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"outside-write\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"inside-write\",\"result\":\"allowed\"},{\"name\":\"child-outside-read\",\"result\":\"allowed\",\"value\":{\"status\":1,\"denied\":true}},{\"name\":\"allowed-http\",\"result\":\"allowed\"},{\"name\":\"denied-http\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"redirect-denied-port\",\"result\":\"denied\",\"code\":\"EPERM\"}]\n",
+			"stderr": ""
+		},
+		{
+			"date": "2026-10-22T00:52:31.299Z",
+			"mode": "restricted",
+			"removed": "db",
+			"scope": "OS probe only, synthetic canaries/local ports; not Newman or business acceptance",
+			"root": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-isolation-BIm8e6",
+			"node": "/opt/homebrew/Cellar/node/23.10.0_1/bin/node",
+			"exitCode": 0,
+			"termination": {
+				"code": 0,
+				"signal": null
+			},
+			"allowedHits": 2,
+			"deniedHits": 0,
+			"stdout": "[{\"name\":\"inside-read\",\"result\":\"allowed\",\"value\":\"synthetic-inside-content\"},{\"name\":\"outside-read\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"symlink-outside-read\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"outside-write\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"inside-write\",\"result\":\"allowed\"},{\"name\":\"child-outside-read\",\"result\":\"allowed\",\"value\":{\"status\":1,\"denied\":true}},{\"name\":\"allowed-http\",\"result\":\"allowed\"},{\"name\":\"denied-http\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"redirect-denied-port\",\"result\":\"denied\",\"code\":\"EPERM\"}]\n",
+			"stderr": ""
+		},
+		{
+			"date": "2026-10-22T00:52:31.466Z",
+			"mode": "restricted",
+			"removed": "library",
+			"scope": "OS probe only, synthetic canaries/local ports; not Newman or business acceptance",
+			"root": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-isolation-Zsw88E",
+			"node": "/opt/homebrew/Cellar/node/23.10.0_1/bin/node",
+			"exitCode": 0,
+			"termination": {
+				"code": 0,
+				"signal": null
+			},
+			"allowedHits": 2,
+			"deniedHits": 0,
+			"stdout": "[{\"name\":\"inside-read\",\"result\":\"allowed\",\"value\":\"synthetic-inside-content\"},{\"name\":\"outside-read\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"symlink-outside-read\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"outside-write\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"inside-write\",\"result\":\"allowed\"},{\"name\":\"child-outside-read\",\"result\":\"allowed\",\"value\":{\"status\":1,\"denied\":true}},{\"name\":\"allowed-http\",\"result\":\"allowed\"},{\"name\":\"denied-http\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"redirect-denied-port\",\"result\":\"denied\",\"code\":\"EPERM\"}]\n",
+			"stderr": ""
+		},
+		{
+			"date": "2026-10-22T00:52:31.534Z",
+			"mode": "restricted",
+			"removed": "parents",
+			"scope": "OS probe only, synthetic canaries/local ports; not Newman or business acceptance",
+			"root": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-isolation-kV57Nn",
+			"node": "/opt/homebrew/Cellar/node/23.10.0_1/bin/node",
+			"exitCode": null,
+			"termination": {
+				"code": null,
+				"signal": "SIGABRT"
+			},
+			"allowedHits": 0,
+			"deniedHits": 0,
+			"stdout": "",
+			"stderr": ""
+		},
+		{
+			"date": "2026-10-22T00:53:03.553Z",
+			"mode": "restricted",
+			"scope": "OS probe only, synthetic canaries/local ports; not Newman or business acceptance",
+			"root": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-isolation-vPO7wi",
+			"node": "/opt/homebrew/Cellar/node/23.10.0_1/bin/node",
+			"exitCode": 0,
+			"termination": {
+				"code": 0,
+				"signal": null
+			},
+			"allowedHits": 2,
+			"deniedHits": 0,
+			"stdout": "[{\"name\":\"inside-read\",\"result\":\"allowed\",\"value\":\"synthetic-inside-content\"},{\"name\":\"outside-read\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"symlink-outside-read\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"outside-write\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"inside-write\",\"result\":\"allowed\"},{\"name\":\"child-outside-read\",\"result\":\"allowed\",\"value\":{\"status\":1,\"denied\":true}},{\"name\":\"allowed-http\",\"result\":\"allowed\"},{\"name\":\"denied-http\",\"result\":\"denied\",\"code\":\"EPERM\"},{\"name\":\"redirect-denied-port\",\"result\":\"denied\",\"code\":\"EPERM\"}]\n",
+			"stderr": ""
 		}
 	],
 	"controls": {
 		"allowDefaultNode": "startup succeeded; no boundary claim",
 		"denyDefaultBroadFileNode": "startup succeeded with broad file allowance; not acceptable isolation"
 	},
-	"conclusion": "Numeric-IP network rule rejected; localhost accepted syntactically. Restricted file profile aborts Node before probe. No target widened, no personal credentials read. Further isolation design and real business credentials remain required."
+	"conclusion": "Exact system parent-directory read rules allow Node startup; with restricted canary/runtime read roots and run-local writes, actual MCP/Newman verifies OS file/loopback-port boundaries. Native broad controls are not proof. Numeric remote-IP restriction and production integration remain unproven. No real business API requests sent.",
+	"followup": {
+		"summary": {
+			"task": "real-target-isolation-followup",
+			"scope": "macOS restricted files and loopback port; actual MCP/Newman; no user business calls",
+			"status": "passed-local-OS-MCP-boundary-only",
+			"root": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-mcp-Vl2leB",
+			"checks": [
+				{
+					"name": "OS-denies-outside-file-symlink-write-and-inherited-child-read",
+					"status": "passed",
+					"evidence": [
+						{
+							"name": "inside-read",
+							"denied": false
+						},
+						{
+							"name": "outside-read",
+							"denied": true
+						},
+						{
+							"name": "symlink-read",
+							"denied": true
+						},
+						{
+							"name": "outside-write",
+							"denied": true
+						},
+						{
+							"name": "inside-write",
+							"denied": false
+						},
+						{
+							"name": "child-read",
+							"denied": true
+						}
+					]
+				},
+				{
+					"name": "actual-MCP-and-unmodified-pinned-Newman-pass-inside-OS-boundary",
+					"status": "passed",
+					"evidence": {
+						"runId": "positive",
+						"status": "completed",
+						"executionVerdict": "passed",
+						"pid": 3311,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false,
+						"requests": {
+							"total": 1,
+							"pending": 0,
+							"failed": 0
+						},
+						"assertions": {
+							"total": 1,
+							"pending": 0,
+							"failed": 0
+						},
+						"failures": 0,
+						"executions": [
+							{
+								"caseId": "probe",
+								"method": "GET",
+								"status": 200,
+								"response": {
+									"jsonValid": true
+								},
+								"requestError": null,
+								"assertions": [
+									{
+										"name": "200",
+										"passed": true,
+										"skipped": false,
+										"error": null
+									}
+								]
+							}
+						],
+						"durationMs": 1166,
+						"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+					}
+				},
+				{
+					"name": "actual-assertion-failure-is-retained",
+					"status": "passed",
+					"evidence": "failed"
+				},
+				{
+					"name": "OS-denies-other-port-without-JavaScript-network-guard",
+					"status": "passed",
+					"evidence": {
+						"runId": "denied-port",
+						"status": "completed",
+						"executionVerdict": "error",
+						"pid": 3347,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false,
+						"requests": {
+							"total": 1,
+							"pending": 0,
+							"failed": 1
+						},
+						"assertions": {
+							"total": 1,
+							"pending": 0,
+							"failed": 1
+						},
+						"failures": 2,
+						"executions": [
+							{
+								"caseId": "probe",
+								"method": "GET",
+								"status": null,
+								"response": null,
+								"requestError": {
+									"code": "EPERM"
+								},
+								"assertions": [
+									{
+										"name": "200",
+										"passed": false,
+										"skipped": false,
+										"error": {
+											"name": "AssertionError",
+											"message": "Assertion did not match its frozen expectation; raw values omitted"
+										}
+									}
+								]
+							}
+						],
+						"durationMs": 1143,
+						"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+					}
+				},
+				{
+					"name": "Newman-followed-redirect-cannot-reach-unapproved-port",
+					"status": "passed",
+					"evidence": {
+						"runId": "redirect",
+						"status": "completed",
+						"executionVerdict": "error",
+						"pid": 3348,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false,
+						"requests": {
+							"total": 1,
+							"pending": 0,
+							"failed": 1
+						},
+						"assertions": {
+							"total": 1,
+							"pending": 0,
+							"failed": 1
+						},
+						"failures": 2,
+						"executions": [
+							{
+								"caseId": "probe",
+								"method": "GET",
+								"status": null,
+								"response": null,
+								"requestError": {
+									"code": "EPERM"
+								},
+								"assertions": [
+									{
+										"name": "200",
+										"passed": false,
+										"skipped": false,
+										"error": {
+											"name": "AssertionError",
+											"message": "Assertion did not match its frozen expectation; raw values omitted"
+										}
+									}
+								]
+							}
+						],
+						"durationMs": 1154,
+						"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+					}
+				},
+				{
+					"name": "Newman-can-upload-explicit-inside-file-while-outside-remains-denied",
+					"status": "passed",
+					"evidence": {
+						"runId": "inside-file-body",
+						"status": "completed",
+						"executionVerdict": "passed",
+						"pid": 3349,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false,
+						"requests": {
+							"total": 1,
+							"pending": 0,
+							"failed": 0
+						},
+						"assertions": {
+							"total": 1,
+							"pending": 0,
+							"failed": 0
+						},
+						"failures": 0,
+						"executions": [
+							{
+								"caseId": "probe",
+								"method": "POST",
+								"status": 200,
+								"response": {
+									"jsonValid": true
+								},
+								"requestError": null,
+								"assertions": [
+									{
+										"name": "200",
+										"passed": true,
+										"skipped": false,
+										"error": null
+									}
+								]
+							}
+						],
+						"durationMs": 1156,
+						"evidenceProjection": "fixture allowlist; headers/body fields omitted"
+					}
+				},
+				{
+					"name": "Newman-file-body-cannot-read-or-upload-outside-canary",
+					"status": "passed",
+					"evidence": {
+						"runId": "outside-file-body",
+						"status": "running",
+						"executionVerdict": "unknown",
+						"pid": 3362,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false
+					}
+				},
+				{
+					"name": "cancellation-exits-own-sandbox-process-and-retains-unknown-without-retry",
+					"status": "passed",
+					"evidence": {
+						"runId": "cancel",
+						"status": "running",
+						"executionVerdict": "unknown",
+						"pid": 3364,
+						"cloudKeyPresent": false,
+						"parentCanaryPresent": false
+					}
+				}
+			],
+			"events": [
+				{
+					"target": "allowed",
+					"url": "/ok",
+					"bytes": 0,
+					"containsCanary": false
+				},
+				{
+					"target": "allowed",
+					"url": "/ok",
+					"bytes": 0,
+					"containsCanary": false
+				},
+				{
+					"target": "allowed",
+					"url": "/redirect",
+					"bytes": 0,
+					"containsCanary": false
+				},
+				{
+					"target": "allowed",
+					"url": "/inside-file",
+					"bytes": 17,
+					"containsCanary": false
+				},
+				{
+					"target": "allowed",
+					"url": "/slow",
+					"bytes": 0,
+					"containsCanary": false
+				}
+			],
+			"runnerSha256": "4dc40a3399835899088399abd7db1b82a298761b68a6a93f71abfee35029a2af",
+			"remaining": [
+				"arbitrary remote-IP target restriction is not proven",
+				"production runner does not use this exploratory OS profile",
+				"real business authentication and test records are unavailable",
+				"system/runtime read roots and mach services are not a general hostile-native-code sandbox"
+			]
+		},
+		"McpAttempts": [
+			{
+				"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-mcp-bG80L9",
+				"status": "failed",
+				"checksPassed": 5,
+				"error": "Error: [mcp:os-probe] 进程退出 (1)\n    at ChildProcess.<anonymous> (/Users/liyingjun/Desktop/SW-QA/15-aqa/server/mcp-bridge.ts:196:20)\n    at ChildProcess.emit (node:events:507:28)\n    at ChildProcess._handle.onexit (node:internal/child_process:294:12)"
+			},
+			{
+				"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-mcp-I8kNWh",
+				"status": "failed",
+				"checksPassed": 5,
+				"error": "Error: [mcp:os-probe] 进程退出 (1)\n    at ChildProcess.<anonymous> (/Users/liyingjun/Desktop/SW-QA/15-aqa/server/mcp-bridge.ts:196:20)\n    at ChildProcess.emit (node:events:507:28)\n    at ChildProcess._handle.onexit (node:internal/child_process:294:12)"
+			},
+			{
+				"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-mcp-aQYfZ7",
+				"status": "passed-local-OS-MCP-boundary-only",
+				"checksPassed": 7,
+				"error": null
+			},
+			{
+				"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-mcp-0UdxUP",
+				"status": "passed-local-OS-MCP-boundary-only",
+				"checksPassed": 7,
+				"error": null
+			},
+			{
+				"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-mcp-Vl2leB",
+				"status": "passed-local-OS-MCP-boundary-only",
+				"checksPassed": 8,
+				"error": null
+			}
+		],
+		"validation": {
+			"typecheck": "passed",
+			"mcpBridgeUnits": "33/33",
+			"format": "passed",
+			"lint": "passed",
+			"protocol": "main passed; tag heuristic SKIP"
+		}
+	}
 }

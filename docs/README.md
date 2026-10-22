@@ -30,6 +30,7 @@
 
 ## 功能设计提案
 
+- [接口测试本机 OS/MCP 隔离补验](api-testing-evidence/isolation-local-mcp.md)：合成文件、进程继承与端口边界；真实目标仍未开放。
 - [接口测试当前完成审计](api-testing-evidence/completion-audit.md)：工程/实际模型证据、真实业务缺口和按需延后项。
 - [P3-2 持续问题跟踪](api-testing-evidence/P3-2.md)：历史关联、预算分析修订、已知异常零重复调用及站内变化提示。
 - [P3-1 宿主定时执行](api-testing-evidence/P3-1.md)：固定 fixture 授权、计划时间账本、严格保存和停止/恢复。

@@ -151,3 +151,5 @@ P1 工程验收通过后可以开展 P2 本地管理；没有用户真实环境�
 完成一个阶段的标准：对应任务有证据、关键失败路径验证、文档与代码一致、无冒充成功的 SKIP/unknown；未解决事项明确归属。不要用测试数量或提交数量代替业务验收。
 
 当前逐项完成审计见 [completion-audit.md](api-testing-evidence/completion-audit.md)。真实业务验收仍未完成，不将当前工程交付记为 goal 全部完成；OS 能力探测的失败记录见 isolation-followup.json。
+
+2026-10-22 续查：本机 OS + 真实 MCP/Newman 隔离补验 8 项符合预期，见 [记录](api-testing-evidence/isolation-local-mcp.md)。仅证明本机端口/合成文件边界，未开放真实目标；契约/公开前端规则已补入业务清单，可用鉴权/关联测试数据与远端隔离仍未满足。
