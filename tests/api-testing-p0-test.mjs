@@ -1,3 +1,4 @@
+import { apiTestRuntime } from "./lib/api-test-runtime.mjs";
 /** P0-1 real stdio MCP → pinned Postman executor → Newman. Run with --import tsx. */
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
@@ -13,7 +14,7 @@ import { McpClient } from "../server/mcp/mcp-bridge.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const fixture = join(root, "tests/fixtures/api-testing-p0");
-const runtime = resolve(process.argv[2] ?? join(root, "tests/scratch/api-testing-p0-1/runtime"));
+const runtime = resolve(process.argv[2] ?? apiTestRuntime());
 const require = createRequire(join(runtime, "package.json"));
 const upstream = require.resolve("@postman/postman-mcp-server");
 const output = mkdtempSync(join(tmpdir(), "api-testing-p0-1-"));

@@ -107,3 +107,7 @@ spawn 后记录 `server.pid`，测试收尾（含异常 catch 路径）用 `proc
 **Playwright 脚本**：Chrome 路径不再写死——`tests/lib/chrome.mjs` 逐平台探测（`PI_WEB_CHROME` 可覆盖）。跨平台两条硬规则：① 脚本里取仓库根用 `fileURLToPath(new URL("..", import.meta.url))`，`URL.pathname` 在 Windows 上是 `/E:/...`，`spawn` 的 cwd/脚本参数都会 ENOENT；② 服务端进程清理在 win32 用 `tests/lib/port-utils.mjs` 的 `freePort(port)`（Windows 没有负数 PID 的进程组，`process.kill(-pid)` 静默失败会留下监听进程）。
 
 **测试脚本里禁止在 try 块内直接 `process.exit`**：`process.exit` 会跳过 `finally`，spawn 的 server 永远不会被杀 → 每次运行泄漏一个进程，下次跑同端口测试报 "port busy — abort"（steer-queue-smoke 踩过，已修：设 ok 标志 + finally 里杀进程并等端口释放再 exit）。
+
+## 可选开发依赖与构建分层
+
+源码根 `npm ci` 只安装核心依赖。完整五配置类型检查另需 `npm run install:desktop`，浏览器/UI 测试另需 `npm run install:e2e`；vendor 只在重建时安装。API 测试共享依赖使用 `npm run install:api-tests`。升级已有安装、兼容链接与 CI 规则见 [项目精简](project-slimming.md)。

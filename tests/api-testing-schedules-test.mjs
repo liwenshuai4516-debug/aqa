@@ -1,3 +1,4 @@
+import { apiTestRuntime } from "./lib/api-test-runtime.mjs";
 /** P2-1: real host/MCP/Newman persistence; review is an explicitly marked control stub. */
 import assert from "node:assert/strict";
 import {
@@ -20,7 +21,7 @@ import { PluginManager } from "../server/plugins.ts";
 import { ClientSession } from "../server/agent/agent-service.ts";
 import { ApiTestingRunner } from "../server/api-testing-runner.ts";
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtime = resolve(process.argv[2] ?? "tests/scratch/api-testing-p1-1/runtime");
+const runtime = resolve(process.argv[2] ?? apiTestRuntime());
 const output = mkdtempSync(join(tmpdir(), "api-testing-p3-1-")),
 	project = join(output, "project"),
 	data = join(output, "data"),

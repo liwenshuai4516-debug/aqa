@@ -1,0 +1,8 @@
+{
+	"status": "PASS",
+	"productionInstall": true,
+	"health": true,
+	"web": true,
+	"optionalToolsAbsent": true,
+	"modelCalls": 0
+}

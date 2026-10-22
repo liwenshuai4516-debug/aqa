@@ -1,3 +1,4 @@
+import { apiTestRuntime } from "./lib/api-test-runtime.mjs";
 /** macOS OS boundary acceptance: synthetic files/local ports only; not a real-target authorization. */
 import assert from "node:assert/strict";
 import {
@@ -21,7 +22,7 @@ import { API_FIXTURE_ISOLATION_POLICY, prepareApiFixtureIsolation } from "../ser
 assert.equal(process.platform, "darwin", "This acceptance requires macOS; other platforms are not verified");
 assert(existsSync("/usr/bin/sandbox-exec"));
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtime = realpathSync(resolve(process.argv[2] ?? "tests/scratch/api-testing-p1-1/runtime"));
+const runtime = realpathSync(resolve(process.argv[2] ?? apiTestRuntime()));
 const root = realpathSync(mkdtempSync(join(tmpdir(), "api-testing-os-mcp-")));
 const outside = join(root, "outside-canary");
 writeFileSync(outside, "SYNTHETIC_OS_CANARY");

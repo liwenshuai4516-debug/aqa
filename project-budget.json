@@ -1,0 +1,18 @@
+{
+	"trackedBytes": {
+		"AGENTS.md": 12000,
+		"docs/desktop-delivery/evidence": 63696818,
+		"assets/demo-video.mp4": 20012405,
+		"plugins/mermaid/client/vendor": 5346437,
+		"plugins/run-trace/client/vendor": 568528
+	},
+	"rootLockedPackages": 650,
+	"localPaths": [
+		"node_modules",
+		"desktop/node_modules",
+		"tools/vendor/node_modules",
+		"tools/e2e/node_modules",
+		"plugins/api-testing/node_modules",
+		"tests/scratch"
+	]
+}

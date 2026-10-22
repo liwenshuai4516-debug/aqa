@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [master, main]
   pull_request:
-    branches: [main]
+    branches: [master, main]
   # 全量冒烟 nightly（北京时间午夜）：PR 只跑 --core 快检，慢/重测试由这里兜底。
   schedule:
     - cron: "0 16 * * *"
@@ -24,10 +24,17 @@ jobs:
           # 里跑它自己的 `npm ci`（那个包有自己的 66 个依赖 + 自己的 esbuild）。
           cache-dependency-path: |
             package-lock.json
+            desktop/package-lock.json
+            tools/e2e/package-lock.json
+            tools/vendor/package-lock.json
             plugins/vscode-editor/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          npm run install:desktop
+          npm run install:e2e
+          npm run install:vendor
 
       # 代码格式（prettier；失败先修格式：npm run format）
       - name: Check formatting
@@ -48,11 +55,14 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      - name: Check project budgets
+        run: npm run size:check
+
       - name: Build
         run: npm run build
 
       # 入库的构建产物必须与 src/ 同步：改了插件 src/ 却忘了重新生成 bundle，这里直接红。
-      # · mermaid / run-trace 的 vendor bundle 已由上面的 `npm run build` 生成，直接校验；
+      # · mermaid / run-trace 的 vendor bundle 已由本步骤的 `npm run build:vendor` 生成，直接校验；
       # · db-client 的 bundle 无第三方依赖，用根依赖里的 esbuild 就能打；
       # · vscode-editor 的 bundle 要**它自己的** 66 个包（CodeMirror / xterm / 自己锁定的
       #   esbuild，见该目录 package.json），所以先在里面 `npm ci`；
@@ -61,6 +71,7 @@ jobs:
       # 必须在各自插件目录里跑 —— 在仓库根跑会报 `Could not resolve "src/client.js"`。
       - name: Check committed plugin bundles are up to date
         run: |
+          npm run build:vendor
           (cd plugins/vscode-editor && npm ci --no-audit --no-fund && node build.mjs)
           (cd plugins/db-client && node build.mjs)
           git diff --exit-code -- \

@@ -30,8 +30,15 @@ jobs:
         with:
           node-version: "24.19.0"
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            desktop/package-lock.json
+            tools/e2e/package-lock.json
       - name: Install locked dependencies including bundled SDK
-        run: npm ci --include=dev --include=optional
+        run: |
+          npm ci --include=dev --include=optional
+          npm run install:desktop
+          npm run install:e2e
       - name: Protected-source gate
         run: node scripts/check-desktop-baseline.mjs
       - name: Typecheck
@@ -47,7 +54,7 @@ jobs:
       - name: Original integration regression
         run: node tests/run-smoke.mjs --no-build
       - name: Package confirmed architecture without publishing
-        run: npx electron-builder -c desktop/electron-builder.yml --${{ matrix.target }} --${{ matrix.arch }} --publish never
+        run: npm run desktop:package -- --${{ matrix.target }} --${{ matrix.arch }} --publish never
       - name: Verify actual package resources
         run: node scripts/check-desktop-package.mjs "${{ matrix.appRoot }}"
       - name: Generate checksums

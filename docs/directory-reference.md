@@ -388,3 +388,13 @@ web/src/
 手动目标专用凭据：`server/api-testing-credential.ts` 读取并验证绑定项目/目标的短期测试 token 引用，`api-testing-runner.ts` 负责私有交付与撤销清理；`tests/api-testing-target-test.mjs` 使用合成凭据验证，见 [凭据验收](api-testing-evidence/credential-host.md)。
 
 API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配置技能与宿主插件，拒绝覆盖其他安装；`tests/unit/api-testing-registration.test.ts` 验证配置保留/冲突，`tests/api-testing-visibility-test.mjs` 验证桌面实际可见与快捷操作。见 [验收](api-testing-visibility.md)。
+
+## 精简与依赖工具
+
+- `desktop/package*.json`：桌面可选开发工具。
+- `tools/vendor/package*.json`、`tools/e2e/package*.json`：vendor 与 E2E 独立锁文件。
+- `scripts/install-profile.mjs`、`scripts/run-profile.mjs`：可选工具安装、兼容链接和本地执行。
+- `scripts/project-budget.mjs`、`project-budget.json`：固定体积预算及本机目录统计。
+- `scripts/archive-evidence.mjs`：外部证据副本、校验索引，不删除原件。
+- `tests/lib/api-test-runtime.mjs`：共享 API 依赖与每次隔离的源码副本。
+- `tests/unit/project-slimming.test.ts`：安装冲突与归档完整性验证。

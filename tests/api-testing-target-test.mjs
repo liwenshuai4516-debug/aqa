@@ -1,3 +1,4 @@
+import { apiTestRuntime } from "./lib/api-test-runtime.mjs";
 /** Host target/relay acceptance; real plugin/MCP/Newman, explicit review stub, synthetic data. */
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
@@ -22,9 +23,7 @@ import { PluginManager } from "../server/plugins.ts";
 import { ClientSession } from "../server/agent/agent-service.ts";
 import { ApiTestingRunner } from "../server/api-testing-runner.ts";
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtime = resolve(
-	process.argv.slice(2).find((a) => !a.startsWith("--")) ?? "tests/scratch/api-testing-p1-1/runtime",
-);
+const runtime = resolve(process.argv.slice(2).find((a) => !a.startsWith("--")) ?? apiTestRuntime());
 const output = mkdtempSync(join(tmpdir(), "api-testing-target-"));
 const checks = [],
 	hits = [],

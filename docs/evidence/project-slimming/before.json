@@ -1,0 +1,12 @@
+{
+	"commit": "c1a74282bb8a0f013ca0b88cd04d4cf0897a9011",
+	"agentsBytes": 50216,
+	"rootLockedPackages": 979,
+	"disk": {
+		"node_modules": "1328548 KiB",
+		"node_modules/electron": "318228 KiB",
+		"tests/scratch": "604056 KiB",
+		"docs/desktop-delivery/evidence": "66096 KiB"
+	},
+	"buildSeconds": 3.55
+}

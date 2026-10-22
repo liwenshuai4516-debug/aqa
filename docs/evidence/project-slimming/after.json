@@ -1,0 +1,95 @@
+{
+	"baselineCommit": "c1a74282bb8a0f013ca0b88cd04d4cf0897a9011",
+	"agentsBytes": {
+		"before": 50216,
+		"after": 7830
+	},
+	"rootLockedPackages": {
+		"before": 979,
+		"after": 612
+	},
+	"diskKiB": {
+		"coreInstall": 532368,
+		"oldFullDevelopmentInstall": 1328548
+	},
+	"buildSeconds": {
+		"baselineSingleRun": 3.55,
+		"afterSingleRun": 3.79,
+		"conclusion": "No reliable speed improvement established; ordinary build no longer regenerates vendor."
+	},
+	"checks": {
+		"minimalBuildAndCoreTypecheck": "PASS; all optional packages absent",
+		"fullTypecheck": "PASS",
+		"relatedUnitTests": {
+			"passed": 55,
+			"failed": 0
+		},
+		"coreSmoke": {
+			"passed": 22,
+			"failed": 0
+		},
+		"apiFixtures": {
+			"p0": 15,
+			"suite": 10,
+			"review": 11,
+			"workflow": 17,
+			"scope": "local fixture; explicit model stubs; no business requests"
+		},
+		"uiIntegration": {
+			"passed": 10,
+			"scope": "actual local Chromium/SDK/MCP, no model or business request"
+		},
+		"productionInstall": "PASS; real tgz install with --omit=dev, isolated health and web checks",
+		"desktopPackage": "PASS; macOS arm64 directory package, resources and Electron Node imports; unsigned; native UI not exercised",
+		"vendorRebuild": "PASS; output byte-identical to tracked bundles",
+		"formatLintProtocolDiffCheck": "PASS",
+		"e2eHostPeers": "PASS; --omit=peer avoids duplicate SDK/typebox; UI 10 checks rerun successfully",
+		"externalArchive": "PASS; 5 files copied, SHA-256 verified; originals retained; no upload"
+	},
+	"fullUnitRun": {
+		"passed": 5228,
+		"failed": 2,
+		"skipped": 9,
+		"baselineReproducedFailures": [
+			"plugin-sdk-mock: SDK_VERSION 0.1.2 vs package.json 0.1.3",
+			"link-plugins: rmSync fails for directory link under current Node"
+		]
+	},
+	"preserved": [
+		"historical evidence, video and offline bundles",
+		"existing main-workspace node_modules and pinned old API runtimes",
+		"unrelated .watermate and data-space plugin changes"
+	],
+	"notExecuted": [
+		"Windows/Linux installation and packaging",
+		"signed installer and native window regression",
+		"remote evidence upload and plugin release migration",
+		"paid models and real business API"
+	],
+	"actualModelCalls": 0,
+	"businessRequests": 0,
+	"mainIntegration": {
+		"parentCommit": "2fdfedd7008cc74de87f65a597585105a2197707",
+		"build": "PASS",
+		"fullTypecheck": "PASS",
+		"relatedUnitTests": {
+			"passed": 55,
+			"failed": 0
+		},
+		"coreSmoke": {
+			"passed": 21,
+			"failed": 1,
+			"failedTest": "plugin-scaffold-test: ui-slot activation log missing",
+			"targetedRerun": "FAIL; same missing log",
+			"cause": "unconfirmed; isolated worktree core suite passed 22/22"
+		},
+		"lintProtocolBudgets": "PASS"
+	},
+	"cleanup": {
+		"scope": "owned isolated verification worktree only",
+		"removedAllocatedKiBBeforeDeletion": 2198992,
+		"approxGiB": 2.1,
+		"mainWorkspaceDependenciesUnchanged": true,
+		"historicalEvidenceUnchanged": true
+	}
+}

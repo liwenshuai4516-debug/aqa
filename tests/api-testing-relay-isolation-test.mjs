@@ -1,3 +1,4 @@
+import { apiTestRuntime } from "./lib/api-test-runtime.mjs";
 /** Product fixed TCP transport with real MCP/Newman and OS profile; no business acceptance. */
 import assert from "node:assert/strict";
 import { createServer as httpServer } from "node:http";
@@ -7,9 +8,7 @@ import { join, resolve } from "node:path";
 import { McpClient } from "../server/mcp/mcp-bridge.ts";
 import { prepareApiFixtureIsolation } from "../server/api-testing-isolation.ts";
 import { startApiTargetRelay } from "../server/api-testing-relay.ts";
-const runtime = realpathSync(
-	resolve(process.argv.slice(2).find((a) => !a.startsWith("--")) ?? "tests/scratch/api-testing-p1-1/runtime"),
-);
+const runtime = realpathSync(resolve(process.argv.slice(2).find((a) => !a.startsWith("--")) ?? apiTestRuntime()));
 assert.equal(process.platform, "darwin", "Only macOS OS boundary is verified");
 const output = realpathSync(mkdtempSync(join(tmpdir(), "api-testing-relay-probe-")));
 const report = {

@@ -28,7 +28,7 @@
 | 本地开发、测试、CI                   | [开发工作流](development.md)                                                             |
 | 大文件评估、缓存与临时依赖清理       | [项目体积维护](project-cleanup.md)                                                       |
 | 配置、部署、反向代理                 | [环境变量](env-vars.md)、[部署](deployment.md)、[Antigravity 反代](antigravity-proxy.md) |
-| 日常代码备份、正式发布               | [AGENTS.md §6](../AGENTS.md)、[发布说明](release.md)                                     |
+| 日常代码备份、正式发布               | [备份与发布](backup-and-release.md)、[发布说明](release.md)                              |
 | Electron 开发、安装包与桌面验收      | [桌面说明](../desktop/README.md)、下方桌面交付记录                                       |
 
 ## 功能设计提案
@@ -65,13 +65,15 @@ UI 测试能力接入见 [Pi UI workflow 接入与验收](ui-testing-integration
 
 ## 文档维护分工
 
-| 文档                            | 维护内容                                             |
-| ------------------------------- | ---------------------------------------------------- |
-| `AGENTS.md`                     | 必须执行的协作规则、模块规范摘要、开发禁令与提交要求 |
-| `docs/README.md`                | 阅读顺序与专题链接，不复制实现细节                   |
-| `docs/project-map.md`           | 模块职责、入口、依赖边界与目录管理                   |
-| `docs/module-development.md`    | 新功能开发步骤、联动清单与验收模板                   |
-| `docs/directory-reference.md`   | 文件级定位说明；以实际源码为准                       |
-| `docs/architecture-*.md` 等专题 | 实现机制、设计取舍和对应测试                         |
+| 文档                            | 维护内容                                     |
+| ------------------------------- | -------------------------------------------- |
+| `AGENTS.md`                     | 核心规则、验证与提交要求；详细约束按主题读取 |
+| `docs/README.md`                | 阅读顺序与专题链接，不复制实现细节           |
+| `docs/project-map.md`           | 模块职责、入口、依赖边界与目录管理           |
+| `docs/module-development.md`    | 新功能开发步骤、联动清单与验收模板           |
+| `docs/directory-reference.md`   | 文件级定位说明；以实际源码为准               |
+| `docs/architecture-*.md` 等专题 | 实现机制、设计取舍和对应测试                 |
 
 新增模块时更新地图与目录参考；新增专题时在本文登记。规范冲突先核对当前用户决定、`AGENTS.md` 和代码事实，修正文档，不把历史描述当作新需求。
+
+项目精简与分组依赖见 [项目精简](project-slimming.md)；按改动主题读取 [开发约束](development-constraints.md)，新增能力先读 [能力交付规则](capability-delivery.md)。

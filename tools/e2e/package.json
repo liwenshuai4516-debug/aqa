@@ -1,0 +1,12 @@
+{
+	"name": "pi-web-ui-tools-e2e-tools",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"devDependencies": {
+		"@playwright/test": "1.62.1",
+		"playwright": "1.62.1",
+		"playwright-core": "1.63.0",
+		"pi-ui-testing": "file:../../capabilities/ui-testing/pi-ui-testing-0.1.0.tgz"
+	}
+}

@@ -1,3 +1,4 @@
+import { apiTestRuntime } from "./lib/api-test-runtime.mjs";
 /** P2-2 management through the real controlled plugin tool and real MCP/Newman. */
 import assert from "node:assert/strict";
 import {
@@ -20,7 +21,7 @@ import { PluginManager } from "../server/plugins.ts";
 import { ClientSession } from "../server/agent/agent-service.ts";
 import { ApiTestingRunner } from "../server/api-testing-runner.ts";
 const repo = fileURLToPath(new URL("..", import.meta.url)),
-	runtime = resolve(process.argv[2] ?? "tests/scratch/api-testing-p1-1/runtime");
+	runtime = resolve(process.argv[2] ?? apiTestRuntime());
 const output = mkdtempSync(join(tmpdir(), "api-testing-p2-2-")),
 	project = join(output, "project"),
 	data = join(output, "data"),

@@ -30,3 +30,5 @@ npm run ui-testing:enable -- --agent-dir "$HOME/Library/Application Support/Pi A
 应用级可发现不代表任意目录满足正式测试条件；目标项目仍须具备原包要求的 Playwright 依赖、来源和环境数据。此接入不随全局 npm 安装或 Electron 安装包自动分发。
 
 当前项目技能入口统一在 `.pi/skills/`，项目模式登记指向该目录；应用级原入口保留兼容。详见 [能力维护指南](../../docs/capability-layout.md)。
+
+当前先运行 `npm run install:e2e` 安装原版 UI 工作流包及 Playwright，再执行上述接入命令。根 `npm ci` 后需重新安装该 profile 恢复兼容链接。

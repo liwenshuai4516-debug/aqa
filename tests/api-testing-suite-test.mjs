@@ -1,3 +1,4 @@
+import { apiTestRuntime } from "./lib/api-test-runtime.mjs";
 /** P1-1 engineering acceptance: real parser/compiler and Newman templates, no model or business target. */
 import assert from "node:assert/strict";
 import { mkdtempSync, cpSync, writeFileSync, readFileSync, mkdirSync, symlinkSync, existsSync } from "node:fs";
@@ -6,7 +7,7 @@ import { join, resolve } from "node:path";
 import { pathToFileURL, fileURLToPath } from "node:url";
 import vm from "node:vm";
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtime = resolve(process.argv[2] ?? "tests/scratch/api-testing-p1-1/runtime");
+const runtime = resolve(process.argv[2] ?? apiTestRuntime());
 cpSync(join(repo, "plugins/api-testing/suite.mjs"), join(runtime, "suite.mjs"));
 const { importContract, designCandidates, compileSuite, saveDraft, hash } = await import(
 	pathToFileURL(join(runtime, "suite.mjs")).href

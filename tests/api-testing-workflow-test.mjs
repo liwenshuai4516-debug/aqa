@@ -1,3 +1,4 @@
+import { apiTestRuntime } from "./lib/api-test-runtime.mjs";
 /** P1-3: actual plugin/identity/private MCP/Newman; independent model responses explicitly stubbed. */
 import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, cpSync, symlinkSync, readFileSync, writeFileSync, readdirSync } from "node:fs";
@@ -10,7 +11,7 @@ import { PluginManager } from "../server/plugins.ts";
 import { ClientSession } from "../server/agent/agent-service.ts";
 import { ApiTestingRunner } from "../server/api-testing-runner.ts";
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtime = resolve(process.argv[2] ?? "tests/scratch/api-testing-p1-1/runtime");
+const runtime = resolve(process.argv[2] ?? apiTestRuntime());
 const output = mkdtempSync(join(tmpdir(), "api-testing-p1-3-")),
 	project = join(output, "project"),
 	data = join(output, "data"),

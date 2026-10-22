@@ -58,3 +58,7 @@ macOS 默认数据目录为 `~/Library/Application Support/Pi Agent Desktop/`；
 当前内部版本已验证同版本应用重装和完整离线恢复，见 `docs/desktop-delivery/T25-backup-restore.md`。这不代表跨版本迁移或自动更新已通过。
 
 完整结果、失败和未验证项见 `docs/desktop-delivery/`。编译或 mock 成功不能替代原生平台与安装验收。
+
+## 可选桌面工具安装
+
+根安装已不再自带 Electron。源码开发先执行 `npm ci` 和 `npm run install:desktop`；浏览器/原生自动化另装 `npm run install:e2e`。桌面命令沿用根 scripts，详情见 [项目精简](../docs/project-slimming.md)。

@@ -1,3 +1,4 @@
+import { apiTestRuntime } from "./lib/api-test-runtime.mjs";
 /** Opt-in acceptance: configured real model + isolated fixture + real private MCP/Newman. */
 import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, cpSync, symlinkSync, readFileSync, writeFileSync } from "node:fs";
@@ -16,7 +17,7 @@ assert(
 	"Explicit --use-configured-model is required; consumes configured model quota",
 );
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtime = resolve(process.env.API_TEST_RUNTIME ?? "tests/scratch/api-testing-p1-1/runtime");
+const runtime = resolve(process.env.API_TEST_RUNTIME ?? apiTestRuntime());
 const model = process.env.API_TEST_MODEL ?? "gpt/gpt-6.1-sol";
 const output = mkdtempSync(join(tmpdir(), "api-testing-p1-4-model-"));
 const project = join(output, "project"),

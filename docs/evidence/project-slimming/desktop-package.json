@@ -1,0 +1,8 @@
+{
+	"status": "PASS",
+	"platform": "macOS arm64",
+	"resources": true,
+	"electronNodeModuleImports": true,
+	"optionalToolsAbsent": true,
+	"notExecuted": ["signed installer", "native window interaction", "Windows/Linux"]
+}

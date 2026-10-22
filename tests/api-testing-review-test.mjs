@@ -1,3 +1,4 @@
+import { apiTestRuntime } from "./lib/api-test-runtime.mjs";
 /** P1-2 engineering controls with explicit model stubs; not actual model acceptance. */
 import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, cpSync } from "node:fs";
@@ -5,7 +6,7 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const runtime = resolve(process.argv[2] ?? "tests/scratch/api-testing-p1-1/runtime");
+const runtime = resolve(process.argv[2] ?? apiTestRuntime());
 for (const name of ["suite.mjs", "review.mjs"]) cpSync(join(repo, "plugins/api-testing", name), join(runtime, name));
 const { importContract, compileSuite, saveDraft, hash } = await import(pathToFileURL(join(runtime, "suite.mjs")).href);
 const { inspectDraft, reviewDraft } = await import(pathToFileURL(join(runtime, "review.mjs")).href);

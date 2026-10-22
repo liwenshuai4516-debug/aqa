@@ -1,8 +1,9 @@
 /** Exercise package discovery and the real SDK/MCP binding without model or business requests. */
 import assert from "node:assert/strict";
+import { realpathSync } from "node:fs";
 import { cp, copyFile, mkdtemp, mkdir, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Type } from "typebox";
 import { ArtifactStore } from "pi-ui-testing";
@@ -21,6 +22,7 @@ const project = join(temporary, "project");
 const target = join(temporary, "target");
 const agentDir = join(temporary, "agent");
 const checks = [];
+const packageSkills = realpathSync(join(repo, "node_modules/pi-ui-testing/skills"));
 let session;
 try {
 	await mkdir(join(project, ".pi"), { recursive: true });
@@ -74,6 +76,14 @@ try {
 		modelRuntime,
 		settingsManager: SettingsManager.create(target, agentDir, { projectTrusted: true }),
 		resourceLoaderOptions: {
+			// Isolate discovery from user-wide ~/.agents skills; retain all fixture/package names for the exact assertion.
+			skillsOverride: (base) => ({
+				...base,
+				skills: base.skills.filter((skill) => {
+					const path = realpathSync(skill.filePath);
+					return path.startsWith(realpathSync(temporary) + sep) || path.startsWith(packageSkills + sep);
+				}),
+			}),
 			extensionFactories: [
 				(pi) => {
 					pi.on("tool_call", (event) => {

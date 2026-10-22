@@ -1,3 +1,4 @@
+import { apiTestRuntime } from "./lib/api-test-runtime.mjs";
 /** P0-2: actual plugin + ClientSession adapter + private stdio MCP/Newman, no model. */
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
@@ -13,7 +14,7 @@ import { ApiTestingRunner } from "../server/api-testing-runner.ts";
 import { API_FIXTURE_ISOLATION_POLICY } from "../server/api-testing-isolation.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
-const runtime = resolve(process.argv[2] ?? join(root, "tests/scratch/api-testing-p0-1/reproduce"));
+const runtime = resolve(process.argv[2] ?? apiTestRuntime());
 const output = mkdtempSync(join(tmpdir(), "api-testing-p0-2-"));
 const data = join(output, "data");
 const project = join(output, "project");
