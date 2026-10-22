@@ -400,3 +400,10 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 - `scripts/archive-evidence.mjs`：外部证据副本、校验索引，不删除原件。
 - `tests/lib/api-test-runtime.mjs`：共享 API 依赖与每次隔离的源码副本。
 - `tests/unit/project-slimming.test.ts`：安装冲突与归档完整性验证。
+
+## UI 执行守卫与本项目 fixture
+
+- `server/extension-tool-policy.ts`：UI 工具 operation 的查询、写资产、浏览器动作、正式执行分类；未知 UI/MCP 操作在受限模式保守拒绝。
+- `server/extension-tool-gate.ts`：宿主隐藏 SDK 扩展，统一检查顶层、嵌套及后注册工具；不依赖工具是否从 UI 隐藏。
+- `qa/ui/`：本项目隔离服务、数据、Playwright fixture 与预检，维护见 [README](../qa/ui/README.md)。
+- `tests/ui-tool-guards-test.mjs`、`tests/ui-project-fixture-test.mjs`、`tests/ui-project-browser-test.mjs`：门禁、生命周期及真实浏览器验收。

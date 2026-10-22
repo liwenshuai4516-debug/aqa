@@ -15,6 +15,7 @@
 // wholesale (no union merge / no stale built-in leftovers).
 import "../patch-remote-catalog.js";
 import "../patch-turn-end-boundary.js";
+import { createExtensionToolGate } from "../extension-tool-gate.js";
 import { skillBlock, isUiTestingExtension, isUiTestingDisabled } from "../skill/skill-presentation.js";
 import { spawn } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
@@ -2842,6 +2843,7 @@ export class ClientSession {
 		targetPreset?: string,
 	): CreateAgentSessionRuntimeFactory {
 		return async ({ cwd: effectiveCwd, sessionManager }) => {
+			const bridgeAnchor: { session?: AgentSession } = {};
 			const services = await createAgentSessionServices({
 				cwd: effectiveCwd,
 				modelRuntime: this.sharedModelRuntime,
@@ -2976,6 +2978,34 @@ export class ClientSession {
 					// 等都取自本次 run 的 systemPromptOptions，永远最新）。
 					extensionFactories: [
 						{
+							name: "pi-webui-tool-gate",
+							hidden: true,
+							factory: createExtensionToolGate(() => {
+								const home = bridgeAnchor.session ? this.findConversationHome?.(bridgeAnchor.session) : undefined;
+								const client = home?.session ?? this;
+								const id = home?.convId ?? ownerId ?? client.activeId;
+								const conv = client.convs.get(id);
+								if (!conv)
+									return {
+										planMode: true,
+										delegateMode: false,
+										goalReview: false,
+										permission: "read-only",
+										uiDisabled: true,
+									};
+								return {
+									planMode: client.planModeOf(id),
+									delegateMode: client.delegateModeOf(id),
+									goalReview: client.goalReviewTurnOf(id),
+									permission:
+										conv.permissionPreset ??
+										client.settingsSvc.current.defaultPermissionPreset ??
+										"workspace-write-never",
+									uiDisabled: isUiTestingDisabled(client.settingsSvc.current),
+								};
+							}),
+						},
+						{
 							name: "codemode",
 							hidden: true,
 							replaceable: true,
@@ -3108,7 +3138,6 @@ export class ClientSession {
 			// 桥接工具目标（问卷 / 页面）：每次调用都解析「现在谁持有这条对话」，
 			// 而不是认这个 runtime 是在哪个 ClientSession 里建出来的（过户会换主）。
 			// anchor 在拿到 created.session 后回填（SDK 的 runtime.session 就是它）。
-			const bridgeAnchor: { session?: AgentSession } = {};
 			const bridge = this.bridgeTarget(bridgeAnchor, ownerId);
 
 			// 为全新会话（0 条消息的空白对话/新对话）提前解析目标模型并注入，

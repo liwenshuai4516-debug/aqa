@@ -12,6 +12,7 @@
  *
  * 判定全部是纯函数（无 IO），单测见 tests/unit/plan-mode.test.ts。
  */
+import { extensionToolEffect } from "./extension-tool-policy.js";
 
 /** 计划模式下确定禁止的工具：写文件 / 改文件 / 建删 / 版本控制写。 */
 const BLOCKED_TOOLS = new Set([
@@ -371,7 +372,8 @@ export function planModeDenial(toolName: string, params: unknown): PlanModeDenia
 			reasonEn: `Plan mode: only read-only commands are allowed; rejected: \`${cmd.slice(0, 200)}\`. Use read/grep or read-only git (status/diff/log). Put proposed changes in the plan and wait for the user's go-ahead.`,
 		};
 	}
-	if (BLOCKED_TOOLS.has(name)) {
+	const effect = extensionToolEffect(name, params);
+	if (BLOCKED_TOOLS.has(name) || (effect !== undefined && effect !== "query")) {
 		return {
 			kind: "write-tool",
 			reason: `计划模式：只规划不实施，${name} 被拒。请把这一步写进计划（plan_update 步骤 + 计划正文），等用户确认后在新一轮里实施。`,

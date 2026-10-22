@@ -12,10 +12,11 @@
  * 判定全部是纯函数（无 IO），单测见 tests/unit/goal-review-gate.test.ts。
  * 包裹形态与 withPlanModeGate / withDelegationGate 同构，见 agent-service.ts。
  *
- * 已知局限（与计划/审查者闸门同口径）：创建时注册进 customTools 的插件工具
- * 同样被包裹；但之后经 refreshPluginTools 动态补入已有会话的不在覆盖面。
- * 自研插件若绕过 wrapper 直接写文件同样拦不住 —— 只读是硬闸门，不是安全边界。
+ * SDK 工具调用另经 extension-tool-gate 的统一前置检查，覆盖后续注册与嵌套调用。
+ * 进程内受信任插件若绕过工具管线直接写文件仍拦不住；此门禁不是 OS 沙箱。
  */
+import { extensionToolEffect } from "./extension-tool-policy.js";
+
 import { bashCommandIsReadOnly, SESSION_DISPATCH_TOOLS } from "./plan-mode.js";
 
 /** 审查回合禁写的工具：与计划/审查者模式同名单（写 / 改 / 增删 / git 写 / 形态变换）。 */
@@ -258,7 +259,8 @@ export function goalReviewDenial(toolName: string, params: unknown): GoalReviewD
 			reasonEn: `Goal review round: only read-only commands are allowed; rejected: \`${cmd.slice(0, 200)}\`. To change the workspace, verdict fail with concrete items and let the executor do it next round.`,
 		};
 	}
-	if (WRITE_TOOLS.has(name)) {
+	const effect = extensionToolEffect(name, params);
+	if (WRITE_TOOLS.has(name) || (effect !== undefined && effect !== "query")) {
 		return {
 			kind: "write-tool",
 			reason: `目标审查回合：只读核实，${name} 被拒。工作区的改动由执行对话做；你的职责是看实际状态、只回 verdict JSON。`,

@@ -15,6 +15,8 @@
  *
  * 判定全部是纯函数（无 IO），单测见 tests/unit/delegate-mode.test.ts。
  */
+import { extensionToolEffect } from "./extension-tool-policy.js";
+
 import { bashCommandIsReadOnly, SESSION_DISPATCH_TOOLS } from "./plan-mode.js";
 
 /** 审查者模式下确定禁止的工具：与计划模式同名单（写 / 改 / 增删 / git 写 / 形态变换）。 */
@@ -123,7 +125,8 @@ export function delegationDenial(toolName: string, params: unknown): DelegationD
 			reasonEn: `Reviewer mode: only read-only commands are allowed; rejected: \`${cmd.slice(0, 200)}\`. The executor conversation makes the changes — your job is to inspect the result and judge whether it meets the goal.`,
 		};
 	}
-	if (BLOCKED_TOOLS.has(name)) {
+	const effect = extensionToolEffect(name, params);
+	if (BLOCKED_TOOLS.has(name) || (effect !== undefined && effect !== "query")) {
 		return {
 			kind: "write-tool",
 			reason: `审查者模式：本对话不施工，${name} 被拒。需求已由服务端转给执行对话；请改为审阅它交回来的结果（读 diff/测试输出）并提出下一轮要求。`,

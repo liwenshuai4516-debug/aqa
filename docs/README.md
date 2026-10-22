@@ -31,6 +31,11 @@
 | 日常代码备份、正式发布               | [备份与发布](backup-and-release.md)、[发布说明](release.md)                              |
 | Electron 开发、安装包与桌面验收      | [桌面说明](../desktop/README.md)、下方桌面交付记录                                       |
 
+## UI 测试维护与验收
+
+- [本项目环境与数据 fixture](../qa/ui/README.md)：临时服务、身份与初态预检、归属数据、重复执行及中断清理。
+- [P0 守卫与 fixture 验收](ui-testing-p0-evidence.md)：操作分类、实际 SDK/宿主门禁、隔离浏览器和残留证据。
+
 ## 功能设计提案
 
 - [接口测试本机 OS/MCP 隔离补验](api-testing-evidence/isolation-local-mcp.md)：合成文件、进程继承与端口边界；真实目标仍未开放。

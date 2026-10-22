@@ -306,6 +306,14 @@ slot 框架的原则是「插件声明、宿主渲染」——插件碰不到宿
 设计取舍：限制的不是**能力**（授权后就是完整 DOM），而是**谁可以**——用户在设置面板
 点一次头。服务端 `index.mjs` 本来就是完整 Node 可信代码，不在此门禁内。
 
+### SDK 扩展工具的会话执行门禁
+
+Pi 运行时注入隐藏的 `pi-webui-tool-gate`，通过 SDK `tool_call` 在执行前核对当前归属会话（过户后重新解析）、计划/委派/目标审查、只读权限及 UI 能力停用状态。该入口同时覆盖后注册工具与 `ctx.executeTool()` 嵌套调用；硬模式先于普通权限，“完全权限”或审批记忆不能绕过。内置 wrapper 继续保留。
+
+`extension-tool-policy.ts` 按原包 operation 区分查询、写资产、浏览器动作和执行。查询可在受限会话使用；写入、录制及执行被拒。未登记分类的第三方工具和通用 MCP 调用，在受限模式不信任名字或作者的 `readOnlyHint`，保守拒绝；普通模式继续原执行路径。UI 包升级须同步分类与回归，具体查询名单以代码为准。
+
+这只约束 Pi SDK 工具管线，不是进程或网络沙箱；受信任 Node 插件在工具管线外的文件/网络操作、非 Pi 引擎、真实业务站点授权仍按各自契约约束。工程回归和本项目 fixture 见 [P0 验收](ui-testing-p0-evidence.md)。
+
 ## MCP 工具桥（server/mcp/mcp-bridge.ts）
 
 受控内部执行接缝见 `server/mcp/plugin-mcp.ts`：pi 插件工具适配器注入短期身份，`host.mcp.call(context, request, signal)` 在工具权限、原会话模式及插件生命周期内调用私有提供者。当前有 `server/api-testing-runner.ts` 的受控 fixture 工作流与一次性批准路径（P1-3）；工作流评审经宿主 llm 权限/模型范围包装，不加入下述常规 MCP 注册表；不是任意 call 或 OS 沙箱。P2-1 资产位于宿主 `<dataDir>/api-testing/assets`，批准由受控工作流发布；存储根不对模型开放任意路径覆盖。取消后由 `McpClient.closeAndWait()` 观察实际退出才释放项目锁。详见 [P0-2 验收](api-testing-evidence/P0-2.md) 和 [SDK](../plugin-sdk/README.md)。

@@ -1,0 +1,52 @@
+{
+	"recordedAt": "2026-10-22T10:07:34.541Z",
+	"scope": "UI execution guards and isolated project fixture",
+	"storage": "Local ignored tests/scratch; raw evidence is not committed or remotely archived",
+	"files": [
+		{
+			"path": "tests/scratch/ui-p0-final-20261022/unit.log",
+			"bytes": 210,
+			"sha256": "97071981ff9b622b333f5a0bfc151406c55d0e1493746767e526eb56a684ba78"
+		},
+		{
+			"path": "tests/scratch/ui-p0-final-20261022/sdk-mcp.log",
+			"bytes": 1289,
+			"sha256": "ad160786c1006dfe8deda102112f2c29edd0348d0e200d352f0df23014b9f62b"
+		},
+		{
+			"path": "tests/scratch/ui-p0-final-20261022/host-guards.log",
+			"bytes": 192,
+			"sha256": "1dcd2c2fe56b383c72f311a7378471d2be142826359a15f5b6714b6c12ece1fe"
+		},
+		{
+			"path": "tests/scratch/ui-p0-final-20261022/browser.log",
+			"bytes": 513,
+			"sha256": "ddec477db855a0b7d614006a5e350cbcb038faa165ee380296574d56765b6652"
+		},
+		{
+			"path": "tests/scratch/ui-p0-final-20261022/lint.log",
+			"bytes": 88,
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+		},
+		{
+			"path": "tests/scratch/ui-p0-final-20261022/protocol.log",
+			"bytes": 360,
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+		},
+		{
+			"path": "tests/scratch/ui-guards/1792663610947/result.json",
+			"bytes": 1360,
+			"sha256": "09890e5d083e9f06b222175299abe8619eeca39842254f93f852ba3df32eb2ad"
+		},
+		{
+			"path": "tests/scratch/ui-project-fixture/1792663392520/result.json",
+			"bytes": 572,
+			"sha256": "a9452a9cbc02c77c955c2407af01a5d1ab03761fea55e79135de45a31b2b86de"
+		},
+		{
+			"path": "tests/scratch/ui-project-browser/1792663609484/report.json",
+			"bytes": 3094,
+			"sha256": "a6962acfde67bd8256df3b12bb87da27bc84c198ae9880b292bb5f5c250fa115"
+		}
+	]
+}

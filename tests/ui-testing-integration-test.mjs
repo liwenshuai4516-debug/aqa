@@ -14,9 +14,12 @@ import {
 	SessionManager,
 	SettingsManager,
 } from "@earendil-works/pi-coding-agent";
+import { ensureBuild } from "./lib/ensure-build.mjs";
 import { enableUiTesting } from "../scripts/enable-ui-testing.mjs";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
+ensureBuild(repo, "ui-testing-integration");
+const { createExtensionToolGate } = await import("../dist/server/extension-tool-gate.js");
 const temporary = await mkdtemp(join(tmpdir(), "ui-testing-integration-"));
 const project = join(temporary, "project");
 const target = join(temporary, "target");
@@ -24,6 +27,13 @@ const agentDir = join(temporary, "agent");
 const checks = [];
 const packageSkills = realpathSync(join(repo, "node_modules/pi-ui-testing/skills"));
 let session;
+const guardState = {
+	planMode: false,
+	delegateMode: false,
+	goalReview: false,
+	permission: "workspace-write-never",
+	uiDisabled: false,
+};
 try {
 	await mkdir(join(project, ".pi"), { recursive: true });
 	await mkdir(agentDir);
@@ -82,6 +92,7 @@ try {
 				}),
 			}),
 			extensionFactories: [
+				{ name: "host-guard", hidden: true, factory: createExtensionToolGate(() => guardState) },
 				(pi) => {
 					pi.on("tool_call", (event) => {
 						nestedCalls.push({ name: event.toolName, parent: event.parentToolCallId });
@@ -246,6 +257,59 @@ try {
 		input: { intent: "Close the isolated capability check page" },
 	});
 	assert.equal(closed.details.isError, false, JSON.stringify(closed.content));
+	// Real package executors, same SDK nested pipeline as recording. Restricted
+	// requests must be rejected before a candidate file or browser action exists.
+	for (const [field, value] of [
+		["planMode", true],
+		["delegateMode", true],
+		["goalReview", true],
+		["permission", "read-only"],
+	]) {
+		const old = guardState[field];
+		guardState[field] = value;
+		const denied = await invoke("integration_native_call", {
+			tool: "ui_case_design",
+			input: {
+				request: {
+					operation: "save-file",
+					asset_id: "guard-probe",
+					revision: "r1",
+					name: "candidate.spec.ts",
+					content: "must not be saved",
+				},
+			},
+		});
+		assert.equal(denied.details.isError, true, JSON.stringify(denied));
+		assert.match(JSON.stringify(denied.content), /被拒|只读|计划模式|审查/);
+		const browserDenied = await invoke("integration_native_call", { tool: backend + "browser_close", input: {} });
+		assert.equal(browserDenied.details.isError, true);
+		const query = await invoke("integration_native_call", {
+			tool: "ui_test_workflow",
+			input: { request: { operation: "catalog" } },
+		});
+		assert.equal(query.details.isError, false, JSON.stringify(query));
+		checks.push(`real package write/browser denied but catalog allowed: ${field}`);
+		guardState[field] = old;
+	}
+	assert.equal(
+		await readFile(join(target, "qa/ui/assets/guard-probe/revisions/r1/candidate.spec.ts"), "utf8").catch((e) => {
+			if (e.code === "ENOENT") return null;
+			throw e;
+		}),
+		null,
+	);
+	guardState.uiDisabled = true;
+	assert.equal(
+		(
+			await invoke("integration_native_call", {
+				tool: "ui_test_workflow",
+				input: { request: { operation: "catalog" } },
+			})
+		).details.isError,
+		true,
+	);
+	guardState.uiDisabled = false;
+	checks.push("UI disable is enforced on nested calls without reload");
 	console.log(
 		JSON.stringify(
 			{
