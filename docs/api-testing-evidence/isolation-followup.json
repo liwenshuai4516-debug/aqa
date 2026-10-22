@@ -1,0 +1,64 @@
+{
+	"date": "2026-10-22",
+	"status": "not-proven",
+	"scope": "macOS built-in isolation capability probe; no Newman or business requests",
+	"attempts": [
+		{
+			"date": "2026-10-22T00:47:16.954Z",
+			"scope": "OS probe only, synthetic canaries/local ports; not Newman or business acceptance",
+			"root": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-isolation-jNBAge",
+			"node": "/opt/homebrew/Cellar/node/23.10.0_1/bin/node",
+			"exitCode": 65,
+			"allowedHits": 0,
+			"deniedHits": 0,
+			"stdout": "",
+			"stderr": "sandbox-exec: host must be * or localhost in network address\n\nBacktrace: \n/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-isolation-jNBAge/profile.sb:7:26:\n\t(remote ip \"127.0.0.1:56494\")\n\n"
+		},
+		{
+			"date": "2026-10-22T00:47:30.975Z",
+			"scope": "OS probe only, synthetic canaries/local ports; not Newman or business acceptance",
+			"root": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-isolation-ELXZet",
+			"node": "/opt/homebrew/Cellar/node/23.10.0_1/bin/node",
+			"exitCode": null,
+			"allowedHits": 0,
+			"deniedHits": 0,
+			"stdout": "",
+			"stderr": ""
+		},
+		{
+			"date": "2026-10-22T00:47:44.997Z",
+			"scope": "OS probe only, synthetic canaries/local ports; not Newman or business acceptance",
+			"root": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-isolation-UuINTl",
+			"node": "/opt/homebrew/Cellar/node/23.10.0_1/bin/node",
+			"exitCode": null,
+			"termination": {
+				"code": null,
+				"signal": "SIGABRT"
+			},
+			"allowedHits": 0,
+			"deniedHits": 0,
+			"stdout": "",
+			"stderr": ""
+		},
+		{
+			"date": "2026-10-22T00:48:01.960Z",
+			"scope": "OS probe only, synthetic canaries/local ports; not Newman or business acceptance",
+			"root": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/api-testing-os-isolation-bokszI",
+			"node": "/opt/homebrew/Cellar/node/23.10.0_1/bin/node",
+			"exitCode": null,
+			"termination": {
+				"code": null,
+				"signal": "SIGABRT"
+			},
+			"allowedHits": 0,
+			"deniedHits": 0,
+			"stdout": "",
+			"stderr": ""
+		}
+	],
+	"controls": {
+		"allowDefaultNode": "startup succeeded; no boundary claim",
+		"denyDefaultBroadFileNode": "startup succeeded with broad file allowance; not acceptable isolation"
+	},
+	"conclusion": "Numeric-IP network rule rejected; localhost accepted syntactically. Restricted file profile aborts Node before probe. No target widened, no personal credentials read. Further isolation design and real business credentials remain required."
+}

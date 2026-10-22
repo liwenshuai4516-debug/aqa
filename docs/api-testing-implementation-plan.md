@@ -1,6 +1,6 @@
 # 接口自动化测试分阶段执行计划
 
-状态：2026-10-21 P0–P2 的 fixture 工程验收及 P1-4 实际 GPT 验收已完成；P3 已完成 fixture 定时执行及持续问题跟踪，真实业务仍受鉴权/规则及 OS 隔离限制。按 §7 逐条记录区分工程、模型与真实业务结果。
+状态：2026-10-22 P0–P2 的 fixture 工程验收及 P1-4 实际 GPT 验收已完成；P3 已完成 fixture 定时执行及持续问题跟踪，真实业务仍受鉴权/规则及 OS 隔离限制。按 §7 逐条记录区分工程、模型与真实业务结果。
 
 [总体设计](api-testing-workflow-design.md) · [资产设计](api-testing-assets-design.md) · [模块规范](module-development.md) · [AGENTS.md](../AGENTS.md)
 
@@ -149,3 +149,5 @@ P1 工程验收通过后可以开展 P2 本地管理；没有用户真实环境�
 | P4   | 按计划延后；未启动                 | 当前真实来源为已支持的 OAS 3.0.1，见 business-intake.json                            | 未收到其他格式需求/导出样例或语义缓存成本依据，不增加推测功能                                                 | 后续每项需具体输入、独立 fixture 和成本证据                               |
 
 完成一个阶段的标准：对应任务有证据、关键失败路径验证、文档与代码一致、无冒充成功的 SKIP/unknown；未解决事项明确归属。不要用测试数量或提交数量代替业务验收。
+
+当前逐项完成审计见 [completion-audit.md](api-testing-evidence/completion-audit.md)。真实业务验收仍未完成，不将当前工程交付记为 goal 全部完成；OS 能力探测的失败记录见 isolation-followup.json。
