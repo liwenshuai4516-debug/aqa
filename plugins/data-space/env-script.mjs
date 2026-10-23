@@ -161,6 +161,8 @@ export function normalizeScriptRun(raw) {
  *   - 每一条都没过期（expiresAt 为空视为不过期，由用户自己把握）。
  */
 export function dynamicFresh(env, nowMs = Date.now()) {
+	// 强制刷新失败后，旧值不能再次被当作有效会话使用。
+	if (env?.scriptRun?.ok === false) return false;
 	const list = Array.isArray(env?.dynamic) ? env.dynamic : [];
 	const keys = dynamicKeys(env?.script);
 	if (!list.length || !keys.length) return false;
@@ -289,6 +291,16 @@ const compactError = (err) =>
 		.replace(/\s+/g, " ")
 		.trim();
 
+/** 防止已知秘密被错误消息或环境备注反射回普通输出；不代替执行证据隔离。 */
+export function redactEnvSecrets(text, env, extracted = []) {
+	const values = [...(env?.params ?? []), ...(env?.dynamic ?? []), ...extracted]
+		.filter((v) => v.secret && typeof v.value === "string" && v.value)
+		.flatMap((v) => [v.value, encodeURIComponent(v.value), JSON.stringify(v.value).slice(1, -1)]);
+	let safe = String(text ?? "");
+	for (const value of [...new Set(values)].sort((a, b) => b.length - a.length)) safe = safe.replaceAll(value, "***");
+	return safe;
+}
+
 /**
  * 跑一遍脚本，返回取到的动态值（不落盘，由调用方决定要不要保存）。
  *
@@ -323,7 +335,16 @@ export async function runEnvScript({
 	}
 	const values = [];
 	const steps = [];
-	const fail = (error) => ({ ok: false, error, values, steps, at: new Date(now).toISOString() });
+	const fail = (error) => ({
+		ok: false,
+		error: redactEnvSecrets(error, env, values),
+		values,
+		steps: steps.map((step) => ({
+			...step,
+			...(step.error ? { error: redactEnvSecrets(step.error, env, values) } : {}),
+		})),
+		at: new Date(now).toISOString(),
+	});
 
 	for (const [index, step] of s.steps.entries()) {
 		const label = step.name || `步骤 ${index + 1}`;

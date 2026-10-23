@@ -1,5 +1,5 @@
 import { maskSecrets } from "./client/brief.mjs";
-import { dynamicFresh, dynamicSummary, scriptReady } from "./env-script.mjs";
+import { dynamicFresh, dynamicSummary, redactEnvSecrets, scriptReady } from "./env-script.mjs";
 /**
  * 数据空间的 AI 工具（v2/v3）：查询用例 & 回写执行结果。
  *
@@ -11,8 +11,7 @@ import { dynamicFresh, dynamicSummary, scriptReady } from "./env-script.mjs";
  *   - 只读工具不写盘；回写工具只追加执行记录（runs.json），不改用例内容。
  *   - 环境只给名称 / 地址 / 参数名与非敏感值；标了 secret 的参数一律 `***`，
  *     不进模型上下文（要真实口令就让用户自己用，别让它猜）。
- *   - 例外只有一处：环境内置脚本取到的动态值，在显式 action=refresh 时以明文返回，
- *     供本次执行鉴权；调用方需明确告知不要回显、不要写盘。
+ *   - 脚本敏感动态值同样不出服务端；未接入私密参数执行链时明确阻塞，不经模型转交。
  *   - 文本给模型看，不追求好看；一条用例一行，字段用 · 分隔，超量时明确说「只给了前 N 条」。
  */
 import { isStale, latestByCase, normalizeVerdict, parseAnchor, summarize } from "./runs.mjs";
@@ -122,7 +121,7 @@ const envText = (env) => (env ? [env.name, env.baseUrl].filter(Boolean).join(" �
 /**
  * 一个环境的完整块：名称 / 默认 / 地址 / 参数 / 敏感参数名 / 内置脚本 / 动态值 / 备注。
  * 敏感值连键值对都不给（只列名字），避免 `口令=***` 被下游脱敏规则二次改写后看不出原意。
- * 动态值（脚本取回的 token…）同样只给名字；要明文得用 action=refresh。
+ * 动态值（脚本取回的 token…）同样只给名字，refresh 也不返回敏感明文。
  */
 function envBlock(env, nowMs = Date.now()) {
 	const plain = [];
@@ -134,7 +133,7 @@ function envBlock(env, nowMs = Date.now()) {
 		else plain.push(`${key}=${oneline(p?.value ?? "") || "—"}`);
 	}
 	const lines = [
-		`- ${str(env.name, 60) || "未命名环境"}${env.isDefault ? "（默认）" : ""}${env.baseUrl ? ` · ${env.baseUrl}` : ""}`,
+		`- ${str(env.name, 60) || "未命名环境"}${env.isDefault ? "（默认）" : ""}${env.baseUrl ? ` · ${env.baseUrl}` : ""} · projectId=${env.systemId} · envId=${env.id}`,
 	];
 	lines.push(`  参数：${plain.length ? plain.join(" · ") : "（未配置）"}`);
 	if (secret.length) lines.push(`  敏感：${secret.join("、")}（值不提供，需要时由用户本人填写或执行）`);
@@ -159,21 +158,6 @@ function envBlock(env, nowMs = Date.now()) {
 	}
 	if (str(env.note, 200)) lines.push(`  备注：${oneline(env.note)}`);
 	return lines.join("\n");
-}
-
-/**
- * 只给 Agent 执行用的明文块：脚本刚取到的动态值。
- * 与 envBlock 分开渲染，因为调用方会对 envBlock 部分做脱敏，而这一段就是要拿去做鉴权的。
- */
-function dynamicPlainBlock(env, nowMs = Date.now()) {
-	const lines = (env.dynamic ?? []).map((v) => {
-		const note = dynamicSummary(v, nowMs);
-		return `- ${v.key} = ${oneline(v.value) || "（空）"}${note ? `  （${note}）` : ""}`;
-	});
-	return [
-		`环境「${str(env.name, 60)}」脚本刚取到的动态值（仅供本次执行使用；不要复述给用户、不要写进文件或当作结论）:`,
-		...lines,
-	].join("\n");
 }
 
 function resultTag(runsByCase, c) {
@@ -352,12 +336,11 @@ export function createDataSpaceTools(ctx) {
 			name: "data_space_env",
 			label: "查环境参数",
 			description:
-				"Read the Data Space environment address book: environments of a project (test / staging / production) with base URL and parameters such as tenant, account or database. An environment may also carry a built-in script (declarative HTTP steps, e.g. login) that produces short-lived values like tokens; call with action=refresh to run it and receive those values in plain text. Values flagged as secret come back masked as ***; never guess them.",
-			promptSnippet: "the user's test environment URLs, parameters and script-produced tokens",
+				"Read project environments without side effects. Explicit refresh prepares one environment through its HTTP script, reusing valid values unless forced. Secret values remain server-side; private browser credential consumption is not supported.",
+			promptSnippet: "Look up test environment URLs and parameter readiness.",
 			promptGuidelines: [
 				"Use data_space_env before executing or automating cases that need a base URL, tenant, account, billing period or other environment-specific parameter — do not invent these values.",
-				"Secret parameters are masked as ***; ask the user to fill them in themselves or to run that step locally instead of guessing.",
-				"When a token is needed use action=refresh: the script logs in and returns fresh values. Keep them for this run only — never echo, save or quote them.",
+				"Refresh requires one unambiguous environment. Secret-dependent execution remains blocked until a private execution adapter is available; never copy credentials into scripts or artifacts.",
 			],
 			parameters: {
 				type: "object",
@@ -371,8 +354,9 @@ export function createDataSpaceTools(ctx) {
 						type: "string",
 						enum: ["list", "refresh"],
 						description:
-							"list (default): read environments without network or writes. refresh: explicitly run the environment script and return fresh values.",
+							"list (default): no network or writes. refresh: prepare one environment, reusing valid cached values.",
 					},
+					force: { type: "boolean", description: "Refresh even when cached values are valid (default false)." },
 				},
 			},
 			async execute(_id, params) {
@@ -385,10 +369,13 @@ export function createDataSpaceTools(ctx) {
 					.join(" · ");
 				const match = (store) => {
 					const out = [];
+					const exactProject = (store.systems ?? []).some((s) => s.id === project);
+					const exactEnv = (store.envs ?? []).some((e) => e.id === envWant);
 					for (const s of store.systems ?? []) {
-						if (project && !nameHit([s.id, s.name, s.code], project)) continue;
+						if (project && (exactProject ? s.id !== project : !nameHit([s.id, s.name, s.code], project))) continue;
 						const list = (store.envs ?? []).filter(
-							(e) => e.systemId === s.id && (!envWant || nameHit([e.id, e.name], envWant)),
+							(e) =>
+								e.systemId === s.id && (!envWant || (exactEnv ? e.id === envWant : nameHit([e.id, e.name], envWant))),
 						);
 						if (!list.length) continue;
 						out.push({
@@ -407,18 +394,23 @@ export function createDataSpaceTools(ctx) {
 				const candidates = match(ctx.store())
 					.flatMap((g) => g.envs)
 					.filter((e) => scriptReady(e.script));
+				const selected = match(ctx.store()).flatMap((g) => g.envs);
+				if (action === "refresh" && selected.length !== 1)
+					return `环境准备阻塞：匹配 ${selected.length} 个环境，请用明确 project/env ID 唯一指定；未运行任何脚本。`;
 				const targets = action === "refresh" ? candidates : [];
-				const refreshed = [];
 				if (!candidates.length && action === "refresh") notes.push("这些环境没有启用内置脚本，没有可取的动态值。");
 				if (targets.length && typeof ctx.refreshEnv === "function") {
-					if (targets.length > 3)
-						notes.push(`有 ${targets.length} 个环境的动态值需要更新，本次只处理前 3 个（可用 project / env 缩小范围）`);
-					for (const env of targets.slice(0, 3)) {
-						const out = await ctx.refreshEnv(env.id, { force: true });
-						if (out?.ok && !out.cached) refreshed.push(env.id);
+					for (const env of targets) {
+						const out = await ctx.refreshEnv(env.id, { force: p.force === true });
+						if (out?.ok)
+							notes.push(
+								`「${str(env.name, 60)}」动态参数${out.cached ? "有效期内复用" : "已刷新"}；来源：环境内置脚本。`,
+							);
 						else if (!out?.ok) notes.push(`「${str(env.name, 60)}」动态值未更新：${oneline(out?.error || "未知错误")}`);
 					}
 				}
+				if (targets.length && typeof ctx.refreshEnv !== "function")
+					notes.push("环境准备阻塞：当前宿主不支持脚本刷新。");
 
 				const store = ctx.store();
 				const groups = match(store);
@@ -430,21 +422,16 @@ export function createDataSpaceTools(ctx) {
 							`### ${str(g.system.name, 60)}${g.system.code ? `（${g.system.code}）` : ""}\n${g.envs.map((e) => envBlock(e, nowMs)).join("\n")}`,
 					)
 					.join("\n\n");
-				const head = `数据空间 · 环境 · 命中 ${hit} 个${scope ? `（${scope}）` : ""}\n敏感参数以 *** 返回；脚本取到的动态值只给名字，需要明文用 action=refresh。`;
+				const head = `数据空间 · 环境 · 命中 ${hit} 个${scope ? `（${scope}）` : ""}\n敏感参数只给名字，不返回明文。配置可读；网络、身份/角色、数据初态未验证。`;
+				if (groups.some((g) => g.envs.some((e) => [...(e.params ?? []), ...(e.dynamic ?? [])].some((v) => v.secret))))
+					notes.push("私密参数执行链未接入：依赖这些秘密的浏览器测试保持阻塞，不得经模型、用例、报告或归档转交明文。");
 				const tail = [
 					...notes.map((n) => `- ${n}`),
 					...(action === "refresh" ? [] : ["- 需要 Token / 会话之类的最新值时，用 action=refresh 让脚本现取。"]),
 				].join("\n");
-				// 脱敏只作用于环境描述部分；动态值明文块单独追加，不进脱敏链路。
-				const masked = maskSecrets(`${head}\n\n${body}${tail ? `\n\n${tail}` : ""}`);
-				const plain = (action === "refresh" ? refreshed : [])
-					.map((id) => {
-						const env = (store.envs ?? []).find((e) => e.id === id);
-						return env ? dynamicPlainBlock(env, nowMs) : "";
-					})
-					.filter(Boolean)
-					.join("\n\n");
-				return plain ? `${masked}\n\n${plain}` : masked;
+				let output = `${head}\n\n${body}${tail ? `\n\n${tail}` : ""}`;
+				for (const env of store.envs ?? []) output = redactEnvSecrets(output, env);
+				return maskSecrets(output);
 			},
 		},
 		{
