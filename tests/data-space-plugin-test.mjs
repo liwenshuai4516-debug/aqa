@@ -52,6 +52,11 @@ const CLIENT_FILES = [
 ensureBuild(repoRoot, "data-space-plugin-test");
 
 const dataDir = mkdtempSync(join(tmpdir(), "pi-web-data-space-"));
+const agentDir = join(dataDir, "agent");
+mkdirSync(agentDir);
+writeFileSync(join(agentDir, "settings.json"), "{}");
+writeFileSync(join(agentDir, "auth.json"), "{}");
+writeFileSync(join(agentDir, "models.json"), '{"providers":{}}');
 mkdirSync(join(dataDir, "plugins"), { recursive: true });
 cpSync(PLUGIN_SRC, join(dataDir, "plugins", "data-space"), { recursive: true });
 // 出站请求要过宿主白名单。这份**临时副本**额外授权 127.0.0.1，供下面的模拟登录接口使用；
@@ -89,7 +94,13 @@ function check(ok, msg, extra) {
 
 function startServer() {
 	const p = spawn(process.execPath, [distEntry(repoRoot)], {
-		env: { ...process.env, PI_WEB_PORT: String(PORT), PI_WEB_DATA_DIR: dataDir, PI_WEB_CWD: repoRoot },
+		env: {
+			...process.env,
+			PI_WEB_PORT: String(PORT),
+			PI_WEB_DATA_DIR: dataDir,
+			PI_CODING_AGENT_DIR: agentDir,
+			PI_WEB_CWD: repoRoot,
+		},
 		stdio: ["ignore", "pipe", "pipe"],
 	});
 	p.stderr.on("data", (d) => {
@@ -125,7 +136,8 @@ async function connectWs(clientId) {
 			} catch {
 				return;
 			}
-			if (msg?.type === "ready" || msg?.type === "snapshot") {
+			// ready only acknowledges transport; plugin activation happens during attach.
+			if (msg?.type === "snapshot") {
 				clearTimeout(timer);
 				resolve(sock);
 			}
