@@ -97,7 +97,7 @@ const attribution = obj({
 	evidenceRefs: list(ref("evidence")),
 	status: choice("verified", "unconfirmed"),
 });
-const finding = obj({
+export const Finding = obj({
 	findingId: str,
 	conditionId: optional(str),
 	ruleId: str,
@@ -111,6 +111,7 @@ const finding = obj({
 	reason: str,
 	attributions: list(attribution),
 	error: optional(str),
+	metrics: optional(T.Record(str, T.Unknown())),
 });
 export const schemas = {
 	contracts: obj({
@@ -176,12 +177,50 @@ export const schemas = {
 		evaluatorVersions: T.Record(str, str),
 		configDigest: hash,
 		state: choice("completed", "failed", "cancelled"),
-		findings: list(finding),
+		findings: list(Finding),
 		summary: obj({
 			deliveryVerdict: choice("pass", "fail", "inconclusive"),
 			goal: choice("achieved", "partially-achieved", "not-achieved", "undetermined"),
+			behavior: optional(choice("pass", "fail", "inconclusive")),
+			counts: optional(
+				obj({
+					object: T.Literal("findings"),
+					planned: T.Integer({ minimum: 0 }),
+					executed: T.Integer({ minimum: 0 }),
+					determinate: T.Integer({ minimum: 0 }),
+					pass: T.Integer({ minimum: 0 }),
+					fail: T.Integer({ minimum: 0 }),
+					inconclusive: T.Integer({ minimum: 0 }),
+					notExecuted: T.Integer({ minimum: 0 }),
+					errors: T.Integer({ minimum: 0 }),
+					excluded: T.Integer({ minimum: 0 }),
+					passRate: T.Union([T.Number({ minimum: 0, maximum: 1 }), T.Null()]),
+					coverage: T.Union([T.Number({ minimum: 0, maximum: 1 }), T.Null()]),
+				}),
+			),
+			exclusions: optional(list(obj({ findingId: str, reason: str }))),
+			requiredRuleGaps: optional(list(str)),
 		}),
 		assessmentStage: choice("provisional", "final"),
+		configuration: optional(
+			obj({
+				profileId: str,
+				profileVersion: str,
+				rules: list(obj({ id: str, version: str, config: T.Record(str, T.Unknown()) })),
+			}),
+		),
+		job: optional(
+			obj({
+				jobId: str,
+				generation: T.Integer({ minimum: 1 }),
+				queuedAt: str,
+				startedAt: optional(str),
+				endedAt: str,
+				cancellationRequestedAt: optional(str),
+				cancellationConfirmedAt: optional(str),
+				error: optional(str),
+			}),
+		),
 	}),
 	reviews: obj({
 		evaluationRef: ref("evaluations"),

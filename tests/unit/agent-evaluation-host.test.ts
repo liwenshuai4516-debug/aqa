@@ -45,8 +45,10 @@ async function harness() {
 		join(plugin, "index.mjs"),
 		`import { EvaluationStore } from './store.mjs';
 import { EvidenceCollector } from './collect.mjs';
+import { EvaluationRegistry } from './registry.mjs';
+import { EvaluationEngine } from './evaluate.mjs';
 export default { activate(host) {
- const state=globalThis.__evaluationFixture={host,EvaluationStore,EvidenceCollector};
+ const state=globalThis.__evaluationFixture={host,EvaluationStore,EvidenceCollector,EvaluationRegistry,EvaluationEngine};
  return host.onMessage((payload,from)=>{try{state.last=host.readEvaluationEvidence(from,payload.query);}catch(error){state.error=error.code;}});
 }};`,
 	);
@@ -98,7 +100,7 @@ describe("EC02 host integration", () => {
 		expect(page.children.map((c) => c.conversationId).sort()).toEqual(["child", "grandchild"]);
 	});
 
-	it("copies new collector code into an isolated plugin and persists a real SDK selection", async () => {
+	it("copies collector and evaluator code into an isolated plugin, then seals and scores a real SDK selection", async () => {
 		const h = await harness(),
 			source = h.host.readEvaluationEvidence("client1", h.query);
 		const context = { clientId: "client1" };
@@ -171,6 +173,52 @@ describe("EC02 host integration", () => {
 		const snapshot = collector.seal(context, result.checkpointRef, "seal");
 		expect(snapshot.data.gaps).toContain("source-is-ephemeral; restart recovery is unavailable");
 		expect(snapshot.data.coverage).toBe("partial");
+		const registry = new h.fixture.EvaluationRegistry();
+		registry.registerEvaluators([
+			{
+				manifest: {
+					id: "Probe",
+					version: "1",
+					method: "deterministic",
+					supportedTaskTypes: ["agent-task"],
+					requiredEvidence: ["message"],
+					configSchema: { type: "object", additionalProperties: false },
+					outputSchemaVersion: 1,
+					timeoutMs: 1000,
+					budget: { maxFindings: 1 },
+					dependencies: [],
+				},
+				evaluate: (_contract: any, view: any) => [
+					{
+						verdict: "pass",
+						evidenceState: "sufficient",
+						evidenceRefs: [view.evidence[0].ref],
+						missingEvidence: [],
+						reason: "Selected real SDK entry is available",
+					},
+				],
+			},
+		]);
+		registry.registerProfile({
+			id: "probe",
+			version: "1",
+			taskTypes: ["agent-task"],
+			rules: [{ id: "Probe", version: "1", config: {} }],
+			required: [],
+			aggregation: "contract-v1",
+		});
+		const engine = new h.fixture.EvaluationEngine(store, registry);
+		cleanup.push(() => engine.close());
+		const report = await engine.evaluate(context, {
+			snapshotRef: ref(snapshot),
+			profileId: "probe",
+			profileVersion: "1",
+			requestId: "score",
+		});
+		expect(report.data.state).toBe("completed");
+		expect(report.data.findings[0].verdict).toBe("pass");
+		expect(report.data.summary.goal).toBe("undetermined");
+		expect(report.data.assessmentStage).toBe("provisional");
 	});
 	it("binds native reads to the actual workspace and rejects a changed source session", async () => {
 		const h = await harness();

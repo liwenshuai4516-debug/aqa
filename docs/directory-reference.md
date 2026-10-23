@@ -415,3 +415,5 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 数据空间结果规范：`.pi/skills/data-space-testing/references/result-output.md`（Agent 交付约定，不是存储 schema）、同 Skill `scripts/validate-result.mjs`（只读一致性检查）；`tests/data-space-skill-desktop-test.mjs`（Electron 技能、插件归属和快捷发现验收）。
 
 Agent 评估 EC01/EC02：`plugins/agent-evaluation/schema.mjs`（运行校验）、`store.mjs`（单写者/幂等/授权/导出）、`durable.mjs`（原子持久化）、`collect.mjs`/`adapters/pi.mjs`（采集与封存）、`server/agent/evaluation-evidence.ts`（授权 SDK 选区）；`tests/unit/agent-evaluation-{store,evidence,host}.test.ts` 与 `tests/agent-evaluation-{native,server}-test.mjs` 为工程验收。产品接线待 EC04，见 [EC02](agent-evaluation-evidence/EC02.md)。
+
+Agent 评估 EC03 基础：`plugins/agent-evaluation/registry.mjs`（三类扩展校验）、`evaluate.mjs`（快照作业）、`aggregate.mjs`（聚合）；`tests/fixtures/agent-evaluation/engine.mjs` 与 `tests/unit/agent-evaluation-{registry,engine}.test.ts` 提供合成对照。七条基础规则和完整 EC03 验收待续。
