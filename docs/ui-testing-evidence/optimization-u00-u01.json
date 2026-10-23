@@ -1,0 +1,85 @@
+{
+	"scope": "U00 baseline + U01 engineering regression; M1/M2 not complete",
+	"hostBase": "b3de3207ae3289e6484a430a2d7f9c6665e5a356",
+	"sourceCommit": "2e42b91379569dde4875447bb48333c0430b9aee",
+	"distribution": "0.1.1",
+	"actualModelCalls": 0,
+	"businessWrites": 0,
+	"evidence": [
+		{
+			"path": "tests/scratch/ui-optimization-u00/baseline.json",
+			"sha256": "30ec768fb19c2db919e5b985413d03961005c501efb7101b99c847c35e3febcb",
+			"bytes": 1207
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u01-before.log",
+			"sha256": "c4aa5ea5edc5d3ff6f25f8efd4e8fe11c8998aa925978163f04552050ef72bec",
+			"bytes": 990
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u01-after.log",
+			"sha256": "d83e1a17aeb3f0d0314b200e7c28f38f65b0b4a152e0efcb586c2be4e52556a7",
+			"bytes": 1424
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u01-regression.log",
+			"sha256": "6e3d69330787838440f4fc2c3d2f265f24dade6d5247c2cf0da9f44077ed36fa",
+			"bytes": 1208
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/fixture-calibration.log",
+			"sha256": "ced30683a99378306941c3edfb40d799479010b97bcc7d21885b73bd98291c09",
+			"bytes": 436
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u01-installed.log",
+			"sha256": "19a4dd3dce4c3502e0ebf0cb2363dbfe52c81b93813d29cfbeb10f4ada3c4eef",
+			"bytes": 729
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u01-installed-retry.log",
+			"sha256": "8ca39bd802d3cb67da1ce8dbf8f1399a342993afb23c9d49417a5deff8b354b7",
+			"bytes": 217
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/ui-integration.log",
+			"sha256": "713a120ccc682d538a8c9be9db745450e1c0ac881d8faef8de87075f7bf35666",
+			"bytes": 1327
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/desktop-management.log",
+			"sha256": "f86819bd779987ed8ac92bef1973e6f50ead4da6f71ef445dcf7581e17e7ee4d",
+			"bytes": 734
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/host-unit.log",
+			"sha256": "422872850d47ac71190789fd00d5895a5609347075a3f473770fab5252dd6398",
+			"bytes": 198
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/typecheck.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/host-lint-final.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/host-protocol-final.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"bytes": 360
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/pack.log",
+			"sha256": "07f3c83902a02786fd91fc995838cf39be615faaf9f72af6c156245fcef95584",
+			"bytes": 4082
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/install-final.log",
+			"sha256": "f0b8235caa7ac6eff22d61a06d11b04d1ffea801387428575e0f7592e53441b8",
+			"bytes": 132
+		}
+	]
+}

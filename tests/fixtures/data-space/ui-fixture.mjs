@@ -4,7 +4,8 @@ import { mkdtemp, mkdir, writeFile, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-export async function setupUiFixture({ discardPersistence = false } = {}) {
+import { optimizationPage } from "./ui-optimization-page.mjs";
+export async function setupUiFixture({ discardPersistence = false, optimization = false } = {}) {
 	const root = await mkdtemp(join(tmpdir(), "data-space-native-ui-")),
 		project = join(root, "project"),
 		agentDir = join(root, "agent");
@@ -12,6 +13,7 @@ export async function setupUiFixture({ discardPersistence = false } = {}) {
 	await mkdir(agentDir);
 	const server = createServer((_req, res) => {
 		res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+		if (optimization) return res.end(optimizationPage({ discardPersistence }));
 		res.end(`<!doctype html><h1>Names</h1><form><label>Name <input required name="name"></label><button>Save</button></form><ul></ul><script>
  const list=document.querySelector('ul'),names=JSON.parse(localStorage.getItem('names')||'[]');
  function render(){list.replaceChildren(...names.map(name=>{const li=document.createElement('li');li.textContent=name;return li}));}

@@ -5,7 +5,7 @@
 | 维护内容                                | 唯一位置                                                                         |
 | --------------------------------------- | -------------------------------------------------------------------------------- |
 | 技能名称、描述、调度入口                | `../SKILL.md`                                                                    |
-| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.0.tgz`                                              |
+| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.1.tgz`                                              |
 | 原生测试 MCP 适配                       | `../assets/mcp-extension.mjs`                                                    |
 | Chromium 执行配置                       | `../assets/playwright.config.mjs`                                                |
 | 八个阶段技能、schema、runner 与评估规则 | 安装后的 `node_modules/pi-ui-testing/`，修改上游源码后重新分发，不直接改安装目录 |
@@ -14,8 +14,8 @@
 | 管理页与快捷发现的公共逻辑              | `server/skill/`、`server/settings-service.ts`、`server/slash-commands.ts`        |
 | 测试资产与执行证据                      | 被测工作区 `qa/ui/`，不写进技能目录                                              |
 
-原版包来源提交：`44df50bb383a8e27185290e75c47095f176e764b`。
-SHA-256：`3557ed20d2c81ba331981aa06668a0275a867f24c8da540f09c83eff6877e6ef`。本次仅迁移位置，不改写压缩包。
+原版包来源提交：`2e42b91379569dde4875447bb48333c0430b9aee`。
+SHA-256：`817ac2028836476419f459c379c12fbc1dcea0833a9e43cdc393cb1ac57ea9bd`。0.1.1 从维护源码重建：partial 报告交付保留阻塞及原任务续跑，Markdown 交付文件不再当 JSON 清单读取。原 0.1.0 包及摘要仍可从 Git 和本次基线证据恢复。
 
 ## 安装与发现
 
