@@ -1,6 +1,6 @@
 /** Exercise package discovery and the real SDK/MCP binding without model or business requests. */
 import assert from "node:assert/strict";
-import { realpathSync } from "node:fs";
+import { existsSync, realpathSync } from "node:fs";
 import { cp, copyFile, mkdtemp, mkdir, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, sep } from "node:path";
@@ -59,7 +59,7 @@ try {
 	await mkdir(join(target, "tests"), { recursive: true });
 	await writeFile(
 		join(target, "tests/seed.spec.ts"),
-		"import { test } from '@playwright/test';\ntest('integration seed', async ({ page }) => { await page.route('http://127.0.0.1:18981/**', r => r.fulfill({contentType: 'text/html', body: '<button>Capability smoke</button>'})); await page.goto('/synthetic'); });\n",
+		`import { test } from '@playwright/test';\ntest('integration seed', async ({ page }) => { await import('node:fs/promises').then(fs => fs.writeFile(${JSON.stringify(join(target, "seed-executed"))}, 'owned fixture')); await page.route('http://127.0.0.1:18981/**', r => r.fulfill({contentType: 'text/html', body: '<button>Capability smoke</button>'})); await page.goto('/synthetic'); });\n`,
 	);
 	await writeFile(join(project, ".pi/settings.json"), '{"theme":"light"}\n');
 	const settingsPath = await enableUiTesting(project);
@@ -230,6 +230,38 @@ try {
 			],
 		},
 	];
+	// MCP itself otherwise selects the first existing candidate silently.
+	await copyFile(join(target, "tests/seed.spec.ts"), join(target, "seed.spec.ts"));
+	const ambiguousSeed = await invoke("integration_native_call", {
+		tool: backend + "generator_setup_page",
+		input: { project: "chromium", seedFile: "seed.spec.ts", plan: "Reject ambiguous seed before execution." },
+	});
+	await rm(join(target, "seed.spec.ts"));
+	assert.equal(ambiguousSeed.details.isError, true, JSON.stringify(ambiguousSeed.content));
+	assert.match(JSON.stringify(ambiguousSeed.content), /多个/);
+	checks.push("ambiguous seed paths are blocked by the host before MCP setup");
+	for (const input of [
+		{ project: "chromium", seedFile: "tests/missing.spec.ts" },
+		{ project: "missing-project", seedFile: "tests/seed.spec.ts" },
+	]) {
+		const denied = await invoke("integration_native_call", {
+			tool: backend + "generator_setup_page",
+			input: { ...input, plan: "Reject invalid initialization before seed execution." },
+		});
+		assert.equal(denied.details.isError, true, JSON.stringify(denied.content));
+		assert.match(JSON.stringify(denied.content), /UI 初始化阻塞/);
+	}
+	const seedCode = await readFile(join(target, "tests/seed.spec.ts"), "utf8");
+	await writeFile(join(target, "tests/seed.spec.ts"), seedCode + "\ntest('extra seed', async () => {});\n");
+	const multiSeed = await invoke("integration_native_call", {
+		tool: backend + "generator_setup_page",
+		input: { project: "chromium", seedFile: "tests/seed.spec.ts", plan: "Reject multi-test seed." },
+	});
+	assert.equal(multiSeed.details.isError, true, JSON.stringify(multiSeed.content));
+	assert.match(JSON.stringify(multiSeed.content), /单个/);
+	assert.equal(existsSync(join(target, "seed-executed")), false, "Rejected setup must not run seed body");
+	await writeFile(join(target, "tests/seed.spec.ts"), seedCode);
+	checks.push("missing seed/project and multi-test seed stop before seed-body side effects");
 	const setup = await invoke("integration_native_call", {
 		tool: backend + "generator_setup_page",
 		input: {
@@ -239,6 +271,7 @@ try {
 		},
 	});
 	assert.equal(setup.details.isError, false, JSON.stringify(setup.content));
+	assert.equal(existsSync(join(target, "seed-executed")), true);
 	checks.push(
 		"test MCP uses independent workspace dependencies, custom testDir and baseURL to open a real Chromium seed",
 	);

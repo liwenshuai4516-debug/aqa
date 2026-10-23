@@ -8,6 +8,7 @@
 | 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.1.tgz`                                              |
 | 原生测试 MCP 适配                       | `../assets/mcp-extension.mjs`                                                    |
 | Chromium 执行配置                       | `../assets/playwright.config.mjs`                                                |
+| 录制 seed 前置校验                      | `../assets/recording-preflight.mjs`（由 MCP 执行钩子调用，不另建 runner）        |
 | 八个阶段技能、schema、runner 与评估规则 | 安装后的 `node_modules/pi-ui-testing/`，修改上游源码后重新分发，不直接改安装目录 |
 | E2E 依赖与版本锁                        | 仓库 `tools/e2e/package.json`、`package-lock.json`                               |
 | 项目/应用登记                           | 仓库 `scripts/enable-ui-testing.mjs`                                             |
@@ -58,3 +59,5 @@ npx vitest run tests/unit/skill-capability-settings.test.ts tests/unit/ui-testin
 真实界面回归另见仓库 [接入记录](../../../../docs/ui-testing-integration.md) 中的 visibility 命令；本次迁移结果见 [目录归并验收](../../../../docs/ui-testing-maintenance-evidence.md)。全局能力导航见 [能力维护](../../../../docs/capability-layout.md)。
 
 MCP 运行时选择由 `assets/playwright-runtime.mjs` 负责：CLI 与配置均基于当前工作区；无配置才用后备配置，缺依赖或多个配置阻塞。`tests/ui-testing-integration-test.mjs` 使用独立复制的 Playwright、`tests/` seed 与相对 baseURL 检查跨工作区启动；不以共享依赖链接替代此项回归。
+
+录制前置校验在现有 `generator_setup_page` 的执行钩子中生效：要求明确 project/seedFile，通过目标 CLI 的 `--list` 校验唯一文件和单个测试；缺失、路径歧义、多测试、错误 project 或收集不兼容时拒绝，不创建默认 seed。只收集，不执行 seed 测试体；每次 setup 重新检查。配置模块与测试模块仍会被 Playwright 收集器加载，必须使用已授权工作区；该检查不证明登录、角色或数据初态就绪。只查看、分析和已有资产正式回归不触发此录制检查。

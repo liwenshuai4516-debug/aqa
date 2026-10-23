@@ -1,8 +1,9 @@
 // Use the SDK pipeline so recording retains nested calls, hooks and cancellation.
 import { resolvePlaywrightRuntime } from "./playwright-runtime.mjs";
+import { validateRecordingSeed } from "./recording-preflight.mjs";
 import { createMcpExtension } from "@earendil-works/pi-coding-agent";
 
-export default createMcpExtension({
+const mcp = createMcpExtension({
 	loadConfig: (ctx) => {
 		const runtime = resolvePlaywrightRuntime(ctx.cwd);
 		return {
@@ -24,3 +25,15 @@ export default createMcpExtension({
 		};
 	},
 });
+
+export default async function (pi) {
+	pi.on("tool_call", async (event, ctx) => {
+		if (event.toolName !== "mcp__ui_playwright_test__generator_setup_page") return;
+		try {
+			await validateRecordingSeed(ctx.cwd, event.input);
+		} catch (error) {
+			return { block: true, reason: error.message };
+		}
+	});
+	return mcp(pi);
+}

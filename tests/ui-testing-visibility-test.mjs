@@ -1,6 +1,6 @@
 // Reproduce the desktop workspace mismatch, then verify app registration via real UI reload.
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, symlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { setTimeout as delay } from "node:timers/promises";
@@ -19,6 +19,7 @@ const userData = join(temporary, "desktop");
 const agentDir = join(userData, "agent");
 const output = join(repo, "tests/scratch/ui-workflow-visibility", String(Date.now()));
 await mkdir(workspace);
+await symlink(join(repo, "node_modules"), join(workspace, "node_modules"), "dir");
 await mkdir(agentDir, { recursive: true });
 await mkdir(output, { recursive: true });
 await writeFile(join(agentDir, "auth.json"), "{}");
@@ -31,6 +32,7 @@ const env = {
 	PI_WEB_CWD: workspace,
 	PI_WEB_PORT: String(port),
 	PI_WEB_PLUGIN_CATALOG_URL: "off",
+	PI_WEB_SDK: "bundled",
 };
 for (const key of Object.keys(env)) {
 	if (
@@ -65,8 +67,11 @@ try {
 			}
 		}),
 	);
+	await page.waitForSelector(".app");
 	await page.reload();
 	await page.waitForSelector(".app");
+	const setup = page.locator(".setup-modal .modal-close");
+	if (await setup.isVisible()) await setup.click();
 	const input = page.locator("textarea").first();
 	const command = async (text, expected) => {
 		const after = notices.length;
@@ -143,7 +148,14 @@ try {
 	await page?.screenshot({ path: join(output, "failure.png") }).catch(() => {});
 	process.exitCode = 1;
 } finally {
-	await app?.close();
+	try {
+		await app?.close();
+	} catch (error) {
+		result.status = "FAIL";
+		result.cleanupError = String(error);
+		app?.process().kill("SIGTERM");
+		process.exitCode = 1;
+	}
 	await writeFile(join(output, "result.json"), JSON.stringify(result, null, 2) + "\n");
 	console.log(JSON.stringify({ ...result, evidence: output }, null, 2));
 }
