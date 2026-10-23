@@ -5,11 +5,23 @@
  *   - 清洗：悬空 systemId 丢弃、id 去重、名称截断、baseUrl 去尾斜杠、超上限截断；
  *   - 默认环境：同项目多个 isDefault 只留第一个，一个都没有就认第一条，项目之间互不影响；
  *   - 用例环境：取所属项目的默认环境，未归类 / 项目没配环境返回空；
+ *   - 环境参数（0.10.0）：空名丢弃、同名留首个、截断、secret 兼容、上限、展示层占位；
  *   - 执行流水：env / envId 原样保留并截断，旧流水没有这两个字段也不炸。
  */
 import { describe, expect, it } from "vitest";
-import { MAX, normalizeStore } from "../../plugins/data-space/model.mjs";
-import { S, applyStore, defaultEnvOf, envLabel, envOfCase, envsOf } from "../../plugins/data-space/client/state.mjs";
+import { MAX, normalizeEnvParams, normalizeStore } from "../../plugins/data-space/model.mjs";
+import {
+	S,
+	SECRET_MASK,
+	applyStore,
+	defaultEnvOf,
+	envLabel,
+	envOfCase,
+	envsOf,
+	paramText,
+	paramsOf,
+	paramValueText,
+} from "../../plugins/data-space/client/state.mjs";
 import { normalizeRun } from "../../plugins/data-space/runs.mjs";
 
 const stamp = "2026-10-20T02:00:00.000Z";
@@ -66,6 +78,69 @@ describe("环境清洗", () => {
 	});
 });
 
+describe("环境参数清洗", () => {
+	it("没有名称的行丢掉，其余按顺序保留", () => {
+		expect(
+			normalizeEnvParams([{ key: "  ", value: "x" }, { key: "账号", value: "qa_admin" }, null, { value: "没名字" }]),
+		).toEqual([{ key: "账号", value: "qa_admin", secret: false }]);
+	});
+
+	it("同名只留第一个（大小写不敏感）", () => {
+		const out = normalizeEnvParams([
+			{ key: "Token", value: "a" },
+			{ key: "token", value: "b" },
+			{ key: "租户", value: "PMS-TEST" },
+		]);
+		expect(out.map((p: Record<string, unknown>) => `${p.key}=${p.value}`)).toEqual(["Token=a", "租户=PMS-TEST"]);
+	});
+
+	it("参数名截到 60、值截到 500，值里的换行与冒号原样保留", () => {
+		const value = "jdbc:mysql://db:3306/pms?\nzone=Asia/Shanghai";
+		const [one] = normalizeEnvParams([{ key: "库".repeat(80), value: `${value}${"x".repeat(600)}` }]);
+		expect(one.key).toHaveLength(60);
+		expect(String(one.value)).toHaveLength(500);
+		expect(String(one.value).startsWith(value)).toBe(true);
+	});
+
+	it("非字符串的 value 视为空（页面只发字符串）", () => {
+		expect(normalizeEnvParams([{ key: "验证码", value: 888888 }])[0].value).toBe("");
+	});
+
+	it('secret 只认 true / "true" / 1', () => {
+		const out = normalizeEnvParams([
+			{ key: "a", secret: true },
+			{ key: "b", secret: "true" },
+			{ key: "c", secret: 1 },
+			{ key: "d", secret: "false" },
+			{ key: "e", secret: 0 },
+		]);
+		expect(out.map((p: Record<string, unknown>) => p.secret)).toEqual([true, true, true, false, false]);
+	});
+
+	it(`超过 ${MAX.envParams} 条只留前面，不是数组就当空`, () => {
+		const many = Array.from({ length: MAX.envParams + 8 }, (_, i) => ({ key: `k${i}`, value: `${i}` }));
+		expect(normalizeEnvParams(many)).toHaveLength(MAX.envParams);
+		expect(normalizeEnvParams(undefined)).toEqual([]);
+		expect(normalizeEnvParams("nope")).toEqual([]);
+	});
+
+	it("整份保存时跟着环境一起收敛，旧库没有这个字段就是空数组", () => {
+		const out = build([
+			env({
+				id: "e1",
+				params: [
+					{ key: "账号", value: "qa" },
+					{ key: "账号", value: "dup" },
+					{ key: "", value: "x" },
+				],
+			}),
+			env({ id: "e2", name: "预发环境" }),
+		]);
+		expect((out.envs[0] as Record<string, unknown>).params).toEqual([{ key: "账号", value: "qa", secret: false }]);
+		expect((out.envs[1] as Record<string, unknown>).params).toEqual([]);
+	});
+});
+
 describe("默认环境", () => {
 	it("同项目多个默认只认第一个", () => {
 		const out = build([env({ id: "e1", isDefault: true }), env({ id: "e2", name: "预发环境", isDefault: true })]);
@@ -118,6 +193,25 @@ describe("页面取用", () => {
 		expect(envLabel({ name: "预发环境", baseUrl: "" })).toBe("预发环境");
 		expect(envLabel(null)).toBe("");
 		expect(S.envs).toHaveLength(3);
+	});
+});
+
+describe("参数在页面上怎么显示", () => {
+	it("paramsOf 兜住缺失与脏数据", () => {
+		expect(paramsOf({ id: "e", params: [{ key: "账号", value: "qa", secret: false }] })).toHaveLength(1);
+		expect(paramsOf({ id: "e" })).toEqual([]);
+		expect(paramsOf(null)).toEqual([]);
+	});
+
+	it("敏感值只给占位，非敏感值给真值", () => {
+		expect(paramValueText({ key: "口令", value: "demo-pass", secret: true })).toBe(SECRET_MASK);
+		expect(paramValueText({ key: "租户", value: "PMS-TEST", secret: false })).toBe("PMS-TEST");
+		expect(paramValueText({ key: "空", value: "" })).toBe("—");
+	});
+
+	it("一行写法：名称=值", () => {
+		expect(paramText({ key: "账号", value: "qa", secret: false })).toBe("账号=qa");
+		expect(paramText({ key: "口令", value: "demo-pass", secret: true })).toBe(`口令=${SECRET_MASK}`);
 	});
 });
 

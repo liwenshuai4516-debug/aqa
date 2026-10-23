@@ -38,7 +38,7 @@ import { openResultModal, resultModalHtml, saveResultNow } from "./modal-result.
 import { registerCaseMention } from "./mention.mjs";
 import { caseModalHtml, copyCase, deleteCase, openCaseModal, saveCase } from "./modal-case.mjs";
 import { deleteNode, nodeModalHtml, openNodeEdit, openNodeModal, saveNode } from "./modal-node.mjs";
-import { copyEnv, deleteEnv, envModalHtml, openEnvModal, saveEnv } from "./modal-env.mjs";
+import { copyEnv, copyEnvParams, deleteEnv, envModalHtml, openEnvModal, saveEnv } from "./modal-env.mjs";
 import { refreshPathSelects } from "./path-select.mjs";
 
 /* ------------------------------------------------------------------ 骨架 */
@@ -340,6 +340,20 @@ function onClick(e) {
 		void copyEnv(id);
 		return;
 	}
+	if (act === "copy-env-params") {
+		void copyEnvParams(id);
+		return;
+	}
+	if (act === "add-env-param") {
+		S.envModal?.params.push({ key: "", value: "", secret: false });
+		renderOverlay();
+		return;
+	}
+	if (act === "del-env-param") {
+		S.envModal?.params.splice(Number(hit.dataset.pi), 1);
+		renderOverlay();
+		return;
+	}
 	if (act === "del-env") {
 		void deleteEnv(id);
 		return;
@@ -420,6 +434,11 @@ function onInput(e) {
 	if (S.caseModal && el.dataset.si !== undefined && el.dataset.sf) {
 		const step = S.caseModal.steps[Number(el.dataset.si)];
 		if (step) step[el.dataset.sf] = el.value;
+		return;
+	}
+	if (S.envModal && el.dataset.pi !== undefined && el.dataset.pf) {
+		const param = S.envModal.params[Number(el.dataset.pi)];
+		if (param) param[el.dataset.pf] = el.value;
 	}
 }
 
@@ -429,6 +448,12 @@ function onChange(e) {
 
 	if (S.automationModal && el.dataset.f) {
 		S.automationModal[el.dataset.f] = el.value;
+		return;
+	}
+	// 敏感开关只改标记，不重绘：保住用户正在输入的焦点与滚动位置。
+	if (S.envModal && el.dataset.pi !== undefined && el.dataset.pf === "secret") {
+		const param = S.envModal.params[Number(el.dataset.pi)];
+		if (param) param.secret = el.checked;
 		return;
 	}
 	if (el.dataset.el === "import-file") {
@@ -587,6 +612,11 @@ function normalizeImport(parsed) {
 		systemId: e?.systemId || "",
 		name: e?.name || "未命名环境",
 		baseUrl: String(e?.baseUrl || "").replace(/\/+$/, ""),
+		params: asArr(e?.params).map((p) => ({
+			key: String(p?.key || "").slice(0, 60),
+			value: String(p?.value || "").slice(0, 500),
+			secret: p?.secret === true || p?.secret === "true",
+		})),
 		note: e?.note || "",
 		isDefault: Boolean(e?.isDefault),
 		createdAt: e?.createdAt || nowIso,

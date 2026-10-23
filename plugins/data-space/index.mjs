@@ -15,8 +15,10 @@
  *     旧文件先备份为 store.json.v1-<时间戳>.bak。
  *   - 执行结果（v3 回写）单独落 `<dataDir>/data-space/runs.json`：它是流水不是内容，
  *     和 store 混在一起会让「页面整份保存」与「AI 回写」互相抢 revision。
- *   - AI 工具只做两件事：按项目/模块/功能/编号查用例（省上下文）与回写执行结果；
- *     工具结果里带项目默认环境（名称 + 地址），不涉及任何口令。写盘后 broadcast 让页面自动刷新。
+ *   - 0.10.0 给环境加「参数」：账号 / 租户 / 数据库这类键值对，secret 标记敏感值；
+ *     列表、CSV 与 AI 工具里敏感值一律占位，明文只留在本地 store.json。
+ *   - AI 工具做三件事：查用例、查环境参数、回写执行结果；工具结果里敏感参数只给 ***。
+ *     写盘后 broadcast 让页面自动刷新。
  */
 import { copyFileSync, existsSync, readFileSync, realpathSync, renameSync } from "node:fs";
 import { atomicJson } from "./durable.mjs";

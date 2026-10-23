@@ -8,6 +8,7 @@
  *   - 概览统计：未执行不进分母，通过率按已执行算；
  *   - 锚点解析：revision + cases 列表；
  *   - data_space_cases：list / get / stats、按项目·功能·结果筛选、卡片档带步骤；
+ *   - data_space_env：按项目 / 环境查地址与参数，敏感值只给 ***；
  *   - data_space_record_result：按编号回写、未知编号不静默丢、锚点补全批次；
  *   - `@` 提及：编号精确 > 编号前缀 > 标题命中、空查询列最近更新、功能/模块范围命中、插入文本不以 @ 开头。
  */
@@ -260,6 +261,91 @@ describe("data_space_cases 工具", () => {
 		const lines = formatCaseLines(store, [store.cases[0] as Row], latestByCase([]));
 		expect(lines).toContain("最近 未执行");
 		expect(formatStats(store, [])).toContain("结果 revision 0");
+	});
+});
+
+describe("data_space_env 工具", () => {
+	const envRow = (over: Row): Row => ({
+		baseUrl: "",
+		note: "",
+		isDefault: false,
+		params: [],
+		createdAt: stamp,
+		updatedAt: stamp,
+		...over,
+	});
+	const store = baseStore({
+		envs: [
+			envRow({
+				id: "e1",
+				systemId: "s1",
+				name: "测试环境",
+				baseUrl: "https://pm-test.example.com",
+				isDefault: true,
+				params: [
+					{ key: "账号", value: "qa_contract", secret: false },
+					{ key: "租户", value: "PMS-TEST", secret: false },
+					{ key: "口令", value: "demo-pass", secret: true },
+				],
+				note: "数据每早重置",
+			}),
+			envRow({ id: "e2", systemId: "s1", name: "预发环境", baseUrl: "https://pm-stg.example.com" }),
+			envRow({
+				id: "e3",
+				systemId: "s2",
+				name: "测试环境",
+				baseUrl: "https://wss-test.example.com",
+				isDefault: true,
+				params: [{ key: "库", value: "jdbc:mysql://db:3306/wss", secret: false }],
+			}),
+		],
+	});
+	const ctx = { store: () => store, runs: () => ({ version: 1, revision: 0, runs: [] }), record: () => ({}) };
+	const call = async (params: Row = {}) => {
+		const tool = createDataSpaceTools(ctx as never).find((t) => t.name === "data_space_env");
+		return String(await tool!.execute("call-env", params));
+	};
+
+	it("不传筛选时按项目分组，默认环境排前面", async () => {
+		const text = await call();
+		expect(text).toContain("命中 3 个");
+		expect(text).toContain("项目管理系统（PMS）");
+		expect(text).toContain("供水调度（WSS）");
+		expect(text.indexOf("测试环境（默认）")).toBeLessThan(text.indexOf("预发环境 · https://pm-stg.example.com"));
+	});
+
+	it("非敏感参数给真值，敏感参数只给 ***", async () => {
+		const text = await call({ project: "PMS" });
+		expect(text).toContain("账号=qa_contract");
+		expect(text).toContain("租户=PMS-TEST");
+		// 敏感值连键值对都不给，只留参数名，避免被下游脱敏二次改写
+		expect(text).toContain("敏感：口令（值不提供");
+		expect(text).not.toContain("口令=");
+		expect(text).not.toContain("demo-pass");
+	});
+
+	it("按项目筛掉别的项目，按环境名再收一次", async () => {
+		const one = await call({ project: "项目管理系统" });
+		expect(one).toContain("pm-test.example.com");
+		expect(one).toContain("pm-stg.example.com");
+		expect(one).not.toContain("wss-test.example.com");
+
+		const stg = await call({ env: "预发" });
+		expect(stg).toContain("命中 1 个");
+		expect(stg).toContain("参数：（未配置）");
+		expect(stg).not.toContain("PMS-TEST");
+	});
+
+	it("没配参数的环境写明未配置，有备注的带上备注，找不到时给下一步", async () => {
+		expect(await call({ env: "生产" })).toContain("没有找到匹配的环境");
+		expect(await call({ project: "项目管理系统" })).toContain("备注：数据每早重置");
+		expect(await call({ env: "预发" })).not.toContain("备注：");
+	});
+
+	it("stats 里带上「几个环境配了参数」", async () => {
+		const tool = createDataSpaceTools(ctx as never).find((t) => t.name === "data_space_cases");
+		const text = String(await tool!.execute("call-stats", { action: "stats" }));
+		expect(text).toContain("环境参数：2/3 个环境已配参数");
 	});
 });
 

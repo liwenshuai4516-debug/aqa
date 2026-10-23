@@ -94,32 +94,47 @@ export function seedStore() {
 	];
 
 	// 每个项目一份地址簿：默认环境用 isDefault 标出，用例 / 结果都往默认环境上对。
+	// 没配参数的环境也留一个空数组，页面上不区分「没配」和「字段缺失」。
+	const envRow = (obj) => row({ params: [], ...obj });
 	const envs = [
-		row({
+		envRow({
 			id: "env-pms-test",
 			systemId: "sys-pms",
 			name: "测试环境",
 			baseUrl: "https://pms-test.example.com",
 			note: "合同 / 供应商联调环境，数据每周重置。",
 			isDefault: true,
+			params: [
+				{ key: "账号", value: "qa_contract" },
+				{ key: "租户", value: "PMS-TEST" },
+				{ key: "口令", value: "demo-pass", secret: true },
+			],
 		}),
-		row({
+		envRow({
 			id: "env-pms-stg",
 			systemId: "sys-pms",
 			name: "预发环境",
 			baseUrl: "https://pms-stg.example.com",
 			note: "",
 			isDefault: false,
+			params: [
+				{ key: "账号", value: "qa_contract" },
+				{ key: "租户", value: "PMS-STG" },
+			],
 		}),
-		row({
+		envRow({
 			id: "env-wop-test",
 			systemId: "sys-wop",
 			name: "测试环境",
 			baseUrl: "http://wop-test.local:8080",
 			note: "设备与工单联调。",
 			isDefault: true,
+			params: [
+				{ key: "设备网关", value: "http://wop-test.local:8080/gateway" },
+				{ key: "验证码", value: "888888" },
+			],
 		}),
-		row({
+		envRow({
 			id: "env-wop-prod",
 			systemId: "sys-wop",
 			name: "生产环境",
@@ -127,15 +142,19 @@ export function seedStore() {
 			note: "只读核对用，不在此环境造数据。",
 			isDefault: false,
 		}),
-		row({
+		envRow({
 			id: "env-wds-local",
 			systemId: "sys-wds",
 			name: "本地",
 			baseUrl: "http://127.0.0.1:9000",
 			note: "调度服务本地起，点位数据靠模拟。",
 			isDefault: true,
+			params: [
+				{ key: "数据库", value: "mysql://127.0.0.1:3306/wds" },
+				{ key: "租户", value: "WDS-LOCAL" },
+			],
 		}),
-		row({
+		envRow({
 			id: "env-wds-test",
 			systemId: "sys-wds",
 			name: "测试环境",
@@ -143,23 +162,28 @@ export function seedStore() {
 			note: "",
 			isDefault: false,
 		}),
-		row({
+		envRow({
 			id: "env-cts-test",
 			systemId: "sys-cts",
 			name: "测试环境",
 			baseUrl: "https://cts-test.example.com",
 			note: "",
 			isDefault: true,
+			params: [{ key: "座席工号", value: "8001" }],
 		}),
-		row({
+		envRow({
 			id: "env-bms-test",
 			systemId: "sys-bms",
 			name: "测试环境",
 			baseUrl: "https://bms-test.example.com",
 			note: "账单与催缴联调。",
 			isDefault: true,
+			params: [
+				{ key: "租户", value: "BMS-TEST" },
+				{ key: "账期", value: "2026-09" },
+			],
 		}),
-		row({
+		envRow({
 			id: "env-bms-stg",
 			systemId: "sys-bms",
 			name: "预发环境",

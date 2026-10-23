@@ -8,7 +8,8 @@ import { maskSecrets } from "./client/brief.mjs";
  *
  * 约束：
  *   - 只读工具不写盘；回写工具只追加执行记录（runs.json），不改用例内容。
- *   - 输出里只带项目的默认环境（名称 + 地址），不带任何账号 / 口令。
+ *   - 环境只给名称 / 地址 / 参数名与非敏感值；标了 secret 的参数一律 `***`，
+ *     不进模型上下文（要真实口令就让用户自己用，别让它猜）。
  *   - 文本给模型看，不追求好看；一条用例一行，字段用 · 分隔，超量时明确说「只给了前 N 条」。
  */
 import { isStale, latestByCase, normalizeVerdict, parseAnchor, summarize } from "./runs.mjs";
@@ -115,6 +116,28 @@ function defaultEnvFor(store, featureId) {
 /** 环境的一行写法：名称 + 地址（地址可能为空）。 */
 const envText = (env) => (env ? [env.name, env.baseUrl].filter(Boolean).join(" · ") : "");
 
+/**
+ * 一个环境的完整块：名称 / 默认 / 地址 / 参数 / 敏感参数名 / 备注。
+ * 敏感值连键值对都不给（只列名字），避免 `口令=***` 被下游脱敏规则二次改写后看不出原意。
+ */
+function envBlock(env) {
+	const plain = [];
+	const secret = [];
+	for (const p of env.params ?? []) {
+		const key = str(p?.key, 60);
+		if (!key) continue;
+		if (p.secret) secret.push(key);
+		else plain.push(`${key}=${oneline(p?.value ?? "") || "—"}`);
+	}
+	const lines = [
+		`- ${str(env.name, 60) || "未命名环境"}${env.isDefault ? "（默认）" : ""}${env.baseUrl ? ` · ${env.baseUrl}` : ""}`,
+	];
+	lines.push(`  参数：${plain.length ? plain.join(" · ") : "（未配置）"}`);
+	if (secret.length) lines.push(`  敏感：${secret.join("、")}（值不提供，需要时由用户本人填写或执行）`);
+	if (str(env.note, 200)) lines.push(`  备注：${oneline(env.note)}`);
+	return lines.join("\n");
+}
+
 function resultTag(runsByCase, c) {
 	const run = runsByCase.get(c.id);
 	if (!run) return "未执行";
@@ -180,6 +203,7 @@ export function formatStats(store, runs) {
 		`数据空间概览（数据 revision ${store.revision ?? 0} · 结果 revision ${runs?.revision ?? 0}）`,
 		`- 项目 ${(store.systems ?? []).length} · 模块 ${(store.modules ?? []).length} · 功能 ${features.length} · 用例 ${(store.cases ?? []).length} · 环境 ${(store.envs ?? []).length}`,
 		`- 环境分布：${(store.systems ?? []).filter((s) => (store.envs ?? []).some((e) => e.systemId === s.id)).length}/${(store.systems ?? []).length} 个项目已设地址`,
+		`- 环境参数：${(store.envs ?? []).filter((e) => (e.params ?? []).length).length}/${(store.envs ?? []).length} 个环境已配参数`,
 		`- 类型：接口 ${api} / UI ${ui}${(store.cases ?? []).length - api - ui > 0 ? ` / 其他 ${(store.cases ?? []).length - api - ui}` : ""}`,
 		`- 覆盖：${covered}/${features.length} 个功能有用例${features.length ? `（${Math.round((covered / features.length) * 100)}%）` : ""}`,
 		`- 执行：已执行 ${s.executed} · 通过 ${s["通过"]} / 失败 ${s["失败"]} / 阻塞 ${s["阻塞"]} · 未执行 ${s.untested} · 通过率 ${s.passRate}%${s.stale ? ` · 其中 ${s.stale} 条结果已过期` : ""}`,
@@ -284,6 +308,53 @@ export function createDataSpaceTools(ctx) {
 						: formatCaseLines(store, shown, runsByCase);
 				const tail = missing.length ? `\n\n未找到：${missing.join("、")}` : "";
 				return maskSecrets(`${head}\n\n${body || "（没有匹配的用例）"}${tail}`);
+			},
+		},
+		{
+			name: "data_space_env",
+			label: "查环境参数",
+			description:
+				"Read the Data Space environment address book: environments of a project (test / staging / production) with their base URL and parameters such as tenant, account or database. Values flagged as secret come back masked as ***; never guess them.",
+			promptSnippet: "the user's test environment URLs and parameters",
+			promptGuidelines: [
+				"Use data_space_env before executing or automating cases that need a base URL, tenant, account, billing period or other environment-specific parameter — do not invent these values.",
+				"Secret parameters are masked as ***; ask the user to fill them in themselves or to run that step locally instead of guessing.",
+			],
+			parameters: {
+				type: "object",
+				properties: {
+					project: {
+						type: "string",
+						description: "Project name, code or id (substring, case-insensitive). Omit for all projects.",
+					},
+					env: { type: "string", description: "Environment name or id (substring), e.g. 测试环境 / 预发环境." },
+				},
+			},
+			execute(_id, params) {
+				const p = params && typeof params === "object" ? params : {};
+				const store = ctx.store();
+				const project = str(p.project, 80);
+				const envWant = str(p.env, 80);
+				const groups = [];
+				let hit = 0;
+				for (const s of store.systems ?? []) {
+					if (project && !nameHit([s.id, s.name, s.code], project)) continue;
+					const list = (store.envs ?? []).filter(
+						(e) => e.systemId === s.id && (!envWant || nameHit([e.id, e.name], envWant)),
+					);
+					if (!list.length) continue;
+					hit += list.length;
+					const sorted = list.slice().sort((a, b) => Number(!!b.isDefault) - Number(!!a.isDefault));
+					groups.push(`### ${str(s.name, 60)}${s.code ? `（${s.code}）` : ""}\n${sorted.map(envBlock).join("\n")}`);
+				}
+				if (!groups.length) {
+					const scope = [project ? `项目「${project}」` : "", envWant ? `环境「${envWant}」` : ""]
+						.filter(Boolean)
+						.join(" · ");
+					return `没有找到匹配的环境${scope ? `（${scope}）` : ""}。可以先用 data_space_cases 的 stats 看看有哪些项目，或让用户先在「环境」页建一条。`;
+				}
+				const head = `数据空间 · 环境 · 命中 ${hit} 个${project ? `（项目「${project}」）` : ""}${envWant ? `（环境「${envWant}」）` : ""}\n敏感参数以 *** 返回，需要真实值请让用户自己填或自己执行。`;
+				return maskSecrets(`${head}\n\n${groups.join("\n\n")}`);
 			},
 		},
 		{

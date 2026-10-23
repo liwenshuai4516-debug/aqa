@@ -19,6 +19,12 @@ export const BASE = `${appRoot()}/plugins-api/data-space`;
 export const PRIORITIES = ["P0", "P1", "P2", "P3"];
 /** 环境名的常用写法：只给新建弹窗做输入建议（datalist），不是限定词表，用户可写「UAT 环境」之类。 */
 export const ENV_PRESETS = ["本地", "测试环境", "预发环境", "生产"];
+/** 环境参数的常用参数名：同样只做输入建议。 */
+export const ENV_PARAM_PRESETS = ["账号", "口令", "租户", "组织编码", "数据库", "接口地址", "接口 Token", "验证码"];
+/** 敏感参数在页面 / 导出 / AI 里的占位写法。 */
+export const SECRET_MASK = "••••";
+/** 单个环境的参数条数上限（与服务端 model.mjs 的 MAX.envParams 对齐）。 */
+export const ENV_PARAM_MAX = 30;
 /** 当前只做接口 / UI 两类；追加类型时改服务端 model.mjs 的 CASE_TYPES，这里只是接口未就绪时的兜底。 */
 export const CASE_TYPES = ["接口", "UI"];
 export const CASE_STATUS = ["草稿", "待评审", "已评审", "已废弃"];
@@ -213,6 +219,22 @@ export function envOfCase(c) {
 /** 环境的一行写法：名称 · 地址。 */
 export function envLabel(env) {
 	return env ? [env.name, env.baseUrl].filter(Boolean).join(" · ") : "";
+}
+
+export function paramsOf(env) {
+	return Array.isArray(env?.params) ? env.params : [];
+}
+
+/** 参数的展示值：敏感值一律占位，空值给一个短横线；不把口令带进标题栏 / 列表。 */
+export function paramValueText(p) {
+	if (p?.secret) return SECRET_MASK;
+	const v = String(p?.value ?? "").trim();
+	return v || "—";
+}
+
+/** `键=值` 的一行写法（敏感值已脱敏），用于列表标题与提示。 */
+export function paramText(p) {
+	return `${String(p?.key ?? "")}=${paramValueText(p)}`;
 }
 
 /** 用例编号：优先用项目 code，如 PMS-004；没有 code 用 CASE-004。 */

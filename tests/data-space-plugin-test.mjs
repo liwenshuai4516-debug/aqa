@@ -173,6 +173,20 @@ try {
 		"示例环境地址不带尾随斜杠",
 	);
 	check(
+		(st?.envs ?? []).every((e) => Array.isArray(e.params)),
+		"每个环境都带 params 数组（没配就是空数组）",
+		(st?.envs ?? []).map((e) => [e.id, Array.isArray(e.params)]),
+	);
+	check(
+		(st?.envs ?? []).some((e) => (e.params ?? []).length > 0),
+		"示例环境里带了参数示例（账号 / 租户 / 口令）",
+		(st?.envs ?? []).filter((e) => (e.params ?? []).length).map((e) => [e.id, e.params?.length]),
+	);
+	check(
+		(st?.envs ?? []).some((e) => (e.params ?? []).some((p0) => p0.secret === true)),
+		"示例里至少有一个敏感参数",
+	);
+	check(
 		JSON.stringify(st?.caseTypes) === JSON.stringify(["接口", "UI"]),
 		"快照下发用例类型清单（接口 / UI）",
 		st?.caseTypes,
@@ -241,6 +255,14 @@ try {
 			systemId,
 			name: "探针环境",
 			baseUrl: "https://probe.example.com///",
+			// 故意混入：重复名、空名、字符串形式的 secret、数字值
+			params: [
+				{ key: "账号", value: "probe_user" },
+				{ key: "口令", value: "probe-pass", secret: "true" },
+				{ key: "账号", value: "dup" },
+				{ key: "  ", value: "no-key" },
+				{ key: "验证码", value: 123456 },
+			],
 			note: "测试用例创建",
 			isDefault: false,
 			createdAt: stamp,
@@ -369,6 +391,16 @@ try {
 		"新项目下第一个环境自动成为默认",
 		after.envs?.filter((e) => e.systemId === systemId).map((e) => [e.id, e.isDefault]),
 	);
+	check(
+		JSON.stringify(probeEnv?.params) ===
+			JSON.stringify([
+				{ key: "账号", value: "probe_user", secret: false },
+				{ key: "口令", value: "probe-pass", secret: true },
+				{ key: "验证码", value: "", secret: false },
+			]),
+		"环境参数读回一致：重名留首个、空名丢弃、secret 兼容字符串、非字符串值置空",
+		probeEnv?.params,
+	);
 	check(!(after.envs ?? []).some((e) => e.id === "ghost-env"), "项目不存在的环境被丢弃");
 
 	// -- 执行结果：POST /runs 回写 → 单独文件 → 重启后仍在 -------------------
@@ -447,6 +479,16 @@ try {
 	check(
 		st?.systems?.some((s) => s.id === "probe-system"),
 		"重启后系统层级仍在",
+	);
+	check(
+		JSON.stringify((st?.envs ?? []).find((e) => e.id === "probe-env")?.params ?? []) ===
+			JSON.stringify([
+				{ key: "账号", value: "probe_user", secret: false },
+				{ key: "口令", value: "probe-pass", secret: true },
+				{ key: "验证码", value: "", secret: false },
+			]),
+		"重启后环境参数（含敏感值）仍在本机 store.json 里",
+		(st?.envs ?? []).find((e) => e.id === "probe-env")?.params,
 	);
 	check((st?.runs?.length ?? 0) === 2 && (st?.runsRevision ?? 0) >= 2, "重启后执行结果仍在", {
 		runs: st?.runs?.length,

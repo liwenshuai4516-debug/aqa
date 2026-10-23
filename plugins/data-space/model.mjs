@@ -4,6 +4,7 @@
  * 结构（version 3）：
  *   systems -> modules(systemId) -> features(moduleId) -> cases(featureId)
  *   envs(systemId)  每个项目自己的地址簿（测试 / 预发 / 生产…），同项目恰好一个默认
+ *     env.params   环境参数（账号 / 租户 / 数据库…），键值对，secret 标记敏感值
  * 层级一律扁平父引用：搜索、移动、导入导出都比嵌套树简单，悬空引用在清洗时统一处理。
  */
 import { createHash, randomUUID } from "node:crypto";
@@ -15,6 +16,7 @@ export const MAX = {
 	features: 720,
 	cases: 3000,
 	envs: 300,
+	envParams: 30,
 	steps: 60,
 	tags: 12,
 };
@@ -28,6 +30,8 @@ export const PRIORITIES = ["P0", "P1", "P2", "P3"];
  */
 export const CASE_TYPES = ["接口", "UI"];
 export const CASE_STATUS = ["草稿", "待评审", "已评审", "已废弃"];
+/** 环境参数的常用参数名：只用于页面输入建议，不限制取值。 */
+export const ENV_PARAM_PRESETS = ["账号", "口令", "租户", "组织编码", "数据库", "接口地址", "接口 Token", "验证码"];
 
 const COLOR_SET = new Set(COLORS);
 const PRIORITY_SET = new Set(PRIORITIES);
@@ -73,6 +77,32 @@ export function migrateLegacy(parsed) {
 		droppedDatasets,
 		migratedFrom: 1,
 	};
+}
+
+/**
+ * 环境参数：`[{ key, value, secret }]`。
+ *   - 没有 key 的行丢掉（页面上是「加了一行还没填」）；同名参数只留第一个，避免读的时候靠位置猜；
+ *   - value 原样保留（不 trim），允许放 JSON / 连接串，只做长度截断；
+ *   - secret 只认 true / "true" / 1，字符串 "false" 不算敏感。
+ */
+export function normalizeEnvParams(raw) {
+	const out = [];
+	const seen = new Set();
+	for (const item of Array.isArray(raw) ? raw : []) {
+		const po = item && typeof item === "object" ? item : {};
+		const key = str(po.key, 60);
+		if (!key) continue;
+		const low = key.toLowerCase();
+		if (seen.has(low)) continue;
+		seen.add(low);
+		out.push({
+			key,
+			value: typeof po.value === "string" ? po.value.slice(0, 500) : "",
+			secret: po.secret === true || po.secret === "true" || po.secret === 1,
+		});
+		if (out.length >= MAX.envParams) break;
+	}
+	return out;
 }
 
 /** 收进来的任何东西都必须先过这里：丢掉未知字段、截断长度、补 id、清掉悬空父引用。 */
@@ -197,6 +227,7 @@ export function normalizeStore(raw, previous) {
 				name: str(eo.name, 60) || "未命名环境",
 				// 末尾多余的斜杠会让拼接出来的路径出现 `//`，存的时候就去掉。
 				baseUrl: str(eo.baseUrl, 300).replace(/\/+$/, ""),
+				params: normalizeEnvParams(eo.params),
 				note: str(eo.note, 300),
 				isDefault: eo.isDefault === true || eo.isDefault === "true" || eo.isDefault === 1,
 				createdAt: str(eo.createdAt, 40) || prevEnvs.get(id)?.createdAt || now(),

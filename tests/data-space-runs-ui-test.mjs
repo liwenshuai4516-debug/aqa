@@ -5,7 +5,8 @@
  *   1. 插件 bundle 进页即注册 `@` 提及提供者（不必先打开数据空间页）；
  *   2. 输入 `@` 出现「数据空间用例」来源的命中，选中后写进输入框的是轻引用（不以 @ 开头）；
  *   3. 概览有「通过率」卡片与执行结果进度条，未执行显示且不计入分母；
- *   3b. 环境页按项目列出环境（默认徽章、按名称搜索、新建后地址末尾斜杠收敛）；
+ *   3b. 环境页按项目列出环境（默认徽章、按名称 / 参数名搜索、新建带参数的环境、
+ *       敏感参数只显示占位且不参与搜索、重开弹窗参数仍在）；
  *   4. 用例表「最近结果」列点开可登记（可顺带选定本次环境），保存后徽章变成「通过」，
  *      概览通过率随之变化，执行结果页的「环境」列与筛选跟着生效；
  *   5. 刷新页面后结果仍在（落在 runs.json，不在内存）；
@@ -204,6 +205,16 @@ try {
 		await envModal.locator('select[data-f="systemId"]').selectOption({ index: 0 });
 		await envModal.locator('input[data-f="name"]').fill("E2E 环境");
 		await envModal.locator('input[data-f="baseUrl"]').fill("https://e2e.example.com/");
+		// 两个参数：账号（明文）+ 口令（敏感，列表里只显示占位）
+		await envModal.locator('button[data-act="add-env-param"]').click();
+		await sleep(250);
+		await envModal.locator('.dsp-param input[data-pf="key"]').last().fill("账号");
+		await envModal.locator('.dsp-param input[data-pf="value"]').last().fill("e2e_user");
+		await envModal.locator('button[data-act="add-env-param"]').click();
+		await sleep(250);
+		await envModal.locator('.dsp-param input[data-pf="key"]').last().fill("口令");
+		await envModal.locator('.dsp-param input[data-pf="value"]').last().fill("e2e-pass");
+		await envModal.locator('.dsp-param input[data-pf="secret"]').last().check();
 		await envModal.locator('button[data-act="save-env"]').click();
 		await sleep(900);
 		check("保存后弹窗关闭", (await page.locator(".dsp-modal", { hasText: "新建环境" }).count()) === 0);
@@ -211,6 +222,45 @@ try {
 		check("新环境出现在表里", (await newRow.count()) === 1);
 		const urlCell = (await newRow.locator(".dsp-url-cell").innerText()).trim();
 		check("地址末尾斜杠已收敛", urlCell === "https://e2e.example.com", urlCell);
+
+		const chips = newRow.locator(".dsp-param-chip");
+		check("参数以 chip 列在环境行里", (await chips.count()) === 2, `${await chips.count()} 个`);
+		const chipText = (await newRow.locator(".dsp-params-cell").innerText()).replace(/\s+/g, " ");
+		check("非敏感参数显示真值", chipText.includes("e2e_user"), chipText);
+		check("敏感参数只显示占位，明文不进列表", chipText.includes("••••") && !chipText.includes("e2e-pass"), chipText);
+
+		await newRow.locator('button[data-act="edit-env"]').first().click();
+		await sleep(400);
+		const editModal = page.locator(".dsp-modal", { hasText: "编辑环境" }).first();
+		const editOpen = await editModal
+			.waitFor({ timeout: 4000 })
+			.then(() => true)
+			.catch(() => false);
+		check("点环境名能重新打开编辑弹窗", editOpen);
+		if (editOpen) {
+			const keys = editModal.locator('.dsp-param input[data-pf="key"]');
+			check("重开弹窗仍带两条参数", (await keys.count()) === 2, `${await keys.count()} 条`);
+			check(
+				"参数名与值读回一致",
+				(await keys.first().inputValue()) === "账号" &&
+					(await editModal.locator('.dsp-param input[data-pf="value"]').first().inputValue()) === "e2e_user",
+			);
+			check("敏感勾选读回一致", await editModal.locator('.dsp-param input[data-pf="secret"]').last().isChecked());
+			await editModal.locator('button[data-act="close-modal"]').first().click();
+			await sleep(300);
+		}
+
+		await page.locator('[data-el="env-search"]').fill("账号");
+		await sleep(350);
+		check("按参数名能搜到环境", (await page.locator(".dsp-table.ds tbody tr", { hasText: "E2E 环境" }).count()) === 1);
+		await page.locator('[data-el="env-search"]').fill("e2e-pass");
+		await sleep(350);
+		check(
+			"敏感值不参与搜索（不能靠搜索反推口令）",
+			(await page.locator(".dsp-table.ds tbody tr", { hasText: "E2E 环境" }).count()) === 0,
+		);
+		await page.locator('[data-el="env-search"]').fill("");
+		await sleep(300);
 	}
 
 	// -- 4) 用例表登记结果 → 徽章变化 ----------------------------------------

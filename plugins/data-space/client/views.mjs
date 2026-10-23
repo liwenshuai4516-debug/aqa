@@ -20,6 +20,9 @@ import {
 	moduleOf,
 	modulesOf,
 	observedTypes,
+	paramsOf,
+	paramText,
+	paramValueText,
 	pathOfFeature,
 	pathText,
 	resultOf,
@@ -41,6 +44,7 @@ export const ICON = {
 	trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M18.5 6l-1 14h-11l-1-14"/></svg>`,
 	case: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 10.5l2 2 4.5-4.5"/><path d="M8 17h8"/></svg>`,
 	brief: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a7.5 7.5 0 0 1-7.5 7.5H8l-4 3v-9.5A7.5 7.5 0 0 1 11.5 5h2A7.5 7.5 0 0 1 21 11.5z"/><path d="M9.5 11.5h5"/><path d="M12 9v5"/></svg>`,
+	key: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12L20 3"/><path d="M17 6l2.5 2.5"/><path d="M14.5 8.5L17 11"/></svg>`,
 };
 
 const pct = (n, d) => (d > 0 ? Math.round((n / d) * 100) : 0);
@@ -459,7 +463,12 @@ function projectView(systemId) {
 		: emptyCases(activeFeature ? "这个功能还没有用例" : "这个范围还没有用例", activeFeature?.id);
 
 	const env = defaultEnvOf(s.id);
-	const sub = [head.note ? esc(head.note) : "", meta, env ? `默认环境 ${esc(envLabel(env))}` : ""]
+	const envParams = env ? paramsOf(env).length : 0;
+	const sub = [
+		head.note ? esc(head.note) : "",
+		meta,
+		env ? `默认环境 ${esc(envLabel(env))}${envParams ? `（${envParams} 个参数）` : ""}` : "",
+	]
 		.filter(Boolean)
 		.join(" · ");
 
@@ -739,8 +748,30 @@ function scopeSelect(name, value, options) {
 	return `<select data-el="${name}">${options.map(([v, l]) => `<option value="${esc(v)}" ${value === v ? "selected" : ""}>${esc(l)}</option>`).join("")}</select>`;
 }
 
+/** 参数值只展示前一段：列表里长连接串会把整行撑爆，完整值放 title。 */
+function shortParamValue(p) {
+	const text = paramValueText(p);
+	return text.length > 16 ? `${text.slice(0, 16)}…` : text;
+}
+
+/** 参数列：最多三个 chip（键 + 值），其余给 +N；敏感值只显示占位点。 */
+function envParamsCell(e) {
+	const ps = paramsOf(e);
+	if (!ps.length) return `<span class="dsp-muted">—</span>`;
+	const shown = ps.slice(0, 3);
+	return `<div class="dsp-params-cell">${shown
+		.map(
+			(p) =>
+				`<span class="dsp-param-chip${p.secret ? " secret" : ""}" title="${esc(paramText(p))}">${esc(p.key)}<b>${esc(shortParamValue(p))}</b></span>`,
+		)
+		.join(
+			"",
+		)}${ps.length > shown.length ? `<span class="dsp-param-more">+${ps.length - shown.length}</span>` : ""}</div>`;
+}
+
 function envRow(e) {
 	const s = systemOf(e.systemId);
+	const params = paramsOf(e);
 	return `<tr>
 		<td><div class="dsp-name-cell" data-act="edit-env" data-id="${esc(e.id)}"><span class="dsp-dot ${esc(s?.color || "gray")}"></span><b title="${esc(e.name)}">${esc(e.name)}</b>${
 			e.isDefault ? `<span class="dsp-default" title="该项目的默认环境">默认</span>` : ""
@@ -749,11 +780,13 @@ function envRow(e) {
 		<td class="dsp-url-cell" title="${esc(e.baseUrl || "")}">${
 			e.baseUrl ? `<span class="dsp-code">${esc(e.baseUrl)}</span>` : `<span class="dsp-muted">—</span>`
 		}</td>
+		<td>${envParamsCell(e)}</td>
 		<td class="dsp-muted" title="${esc(e.note || "")}">${esc(e.note || "—")}</td>
 		<td class="dsp-num-cell">${fmtTime(e.updatedAt)}</td>
 		<td><div class="dsp-row-actions">
-			<button class="dsp-btn icon" data-act="edit-env" data-id="${esc(e.id)}" title="编辑">${ICON.edit}</button>
-			<button class="dsp-btn icon" data-act="copy-env" data-id="${esc(e.id)}" title="复制">${ICON.copy}</button>
+			<button class="dsp-btn icon" data-act="edit-env" data-id="${esc(e.id)}" title="编辑（含参数）">${ICON.edit}</button>
+			<button class="dsp-btn icon" data-act="copy-env-params" data-id="${esc(e.id)}" title="复制参数（KEY=VALUE）" ${params.length ? "" : "disabled"}>${ICON.key}</button>
+			<button class="dsp-btn icon" data-act="copy-env" data-id="${esc(e.id)}" title="复制这个环境">${ICON.copy}</button>
 			<button class="dsp-btn icon danger" data-act="del-env" data-id="${esc(e.id)}" title="删除">${ICON.trash}</button>
 		</div></td>
 	</tr>`;
@@ -764,7 +797,9 @@ function scopedEnvs() {
 	return S.envs.filter((e) => {
 		if (S.envScope && e.systemId !== S.envScope) return false;
 		if (!q) return true;
-		return [e.name, e.baseUrl, e.note, systemOf(e.systemId)?.name].join(" ").toLowerCase().includes(q);
+		// 敏感值不进搜索（避免用搜索反推口令），参数名与其他字段照常匹配。
+		const paramTexts = paramsOf(e).map((p) => (p.secret ? p.key : `${p.key} ${p.value}`));
+		return [e.name, e.baseUrl, e.note, systemOf(e.systemId)?.name, ...paramTexts].join(" ").toLowerCase().includes(q);
 	});
 }
 
@@ -773,23 +808,23 @@ export function envsHtml() {
 	const missing = S.systems.filter((s) => !defaultEnvOf(s.id));
 	return `
 	<div class="dsp-page-head">
-		<div><h3>环境<span class="dsp-num">${S.envs.length} 个</span></h3><div class="dsp-page-sub">每个项目一份地址簿：测试、预发、生产各自是什么地址。登记执行结果时选环境，回看时能分清这轮跑的是哪。</div></div>
+		<div><h3>环境<span class="dsp-num">${S.envs.length} 个</span></h3><div class="dsp-page-sub">每个项目一份地址簿：地址 + 测试参数（账号、租户、数据库…）。登记执行结果时选环境，回看时能分清这轮跑的是哪，AI 也能按需取参数。</div></div>
 		<button class="dsp-btn primary" data-act="new-env">＋ 新建环境</button>
 	</div>
 	<div class="dsp-toolbar">
-		<input class="dsp-search" data-el="env-search" value="${esc(S.envQ)}" placeholder="搜索名称 / 地址 / 备注 / 项目" />
+		<input class="dsp-search" data-el="env-search" value="${esc(S.envQ)}" placeholder="搜索名称 / 地址 / 参数 / 备注 / 项目" />
 		${scopeSelect("env-system", S.envScope, [["", "全部项目"], ...S.systems.map((s) => [s.id, s.name])])}
 		<span class="dsp-muted">${list.length} / ${S.envs.length}${missing.length ? ` · ${missing.length} 个项目还没配环境` : ""}</span>
 	</div>
 	${
 		list.length
-			? `<div class="dsp-table-wrap"><table class="dsp-table ds"><colgroup><col style="width:24%"/><col style="width:18%"/><col style="width:auto"/><col style="width:22%"/><col style="width:100px"/><col style="width:112px"/></colgroup><thead><tr><th>名称</th><th>所属项目</th><th>地址</th><th>备注</th><th>更新时间</th><th></th></tr></thead><tbody>${list
+			? `<div class="dsp-table-wrap"><table class="dsp-table ds"><colgroup><col style="width:20%"/><col style="width:15%"/><col style="width:auto"/><col style="width:26%"/><col style="width:18%"/><col style="width:100px"/><col style="width:140px"/></colgroup><thead><tr><th>名称</th><th>所属项目</th><th>地址</th><th>参数</th><th>备注</th><th>更新时间</th><th></th></tr></thead><tbody>${list
 					.map(envRow)
 					.join("")}</tbody></table></div>`
 			: `<div class="dsp-empty"><b>${S.envs.length ? "没有匹配的环境" : "还没有环境"}</b>${
 					S.envs.length
 						? "换个项目筛选或清空搜索词试试。"
-						: "给项目建一套环境（例如「测试环境」+ 地址），登记结果时就能选到它。"
+						: "给项目建一套环境（例如「测试环境」+ 地址），再把账号、租户、口令这类测试参数填进去，登记结果时就能选到它。"
 				}<button class="dsp-btn primary" data-act="new-env">＋ 新建环境</button></div>`
 	}
 	${footHtml()}`;
