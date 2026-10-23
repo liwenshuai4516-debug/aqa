@@ -1,9 +1,11 @@
 import { createPortal } from "react-dom";
 import { FiInfo, FiX } from "react-icons/fi";
-import { useT } from "../i18n";
+import { useLocale, useT } from "../i18n";
 import { useEscapeKey } from "../shortcut-stack";
 import { closeToolInfo, useToolInfoState, type ToolInfoView } from "../tool-info-state";
 import { schemaRows, type SchemaRow } from "../tool-schema";
+// 抬头展示名：中文界面显示动作名，正文的工具定义仍是引擎返回的英文原文。
+import { toolDisplayName } from "../tool-labels";
 import { CopyButton } from "./copy-button";
 
 /**
@@ -18,6 +20,7 @@ import { CopyButton } from "./copy-button";
  */
 export function ToolInfoDialog() {
 	const t = useT();
+	const locale = useLocale();
 	const info = useToolInfoState();
 
 	// 审查 #12：Esc 改走 shortcut-stack 分层栈（与 Modal 同一调度）；
@@ -42,7 +45,9 @@ export function ToolInfoDialog() {
 						<FiInfo />
 						{t("toolInfoTitle")}
 					</span>
-					<code className="tool-info-name">{info.name}</code>
+					<code className="tool-info-name" title={info.name}>
+						{toolDisplayName(info.name, locale)}
+					</code>
 					{info.label && info.label !== info.name && <span className="tool-info-label">{info.label}</span>}
 					<button type="button" className="btn" title={t("close")} onClick={closeToolInfo}>
 						<FiX />

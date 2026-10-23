@@ -190,7 +190,8 @@ export function ThinkingBlock({ thinking, streaming, wrap = true, forceOpen = fa
 					</>
 				}
 			>
-				<span className="thinking-name">think</span>
+				{/* 抬头用 i18n 的 thinking（中文“思考” / 英文 Thinking），不再硬编码机器名。 */}
+				<span className="thinking-name">{t("thinking")}</span>
 				{activeStream && shown ? (
 					<span className="thinking-live-label">
 						{t("thinkingNow")}

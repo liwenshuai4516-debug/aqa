@@ -4,6 +4,8 @@ import { FiAlertTriangle, FiCheck, FiCheckCircle, FiEdit3, FiLayers, FiX } from 
 import { appSend } from "../app-globals";
 import { isZhLocale, useI18n, useT } from "../i18n";
 import { renderHighlightedCommand } from "../bash-danger";
+// 工具名的中文展示名（审批判定仍用 approval.toolName，见下方 appSend）。
+import { toolDisplayName } from "../tool-labels";
 import type { UiToolApproval } from "../types";
 
 interface ToolApprovalDialogProps {
@@ -112,8 +114,8 @@ export function ToolApprovalDialog({ approval }: ToolApprovalDialogProps) {
 						<FiAlertTriangle />
 						{t("toolApprovalTitle")}
 					</span>
-					<code className="tool-info-name" style={{ fontWeight: 700 }}>
-						{approval.toolName}
+					<code className="tool-info-name" style={{ fontWeight: 700 }} title={approval.toolName}>
+						{toolDisplayName(approval.toolName, locale)}
 					</code>
 					{approval.parentTool === "codemode" && (
 						<span
