@@ -1,5 +1,82 @@
 /** Only real execution operations may request result synchronization. */
 import type { TestEngine } from "./test-asset-reader.js";
+import type { PlanState, PlanStep } from "./protocol.js";
+
+/** Display projection only: native checkpoints remain the execution/approval authority. */
+export function nativeUiWorkflowPlan(
+	args: any,
+	result: any,
+	current: PlanState | null,
+): { steps: PlanStep[]; activeStepId: string | null } | undefined {
+	const operation = args?.request?.operation;
+	if (!["start", "status", "checkpoint", "block", "resume-task"].includes(operation)) return;
+	try {
+		const text = result?.content?.find((part: any) => part.type === "text")?.text;
+		if (typeof text !== "string" || Buffer.byteLength(text) > 64000) return;
+		const output = JSON.parse(text).output;
+		const task = output?.task;
+		const data = task?.data;
+		if (task?.kind !== "task" || !/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,95}$/.test(task.id ?? "")) return;
+		if (!["new", "record", "execute", "analyze", "resume", "rerun-failed", "rerun-all"].includes(data?.workflow?.mode))
+			return;
+		if (!["running", "pending", "blocked", "cancelled", "completed"].includes(data?.state)) return;
+		if (output.task_ref?.path !== `qa/ui/tasks/${task.id}/manifest.json`) return;
+		if (!/^[a-f0-9]{64}$/.test(output.task_ref.sha256 ?? "")) return;
+		const titles: Record<string, string> = {
+			"discover-record": "发现与录制 / Discover & record",
+			"case-design": "用例设计 / Case design",
+			"design-review": "设计评估 / Design review",
+			execute: "正式执行 / Execute",
+			analyze: "结果分析 / Analyze",
+			"result-review": "结果评估与报告交付 / Review & deliver",
+		};
+		const sequence: unknown = output.sequence;
+		if (
+			!Array.isArray(sequence) ||
+			!sequence.length ||
+			sequence.length > 6 ||
+			sequence.some((stage) => typeof stage !== "string" || !titles[stage]) ||
+			new Set(sequence).size !== sequence.length ||
+			!sequence.includes(data.stage) ||
+			!Array.isArray(data.completed_stages)
+		)
+			return;
+		const prefix = `ui:${task.id}:`;
+		const existing = current?.steps ?? [];
+		// Read-only status must not attach an unrelated task to this conversation.
+		if (!["start", "resume-task"].includes(operation) && !existing.some((step) => step.id.startsWith(prefix))) return;
+		const reasons = [
+			...(Array.isArray(data.blockers) ? data.blockers : []),
+			...(Array.isArray(output.blockers) ? output.blockers.map((b: any) => b.message) : []),
+		].filter((reason): reason is string => typeof reason === "string");
+		const stopped = data.state === "blocked" || data.state === "cancelled" || reasons.length > 0;
+		const stages: PlanStep[] = sequence.map((stage) => ({
+			id: prefix + stage,
+			title: `${task.id} · ${titles[stage]}`,
+			status: data.completed_stages.includes(stage)
+				? "done"
+				: !stopped && data.state === "running" && stage === data.stage
+					? "in_progress"
+					: "pending",
+			description:
+				`${output.task_ref.path}\n` +
+				(stopped && !data.completed_stages.includes(stage)
+					? `${data.state === "cancelled" ? "已取消 / Cancelled" : "阻塞 / Blocked"}: ${[...new Set(reasons)].join("; ")}\n`
+					: "") +
+				"工作流进度不代表用例全部通过 / Workflow progress does not mean all tests passed.",
+		}));
+		// Preserve custom/other task steps, including their ordering.
+		const remaining = [...stages];
+		const steps = existing.flatMap((step) =>
+			step.id.startsWith(prefix) ? (remaining.length ? [remaining.shift()!] : []) : [step],
+		);
+		steps.push(...remaining);
+		return { steps, activeStepId: stopped || data.state !== "running" ? null : prefix + data.stage };
+	} catch {
+		// Missing/truncated output must never infer completion.
+		return;
+	}
+}
 export function nativeTestCompletion(
 	name: string,
 	args: unknown,

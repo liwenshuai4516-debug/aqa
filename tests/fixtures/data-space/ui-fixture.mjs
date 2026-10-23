@@ -11,7 +11,9 @@ export async function setupUiFixture({ discardPersistence = false, optimization 
 		agentDir = join(root, "agent");
 	await mkdir(project);
 	await mkdir(agentDir);
+	const state = { browserRequests: 0 };
 	const server = createServer((_req, res) => {
+		state.browserRequests++;
 		res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
 		if (optimization) return res.end(optimizationPage({ discardPersistence }));
 		res.end(`<!doctype html><h1>Names</h1><form><label>Name <input required name="name"></label><button>Save</button></form><ul></ul><script>
@@ -27,7 +29,7 @@ export async function setupUiFixture({ discardPersistence = false, optimization 
 		project,
 		agentDir,
 		url: `http://127.0.0.1:${server.address().port}`,
-		state: {},
+		state,
 		async close() {
 			server.closeAllConnections();
 			await new Promise((ok) => server.close(ok));

@@ -17,7 +17,7 @@ import "../patch-remote-catalog.js";
 import "../patch-turn-end-boundary.js";
 import { createExtensionToolGate } from "../extension-tool-gate.js";
 import { extensionToolEffect } from "../extension-tool-policy.js";
-import { nativeTestCompletion, nativeTestAssetCreated } from "../test-execution-notice.js";
+import { nativeTestCompletion, nativeTestAssetCreated, nativeUiWorkflowPlan } from "../test-execution-notice.js";
 import { skillBlock, isUiTestingExtension, isUiTestingDisabled } from "../skill/skill-presentation.js";
 import { spawn } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
@@ -4348,7 +4348,7 @@ export class ClientSession {
 				if (event.toolName === "bash") {
 					this.bg.snapshotBefore();
 				}
-				if (["update_plan", "ui_test_run", "api_test_execute"].includes(event.toolName)) {
+				if (["update_plan", "ui_test_workflow", "ui_test_run", "api_test_execute"].includes(event.toolName)) {
 					conv.toolPendingArgs.set(event.toolCallId, event.args);
 				}
 				// 看门狗豁免：ask_user_question 阻塞等的是「人类回答」，不是挂死的工具
@@ -4388,6 +4388,10 @@ export class ClientSession {
 				conv.toolPendingArgs.delete(event.toolCallId);
 				if (!event.isError && event.toolName === "update_plan" && pendingArgs) {
 					this.syncSolUpdatePlan(conv, pendingArgs);
+				}
+				if (!event.isError && event.toolName === "ui_test_workflow") {
+					const projection = nativeUiWorkflowPlan(pendingArgs, event.result, this.planManager.getPlan(conv.id));
+					if (projection) this.updatePlan(projection.steps, projection.activeStepId, conv.id);
 				}
 				// Bash finished — wait briefly for background servers to bind their
 				// ports, then diff against the pre-run snapshot and record them.

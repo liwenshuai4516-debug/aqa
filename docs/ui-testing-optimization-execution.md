@@ -201,3 +201,19 @@ A06-7格式及工程回执对账路径已有证据，真实模型生成遵循度
 U06工程路径对账：A06-1/2映射/待归类与不迁移历史；A06-3去重/并发/修订保留；A06-4两类可查询回执；A06-5原run补同步与八态；A06-6本轮有界修订投影及历史；A06-7交付结构校验；A06-8既有Skill公开参数、只读/执行、秘密、幂等/版本五场景规则已通读并对照单测及原生/桌面工程证据。Skill仍只路由已有工具与原生引用，未复制runner/批准规则；界面版本筛选不改变工具原范围。没有真实模型生成遵循度证据，不把这些工程检查当M1/M2放行。
 
 U06保持“工程回归通过、依赖放行待验”：U00全量基线、U02完整环境/秘密执行以及真实目标/模型条件仍未通过，整计划不完成。下一步回到U01桌面状态对账与U02环境契约的未完成项，再按真实依赖推进U05/U03/U07及U09；U08未启动，保留串行。
+
+## U01 续跑：原生阶段自动同步任务看板
+
+复现宿主接线缺口：原生 `ui_test_workflow` 已返回 blocked，但宿主只对 `plan_update` / `update_plan` 同步看板，原生阶段不会自动更新。新增工具结束事件回归先有 2 项失败、2 项通过，证据 `tests/scratch/ui-optimization-u00/u01-board-before.log`。
+
+`server/test-execution-notice.ts` 将原生工具回执中的 task、sequence、completed_stages、stage 和具体 blocker 投影为既有 PlanStep；`agent-service.ts` 在工具开始保存参数、结束后复用 `updatePlan` 的持久化与广播。没有新增执行状态机或批准路径，不依据 runner 的用例失败推断工作流故障。阻塞/取消阶段保持 pending 并注明原因、停止活动节点；原生确认完成的阶段才记 done。看板说明工作流进度不代表用例全部通过。保留其他任务/人工步骤；仅显式 start/resume-task 可接入新任务，status 不接入其他任务；catalog/view、工具错误、超限或无法解析回执不推断完成。看板仍是展示投影，不能代替原生门禁或独立评审。
+
+本轮验证：
+
+- 23 项相关单测通过（3 文件），覆盖宿主工具结束事件、partial 未完成、原任务恢复、其他计划保留、异常输出及已有看板行为。`u01-board-unit-final.log`。
+- 原生安装包恢复集成 1 项通过：真实失败 run 删除 trace 后生成 partial、阻塞交付、重复 checkpoint 保留历史；恢复原 trace、生成新的完整统计/报告，经控制评审后显式续跑原任务，交付仍如实包含 failed=1，旧 partial 不覆盖，分析恢复无新增浏览器请求。`u01-board-native-restored-final.log`。夹具增加实际 HTTP 请求计数并先断言已访问目标，避免用不存在的字段推断零重放。控制评审仅验协议路径，不是实际模型语义验收。
+- 隔离 Electron + 实际 SDK/原生工作流工具 4 项检查通过：partial 后原生 blocked/看板 1/2、具体缺口及可读阶段报告；普通执行无实施按钮；刷新保留看板；显式同任务恢复活动阶段、未修复重新阻塞且历史报告只保留一份。最终原始证据 `tests/scratch/ui-workflow-board-desktop/1792748680151/`（`u01-board-desktop-evidence.log`），保存 blocked/resumed/reblocked 三份原生任务 JSON、阶段报告和截图；首次同路径证据 `1792748427199/partial-blocked.png` 已人工查看。提供器为本地控制响应（8 次），0 付费模型、0 真实业务请求，真实 Playwright 仅访问隔离合成目标。
+
+本轮桌面证据覆盖刷新恢复，不宣称完整进程重启或新会话自动发现所有任务；完整失败报告交付的桌面/数据空间联合对账与 A01-1 全部前置零 runner 场景仍待补。U01、U00–U09 及 M1/M2 均未整体完成；U02 私密执行/证据隔离及其他原有缺口保持未放行，真实模型预算不因控制提供器通过而增加。
+
+本轮全量类型、构建、lint、协议、体积和差异检查通过；日志前缀 `tests/scratch/ui-optimization-u00/u01-board-`。清理仅预览，可清理 0 项；保留既有 `.gitignore` 和 `plugins/db-client/package-lock.json` 差异。
