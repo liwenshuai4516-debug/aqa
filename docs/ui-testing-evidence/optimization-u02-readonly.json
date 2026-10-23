@@ -1,0 +1,51 @@
+{
+	"scope": "U02 read-only query and operation classification only; private execution references not implemented",
+	"pluginVersion": "0.12.2",
+	"unitPassed": 97,
+	"hostAssertionsPassed": 139,
+	"desktopChecksPassed": 5,
+	"actualModelCalls": 0,
+	"businessRequests": 0,
+	"evidence": [
+		{
+			"path": "tests/scratch/ui-optimization-u00/u02-readonly-before.log",
+			"sha256": "d2294697423f78a02a1333019ea6db570d828ac6d4fc86a2c09f395eacddf30f",
+			"bytes": 2371
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u02-readonly-final.log",
+			"sha256": "7ac09b827e402ff458995ff0466989c12c31a506b38d3fd66c4713b3cd9f176f",
+			"bytes": 209
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u02-typecheck-final.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u02-build.log",
+			"sha256": "9d43b3922524053756b55b4ef1ae7ad177ec978d34e9c5f177ca49f01dd3d6ea",
+			"bytes": 6101
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u02-plugin-integration.log",
+			"sha256": "cbe13ad433c3d37490ec0cbd1196649401c779a75f339bc5288eb151dc3c0a5f",
+			"bytes": 6574
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u02-desktop-management.log",
+			"sha256": "5b87a4ff82e0ba88495fad49106d6e0b790c94a8d7d1ad40f56a80b2156ae25e",
+			"bytes": 734
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u02-lint-final.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u02-protocol-final.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"bytes": 360
+		}
+	]
+}

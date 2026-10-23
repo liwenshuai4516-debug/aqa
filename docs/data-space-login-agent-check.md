@@ -20,3 +20,9 @@
 完整宿主脚本 `tests/data-space-plugin-test.mjs` 两次运行均在初始 `GET /state` 返回 404，最终 16 项断言失败；静态资源可加载，正式登录集成步骤未运行，不能视为通过。日志保留在 `tests/scratch/data-space-login-agent-integration.log` 与 `tests/scratch/data-space-login-agent-integration-retry.log`。这是修复前的历史结果，根因和复验见上一节。
 
 未完成实际桌面窗口、模型调用及真实业务登录验收。显式 refresh 会把动态值交给 Agent，即进入工具回执/对话上下文；“不回显、不写文件”的提示不等同于凭据隔离机制。这里的 HTTP 登录步骤也不会自动建立 Playwright 浏览器登录会话。
+
+## U02 只读行为修正（0.12.2）
+
+按 UI 优化计划，默认 list 已改为纯查询，不再隐式登录、刷新或写入；过期信息提示显式刷新。宿主将 `data_space_env` 的 list/缺省 action 分类为 query，其余 action 按副作用拦截，计划、委派、目标审查及只读权限不得借 refresh 绕过守卫。上述 0.12.1 默认自动刷新的描述为历史结果。
+
+显式 refresh 返回动态明文的旧机制仍待 U02 私有引用执行链改造，不能把本次只读修复声明为 A02-5 已通过。

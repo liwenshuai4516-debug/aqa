@@ -1,12 +1,12 @@
 import { afterEach, expect, it } from "vitest";
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import plugin from "../../plugins/data-space/index.mjs";
 const roots: string[] = [];
 afterEach(() => roots.splice(0).forEach((p) => rmSync(p, { recursive: true, force: true })));
 
-it("connects saved login scripts to Agent refresh, masks list results, and preserves cached credentials", async () => {
+it("keeps environment list side-effect free while explicit refresh remains authorized", async () => {
 	const dataDir = mkdtempSync(join(tmpdir(), "ds-env-agent-"));
 	roots.push(dataDir);
 	mkdirSync(join(dataDir, "data-space"));
@@ -71,14 +71,16 @@ it("connects saved login scripts to Agent refresh, masks list results, and prese
 	try {
 		const tool = tools.get("data_space_env");
 		expect(tool).toBeDefined();
+		const beforeQuery = readFileSync(join(dataDir, "data-space/store.json"), "utf8");
 		const list = await tool.execute("list", { project: "p", env: "e" });
-		expect(calls).toBe(1);
+		expect(calls).toBe(0);
 		expect(list).not.toContain("fixture-token");
 		expect(list).not.toContain("fixture-password");
 		await tool.execute("cached", { project: "p", env: "e" });
-		expect(calls).toBe(1);
+		expect(calls).toBe(0);
+		expect(readFileSync(join(dataDir, "data-space/store.json"), "utf8")).toBe(beforeQuery);
 		const refresh = await tool.execute("refresh", { project: "p", env: "e", action: "refresh" });
-		expect(calls).toBe(2);
+		expect(calls).toBe(1);
 		expect(refresh).toContain("fixture-token");
 		expect(refresh).not.toContain("fixture-password");
 		fail = true;

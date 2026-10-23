@@ -27,11 +27,11 @@ describe("UI execution guards", () => {
 		expect(planModeDenial(name, { request: { operation } })).toBeUndefined();
 		expect(delegationDenial(name, { request: { operation } })).toBeUndefined();
 	});
-	it("does not enter an executor for blocked UI start", async () => {
+	it.each(["ui_test_run", "data_space_env"])("does not enter a blocked executor: %s", async (name) => {
 		let executions = 0;
 		const tool = withPlanModeGate(
 			{
-				name: "ui_test_run",
+				name,
 				label: "probe",
 				description: "probe",
 				parameters: Type.Object({}),
@@ -44,7 +44,13 @@ describe("UI execution guards", () => {
 			() => "zh",
 		);
 		await expect(
-			tool.execute("probe", { request: { operation: "start" } } as never, undefined, undefined, {} as never),
+			tool.execute(
+				"probe",
+				{ request: { operation: "start" }, action: "refresh" } as never,
+				undefined,
+				undefined,
+				{} as never,
+			),
 		).rejects.toThrow();
 		expect(executions).toBe(0);
 	});
@@ -110,5 +116,30 @@ describe("extension permission and operation boundaries", () => {
 			expect(extensionToolDenial("ui_test_run", { request: { operation: "start" } }, mode)).toBeDefined();
 			expect(extensionToolDenial("read", { path: "hello.txt" }, mode)).toBeUndefined();
 		}
+	});
+});
+
+describe("Data Space environment effects", () => {
+	it.each([undefined, "list"])("allows only side-effect-free environment query %s", (action) => {
+		expect(planModeDenial("data_space_env", { action })).toBeUndefined();
+		expect(delegationDenial("data_space_env", { action })).toBeUndefined();
+		expect(
+			extensionToolDenial(
+				"data_space_env",
+				{ action },
+				{ planMode: false, delegateMode: false, goalReview: false, permission: "read-only", uiDisabled: false },
+			),
+		).toBeUndefined();
+	});
+	it.each(["refresh", "Refresh", "unknown"])("blocks environment effect %s in restricted modes", (action) => {
+		expect(planModeDenial("data_space_env", { action })).toBeDefined();
+		expect(delegationDenial("data_space_env", { action })).toBeDefined();
+		expect(
+			extensionToolDenial(
+				"data_space_env",
+				{ action },
+				{ planMode: false, delegateMode: false, goalReview: false, permission: "read-only", uiDisabled: false },
+			),
+		).toBeDefined();
 	});
 });

@@ -155,7 +155,7 @@ function envBlock(env, nowMs = Date.now()) {
 			const state = note ? `（${note}）` : "";
 			return v.secret ? `${v.key} 已取到${state}` : `${v.key}=${oneline(v.value) || "—"}${state}`;
 		});
-		lines.push(`  动态值：${items.join(" · ")}${dynamicFresh(env, nowMs) ? "" : "（已过期，下次使用时会重取）"}`);
+		lines.push(`  动态值：${items.join(" · ")}${dynamicFresh(env, nowMs) ? "" : "（已过期，需要显式 refresh）"}`);
 	}
 	if (str(env.note, 200)) lines.push(`  备注：${oneline(env.note)}`);
 	return lines.join("\n");
@@ -371,7 +371,7 @@ export function createDataSpaceTools(ctx) {
 						type: "string",
 						enum: ["list", "refresh"],
 						description:
-							"list (default): read environments and auto-refresh expired dynamic values. refresh: force running the environment script and return the values in plain text.",
+							"list (default): read environments without network or writes. refresh: explicitly run the environment script and return fresh values.",
 					},
 				},
 			},
@@ -402,23 +402,19 @@ export function createDataSpaceTools(ctx) {
 					return `没有找到匹配的环境${scope ? `（${scope}）` : ""}。可以先用 data_space_cases 的 stats 看看有哪些项目，或让用户先在「环境」页建一条。`;
 				}
 
-				// 脚本只在环境真被用到时才跑：命中环境里动态值已过期的，最多自动刷 3 个（失败有 60 秒冷却）。
+				// 只读查询不运行脚本；网络与动态值写入只来自显式 refresh。
 				const notes = [];
 				const candidates = match(ctx.store())
 					.flatMap((g) => g.envs)
 					.filter((e) => scriptReady(e.script));
-				const targets = action === "refresh" ? candidates : candidates.filter((e) => !dynamicFresh(e));
+				const targets = action === "refresh" ? candidates : [];
 				const refreshed = [];
 				if (!candidates.length && action === "refresh") notes.push("这些环境没有启用内置脚本，没有可取的动态值。");
 				if (targets.length && typeof ctx.refreshEnv === "function") {
 					if (targets.length > 3)
 						notes.push(`有 ${targets.length} 个环境的动态值需要更新，本次只处理前 3 个（可用 project / env 缩小范围）`);
 					for (const env of targets.slice(0, 3)) {
-						// 自动刷新不弹授权：列表查询不该把用户按在弹窗上，未授权就先把原因写回来。
-						const out = await ctx.refreshEnv(env.id, {
-							force: action === "refresh",
-							...(action === "refresh" ? {} : { ask: false }),
-						});
+						const out = await ctx.refreshEnv(env.id, { force: true });
 						if (out?.ok && !out.cached) refreshed.push(env.id);
 						else if (!out?.ok) notes.push(`「${str(env.name, 60)}」动态值未更新：${oneline(out?.error || "未知错误")}`);
 					}

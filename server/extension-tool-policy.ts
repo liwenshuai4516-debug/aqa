@@ -16,6 +16,7 @@ export function extensionToolEffect(name: string, params: unknown): ExtensionToo
 	const action = params && typeof params === "object" ? (params as { action?: unknown }).action : undefined;
 	if (name === "data_space_cases")
 		return action === undefined || ["list", "get", "stats"].includes(action as string) ? "query" : "asset-write";
+	if (name === "data_space_env") return action === undefined || action === "list" ? "query" : "asset-write";
 	if (name === "data_space_record_result") return "asset-write";
 	if (name === "data_space_automation")
 		return ["inspect", "route"].includes(action as string) ? "query" : "asset-write";
