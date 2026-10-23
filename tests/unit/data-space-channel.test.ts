@@ -125,6 +125,58 @@ it("never guesses among duplicate/default environments or mismatched URL paths",
 	expect(await f.init({ envId: "e", targetUrl: "http://localhost:18980/pms-evil" })).toMatchObject({ ok: false });
 	f.a.dispose();
 });
+
+it("reads a run once within a sync, but verifies it again on the next request", async () => {
+	const f = fixture();
+	await f.a.idle();
+	await f.init();
+	const originalRead = f.options.host.testing.read;
+	let reads = 0;
+	f.options.host.testing.read = async (...args: any[]) => {
+		reads++;
+		return originalRead(...args);
+	};
+	expect((await f.a.sync(f.cwd, "ui", "r1")).ok).toBe(true);
+	expect(reads).toBe(1);
+	expect(f.runs().runs).toHaveLength(1);
+	expect((await f.a.sync(f.cwd, "ui", "r1")).duplicate).toBe(1);
+	expect(reads).toBe(2);
+	f.options.host.testing.read = async () => {
+		throw new Error("Evidence changed");
+	};
+	await expect(f.a.sync(f.cwd, "ui", "r1")).rejects.toThrow("Evidence changed");
+	expect(f.runs().runs).toHaveLength(1);
+	f.a.dispose();
+});
+
+it("continues recovery in an independent workspace after a directory listing fails", async () => {
+	const f = fixture();
+	await f.a.idle();
+	await f.init();
+	await f.intake();
+	f.a.dispose();
+	const missing = join(f.cwd, "missing");
+	f.store().cases.unshift({
+		...f.store().cases[0],
+		id: "missing-case",
+		automation: { ...f.store().cases[0].automation, workspace: missing },
+	});
+	const scanned: string[] = [];
+	f.options.host.testing.list = async (_engine: string, workspace: string) => {
+		scanned.push(workspace);
+		if (workspace === missing) throw new Error("Missing workspace");
+		return ["r1"];
+	};
+	const recovered = createAutomation(f.options);
+	try {
+		await recovered.idle();
+		expect(scanned).toEqual([missing, f.cwd]);
+		expect(f.runs().runs).toHaveLength(1);
+		expect(recovered.status().error).toContain("Missing workspace");
+	} finally {
+		recovered.dispose();
+	}
+});
 it("automatically imports candidates and native results once without overwriting edits or granting approval", async () => {
 	const f = fixture();
 	await f.a.idle();

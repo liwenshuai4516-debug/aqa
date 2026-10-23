@@ -63,9 +63,10 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 	}
 	async function syncNative(cwd, engine, reference) {
 		const workspace = realpathSync(cwd);
+		let native;
 		if (channel.list().some((c) => c.workspace === workspace && c.engine === engine)) {
-			const run = await host.testing.read(engine, workspace, reference);
-			const asset = await host.testing.inspect(engine, workspace, run.assetRef);
+			native = await host.testing.read(engine, workspace, reference);
+			const asset = await host.testing.inspect(engine, workspace, native.assetRef);
 			if (disposed) throw new Error("数据空间已停用");
 			channel.intake(asset);
 		}
@@ -73,7 +74,7 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 			(c) => c.automation?.engine === engine && c.automation.workspace === workspace,
 		);
 		if (!candidates.length) return { ok: true, imported: 0, duplicate: 0, unmatched: true };
-		const native = await host.testing.read(engine, workspace, reference);
+		native ??= await host.testing.read(engine, workspace, reference);
 		if (disposed) throw new Error("数据空间已停用");
 		const pending = [],
 			errors = [];
@@ -223,17 +224,30 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 					.map((c) => [JSON.stringify([c.automation.engine, c.automation.workspace]), c.automation]),
 			);
 			for (const c of channel.list()) groups.set(JSON.stringify([c.engine, c.workspace]), c);
+			const recoveryErrors = [];
 			for (const b of groups.values()) {
-				for (const reference of await host.testing.list(b.engine, b.workspace)) {
+				let references;
+				try {
+					references = await host.testing.list(b.engine, b.workspace);
+				} catch (error) {
+					syncError = String(error.message || error);
+					recoveryErrors.push(syncError);
+					host.log("error", "历史工作区扫描失败", syncError);
+					continue;
+				}
+				for (const reference of references) {
 					if (disposed) return;
 					try {
-						await sync(b.workspace, b.engine, reference);
+						const receipt = await sync(b.workspace, b.engine, reference);
+						recoveryErrors.push(...(receipt.errors ?? []));
 					} catch (error) {
 						syncError = String(error.message || error);
+						recoveryErrors.push(syncError);
 						host.log("error", "历史批次同步失败", syncError);
 					}
 				}
 			}
+			if (recoveryErrors.length) syncError = [...new Set(recoveryErrors)].join("；");
 		})
 		.catch((error) => {
 			syncError = String(error.message || error);
