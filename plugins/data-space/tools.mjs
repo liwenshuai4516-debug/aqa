@@ -441,7 +441,7 @@ export function createDataSpaceTools(ctx) {
 				].join("\n");
 				// 脱敏只作用于环境描述部分；动态值明文块单独追加，不进脱敏链路。
 				const masked = maskSecrets(`${head}\n\n${body}${tail ? `\n\n${tail}` : ""}`);
-				const plain = refreshed
+				const plain = (action === "refresh" ? refreshed : [])
 					.map((id) => {
 						const env = (store.envs ?? []).find((e) => e.id === id);
 						return env ? dynamicPlainBlock(env, nowMs) : "";
