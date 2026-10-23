@@ -398,3 +398,17 @@ A02-6/7 的上述合成运行时路径已有直接工程证据；A02-5 私密桥
 成功证据 `tests/scratch/ui-locator-revalidation/1792775765630/`；[摘要与索引](ui-testing-evidence/optimization-u05-locator-revalidation.json)及约23KB的[归档](ui-testing-evidence/optimization-u05-locator-revalidation.tar.gz)包含90个公开文件、75组逐一校验的引用，归档再回读校验，不含SDK会话、认证和依赖。首轮成功历史保留，最终轮加强严格错误、分区计数、原页面摘要和证据复制检查后仍通过。
 
 全量typecheck、3文件14项单测、lint、协议结构通过；协议历史启发式无tag跳过。日志前缀 `tests/scratch/ui-optimization-u00/u05-locator-`，清理仅预览。本轮仅测试/文档更新，前轮Electron7项仅作历史接入证据，不算本轮执行。A05-4/5上述工程缺口已有证据；完整浏览器候选、独立评审、13断言正反诊断、实际依赖/部署与真实模型验收仍待完成，U05及M1/M2保持未完成。
+
+### U05 诊断输入准备：13 个错误副本（2026-10-24）
+
+按原生诊断契约，负向探针必须使目标 assertion 的 expect 失败，并让全部非目标 case 通过。因此没有用全局隐藏 Add 一类会连带破坏编辑/分页的错误副本。新增 `ui-multifunction-probes.mjs`，逐条声明13个源码替换：忽略查询、重置保留过滤、取消误持久化、保存丢持久化、标签选中错误、默认展开、每页行数错误、下一页丢过滤、viewer显示Add、tester禁用Add、加载/空/错误状态文本错误。
+
+新修订 `u05-full-declaration/v2-probes` 仅在候选增加 `x-u05-case` 用例标识（含独立viewer context），用于受控副本按case注入；它不是认证机制。删除这两处新增后，脚本字节与原v1一致，全部原断言/预期不变。冻结正副本不修改；每个负副本只在目标case收到标识时替换唯一源码片段，预检和非目标case得到原始HTML。13个探针、14份环境/配置、变异来源及诊断计划均纳入新修订files，原v1、原阻塞任务和浏览器partial不覆盖。
+
+`tests/ui-multifunction-probes-test.mjs` **3 项准备检查通过**：14个不同本地origin、98次HTTP页面内容检查核对目标/非目标隔离和返回摘要，非法路径404；所有变异脚本语法可解析；原生环境/诊断schema及候选静态检查通过，13条断言全部映射。未启动浏览器、模型、诊断或正式runner。**这些检查没有证明浏览器确实检出13种故障，也没有授予设计批准或runtime_ready。**
+
+本轮所有夹具服务已关闭，保存确切origin和状态；后续恢复相同地址/源码并重新验证身份/初态，若端口、配置或源码变化则生成新修订。当前仍引用仅允许准备的source-only scope，进入执行前还须对齐明确执行范围与环境后独立审查。原生模型评审既有18/18额度耗尽，不能用控制协议或生成者结论代替；诊断依赖评审批准，继续未执行。
+
+成功证据 `tests/scratch/ui-multifunction-probes/1792776816807/`；[摘要](ui-testing-evidence/optimization-u05-probes.json)与约55KB的[归档](ui-testing-evidence/optimization-u05-probes.tar.gz)保存228个文件、193组已回读核对引用及HTTP返回摘要。继承的file-index.json引用旧catalog，保留在原历史归档中，本轮归档不重复纳入它，改用当前逐文件索引；没有改写旧摘要。全量typecheck、3文件14单测、lint、协议结构通过；无tag的协议历史检查跳过。日志前缀 `tests/scratch/ui-optimization-u00/u05-probes-`。本轮仅候选准备和测试/文档，未重跑Electron，历史桌面结果不计入本轮。
+
+U05继续实施中：诊断输入已准备，独立评审、实际正反诊断、完整浏览器候选交接和真实环境验收未完成。原U00/U02前置、U03/U07/U09与M1/M2门禁仍保留，整目标没有标完成；U08未启动。
