@@ -227,3 +227,11 @@ U06保持“工程回归通过、依赖放行待验”：U00全量基线、U02�
 本次扩展回归共 6 项桌面检查通过（涵盖前述 4 项及完整交付/数据空间 2 项），本地控制提供器 11 次请求、0 付费模型、0 真实业务请求。证据 `tests/scratch/ui-workflow-board-desktop/1792748911241/`：增加 completed-task.json、complete-failed-report.md、data-space-sync.json、completed-failed-report.png、data-space-failed.png；后者已人工查看。日志 `tests/scratch/ui-optimization-u00/u01-board-joint-desktop.log`。共用恢复夹具后的原生安装包回归 1 项通过，日志 `u01-joint-native.log`；本轮全量类型、lint、协议与差异检查通过。宿主实现沿用已验证构建，无新增生产代码，不重复构建。
 
 A01-2/3/4 与 A01-5 的上述隔离工程路径已留证；A01-1 全部前置零 runner 场景、U00 全量计量及真实模型/业务验收未完成，不能据此关闭 U01、U09 或整计划。下一步继续这些前置场景及 U02 的完整环境/秘密执行链；U08 仍未启动。
+
+### U01 续跑：四类前置门禁的零 runner 证据
+
+新增 `tests/ui-workflow-admission-test.mjs`，通过实际创建一个 Node 子进程校准 `diagnostics_channel` 的 child_process 观测，再分别验证录制 partial、资产未批准/不能借另一修订批准、设计已批准但运行证明缺失、脚本证据文件缺失四类路径。四类均 child_processes=0、目标 HTTP 请求增量=0、formal_runs=0；下游阶段未完成。缺失证据在 start 登记前已拒绝，确认未产生新任务；其他执行拒绝沿原 task_ref 显式 block，保存原生真实错误原因。没有用“未访问页面”替代零 runner 证据，也没有通过改低门禁强行执行。
+
+初版测试把 start 返回 running 误当成已启动执行、预期自动 blocked；缺失文件时还预期一定创建新任务。该验收假设与现有契约不符：start 是登记、目录提供信息，实际准入由 UiRunService 强制，失败后使用已有 block 交接。保留 `u01-admission-assumptions.log`（1 子场景通过，3 子场景失败；父测试也计失败），据真实契约明确区分登记、runner 拒绝和持久化阻塞，未修改生产门禁或忽略 runner 失败。最终 `u01-admission-native-release.log`：4 子场景及父测试共 5 项通过，0 失败/跳过；运行命令 `node --import tsx --test tests/ui-workflow-admission-test.mjs`。全量类型、lint、协议、差异检查通过，清理仅预览。
+
+结合前述恢复及隔离桌面/数据空间对账，U01 更新为“工程回归通过，依赖待验”，不表示真实模型会自动正确执行所有交接，也不替代 U00/U09 的完整 Agent 流程基线和真实验收。下一步继续 U00 的计量及 U02 的完整环境/秘密执行链，再按依赖推进 U05/U03/U07；整计划保持进行中，U08 可选且未启动。
