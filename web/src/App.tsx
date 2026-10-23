@@ -72,6 +72,7 @@ import {
 } from "./plugin-loader";
 import { setFenceSend, syncFenceRenderers, syncMessageWidgets } from "./plugin-fence";
 import { findFileHandler, syncFileHandlers, type FileHandlerPlugin } from "./plugin-file-handlers";
+import { setPluginToolLabels } from "./tool-label-catalog";
 import { PiSetupModal } from "./components/PiSetupModal";
 import { isDesktopShell } from "./desktop";
 import { ModelConfigModal } from "./components/ModelConfigModal";
@@ -613,6 +614,11 @@ export function App() {
 		syncFileHandlers(enabledPlugins, chat.pluginsEpoch);
 		void syncPluginViews(enabledPlugins, chat.pluginsEpoch);
 	}, [enabledPlugins, chat.pluginsEpoch, send]);
+	// 插件注册工具时写的展示名（`label`）→ 工具卡抬头目录：装/卸/重载插件后跟随刷新，
+	// 历史消息里的插件工具也能直接显示作者起的中文名。
+	useEffect(() => {
+		setPluginToolLabels(chat.plugins);
+	}, [chat.plugins]);
 	// 插件宿主动作桥（window.__piWebUiHost）：插件 client bundle 拿不到 React 实例，
 	// 需要「切视图 / 新建对话 + 自动发一段话」这类动作时走它（见 plugin-host.ts）。
 	// deps 读的是 ref（挂载时装一次，不能把每次渲染的闭包困在里面）。

@@ -41,8 +41,9 @@ import {
 import type { ToolStatus, UiImageBlock, UiMessage, UiToolCallBlock } from "../types";
 import { isZhLocale, useLocale, useT } from "../i18n";
 import { openContextMenu } from "../context-menu-state";
-// 工具卡抬头的展示名（中文界面显示动作名，其余回退机器名）。
+// 工具卡抬头的展示名（中文界面显示动作名，插件工具用作者自带的 label，其余回退机器名）。
 import { toolDisplayName } from "../tool-labels";
+import { useToolLabel } from "../tool-label-catalog";
 // 工具定义说明弹窗（模块级 store：卡片只负责发打开请求，弹窗挂在 App 上）。
 import { openToolInfo } from "../tool-info-state";
 import { CollapsibleHead } from "./CollapsibleHead";
@@ -193,8 +194,10 @@ export const ToolCallBlock = memo(function ToolCallBlock({
 	const t = useT();
 	const locale = useLocale();
 	const isZh = isZhLocale(locale);
-	// 抬头展示名：只有“显示”走映射，block.name 仍是机器名（图标/色系/右键/详情都用它）。
-	const toolName = toolDisplayName(block.name, locale);
+	// 抬头展示名：静态中文表 → 插件自带 label → 机器名；block.name 仍是机器名
+	// （图标/色系/右键/详情都用它）。
+	const ownLabel = useToolLabel(block.name);
+	const toolName = toolDisplayName(block.name, locale, ownLabel);
 	// null = 未手动点过 → 跟随开关：wrap=true（开）→ 全部展开；wrap=false（关）→ 全部折叠。
 	// 与 ThinkingBlock 一致——开关切换时自动折叠/展开所有未手动点过的工具。
 	// 例外：present_files（展示文件）默认展开——它的正文就是内容本身（图片/视频

@@ -6,6 +6,7 @@ import { isZhLocale, useI18n, useT } from "../i18n";
 import { renderHighlightedCommand } from "../bash-danger";
 // 工具名的中文展示名（审批判定仍用 approval.toolName，见下方 appSend）。
 import { toolDisplayName } from "../tool-labels";
+import { useToolLabel } from "../tool-label-catalog";
 import type { UiToolApproval } from "../types";
 
 interface ToolApprovalDialogProps {
@@ -28,6 +29,8 @@ interface ToolApprovalDialogProps {
 export function ToolApprovalDialog({ approval }: ToolApprovalDialogProps) {
 	const t = useT();
 	const { locale } = useI18n();
+	// 插件工具自带展示名（静态表 → 自带 label → 机器名）。
+	const ownLabel = useToolLabel(approval?.toolName);
 
 	// 本地编辑的参数文本（JSON 字符串）
 	const [paramsText, setParamsText] = useState("");
@@ -115,7 +118,7 @@ export function ToolApprovalDialog({ approval }: ToolApprovalDialogProps) {
 						{t("toolApprovalTitle")}
 					</span>
 					<code className="tool-info-name" style={{ fontWeight: 700 }} title={approval.toolName}>
-						{toolDisplayName(approval.toolName, locale)}
+						{toolDisplayName(approval.toolName, locale, ownLabel)}
 					</code>
 					{approval.parentTool === "codemode" && (
 						<span

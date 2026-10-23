@@ -441,7 +441,7 @@ export function activate(host) {
 
 	const tool = {
 		name: "browser_use",
-		label: "Browser Use",
+		label: "浏览器操作",
 		description:
 			"Control a persistent Chrome browser via DrissionPage (port 9333). Actions: open/new tab, list tabs, switch tab, close tab, snapshot human-visible elements, click, input, select dropdown, check/uncheck, type, press key, hover, scroll, wait, execute JS, screenshot, and quit. State (cookies, logins, tabs) persists across commands.",
 		promptSnippet: "automate a persistent Chrome browser (tabs, snapshot, click, type)",
@@ -717,7 +717,7 @@ export function activate(host) {
 
 	const searchTool = {
 		name: "browser_search",
-		label: "Browser Search",
+		label: "网页搜索",
 		description:
 			"Search the web using a real headless Chrome instance with ad-filtering and direct SERP extraction. Returns structured natural results and instant answers across Bing, Sogou, 360, Baidu, Google, DuckDuckGo, Brave, and Yahoo.",
 		promptSnippet: "search the web via real browser with ad filtering and fast SERP extraction",

@@ -4,8 +4,9 @@ import { useLocale, useT } from "../i18n";
 import { useEscapeKey } from "../shortcut-stack";
 import { closeToolInfo, useToolInfoState, type ToolInfoView } from "../tool-info-state";
 import { schemaRows, type SchemaRow } from "../tool-schema";
-// 抬头展示名：中文界面显示动作名，正文的工具定义仍是引擎返回的英文原文。
+// 抬头展示名：静态表 → 插件自带 label（定义里的 label 优先）→ 机器名；正文仍是引擎原文。
 import { toolDisplayName } from "../tool-labels";
+import { useToolLabel } from "../tool-label-catalog";
 import { CopyButton } from "./copy-button";
 
 /**
@@ -22,6 +23,8 @@ export function ToolInfoDialog() {
 	const t = useT();
 	const locale = useLocale();
 	const info = useToolInfoState();
+	// 插件工具自带展示名：定义应答里带 label 时优先用它；未带则读插件清单目录。
+	const catalogLabel = useToolLabel(info?.name);
 
 	// 审查 #12：Esc 改走 shortcut-stack 分层栈（与 Modal 同一调度）；
 	// 关闭状态下不启用，避免吞掉下层弹窗的 Esc。
@@ -30,6 +33,8 @@ export function ToolInfoDialog() {
 	}, Boolean(info));
 
 	if (!info) return null;
+
+	const display = toolDisplayName(info.name, locale, info.label ?? catalogLabel);
 
 	return createPortal(
 		<div className="modal-backdrop" onClick={closeToolInfo}>
@@ -46,9 +51,11 @@ export function ToolInfoDialog() {
 						{t("toolInfoTitle")}
 					</span>
 					<code className="tool-info-name" title={info.name}>
-						{toolDisplayName(info.name, locale)}
+						{display}
 					</code>
-					{info.label && info.label !== info.name && <span className="tool-info-label">{info.label}</span>}
+					{info.label && info.label !== info.name && info.label !== display && (
+						<span className="tool-info-label">{info.label}</span>
+					)}
 					<button type="button" className="btn" title={t("close")} onClick={closeToolInfo}>
 						<FiX />
 					</button>

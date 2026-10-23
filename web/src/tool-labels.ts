@@ -4,10 +4,14 @@
  * 工具卡、思考卡、审批弹窗抬头显示的是**机器名**（`read` / `bash` / `grep` …），
  * 中文界面里读起来像命令而不是动作。这里给出一层纯展示映射：
  *
- *   · 中文界面（`zh` 及 `zh-*`）→ 表中的中文动作名；
- *   · 其它语言 → 原名（英文界面原本就可读，多一层英文表反而两处维护）；
- *   · 表里没有的名字（插件工具、MCP 工具、`mcp__srv__tool`）→ 原名回退，
- *     不会出现空标题。
+ *   · 中文界面（`zh` 及 `zh-*`）且表里有 → 表中的中文动作名；
+ *   · 表里没有、但工具作者自带展示名（插件注册工具时写的 `label`，见
+ *     `tool-label-catalog.ts`）→ 用作者写的名字：插件作者最清楚这个工具该叫
+ *     什么，中文界面不必再靠手写表猜；标签与机器名相同视为没起名字；
+ *   · 都没有 → 原名回退（`mcp__srv__tool` 之类），不会出现空标题。
+ *
+ * 插件自带名对所有语言都生效：`label` 的语义是「UI 显示标签」，由作者定语言
+ * （内置插件统一写中文），前端不再按界面语言二次改写它。
  *
  * 为什么是独立模块而不是 i18n 字典：`tests/unit/locales.test.ts` 要求 zh 字典
  * 与 12 个语言包键一一对应且无空值，`tests/unit/i18n-dead-keys.test.ts` 要求
@@ -70,11 +74,18 @@ export const ZH_TOOL_LABELS: Readonly<Record<string, string>> = {
 };
 
 /**
- * 卡头展示名：中文界面取表内中文名，其余情况（非中文界面、表内没有、空名）
- * 一律回退原名。
+ * 卡头展示名。优先级（单测覆盖）：
+ *  1. 中文界面 + 表内中文名；
+ *  2. 工具自带展示名 `ownLabel`（插件 `registerAgentTool`/`registerTool` 的 `label`）；
+ *  3. 机器名 `name`。
+ *
+ * `ownLabel` 为空、全空白或与机器名相同时视为「没起名字」，继续回退。
  */
-export function toolDisplayName(name: string, locale: string | null | undefined): string {
+export function toolDisplayName(name: string, locale: string | null | undefined, ownLabel?: string | null): string {
 	const raw = name ?? "";
 	const zh = ZH_TOOL_LABELS[raw];
-	return zh && isZhLocale(locale) ? zh : raw;
+	if (zh && isZhLocale(locale)) return zh;
+	const own = typeof ownLabel === "string" ? ownLabel.trim() : "";
+	if (own && own !== raw) return own;
+	return raw;
 }
