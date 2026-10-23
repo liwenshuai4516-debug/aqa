@@ -2,14 +2,15 @@
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import { once } from "node:events";
-import { mkdtemp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, writeFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import electron from "electron";
 import { sha256 } from "pi-ui-testing";
-import { partialReport } from "./fixtures/data-space/ui-partial-fixture.mjs";
+import { partialReport, restorePartial } from "./fixtures/data-space/ui-partial-fixture.mjs";
 import { enableUiTesting } from "../scripts/enable-ui-testing.mjs";
+import { enableDataSpace } from "../scripts/enable-data-space.mjs";
 import { ensureBuild } from "./lib/ensure-build.mjs";
 import { launchNativeApp } from "./desktop/native-app.mjs";
 import { waitUntil } from "../qa/ui/project-environment.mjs";
@@ -27,6 +28,21 @@ const userData = join(temporary, "desktop");
 const agentDir = join(userData, "agent");
 await mkdir(agentDir, { recursive: true });
 await enableUiTesting(repo, agentDir);
+const dataDir = join(userData, "data");
+await enableDataSpace(repo, { agentDir, dataDir });
+await mkdir(join(dataDir, "data-space"), { recursive: true });
+await writeFile(
+	join(dataDir, "data-space/store.json"),
+	JSON.stringify({
+		version: 3,
+		revision: 1,
+		systems: [{ id: "project", name: "Isolated U01 project" }],
+		modules: [{ id: "module", systemId: "project", name: "Names" }],
+		features: [{ id: "save", moduleId: "module", name: "Save" }],
+		cases: [],
+		envs: [{ id: "env", systemId: "project", name: "Synthetic", baseUrl: native.f.fixture.url, params: [] }],
+	}),
+);
 const taskId = "desktop-partial";
 const taskPath = `qa/ui/tasks/${taskId}/manifest.json`;
 const result = {
@@ -39,6 +55,7 @@ const result = {
 	userData,
 	runRef: native.execution.run_ref,
 };
+let restored;
 const provider = createServer(async (req, res) => {
 	try {
 		// Consume the SDK request, but never retain prompts or authentication.
@@ -49,17 +66,17 @@ const provider = createServer(async (req, res) => {
 		let request;
 		if (ordinal === 1)
 			request = { operation: "start", input: { task_id: taskId, mode: "analyze", run_ref: native.execution.run_ref } };
-		if ([2, 3, 5, 7].includes(ordinal)) {
+		if ([2, 3, 5, 7, 9, 10].includes(ordinal)) {
 			const ref = { path: taskPath, sha256: sha256(await readFile(join(workspace, taskPath))) };
-			request =
-				ordinal === 5
-					? { operation: "resume-task", task_ref: ref }
-					: {
-							operation: "checkpoint",
-							task_ref: ref,
-							stage: ordinal === 2 ? "analyze" : "result-review",
-							output_refs: [native.report.report_ref],
-						};
+			request = [5, 9].includes(ordinal)
+				? { operation: "resume-task", task_ref: ref }
+				: {
+						operation: "checkpoint",
+						task_ref: ref,
+						stage: ordinal === 2 ? "analyze" : "result-review",
+						output_refs:
+							ordinal === 10 ? [restored.full.report_ref, restored.approved.review_ref] : [native.report.report_ref],
+					};
 		}
 		const delta = request
 			? {
@@ -214,6 +231,89 @@ try {
 	await page.screenshot({ path: join(output, "reblocked.png") });
 	result.checks.push(
 		"Unrepaired evidence reblocks the same task without duplicating or overwriting the historical partial report",
+	);
+	// Only this isolated agent directory is inspected; use the native service's real review authority path.
+	const sessionDirectories = (await readdir(join(agentDir, "sessions"), { withFileTypes: true })).filter((entry) =>
+		entry.isDirectory(),
+	);
+	assert.equal(sessionDirectories.length, 1);
+	const beforeRestore = native.f.fixture.state.browserRequests;
+	assert.ok(beforeRestore > 0);
+	restored = await restorePartial(
+		native,
+		join(agentDir, "sessions", sessionDirectories[0].name, "ui-review-authority"),
+	);
+	assert.equal(restored.approved.decision, "approved");
+	await send({
+		type: "prompt",
+		text: "Evidence has been restored and the controlled review has completed. Explicitly resume and deliver the complete failed report for the original task.",
+	});
+	await settled(11);
+	const completed = await task();
+	assert.equal(completed.id, taskId);
+	assert.equal(completed.data.state, "completed");
+	assert.ok(completed.data.output_refs.some((ref) => ref.path === partial.path));
+	const finalDelivery = completed.data.output_refs.filter(
+		(ref) => ref.path.endsWith(".md") && ref.path !== partial.path,
+	);
+	assert.equal(finalDelivery.length, 1);
+	const finalContent = await readFile(join(workspace, finalDelivery[0].path), "utf8");
+	assert.match(finalContent, /\| failed \| 1 \|/);
+	assert.equal(native.f.fixture.state.browserRequests, beforeRestore);
+	await writeFile(join(output, "completed-task.json"), JSON.stringify(completed, null, 2));
+	await writeFile(join(output, "complete-failed-report.md"), finalContent);
+	assert.equal(await page.locator(".plan-board-count").innerText(), "2/2");
+	await page.screenshot({ path: join(output, "completed-failed-report.png") });
+	result.checks.push(
+		"Restored evidence and controlled native review allow same-task complete delivery; Electron shows 2/2 while the original report truthfully records failed=1, with no browser replay",
+	);
+	const request = (body) =>
+		page.evaluate(async (body) => {
+			const response = await fetch("/plugins-api/data-space/automation", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(body),
+			});
+			if (!response.ok) throw new Error(`Data Space HTTP ${response.status}: ${await response.text()}`);
+			return response.json();
+		}, body);
+	const imported = await request({
+		action: "import",
+		engine: "ui",
+		workspace,
+		assetRef: native.assetRef,
+		envId: "env",
+		featureMappings: [{ nativeModuleId: "names", nativeFeatureId: "save", featureId: "save" }],
+	});
+	assert.equal(imported.imported, 1);
+	await request({
+		action: "bind",
+		workspace,
+		caseId: imported.caseIds[0],
+		engine: "ui",
+		assetRef: native.assetRef,
+		nativeCaseId: "C1",
+		envId: "env",
+	});
+	const synced = await request({ action: "sync", engine: "ui", workspace, runRef: native.execution.run_ref });
+	assert.equal(synced.complete, true);
+	assert.equal(synced.items[0].verdict, "失败");
+	const repeated = await request({ action: "sync-status", engine: "ui", workspace, runRef: native.execution.run_ref });
+	assert.equal(repeated.items[0].resultId, synced.items[0].resultId);
+	assert.equal(repeated.items[0].verdict, "失败");
+	await writeFile(join(output, "data-space-sync.json"), JSON.stringify(repeated, null, 2));
+	await page.locator("header button, .topbar button, nav button").filter({ hasText: "数据空间" }).first().click();
+	await page.locator('.dsp-nav button[data-tab="cases"]').click();
+	const row = page
+		.locator("tr")
+		.filter({ has: page.locator('[data-act="automation-open"]') })
+		.first();
+	await row.locator('[data-act="automation-open"]').click();
+	await page.locator(".dsp-modal summary").filter({ hasText: "原生执行记录与证据" }).click();
+	assert.match(await page.locator(".dsp-modal").innerText(), /失败/);
+	await page.screenshot({ path: join(output, "data-space-failed.png") });
+	result.checks.push(
+		"Data Space keeps the same native batch as failed and preserves its result ID, independently of workflow delivery completion",
 	);
 	result.status = "PASS";
 } catch (error) {

@@ -217,3 +217,13 @@ U06保持“工程回归通过、依赖放行待验”：U00全量基线、U02�
 本轮桌面证据覆盖刷新恢复，不宣称完整进程重启或新会话自动发现所有任务；完整失败报告交付的桌面/数据空间联合对账与 A01-1 全部前置零 runner 场景仍待补。U01、U00–U09 及 M1/M2 均未整体完成；U02 私密执行/证据隔离及其他原有缺口保持未放行，真实模型预算不因控制提供器通过而增加。
 
 本轮全量类型、构建、lint、协议、体积和差异检查通过；日志前缀 `tests/scratch/ui-optimization-u00/u01-board-`。清理仅预览，可清理 0 项；保留既有 `.gitignore` 和 `plugins/db-client/package-lock.json` 差异。
+
+### U01 续跑：完整失败报告的桌面与数据空间联合对账
+
+在同一隔离 Electron 流程继续恢复原 trace，并通过原生 ResultReviewService 的控制评审生成可信登记（仅协议测试，不是实际模型验收）；显式 resume/checkpoint 原任务后，看板变为 2/2，原生任务 completed，但最终报告仍记录 failed=1。旧阶段报告继续保留；原生目标 HTTP 请求计数未增加。控制评审只使用本测试新建的 agentDir/sessions 目录，不读取个人配置或私有认证。
+
+启用本仓库数据空间插件的隔离安装，通过桌面实际宿主 HTTP 路径 import/bind/sync/sync-status，确认同一原生 run 归档为“失败”，只读查询保留原结果 ID；打开数据空间的原生执行记录弹窗核对“失败”。工作流交付完成没有把业务失败改成通过，也没有重放浏览器动作。
+
+本次扩展回归共 6 项桌面检查通过（涵盖前述 4 项及完整交付/数据空间 2 项），本地控制提供器 11 次请求、0 付费模型、0 真实业务请求。证据 `tests/scratch/ui-workflow-board-desktop/1792748911241/`：增加 completed-task.json、complete-failed-report.md、data-space-sync.json、completed-failed-report.png、data-space-failed.png；后者已人工查看。日志 `tests/scratch/ui-optimization-u00/u01-board-joint-desktop.log`。共用恢复夹具后的原生安装包回归 1 项通过，日志 `u01-joint-native.log`；本轮全量类型、lint、协议与差异检查通过。宿主实现沿用已验证构建，无新增生产代码，不重复构建。
+
+A01-2/3/4 与 A01-5 的上述隔离工程路径已留证；A01-1 全部前置零 runner 场景、U00 全量计量及真实模型/业务验收未完成，不能据此关闭 U01、U09 或整计划。下一步继续这些前置场景及 U02 的完整环境/秘密执行链；U08 仍未启动。
