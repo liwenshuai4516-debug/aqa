@@ -11,12 +11,13 @@ export async function setupUiFixture({ discardPersistence = false, optimization 
 		agentDir = join(root, "agent");
 	await mkdir(project);
 	await mkdir(agentDir);
-	const state = { browserRequests: 0 };
+	const state = { browserRequests: 0, responseStatus: 200, identityText: "Names", saveLabel: "Save" };
+	const html = (value) => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	const server = createServer((_req, res) => {
 		state.browserRequests++;
-		res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+		res.writeHead(state.responseStatus, { "Content-Type": "text/html; charset=utf-8" });
 		if (optimization) return res.end(optimizationPage({ discardPersistence }));
-		res.end(`<!doctype html><h1>Names</h1><form><label>Name <input required name="name"></label><button>Save</button></form><ul></ul><script>
+		res.end(`<!doctype html><h1>${html(state.identityText)}</h1><form><label>Name <input required name="name"></label><button>${html(state.saveLabel)}</button></form><ul></ul><script>
  const list=document.querySelector('ul'),names=JSON.parse(localStorage.getItem('names')||'[]');
  function render(){list.replaceChildren(...names.map(name=>{const li=document.createElement('li');li.textContent=name;return li}));}
  document.querySelector('form').onsubmit=e=>{e.preventDefault();names.push(new FormData(e.target).get('name'));${discardPersistence ? "localStorage.removeItem('names')" : "localStorage.setItem('names',JSON.stringify(names))"};render();};render();</script>`);

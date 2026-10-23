@@ -257,3 +257,23 @@ A01-2/3/4 与 A01-5 的上述隔离工程路径已留证；A01-1 全部前置零
 边界：privateExecution 对含私密参数的环境明确 not-ready；尚未实现受控私密引用的浏览器消费、截图/trace/报告/归档全链路秘密隔离，不能把 HTTP token 猜测转换为 storageState。网络/身份/角色/数据的完整运行时预检仍须原生执行证据，本轮不授予就绪。A02-1/3/4/7 的上述工程子路径已有回归，A02-2沿用已留证的seed守卫，不冒充新开发。U02、U00、M1/M2与整计划仍未完成；U05/U03/U07/U09及完整计量继续待推进，U08未启动、保留串行。
 
 最终秘密分类修复后，Electron同路径8项再次通过，证据 `tests/scratch/data-space-skill-desktop/1792750012288/`（`u02-preparation-desktop-release.log`）；不将重复执行累加为16项。最终全量类型及lint通过（`u02-preparation-typecheck-release.log` / `u02-preparation-lint-release.log`）。无客户端代码变化，桌面沿用本轮串行构建；隔离插件链接实际加载0.16.0新模块，用户旧进程未刷新。
+
+### U02 续跑：当前运行条件及私有认证预检的实际证据
+
+起点 `72420efe332fecf266fe74237e6710ad2663fbcb`，继续保留 `.gitignore` 和 db-client 锁差异。前一目标轮已提交代码并推送核对，属于实际进展。本轮未新增执行器、宿主工具或认证转换：先核对现有原生入口，确认 storageState 私有引用已可由预检消费；数据空间的 HTTP token 到 storageState 尚无明确绑定/转换契约，不能猜测 cookie/localStorage。正式 runner/诊断仍保存失败trace/截图，且结果完整性规则要求失败trace，因此不能只关截图就声称 A02-5 完成。
+
+新增 `tests/ui-environment-preflight-test.mjs`，在已有成功诊断和批准之后改变合成目标的实际响应，而不修改资产/批准摘要。身份文本变化、初态变化及503分别返回原生 preflight.check=identity/initial-state/site；真实子进程观察先校准，三类正式 CLI 启动数均0。原生冻结分母仍为1，blocked=1、failed=0，business_started=false；已有请求重查零新进程/目标请求，恢复后的新明确请求启动1次正式CLI并真实passed=1。夹具仅新增可控响应字段，默认保持原页面行为。
+
+另用临时私有目录（0700）、合成 storageState 文件（0600）和本测试唯一环境变量引用，确认实际 Chromium 发出合成cookie后通过身份/初态检查；文件存在但cookie过期时身份检查阻塞；缺少引用、文件无效或已删除时 auth-reference 阶段阻塞且目标请求不增加。按用例声明期待 guest 时匿名新context正常通过且没有沿用先前cookie。普通预检回执无秘密值或私有路径，工作区未生成截图/trace/报告；测试结束删除自身私有文件及引用。不读取个人认证。该证据只覆盖 native preflight，不是数据空间私密桥接或正式执行证据隔离验收。
+
+首次测试读取了错误的统计字段 denominator/statistics，导致3个子场景在检查后报错，末场景受未恢复503影响；原生未被修改、失败未跳过。核对实际 contracts 后改用 planned_count/counts，补充每个子场景清理响应状态；首次失败日志 `u02-runtime-preflight.log` 保留（1通过/5失败，包含父测试）。没有将此测试错误登记为产品缺陷。
+
+本轮实际执行（日志位于 `tests/scratch/ui-optimization-u00/`）：
+
+- 联合原生回归12项通过、0失败/跳过（`u02-runtime-native-final.log`）：本次4个运行条件子测试、2个父/独立测试共6项，加U01前置门禁5项及partial恢复1项。不把它们称为12条业务用例。子进程校准、原生run与统计引用保留在日志指出的临时合成工作区。
+- 相关5文件95项单测通过（`u02-runtime-unit.log`）；全量typecheck、lint、协议通过（`u02-runtime-typecheck-final.log` / `u02-runtime-lint.log` / `u02-runtime-protocol.log`）。本轮只改测试和文档，沿用已验证应用及原生分发包，无需重复升级插件或重建bundle。
+- Electron实际进程9项检查通过（`u02-runtime-desktop.log`），证据 `tests/scratch/data-space-skill-desktop/1792750643052/`。增加原生身份失效后的真实初始化阻塞，通过实际宿主sync保存“阻塞”，原“通过”行及ID保留；恢复目标后重查原请求不重放。`identity-blocked.json`保存原生preflight/runRef/同步回执，完整modal文本断言两条结论可查。首张截图只显示旧通过记录，后续调整证据滚动位置，不拿不可见文字当截图已展示阻塞。
+
+A02-6/7 的上述合成运行时路径已有直接工程证据；A02-5 私密桥接和正式执行证据通道仍未实现。角色/初态的真实业务依据、当前OperationContract身份及诊断副本、真实模型条件、U00完整基线、U05/U03/U07及U09仍未放行，不因预检已有能力而关闭整计划；U08未启动。
+
+最终桌面9项再次通过，证据 `tests/scratch/data-space-skill-desktop/1792750736696/`（`u02-runtime-desktop-evidence.log`），不累加两轮数量。已人工查看 `identity-blocked.png`，本次截图实际显示“阻塞”及对应原生runId。当前仍无plan_update工具，执行记录继续作为进度入口；未伪造应用看板节点。

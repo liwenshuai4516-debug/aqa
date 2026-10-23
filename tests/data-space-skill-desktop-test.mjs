@@ -417,6 +417,64 @@ try {
 	result.checks.push(
 		"desktop recent/all imported revisions preserve old case bindings, native source refs and run evidence",
 	);
+	// A past diagnostic and configured channel cannot prove the current browser identity.
+	await page.locator('.dsp-modal [data-act="close-modal"]').click();
+	native.f.fixture.state.identityText = "Signed out";
+	let blocked;
+	try {
+		blocked = await native.service.start({ ...native.request, request_id: "desktop-current-identity-expired" });
+	} finally {
+		native.f.fixture.state.identityText = "Names";
+	}
+	const preflightRef = blocked.run.data.output_refs.find((ref) => ref.path.endsWith("/preflight.json"));
+	const preflight = JSON.parse(await readFile(join(workspace, preflightRef.path), "utf8"));
+	assert.deepEqual([preflight.status, preflight.check], ["blocked", "identity"]);
+	assert(!blocked.run.data.output_refs.some((ref) => ref.path.endsWith("/process-started.json")));
+	const blockedSync = await request("/automation", {
+		action: "sync",
+		engine: "ui",
+		runRef: blocked.run_ref,
+		workspace,
+	});
+	assert.equal(blockedSync.items.length, 1);
+	assert.equal(blockedSync.items[0].verdict, "阻塞");
+	const savedRuns = JSON.parse(await readFile(join(dataDir, "data-space/runs.json"), "utf8")).runs;
+	assert.equal(savedRuns.length, 2);
+	assert(savedRuns.some((run) => run.id === synced.resultId && run.verdict === "通过"));
+	const beforeBlockedQuery = native.f.fixture.state.browserRequests;
+	const replayed = await native.service.start({ ...native.request, request_id: "desktop-current-identity-expired" });
+	assert.equal(replayed.replayed, true);
+	assert.deepEqual(replayed.run_ref, blocked.run_ref);
+	assert.equal(native.f.fixture.state.browserRequests, beforeBlockedQuery);
+	await oldRow.locator('[data-act="automation-open"]').click();
+	await page.locator(".dsp-modal summary").filter({ hasText: "原生执行记录与证据" }).click();
+	await waitUntil(
+		async () => (await page.locator(".dsp-modal").innerText()).includes(blockedSync.runId),
+		"current identity blocked record",
+	);
+	assert((await page.locator(".dsp-modal").innerText()).includes("阻塞"));
+	await writeFile(
+		join(output, "identity-blocked.json"),
+		JSON.stringify({ preflight, runRef: blocked.run_ref, sync: blockedSync, replayed: replayed.replayed }, null, 2),
+	);
+	await page
+		.locator(".dsp-modal details")
+		.last()
+		.locator("pre")
+		.evaluate((element) => {
+			const text = element.firstChild;
+			const index = text.textContent.indexOf('"verdict": "阻塞"');
+			if (index < 0) throw new Error("Blocked verdict is missing from the rendered record");
+			const range = document.createRange();
+			range.setStart(text, index);
+			range.setEnd(text, index + 15);
+			const body = element.closest(".dsp-modal-body");
+			body.scrollTop += range.getBoundingClientRect().top - body.getBoundingClientRect().top - 80;
+		});
+	await page.screenshot({ path: join(output, "identity-blocked.png") });
+	result.checks.push(
+		"current identity expiration blocks native business execution; desktop shows blocked separately and preserves the previous passed result without replay",
+	);
 	result.status = "PASS";
 } catch (error) {
 	result.error = error.stack;

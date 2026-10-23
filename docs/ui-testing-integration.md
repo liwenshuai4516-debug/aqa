@@ -81,3 +81,9 @@ PI_WEB_SMOKE_PREBUILT=1 node tests/ui-testing-visibility-test.mjs
 本次支持范围为本地 Pi agent、Chromium、单 worker、零自动重试。DSH/其他引擎、SSH 工作区、多浏览器、并行测试和桌面分发未验收；源包原项目的历史结果不作为本轮结果。
 
 当前项目技能入口统一在 `.pi/skills/`，项目模式登记指向该目录；应用级原入口保留兼容。详见 [能力维护指南](capability-layout.md)。
+
+## 运行前环境检查回归
+
+`node --import tsx --test tests/ui-environment-preflight-test.mjs` 使用已安装原生 runner 和隔离合成目标：诊断通过后改变站点、身份或初态，检查业务执行前阻塞、原生分母/状态及同请求不重放；恢复后的新明确请求才执行正式用例。另以私有合成 storageState 验证浏览器实际消费、失效/缺失/无效引用，以及匿名 context 不继承登录态。它不接入数据空间私密参数，也不验证正式执行的截图/trace隔离。
+
+Electron 对账沿用 `PI_WEB_SMOKE_PREBUILT=1 node --import tsx tests/data-space-skill-desktop-test.mjs`，增加身份变化后的阻塞归档及原通过记录保留。使用既有已构建产物，先完成必要构建再设置 prebuilt；不向个人配置写入认证。最新证据见 [优化执行记录](ui-testing-optimization-execution.md)，不将历史测试或仅预检通过当成完整业务验收。
