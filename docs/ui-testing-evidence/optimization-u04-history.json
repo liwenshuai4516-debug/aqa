@@ -1,0 +1,269 @@
+{
+	"date": "2026-10-23",
+	"status": "controlled-history-measurement-passed",
+	"u04_status": "in-progress",
+	"native": "0.1.2",
+	"data_space": "0.16.0",
+	"history_sizes": [1, 8],
+	"repetitions_per_size": 6,
+	"actual_model_calls": 0,
+	"business_requests": 0,
+	"native_run_count": 8,
+	"control_review": "Protocol fixture, not real model approval",
+	"method": "one native run sync, then recovery with one/eight genuine native runs; first recovery separated from five repeated reconstructions",
+	"limitations": "Local component reconstruction, not an Electron/process restart or complete Agent workflow. Same-process filesystem caches remain warm; no overall speed or before/after optimization claim.",
+	"native_runs": [
+		{
+			"path": "qa/ui/runs/run-1249f06947265e47b0d54258ae80b462/manifest.json",
+			"sha256": "836094e4977e6aa389545af50c830063428b28b741eb71c28b5d553b47c9516c"
+		},
+		{
+			"path": "qa/ui/runs/run-1d2684104272421fbe008c97b5f5b540/manifest.json",
+			"sha256": "55952c10ba8ddecd4f00839ba01e036d37eeb01357564e0ed305d2004d1ffb94"
+		},
+		{
+			"path": "qa/ui/runs/run-e90406c0dbfd4a0c83b699dbfb9797f9/manifest.json",
+			"sha256": "03a2abb7d916325e7decbcec7fec3a4739b43709d42ddeff0749e55c99ce42b0"
+		},
+		{
+			"path": "qa/ui/runs/run-4010d7731b5553a278482685e467fa95/manifest.json",
+			"sha256": "3de1c73f5c6a5ba0a4e92bd1f0c1b6bbcec1b0d79159e919f319e05e8e3d033b"
+		},
+		{
+			"path": "qa/ui/runs/run-29c47e8597c4c29b52d84756b737b46f/manifest.json",
+			"sha256": "c6d600a7ec0cfc9145cd372f5bac53f29e1697dceab63302c3961ef08f7f6eac"
+		},
+		{
+			"path": "qa/ui/runs/run-6086bf7a80ba868cc416e3cfddab3ae9/manifest.json",
+			"sha256": "9170628f4698e69d170fd44092d8674ebe254d70a4ccc18acb5c4e324e055b40"
+		},
+		{
+			"path": "qa/ui/runs/run-a0294d98cfa692dd57c1a6c0b914b2a5/manifest.json",
+			"sha256": "17714543a1a00dc43fc81178e2bffc0a1ba43b633e4eba52db6c9781be58997a"
+		},
+		{
+			"path": "qa/ui/runs/run-1405d845bf2355cf5883a785bdb1adf0/manifest.json",
+			"sha256": "25b55e4e03afc82c0af33367644b046a9d9dbdd2fcb0ae932039d840bd9b42e5"
+		}
+	],
+	"sync_samples": [
+		{
+			"round": 0,
+			"fullReads": 1,
+			"readMs": 12.447249999999258,
+			"syncMs": 12.869000000000597,
+			"imported": 1,
+			"duplicate": 0
+		},
+		{
+			"round": 1,
+			"fullReads": 1,
+			"readMs": 11.255000000001019,
+			"syncMs": 11.454916000000594,
+			"imported": 0,
+			"duplicate": 1
+		},
+		{
+			"round": 2,
+			"fullReads": 1,
+			"readMs": 10.717999999998938,
+			"syncMs": 10.807416999999987,
+			"imported": 0,
+			"duplicate": 1
+		},
+		{
+			"round": 3,
+			"fullReads": 1,
+			"readMs": 11.073499999998603,
+			"syncMs": 11.158957999999984,
+			"imported": 0,
+			"duplicate": 1
+		},
+		{
+			"round": 4,
+			"fullReads": 1,
+			"readMs": 13.928750000000946,
+			"syncMs": 14.035749999999098,
+			"imported": 0,
+			"duplicate": 1
+		},
+		{
+			"round": 5,
+			"fullReads": 1,
+			"readMs": 12.771458999999595,
+			"syncMs": 13.153457999998864,
+			"imported": 0,
+			"duplicate": 1
+		}
+	],
+	"recovery": [
+		{
+			"historySize": 1,
+			"round": 0,
+			"fullReads": 1,
+			"listCalls": 1,
+			"readMs": 11.014083000000028,
+			"listMs": 0.3783340000009048,
+			"elapsedMs": 11.631499999999505,
+			"resultWrites": 0,
+			"addedRows": 0
+		},
+		{
+			"historySize": 1,
+			"round": 1,
+			"fullReads": 1,
+			"listCalls": 1,
+			"readMs": 10.366540999999415,
+			"listMs": 0.19895800000085728,
+			"elapsedMs": 10.713250000000698,
+			"resultWrites": 0,
+			"addedRows": 0
+		},
+		{
+			"historySize": 1,
+			"round": 2,
+			"fullReads": 1,
+			"listCalls": 1,
+			"readMs": 10.345125000001644,
+			"listMs": 0.1757080000006681,
+			"elapsedMs": 10.639417000000321,
+			"resultWrites": 0,
+			"addedRows": 0
+		},
+		{
+			"historySize": 1,
+			"round": 3,
+			"fullReads": 1,
+			"listCalls": 1,
+			"readMs": 9.860582999999679,
+			"listMs": 0.15754199999901175,
+			"elapsedMs": 10.269082999999227,
+			"resultWrites": 0,
+			"addedRows": 0
+		},
+		{
+			"historySize": 1,
+			"round": 4,
+			"fullReads": 1,
+			"listCalls": 1,
+			"readMs": 10.591042000000016,
+			"listMs": 0.1362090000002354,
+			"elapsedMs": 10.842542000000321,
+			"resultWrites": 0,
+			"addedRows": 0
+		},
+		{
+			"historySize": 1,
+			"round": 5,
+			"fullReads": 1,
+			"listCalls": 1,
+			"readMs": 10.562667000000147,
+			"listMs": 0.1741249999995489,
+			"elapsedMs": 10.857083000000785,
+			"resultWrites": 0,
+			"addedRows": 0
+		},
+		{
+			"historySize": 8,
+			"round": 0,
+			"fullReads": 8,
+			"listCalls": 1,
+			"readMs": 95.16791799999555,
+			"listMs": 0.978040999998484,
+			"elapsedMs": 97.19904200000019,
+			"resultWrites": 7,
+			"addedRows": 7
+		},
+		{
+			"historySize": 8,
+			"round": 1,
+			"fullReads": 8,
+			"listCalls": 1,
+			"readMs": 86.26612400000522,
+			"listMs": 0.7878749999981665,
+			"elapsedMs": 87.77229200000147,
+			"resultWrites": 0,
+			"addedRows": 0
+		},
+		{
+			"historySize": 8,
+			"round": 2,
+			"fullReads": 8,
+			"listCalls": 1,
+			"readMs": 81.3971240000028,
+			"listMs": 0.5901250000024447,
+			"elapsedMs": 82.64783300000272,
+			"resultWrites": 0,
+			"addedRows": 0
+		},
+		{
+			"historySize": 8,
+			"round": 3,
+			"fullReads": 8,
+			"listCalls": 1,
+			"readMs": 81.15383400000428,
+			"listMs": 0.6348749999961001,
+			"elapsedMs": 82.44508400000632,
+			"resultWrites": 0,
+			"addedRows": 0
+		},
+		{
+			"historySize": 8,
+			"round": 4,
+			"fullReads": 8,
+			"listCalls": 1,
+			"readMs": 83.26045799999702,
+			"listMs": 0.6158330000034766,
+			"elapsedMs": 84.46945799999958,
+			"resultWrites": 0,
+			"addedRows": 0
+		},
+		{
+			"historySize": 8,
+			"round": 5,
+			"fullReads": 8,
+			"listCalls": 1,
+			"readMs": 84.23829100000148,
+			"listMs": 0.5962499999950523,
+			"elapsedMs": 85.44791699999769,
+			"resultWrites": 0,
+			"addedRows": 0
+		}
+	],
+	"warm_medians": {
+		"1": {
+			"fullReads": 1,
+			"listCalls": 1,
+			"readMs": 10.367,
+			"listMs": 0.174,
+			"elapsedMs": 10.713,
+			"resultWrites": 0,
+			"addedRows": 0
+		},
+		"8": {
+			"fullReads": 8,
+			"listCalls": 1,
+			"readMs": 83.26,
+			"listMs": 0.616,
+			"elapsedMs": 84.469,
+			"resultWrites": 0,
+			"addedRows": 0
+		}
+	},
+	"decision": "No cross-request cache or index introduced. Per-run verification dominates this local component sample, but complete U00 Agent timing and broader history scale are still needed to establish whole-workflow value.",
+	"evidence": {
+		"raw": "tests/scratch/ui-optimization-u00/u04-expanded-history-final.json",
+		"archive": "docs/ui-testing-evidence/optimization-u04-history.tar.gz",
+		"archive_sha256": "bcae95e240a6bc4c9cda1ef5fb9ab77379f70f93e5dafaf933cd78be76008658",
+		"archive_bytes": 73052,
+		"verified_native_manifest_hashes": 8
+	},
+	"validation": {
+		"typecheck": "passed",
+		"unit_files": 2,
+		"unit_tests_passed": 26,
+		"lint": "passed",
+		"protocol_structure": "passed",
+		"protocol_history": "skipped: no tag"
+	}
+}

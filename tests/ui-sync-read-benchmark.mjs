@@ -25,13 +25,24 @@ try {
 	};
 	let runs = { revision: 1, runs: [] };
 	let reads = 0,
-		readMs = 0;
-	automation = createAutomation({
+		readMs = 0,
+		lists = 0,
+		listMs = 0,
+		resultWrites = 0;
+	const options = {
 		host: {
 			dataDir: d.f.fixture.agentDir,
 			testing: {
 				inspect: (...args) => reader.inspect(...args),
-				list: async () => [],
+				list: async (...args) => {
+					lists++;
+					const started = performance.now();
+					try {
+						return await reader.list(...args);
+					} finally {
+						listMs += performance.now() - started;
+					}
+				},
 				read: async (...args) => {
 					reads++;
 					const started = performance.now();
@@ -51,9 +62,11 @@ try {
 			store = next;
 		},
 		commitRuns: (next) => {
+			resultWrites++;
 			runs = next;
 		},
-	});
+	};
+	automation = createAutomation(options);
 	await automation.idle();
 	assert.equal(
 		(
@@ -106,18 +119,71 @@ try {
 			duplicate: receipt.duplicate,
 		});
 	}
+	// Additional native runs are created before measurement. Recovery itself must never replay them.
+	const nativeRuns = [execution.run_ref],
+		recovery = [];
+	for (const historySize of [1, 8]) {
+		while (nativeRuns.length < historySize) {
+			const next = await d.service.start({ ...d.request, request_id: "history-" + nativeRuns.length });
+			assert.equal(next.run.data.state, "finished");
+			nativeRuns.push(next.run_ref);
+		}
+		for (let round = 0; round < 6; round++) {
+			const before = {
+				reads,
+				readMs,
+				lists,
+				listMs,
+				resultWrites,
+				rows: runs.runs.length,
+				browserRequests: d.f.fixture.state.browserRequests,
+			};
+			automation.dispose();
+			const started = performance.now();
+			automation = createAutomation(options);
+			await automation.idle();
+			const elapsedMs = performance.now() - started;
+			assert.equal(automation.status().error, "");
+			assert.equal(lists - before.lists, 1, "Bindings and channel for the same workspace must share one scan");
+			assert.equal(reads - before.reads, historySize, "Current recovery revalidates each native run once");
+			assert.equal(runs.runs.length, historySize * asset.cases.length);
+			assert.ok(
+				runs.runs.every((run) => run.verdict === "通过"),
+				"All controlled history runs must retain their native passed outcome",
+			);
+			assert.equal(new Set(runs.runs.map((r) => r.automation.key)).size, runs.runs.length);
+			assert.equal(d.f.fixture.state.browserRequests, before.browserRequests, "Recovery must not call the browser");
+			if (round > 0 || historySize === 1)
+				assert.equal(resultWrites, before.resultWrites, "Already-synced history must not be written again");
+			recovery.push({
+				historySize,
+				round,
+				fullReads: reads - before.reads,
+				listCalls: lists - before.lists,
+				readMs: readMs - before.readMs,
+				listMs: listMs - before.listMs,
+				elapsedMs,
+				resultWrites: resultWrites - before.resultWrites,
+				addedRows: runs.runs.length - before.rows,
+			});
+		}
+	}
 	console.log(
 		JSON.stringify(
 			{
-				scope: "one native successful run; first sync then five repeated syncs; cold process separated from warm calls",
+				scope:
+					"one native run sync, then recovery with one/eight genuine native runs; first recovery separated from five repeated reconstructions",
 				preparation:
 					"Explicit import and bind before measurement; 0.13.0 contract, separate from historical 0.12.x first-sync intake timing.",
-				limitations: "Not an Agent workflow or expanded history benchmark; no overall speed claim.",
+				limitations:
+					"Local component reconstruction, not an Electron/process restart or complete Agent workflow. Same-process filesystem caches remain warm; no overall speed or before/after optimization claim.",
 				workspace,
 				runRef: execution.run_ref,
 				actualModelCalls: 0,
 				businessRequests: 0,
 				samples,
+				nativeRuns,
+				recovery,
 			},
 			null,
 			2,
