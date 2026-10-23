@@ -113,6 +113,6 @@ API 能力接入：`scripts/enable-api-testing.mjs` 在明确的宿主 dataDir �
 
 UI 测试 P0：`server/extension-tool-policy.ts` 定义操作副作用，`server/extension-tool-gate.ts` 在 Pi SDK 工具调用前检查模式与只读权限；`qa/ui/` 维护本项目隔离服务、数据和浏览器 fixture。运行入口见 [fixture 维护](../qa/ui/README.md)，证据见 [P0 验收](ui-testing-p0-evidence.md)。
 
-数据空间与原生 UI/API 执行关联：`plugins/data-space/automation.mjs`、`server/test-asset-reader.ts`（只读核验）、`server/test-execution-notice.ts`（完成引用）。维护与验收见 [接入记录](data-space-integration.md)。
+数据空间与原生 UI/API 执行关联：`plugins/data-space/test-channel.mjs`（环境初始化与资产归档）、`plugins/data-space/automation.mjs`、`server/test-asset-reader.ts`（只读核验）、`server/test-execution-notice.ts`（完成引用）。维护与验收见 [接入记录](data-space-integration.md)。
 
 数据空间 Agent 交接规范：`.pi/skills/data-space-testing/SKILL.md` 选择查询／绑定／同步／普通登记路径，`references/result-output.md` 约定结果交付；`tests/data-space-skill-desktop-test.mjs` 验证 Electron 发现与插件归属联动。

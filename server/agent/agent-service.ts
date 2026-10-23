@@ -17,7 +17,7 @@ import "../patch-remote-catalog.js";
 import "../patch-turn-end-boundary.js";
 import { createExtensionToolGate } from "../extension-tool-gate.js";
 import { extensionToolEffect } from "../extension-tool-policy.js";
-import { nativeTestCompletion } from "../test-execution-notice.js";
+import { nativeTestCompletion, nativeTestAssetCreated } from "../test-execution-notice.js";
 import { skillBlock, isUiTestingExtension, isUiTestingDisabled } from "../skill/skill-presentation.js";
 import { spawn } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
@@ -4394,11 +4394,13 @@ export class ClientSession {
 				if (event.toolName === "bash") void this.bg.trackAfterBash();
 				const durationMs = startedAt !== undefined ? Date.now() - startedAt : undefined;
 				const completion = nativeTestCompletion(event.toolName, pendingArgs, event.result, event.isError);
+				const createdAsset = nativeTestAssetCreated(event.toolName, pendingArgs, event.result, event.isError);
 				// 插件扩展点：工具结束执行（带耗时与错误标志）。
 				this.onToolEvent?.({
 					phase: "end",
 					cwd: conv.cwd,
 					...(completion ? { testRun: completion } : {}),
+					...(createdAsset ? { testAsset: createdAsset } : {}),
 					toolName: event.toolName,
 					conversationId: conv.id,
 					toolCallId: event.toolCallId,

@@ -2,26 +2,11 @@
 import { randomUUID } from "node:crypto";
 import { realpathSync } from "node:fs";
 import { caseFingerprint } from "./model.mjs";
+import { createTestChannel, environmentUrl as url } from "./test-channel.mjs";
 import { normalizeVerdict } from "./runs.mjs";
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-const url = (value) => {
-	let parsed;
-	try {
-		parsed = new URL(value);
-	} catch {
-		throw new Error("关联需要明确的 HTTP(S) 环境地址");
-	}
-	if (
-		!["http:", "https:"].includes(parsed.protocol) ||
-		parsed.username ||
-		parsed.password ||
-		parsed.search ||
-		parsed.hash
-	)
-		throw new Error("环境地址不能包含凭据、查询参数或片段");
-	return parsed.href.replace(/\/+$/, "");
-};
 export function createAutomation({ host, store, runs, commitStore, commitRuns }) {
+	const channel = createTestChannel({ host, store, commitStore });
 	let syncError = "",
 		queue = Promise.resolve(),
 		serial = Promise.resolve(),
@@ -78,6 +63,12 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 	}
 	async function syncNative(cwd, engine, reference) {
 		const workspace = realpathSync(cwd);
+		if (channel.list().some((c) => c.workspace === workspace && c.engine === engine)) {
+			const run = await host.testing.read(engine, workspace, reference);
+			const asset = await host.testing.inspect(engine, workspace, run.assetRef);
+			if (disposed) throw new Error("数据空间已停用");
+			channel.intake(asset);
+		}
 		const candidates = store().cases.filter(
 			(c) => c.automation?.engine === engine && c.automation.workspace === workspace,
 		);
@@ -149,9 +140,21 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 		return { ok: !errors.length, imported: pending.length, duplicate, errors };
 	}
 	async function call(cwd, input) {
+		if (disposed) throw new Error("数据空间已停用");
+		if (input.action === "initialize") return channel.initialize(cwd, input);
+		if (input.action === "disconnect") return channel.disconnect(cwd, input);
+		if (input.action === "import") {
+			const asset = await host.testing.inspect(input.engine, cwd, input.assetRef);
+			if (disposed) throw new Error("数据空间已停用");
+			return channel.intake(asset);
+		}
 		if (input.action === "bind") return bind(cwd, input);
 		if (input.action === "sync") return sync(cwd, input.engine, input.runRef);
-		if (input.action === "inspect") return host.testing.inspect(input.engine, cwd, input.assetRef);
+		if (input.action === "inspect") {
+			const asset = await host.testing.inspect(input.engine, cwd, input.assetRef);
+			// Keep the public picker payload compact; detailed cases are for host-side intake.
+			return { ...asset, cases: asset.cases.map(({ id, title }) => ({ id, title })) };
+		}
 		const c = find(input.caseId),
 			b = c?.automation;
 		if (!b || b.workspace !== realpathSync(cwd)) throw new Error("当前工作区没有此用例的自动化关联");
@@ -193,9 +196,17 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 		};
 	}
 	const off = host.onToolEvent?.((ev) => {
-		if (ev.phase !== "end" || ev.isError || !ev.cwd || !ev.testRun) return;
+		if (ev.phase !== "end" || ev.isError || !ev.cwd || (!ev.testRun && !ev.testAsset)) return;
 		queue = queue
-			.then(() => sync(ev.cwd, ev.testRun.engine, ev.testRun.reference))
+			.then(async () => {
+				if (disposed) return;
+				if (
+					ev.testAsset &&
+					channel.list().some((c) => c.workspace === realpathSync(ev.cwd) && c.engine === ev.testAsset.engine)
+				)
+					await call(ev.cwd, { action: "import", engine: ev.testAsset.engine, assetRef: ev.testAsset.reference });
+				if (ev.testRun) await sync(ev.cwd, ev.testRun.engine, ev.testRun.reference);
+			})
 			.catch((error) => {
 				syncError = String(error.message || error);
 				host.log("error", "自动化结果同步失败", syncError);
@@ -211,6 +222,7 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 					.cases.filter((c) => c.automation)
 					.map((c) => [JSON.stringify([c.automation.engine, c.automation.workspace]), c.automation]),
 			);
+			for (const c of channel.list()) groups.set(JSON.stringify([c.engine, c.workspace]), c);
 			for (const b of groups.values()) {
 				for (const reference of await host.testing.list(b.engine, b.workspace)) {
 					if (disposed) return;

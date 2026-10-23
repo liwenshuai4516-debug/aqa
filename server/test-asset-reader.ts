@@ -10,7 +10,13 @@ export interface NativeTestAsset {
 	workspace: string;
 	assetRef: string | TestFileRef;
 	revision: string;
-	cases: Array<{ id: string; title: string }>;
+	cases: Array<{
+		id: string;
+		title: string;
+		priority?: string;
+		preconditions?: string[];
+		steps?: Array<{ action: string; expect: string }>;
+	}>;
 	environment: { id: string; baseUrl: string };
 }
 export interface NativeTestRun {
@@ -91,7 +97,19 @@ export class TestAssetReader {
 				workspace,
 				assetRef: ref,
 				revision: asset.data.revision,
-				cases: cases.data.cases.map((c: any) => ({ id: c.case_id, title: c.title ?? c.case_id })),
+				cases: cases.data.cases.map((c: any) => ({
+					id: c.case_id,
+					title: c.title ?? c.case_id,
+					priority: c.priority,
+					preconditions: c.preconditions,
+					steps: c.steps.map((step: any) => ({
+						action: step.action,
+						expect: c.assertions
+							.filter((a: any) => step.assertion_ids.includes(a.assertion_id))
+							.map((a: any) => `${a.target} ${a.comparison} ${JSON.stringify(a.expected)}`)
+							.join("\n"),
+					})),
+				})),
 				environment: { id: scope.data.environment_id, baseUrl: scope.data.base_url ?? "" },
 			};
 		}
@@ -133,7 +151,16 @@ export class TestAssetReader {
 			workspace,
 			assetRef: ref,
 			revision: ref,
-			cases: cases.map((c: any) => ({ id: c.id, title: c.id })),
+			cases: cases.map((c: any) => ({
+				id: c.id,
+				title: c.operationId ?? c.id,
+				steps: [
+					{
+						action: `调用 ${c.operationId}（请求数据见原生资产）`,
+						expect: `HTTP ${c.status}; ${JSON.stringify(c.checks ?? [])}`,
+					},
+				],
+			})),
 			environment: { id: "", baseUrl: meta.origin },
 		};
 	}

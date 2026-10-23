@@ -9,22 +9,49 @@ import { ensureBuild } from "./lib/ensure-build.mjs";
 import { portUp } from "./lib/port-utils.mjs";
 import { launchNativeApp } from "./desktop/native-app.mjs";
 import { waitUntil } from "../qa/ui/project-environment.mjs";
+import { ready } from "./fixtures/data-space/ui-run-fixture.mjs";
 import { enableDataSpace } from "../scripts/enable-data-space.mjs";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
 ensureBuild(repo, "data-space-skill-desktop");
 const temporary = await mkdtemp(join(tmpdir(), "data-space-skill-desktop-"));
-const workspace = join(temporary, "workspace");
+const cleanup = [];
+const native = await ready({ after: (fn) => cleanup.push(fn) });
+const workspace = native.f.root;
 const userData = join(temporary, "desktop");
 const agentDir = join(userData, "agent");
 const dataDir = join(userData, "data");
 const output = join(repo, "tests/scratch/data-space-skill-desktop", String(Date.now()));
-await mkdir(workspace);
+
 await mkdir(agentDir, { recursive: true });
 await mkdir(output, { recursive: true });
 await writeFile(join(agentDir, "auth.json"), "{}");
 await writeFile(join(agentDir, "models.json"), '{"providers":{}}');
 await enableDataSpace(repo, { agentDir, dataDir });
+await mkdir(join(dataDir, "data-space"), { recursive: true });
+await writeFile(
+	join(dataDir, "data-space/store.json"),
+	JSON.stringify({
+		version: 3,
+		revision: 1,
+		systems: [{ id: "desktop-project", name: "Desktop channel" }],
+		modules: [],
+		features: [],
+		cases: [],
+		envs: [
+			{
+				id: "desktop-env",
+				systemId: "desktop-project",
+				name: "Synthetic",
+				baseUrl: native.f.fixture.url,
+				params: [
+					{ key: "tenant", value: "fixture", secret: false },
+					{ key: "token", value: "synthetic-private", secret: true },
+				],
+			},
+		],
+	}),
+);
 const first = await readFile(join(agentDir, "settings.json"), "utf8");
 await enableDataSpace(repo, { agentDir, dataDir });
 assert.equal(await readFile(join(agentDir, "settings.json"), "utf8"), first);
@@ -61,6 +88,7 @@ try {
 			} catch {}
 		}),
 	);
+	await page.waitForSelector(".app");
 	await page.reload();
 	await page.waitForSelector(".app");
 	const setup = page.locator(".setup-modal .modal-close");
@@ -168,13 +196,70 @@ try {
 	await page.screenshot({ path: join(output, "tools.png") });
 	await close();
 	result.checks.push("desktop tool management exposes all four existing Data Space tools");
+	const request = (path, body) =>
+		page.evaluate(
+			async ({ path, body }) => {
+				const response = await fetch(
+					`/plugins-api/data-space${path}`,
+					body ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {},
+				);
+				if (!response.ok) throw new Error(`Data Space HTTP ${response.status}`);
+				return response.json();
+			},
+			{ path, body },
+		);
+	const initialized = await request("/automation", {
+		action: "initialize",
+		engine: "ui",
+		targetUrl: native.f.fixture.url,
+		workspace,
+	});
+	assert.equal(initialized.status, "configured");
+	assert.equal(initialized.parameters.tenant, "fixture");
+	assert(!JSON.stringify(initialized).includes("synthetic-private"));
+	const imported = await request("/automation", {
+		action: "import",
+		engine: "ui",
+		assetRef: native.assetRef,
+		workspace,
+	});
+	assert.equal(imported.imported, 1);
+	const executed = await native.service.start(native.request);
+	assert.equal(executed.run.data.exit_code, 0);
+	// Settings switches gate tools; only a real host restart reactivates plugins.
+	await app.close();
+	app = await launchNativeApp({ executablePath: electron, packaged: false, env });
+	page = await app.firstWindow();
+	await page.waitForSelector(".app");
+	await waitUntil(
+		async () => {
+			const saved = JSON.parse(
+				await readFile(join(dataDir, "data-space/runs.json"), "utf8").catch(() => '{"runs":[]}'),
+			);
+			return saved.runs.length === 1 && saved.runs[0].verdict === "通过";
+		},
+		"desktop channel recovery",
+		60000,
+	);
+	const repeated = await request("/automation", {
+		action: "import",
+		engine: "ui",
+		assetRef: native.assetRef,
+		workspace,
+	});
+	assert.equal(repeated.duplicate, 1);
+	result.checks.push(
+		"real Electron environment initialization, native case import, persisted channel and automatic native Playwright result recovery",
+	);
 	result.status = "PASS";
 } catch (error) {
 	result.error = error.stack;
+	await writeFile(join(output, "desktop.log"), app?.getLogs() ?? "");
 	await page?.screenshot({ path: join(output, "failure.png") }).catch(() => {});
 	process.exitCode = 1;
 } finally {
 	await app?.close();
+	for (const close of cleanup.reverse()) await close();
 	await writeFile(join(output, "result.json"), JSON.stringify(result, null, 2) + "\n");
 	console.log(JSON.stringify({ ...result, evidence: output }, null, 2));
 }

@@ -30,3 +30,32 @@ export function nativeTestCompletion(
 		}
 	}
 }
+
+/** Creation notices contain references only; the reader validates persisted native assets. */
+export function nativeTestAssetCreated(
+	name: string,
+	args: any,
+	result: any,
+	isError: boolean,
+): { engine: TestEngine; reference: unknown } | undefined {
+	if (isError) return;
+	if (
+		name === "ui_case_design" &&
+		args?.request?.operation === "candidate" &&
+		result?.details?.status === "completed"
+	) {
+		const ref = result.details.artifact_refs?.find(
+			(r: any) => typeof r.path === "string" && /^qa\/ui\/assets\/.+\/manifest\.json$/.test(r.path),
+		);
+		if (ref) return { engine: "ui", reference: { path: ref.path, sha256: ref.sha256 } };
+	}
+	if (name === "api_test_execute" && ["review", "asset_import", "asset_restore"].includes(args?.action)) {
+		try {
+			const text = result?.content?.find((c: any) => c.type === "text")?.text;
+			const value = result?.details?.assetRef ? result.details : text && text.length <= 64000 ? JSON.parse(text) : null;
+			if (/^[a-f0-9]{64}$/.test(value?.assetRef ?? "")) return { engine: "api", reference: value.assetRef };
+		} catch {
+			/* No usable asset reference. */
+		}
+	}
+}

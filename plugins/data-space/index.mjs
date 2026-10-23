@@ -419,16 +419,24 @@ export default {
 					name: "data_space_automation",
 					label: "测试资产与原生结果关联",
 					description:
-						"Inspect or bind Data Space cases to native UI/API assets, route execution to existing workflows, or synchronize verified native runs. Does not grant approval or execute a runner.",
-					promptSnippet: "Connect catalog cases with native test assets and results.",
+						"Initialize project test environments, import native cases, bind assets, or synchronize verified runs. Does not approve or execute tests.",
+					promptSnippet: "Connect project environments, generated cases and native results.",
 					promptGuidelines: [
+						"Initialize with engine and targetUrl before discovery. Use returned environment IDs and nonsecret parameters; configured does not mean reachable or authenticated.",
+						"Import a generated asset to verify writeback. Native generation and execution events also synchronize automatically after initialization.",
 						"Use route to obtain the original execution entry. Never replace native approval or preflight.",
 						"Use sync for an existing run after a synchronization error; do not replay execution.",
 					],
 					parameters: {
 						type: "object",
 						properties: {
-							action: { type: "string", enum: ["inspect", "bind", "unbind", "route", "sync"] },
+							action: {
+								type: "string",
+								enum: ["initialize", "disconnect", "import", "inspect", "bind", "unbind", "route", "sync"],
+							},
+							systemId: { type: "string" },
+							targetUrl: { type: "string" },
+							featureId: { type: "string" },
 							caseId: { type: "string" },
 							engine: { type: "string", enum: ["ui", "api"] },
 							assetRef: { anyOf: [{ type: "string" }, { type: "object" }] },

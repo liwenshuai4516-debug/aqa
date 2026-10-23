@@ -1,7 +1,6 @@
-import { defineConfig } from "@playwright/test";
 import { join } from "node:path";
 
-export default defineConfig({
+export default {
 	testDir: join(process.cwd(), "qa/ui"),
 	workers: 1,
 	retries: 0,
@@ -12,4 +11,4 @@ export default defineConfig({
 		screenshot: "only-on-failure",
 	},
 	projects: [{ name: "chromium", use: { browserName: "chromium" } }],
-});
+};

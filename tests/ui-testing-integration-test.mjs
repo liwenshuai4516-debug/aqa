@@ -40,20 +40,26 @@ try {
 	await writeFile(join(project, "package.json"), '{"type":"module"}\n');
 	await symlink(join(repo, "node_modules"), join(project, "node_modules"), "junction");
 	await mkdir(target);
-	await symlink(join(repo, "node_modules"), join(target, "node_modules"), "junction");
+	await mkdir(join(target, "node_modules/@playwright"), { recursive: true });
+	for (const name of ["@playwright/test", "playwright", "playwright-core"])
+		await cp(realpathSync(join(repo, "node_modules", name)), join(target, "node_modules", name), { recursive: true });
+	await writeFile(
+		join(target, "playwright.config.mjs"),
+		"export default { testDir: './tests', use: { baseURL: 'http://127.0.0.1:18981' }, projects: [{ name: 'chromium', use: { browserName: 'chromium' } }] };\n",
+	);
 	await cp(join(repo, ".pi/skills/ui-testing-workflow"), join(project, ".pi/skills/ui-testing-workflow"), {
 		recursive: true,
 	});
-	for (const name of ["mcp-extension.mjs", "playwright.config.mjs"]) {
+	for (const name of ["mcp-extension.mjs", "playwright.config.mjs", "playwright-runtime.mjs"]) {
 		await copyFile(
 			join(repo, ".pi/skills/ui-testing-workflow/assets", name),
 			join(project, ".pi/skills/ui-testing-workflow/assets", name),
 		);
 	}
-	await mkdir(join(target, "qa/ui"), { recursive: true });
+	await mkdir(join(target, "tests"), { recursive: true });
 	await writeFile(
-		join(target, "qa/ui/seed.spec.ts"),
-		"import { test } from '@playwright/test';\ntest('integration seed', async ({ page }) => { await page.setContent('<button>Capability smoke</button>'); });\n",
+		join(target, "tests/seed.spec.ts"),
+		"import { test } from '@playwright/test';\ntest('integration seed', async ({ page }) => { await page.route('http://127.0.0.1:18981/**', r => r.fulfill({contentType: 'text/html', body: '<button>Capability smoke</button>'})); await page.goto('/synthetic'); });\n",
 	);
 	await writeFile(join(project, ".pi/settings.json"), '{"theme":"light"}\n');
 	const settingsPath = await enableUiTesting(project);
@@ -228,12 +234,14 @@ try {
 		tool: backend + "generator_setup_page",
 		input: {
 			project: "chromium",
-			seedFile: "qa/ui/seed.spec.ts",
+			seedFile: "tests/seed.spec.ts",
 			plan: "Open a local synthetic page to check capability wiring.",
 		},
 	});
 	assert.equal(setup.details.isError, false, JSON.stringify(setup.content));
-	checks.push("test MCP opens a real Chromium page from an isolated synthetic seed");
+	checks.push(
+		"test MCP uses independent workspace dependencies, custom testDir and baseURL to open a real Chromium seed",
+	);
 	const snapshot = await invoke("integration_native_call", { tool: backend + "browser_snapshot" });
 	assert.equal(snapshot.details.isError, false, JSON.stringify(snapshot.content));
 	assert.match(JSON.stringify(snapshot.content), /Capability smoke/);

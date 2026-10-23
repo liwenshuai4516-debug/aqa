@@ -76,3 +76,59 @@
 - `PI_WEB_SMOKE_PREBUILT=1 node tests/data-space-skill-desktop-test.mjs`：四组检查通过，真实 Electron 跨工作区发现、`/data` 补全、单技能禁用持久性、插件关闭联动及恢复、四个工具管理。该入口须先具备当前 server/web/desktop 构建。
 - 桌面证据：`tests/scratch/data-space-skill-desktop/1792723568306/` 下 `result.json`、`skill.png`、`plugin-blocked.png`、`tools.png`。零模型调用、零业务请求，精确关闭本次应用实例；未执行实际模型遵循度、业务回写或其他平台验收。
 - 实际桌面应用专用 `agent/settings.json` 已有指向本仓库的 `data-space-testing` 登记，`data/plugins/data-space` 链接也指向本仓库；本轮仅核对相关配置字段和链接，未读取认证或业务数据、未覆盖个人安装。用户原窗口未自动操作或重启，执行 `/reload` 后可读取更新后的 Skill；不声称旧会话已刷新。
+
+## 2026-10-23：启动修复与项目测试通道
+
+### 已确认的启动原因与修复
+
+OperationContract 失败发生在录制初始化，原始错误为 `seed test not found`，不是页面功能失败。原 MCP 固定使用安装目录配置（`testDir=qa/ui`），而用户工作区 seed 在 `tests/`；换配置但仍使用宿主 CLI 又会混入两份 Playwright，出现 `Playwright Test did not expect test() to be called here`。原诊断记录位于 `tests/scratch/ui-seed-diagnosis/result.json`。42 条源码候选均未正式执行，不得计为产品失败。
+
+1. **配置与运行时一起修复**：MCP 从当前工作区解析 `@playwright/test` 对应的 CLI，选择工作区唯一 `playwright.config.*`。缺少依赖或多个配置会明确阻塞。无项目配置时才用不加载宿主 Playwright 的后备配置（仅 `qa/ui`，没有业务 baseURL）。独立依赖、`tests/` 目录、相对 URL 必须作为回归场景。
+2. **录制前预检**：技能要求用所选 CLI/config 收集唯一 seed，核对 project、testDir、baseURL，然后做浏览器访问及登录检查。相对 seed 绑定守卫保持有效；绝对路径不是修复办法。
+3. **错误分层**：配置、依赖、登录、网络问题归初始化阻塞；有业务断言证据才归产品失败。保留旧失败记录，在修复后产生新批次。
+
+### 已实现的数据交接
+
+复用四个既有 Data Space 工具；扩展 `data_space_automation`，插件版本 0.11.0。初始化是持久写入，沿用现有计划、只读、委派与禁用守卫；查询不建立通道。没有新 runner、批准路径、数据集库或结果数据库。
+
+- `initialize {engine,targetUrl?,systemId?,envId?,featureId?}`：至少提供一个目标条件，按 HTTP(S) 地址路径边界与明确 ID 匹配；仅唯一结果建立通道。无匹配返回 `missing-environment`，多匹配返回 `ambiguous` 和候选，默认标记不消歧。返回 `configured`、真实 ID、非敏感参数及敏感参数名称；network/authentication 保持 `not-checked`，不能宣称可登录。账号秘密不回传、不写入通道。当前仅环境参数可作为数据输入；旧数据集已移除，不声称支持不存在的数据集能力。
+- `import {engine,assetRef}`：宿主从原生资产核验 hash、工作区、环境和原生用例。UI 候选与 API 已冻结资产导入草稿，保存步骤／预期摘要与原生引用。自动绑定版本，仍需原工作流的设计评估、诊断与执行许可。完整来源、断言、请求及超过台账字段限额的内容在原生资产保留。
+- 原生 `ui_case_design.candidate` 成功及 API review/import/restore 形成资产时，宿主发送仅含引用的事件自动导入。仅保存 cases、尚未形成资产的草稿不自动创建占位台账。事件失败可按原 assetRef 重试 import；技能要求核对回执。
+- 正式执行完成后自动导入缺失用例并同步原生结果。宿主进程重启／插件实际重新加载时扫描已有批次补同步；不会重放测试。资产生成事件丢失且未执行时，用 import 补归档；不声称重启会扫描所有未执行候选。
+- `disconnect {engine,envId}` 停止当前工作区该通道的新归档；原有显式用例绑定继续同步，停止单条需 `unbind`。同工作区、引擎、相同地址有多个通道时拒绝自动归属，先断开非本次通道。
+
+`<dataDir>/data-space/channels.json` 是版本 1 的通道索引，仅存工作区／引擎／项目／环境／地址／可选功能 ID；不进入页面整库保存，不复制参数或测试结果。`store.json` 继续存台账，新增服务器拥有的 `nativeSource` 幂等来源，普通保存不能伪造它；`runs.json` 继续存证据结果。写入均沿用原子持久化。
+
+默认目录为对应项目的“自动化测试 → UI/API 自动化导入”；初始化传 featureId 可归档到现有功能。导入键为工作区 + 引擎 + 完整资产引用 + 环境 ID + 原生用例 ID。同版本重复不增行，人工编辑不覆盖；不同资产修订保留为不同台账行，不自动合并同名用例。达到现有容量限制整体拒绝导入。项目／环境／功能被删除或改属后阻塞，不自动移动历史证据。
+
+### 使用与边界
+
+针对本次 URL，先调用：
+
+```json
+{ "action": "initialize", "engine": "ui", "targetUrl": "http://192.168.90.224:8238/pms/OperationContract" }
+```
+
+在匹配环境后，Agent 按返回 baseURL 与参数准备工作区 seed/config、测试数据规则；敏感登录沿用私有凭据引用，不能用脱敏占位值。数据参数是数据，不能作为代码或任意进程环境变量运行。本次不替用户创建生产环境、不回填个人凭据、不把初始化成功当作业务验收。
+
+入口继续由已安装的 data-space-testing 与 ui-testing-workflow 技能承载，使用原有设置页、工具开关和 `/data`、`/ui` 快捷发现。修改共享宿主后需要运行更新后的桌面版本；已有会话 `/reload` 刷新技能和 MCP，插件“重新扫描”或宿主重启加载新插件代码，不能声称旧进程已自动更新。
+
+### 自审
+
+- 合规：只归档宿主核验的原生资产与批次，不接受 Agent 自报通过；环境匹配不提供执行授权；私密参数不进入工具输出。
+- 冗余：复用既有用例、环境、绑定、结果和工具，只新增独立通道索引，避免参数副本及另一套结果 schema。
+- 场景：支持从 URL 开始的新测试、已有项目归档、缺环境／多环境阻塞、修改后续跑、幂等补归档和宿主重启补同步；只分析旧批次不重新执行。
+- 限制：配置匹配与真实可访问／已登录分开；API 未冻结草稿、未组装 UI 草稿不入正式台账；自动分组不是功能语义识别，准确功能归属应指定 featureId。技能不能强制所有自主行为都经过初始化，实际写入和匹配限制在执行侧落实。
+
+设置中的插件／工具开关控制 Agent 可调用能力，不等于卸载服务端插件，也不会触发历史补同步；需要停止某个通道的新归档时使用 disconnect。历史补同步由宿主启动或实际插件重载触发。
+
+### 本轮验收记录
+
+- 全量 `npm run typecheck`、构建、lint、协议检查、diff 空白检查通过；协议版本 Git 启发式因仓库无 tag 跳过，协议双端检查通过。
+- Data Space / UI 运行时 / 登记 / 技能开关 11 个单测文件共 138 项通过；后续 URL 校验去重、公共 inspect 保持摘要后的通道／关联／完整性回归 17 项通过。SDK 能力目录回归通过，明确检查包含 data-space-testing 在内的 5 个项目入口与 8 个原生 UI 阶段。
+- 真实 SDK / Playwright MCP 集成通过，目标依赖独立、testDir 为 tests、使用相对 baseURL；证据 `tests/scratch/ui-channel-mcp-integration.log`。
+- 真实 API Newman 与 UI Playwright 原生回归 7 组通过（含失败、重测、取消、篡改拒绝、跨工作区拒绝、重启补同步）。证据 `tests/scratch/data-space-channel-native.log`；评估回复为明确控制夹具，不计真实模型评审。
+- macOS Electron 实际进程 5 组通过：跨工作区登记与 `/data`、技能启停重载、插件归属联动、四个工具可见、环境初始化→原生用例入库→宿主重启→真实结果自动补同步→重复导入去重。证据 `tests/scratch/data-space-skill-desktop/1792726984016/result.json` 与同目录界面截图。早期“开关应触发重载”的错误测试假设和一次首次页面重载竞争均保留失败证据，最终按真实生命周期验收。
+- 额外提示词卫生检查 8 项中 7 项通过，1 项为既有失败：`plugins/data-space/tools.mjs` 原有 project 参数说明在第 242 / 328 行重复；HEAD 版本也存在，未修改无关说明或削弱检查。
+- 实际 `Pi Agent Desktop` 的 data-space 链接、技能登记与旧 MCP 兼容入口已核对指向当前仓库。隔离验收未调用付费模型或访问 PMS 业务页面。本轮不是 OperationContract 的业务回归，不把 42 条旧候选计为已执行。
+- 开始／交付 clean 均为预览，没有符合清理条件的缓存，未删除证据。个人配置和凭据未改动；用户原有 `.gitignore`、`plugins/db-client/package-lock.json` 以及验收后出现的环境脚本／动态值／界面并行改动不纳入本次提交；共用 index.mjs、model.mjs 按本轮差异隔离暂存。

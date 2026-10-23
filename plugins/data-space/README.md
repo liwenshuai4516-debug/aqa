@@ -325,3 +325,5 @@ npm run data-space:enable -- --agent-dir <应用agent目录> --data-dir <应用d
 验证：`npm run test:data-space:native`（真实原 runner，独立评审响应为控制替身）及 `npm run test:data-space:browser`（隔离宿主/浏览器管理入口）。范围、证据和已知边界见 [接入记录](../../docs/data-space-integration.md)。
 
 维护模块：`model.mjs` 层级与用例内容版本；`durable.mjs` 原子写；`runs.mjs` 历史与状态；`automation.mjs` 关联、幂等同步与补漏；`client/modal-automation.mjs` 交互；宿主 `server/test-asset-reader.ts` 只读核验原生证据，`server/test-execution-notice.ts` 仅发布执行引用。
+
+0.11.0 增加项目测试通道：`data_space_automation.initialize` 匹配环境并返回非敏感参数；原生资产事件自动导入草稿、批次事件自动同步结果。`import` 幂等补归档、`disconnect` 停止通道新归档。细节、边界和验收见 [接入说明](../../docs/data-space-integration.md)。

@@ -408,6 +408,6 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 - `qa/ui/`：本项目隔离服务、数据、Playwright fixture 与预检，维护见 [README](../qa/ui/README.md)。
 - `tests/ui-tool-guards-test.mjs`、`tests/ui-project-fixture-test.mjs`、`tests/ui-project-browser-test.mjs`：门禁、生命周期及真实浏览器验收。
 
-数据空间接入：`plugins/data-space/automation.mjs`（关联与幂等同步）、`durable.mjs`（原子写）、`client/modal-automation.mjs`（管理入口）；`server/test-asset-reader.ts` / `test-execution-notice.ts`（原生证据桥）；`.pi/skills/data-space-testing/`；`scripts/enable-data-space.mjs`；`tests/data-space-{native,browser}-test.mjs`。
+数据空间接入：`plugins/data-space/test-channel.mjs`（环境初始化与资产归档）、`plugins/data-space/automation.mjs`（关联与幂等同步）、`durable.mjs`（原子写）、`client/modal-automation.mjs`（管理入口）；`server/test-asset-reader.ts` / `test-execution-notice.ts`（原生证据桥）；`.pi/skills/data-space-testing/`；`scripts/enable-data-space.mjs`；`tests/data-space-{native,browser}-test.mjs`。
 
 数据空间结果规范：`.pi/skills/data-space-testing/references/result-output.md`（Agent 交付约定，不是存储 schema）；`tests/data-space-skill-desktop-test.mjs`（Electron 技能、插件归属和快捷发现验收）。

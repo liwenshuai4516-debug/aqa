@@ -123,6 +123,7 @@ export interface PluginToolEvent {
 	cwd?: string;
 	/** Native completion reference only; verdicts must be re-read from native evidence. */
 	testRun?: { engine: TestEngine; reference: unknown };
+	testAsset?: { engine: TestEngine; reference: unknown };
 	phase: "start" | "end";
 	toolName: string;
 	/** 事件所属对话（会话未就绪时可能为空）。 */

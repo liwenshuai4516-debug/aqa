@@ -194,6 +194,7 @@ export function normalizeStore(raw, previous) {
 				preconditions: typeof co.preconditions === "string" ? co.preconditions.slice(0, 2000) : "",
 				steps,
 				note: typeof co.note === "string" ? co.note.slice(0, 2000) : "",
+				nativeSource: previous ? (prevCases.get(co.id)?.nativeSource ?? null) : (co.nativeSource ?? null),
 				automation: previous
 					? (prevCases.get(co.id)?.automation ?? null)
 					: co.automation && typeof co.automation === "object"

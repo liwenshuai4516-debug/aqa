@@ -56,3 +56,5 @@ npx vitest run tests/unit/skill-capability-settings.test.ts tests/unit/ui-testin
 ```
 
 真实界面回归另见仓库 [接入记录](../../../../docs/ui-testing-integration.md) 中的 visibility 命令；本次迁移结果见 [目录归并验收](../../../../docs/ui-testing-maintenance-evidence.md)。全局能力导航见 [能力维护](../../../../docs/capability-layout.md)。
+
+MCP 运行时选择由 `assets/playwright-runtime.mjs` 负责：CLI 与配置均基于当前工作区；无配置才用后备配置，缺依赖或多个配置阻塞。`tests/ui-testing-integration-test.mjs` 使用独立复制的 Playwright、`tests/` seed 与相对 baseURL 检查跨工作区启动；不以共享依赖链接替代此项回归。
