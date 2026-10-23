@@ -298,3 +298,25 @@ A02-6/7 的上述合成运行时路径已有直接工程证据；A02-5 私密桥
 本次覆盖A05-2/3/4/5的单功能工程子路径及按需策略，不关闭U05：冻结的六类多功能范围尚未通过完整Agent发现/状态/定位/候选链验证；重复按钮/frame、角色或部署变化重验、完整覆盖对照仍需补证。策略文字与控制协议回归不能证明真实模型遵循度；U00计量、U02私密执行/证据隔离、U03/U07和U09仍未完成。整goal保持进行中，U08未启动、保留串行。
 
 目录布局回归进一步暴露 data-space-testing 入口11867字节，超过宿主 skill 工具8KB硬上限，SDK发现与桌面列名正常却无法按名加载正文。没有提高上限或复制规则：将入库/绑定/同步详细章节原样移到 `references/native-handoff.md`，入口按相关意图加载，保留核心授权和重复执行边界。此为U06相关能力交付修复，纯Skill文档不升级插件。首轮失败证据保留；最终目录回归3项通过（`u05-layout-final.log`），宿主按名称实际加载五个入口，两个项目Skill quick_validate通过。入口正文降为5107字节。额外数据空间Electron9项通过（`u05-data-space-desktop.log`），证据 `tests/scratch/data-space-skill-desktop/1792755411313/`，包括技能启停/快捷发现、原生归档、版本及身份阻塞；0模型、0真实业务请求。没有因此将U06或整计划记为完成。
+
+### U05 续跑：六类功能草稿、同会话复用与预算缺口
+
+从中断留下的 `tests/ui-function-discovery-test.mjs` 续接，复用冻结的 `u00-1` 页面、六类功能、tester/viewer 和原 60 动作 / 120 秒上限。原生包仍为 0.1.2，没有修改运行包、生产代码、个人安装或既有页面。使用真实 Pi SDK / 测试 MCP / Chromium，控制调用只验证工程路径，不计真实模型规划或正式业务回归。当前无 `plan_update` 工具，以本记录和计划放行表同步进度。
+
+中断前失败是测试草稿把附件写到存储契约不允许的目录；本轮修正附件归属和 seed 文件摘要登记。后续运行暴露快照含 `[ref=...]`、Details 实际为 generic 而不是 button，以及原生 inventory 会追加草稿引用的事实；修正测试假设，未改产品来适配错误预期。失败日志和证据均保留，详见[本轮摘要](ui-testing-evidence/optimization-u05-multifunction.json)。全局技能 doctor 固定要求 0.1.0，因实际已升级 0.1.2 报版本不匹配；其余依赖与 Chromium 检查通过，本轮以实际安装版的 SDK/MCP 和 Electron 回归核验兼容性，不降级或覆盖个人技能。
+
+最终多功能回归 **5 项工程检查通过**，包括：
+
+- 查询首份草稿在其他五类功能探索和最终脚本生成前持久化；后续逐功能存稿累积引用，旧清单中的未完成 Reset 缺口不被新清单覆盖。
+- 六类功能保留稳定 feature/scenario ID、角色、入口、声明摘要、实际状态及观察引用；未观察断言明确留 gap，草稿定位不含临时 ref。
+- tester 同一次录制执行 49 个探索动作：setup 1、snapshot 15、locator 生成 13、type 4、click 15、navigate 1；另有 1 次归属清理。Query 定位跨同角色重载后实际严格交互成功，合成新增数据重载后可查到。
+- viewer 使用独立角色范围与新 context，Add 确实隐藏但 permission 功能仍保留；错误角色清单被拒。预算压力分支配置为 2 动作，setup 与 snapshot 后的点击在 MCP 前拒绝；没有删除原六类范围，另外五类仍保存未探索缺口。预算耗尽后 browser_close 成功，finish 保留 `step-budget` 和 `partial`。
+- tester 的 partial 录制 checkpoint 被原工作流拒绝，原任务仍在 discover-record、已完成阶段为空，没有启动额外 MCP 或正式 runner。viewer 结束也不覆盖 tester 原始 partial。
+
+原始成功证据 `tests/scratch/ui-function-discovery/1792758448582/`，140 个文件引用逐一回读核对 SHA-256；包含 seed、配置、原生动作回执、逐功能草稿、历史清单及任务状态，不含认证、会话或 node_modules。已保存约 37KB 的[可迁移证据归档](ui-testing-evidence/optimization-u05-multifunction.tar.gz)，归档摘要登记在本轮 JSON；历史失败继续保留在本地 scratch，没有混入成功统计。
+
+本轮隔离 Electron **7 项通过**，证据 `tests/scratch/ui-workflow-visibility/1792758121280/`：技能可见、发现技能禁用/启用跨 reload 保持、快捷发现、MCP 87 工具连接及重连。已查看 `discovery-restored.png`，实际显示发现技能快捷项。本轮没有操作个人应用窗口或重载用户服务；桌面管理接入与控制多功能探索分列，不宣称已在桌面完成真实模型端到端探索。
+
+全量 typecheck、3 文件 **51 项单测**、lint 通过；协议结构检查通过，Git 历史版本启发式因无 tag 跳过。日志前缀 `tests/scratch/ui-optimization-u00/u05-multifunction-`。测试代码已格式化，提交前核对差异和体积预算；0 付费模型、0 正式 runner、0 真实业务请求。
+
+验收边界：A05-1/2/3/5/8/9 的上述工程路径已有证据，A05-4 仅本页严格交互与重载复用；A05-6/7 未全量完成。加载瞬态、带查询条件的分页、取消的写副作用独立核验、重复按钮/frame、部署/依赖变化以及完整候选的断言—脚本映射仍待补齐。两角色分别保留权限缺口，不把对方观察写成本角色已验证。U05、M1/M2 和整计划继续进行中；U00完整计量、U02私密桥接/证据隔离、U03/U07、U09及真实模型/OperationContract条件仍未放行，U08继续未启动。后续先补可独立验证的工程缺口，再按原前置关系推进，不用这次阶段成果关闭最终交付。

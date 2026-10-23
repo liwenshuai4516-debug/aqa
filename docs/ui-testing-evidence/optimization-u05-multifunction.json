@@ -1,0 +1,138 @@
+{
+	"date": "2026-10-23",
+	"status": "controlled-engineering-regression-passed",
+	"u05_status": "in-progress",
+	"runtime": {
+		"native": "0.1.2",
+		"sdk": "1.2.0",
+		"playwright_test": "1.62.1",
+		"node": "v23.10.0",
+		"desktop": "isolated macOS arm64 Electron"
+	},
+	"scope": {
+		"version": "u00-1",
+		"declaration": {
+			"path": "qa/ui/scopes/declaration/fixture.mjs",
+			"sha256": "f07cad393d22c4629c771ef7763de96b47d030b6730fbec222fd110da2b89cc5"
+		},
+		"budget": {
+			"actions": 60,
+			"milliseconds": 120000,
+			"completion": "All frozen assertions evidenced or explicitly blocked."
+		}
+	},
+	"checks": [
+		"first feature draft persists before exploring the remaining five features or writing a final script",
+		"each feature keeps stable IDs and source/state references; newer drafts preserve immutable earlier gaps",
+		"partial recording cannot advance the workflow to case design; no additional MCP action is dispatched",
+		"six frozen features retain state evidence or explicit gaps, same tester recording reuses Query across reload and uses only one setup/one navigation",
+		"viewer uses a distinct context/scope, wrong-role inventory is rejected, exhausted budget sends zero extra MCP actions while cleanup and partial handoff remain possible"
+	],
+	"model_calls": 0,
+	"formal_runner_calls": 0,
+	"business_requests": 0,
+	"tester": {
+		"session": {
+			"path": "qa/ui/recordings/tester/session.json",
+			"sha256": "a235f8b648e24cbb989b4ef21d116e8e2462df2f3a6aba8f3f444dd5e67b2af9"
+		},
+		"partial": {
+			"path": "qa/ui/recordings/tester/manifest.json",
+			"sha256": "e3b57a5752d564ec2d75419dab293d96a6e1541505705802c533f45d714a0bc6"
+		},
+		"inventory": {
+			"path": "qa/ui/inventories/inventory-65/manifest.json",
+			"sha256": "f1044f67f9f57803b5a62d72d3bfee324b1e748e10b813e9dc485f5b0bad2ea2"
+		},
+		"firstDraft": {
+			"path": "qa/ui/inventories/inventory-11/manifest.json",
+			"sha256": "7cd07b77c51c5f87b5d2e15a658ed0d5b8c11b64872f0eb9f0315fc26f58f1bb"
+		},
+		"actions": 49,
+		"counts": {
+			"generator_setup_page": 1,
+			"browser_snapshot": 15,
+			"browser_generate_locator": 13,
+			"browser_type": 4,
+			"browser_click": 15,
+			"browser_navigate": 1
+		}
+	},
+	"viewer": {
+		"partial": {
+			"path": "qa/ui/recordings/viewer/manifest.json",
+			"sha256": "8655021940ef73f0ae3132b09c1cb3caf77af2f4f3ce3a3f62edf93647a43ba8"
+		},
+		"inventory": {
+			"path": "qa/ui/inventories/inventory-77/manifest.json",
+			"sha256": "6d09ce1fe4a8222e026b91967604b846b3893aef75005823e6c00da7b7833846"
+		},
+		"actions": 3
+	},
+	"partial_checkpoint": {
+		"schema_version": "1.0",
+		"capability_id": "ui-test-workflow",
+		"capability_version": "0.1.0",
+		"status": "blocked",
+		"artifact_refs": [],
+		"errors": [
+			{
+				"category": "precondition",
+				"message": "录制未完整登记，保存缺口后阻塞，不直接进入生成",
+				"recoverable": false
+			}
+		]
+	},
+	"budget_rejection": {
+		"schema_version": "1.0",
+		"capability_id": "ui-discover-record",
+		"capability_version": "0.1.0",
+		"status": "blocked",
+		"artifact_refs": [],
+		"errors": [
+			{
+				"category": "precondition",
+				"message": "录制已停止：step-budget",
+				"recoverable": false
+			}
+		]
+	},
+	"desktop": {
+		"checks_passed": 7,
+		"evidence": "tests/scratch/ui-workflow-visibility/1792758121280",
+		"personal_application_reloaded": false
+	},
+	"validation": {
+		"typecheck": "passed",
+		"unit_tests_passed": 51,
+		"unit_files": 3,
+		"lint": "passed",
+		"protocol_structure": "passed",
+		"protocol_history": "skipped: no git tag"
+	},
+	"remaining": [
+		"Loading transition not observed by sequential MCP snapshots",
+		"Paging with active query not observed",
+		"Cancellation write side effects not independently inspected",
+		"Complete script/case/assertion mapping and independent design review not performed",
+		"Repeated buttons/frame and deployment/dependency changes not exercised",
+		"Real model adherence and OperationContract acceptance remain blocked by original prerequisites"
+	],
+	"evidence": {
+		"directory": "tests/scratch/ui-function-discovery/1792758448582",
+		"result_sha256": "e0cfe60c331615dd8e860bdbccda4e33fd596470792715beb185227e43aae3b4",
+		"archive": "docs/ui-testing-evidence/optimization-u05-multifunction.tar.gz",
+		"archive_sha256": "7e6fea314987658c09deb4f2da3defedef1b22ba476cd41bcc90221a9df9f263",
+		"archive_bytes": 36946,
+		"verified_references": 140,
+		"location": "Version-controlled archive and summary; original scratch and historical failures retained locally"
+	},
+	"prior_failures_retained": [
+		"tests/scratch/ui-function-discovery/1792756553743/result.json",
+		"tests/scratch/ui-optimization-u00/u05-multifunction-01.log",
+		"tests/scratch/ui-optimization-u00/u05-multifunction-02.log",
+		"tests/scratch/ui-optimization-u00/u05-multifunction-03.log",
+		"tests/scratch/ui-optimization-u00/u05-multifunction-05.log"
+	],
+	"doctor": "Global skill doctor still pins 0.1.0 and reports version mismatch; actual project 0.1.2 validated through SDK/MCP and Electron, no downgrade or personal skill changes"
+}
