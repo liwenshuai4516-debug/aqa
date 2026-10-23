@@ -79,6 +79,105 @@ function fixture() {
 		event: () => listener({ phase: "end", cwd, testRun: { engine: "api", reference: "r" } }),
 	};
 }
+it("queries pending native results without writing, then reconciles concurrent sync receipts", async () => {
+	const f = fixture();
+	await f.a.idle();
+	await f.bind();
+	const before = JSON.stringify({ store: f.store(), runs: f.runs() });
+	const query = () => f.a.call(f.cwd, { action: "sync-status", engine: "api", runRef: "r" });
+	expect(await query()).toMatchObject({
+		status: "pending",
+		runId: "r",
+		runRef: "r",
+		counts: { pending: 1, unmatched: 0 },
+		complete: false,
+	});
+	expect(JSON.stringify({ store: f.store(), runs: f.runs() })).toBe(before);
+	const [a, b] = await Promise.all([f.a.sync(f.cwd, "api", "r"), f.a.sync(f.cwd, "api", "r")]);
+	expect(a.counts).toMatchObject({ new: 1, existing: 0 });
+	expect(b.counts).toMatchObject({ new: 0, existing: 1 });
+	expect(await query()).toMatchObject({
+		status: "synced",
+		complete: true,
+		counts: { existing: 1, pending: 0 },
+		items: [{ caseId: "c", nativeCaseId: "native", envId: "e", projectId: "s", featureId: "f", verdict: "通过" }],
+	});
+	expect(f.runs().runs).toHaveLength(1);
+	f.a.dispose();
+});
+it("reports unbound native cases and stale associations without treating zero imports as complete", async () => {
+	const f = fixture();
+	await f.a.idle();
+	expect(await f.a.sync(f.cwd, "api", "r")).toMatchObject({
+		imported: 0,
+		complete: false,
+		counts: { unmatched: 1 },
+		runId: "r",
+	});
+	await f.bind();
+	f.store().cases[0].title = "changed";
+	expect(await f.a.sync(f.cwd, "api", "r")).toMatchObject({
+		complete: false,
+		counts: { stale: 1 },
+		items: [{ status: "stale" }],
+	});
+	expect(f.runs().runs).toHaveLength(0);
+	f.a.dispose();
+});
+it("isolates one invalid environment while synchronizing an independent association", async () => {
+	const f = fixture();
+	await f.a.idle();
+	await f.bind();
+	f.store().cases.push({
+		...f.store().cases[0],
+		id: "other",
+		automation: { ...f.store().cases[0].automation, envId: "missing" },
+	});
+	const result = await f.a.sync(f.cwd, "api", "r");
+	expect(result).toMatchObject({ ok: false, imported: 1, complete: false, counts: { new: 1, failed: 1 } });
+	expect(f.runs().runs).toHaveLength(1);
+	const originalId = f.runs().runs[0].id;
+	f.store().envs.push({ ...f.store().envs[0], id: "missing" });
+	const repaired = await f.a.sync(f.cwd, "api", "r");
+	expect(repaired).toMatchObject({ complete: true, runId: "r", counts: { new: 1, existing: 1, failed: 0 } });
+	expect(f.runs().runs).toHaveLength(2);
+	expect(f.runs().runs[0].id).toBe(originalId);
+	f.a.dispose();
+});
+it("keeps full unmatched counts when native receipt items are truncated", async () => {
+	const f = fixture();
+	await f.a.idle();
+	f.native.rows = Array.from({ length: 105 }, (_, i) => ({
+		caseId: `N${i}`,
+		status: "skipped",
+		evidenceComplete: false,
+	}));
+	const receipt = await f.a.call(f.cwd, { action: "sync-status", engine: "api", runRef: "r" });
+	expect(receipt).toMatchObject({
+		complete: false,
+		imported: 0,
+		total: 105,
+		nativeCaseCount: 105,
+		counts: { unmatched: 105 },
+		itemsTruncated: true,
+	});
+	expect(receipt.items).toHaveLength(100);
+	expect(f.runs().runs).toHaveLength(0);
+	f.a.dispose();
+});
+
+it("allows sync-status through read-only guards but keeps sync a write", () => {
+	expect(extensionToolEffect("data_space_automation", { action: "sync-status" })).toBe("query");
+	expect(
+		extensionToolDenial(
+			"data_space_automation",
+			{ action: "sync-status" },
+			{ planMode: true, delegateMode: true, goalReview: true, permission: "read-only", uiDisabled: false },
+		),
+	).toBeUndefined();
+	expect(extensionToolEffect("data_space_automation", { action: "sync" })).toBe("asset-write");
+});
+
 describe("native Data Space associations", () => {
 	it("deduplicates concurrent manual/event sync and recovers missed notifications after restart", async () => {
 		const f = fixture();
@@ -187,6 +286,7 @@ it("host plugin invocation independently enforces plan/delegate/goal and disable
 		conv.delegateMode = mode === "delegate";
 		review = mode === "goal";
 		await defs[0].execute("q", { action: "get" });
+		await defs[1].execute("status", { action: "sync-status" });
 		const before = calls;
 		await expect(defs[1].execute("w", { action: "sync" })).rejects.toThrow("blocked");
 		expect(calls).toBe(before);

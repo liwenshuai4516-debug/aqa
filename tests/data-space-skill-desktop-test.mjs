@@ -275,6 +275,18 @@ try {
 		"desktop channel recovery",
 		60000,
 	);
+	const beforeSyncQuery = await readFile(join(dataDir, "data-space/runs.json"), "utf8");
+	const syncReceipt = await request("/automation", {
+		action: "sync-status",
+		engine: "ui",
+		runRef: executed.run_ref,
+		workspace,
+	});
+	assert.equal(syncReceipt.complete, true);
+	assert.equal(syncReceipt.counts.existing, 1);
+	assert.equal(syncReceipt.items[0].projectId, "desktop-project");
+	assert.equal(syncReceipt.items[0].verdict, "通过");
+	assert.equal(await readFile(join(dataDir, "data-space/runs.json"), "utf8"), beforeSyncQuery);
 	const recoveredReceipt = await request("/automation", { ...archiveInput, action: "archive-status" });
 	assert.equal(recoveredReceipt.classificationComplete, true);
 	assert.equal(recoveredReceipt.counts.existing, 1);

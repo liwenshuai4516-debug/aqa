@@ -91,4 +91,4 @@
 
 ## 契约维护
 
-参数与限制以当前工具 schema 为准。维护本约定时核对 `plugins/data-space/tools.mjs`（查询／普通登记）、`automation.mjs`（绑定／同步／幂等）、`runs.mjs`（状态／过期）、`server/test-asset-reader.ts`（原生证据核验），不复制它们的存储 schema 或执行规则。现有查询主要返回文本，未提供通用结构化历史明细查询；本约定不能补出接口未返回的字段，也不保证任意 Agent 输出已通过程序校验。
+参数与限制以当前工具 schema 为准。维护本约定时核对 `plugins/data-space/tools.mjs`（查询／普通登记）、`automation.mjs`（绑定／同步／幂等）、`runs.mjs`（状态／过期）、`server/test-asset-reader.ts`（原生证据核验），不复制它们的存储 schema 或执行规则。用 `sync-status` 查询单个原生 run 的当前归档对账，`archive-status` 查询资产用例入库；两者均只读，不替代原生证据检查。`sync-status` 的 `complete` 是同步完整性，不能填入 `evidenceComplete`。回执按用例关联计数，不能直接填入按用例/实例计数的 summary。其余查询主要返回文本，未提供通用结构化历史明细查询；本约定不能补出接口未返回的字段，也不保证任意 Agent 输出已通过程序校验。

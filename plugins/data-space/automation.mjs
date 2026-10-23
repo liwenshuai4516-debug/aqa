@@ -62,40 +62,70 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 		serial = next.catch(() => {});
 		return next;
 	}
-	async function syncNative(cwd, engine, reference) {
+	async function syncNative(cwd, engine, reference, queryOnly = false) {
 		const workspace = realpathSync(cwd);
-		let native;
-		if (channel.list().some((c) => c.workspace === workspace && c.engine === engine)) {
-			native = await host.testing.read(engine, workspace, reference);
-			if (disposed) throw new Error("数据空间已停用");
-		}
-		const candidates = store().cases.filter(
-			(c) => c.automation?.engine === engine && c.automation.workspace === workspace,
-		);
-		if (!candidates.length) return { ok: true, imported: 0, duplicate: 0, unmatched: true };
-		native ??= await host.testing.read(engine, workspace, reference);
+		const native = await host.testing.read(engine, workspace, reference);
 		if (disposed) throw new Error("数据空间已停用");
+		const candidates = store().cases.filter(
+			(c) =>
+				c.automation?.engine === engine &&
+				c.automation.workspace === workspace &&
+				same(c.automation.assetRef, native.assetRef),
+		);
 		const pending = [],
 			errors = [];
+		const items = [],
+			matched = new Set();
 		let duplicate = 0;
 		for (const c of candidates) {
-			if (!same(c, find(c.id))) {
-				errors.push(`${c.code || c.id}: 同步期间用例或关联已改变，请重试`);
-				continue;
-			}
 			const b = c.automation;
-			if (!same(b.assetRef, native.assetRef)) continue;
-			if (b.caseVersion !== caseFingerprint(c)) {
-				errors.push(`${c.code || c.id}: 用例已修改，须重新关联资产版本`);
+			const rows = native.rows.filter((r) => r.caseId === b.nativeCaseId);
+			if (!rows.length) continue; // Subset runs do not create outcomes for other cases.
+			matched.add(b.nativeCaseId);
+			const item = {
+				caseId: c.id,
+				nativeCaseId: b.nativeCaseId,
+				featureId: c.featureId,
+				assetRevision: b.revision,
+				caseVersion: b.caseVersion,
+				envId: b.envId,
+				projectId: null,
+				status: "pending",
+				verdict: null,
+				resultId: null,
+				reason: null,
+			};
+			items.push(item);
+			if (!same(c, find(c.id))) {
+				item.status = "stale";
+				item.reason = "同步期间用例或关联已改变，请重试";
+				errors.push(`${c.code || c.id}: ${item.reason}`);
 				continue;
 			}
-			const env = environment(c, b.envId);
-			if (url(env.baseUrl) !== url(native.environment.baseUrl) || b.nativeEnvironmentId !== native.environment.id)
-				throw new Error("原生批次环境与关联环境不同");
-			const rows = native.rows.filter((r) => r.caseId === b.nativeCaseId);
-			if (!rows.length) continue; // A subset rerun must not manufacture outcomes for unselected cases.
+			if (b.caseVersion !== caseFingerprint(c)) {
+				item.status = "stale";
+				item.reason = "用例已修改，须重新关联资产版本";
+				errors.push(`${c.code || c.id}: ${item.reason}`);
+				continue;
+			}
+			let env;
+			try {
+				env = environment(c, b.envId);
+				item.projectId = env.systemId;
+				if (url(env.baseUrl) !== url(native.environment.baseUrl) || b.nativeEnvironmentId !== native.environment.id)
+					throw new Error("原生批次环境与关联环境不同");
+			} catch (error) {
+				item.status = "failed";
+				item.reason = error.message;
+				errors.push(`${c.code || c.id}: ${item.reason}`);
+				continue;
+			}
 			const key = JSON.stringify([engine, workspace, native.runId, c.id]);
-			if (runs().runs.some((r) => r.automation?.key === key)) {
+			const existing = runs().runs.find((r) => r.automation?.key === key);
+			if (existing) {
+				item.status = "existing";
+				item.resultId = existing.id;
+				item.verdict = existing.verdict;
 				duplicate++;
 				continue;
 			}
@@ -104,8 +134,12 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 				["failed", "unknown", "cancelled", "not-run", "blocked", "skipped", "flaky", "passed"].find((s) =>
 					states.includes(s),
 				) ?? "unknown";
+			item.verdict = normalizeVerdict(status);
+			if (queryOnly) continue;
+			item.status = "new";
+			item.resultId = randomUUID();
 			pending.push({
-				id: randomUUID(),
+				id: item.resultId,
 				caseId: c.id,
 				code: c.code,
 				verdict: normalizeVerdict(status),
@@ -135,10 +169,41 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 				},
 			});
 		}
+		for (const nativeCaseId of new Set(native.rows.map((r) => r.caseId))) {
+			if (!matched.has(nativeCaseId))
+				items.push({ nativeCaseId, caseId: null, status: "unmatched", reason: "本批次用例没有当前工作区内的资产绑定" });
+		}
 		if (pending.length) commitRuns({ ...runs(), revision: runs().revision + 1, runs: [...runs().runs, ...pending] });
-		syncError = errors.join("；");
-		return { ok: !errors.length, imported: pending.length, duplicate, errors };
+		if (!queryOnly) syncError = errors.join("；");
+		const counts = { new: 0, existing: 0, pending: 0, unmatched: 0, stale: 0, failed: 0 };
+		for (const item of items) counts[item.status]++;
+		const complete = items.length > 0 && counts.new + counts.existing === items.length;
+		return {
+			ok: !errors.length,
+			status: complete ? "synced" : errors.length ? "partial" : counts.pending ? "pending" : "unmatched",
+			complete,
+			imported: pending.length,
+			duplicate,
+			errors: errors.slice(0, 100),
+			errorCount: errors.length,
+			errorsTruncated: errors.length > 100,
+			unmatched: counts.unmatched > 0,
+			workspace,
+			engine,
+			assetRef: native.assetRef,
+			runRef: reference,
+			runId: native.runId,
+			parentRunId: native.parentRunId ?? null,
+			nativeEnvironment: native.environment,
+			unit: "case-association",
+			total: items.length,
+			nativeCaseCount: new Set(native.rows.map((r) => r.caseId)).size,
+			counts,
+			items: items.slice(0, 100),
+			itemsTruncated: items.length > 100,
+		};
 	}
+
 	async function call(cwd, input) {
 		if (disposed) throw new Error("数据空间已停用");
 		if (input.action === "initialize") return channel.initialize(cwd, input);
@@ -157,6 +222,7 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 		}
 		if (input.action === "bind") return bind(cwd, input);
 		if (input.action === "sync") return sync(cwd, input.engine, input.runRef);
+		if (input.action === "sync-status") return syncNative(cwd, input.engine, input.runRef, true);
 		if (input.action === "inspect") {
 			const asset = await host.testing.inspect(input.engine, cwd, input.assetRef);
 			// Keep the public picker payload compact; detailed cases are for host-side intake.

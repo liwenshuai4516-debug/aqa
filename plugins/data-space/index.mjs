@@ -582,7 +582,7 @@ export default {
 						"Import stores draft cases only: no automation binding, execution or result. Native generation and execution events no longer archive assets on their own.",
 						"Use featureMappings for multiple native features. Query archive-status to check intake and classification separately; never relocate historical cases on retry.",
 						"Use route to obtain the original execution entry. Never replace native approval or preflight.",
-						"Use sync for an existing run after a synchronization error; do not replay execution.",
+						"Query sync-status by runRef before retrying sync; pending, unmatched and stale items are not complete. Retry synchronization without replaying execution.",
 					],
 					parameters: {
 						type: "object",
@@ -599,6 +599,7 @@ export default {
 									"unbind",
 									"route",
 									"sync",
+									"sync-status",
 								],
 							},
 							systemId: { type: "string" },
