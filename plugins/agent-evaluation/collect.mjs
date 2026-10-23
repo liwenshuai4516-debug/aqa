@@ -54,10 +54,19 @@ export class EvidenceCollector {
 		this.closed = false;
 	}
 	/** @param {any} context
-	 * @param {{attemptRef: any, conversationId: string, requestId: string, nativeRefs?: Array<{engine: string, reference: unknown}>, liveEvents?: any[], liveTruncated?: boolean, signal?: AbortSignal}} options */
+	 * @param {{attemptRef: any, conversationId: string, requestId: string, nativeRefs?: Array<{engine: string, reference: unknown}>, artifactPaths?: string[], liveEvents?: any[], liveTruncated?: boolean, signal?: AbortSignal}} options */
 	async collect(
 		context,
-		{ attemptRef, conversationId, requestId, nativeRefs = [], liveEvents = [], liveTruncated = false, signal },
+		{
+			attemptRef,
+			conversationId,
+			requestId,
+			nativeRefs = [],
+			artifactPaths = [],
+			liveEvents = [],
+			liveTruncated = false,
+			signal,
+		},
 	) {
 		requireValue(!this.closed, "CAPABILITY_UNAVAILABLE", "Collector is stopped");
 		signal?.throwIfAborted();
@@ -76,9 +85,16 @@ export class EvidenceCollector {
 		);
 		requireValue(Array.isArray(nativeRefs) && nativeRefs.length <= 20, "LIMIT_EXCEEDED", "Too many native references");
 		requireValue(liveEvents.length <= 1000, "LIMIT_EXCEEDED", "Too many live observations");
+		requireValue(
+			Array.isArray(artifactPaths) &&
+				artifactPaths.length <= 20 &&
+				new Set(artifactPaths).size === artifactPaths.length,
+			"INVALID_INPUT",
+			"Select at most 20 distinct artifact paths",
+		);
 		const existing = recordsOf(store, context, "evidence");
 		const checkpointSource = `collection:${attempt.id}`;
-		const requestDigest = digest({ attemptRef, conversationId, nativeRefs, liveEvents, liveTruncated });
+		const requestDigest = digest({ attemptRef, conversationId, nativeRefs, artifactPaths, liveEvents, liveTruncated });
 		const prior = existing.find((r) => r.data.sourceId === checkpointSource && r.data.sourceEventId === requestId);
 		if (prior) {
 			const body = readEvidenceJson(store, context, refOf(prior));
@@ -224,6 +240,32 @@ export class EvidenceCollector {
 				);
 			}
 		}
+		for (const path of artifactPaths) {
+			signal?.throwIfAborted();
+			const artifact = this.host.readEvaluationArtifact(context.clientId, {
+				conversationId,
+				sessionId: contract.data.scope.sessionId,
+				path,
+			});
+			const { observedAt, ...bytes } = artifact;
+			remember({
+				attemptRef,
+				sourceId: `artifact:${contract.data.scope.sessionId}`,
+				sourceEventId: digest(path),
+				sourceLocator: path,
+				sourceRevision: digest(bytes),
+				producer: "artifact-reader-v1",
+				availability: artifact.truncated || artifact.redaction.length ? "partial" : "available",
+				origin: "harness-observed",
+				kind: "artifact-snapshot",
+				observedAt,
+				content: JSON.stringify(artifact),
+				redaction: artifact.redaction,
+				// The metadata envelope is complete; byte truncation stays explicit inside it.
+				truncated: false,
+			});
+			gaps.push(`additional-artifact-read-at-observation-time:${path}`);
+		}
 		for (const native of nativeRefs) {
 			signal?.throwIfAborted();
 			const run = await this.host.readEvaluationNative(context.clientId, {
@@ -253,7 +295,7 @@ export class EvidenceCollector {
 			gaps.push(`additional-read-at-observation-time:${run.runId}`);
 		}
 		// Only metadata for tool calls present in the authorized SDK selection is admitted.
-		// These are wall-clock host measurements, not a reconstructed monotonic timeline.
+		// New sources carry a process-local monotonic clock; older durations remain wall-clock observations.
 		for (const event of liveEvents) {
 			const selected = selectedCalls.get(`${event.conversationId}:${event.toolCallId}`);
 			if (!selected || !["tool_start", "tool_end"].includes(event.type)) continue;
@@ -263,7 +305,12 @@ export class EvidenceCollector {
 				at: Number.isFinite(event.at) ? event.at : null,
 				durationMs: Number.isFinite(event.durationMs) && event.durationMs >= 0 ? event.durationMs : null,
 				isError: typeof event.isError === "boolean" ? event.isError : null,
-				clock: "host-wall-clock; clock-adjustment uncertainty",
+				clockEpoch: typeof event.clockEpoch === "string" ? event.clockEpoch : null,
+				monotonicAt: Number.isFinite(event.monotonicAt) && event.monotonicAt >= 0 ? event.monotonicAt : null,
+				clock:
+					typeof event.clockEpoch === "string" && Number.isFinite(event.monotonicAt)
+						? "host-monotonic; process-local"
+						: "host-wall-clock; clock-adjustment uncertainty",
 			};
 			remember({
 				attemptRef: selected.attemptRef,
@@ -293,7 +340,11 @@ export class EvidenceCollector {
 			);
 			if (!admitted) continue;
 			if (!evidence.some((e) => e.id === r.id)) evidence.push(refOf(r));
-			gaps.push("live-observation-is-partial; host-wall-clock-uncertainty");
+			gaps.push(
+				value.clockEpoch && value.monotonicAt !== null
+					? "live-observation-is-partial"
+					: "live-observation-is-partial; host-wall-clock-uncertainty",
+			);
 			if (
 				existing.some(
 					(other) =>
@@ -453,6 +504,8 @@ export class EvidenceCollector {
 						toolCallId: event.toolCallId,
 						at: event.at,
 						durationMs: event.durationMs,
+						clockEpoch: event.clockEpoch,
+						monotonicAt: event.monotonicAt,
 						isError: event.isError,
 					});
 				}

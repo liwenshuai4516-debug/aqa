@@ -209,6 +209,7 @@ export interface PluginHost {
 	getActiveConversation(options?: { clientId?: string; fallback?: "latest-non-subagent" }): unknown;
 	/** Selected evidence only; identity must come from the trusted sender/tool context. */
 	readEvaluationEvidence(clientId: string, query: unknown): unknown;
+	readEvaluationArtifact(clientId: string, query: unknown): unknown;
 	readEvaluationNative(clientId: string, query: unknown): Promise<unknown>;
 	onConversationChanged(handler: () => void): () => void;
 	/** 订阅模型切换成功（回调带 clientId / conversationId / model / isSubagent… 的快照）。 */

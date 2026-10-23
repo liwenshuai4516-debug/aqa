@@ -1,12 +1,15 @@
 /** Offline bridge check against a completed data-space-native-test fixture. No runner/model API. */
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFileSync, writeFileSync, mkdtempSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdtempSync, existsSync, realpathSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { TestAssetReader } from "../server/test-asset-reader.ts";
 import { EvaluationStore } from "../plugins/agent-evaluation/store.mjs";
 import { EvidenceCollector, recordsOf, readEvidenceJson } from "../plugins/agent-evaluation/collect.mjs";
+import { readEvaluationEvidence } from "../server/agent/evaluation-evidence.ts";
+import { EvaluationEngine } from "../plugins/agent-evaluation/evaluate.mjs";
+import { createInternalRegistry } from "../plugins/agent-evaluation/profiles/internal.mjs";
 import { digest } from "../plugins/agent-evaluation/schema.mjs";
 
 const input = process.argv[2];
@@ -21,6 +24,8 @@ const reader = new TestAssetReader(join(fixture, "data"));
 const output = mkdtempSync(join(tmpdir(), "agent-evaluation-native-"));
 const ref = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
 const results = [];
+const tracePath = join(fixture, "evaluation-trace.json");
+const trace = existsSync(tracePath) ? JSON.parse(readFileSync(tracePath, "utf8")) : null;
 for (const item of ledger.store.cases) {
 	const { engine, workspace } = item.automation;
 	const context = { clientId: "offline-native-fixture" };
@@ -30,24 +35,44 @@ for (const item of ledger.store.cases) {
 		dataDir: join(output, engine),
 		authorize: (c) => (c === context ? { domain, sessionIds: [sessionId], allowWrite: true } : undefined),
 	});
+	const entries =
+		engine === "api" && trace && realpathSync(trace.workspace) === realpathSync(workspace) ? trace.entries : [];
+	if (engine === "api" && trace) assert.ok(entries.length, "Actual API call trace must be selected");
+	const source = {
+		...domain,
+		workspace,
+		conversationId: sessionId,
+		sessionId,
+		persisted: true,
+		isStreaming: false,
+		leafId: entries.at(-1)?.id,
+		children: [],
+		getEntry: (id) => entries.find((e) => e.id === id),
+	};
 	let reads = 0;
 	const collector = new EvidenceCollector(store, {
-		readEvaluationEvidence: () => ({
-			...domain,
-			sessionId,
-			sourceId: `fixture:${sessionId}`,
-			observedAt: new Date().toISOString(),
-			items: [],
-			children: [],
-			gaps: ["offline-native-fixture; no historical agent trajectory"],
-			nextCursor: null,
-		}),
+		readEvaluationEvidence: (_client, query) =>
+			entries.length
+				? readEvaluationEvidence(source, query)
+				: {
+						...domain,
+						sessionId,
+						sourceId: `fixture:${sessionId}`,
+						observedAt: new Date().toISOString(),
+						items: [],
+						children: [],
+						gaps: ["offline-native-fixture; no historical agent trajectory"],
+						nextCursor: null,
+					},
 		readEvaluationNative: (_client, request) => {
 			reads++;
 			return reader.read(request.engine, workspace, request.reference);
 		},
 	});
 	try {
+		const refs = await reader.list(engine, workspace);
+		assert.ok(refs.length > 0);
+		const expected = await Promise.all(refs.map((reference) => reader.read(engine, workspace, reference)));
 		const contract = store.write(context, {
 			kind: "contracts",
 			requestId: "contract",
@@ -55,14 +80,22 @@ for (const item of ledger.store.cases) {
 				scope: {
 					source: "pi",
 					sessionId,
-					startMessageId: "fixture",
-					endMessageId: "fixture",
+					startMessageId: entries[0]?.id ?? "fixture",
+					endMessageId: entries.at(-1)?.id ?? "fixture",
 					boundaryPrecision: "exact",
 					childPolicy: "exclude",
 					childSessionIds: [],
 				},
 				objective: "Read existing synthetic native runs without execution",
-				conditions: [],
+				conditions: expected.map((r, i) => ({
+					id: `native-${i}`,
+					statement: `Native ${r.runId} assertions`,
+					sourceType: "user",
+					sourceRef: "fixture:requirements",
+					required: true,
+					applicableWhen: "always",
+					ruleRef: "F02@1",
+				})),
 				constraints: [],
 				environmentRefs: [],
 				provenance: "explicit offline integration fixture",
@@ -93,9 +126,6 @@ for (const item of ledger.store.cases) {
 				state: "unknown",
 			},
 		});
-		const refs = await reader.list(engine, workspace);
-		assert.ok(refs.length > 0);
-		const expected = await Promise.all(refs.map((reference) => reader.read(engine, workspace, reference)));
 		const args = {
 			attemptRef: ref(attempt),
 			conversationId: sessionId,
@@ -125,6 +155,39 @@ for (const item of ledger.store.cases) {
 			);
 			assert.deepEqual(store.get(context, ref(sealed)), sealed);
 		}
+		const beforeScore = reads;
+		const scoring = new EvaluationEngine(
+			store,
+			createInternalRegistry({
+				F02: { checks: expected.map((r, i) => ({ conditionId: `native-${i}`, runId: r.runId })) },
+			}),
+		);
+		const scores = [];
+		try {
+			const scoreArgs = { snapshotRef: ref(sealed), profileId: "internal", profileVersion: "1", requestId: "score" };
+			const report = await scoring.evaluate(context, scoreArgs);
+			assert.equal(report.data.summary.counts.errors, 0);
+			for (const [i, native] of expected.entries()) {
+				const finding = report.data.findings.find((f) => f.conditionId === `native-${i}`);
+				const verdict =
+					entries.length &&
+					native.complete &&
+					native.rows.every((r) => r.evidenceComplete && ["passed", "failed"].includes(r.status))
+						? native.rows.some((r) => r.status === "failed")
+							? "fail"
+							: "pass"
+						: "inconclusive";
+				assert.equal(finding.verdict, verdict, `${native.runId}: ${finding.reason}`);
+				scores.push({ runId: native.runId, expected: verdict, actual: finding.verdict });
+			}
+			const again = await scoring.evaluate(context, { ...scoreArgs, requestId: "rescore" });
+			assert.deepEqual(again.data.findings, report.data.findings);
+			assert.equal(reads, beforeScore, "Re-evaluation must not read or execute native runs");
+			assert.deepEqual(store.get(context, ref(report)), report);
+		} finally {
+			scoring.close();
+		}
+
 		results.push({
 			engine,
 			workspace,
@@ -138,6 +201,8 @@ for (const item of ledger.store.cases) {
 			})),
 			nativeReads: reads,
 			idempotentReplayReads: 0,
+			reEvaluationReads: 0,
+			scores,
 		});
 	} finally {
 		collector.close();

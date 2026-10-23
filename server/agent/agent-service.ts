@@ -769,6 +769,8 @@ export interface TakeoverPayload {
 import { processTreeKillPlan, resolveCwdTarget } from "../process-utils.js";
 export { processTreeKillPlan, resolveCwdTarget };
 
+const EVALUATION_CLOCK_EPOCH = randomUUID();
+
 export class ClientSession {
 	static mcpBridge: McpBridge | null = null;
 	readonly clientId: string;
@@ -3969,10 +3971,19 @@ export class ClientSession {
 
 	/** 发一条运行轨迹事件给插件（host.onRunEvent 订阅者，如轨迹视图插件）。
 	 *  异常隔离——序列化/插件坏了只记日志，绝不影响主流程。 */
-	private emitRun(conv: Conversation, ev: Omit<PluginRunEvent, "conversationId" | "at">): void {
+	private emitRun(
+		conv: Conversation,
+		ev: Omit<PluginRunEvent, "conversationId" | "at" | "clockEpoch" | "monotonicAt">,
+	): void {
 		if (!this.onRunEvent) return;
 		try {
-			this.onRunEvent({ ...ev, conversationId: conv.id, at: Date.now() });
+			this.onRunEvent({
+				...ev,
+				conversationId: conv.id,
+				at: Date.now(),
+				clockEpoch: EVALUATION_CLOCK_EPOCH,
+				monotonicAt: performance.now(),
+			});
 		} catch (err) {
 			console.error("[agent-service] onRunEvent failed:", err);
 		}

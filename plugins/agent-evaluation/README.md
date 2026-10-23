@@ -37,13 +37,13 @@ contract/target/attempt 可按 previousRef 新增 revision，陈旧 revision 拒
 
 宿主 `readEvaluationEvidence(clientId, query)` 只能由可信 sender/tool context 给出 clientId；拒绝未知客户端/会话，无全局快照回退。固定 SDK entry ID 选区，不打开调用方任意路径。`describe` 只给当前分支最近窗口及明确缺口，`collect` 在完整验证边界后分页，单次上限 1,000 条/8MiB/2秒；超大单项标不可用，不用预览冒充正文。隐藏思考、签名、图片和私有内容不采集。
 
-`EvidenceCollector.collect` 的 `liveEvents` 仅由可信宿主 watch 注入，产品入口不得透传请求体里的事件。事件只接纳已选 SDK 工具调用的元数据，不保存实时参数/结果预览；sourceEventId 与 sourceRevision 去重，冲突双方保留。duration 来自宿主 Date.now 墙钟差，明确时钟不确定性，负值/缺失为 null；不推算思考时长、不补造单调计时。实时观察没有历史回填保证，中途启用缺少开始事件会标 gap。显式子任务按独立 attempt 关联，可读取嵌套 subagent；普通派生会话不自动纳入。
+`EvidenceCollector.collect` 的 `liveEvents` 仅由可信宿主 watch 注入，产品入口不得透传请求体里的事件。事件只接纳已选 SDK 工具调用的元数据，不保存实时参数/结果预览；sourceEventId 与 sourceRevision 去重，冲突双方保留。旧 duration 保留墙钟来源和不确定性；新宿主事件额外记录进程 clockEpoch 与 performance.now 单调时刻，F08 只在同 epoch 配对计时，负值/缺失为未知；不推算思考时长、不补造单调计时。实时观察没有历史回填保证，中途启用缺少开始事件会标 gap。显式子任务按独立 attempt 关联，可读取嵌套 subagent；普通派生会话不自动纳入。
 
 证据落盘后才发布 checkpoint，失败重试复用已持久记录；seal 只接受 durable checkpoint。watch 仅显式开启、队列最多 1,000，故障回调与业务隔离，停止/取消后的迟到回调不发布结果。`readEvaluationNative` 从已授权会话取得真实工作区，复用 TestAssetReader，保留原 run 时间/哈希与读时点；不执行测试，不因此证明原 run 属于本次任务。该判断由 EC03 的快照规则完成。
 
 工程结果与源覆盖见 [EC02](../../docs/agent-evaluation-evidence/EC02.md)。
 
-## EC03 评分基础（阶段实现）
+## EC03 评分与基础规则
 
 `registry.mjs` 仅注册可信发布代码中的 adapter/evaluator/profile，版本精确引用，批量注册原子校验重复、依赖环、任务类型和配置。配置 schema 支持明确的有界 JSON Schema 子集；拒绝外部引用和未知关键字，不执行上传代码。profile 的 `required` 表示必须成功处理的评分器；不把它当作额外业务验收条件，缺失只使交付待核验。
 
@@ -51,4 +51,20 @@ contract/target/attempt 可按 previousRef 新增 revision，陈旧 revision 拒
 
 同进程可信 JavaScript 不是恶意代码沙箱：异步超时可中止等待，同步代码不能被计时器抢占；同步迟到结果会被拒绝，不能宣称 CPU 硬隔离。`aggregate.mjs` 分别计算目标、约束和交付门禁，保留已知失败与未知，建议项不成为硬性目标条件。报告附判定覆盖率和确定项通过率，零分母为 null。schemaVersion 1 仅增加可选字段，旧报告仍可读取。
 
-本版本没有默认七条规则或可安装产品入口，完整 EC03 验收仍未完成。进展与待办见 [EC03](../../docs/agent-evaluation-evidence/EC03.md)。
+`profiles/internal.mjs` 注册 F01/F02/F04/F05/F06/F07/F08 的固定 v1 规则。`internalProfile(configs, {id, version})` 显式冻结每条规则配置；checks 默认为空，不能从 Agent 输出自动创造用户要求。新增纯规则只需实现 manifest/evaluate、注册并测试，无须修改评分引擎。
+
+| 规则 | 配置与证据                                                                                | 判断边界                                                                                                         |
+| ---- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| F01  | `checks[{conditionId,path,format?,sha256?,jsonSchema?}]`；artifact-snapshot               | 存在/格式/明确 schema/摘要，不等于语义正确；不完整正文不能验证格式或摘要                                         |
+| F02  | `checks[{conditionId,runId,caseIds?}]`；原生 run + 同 attempt 宿主派生执行引用            | 旧批次、查询、取消、SKIP 或缺关联均不能冒充本轮通过                                                              |
+| F04  | `checks[{conditionId,prerequisiteToolCallId,dependentToolCallId}]`                        | 仅核必要依赖；失败后停止可通过，独立诊断不受阻；成功先后用 SDK parent 链                                         |
+| F05  | `checks[{conditionId,claimEvidenceId,claimPath,basisEvidenceId,basisPath,expectedValue}]` | 仅结构化 boolean 声明与独立事实比较；自由文本留人工；路径使用 JSON Pointer                                       |
+| F06  | `{}`                                                                                      | 去重调用状态分布，不将工具失败自动归咎 Agent                                                                     |
+| F07  | `{pollingToolNames,repairToolNames}`                                                      | 重复候选；已知轮询/成功修复边界排除，不硬扣分，未知意图待人审                                                    |
+| F08  | `{prices,childWaitToolNames,checks}`                                                      | 同 epoch 区间并集与累计工作量分列；缺整段 span 不能证明总耗时上限通过；usage 按调用去重，真实/估算/币种/阶段分账 |
+
+`readEvaluationArtifact(clientId,{conversationId,sessionId,path})` 在宿主端绑定所属工作区，仅允许显式相对路径和普通文件，最多 1MiB；拒绝符号链接、越界与已知凭据文件，读取前后核对文件身份。JSON secret 字段与既有凭据模式脱敏，派生摘要不得冒充原字节。collector 最多选 20 个文件；文件快照注明读取时点，不反推历史存在。元数据完整与文件正文完整分开记录。API 使用现有 tools 权限与严格会话身份；不是任意文件读取入口，也不是对恶意宿主进程的 OS 沙箱。
+
+F08 的 SDK usage 只有明确版本价格表才能估算；SDK 自报 cost 没价格版本时单独保留且不计价，不假定币种或补零。模型思考时长始终不从未观测时间推断。当前评分作业自身的单调耗时单列在 `report.job.elapsedMs`，原任务与评分阶段不混计。
+
+插件版本 0.3.1；工程验证见 [EC03](../../docs/agent-evaluation-evidence/EC03.md)。产品页面、工具/技能管理和实际 Electron 接入仍待 EC04。

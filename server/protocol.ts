@@ -4083,3 +4083,20 @@ export interface AgentEvaluationEvidencePage {
 	rangeStart: string | null;
 	rangeEnd: string | null;
 }
+
+/** A bounded observation, not an arbitrary file read or proof of historical artifact state. */
+export interface AgentEvaluationArtifactQuery {
+	conversationId: string;
+	sessionId: string;
+	path: string;
+}
+export interface AgentEvaluationArtifactSnapshot {
+	path: string;
+	observedAt: string;
+	exists: boolean;
+	size?: number;
+	sha256?: string;
+	text?: string;
+	redaction: string[];
+	truncated: boolean;
+}

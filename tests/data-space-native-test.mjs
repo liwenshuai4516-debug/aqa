@@ -112,15 +112,50 @@ const context = {
 	pluginToolsProvider: () => manager.getAgentTools(),
 	goalReviewTurnOf: () => false,
 };
-const invoke = async (input, signal) =>
-	JSON.parse(
-		(
-			await ClientSession.prototype.enabledPluginToolDefs
-				.call(context, "standard", conv.id)
-				.find((t) => t.name === "api_test_execute")
-				.execute("integration", input, signal)
-		).content[0].text,
-	);
+// Observed harness calls, not a model-generated trajectory. Reused by offline evaluation checks.
+const evaluationTrace = [];
+const appendTrace = (message) => {
+	const id = `event-${evaluationTrace.length + 1}`;
+	evaluationTrace.push({
+		id,
+		parentId: evaluationTrace.at(-1)?.id ?? null,
+		type: "message",
+		timestamp: new Date().toISOString(),
+		message,
+	});
+};
+const invoke = async (input, signal) => {
+	const callId = `call-${evaluationTrace.length + 1}`;
+	appendTrace({
+		role: "assistant",
+		content: [{ type: "toolCall", id: callId, name: "api_test_execute", arguments: input }],
+	});
+	try {
+		const output = await ClientSession.prototype.enabledPluginToolDefs
+			.call(context, "standard", conv.id)
+			.find((t) => t.name === "api_test_execute")
+			.execute(callId, input, signal);
+		appendTrace({
+			...output,
+			role: "toolResult",
+			toolCallId: callId,
+			toolName: "api_test_execute",
+			isError: output.isError === true,
+		});
+		return JSON.parse(output.content[0].text);
+	} catch (error) {
+		appendTrace({
+			role: "toolResult",
+			toolCallId: callId,
+			toolName: "api_test_execute",
+			isError: true,
+			cancelled: signal?.aborted === true,
+			content: [{ type: "text", text: String(error) }],
+		});
+		throw error;
+	}
+};
+
 const result = {
 	status: "running",
 	scope: "local synthetic targets; controlled review responses, real native runners, no real model assessment",
@@ -241,6 +276,18 @@ try {
 	server.closeAllConnections();
 	await new Promise((ok) => server.close(ok));
 	for (const close of cleanup.reverse()) await close();
+	writeFileSync(
+		join(out, "evaluation-trace.json"),
+		JSON.stringify(
+			{
+				provenance: "synthetic harness observing actual tool calls; no model",
+				workspace: project,
+				entries: evaluationTrace,
+			},
+			null,
+			2,
+		),
+	);
 	writeFileSync(join(out, "summary.json"), JSON.stringify(result, null, 2));
 	console.log(JSON.stringify(result));
 }

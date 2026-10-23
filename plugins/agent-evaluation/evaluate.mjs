@@ -470,6 +470,8 @@ export class EvaluationEngine {
 				queuedAt: job.queuedAt,
 				startedAt,
 				endedAt,
+				elapsedMs: performance.now() - startedMono,
+				clockSource: "process-monotonic",
 				...(job.cancellationRequestedAt
 					? { cancellationRequestedAt: job.cancellationRequestedAt, cancellationConfirmedAt: endedAt }
 					: {}),

@@ -2,6 +2,7 @@
  * No subscriptions or business effects here. The host binds the client/session before calling.
  */
 import { createHash } from "node:crypto";
+import { nativeTestCompletion } from "../test-execution-notice.js";
 import type {
 	AgentEvaluationEvidencePage,
 	AgentEvaluationEvidenceQuery,
@@ -81,7 +82,23 @@ function boundedCopy(value: unknown, budget: { bytes: number; nodes: number; red
 	check(budget.bytes <= ITEM_BYTES, "LIMIT_EXCEEDED", "Source exceeds item byte budget");
 	return value;
 }
-function messageBody(entry: SourceEntry): { body: unknown; omitted: boolean } {
+export function redactEvaluationArtifactText(text: string): { text: string; redaction: string[] } {
+	let clean = redactText(text);
+	try {
+		const value = JSON.parse(text),
+			budget = { bytes: 0, nodes: 0, redacted: false };
+		const projected = boundedCopy(value, budget);
+		if (budget.redacted) clean = JSON.stringify(projected);
+	} catch (error) {
+		if (error instanceof EvidenceReadError) throw error;
+	}
+	return { text: clean, redaction: clean !== text ? ["credentials-v1"] : [] };
+}
+
+function messageBody(
+	entry: SourceEntry,
+	nativeExecution?: ReturnType<typeof nativeTestCompletion>,
+): { body: unknown; omitted: boolean } {
 	const message = entry.message as Record<string, unknown> | undefined;
 	if (
 		entry.type !== "message" ||
@@ -106,11 +123,14 @@ function messageBody(entry: SourceEntry): { body: unknown; omitted: boolean } {
 		"output",
 		"exitCode",
 		"cancelled",
+		"denied",
 	])
 		if (message[name] !== undefined) body[name] = message[name];
+	if (nativeExecution) body.nativeExecution = nativeExecution;
 	let omitted = false;
 	if (typeof message.content === "string") body.content = message.content;
 	else if (Array.isArray(message.content)) {
+		check(message.content.length <= 10000, "LIMIT_EXCEEDED", "Source block count exceeds budget");
 		body.content = message.content.flatMap((block: Record<string, unknown>): Record<string, unknown>[] => {
 			if (!block || typeof block !== "object") {
 				omitted = true;
@@ -133,7 +153,11 @@ function messageBody(entry: SourceEntry): { body: unknown; omitted: boolean } {
 	}
 	return { body, omitted };
 }
-function sourceItem(entry: SourceEntry, sourceId: string): AgentEvaluationSourceItem {
+function sourceItem(
+	entry: SourceEntry,
+	sourceId: string,
+	nativeExecution?: ReturnType<typeof nativeTestCompletion>,
+): AgentEvaluationSourceItem {
 	const base = {
 		sourceEventId: entry.id,
 		sourceLocator: `${sourceId}#${entry.id}`,
@@ -143,7 +167,7 @@ function sourceItem(entry: SourceEntry, sourceId: string): AgentEvaluationSource
 		redaction: [] as string[],
 	};
 	try {
-		const { body, omitted } = messageBody(entry);
+		const { body, omitted } = messageBody(entry, nativeExecution);
 		const budget = { bytes: 0, nodes: 0, redacted: false };
 		const content = JSON.stringify(
 			boundedCopy(
@@ -276,6 +300,18 @@ export function readEvaluationEvidence(
 		check(index >= 0, "EVIDENCE_GAP", "Cursor is not in the selected range");
 		offset = index + 1;
 	}
+	const nativeCalls = new Map<string, { name: string; arguments: unknown }>();
+	if (query.mode === "collect")
+		for (const entry of chain) {
+			check(performance.now() - started <= 2000, "LIMIT_EXCEEDED", "Source linking time exceeded");
+			const message = entry.message as { role?: string; content?: unknown } | undefined;
+			if (message?.role === "assistant" && Array.isArray(message.content) && message.content.length <= 10000)
+				for (const block of message.content)
+					if (block?.type === "toolCall" && ["api_test_execute", "ui_test_run"].includes(block.name)) {
+						check(nativeCalls.size < 1000, "LIMIT_EXCEEDED", "Native linking budget exceeded");
+						nativeCalls.set(block.id, { name: block.name, arguments: block.arguments });
+					}
+		}
 	let bytes = 0;
 	for (const entry of chain.slice(offset)) {
 		if (page.items.length >= limit) break;
@@ -297,7 +333,12 @@ export function readEvaluationEvidence(
 			}
 			continue;
 		}
-		const item = sourceItem(entry, page.sourceId);
+		const message = entry.message as { role?: string; toolCallId?: string; isError?: boolean } | undefined;
+		const call = message?.role === "toolResult" && message.toolCallId ? nativeCalls.get(message.toolCallId) : undefined;
+		const completion = call
+			? nativeTestCompletion(call.name, call.arguments, entry.message, message?.isError !== false)
+			: undefined;
+		const item = sourceItem(entry, page.sourceId, completion);
 		bytes += Buffer.byteLength(item.content ?? "");
 		if (bytes > PAGE_BYTES) break;
 		page.items.push(item);

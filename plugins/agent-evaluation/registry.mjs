@@ -51,6 +51,7 @@ const schemaShape = T.Object(
 	{
 		type: T.Optional(T.Union([schemaTypes, T.Array(schemaTypes, { minItems: 1, uniqueItems: true })])),
 		properties: T.Optional(T.Record(T.String(), T.Unknown())),
+		patternProperties: T.Optional(T.Record(T.String(), T.Unknown())),
 		required: T.Optional(T.Array(T.String(), { uniqueItems: true })),
 		additionalProperties: T.Optional(T.Union([T.Boolean(), schema])),
 		items: T.Optional(T.Union([T.Boolean(), schema])),
@@ -77,7 +78,7 @@ const schemaShape = T.Object(
 	},
 	{ additionalProperties: false },
 );
-function checkSchema(value) {
+export function validateConfigSchema(value) {
 	// Deliberately bounded JSON Schema subset; no external refs, runtime code or silent unknown keywords.
 	const raw = JSON.stringify(value);
 	requireValue(raw && Buffer.byteLength(raw) <= 65536, "INVALID_INPUT", "Config schema exceeds budget");
@@ -99,6 +100,14 @@ function checkSchema(value) {
 			}
 		}
 		for (const child of Object.values(item.properties ?? {})) visit(child, depth + 1);
+		for (const [pattern, child] of Object.entries(item.patternProperties ?? {})) {
+			try {
+				new RegExp(pattern);
+			} catch {
+				requireValue(false, "INVALID_INPUT", "Invalid config schema pattern");
+			}
+			visit(child, depth + 1);
+		}
 		for (const name of ["additionalProperties", "items", "not"])
 			if (item[name] !== undefined) visit(item[name], depth + 1);
 		for (const name of ["anyOf", "allOf", "oneOf"]) for (const child of item[name] ?? []) visit(child, depth + 1);
@@ -150,7 +159,7 @@ export class EvaluationRegistry {
 			const manifest = structuredClone(implementation.manifest),
 				name = key(manifest);
 			requireValue(!next.has(name), "VERSION_CONFLICT", `Evaluator already registered: ${name}`);
-			checkSchema(manifest.configSchema);
+			validateConfigSchema(manifest.configSchema);
 			requireValue(
 				new Set(manifest.dependencies.map(key)).size === manifest.dependencies.length,
 				"INVALID_INPUT",

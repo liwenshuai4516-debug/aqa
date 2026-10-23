@@ -47,8 +47,9 @@ async function harness() {
 import { EvidenceCollector } from './collect.mjs';
 import { EvaluationRegistry } from './registry.mjs';
 import { EvaluationEngine } from './evaluate.mjs';
+import { createInternalRegistry } from './profiles/internal.mjs';
 export default { activate(host) {
- const state=globalThis.__evaluationFixture={host,EvaluationStore,EvidenceCollector,EvaluationRegistry,EvaluationEngine};
+ const state=globalThis.__evaluationFixture={host,EvaluationStore,EvidenceCollector,EvaluationRegistry,EvaluationEngine,createInternalRegistry};
  return host.onMessage((payload,from)=>{try{state.last=host.readEvaluationEvidence(from,payload.query);}catch(error){state.error=error.code;}});
 }};`,
 	);
@@ -68,6 +69,28 @@ export default { activate(host) {
 	return { dir, workspace, manager, mgr, client, service, query, fixture, host: fixture.host as PluginHost };
 }
 describe("EC02 host integration", () => {
+	it("emits host monotonic clock values independently of wall-clock rollback", async () => {
+		const h = await harness(),
+			events: any[] = [];
+		h.client.onRunEvent = (event: any) => events.push(event);
+		vi.spyOn(Date, "now").mockReturnValueOnce(100000).mockReturnValueOnce(1);
+		h.client.emitRun({ id: "conv1" }, { type: "tool_start", toolCallId: "t" });
+		h.client.emitRun({ id: "conv1" }, { type: "tool_end", toolCallId: "t" });
+		expect(events[0].at).toBeGreaterThan(events[1].at);
+		expect(events[0].clockEpoch).toBe(events[1].clockEpoch);
+		expect(events[1].monotonicAt).toBeGreaterThanOrEqual(events[0].monotonicAt);
+	});
+	it("binds file reads to the owned source workspace and rejects another session", async () => {
+		const h = await harness();
+		writeFileSync(join(h.workspace, "report"), "fixture");
+		const query = { conversationId: "conv1", sessionId: h.query.sessionId!, path: "report" };
+		expect(h.host.readEvaluationArtifact("client1", query).text).toBe("fixture");
+		expect(() => h.host.readEvaluationArtifact("unknown", query)).toThrow(/owned|client/);
+		expect(() => h.host.readEvaluationArtifact("client1", { ...query, sessionId: "changed" })).toThrow(
+			/session changed/,
+		);
+	});
+
 	it("uses the trusted sender and selected owner without fallback to another client", async () => {
 		const h = await harness();
 		h.mgr.handleMessage("agent-evaluation", { owner: "another-client", query: h.query }, "client1");
@@ -130,7 +153,17 @@ describe("EC02 host integration", () => {
 					childSessionIds: [],
 				},
 				objective: "Read isolated SDK evidence",
-				conditions: [],
+				conditions: [
+					{
+						id: "artifact",
+						statement: "Required JSON artifact",
+						sourceRef: "fixture:user",
+						sourceType: "user",
+						required: true,
+						applicableWhen: "always",
+						ruleRef: "F01@1",
+					},
+				],
 				constraints: [],
 				environmentRefs: [],
 				provenance: "fixture",
@@ -162,14 +195,17 @@ describe("EC02 host integration", () => {
 				state: "unknown",
 			},
 		});
+		writeFileSync(join(h.workspace, "result.json"), '{"ok":true}');
+		const artifactRead = vi.spyOn(h.host, "readEvaluationArtifact");
 		const collector = new h.fixture.EvidenceCollector(store, h.host);
 		cleanup.push(() => collector.close());
 		const result = await collector.collect(context, {
 			attemptRef: ref(attempt),
 			conversationId: "conv1",
 			requestId: "collect",
+			artifactPaths: ["result.json"],
 		});
-		expect(result.evidenceRefs).toHaveLength(2);
+		expect(result.evidenceRefs).toHaveLength(3);
 		const snapshot = collector.seal(context, result.checkpointRef, "seal");
 		expect(snapshot.data.gaps).toContain("source-is-ephemeral; restart recovery is unavailable");
 		expect(snapshot.data.coverage).toBe("partial");
@@ -219,6 +255,29 @@ describe("EC02 host integration", () => {
 		expect(report.data.findings[0].verdict).toBe("pass");
 		expect(report.data.summary.goal).toBe("undetermined");
 		expect(report.data.assessmentStage).toBe("provisional");
+		const internal = new h.fixture.EvaluationEngine(
+			store,
+			h.fixture.createInternalRegistry({
+				F01: { checks: [{ conditionId: "artifact", path: "result.json", format: "json" }] },
+			}),
+		);
+		cleanup.push(() => internal.close());
+		const scoreArgs = {
+			snapshotRef: ref(snapshot),
+			profileId: "internal",
+			profileVersion: "1",
+			requestId: "internal-score",
+		};
+		const firstScore = await internal.evaluate(context, scoreArgs);
+		expect(firstScore.data.findings.find((f: any) => f.ruleId === "F01").verdict).toBe("pass");
+		expect(firstScore.data.summary.counts.errors).toBe(0);
+		expect(firstScore.data.findings).toHaveLength(7);
+		rmSync(join(h.workspace, "result.json"));
+		const rescore = await internal.evaluate(context, { ...scoreArgs, requestId: "explicit-rescore" });
+		expect(rescore.id).not.toBe(firstScore.id);
+		expect(rescore.data.findings).toEqual(firstScore.data.findings);
+		expect(store.get(context, ref(firstScore))).toEqual(firstScore);
+		expect(artifactRead).toHaveBeenCalledTimes(1);
 	});
 	it("binds native reads to the actual workspace and rejects a changed source session", async () => {
 		const h = await harness();

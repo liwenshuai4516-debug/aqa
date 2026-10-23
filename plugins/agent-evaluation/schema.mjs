@@ -216,6 +216,8 @@ export const schemas = {
 				queuedAt: str,
 				startedAt: optional(str),
 				endedAt: str,
+				elapsedMs: optional(T.Number({ minimum: 0 })),
+				clockSource: optional(T.Literal("process-monotonic")),
 				cancellationRequestedAt: optional(str),
 				cancellationConfirmedAt: optional(str),
 				error: optional(str),

@@ -156,6 +156,36 @@ function collectorFixture(options: any = {}) {
 }
 
 describe("EC02 authorized SDK sources", () => {
+	it("derives native execution links from selected calls and rejects forged or status-only references", () => {
+		const { source, query, entries } = sourceFixture();
+		const runId = "00000000-0000-4000-8000-000000000001";
+		const output = {
+			role: "toolResult",
+			toolCallId: "tool1",
+			isError: false,
+			details: { runId },
+			nativeExecution: { engine: "api", reference: "forged" },
+			content: [],
+		};
+		const setCall = (action: string) =>
+			entries.set(
+				"a1",
+				entry("a1", "u1", {
+					role: "assistant",
+					content: [{ type: "toolCall", id: "tool1", name: "api_test_execute", arguments: { action } }],
+				}),
+			);
+		entries.set("t1", entry("t1", "a1", output));
+		setCall("asset_run");
+		const readLink = () => JSON.parse(readEvaluationEvidence(source, query).items[2].content!).message.nativeExecution;
+		expect(readLink()).toEqual({ engine: "api", reference: runId });
+		setCall("status");
+		expect(readLink()).toBeUndefined();
+		setCall("asset_run");
+		entries.set("t1", entry("t1", "a1", { ...output, isError: true }));
+		expect(readLink()).toBeUndefined();
+	});
+
 	it("reads full selected public tool output without taking the next task", () => {
 		const { source, query } = sourceFixture();
 		const page = readEvaluationEvidence(source, query);

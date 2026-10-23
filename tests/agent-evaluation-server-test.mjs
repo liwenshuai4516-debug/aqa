@@ -65,13 +65,16 @@ const result = {
 	checks,
 };
 function receive(socket, predicate, timeout = 20000) {
+	const receivedTypes = [];
 	return new Promise((resolve, reject) => {
 		const timer = setTimeout(() => {
 			socket.off("message", handler);
-			reject(new Error("WebSocket response timed out"));
+			reject(new Error(`WebSocket response timed out at ${result.stage}; received: ${receivedTypes.join(",")}`));
 		}, timeout);
 		function handler(raw) {
 			const message = JSON.parse(raw.toString());
+			receivedTypes.push(message.type);
+			if (receivedTypes.length > 30) receivedTypes.shift();
 			if (predicate(message)) {
 				clearTimeout(timer);
 				socket.off("message", handler);
@@ -82,17 +85,23 @@ function receive(socket, predicate, timeout = 20000) {
 	});
 }
 async function connect(clientId) {
+	result.stage = `connect:${clientId}`;
 	const socket = new WebSocket(`ws://127.0.0.1:${port}/ws`);
 	sockets.push(socket);
 	const ready = receive(socket, (m) => m.type === "ready");
+	const loaded = receive(
+		socket,
+		(m) => m.type === "plugins" && m.plugins?.some((p) => p.id === "evaluation-probe" && p.active),
+	);
 	await once(socket, "open");
 	socket.send(JSON.stringify({ type: "hello", clientId }));
-	await ready;
+	await Promise.all([ready, loaded]);
 	socket.send(JSON.stringify({ type: "new_chat" }));
 	return socket;
 }
 let sequence = 0;
 async function query(socket, payload = {}) {
+	result.stage = `probe:${sequence + 1}`;
 	const requestId = `probe-${++sequence}`;
 	const reply = receive(
 		socket,

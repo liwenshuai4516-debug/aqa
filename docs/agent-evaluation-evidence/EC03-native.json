@@ -1,0 +1,115 @@
+{
+	"status": "PASS",
+	"scope": "offline read and seal of this task's synthetic native runner outputs; no CLI/model/runner invocation",
+	"fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/data-space-native-BbL9Mw",
+	"fixtureSummarySha256": "f580753293d24c4faeffdba8444e949c477c42c2fe9fba039a30ee805c7b3409",
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-native-zNyzJW",
+	"results": [
+		{
+			"engine": "api",
+			"workspace": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/data-space-native-BbL9Mw/api-project",
+			"snapshotRef": {
+				"kind": "snapshots",
+				"id": "e9d3378f-a39a-488a-96a8-2b2a7e392cb8",
+				"revision": 1
+			},
+			"runs": [
+				{
+					"runId": "3addbc6a-cffc-4f02-8479-801d27ac53a6",
+					"at": "2026-10-23T17:17:16.733Z",
+					"complete": true,
+					"statuses": ["passed"],
+					"digest": "700356e052c62e2e2b3fa253396fb629260c9a6a62d66d8600187789c3c4ddba"
+				},
+				{
+					"runId": "9cc5032a-9239-43a1-bc4b-1fd2347bf4a5",
+					"at": "2026-10-23T17:17:05.637Z",
+					"complete": false,
+					"statuses": ["unknown"],
+					"digest": "7802ce092fd412d58519d6e318d4cab87132f5ad5ec83909156b0bf82c28764b"
+				},
+				{
+					"runId": "c5f832c4-038e-42a7-a163-297f745a6288",
+					"at": "2026-10-23T17:17:02.397Z",
+					"complete": true,
+					"statuses": ["failed"],
+					"digest": "d02c1c603b6b2a7affed1626168715b0f2be1eb7a943c1663b6d6a5732b8f2c7"
+				},
+				{
+					"runId": "c870bcff-2a2a-49ea-956c-64128fb7971e",
+					"at": "2026-10-23T17:17:04.025Z",
+					"complete": true,
+					"statuses": ["passed"],
+					"digest": "dabf6135dd641e6d633a90445790e60f984ccf4f3072299ef759ae3979119d05"
+				},
+				{
+					"runId": "d496e6f9-b9b9-4ea2-945e-f2a48bcc3abf",
+					"at": "2026-10-23T17:17:00.728Z",
+					"complete": true,
+					"statuses": ["passed"],
+					"digest": "599da063a6e8a721166d96adf6d2ab653d3b8a226bb6716c12bd452b694f3ee8"
+				}
+			],
+			"nativeReads": 5,
+			"idempotentReplayReads": 0,
+			"reEvaluationReads": 0,
+			"scores": [
+				{
+					"runId": "3addbc6a-cffc-4f02-8479-801d27ac53a6",
+					"expected": "pass",
+					"actual": "pass"
+				},
+				{
+					"runId": "9cc5032a-9239-43a1-bc4b-1fd2347bf4a5",
+					"expected": "inconclusive",
+					"actual": "inconclusive"
+				},
+				{
+					"runId": "c5f832c4-038e-42a7-a163-297f745a6288",
+					"expected": "fail",
+					"actual": "fail"
+				},
+				{
+					"runId": "c870bcff-2a2a-49ea-956c-64128fb7971e",
+					"expected": "pass",
+					"actual": "pass"
+				},
+				{
+					"runId": "d496e6f9-b9b9-4ea2-945e-f2a48bcc3abf",
+					"expected": "pass",
+					"actual": "pass"
+				}
+			]
+		},
+		{
+			"engine": "ui",
+			"workspace": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/data-space-native-ui-qTOgkW/project",
+			"snapshotRef": {
+				"kind": "snapshots",
+				"id": "09dddfad-c311-42e4-a99d-7cf03ee9da6f",
+				"revision": 1
+			},
+			"runs": [
+				{
+					"runId": "run-1249f06947265e47b0d54258ae80b462",
+					"at": "2026-10-23T17:17:12.362Z",
+					"complete": true,
+					"statuses": ["passed"],
+					"digest": "34e0de565756298b5787cc57e88e3346dd8d361474a0f2c5b66f01347a43ee83"
+				}
+			],
+			"nativeReads": 2,
+			"idempotentReplayReads": 0,
+			"reEvaluationReads": 0,
+			"scores": [
+				{
+					"runId": "run-1249f06947265e47b0d54258ae80b462",
+					"expected": "inconclusive",
+					"actual": "inconclusive"
+				}
+			]
+		}
+	],
+	"traceSha256": "79062c3a37a0f4f192ae46095740fda59c17771cb58176c5f2c72dac4b2da593",
+	"traceProvenance": "synthetic harness observing actual tool calls; no model"
+}

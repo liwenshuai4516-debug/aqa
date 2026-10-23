@@ -1,0 +1,36 @@
+import { EvaluationRegistry } from "../registry.mjs";
+import { piEvidenceAdapter } from "../adapters/pi.mjs";
+import { basicEvaluators } from "../evaluators/basic.mjs";
+import { F08 } from "../evaluators/metrics.mjs";
+export const internalEvaluators = [...basicEvaluators, F08];
+/** Exact configs are frozen at registration. Empty checks never invent business expectations. */
+export function internalProfile(configs = {}, { id = "internal", version = "1" } = {}) {
+	const defaults = {
+		F01: { checks: [] },
+		F02: { checks: [] },
+		F04: { checks: [] },
+		F05: { checks: [] },
+		F06: {},
+		F07: { pollingToolNames: [], repairToolNames: ["edit", "write"] },
+		F08: { prices: [], childWaitToolNames: [], checks: [] },
+	};
+	return {
+		id,
+		version,
+		taskTypes: ["agent-task", "client-software"],
+		rules: internalEvaluators.map((rule) => ({
+			id: rule.manifest.id,
+			version: rule.manifest.version,
+			config: configs[rule.manifest.id] ?? defaults[rule.manifest.id],
+		})),
+		required: internalEvaluators.map((rule) => ({ id: rule.manifest.id, version: rule.manifest.version })),
+		aggregation: "contract-v1",
+	};
+}
+export function createInternalRegistry(configs = {}, options = {}) {
+	const registry = new EvaluationRegistry();
+	registry.registerAdapter(piEvidenceAdapter);
+	registry.registerEvaluators(internalEvaluators);
+	registry.registerProfile(internalProfile(configs, options));
+	return registry;
+}

@@ -186,3 +186,7 @@ export default definePlugin({
 需要 `tools` 权限。`inspect(engine, workspace, reference)` 只读返回原生资产版本、用例 ID 与环境；`read(...)` 返回核验后的批次/父批次、逐实例状态、证据引用与完整性；`list(engine, workspace)` 枚举可读取的批次引用。`engine` 为 `ui` 或 `api`，UI 引用为 `{path, sha256}`，API 为资产摘要或 run UUID。缺少执行依赖、证据变化、工作区不符时拒绝；不批准或启动测试，不改写原生结果。
 
 `onToolEvent` 的结束事件可带 `cwd`、`testRun: {engine, reference}`。它只是一条同步提示，消费方仍须调用 `host.testing.read` 核验磁盘证据，不得凭通知认定通过。详见 `docs/data-space-integration.md`。
+
+## Agent 评估只读接口（SDK 0.1.5）
+
+宿主提供 `readEvaluationEvidence`（明确 SDK 选区）、`readEvaluationNative`（原生结果引用）与 `readEvaluationArtifact`（明确工作区相对文件）。这些接口均要求 tools 权限、可信发送方与所属会话；不支持的引擎返回不可用，不退回全局快照。artifact 参数为 `{conversationId,sessionId,path}`；返回观察时间、存在状态及有界脱敏正文/摘要，truncated 表示正文不全。不得用导入请求中的 owner/workspace 覆盖宿主身份。mock 默认返回不可用，测试须显式注入实现。`onRunEvent` 的可选 clockEpoch/monotonicAt 表示进程内单调来源，不能跨进程拼接。

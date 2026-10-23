@@ -1,6 +1,12 @@
 import { TestAssetReader, type TestEngine } from "./test-asset-reader.js";
 import { EvidenceReadError } from "./agent/evaluation-evidence.js";
-import type { AgentEvaluationEvidenceQuery, AgentEvaluationEvidencePage } from "./protocol.js";
+import { readEvaluationArtifact } from "./agent/evaluation-artifact.js";
+import type {
+	AgentEvaluationEvidenceQuery,
+	AgentEvaluationEvidencePage,
+	AgentEvaluationArtifactQuery,
+	AgentEvaluationArtifactSnapshot,
+} from "./protocol.js";
 /**
  * pi-web-ui 插件管理器 —— 可选界面组件的加载与桥接。
  *
@@ -220,6 +226,9 @@ export interface PluginRunEvent {
 	conversationId?: string;
 	/** 事件毫秒时间戳（服务端时钟）。 */
 	at: number;
+	/** Same-process monotonic timestamp; never join different clock epochs. */
+	clockEpoch?: string;
+	monotonicAt?: number;
 	/** run_start：触发本轮的用户任务文本（截断 500 字；steer 等内部续跑为空）。 */
 	task?: string;
 	/** message：已定稿的一条消息（serialize.ts 同形，文本/参数已截断）。 */
@@ -419,6 +428,7 @@ export interface PluginHost {
 	getActiveConversation(options?: PluginConversationQuery): PluginConversationSnapshot | null;
 	/** Read selected raw public evidence. clientId must come from onMessage/from or a bound tool context. */
 	readEvaluationEvidence(clientId: string, query: AgentEvaluationEvidenceQuery): AgentEvaluationEvidencePage;
+	readEvaluationArtifact(clientId: string, query: AgentEvaluationArtifactQuery): AgentEvaluationArtifactSnapshot;
 	readEvaluationNative(
 		clientId: string,
 		query: { conversationId: string; sessionId: string; engine: TestEngine; reference: unknown },
@@ -3866,6 +3876,16 @@ export class PluginManager {
 				if (!self.evaluationEvidenceProvider)
 					throw new EvidenceReadError("CAPABILITY_UNAVAILABLE", "This engine has no evaluation evidence provider");
 				return self.evaluationEvidenceProvider(clientId, query);
+			},
+			readEvaluationArtifact: (clientId, query) => {
+				const scope = host.readEvaluationEvidence(clientId, {
+					conversationId: query.conversationId,
+					mode: "describe",
+					limit: 1,
+				});
+				if (scope.sessionId !== query.sessionId)
+					throw new EvidenceReadError("PERMISSION_DENIED", "Artifact evidence session changed");
+				return readEvaluationArtifact(scope.workspace, query.path);
 			},
 			readEvaluationNative: async (clientId, query) => {
 				const scope = host.readEvaluationEvidence(clientId, {

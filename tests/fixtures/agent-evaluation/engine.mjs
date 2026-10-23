@@ -28,11 +28,13 @@ export function evaluator(id, evaluate, manifest = {}) {
 		evaluate,
 	};
 }
+/** @param {{ rules: any[], conditions?: any[], evidence?: any[], budget?: any, configs?: any }} options */
 export function engineFixture({
 	rules,
 	conditions = [],
 	evidence = [{ kind: "artifact", value: { exists: true } }],
 	budget = {},
+	configs = {},
 }) {
 	const directory = mkdtempSync(join(tmpdir(), "evaluation-engine-")),
 		context = {};
@@ -99,6 +101,7 @@ export function engineFixture({
 			content: JSON.stringify(e.value),
 			redaction: [],
 			truncated: false,
+			...e.data,
 		}),
 	);
 	const snapshot = write("snapshots", {
@@ -116,7 +119,7 @@ export function engineFixture({
 		id: "fixture",
 		version: "1",
 		taskTypes: ["agent-task"],
-		rules: rules.map((r) => ({ id: r.manifest.id, version: r.manifest.version, config: {} })),
+		rules: rules.map((r) => ({ id: r.manifest.id, version: r.manifest.version, config: configs[r.manifest.id] ?? {} })),
 		required: rules.map((r) => ({ id: r.manifest.id, version: r.manifest.version })),
 		aggregation: "contract-v1",
 	});

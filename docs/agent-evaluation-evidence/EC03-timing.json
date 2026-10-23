@@ -1,0 +1,88 @@
+{
+	"status": "PASS",
+	"scope": "two actual parallel subprocesses with controlled ten-second waits; measured host monotonic clock, no model or external client",
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-timing-P5A3pK",
+	"subprocessStarts": 2,
+	"reEvaluationStarts": 0,
+	"intervals": [
+		{
+			"id": "first",
+			"phase": "agent",
+			"kind": "work",
+			"clockEpoch": "5448be73-b4d8-46aa-8ed7-85ce397cbdb3",
+			"startMs": 115.314625,
+			"endMs": 10155.712916
+		},
+		{
+			"id": "second",
+			"phase": "agent",
+			"kind": "work",
+			"clockEpoch": "5448be73-b4d8-46aa-8ed7-85ce397cbdb3",
+			"startMs": 116.491958,
+			"endMs": 10155.987458
+		},
+		{
+			"id": "parent-wait",
+			"phase": "agent",
+			"kind": "wait-child",
+			"clockEpoch": "5448be73-b4d8-46aa-8ed7-85ce397cbdb3",
+			"startMs": 115.277333,
+			"endMs": 10156.016416
+		},
+		{
+			"id": "whole-attempt",
+			"phase": "agent",
+			"kind": "span",
+			"clockEpoch": "5448be73-b4d8-46aa-8ed7-85ce397cbdb3",
+			"startMs": 115.277333,
+			"endMs": 10156.016416
+		}
+	],
+	"expected": {
+		"wallApproxMs": 10000,
+		"cumulativeWorkApproxMs": 20000,
+		"parentWaitCountedAsWork": false
+	},
+	"actual": {
+		"phases": {
+			"setup": {
+				"wallMs": null,
+				"cumulativeWorkMs": null,
+				"observedIntervals": 0,
+				"completeSpan": false
+			},
+			"agent": {
+				"wallMs": 10040.739083,
+				"cumulativeWorkMs": 20079.893791000002,
+				"observedIntervals": 4,
+				"completeSpan": true
+			},
+			"verification": {
+				"wallMs": null,
+				"cumulativeWorkMs": null,
+				"observedIntervals": 0,
+				"completeSpan": false
+			},
+			"evaluation": {
+				"wallMs": null,
+				"cumulativeWorkMs": null,
+				"observedIntervals": 0,
+				"completeSpan": false
+			},
+			"cleanup": {
+				"wallMs": null,
+				"cumulativeWorkMs": null,
+				"observedIntervals": 0,
+				"completeSpan": false
+			}
+		},
+		"wallMs": 10040.739083,
+		"cumulativeWorkMs": 20079.893791000002,
+		"waitingInputMs": null,
+		"waitingApprovalMs": null,
+		"waitingChildMs": 10040.739083,
+		"clockEpochs": ["5448be73-b4d8-46aa-8ed7-85ce397cbdb3"],
+		"gaps": []
+	},
+	"evaluationElapsedMs": 33.204084000000876
+}

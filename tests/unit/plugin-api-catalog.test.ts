@@ -110,6 +110,7 @@ describe("静态表与源码同口径", () => {
 			"getActiveConversation",
 			"readEvaluationEvidence",
 			"readEvaluationNative",
+			"readEvaluationArtifact",
 			"onConversationChanged",
 			"onClientModelChanged",
 			"registerCommand",

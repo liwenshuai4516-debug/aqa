@@ -1,0 +1,803 @@
+{
+	"status": "PASS",
+	"scope": "EC03 offline engineering; not Electron or real model assessment",
+	"unit": {
+		"executed": 179,
+		"passed": 179,
+		"failed": 0,
+		"pending": 0,
+		"originalReport": "/tmp/ec03-unit-results.json",
+		"originalSha256": "3f3e9724906199b47f1a20fab4ec1a0689d2031fd1ca9799b6ebdca2988ecd49",
+		"files": [
+			{
+				"file": "agent-evaluation-artifact.test.ts",
+				"tests": [
+					{
+						"name": "EC03 bounded artifact observation reads actual bytes, records absence and keeps binary digests without inventing text",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 bounded artifact observation rejects unsafe or credential path ../outside",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 bounded artifact observation rejects unsafe or credential path /outside",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 bounded artifact observation rejects unsafe or credential path a/../b",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 bounded artifact observation rejects unsafe or credential path ",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 bounded artifact observation rejects unsafe or credential path .env",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 bounded artifact observation rejects unsafe or credential path private.key",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 bounded artifact observation rejects unsafe or credential path auth.json",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 bounded artifact observation rejects final and ancestor symlinks, and non-regular artifacts",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 bounded artifact observation redacts actual secret fields and hashes the derived text explicitly",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 bounded artifact observation bounds both raw bytes and escaped JSON envelopes",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 bounded artifact observation rejects file replacement observed while reading",
+						"status": "passed"
+					}
+				]
+			},
+			{
+				"file": "agent-evaluation-engine.test.ts",
+				"tests": [
+					{
+						"name": "EC03 snapshot-only scoring jobs freezes inputs, persists version/configuration and re-evaluates without recollecting or executing",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 snapshot-only scoring jobs isolates a throwing rule and keeps independent findings and a completed report",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 snapshot-only scoring jobs times out asynchronous work without accepting its eventual result",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 snapshot-only scoring jobs cancels a running generation and rejects late completion; stop prevents new jobs",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 snapshot-only scoring jobs cancels queued work without calling an evaluator",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 snapshot-only scoring jobs rejects fabricated evidence, wrong condition binding and malformed output without making the Agent fail",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 snapshot-only scoring jobs does not promote target self-reports to verified required success",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 snapshot-only scoring jobs does not replay an interrupted durable job on another engine instance",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 snapshot-only scoring jobs refuses an unauthorized caller before idempotency/status/cancellation access",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 snapshot-only scoring jobs reports save failure without pretending an empty successful report and recovers a lost durable receipt",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 snapshot-only scoring jobs rejects a synchronous late result and isolates it from the next rule",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 snapshot-only scoring jobs does not invoke a rule whose declared required evidence is absent",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 snapshot-only scoring jobs does not mark a rejected report write as completed",
+						"status": "passed"
+					}
+				]
+			},
+			{
+				"file": "agent-evaluation-evidence.test.ts",
+				"tests": [
+					{
+						"name": "EC02 authorized SDK sources derives native execution links from selected calls and rejects forged or status-only references",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 authorized SDK sources reads full selected public tool output without taking the next task",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 authorized SDK sources denies another session/conversation and refuses a broadened missing start",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 authorized SDK sources marks hidden content, credentials and oversized source without making up original bytes",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 authorized SDK sources pages exact ranges and rejects cursor injection and broken chains",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 authorized SDK sources marks a limited description window rather than claiming full child history",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 authorized SDK sources records middle-of-run, ephemeral and selected-child gaps",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 authorized SDK sources uses persistent SDK IDs across a real isolated session reopen",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 durable collector deduplicates replay and out-of-order delivery; seals an immutable checkpoint",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 durable collector keeps conflicting source versions and diagnoses missing tool endings",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 durable collector does not publish a checkpoint on a failed write and recovers without repeated source records",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 durable collector recovers a real process exit after durable evidence publication without publishing an early checkpoint",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 durable collector persists sources across reopening and returns the same checkpoint without replay",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 durable collector marks missing selected children and rejects a source domain substitution",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 durable collector collects an explicitly selected child into a distinct linked attempt",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 durable collector keeps native observations dated, and repeat requests do not re-read or execute",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 durable collector ignores unselected events, isolates failure, and removes listeners on close",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 durable collector deduplicates out-of-order live observations, retains restart gaps and excludes another tool",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 durable collector keeps conflicting timing revisions and does not turn a wall-clock rollback into negative duration",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 durable collector persists selected host metadata through watch and isolates late callbacks",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 durable collector reports and seals an explicit gap after the bounded live queue overflows",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 durable collector rejects a late native callback after cancellation without publishing a checkpoint",
+						"status": "passed"
+					}
+				]
+			},
+			{
+				"file": "agent-evaluation-host.test.ts",
+				"tests": [
+					{
+						"name": "EC02 host integration emits host monotonic clock values independently of wall-clock rollback",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 host integration binds file reads to the owned source workspace and rejects another session",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 host integration uses the trusted sender and selected owner without fallback to another client",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 host integration discovers nested subagents without admitting an unrelated or ordinary derived conversation",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 host integration copies collector and evaluator code into an isolated plugin, then seals and scores a real SDK selection",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 host integration binds native reads to the actual workspace and rejects a changed source session",
+						"status": "passed"
+					},
+					{
+						"name": "EC02 host integration rejects unsupported engines and reads after plugin unload",
+						"status": "passed"
+					}
+				]
+			},
+			{
+				"file": "agent-evaluation-registry.test.ts",
+				"tests": [
+					{
+						"name": "EC03 trusted extension registry registers versioned rules, profiles and adapters without exposing business capabilities",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 trusted extension registry rejects duplicate identity/version while allowing an independently readable new version",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 trusted extension registry rejects cycles and missing dependencies atomically",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 trusted extension registry orders dependencies and rejects profiles that omit them",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 trusted extension registry rejects unregistered versions, unsupported types, malformed schemas and invalid configuration",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 trusted extension registry freezes copies rather than caller-owned mutable profile/schema/capabilities",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 contract aggregation computes required goals and delivery without hiding unknown or known failure (0)",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 contract aggregation computes required goals and delivery without hiding unknown or known failure (1)",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 contract aggregation computes required goals and delivery without hiding unknown or known failure (2)",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 contract aggregation computes required goals and delivery without hiding unknown or known failure (3)",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 contract aggregation computes required goals and delivery without hiding unknown or known failure (4)",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 contract aggregation computes required goals and delivery without hiding unknown or known failure (5)",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 contract aggregation keeps correct refusal separate from an unmet goal",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 contract aggregation does not show successful delivery when an achieved goal violates required constraints",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 contract aggregation keeps proposed/advisory failures out of the required goal and gate",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 contract aggregation uses separate pass-rate and coverage denominators, with zero denominators left unknown",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 contract aggregation cannot drop an always-applicable condition by returning unsupported or unproven not-applicable",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 contract aggregation does not remove an unknown applicability from a mixed denominator",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 contract aggregation keeps a required evaluator execution gap visible without making the task an Agent failure",
+						"status": "passed"
+					}
+				]
+			},
+			{
+				"file": "agent-evaluation-rules.test.ts",
+				"tests": [
+					{
+						"name": "EC03 F01 artifact checks presence and JSON schema",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F01 artifact checks absent artifact",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F01 artifact checks bad JSON",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F01 artifact checks schema mismatch",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F01 artifact checks redacted bytes",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F01 artifact checks bounded existence still observable",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F01 artifact checks unobserved digest",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F01 artifact checks changed digest",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F01 artifact checks does not infer absence from missing evidence or promote target-reported bytes",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F02 current native results requires a matching UI manifest digest as well as a current execution reference",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F02 current native results current passed",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F02 current native results old run",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F02 current native results no execution link",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F02 current native results incomplete",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F02 current native results failed assertion",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F02 current native results skipped is not passed",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F04 necessary dependencies accepts stopping after failure and allows independent diagnosis",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F04 necessary dependencies rejects running the necessary dependent step after failed prerequisite",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F04 necessary dependencies does not prove stopped behavior from partial coverage or unknown prerequisite",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F05 structured claims checks observed boolean claims against separate artifact facts; free text remains unknown",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F06/F07 process diagnostics does not report complete zero calls after discarding conflicting or unavailable records",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F06/F07 process diagnostics deduplicates observations, counts failure/denial/cancel, and does not score these as Agent failures",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F06/F07 process diagnostics retains unknown lifecycle counts for missing ends",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F06/F07 process diagnostics emits candidates without a hard penalty and excludes configured polling and repair boundaries",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F08 timing and cost uses interval unions for two parallel ten-second calls and sums work without parent waits",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F08 timing and cost does not join different monotonic epochs or use negative rollback intervals",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F08 timing and cost separates actual/estimated accounts and deduplicates provider/SDK reports of the same call",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F08 timing and cost leaves missing usage, unversioned estimates and conflicting phases unknown",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F08 timing and cost never infers task duration or model thinking from tool time alone",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F08 timing and cost rejects conflicting live clock observations and preserves monotonic time across a wall-clock jump",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F08 timing and cost does not select an arbitrary price when model/provider pricing is ambiguous",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 F08 timing and cost registers all seven versions without inventing goal conditions",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 sealed engine rule integration scores valid artifact and preserves the old report after explicit re-evaluation",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 sealed engine rule integration scores missing artifact and preserves the old report after explicit re-evaluation",
+						"status": "passed"
+					},
+					{
+						"name": "EC03 sealed engine rule integration scores invalid JSON and preserves the old report after explicit re-evaluation",
+						"status": "passed"
+					}
+				]
+			},
+			{
+				"file": "agent-evaluation-store.test.ts",
+				"tests": [
+					{
+						"name": "EC01 contracts and immutable store separates two task selections and preserves immutable revisions",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store atomically deduplicates requests across restarts and rejects changed input",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store rejects unknown versions, invalid fields, and required inferred conditions",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store denies forged identities, cross domains and unauthorized session selections",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store does not broaden permission through deduplication or transitive references",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store refuses a second writer but permits a read-only view",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store does not publish a half record and preserves failed bytes for recovery",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store recovers a committed write after its acknowledgement was lost without duplication",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store retains damaged and future-schema originals and blocks new writes",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store checks digest again on read and detects changed sealed evidence",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store rejects traversal, file symlinks and directory symlinks",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store enforces byte, record count and page limits without deleting previous evidence",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store keeps immutable snapshots and rejects evidence from a different task",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store distinguishes attachment, reexecution and reconciled attempt transitions",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store exports a verifiable derivative without credentials or request metadata",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store rebuilds an index from backup with no business callback or execution",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store binds a sealed reference to its original digest even if the source is rehashed",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store deduplicates blob bytes only within a domain and checks content before returning it",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store bounds transitive reads and UTF-8 evidence by bytes",
+						"status": "passed"
+					},
+					{
+						"name": "EC01 contracts and immutable store preserves rule reports and only appends reviews from trusted humans",
+						"status": "passed"
+					}
+				]
+			},
+			{
+				"file": "plugin-api-catalog.test.ts",
+				"tests": [
+					{
+						"name": "buildPluginApiCatalog slot 排序 + 别名映射 + kinds 透传",
+						"status": "passed"
+					},
+					{
+						"name": "buildPluginApiCatalog occupants 按插件排序；未知 slot 有回落例子",
+						"status": "passed"
+					},
+					{
+						"name": "buildPluginApiCatalog 返回的是拷贝（调用方改了不污染静态表）",
+						"status": "passed"
+					},
+					{
+						"name": "静态表与源码同口径 33 个真实 slot 个个有例子；别名目标个个存在",
+						"status": "passed"
+					},
+					{
+						"name": "静态表与源码同口径 方法表：无重名、有例子、needs 合法",
+						"status": "passed"
+					},
+					{
+						"name": "静态表与源码同口径 关键方法都在（加宿主方法时来这里补一行，否则目录先过期）",
+						"status": "passed"
+					},
+					{
+						"name": "getApiCatalog 接线 空目录：33 slot 全在，occupants 全空，工具表与目录一致",
+						"status": "passed"
+					},
+					{
+						"name": "getApiCatalog 接线 manifest 基线 + 运行时注册都计入 occupants",
+						"status": "passed"
+					}
+				]
+			},
+			{
+				"file": "plugin-permissions.test.ts",
+				"tests": [
+					{
+						"name": "permissionHostMatches（与 manifest 白名单同口径） 全等或点号后缀；大小写不敏感",
+						"status": "passed"
+					},
+					{
+						"name": "PluginPermissionStore grant/has：net 按主机命中，llm 按模型作用域",
+						"status": "passed"
+					},
+					{
+						"name": "PluginPermissionStore 不限模型的 llm 授权全开",
+						"status": "passed"
+					},
+					{
+						"name": "PluginPermissionStore remember=false 只记内存：同进程可见，重建 store 即失",
+						"status": "passed"
+					},
+					{
+						"name": "PluginPermissionStore 同范围覆盖（不堆条目），坏文件当空表",
+						"status": "passed"
+					},
+					{
+						"name": "PluginPermissionStore revoke 粒度：整表 / 按插件 / 按族 / 按主机",
+						"status": "passed"
+					},
+					{
+						"name": "PluginPermissionStore 非法 id 拒绝（grant 抛错，has 回 false）",
+						"status": "passed"
+					},
+					{
+						"name": "host.requestPermission 非法族抛错；net 不给 hosts 抛错",
+						"status": "passed"
+					},
+					{
+						"name": "host.requestPermission 基础族未声明 → 直接 false（不弹框，requester 不被调用）",
+						"status": "passed"
+					},
+					{
+						"name": "host.requestPermission 静态白名单已命中 → 直接 true（不打扰用户）",
+						"status": "passed"
+					},
+					{
+						"name": "host.requestPermission 无 requester（DSH/无头）→ false",
+						"status": "passed"
+					},
+					{
+						"name": "host.requestPermission 批准记住 → 落盘，下次直接 true；拒绝 → false 且不落盘",
+						"status": "passed"
+					},
+					{
+						"name": "host.requestPermission 拒绝不落盘；仅本次只记内存",
+						"status": "passed"
+					},
+					{
+						"name": "执行期强制 net.fetch：动态授权的主机可过门控（回环拒连证明不是未授权）",
+						"status": "passed"
+					},
+					{
+						"name": "执行期强制 llm.complete：作用域外模型被收紧，作用域内直通 provider",
+						"status": "passed"
+					}
+				]
+			},
+			{
+				"file": "plugin-sdk-mock.test.ts",
+				"tests": [
+					{
+						"name": "createMockHost：示例插件 activate 记录调用 + 读到注入的 settings + 分级日志",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：示例插件 activate 缺 settings 预设时 getSettings 回 {}（插件侧 ?? 生效）",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：overrides 命名空间按子键合并覆盖，且仍进 calls 记录",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：overrides 顶层方法整体替换；log 被换掉后不再写 logs（但仍记 calls）",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：overrides cwd/dir/dataDir 标量可改；非法 overrides 与覆盖 harness 字段直接抛错",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：reset() 清空 calls + logs（原地）；settings 与 handlers 保留",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：无注入回退语义 对话/模型/权限/客户端桥 extras",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：无注入回退语义 fs/scm/bash/project/schedule/route/storage",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：无注入回退语义 schedule 只记调用不设真定时器",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：mock 驱动器 emit 触发订阅 handler；注销后不再触发",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：mock 驱动器 emitSettings 合并预设 + 触发 onSettingsChanged；setSettings 只合并",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：mock 驱动器 fs.watch 也走同一套 handlers/emit（点分方法名）",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：mock 驱动器 events.on / shortcuts.register 的回调在第二参，照样存 + 可 emit",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：ui 内存注册表 register/update/remove/list/arrange + 同 id 覆盖 + off 只摘除本次",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：ui 内存注册表 单次 register 上限 32 条（与宿主同口径）",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：工具/命令/路由/定时注册表 定义体进 mock 存档，可直接调 execute；注销即摘除",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：工具/命令/路由/定时注册表 schedule 只登记不跑；fireSchedules 手动触发；注销即摘除",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：emitAsync / seq / calls 过滤 emitAsync 按序 await 异步 handler，返回各返回值；抛错即 reject",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：emitAsync / seq / calls 过滤 同步 emit 不等待异步 handler（对照语义）",
+						"status": "passed"
+					},
+					{
+						"name": "createMockHost：emitAsync / seq / calls 过滤 calls 条目带 seq；mock.calls(method?) 过滤",
+						"status": "passed"
+					},
+					{
+						"name": "plugin-sdk 版本 SDK_VERSION 与 package.json 一致（单源：改版本两处同步）",
+						"status": "passed"
+					}
+				]
+			},
+			{
+				"file": "plugin-version-bump-guard.test.ts",
+				"tests": [
+					{
+						"name": "插件版本规范与递增守卫 所有内置官方插件必须声明符合 SemVer 格式的版本号",
+						"status": "passed"
+					},
+					{
+						"name": "插件版本规范与递增守卫 detectPluginVersionViolations 判定逻辑单元测试 仅修改 README.md 时无需递增版本号",
+						"status": "passed"
+					},
+					{
+						"name": "插件版本规范与递增守卫 detectPluginVersionViolations 判定逻辑单元测试 修改了代码但未递增版本号时报违规",
+						"status": "passed"
+					},
+					{
+						"name": "插件版本规范与递增守卫 detectPluginVersionViolations 判定逻辑单元测试 版本号回退/降低时报违规",
+						"status": "passed"
+					},
+					{
+						"name": "插件版本规范与递增守卫 detectPluginVersionViolations 判定逻辑单元测试 修改了代码且严格递增版本号时放行",
+						"status": "passed"
+					},
+					{
+						"name": "插件版本规范与递增守卫 detectPluginVersionViolations 判定逻辑单元测试 多插件修改能够准确捕获漏改项",
+						"status": "passed"
+					},
+					{
+						"name": "插件版本规范与递增守卫 检查当前工作区（Working Tree / Staged）中修改的插件代码是否都已递增版本号",
+						"status": "passed"
+					}
+				]
+			}
+		]
+	},
+	"compiledServer": {
+		"status": "PASS",
+		"scope": "isolated compiled server, two clients, no model or business calls; not Electron",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-server-dh7anI",
+		"checks": [
+			"Compiled index/engine/provider/plugin channel uses trusted sender and separate SDK sessions",
+			"Unknown conversation is rejected without snapshot fallback",
+			"Read-only probing does not create a new session or send a prompt"
+		],
+		"stage": "probe:4"
+	},
+	"otherChecks": {
+		"typecheck": "all 5 configurations passed",
+		"lint": "root and explicit evaluator/test scope passed",
+		"protocol": "pure type shim and both v33 passed; Git tag heuristic skipped (no tag)",
+		"models": "zero real calls",
+		"desktop": "not executed; EC04"
+	}
+}

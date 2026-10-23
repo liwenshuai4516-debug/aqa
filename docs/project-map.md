@@ -121,4 +121,4 @@ UI 测试 P0：`server/extension-tool-policy.ts` 定义操作副作用，`server
 
 Agent 评估工程基础：`plugins/agent-evaluation/{schema,store,durable,collect}.mjs`、`adapters/pi.mjs` 与 `server/agent/evaluation-evidence.ts`，提供统一仓库、受控选区、只读原生证据与封存；产品入口待 EC04，见 [EC01](agent-evaluation-evidence/EC01.md)、[EC02](agent-evaluation-evidence/EC02.md)。
 
-Agent 评估评分基础：`plugins/agent-evaluation/{registry,evaluate,aggregate}.mjs`，处理可信扩展注册、快照评分作业与契约聚合；EC03 基础规则/指标仍在实施，见 [进展](agent-evaluation-evidence/EC03.md)。
+Agent 评估评分基础：`plugins/agent-evaluation/{registry,evaluate,aggregate}.mjs`，处理可信扩展注册、快照评分作业与契约聚合；`evaluators/{basic,metrics,common}.mjs` 与 `profiles/internal.mjs` 提供七条规则和指标；授权文件快照在 `server/agent/evaluation-artifact.ts`，见 [进展](agent-evaluation-evidence/EC03.md)。

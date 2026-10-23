@@ -227,6 +227,12 @@ export const HOST_METHODS: ReadonlyArray<CatalogHostMethod> = [
 		example: `host.readEvaluationEvidence(from, { conversationId, mode: "describe", limit: 100 })`,
 	},
 	{
+		name: "readEvaluationArtifact",
+		needs: "tools",
+		summary: "在已授权会话工作区读取明确选中的有界产物快照，不递归发现",
+		example: `host.readEvaluationArtifact(from, {conversationId, sessionId, path: "result.json"})`,
+	},
+	{
 		name: "readEvaluationNative",
 		needs: "tools",
 		summary: "按已授权会话工作区只读核验原生 UI/API 结果，不执行测试",
