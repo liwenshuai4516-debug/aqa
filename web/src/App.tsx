@@ -2627,6 +2627,8 @@ export function App() {
 							)}
 							{/* 任务执行看板 (Plan Mode) */}
 							<PlanBoard
+								planMode={chat.state?.planMode ?? false}
+								streaming={chat.state?.isStreaming ?? false}
 								plan={
 									chat.activeConversationId && chat.state?.conversationId !== chat.activeConversationId
 										? null

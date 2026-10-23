@@ -21,6 +21,8 @@ import { useCopyFeedback } from "../use-copy-feedback";
 
 interface PlanBoardProps {
 	plan: PlanState | null | undefined;
+	planMode: boolean;
+	streaming: boolean;
 }
 
 const NEXT_STATUS: Record<PlanStepStatus, PlanStepStatus> = {
@@ -39,7 +41,7 @@ const NEXT_STATUS: Record<PlanStepStatus, PlanStepStatus> = {
  * 3. 支持在看板上可视化微调/批注：内联编辑步骤、删除步骤、切换状态、新增步骤；
  * 4. 支持一键导出/复制为 Markdown 离线存档。
  */
-export function PlanBoard({ plan }: PlanBoardProps) {
+export function PlanBoard({ plan, planMode, streaming }: PlanBoardProps) {
 	const t = useT();
 	const isZh = isZhLocale(useLocale());
 	const [expanded, setExpanded] = useState(false);
@@ -56,6 +58,7 @@ export function PlanBoard({ plan }: PlanBoardProps) {
 	const doneCount = steps.filter((s) => s.status === "done").length;
 	const totalCount = steps.length;
 	const percent = Math.round((doneCount / totalCount) * 100);
+	const canImplement = planMode && !streaming;
 
 	const activeStep = steps.find((s) => s.id === plan.activeStepId) ?? steps.find((s) => s.status === "in_progress");
 
@@ -70,6 +73,7 @@ export function PlanBoard({ plan }: PlanBoardProps) {
 
 	/** 「开始实施」：关掉服务端只规划闸门，在当前会话直接发起实施轮。 */
 	const handleImplement = () => {
+		if (!canImplement) return;
 		appSend({ type: "set_plan_mode", enabled: false });
 		appSend({ type: "prompt", text: t("planImplementRequest") });
 	};
@@ -249,18 +253,20 @@ export function PlanBoard({ plan }: PlanBoardProps) {
 				</div>
 
 				<div className="plan-board-actions">
-					{/* 实施按钮：核心出口，折叠态和展开态均可访问 */}
-					<button
-						type="button"
-						className="plan-board-implement"
-						title={t("planImplementTip")}
-						onClick={(e) => {
-							e.stopPropagation();
-							handleImplement();
-						}}
-					>
-						{t("planImplementBtn")}
-					</button>
+					{/* 只规划结束后才提供实施出口；普通执行看板仅展示进度。 */}
+					{canImplement && (
+						<button
+							type="button"
+							className="plan-board-implement"
+							title={t("planImplementTip")}
+							onClick={(e) => {
+								e.stopPropagation();
+								handleImplement();
+							}}
+						>
+							{t("planImplementBtn")}
+						</button>
+					)}
 
 					{/* 净室执行：展开态与实施按钮紧邻并排 */}
 					{expanded && (
