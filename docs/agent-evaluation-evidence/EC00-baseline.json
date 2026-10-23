@@ -1,0 +1,226 @@
+{
+	"schemaVersion": 1,
+	"recordedAt": "2026-10-23T12:22:23.336Z",
+	"baselineCommit": "8cca916a72bd9e606313bc9c08e21944c821da91",
+	"machine": {
+		"os": "25.6.0",
+		"arch": "arm64",
+		"cpu": "Apple M1 Pro",
+		"cores": 10,
+		"memoryBytes": 34359738368,
+		"node": "v23.10.0"
+	},
+	"scope": "Synthetic existing goal-evidence digest only. Not Agent execution, collector overhead, evaluation latency or AC39 acceptance. Parallel is a concurrent-call-shaped fixture, not elapsed parallel execution.",
+	"rows": [
+		{
+			"load": "short-serial",
+			"trial": 1,
+			"elapsedMs": 1.7132079999999945,
+			"cpuMicros": {
+				"user": 1693,
+				"system": 61
+			},
+			"rssBefore": 85049344,
+			"rssAfter": 85245952,
+			"inputBytes": 6571,
+			"digestBytes": 2279,
+			"diskBytes": 0
+		},
+		{
+			"load": "short-serial",
+			"trial": 2,
+			"elapsedMs": 0.10599999999999454,
+			"cpuMicros": {
+				"user": 105,
+				"system": 7
+			},
+			"rssBefore": 85262336,
+			"rssAfter": 85311488,
+			"inputBytes": 6571,
+			"digestBytes": 2279,
+			"diskBytes": 0
+		},
+		{
+			"load": "short-serial",
+			"trial": 3,
+			"elapsedMs": 0.0491659999999996,
+			"cpuMicros": {
+				"user": 49,
+				"system": 5
+			},
+			"rssBefore": 85311488,
+			"rssAfter": 85360640,
+			"inputBytes": 6571,
+			"digestBytes": 2279,
+			"diskBytes": 0
+		},
+		{
+			"load": "short-serial",
+			"trial": 4,
+			"elapsedMs": 0.058875000000000455,
+			"cpuMicros": {
+				"user": 72,
+				"system": 9
+			},
+			"rssBefore": 85377024,
+			"rssAfter": 85393408,
+			"inputBytes": 6571,
+			"digestBytes": 2279,
+			"diskBytes": 0
+		},
+		{
+			"load": "short-serial",
+			"trial": 5,
+			"elapsedMs": 0.04475000000000762,
+			"cpuMicros": {
+				"user": 197,
+				"system": 14
+			},
+			"rssBefore": 85409792,
+			"rssAfter": 85458944,
+			"inputBytes": 6571,
+			"digestBytes": 2279,
+			"diskBytes": 0
+		},
+		{
+			"load": "parallel",
+			"trial": 1,
+			"elapsedMs": 0.05483300000000213,
+			"cpuMicros": {
+				"user": 54,
+				"system": 7
+			},
+			"rssBefore": 85524480,
+			"rssAfter": 85590016,
+			"inputBytes": 219491,
+			"digestBytes": 3463,
+			"diskBytes": 0
+		},
+		{
+			"load": "parallel",
+			"trial": 2,
+			"elapsedMs": 0.10187500000000682,
+			"cpuMicros": {
+				"user": 110,
+				"system": 21
+			},
+			"rssBefore": 86163456,
+			"rssAfter": 86163456,
+			"inputBytes": 219491,
+			"digestBytes": 3463,
+			"diskBytes": 0
+		},
+		{
+			"load": "parallel",
+			"trial": 3,
+			"elapsedMs": 0.04908299999999599,
+			"cpuMicros": {
+				"user": 48,
+				"system": 6
+			},
+			"rssBefore": 86392832,
+			"rssAfter": 86392832,
+			"inputBytes": 219491,
+			"digestBytes": 3463,
+			"diskBytes": 0
+		},
+		{
+			"load": "parallel",
+			"trial": 4,
+			"elapsedMs": 0.049041000000002555,
+			"cpuMicros": {
+				"user": 48,
+				"system": 9
+			},
+			"rssBefore": 86638592,
+			"rssAfter": 86638592,
+			"inputBytes": 219491,
+			"digestBytes": 3463,
+			"diskBytes": 0
+		},
+		{
+			"load": "parallel",
+			"trial": 5,
+			"elapsedMs": 0.034458000000000766,
+			"cpuMicros": {
+				"user": 36,
+				"system": 2
+			},
+			"rssBefore": 86867968,
+			"rssAfter": 86867968,
+			"inputBytes": 219491,
+			"digestBytes": 3463,
+			"diskBytes": 0
+		},
+		{
+			"load": "long-output",
+			"trial": 1,
+			"elapsedMs": 0.7620840000000015,
+			"cpuMicros": {
+				"user": 525,
+				"system": 399
+			},
+			"rssBefore": 87097344,
+			"rssAfter": 88113152,
+			"inputBytes": 20007291,
+			"digestBytes": 3455,
+			"diskBytes": 0
+		},
+		{
+			"load": "long-output",
+			"trial": 2,
+			"elapsedMs": 0.10066699999998718,
+			"cpuMicros": {
+				"user": 115,
+				"system": 17
+			},
+			"rssBefore": 179109888,
+			"rssAfter": 179109888,
+			"inputBytes": 20007291,
+			"digestBytes": 3455,
+			"diskBytes": 0
+		},
+		{
+			"load": "long-output",
+			"trial": 3,
+			"elapsedMs": 0.07391700000002288,
+			"cpuMicros": {
+				"user": 91,
+				"system": 12
+			},
+			"rssBefore": 179585024,
+			"rssAfter": 179585024,
+			"inputBytes": 20007291,
+			"digestBytes": 3455,
+			"diskBytes": 0
+		},
+		{
+			"load": "long-output",
+			"trial": 4,
+			"elapsedMs": 0.08833299999997735,
+			"cpuMicros": {
+				"user": 90,
+				"system": 41
+			},
+			"rssBefore": 180355072,
+			"rssAfter": 180355072,
+			"inputBytes": 20007291,
+			"digestBytes": 3455,
+			"diskBytes": 0
+		},
+		{
+			"load": "long-output",
+			"trial": 5,
+			"elapsedMs": 0.07708400000001348,
+			"cpuMicros": {
+				"user": 94,
+				"system": 33
+			},
+			"rssBefore": 181829632,
+			"rssAfter": 181829632,
+			"inputBytes": 20007291,
+			"digestBytes": 3455,
+			"diskBytes": 0
+		}
+	]
+}
