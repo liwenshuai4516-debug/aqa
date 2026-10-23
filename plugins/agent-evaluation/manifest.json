@@ -2,7 +2,7 @@
 	"id": "agent-evaluation",
 	"name": "Agent 评估中心",
 	"nameEn": "Agent evaluation",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "评估契约与证据仓库；产品入口尚未接入。",
 	"descriptionEn": "Evaluation contracts and evidence storage; product entry points are not connected yet.",
 	"apiVersion": 2,

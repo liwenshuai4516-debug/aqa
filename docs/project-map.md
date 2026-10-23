@@ -119,4 +119,4 @@ UI 测试 P0：`server/extension-tool-policy.ts` 定义操作副作用，`server
 
 数据空间 Agent 交接规范：`.pi/skills/data-space-testing/SKILL.md` 选择查询／绑定／同步／普通登记路径，`references/result-output.md` 约定结果交付，`scripts/validate-result.mjs` 只读校验交付一致性；`tests/data-space-skill-desktop-test.mjs` 验证 Electron 发现与插件归属联动。
 
-Agent 评估仓库基础：`plugins/agent-evaluation/{schema,store,durable}.mjs`，提供统一契约、不可变存储与逐引用鉴权；EC01 尚无可安装产品入口，见 [实施记录](agent-evaluation-evidence/EC01.md)。
+Agent 评估工程基础：`plugins/agent-evaluation/{schema,store,durable,collect}.mjs`、`adapters/pi.mjs` 与 `server/agent/evaluation-evidence.ts`，提供统一仓库、受控选区、只读原生证据与封存；产品入口待 EC04，见 [EC01](agent-evaluation-evidence/EC01.md)、[EC02](agent-evaluation-evidence/EC02.md)。

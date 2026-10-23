@@ -1,0 +1,119 @@
+{
+	"nativeRunnerRegression": {
+		"status": "PASS",
+		"scope": "local synthetic targets; controlled review responses, real native runners, no real model assessment",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/data-space-native-g4Hl4G",
+		"checks": [
+			"API actual Newman execution, original route, native evidence and idempotent sync",
+			"API actual failed assertion and successful retest retain parent lineage",
+			"API cancellation imports incomplete native run as unknown without replay",
+			"API changed frozen evidence is rejected",
+			"API cross-workspace result reference rejected",
+			"UI real design gate, positive/negative diagnosis and formal Playwright evidence sync (review response controlled)",
+			"restart imports missed native completion without replaying execution"
+		]
+	},
+	"evaluationCollectorImport": {
+		"status": "PASS",
+		"scope": "offline read and seal of this task's synthetic native runner outputs; no CLI/model/runner invocation",
+		"fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/data-space-native-g4Hl4G",
+		"fixtureSummarySha256": "e3ca00b679fe7b956e41617b65e4a595c5729f1acd5ab3d785da30fcec227af4",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-native-WBwyWL",
+		"results": [
+			{
+				"engine": "api",
+				"workspace": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/data-space-native-g4Hl4G/api-project",
+				"snapshotRef": {
+					"kind": "snapshots",
+					"id": "14ec37ed-f4da-4d0a-8231-10cb834650b1",
+					"revision": 1
+				},
+				"runs": [
+					{
+						"runId": "0d4116d6-3953-4906-8865-f70717fbd8b2",
+						"at": "2026-10-23T14:27:05.754Z",
+						"complete": false,
+						"statuses": ["unknown"],
+						"digest": "e555da606719498572d3ffa606fb9e452a5e61791235e950e05864e2c8ee4261"
+					},
+					{
+						"runId": "473fba39-c452-4b04-8bee-416b060b64fe",
+						"at": "2026-10-23T14:27:00.792Z",
+						"complete": true,
+						"statuses": ["passed"],
+						"digest": "68682f6316d548dd301d7420be5741d47d6d6ca86a5c55d2de6836ef5a81e67c"
+					},
+					{
+						"runId": "8df3fd7c-76e8-4ae3-81c8-920cf7a666dd",
+						"at": "2026-10-23T14:27:04.142Z",
+						"complete": true,
+						"statuses": ["passed"],
+						"digest": "76d118ed2ffbb2ce99253af0cf400bf38cc45d06a6861c73e7799cc6077a631b"
+					},
+					{
+						"runId": "da55e3c7-1471-4d03-9bcc-a65e26f83145",
+						"at": "2026-10-23T14:27:02.484Z",
+						"complete": true,
+						"statuses": ["failed"],
+						"digest": "14c6356a026fdb37f4be6cfe617e9445d9707755686b816678cd0bd1fcf75d19"
+					},
+					{
+						"runId": "f4c965cf-9491-4682-8e0b-3dbdcb4fe6dc",
+						"at": "2026-10-23T14:27:17.261Z",
+						"complete": true,
+						"statuses": ["passed"],
+						"digest": "7242c4ed9e1b7d75b2273563a4f1cd31e1ea31b57112aeaf8ba017f76e87205c"
+					}
+				],
+				"nativeReads": 5,
+				"idempotentReplayReads": 0
+			},
+			{
+				"engine": "ui",
+				"workspace": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/data-space-native-ui-DHDQCI/project",
+				"snapshotRef": {
+					"kind": "snapshots",
+					"id": "d24dbd7c-96d8-4341-be3c-aacd349d3197",
+					"revision": 1
+				},
+				"runs": [
+					{
+						"runId": "run-1249f06947265e47b0d54258ae80b462",
+						"at": "2026-10-23T14:27:12.679Z",
+						"complete": true,
+						"statuses": ["passed"],
+						"digest": "989306a5c93407d783df8ee5d380bbdafcaee3beae0ec36edbb9cc4220cd93ab"
+					}
+				],
+				"nativeReads": 2,
+				"idempotentReplayReads": 0
+			}
+		]
+	},
+	"compiledServerRegression": {
+		"status": "PASS",
+		"scope": "isolated compiled server, two clients, no model or business calls; not Electron",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-server-JLE5he",
+		"checks": [
+			"Compiled index/engine/provider/plugin channel uses trusted sender and separate SDK sessions",
+			"Unknown conversation is rejected without snapshot fallback",
+			"Read-only probing does not create a new session or send a prompt"
+		]
+	},
+	"compiledServerFailures": [
+		{
+			"status": "FAIL",
+			"scope": "isolated compiled server, two clients, no model or business calls; not Electron",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-server-1a9nwW",
+			"checks": [],
+			"error": "TypeError: Cannot read properties of undefined (reading 'principalId')"
+		},
+		{
+			"status": "FAIL",
+			"scope": "isolated compiled server, two clients, no model or business calls; not Electron",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-server-WWcUKC",
+			"checks": [],
+			"error": "AssertionError [ERR_ASSERTION]: {\"requestId\":\"probe-30\",\"error\":{\"code\":\"CAPABILITY_UNAVAILABLE\",\"message\":\"This engine has no evaluation evidence provider\"}}"
+		}
+	]
+}

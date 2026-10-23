@@ -1,20 +1,21 @@
-# Agent 评估中心 — EC01 仓库基础
+# Agent 评估中心 — EC01/EC02 工程基础
 
-当前版本 0.1.0，仅实现统一契约、不可变仓库和工程测试。尚未提供插件运行入口、工具、技能或页面，不要将此目录登记到实际应用；这些入口由 EC02–EC04 接入后统一验收。未调用任何模型或业务执行器。
+当前版本 0.2.0，实现统一契约、不可变仓库、受控源读取与证据采集。尚未提供插件运行入口、工具、技能或页面，不要将此目录登记到实际应用；产品入口由 EC04 接入后统一验收。评估模块不调用模型或业务执行器。
 
 ## 文件与信任边界
 
 - `schema.mjs`：schemaVersion 1、严格字段校验、资源限制、状态转换及脱敏。
 - `store.mjs`：`EvaluationStore`，单写者锁、幂等写入、逐域/会话引用校验、分页读取、导出和索引重建。
 - `durable.mjs`：临时文件写入、fsync、原子发布及父目录 fsync；故障残片保留。
+- `collect.mjs` / `adapters/pi.mjs`：受控选区采集、来源去重/冲突、显式子任务、原生产物只读复核、checkpoint 与不可变封存。
 
-构造器必须接收可信宿主注入的 `authorize(context)`；返回 `domain={principalId,workspaceId}`、授权 `sessionIds`、`allowWrite`，人工入口另有 `human`，执行事实对账另有 `reconciled`。请求体不能生成这些权限。当前单测用 WeakMap 模拟不可伪造上下文，真实宿主接线仍待 EC02/EC04，不以此宣称实际身份边界已验收。
+构造器必须接收可信宿主注入的 `authorize(context)`；返回 `domain={principalId,workspaceId}`、授权 `sessionIds`、`allowWrite`，人工入口另有 `human`，执行事实对账另有 `reconciled`。请求体不能生成这些权限。当前单测用 WeakMap 模拟不可伪造上下文，EC02 已在隔离真实 PluginManager/SDK 中验证可信 sender 与逐会话接线；实际产品入口与 Electron 接入仍待 EC04。
 
 所有写操作均使用 requestId。授权先于幂等查询；同域同请求/同脱敏输入返回原记录，改变输入返回 VERSION_CONFLICT。请求回执与对象在同一文件发布；回执丢失后原请求查询不会再次创建记录。write 不提供 CLI、网络、运行器或业务写入能力；恢复不会自动启动任何任务。
 
 ## 数据契约与读取
 
-磁盘 envelope 为 `{schemaVersion,kind,id,revision,domain,createdAt,data,referenceDigests,redacted,request,digest}`；review 另含可信 reviewer，证据另含 contentRef。`id` 按 kind 分别表示设计中的 taskId/targetId/attemptId/evidenceId/snapshotId/evaluationId/reviewId；`contractRef={kind,id,revision}` 无损编码 taskId/taskRevision，其他对象引用同理。仅仓库内部表示，当前没有新增跨端协议。原始 requestId 和 domain 不进入导出。
+磁盘 envelope 为 `{schemaVersion,kind,id,revision,domain,createdAt,data,referenceDigests,redacted,request,digest}`；review 另含可信 reviewer，证据另含 contentRef。`id` 按 kind 分别表示设计中的 taskId/targetId/attemptId/evidenceId/snapshotId/evaluationId/reviewId；`contractRef={kind,id,revision}` 无损编码 taskId/taskRevision，其他对象引用同理。仅仓库内部表示，跨端类型统一在 server/protocol.ts，消息继续复用插件通道；协议 v33 未变。原始 requestId 和 domain 不进入导出。
 
 数据路径 `<dataDir>/agent-evaluation/`：七类对象目录保存 `<UUID>.<revision>.json`，同域正文以 `blobs/<domain摘要>-<内容SHA256>.blob` 复用。blob 先发布，引用文件后发布，最后更新内存索引。正文没有嵌在每个元数据记录里；`readEvidence` 按字符游标最多 12,000 字符（最坏 UTF-8 48KB）读取，并在返回前验证整个 blob 的摘要与字节数。不同域不共享正文路径；每次读仍校验逐引用权限。
 
@@ -31,3 +32,13 @@ contract/target/attempt 可按 previousRef 新增 revision，陈旧 revision 拒
 正常关闭调用 close，仅移除 nonce 仍匹配的本实例锁。异常关闭后，先确认对应宿主/写者已结束，完整备份目录；在新隔离 dataDir 中复制已提交 JSON 与 blobs，保留原备份、锁、临时/损坏文件的审计索引。仅在新副本排除已审计的残片及旧锁，重新打开后只从已提交记录重建索引。遇到损坏/未来版本、未确认写者或不明残片，不继续写入。不得通过按 PID 杀进程、删除旧证据或业务重跑“修复”仓库。
 
 恢复不安装插件、不调用模型、不执行外部任务。无自动历史清理和破坏性迁移；回滚代码用 git revert，数据保留。完整阶段记录见 [EC01](../../docs/agent-evaluation-evidence/EC01.md)。
+
+## EC02 采集边界
+
+宿主 `readEvaluationEvidence(clientId, query)` 只能由可信 sender/tool context 给出 clientId；拒绝未知客户端/会话，无全局快照回退。固定 SDK entry ID 选区，不打开调用方任意路径。`describe` 只给当前分支最近窗口及明确缺口，`collect` 在完整验证边界后分页，单次上限 1,000 条/8MiB/2秒；超大单项标不可用，不用预览冒充正文。隐藏思考、签名、图片和私有内容不采集。
+
+`EvidenceCollector.collect` 的 `liveEvents` 仅由可信宿主 watch 注入，产品入口不得透传请求体里的事件。事件只接纳已选 SDK 工具调用的元数据，不保存实时参数/结果预览；sourceEventId 与 sourceRevision 去重，冲突双方保留。duration 来自宿主 Date.now 墙钟差，明确时钟不确定性，负值/缺失为 null；不推算思考时长、不补造单调计时。实时观察没有历史回填保证，中途启用缺少开始事件会标 gap。显式子任务按独立 attempt 关联，可读取嵌套 subagent；普通派生会话不自动纳入。
+
+证据落盘后才发布 checkpoint，失败重试复用已持久记录；seal 只接受 durable checkpoint。watch 仅显式开启、队列最多 1,000，故障回调与业务隔离，停止/取消后的迟到回调不发布结果。`readEvaluationNative` 从已授权会话取得真实工作区，复用 TestAssetReader，保留原 run 时间/哈希与读时点；不执行测试，不因此证明原 run 属于本次任务。该判断由 EC03 的快照规则完成。
+
+工程结果与源覆盖见 [EC02](../../docs/agent-evaluation-evidence/EC02.md)。

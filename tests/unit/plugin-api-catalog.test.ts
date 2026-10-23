@@ -108,6 +108,8 @@ describe("静态表与源码同口径", () => {
 			"onToolPost",
 			"onToolEvent",
 			"getActiveConversation",
+			"readEvaluationEvidence",
+			"readEvaluationNative",
 			"onConversationChanged",
 			"onClientModelChanged",
 			"registerCommand",

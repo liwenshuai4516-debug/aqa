@@ -27,6 +27,7 @@ import {
 	appendFileSync,
 	existsSync,
 	readFileSync,
+	realpathSync,
 	readdirSync,
 	rmSync,
 	mkdirSync,
@@ -103,6 +104,8 @@ import { createPluginInvocation } from "../mcp/plugin-mcp.js";
 import { syncPluginToolsIntoSession } from "../plugins.js";
 import { restoreLazyToolNames } from "./lazy-tools-state.js";
 import { modelChangeKey, pickClientConversation } from "../plugin-conversation-view.js";
+import { readEvaluationEvidence, EvidenceReadError } from "./evaluation-evidence.js";
+import type { AgentEvaluationEvidenceQuery, AgentEvaluationEvidencePage } from "../protocol.js";
 import { SettingsService } from "../settings-service.js";
 import {
 	GoalService,
@@ -4002,6 +4005,36 @@ export class ClientSession {
 		} catch (err) {
 			console.error("[agent-service] onClientModelChanged failed:", err);
 		}
+	}
+
+	/** Strict evaluation source: selected conversation only, no active/global fallback. */
+	readEvaluationEvidenceForPlugins(query: AgentEvaluationEvidenceQuery): AgentEvaluationEvidencePage {
+		const target = this.convs.get(query?.conversationId);
+		if (!target)
+			throw new EvidenceReadError("PERMISSION_DENIED", "Evaluation conversation is not owned by this client");
+		const manager = target.session.sessionManager;
+		const descendants = new Set(collectSubagentDescendantIds([...this.convs.values()], target.id));
+		return readEvaluationEvidence(
+			{
+				principalId: this.clientId,
+				workspaceId: createHash("sha256").update(realpathSync(target.cwd)).digest("hex"),
+				workspace: realpathSync(target.cwd),
+				conversationId: target.id,
+				sessionId: manager.getSessionId(),
+				persisted: manager.isPersisted(),
+				isStreaming: target.session.isStreaming,
+				leafId: manager.getLeafId(),
+				getEntry: (id) => manager.getEntry(id),
+				children: [...this.convs.values()]
+					.filter((c) => descendants.has(c.id))
+					.map((c) => ({
+						sessionId: c.session.sessionManager.getSessionId(),
+						conversationId: c.id,
+						persisted: c.session.sessionManager.isPersisted(),
+					})),
+			},
+			query,
+		);
 	}
 
 	/** 插件用：本客户端最近活跃对话的快照（轨迹视图直接显示打开对话的时间线）。

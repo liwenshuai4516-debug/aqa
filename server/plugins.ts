@@ -1,4 +1,6 @@
 import { TestAssetReader, type TestEngine } from "./test-asset-reader.js";
+import { EvidenceReadError } from "./agent/evaluation-evidence.js";
+import type { AgentEvaluationEvidenceQuery, AgentEvaluationEvidencePage } from "./protocol.js";
 /**
  * pi-web-ui 插件管理器 —— 可选界面组件的加载与桥接。
  *
@@ -415,6 +417,13 @@ export interface PluginHost {
 	 *  传 `{clientId}` = 该标签页正在看的对话（本页多标签页互不干扰，#542）；
 	 *  不传 = 最近活跃的非子代理会话。返回 null = 暂无对话。 */
 	getActiveConversation(options?: PluginConversationQuery): PluginConversationSnapshot | null;
+	/** Read selected raw public evidence. clientId must come from onMessage/from or a bound tool context. */
+	readEvaluationEvidence(clientId: string, query: AgentEvaluationEvidenceQuery): AgentEvaluationEvidencePage;
+	readEvaluationNative(
+		clientId: string,
+		query: { conversationId: string; sessionId: string; engine: TestEngine; reference: unknown },
+	): Promise<import("./test-asset-reader.js").NativeTestRun>;
+
 	/** 订阅「某客户端的对话模型切换成功」（#542）。回调收到切换后的快照
 	 *  （含 clientId / conversationId / model），按 clientId 过滤即可只看本页；
 	 *  只在这会话的模型**真的变了**时触发（重复选同一个模型 / 重连重放
@@ -2322,6 +2331,9 @@ export class PluginManager {
 	 *  #542：按 clientId 取「该标签页正在看的对话」；缺省回落「最近活跃的非子代理」。 */
 	conversationProvider: ((options?: PluginConversationQuery) => PluginConversationSnapshot | null) | undefined =
 		undefined;
+	evaluationEvidenceProvider:
+		((clientId: string, query: AgentEvaluationEvidenceQuery) => AgentEvaluationEvidencePage) | undefined = undefined;
+
 	/** index.ts 注入：插件无头调用 agent（微信通道等经 host.chat 调用）。 */
 	chatProvider: ((pluginId: string, req: PluginChatRequest) => Promise<PluginChatResult>) | undefined = undefined;
 	/** 由 index.ts 接入 agent-service：插件直调模型（host.llm.complete 的底层，孤立无工具会话）。
@@ -3849,6 +3861,22 @@ export class PluginManager {
 				},
 			},
 			getActiveConversation: (opts) => self.getActiveConversation(opts),
+			readEvaluationEvidence: (clientId, query) => {
+				if (!can("tools")) throw new EvidenceReadError("PERMISSION_DENIED", "Evaluation tools permission denied");
+				if (!self.evaluationEvidenceProvider)
+					throw new EvidenceReadError("CAPABILITY_UNAVAILABLE", "This engine has no evaluation evidence provider");
+				return self.evaluationEvidenceProvider(clientId, query);
+			},
+			readEvaluationNative: async (clientId, query) => {
+				const scope = host.readEvaluationEvidence(clientId, {
+					conversationId: query.conversationId,
+					mode: "describe",
+					limit: 1,
+				});
+				if (scope.sessionId !== query.sessionId)
+					throw new EvidenceReadError("PERMISSION_DENIED", "Native evidence session changed");
+				return new TestAssetReader(self.dataDir).read(query.engine, scope.workspace, query.reference);
+			},
 			chat: (req) => sendChat(req),
 			chatWait: async (req, opts) => {
 				try {

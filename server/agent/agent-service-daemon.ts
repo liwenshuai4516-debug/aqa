@@ -25,6 +25,8 @@ import { isRemoteWorkspaceUri, resolveWorkspaceSessionDir } from "../remote-ssh-
 import { getMaxOpenConversations } from "./agent-formatters.js";
 import { collectSubagentDescendantIds } from "./subagents.js";
 import { pickLatestClientSnapshot } from "../plugin-conversation-view.js";
+import { EvidenceReadError } from "./evaluation-evidence.js";
+import type { AgentEvaluationEvidenceQuery, AgentEvaluationEvidencePage } from "../protocol.js";
 import type { ToolGuardHook } from "../tool-guards.js";
 import type {
 	ServerMessage,
@@ -576,6 +578,13 @@ export class AgentService {
 		let n = 0;
 		for (const cs of this.clients.values()) n += cs.pendingMessages();
 		return n;
+	}
+
+	/** The caller supplies the sender identity from the trusted plugin callback, never payload.owner. */
+	readEvaluationEvidenceForPlugins(clientId: string, query: AgentEvaluationEvidenceQuery): AgentEvaluationEvidencePage {
+		const client = this.clients.get(clientId);
+		if (!client) throw new EvidenceReadError("PERMISSION_DENIED", "Evaluation client is unavailable");
+		return client.readEvaluationEvidenceForPlugins(query);
 	}
 
 	/** 插件用：全客户端最近活跃对话的快照（#542：按 clientId 取某个标签页正在看的

@@ -207,6 +207,9 @@ export interface PluginHost {
 	onRunEvent(handler: (ev: unknown) => void): () => void;
 	/** 读对话快照。传 `{clientId}` = 该标签页正在看的对话；不传 = 最近活跃的非子代理会话。 */
 	getActiveConversation(options?: { clientId?: string; fallback?: "latest-non-subagent" }): unknown;
+	/** Selected evidence only; identity must come from the trusted sender/tool context. */
+	readEvaluationEvidence(clientId: string, query: unknown): unknown;
+	readEvaluationNative(clientId: string, query: unknown): Promise<unknown>;
 	onConversationChanged(handler: () => void): () => void;
 	/** 订阅模型切换成功（回调带 clientId / conversationId / model / isSubagent… 的快照）。 */
 	onClientModelChanged(handler: (snap: unknown) => void): () => void;

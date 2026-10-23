@@ -221,6 +221,18 @@ export const HOST_METHODS: ReadonlyArray<CatalogHostMethod> = [
 		example: `host.getActiveConversation({ clientId })`,
 	},
 	{
+		name: "readEvaluationEvidence",
+		needs: "tools",
+		summary: "按可信 sender 的会话与 SDK 消息选区读取公开证据；无全局回退",
+		example: `host.readEvaluationEvidence(from, { conversationId, mode: "describe", limit: 100 })`,
+	},
+	{
+		name: "readEvaluationNative",
+		needs: "tools",
+		summary: "按已授权会话工作区只读核验原生 UI/API 结果，不执行测试",
+		example: `await host.readEvaluationNative(from, { conversationId, sessionId, engine: "api", reference: runId })`,
+	},
+	{
 		name: "onConversationChanged",
 		needs: "-",
 		summary: "订阅切对话（轨迹插件重拉时间线）",

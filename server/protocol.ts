@@ -4039,3 +4039,47 @@ export type ServerMessage =
 			previewMessages?: UiMessage[];
 	  }
 	| { type: "sandbox_diff"; diff: SandboxDiffView };
+
+/** Authorized, bounded Pi evidence reads. Payloads use the existing plugin channel. */
+export interface AgentEvaluationEvidenceQuery {
+	conversationId: string;
+	mode: "describe" | "collect";
+	sessionId?: string;
+	startMessageId?: string;
+	endMessageId?: string;
+	cursor?: string;
+	limit?: number;
+	childSessionIds?: string[];
+}
+export interface AgentEvaluationSourceItem {
+	sourceEventId: string;
+	sourceRevision: string;
+	sourceLocator: string;
+	parentEventId: string | null;
+	occurredAt: string;
+	kind: string;
+	content?: string;
+	availability: "available" | "partial" | "unavailable";
+	truncated: boolean;
+	redaction: string[];
+}
+export interface AgentEvaluationEvidencePage {
+	schemaVersion: 1;
+	principalId: string;
+	workspaceId: string;
+	workspace: string;
+	conversationId: string;
+	sessionId: string;
+	sourceId: string;
+	persistedSource: boolean;
+	observedAt: string;
+	isStreaming: boolean;
+	items: AgentEvaluationSourceItem[];
+	choices: Array<{ id: string; role: string; preview: string }>;
+	children: Array<{ sessionId: string; conversationId: string; persisted: boolean }>;
+	gaps: string[];
+	coverage: "complete" | "partial" | "unknown";
+	nextCursor: string | null;
+	rangeStart: string | null;
+	rangeEnd: string | null;
+}

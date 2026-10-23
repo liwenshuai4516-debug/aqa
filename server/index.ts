@@ -19,6 +19,8 @@
 // MUST be imported before the SDK is loaded so on-disk patches apply cleanly.
 import "./patch-remote-catalog.js";
 import "./patch-turn-end-boundary.js";
+import type { AgentEvaluationEvidenceQuery, AgentEvaluationEvidencePage } from "./protocol.js";
+import { EvidenceReadError } from "./agent/evaluation-evidence.js";
 import { ApiTestingRunner } from "./api-testing-runner.js";
 import { existsSync, mkdirSync, readFileSync, statSync } from "node:fs";
 import { stat } from "node:fs/promises";
@@ -1565,6 +1567,8 @@ export interface EngineService {
 	/** 当前打开对话的快照（pi 引擎；dsh 引擎无此方法，插件回退空态）。
 	 *  #542：可带 `{clientId}` 取某标签页正在看的对话。 */
 	readConversationForPlugins?: ((options?: PluginConversationQuery) => PluginConversationSnapshot | null) | undefined;
+	readEvaluationEvidenceForPlugins?:
+		((clientId: string, query: AgentEvaluationEvidenceQuery) => AgentEvaluationEvidencePage) | undefined;
 	/** 模型切换成功通知（#542；pi 引擎。dsh 引擎暂无——插件订不到事件但快照照旧可读）。 */
 	onClientModelChanged?: ((snap: PluginConversationSnapshot) => void) | undefined;
 	/** 插件无头调用 agent（pi 引擎；dsh 引擎暂无，host.chat 明确拒绝）。 */
@@ -1763,6 +1767,14 @@ const service: EngineService = {
 			return ensureEngine(eng).readConversationForPlugins?.(options) ?? null;
 		}
 		return piServiceInstance?.readConversationForPlugins?.(options) ?? null;
+	},
+	readEvaluationEvidenceForPlugins(clientId, query) {
+		const engine = clientEngines.get(clientId);
+		if (!engine) throw new EvidenceReadError("PERMISSION_DENIED", "Evaluation client is unavailable");
+		const target = ensureEngine(engine);
+		if (!target.readEvaluationEvidenceForPlugins)
+			throw new EvidenceReadError("CAPABILITY_UNAVAILABLE", "This engine has no evaluation evidence provider");
+		return target.readEvaluationEvidenceForPlugins(clientId, query);
 	},
 	chatFromPlugin(pluginId, req) {
 		const piSvc = ensureEngine("pi") as AgentService;
@@ -2211,6 +2223,11 @@ for (const s of activeEngines()) wireEngineHooks(s);
 // 插件扩展点：当前打开对话的快照（轨迹视图直接显示打开对话的时间线；
 // dsh 引擎无此方法时回退 null，插件显示空态）。#542：透传 {clientId} 选本标签页的对话。
 pluginMgr.conversationProvider = (opts) => service.readConversationForPlugins?.(opts) ?? null;
+pluginMgr.evaluationEvidenceProvider = (clientId, query) => {
+	if (!service.readEvaluationEvidenceForPlugins)
+		throw new EvidenceReadError("CAPABILITY_UNAVAILABLE", "This engine has no evaluation evidence provider");
+	return service.readEvaluationEvidenceForPlugins(clientId, query);
+};
 // 插件扩展点：无头调用 agent（微信通道等经 host.chat 投递外部消息，无浏览器也能跑）。
 pluginMgr.chatProvider = (pluginId, req) =>
 	service.chatFromPlugin?.(pluginId, req) ?? Promise.reject(new Error("当前引擎不支持无头调用（仅标准 pi 引擎）"));

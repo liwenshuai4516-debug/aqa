@@ -43,7 +43,7 @@
  * tests/unit/plugin-sdk-mock.test.ts 锁定）。脚手架拷贝 sdk/index.mjs 时连版本号
  * 一起带走；已装插件用 `pi-web-ui plugin upgrade-sdk` 刷新拷贝。
  */
-export const SDK_VERSION = "0.1.3";
+export const SDK_VERSION = "0.1.4";
 
 /** 服务端入口校验 + 原样返回（拼错 activate / 忘写 deactivate 在加载期就报错）。 */
 export function definePlugin(def) {
@@ -294,6 +294,14 @@ export function createMockHost(overrides) {
 		onToolPost: sub("onToolPost"),
 		onRunEvent: sub("onRunEvent"),
 		getActiveConversation: () => null,
+		readEvaluationEvidence: () => {
+			throw Object.assign(new Error("No evaluation source configured in mock"), { code: "CAPABILITY_UNAVAILABLE" });
+		},
+		readEvaluationNative: async () => {
+			throw Object.assign(new Error("No native evaluation source configured in mock"), {
+				code: "CAPABILITY_UNAVAILABLE",
+			});
+		},
 		onClientModelChanged: sub("onClientModelChanged"),
 		chat: async () => okFalse("chatProvider（无头调用未接入）"),
 		chatWait: async () => ({ ok: false, error: "mock：未注入 chatProvider（不等 run_end）" }),

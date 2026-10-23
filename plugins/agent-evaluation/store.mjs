@@ -29,7 +29,7 @@ const NOFOLLOW = fs.constants.O_NOFOLLOW;
 const contentHash = (text) => createHash("sha256").update(text).digest("hex");
 
 export class EvaluationStore {
-	constructor({ dataDir, authorize, readOnly = false, limits = {}, fault = () => {} }) {
+	constructor({ dataDir, authorize, readOnly = false, limits = {}, fault = (_stage) => {} }) {
 		requireValue(typeof authorize === "function", "PERMISSION_DENIED", "Trusted authorization provider required");
 		this.authorize = authorize;
 		this.readOnly = readOnly;
@@ -263,7 +263,7 @@ export class EvaluationStore {
 		}
 		return { items, nextCursor: keys.some((k) => k > last) ? last : null };
 	}
-	write(context, { kind, data, requestId, schemaVersion = VERSION, previousRef }) {
+	write(context, { kind, data, requestId, schemaVersion = VERSION, previousRef = undefined }) {
 		const identity = this.identity(context, true);
 		requireValue(
 			typeof requestId === "string" && /^[A-Za-z0-9_-]{1,128}$/.test(requestId),
@@ -419,7 +419,11 @@ export class EvaluationStore {
 		if (kind === "attempts") {
 			const contract = this.get(context, data.contractRef);
 			requireValue(
-				!data.sourceSessionId || data.sourceSessionId === contract.data.scope.sessionId,
+				!data.sourceSessionId ||
+					data.sourceSessionId === contract.data.scope.sessionId ||
+					(data.parentAttemptRef &&
+						contract.data.scope.childSessionIds.includes(data.sourceSessionId) &&
+						same(this.get(context, data.parentAttemptRef).data.contractRef, data.contractRef)),
 				"INVALID_INPUT",
 				"Attempt session differs from contract",
 			);
