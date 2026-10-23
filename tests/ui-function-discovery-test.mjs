@@ -231,7 +231,25 @@ try {
 			JSON.stringify({ cleanup: optimizationScope.cleanup, sideEffects: optimizationScope.sideEffects }),
 		);
 		const seedPath = "tests/" + role + ".seed.spec.ts";
-		const seedContent = `import {test,expect} from '@playwright/test';test('seed',async({page})=>{await page.goto('/?role=${role}');await expect(page.locator('#identity')).toHaveText('Role: ${role}');await expect(page.getByRole('status')).toHaveText('Ready');});`;
+		const seedContent = `import {test,expect} from '@playwright/test';
+import {writeFile} from 'node:fs/promises';
+test('seed',async({page})=>{
+ await page.addInitScript(()=>{
+  const states: {status:string,rows:string[]}[]=[];
+  (window as any).__u05StatusObservations=states;
+  new MutationObserver(()=>{
+   const status=document.querySelector('[role=status]')?.textContent;
+   if(status && status!==states.at(-1)?.status)
+    states.push({status,rows:Array.from(document.querySelectorAll('li'),li=>li.textContent||'')});
+  }).observe(document,{subtree:true,childList:true,characterData:true});
+ });
+ await page.goto('/?role=${role}');
+ await expect(page.locator('#identity')).toHaveText('Role: ${role}');
+ await expect(page.getByRole('status')).toHaveText('Ready');
+ const states=await page.evaluate(()=>(window as any).__u05StatusObservations);
+ expect(states).toEqual([{status:'Loading',rows:[]},{status:'Ready',rows:${JSON.stringify(optimizationScope.initialNames.slice(0, 2))}}]);
+ await writeFile('qa/ui/recordings/${role}/loading-observation.json',JSON.stringify({role:${JSON.stringify(role)},states}));
+});`;
 		await writeFile(join(fixture.project, seedPath), seedContent);
 		const seed = { path: seedPath, sha256: sha256(seedContent) };
 		const started = await invoke({
@@ -249,7 +267,7 @@ try {
 				max_steps: maxSteps,
 				max_duration_ms: optimizationScope.budget.milliseconds,
 				max_no_progress: 3,
-				test_data: ["Gamma", "Missing", "U05-owned-name"],
+				test_data: ["a", "Gamma", "Missing", "U05-owned-item"],
 			},
 		});
 		assert.equal(started.status, "completed", JSON.stringify(started));
@@ -259,6 +277,13 @@ try {
 			project: "chromium",
 			plan: "Explore only frozen u00-1 features for " + role,
 		});
+		const loadingPath = "qa/ui/recordings/" + role + "/loading-observation.json";
+		const loading = await readFile(join(fixture.project, loadingPath));
+		assert.deepEqual(JSON.parse(loading).states, [
+			{ status: "Loading", rows: [] },
+			{ status: "Ready", rows: optimizationScope.initialNames.slice(0, 2) },
+		]);
+		observed.set("states", [{ path: loadingPath, sha256: sha256(loading) }]);
 	};
 	await start("tester");
 	const task = await workflow({
@@ -294,28 +319,19 @@ try {
 	assert.match(body, /listitem(?: \[ref=[^\]]+\])?: Beta/);
 	assert.equal((body.match(/- listitem\b/g) || []).length, 2);
 	await save("search", ["filtered", "reset"]);
-	await locator("next", body, 'button "Next"');
-	await click("next");
-	body = await snapshot("paging");
-	assert.match(body, /listitem(?: \[ref=[^\]]+\])?: Gamma/);
-	await locator("previous", body, 'button "Previous"');
-	await click("previous");
-	body = await snapshot("paging");
-	assert.match(body, /listitem(?: \[ref=[^\]]+\])?: Alpha/);
-	assert.match(body, /button "Previous" \[disabled\]/);
-	await save("paging", ["first page", "last page", "previous boundary"], ["Paging with an active query not observed"]);
 	await locator("add", body, 'button "Add"');
 	await click("add");
 	body = await snapshot("edit");
 	assert.match(body, /- dialog/);
+	await locator("name", body, 'textbox "Name"');
+	await fill("name", "U05-owned-item");
 	await locator("cancel", body, 'button "Cancel"');
 	await click("cancel");
 	body = await snapshot("edit");
 	assert.doesNotMatch(body, /- dialog/);
 	await click("add");
 	body = await snapshot("edit");
-	await locator("name", body, 'textbox "Name"');
-	await fill("name", "U05-owned-name");
+	await fill("name", "U05-owned-item");
 	await locator("save", body, 'button "Save"');
 	await click("save");
 	await call("browser_navigate", {
@@ -323,19 +339,40 @@ try {
 		intent: "Reload same role and origin to check persistence",
 	});
 	body = await snapshot("edit");
-	await fill("query", "U05-owned-name");
+	await fill("query", "U05-owned-item");
 	await click("search");
 	body = await snapshot("edit");
-	assert.match(body, /listitem(?: \[ref=[^\]]+\])?: U05-owned-name/);
-	await save(
-		"edit",
-		["dialog open", "cancel closes dialog", "saved", "persisted after reload"],
-		["Cancellation write side effects not independently inspected"],
+	assert.match(body, /listitem(?: \[ref=[^\]]+\])?: U05-owned-item/);
+	assert.equal(
+		(body.match(/- listitem\b/g) || []).length,
+		1,
+		"Cancelled input must not become a second persisted name",
 	);
+	await save("edit", ["dialog open", "filled then cancelled", "saved once", "one persisted name after reload"]);
 	await click("reset");
 	body = await snapshot("permission");
 	assert.match(body, /button "Add"/);
 	await save("permission", ["tester sees Add"], ["viewer context not observed in tester scope"]);
+	await fill("query", "a");
+	await click("search");
+	await locator("next", body, 'button "Next"');
+	await click("next");
+	body = await snapshot("paging");
+	assert.match(body, /listitem(?: \[ref=[^\]]+\])?: Gamma/);
+	assert.equal(
+		(body.match(/- listitem\b/g) || []).length,
+		1,
+		"Active query must exclude the saved nonmatching item on the last page",
+	);
+	assert.match(body, /textbox "Query"[^\n]*: a/);
+	assert.match(body, /button "Next" \[disabled\]/);
+	await locator("previous", body, 'button "Previous"');
+	await click("previous");
+	body = await snapshot("paging");
+	assert.match(body, /listitem(?: \[ref=[^\]]+\])?: Alpha/);
+	assert.match(body, /textbox "Query"[^\n]*: a/);
+	assert.match(body, /button "Previous" \[disabled\]/);
+	await save("paging", ["first page", "last page", "query retained across next and previous", "both page boundaries"]);
 	await locator("about", body, 'tab "About"');
 	await click("about");
 	body = await snapshot("details");
@@ -357,7 +394,10 @@ try {
 	await click("error");
 	body = await snapshot("states");
 	assert.match(body, /Error loading names/);
-	await save("states", ["empty", "error"], ["Loading transition not observed by sequential MCP snapshots"]);
+	await save("states", ["loading with no rows precedes ready data in seed", "empty", "error"]);
+	checks.push(
+		"seed observes loading before data; filtered paging excludes the saved item; cancelled input adds no duplicate persisted row",
+	);
 	const testerRecording = recording;
 	const testerStatus = await invoke({ operation: "status", session_ref: recording });
 	const testerEvents = testerStatus.output.events;
@@ -366,7 +406,7 @@ try {
 	assert.equal(
 		testerEvents.filter((e) => e.request.tool === "browser_type" && e.request.input.target === locators.get("query"))
 			.length,
-		3,
+		4,
 	);
 	assert.ok(testerEvents.length <= optimizationScope.budget.actions);
 	assert.ok(nested.some((e) => e.name === backend + "browser_generate_locator" && e.parent));

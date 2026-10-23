@@ -1,0 +1,97 @@
+{
+	"date": "2026-10-23",
+	"status": "controlled-engineering-regression-passed",
+	"u05_status": "in-progress",
+	"fixture_version": "u00-1",
+	"fixture_sha256": "f07cad393d22c4629c771ef7763de96b47d030b6730fbec222fd110da2b89cc5",
+	"frozen_budget": {
+		"actions": 60,
+		"milliseconds": 120000,
+		"completion": "All frozen assertions evidenced or explicitly blocked."
+	},
+	"checks": [
+		"first feature draft persists before exploring the remaining five features or writing a final script",
+		"seed observes loading before data; filtered paging excludes the saved item; cancelled input adds no duplicate persisted row",
+		"each feature keeps stable IDs and source/state references; newer drafts preserve immutable earlier gaps",
+		"partial recording cannot advance the workflow to case design; no additional MCP action is dispatched",
+		"six frozen features retain state evidence or explicit gaps, same tester recording reuses Query across reload and uses only one setup/one navigation",
+		"viewer uses a distinct context/scope, wrong-role inventory is rejected, exhausted budget sends zero extra MCP actions while cleanup and partial handoff remain possible"
+	],
+	"tester": {
+		"session": {
+			"path": "qa/ui/recordings/tester/session.json",
+			"sha256": "b71f1d210cc4aab058c9ec5516d32c1a0ccb75ed9114ac4c860d72ac6f56eb94"
+		},
+		"partial": {
+			"path": "qa/ui/recordings/tester/manifest.json",
+			"sha256": "66db14e7163e2a1d4eb9b7e4f44867f999fc18c76049690c1d5c2b4c599d6af7"
+		},
+		"inventory": {
+			"path": "qa/ui/inventories/inventory-68/manifest.json",
+			"sha256": "44096f86c22ba23ddac3b96969fb6c3883b73f07d6a38082fe4b5bcdf7d0c302"
+		},
+		"firstDraft": {
+			"path": "qa/ui/inventories/inventory-11/manifest.json",
+			"sha256": "d8e4da78b4870a3e2d7b298c37f222135b336e3a14bd48b64b54ad4e7e469b84"
+		},
+		"actions": 52,
+		"counts": {
+			"generator_setup_page": 1,
+			"browser_snapshot": 15,
+			"browser_generate_locator": 13,
+			"browser_type": 6,
+			"browser_click": 16,
+			"browser_navigate": 1
+		}
+	},
+	"viewer": {
+		"partial": {
+			"path": "qa/ui/recordings/viewer/manifest.json",
+			"sha256": "39662ab1de99fc470e106ef25179fda1ca8648e9246c02a89e587128518138e3"
+		},
+		"inventory": {
+			"path": "qa/ui/inventories/inventory-80/manifest.json",
+			"sha256": "832727f911d5a42a7995dd2a953d63b7a5785297738574f174a330265ce13c30"
+		},
+		"actions": 3
+	},
+	"model_calls": 0,
+	"formal_runner_calls": 0,
+	"business_requests": 0,
+	"loading_observation": {
+		"role": "tester",
+		"states": [
+			{
+				"status": "Loading",
+				"rows": []
+			},
+			{
+				"status": "Ready",
+				"rows": ["Alpha", "Beta"]
+			}
+		]
+	},
+	"input_revision": "Use U05-owned-item instead of U05-owned-name so query a excludes the saved row; this is additional coverage, not a paired performance comparison. Frozen page/initial names/roles/budget unchanged.",
+	"remaining": [
+		"Complete candidate and assertion-script mappings",
+		"Independent design review and diagnostics",
+		"Repeated buttons/frame and deployment/dependency changes",
+		"Original U00/U02 and real model/OperationContract prerequisites"
+	],
+	"validation": {
+		"typecheck": "passed",
+		"unit_tests_passed": 51,
+		"lint": "passed",
+		"protocol_structure": "passed",
+		"protocol_history": "skipped: no tag",
+		"desktop": "No app or runtime changes; prior 7 checks retained as historical, not rerun"
+	},
+	"evidence": {
+		"original_directory": "tests/scratch/ui-function-discovery/1792760822258",
+		"archive": "docs/ui-testing-evidence/optimization-u05-state-coverage.tar.gz",
+		"archive_sha256": "b68734033a63ce1c03d1126f0f532cf7a53f6fc1836455a441487d5b93ed082c",
+		"archive_bytes": 39016,
+		"verified_references": 147,
+		"previous_summary": "docs/ui-testing-evidence/optimization-u05-multifunction.json"
+	}
+}
