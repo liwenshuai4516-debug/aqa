@@ -37,6 +37,7 @@
 - [P0 守卫与 fixture 验收](ui-testing-p0-evidence.md)：操作分类、实际 SDK/宿主门禁、隔离浏览器和残留证据。
 - [UI 优化执行记录](ui-testing-optimization-execution.md)：分阶段工程证据、私密捕获回归及未完成门禁；分发包维护见[统一入口](../.pi/skills/ui-testing-workflow/references/maintenance.md)。
 - [U05 源码候选证据](ui-testing-evidence/optimization-u05-source-candidate.json)：六功能、13 断言的静态映射与评审阻塞；不代表设计获批或候选已执行。
+- [U05 定位重验证据](ui-testing-evidence/optimization-u05-locator-revalidation.json)：重复按钮、iframe及受控wrapper变化的原生录制检查，保留partial边界。
 
 ## 功能设计提案
 

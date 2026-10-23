@@ -415,3 +415,5 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 数据空间修订视图：`plugins/data-space/client/case-versions.mjs`（最近入库/全部版本及zh/en）；`client/modal-automation.mjs`（原生来源、修订及历史证据）。
 
 数据空间结果规范：`.pi/skills/data-space-testing/references/result-output.md`（Agent 交付约定，不是存储 schema）、同 Skill `scripts/validate-result.mjs`（只读一致性检查）；`tests/data-space-skill-desktop-test.mjs`（Electron 技能、插件归属和快捷发现验收）。
+
+- `tests/ui-locator-revalidation-test.mjs`、`tests/fixtures/data-space/ui-locator-wrapper.mjs`：独立 wrapper 的重复按钮/frame/变化重验工程证据，内嵌冻结页面不变，不替代完整候选。

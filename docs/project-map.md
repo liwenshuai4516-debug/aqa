@@ -122,3 +122,5 @@ UI 多功能源码候选：`tests/ui-multifunction-candidate-test.mjs` 对 `test
 数据空间版本展示：`plugins/data-space/client/case-versions.mjs` 按明确来源和入库顺序投影列表；不变更原生批准、历史资产或执行记录。
 
 数据空间 Agent 交接规范：`.pi/skills/data-space-testing/SKILL.md` 选择查询／绑定／同步／普通登记路径，`references/result-output.md` 约定结果交付，`scripts/validate-result.mjs` 只读校验交付一致性；`tests/data-space-skill-desktop-test.mjs` 验证 Electron 发现与插件归属联动。
+
+UI 定位重验：`tests/ui-locator-revalidation-test.mjs` 使用 `tests/fixtures/data-space/ui-locator-wrapper.mjs` 包裹冻结页面，通过真实 SDK/MCP 验证严格重复匹配、iframe、变化后旧定位拒绝与新定位生成；三分支保留 partial。

@@ -386,3 +386,15 @@ A02-6/7 的上述合成运行时路径已有直接工程证据；A02-5 私密桥
 剩余门禁：独立评审必须经原生工具调用当前模型，既有测试模型额度已耗尽，本轮没有代填评审或借新任务重置费用限制。全部断言的合理负向诊断副本、候选实际运行、完整浏览器候选交接仍待准备/放行；重复按钮/frame、部署变化与真实模型/OperationContract 条件仍未完成。源码候选补充 A05-6/7 的可审查材料，不等于独立设计批准、运行就绪或 U05 完成；U00/U02/U03/U07/U09、M1/M2 继续未完成，U08未启动。
 
 候选模板使用 `.ts` 而非 `.spec.ts` 文件名，避免普通 Playwright 发现误执行未获批候选；生成到原生产物内时才使用 candidate.spec.ts。模板更名后的同4项检查再次通过（`u05-candidate-template-check.log`），不重复累计检查数，归档内候选字节未变。
+
+### U05 定位补证：重复按钮、iframe 与变化重验（2026-10-24）
+
+新增独立 wrapper 包裹冻结 `u00-1` 页面：Toolbar/Backup 各有一个 Search，Names iframe 内的页面按原始字节返回。版本2仅改变 iframe 属性、路径、标题并增加干扰 frame；没有修改冻结页面。三条工程分支在浏览器动作前登记范围、预期与各60动作/120秒预算，不以新分支重置原任务预算。
+
+真实 Pi SDK → 原生0.1.3 → 测试 MCP → Chromium **4 项检查通过**：未限定范围的 Search 因严格匹配两个按钮被拒绝，录制停止后普通动作在进入 MCP 前被阻止，但允许清理；限定 Toolbar 的实际生成定位器只增加该区域计数；iframe 实际生成的 Query/Search 定位器完成 Gamma 查询；wrapper 变化后旧定位器明确无匹配而停止，独立预登记 v2 分支重新观察、生成不同定位器并成功填写。三个分支分别2/14/5动作，另各1次关闭。全部 frame 响应摘要与冻结页面一致。
+
+三个录制 manifest 均保留 **partial**，没有生成完整脚本、设计批准或正式 run，也不覆盖原六功能的 partial 任务。受控 wrapper 变化不是实际业务部署认证；上一阶段的依赖静态拒绝也不算本轮浏览器依赖变化验证。0模型、0正式runner、0真实业务请求。
+
+成功证据 `tests/scratch/ui-locator-revalidation/1792775765630/`；[摘要与索引](ui-testing-evidence/optimization-u05-locator-revalidation.json)及约23KB的[归档](ui-testing-evidence/optimization-u05-locator-revalidation.tar.gz)包含90个公开文件、75组逐一校验的引用，归档再回读校验，不含SDK会话、认证和依赖。首轮成功历史保留，最终轮加强严格错误、分区计数、原页面摘要和证据复制检查后仍通过。
+
+全量typecheck、3文件14项单测、lint、协议结构通过；协议历史启发式无tag跳过。日志前缀 `tests/scratch/ui-optimization-u00/u05-locator-`，清理仅预览。本轮仅测试/文档更新，前轮Electron7项仅作历史接入证据，不算本轮执行。A05-4/5上述工程缺口已有证据；完整浏览器候选、独立评审、13断言正反诊断、实际依赖/部署与真实模型验收仍待完成，U05及M1/M2保持未完成。

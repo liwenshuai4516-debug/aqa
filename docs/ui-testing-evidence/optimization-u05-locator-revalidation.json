@@ -1,0 +1,538 @@
+{
+	"date": "2026-10-24",
+	"status": "engineering-checks-passed-partial-recordings",
+	"u05_status": "in-progress",
+	"runtime_version": "0.1.3",
+	"fixture_version": "u00-1",
+	"checks": [
+		"Unscoped repeated buttons fail strictly; native recording stops and blocks later MCP actions while cleanup remains available",
+		"Named region and actual generated frame locators pass strict interaction and filter only the frozen inner Names list",
+		"Wrapper change invalidates the formerly working frame locator and retains the original stopped evidence",
+		"New version is observed in its own declared branch, regenerated locator works, and partial boundaries remain explicit"
+	],
+	"model_calls": 0,
+	"formal_runner_calls": 0,
+	"real_business_requests": 0,
+	"records": [
+		{
+			"recording": {
+				"path": "qa/ui/recordings/ambiguous/session.json",
+				"sha256": "d5fed35404950723bb7128d5ad83006ad04abfb17b0de0e7eb1d97419a7f44a5"
+			},
+			"partial": {
+				"path": "qa/ui/recordings/ambiguous/manifest.json",
+				"sha256": "1f62cdcb0dce5ff5227e6071fdd28f989940748c7fd123e9cd69befdfab4edd6"
+			},
+			"stopped": "tool-error-or-cancelled",
+			"actions": 2
+		},
+		{
+			"recording": {
+				"path": "qa/ui/recordings/frame-v1/session.json",
+				"sha256": "616da8c139e970801ebc6607dab15d2f4b16ec916555377f1bc32fa566c2ccf7"
+			},
+			"partial": {
+				"path": "qa/ui/recordings/frame-v1/manifest.json",
+				"sha256": "a580d873e0312963e587ba84f40ae2c2cacc90264d0b7d299763bff251752f61"
+			},
+			"stopped": "tool-error-or-cancelled",
+			"actions": 14
+		},
+		{
+			"recording": {
+				"path": "qa/ui/recordings/frame-v2/session.json",
+				"sha256": "112377d36aa56608064dd750b4ea8fb7a44f998482a27f6e5d42df8213ab8417"
+			},
+			"partial": {
+				"path": "qa/ui/recordings/frame-v2/manifest.json",
+				"sha256": "905d686c897aa0863e2d7516e94e0e790f16075373d9187c758789f322bb40e7"
+			},
+			"actions": 5
+		}
+	],
+	"campaign_ref": {
+		"path": "qa/ui/scopes/locator-source/campaign.json",
+		"sha256": "0c9127fba54b030b5f7aeb2a03a468598e4a080ed0a52db36dbbe53b773d2291"
+	},
+	"frozen_page_sha256": "7b91e5f5f5c1c3675ffca77352288ebbd58a43eb96b8a720532c192c2e6b9803",
+	"v1_locators": {
+		"toolbar": "getByRole('region', { name: 'Toolbar' }).getByRole('button', { name: 'Search', exact: true })",
+		"query": "locator('[data-testid=\"names-frame\"]').contentFrame().getByRole('textbox', { name: 'Query' })",
+		"search": "locator('[data-testid=\"names-frame\"]').contentFrame().getByRole('button', { name: 'Search' })"
+	},
+	"v2_locator": "locator('[data-testid=\"renamed-names-frame\"]').contentFrame().getByRole('textbox', { name: 'Query' })",
+	"validation": {
+		"typecheck": "passed",
+		"vitest_passed": 14,
+		"lint": "passed",
+		"protocol_structure": "passed",
+		"protocol_history": "skipped: no tag",
+		"desktop": "Not rerun; test-only changes, previous Electron checks remain historical"
+	},
+	"limits": [
+		"All three focused branches remain partial; original six-feature browser candidate is incomplete",
+		"Wrapper v1/v2 are controlled synthetic deployments, not real service certification",
+		"Prior dependency static check is not browser dependency-change validation",
+		"Independent review and diagnostics remain unexecuted; model allowance exhausted"
+	],
+	"evidence": {
+		"directory": "tests/scratch/ui-locator-revalidation/1792775765630",
+		"archive": "docs/ui-testing-evidence/optimization-u05-locator-revalidation.tar.gz",
+		"archive_sha256": "850e04bb92cfbfd0c2026f65fb5591b2eb99a515553a9333e44c04a4c114fc78",
+		"archive_bytes": 22987,
+		"files": 90,
+		"verified_references": 75
+	},
+	"file_index": [
+		{
+			"path": "nested-calls.json",
+			"sha256": "79e127f96d0a8be2e1074b49f9e4e54c7ae077d9b23618e2e0852686c79f2449",
+			"bytes": 2245
+		},
+		{
+			"path": "playwright.config.mjs",
+			"sha256": "c5ebe9232877110e1338fa6a993469fab9e328a6dd52b0e04050196e6d25e130",
+			"bytes": 170
+		},
+		{
+			"path": "qa/ui/catalog.json",
+			"sha256": "4808127f5f22cae56714e4c48c5d66371cf3b4985deb4dac93532d96dde3310f",
+			"bytes": 2187
+		},
+		{
+			"path": "qa/ui/inventories/ambiguous/.incomplete.json",
+			"sha256": "5a2e12601036d42b9615fb0f79112a9fafd6c26fce76bc0655570fee28113b23",
+			"bytes": 47
+		},
+		{
+			"path": "qa/ui/inventories/ambiguous/manifest.json",
+			"sha256": "20b528296ad59c0e28c6c09aca1e8fb9e6af50bf2a99ff4183574491a7e53bc3",
+			"bytes": 1964
+		},
+		{
+			"path": "qa/ui/inventories/frame-v1/.incomplete.json",
+			"sha256": "612a6f7cfb642cb29f1bcfa2433bfbc62dbc0f1e0108a4cc8b1ae66a3461d812",
+			"bytes": 46
+		},
+		{
+			"path": "qa/ui/inventories/frame-v1/manifest.json",
+			"sha256": "5425236f606b793f1df7f80146a401adba126162c63cdf480dc86aef788b333f",
+			"bytes": 1981
+		},
+		{
+			"path": "qa/ui/inventories/frame-v2/.incomplete.json",
+			"sha256": "fc99fadb2355255dd060e338909ed7a15f0125975749030a97df013e6a1a6f33",
+			"bytes": 46
+		},
+		{
+			"path": "qa/ui/inventories/frame-v2/manifest.json",
+			"sha256": "e3e919b15cbfc766b5cfb9b2c58c7493890c5bd4a81ae32cb803f08704ab2eb1",
+			"bytes": 1971
+		},
+		{
+			"path": "qa/ui/recordings/ambiguous/.incomplete.json",
+			"sha256": "133f07001e074c365a101c44ac05f2031c5d7616311aeddd0a842d06a467cafc",
+			"bytes": 47
+		},
+		{
+			"path": "qa/ui/recordings/ambiguous/data.json",
+			"sha256": "eb8b9a65651d5b0911ca488436a5611472bf360d8f43e7eca8b833a53fc0fe19",
+			"bytes": 110
+		},
+		{
+			"path": "qa/ui/recordings/ambiguous/events/action-2/request.json",
+			"sha256": "ba26901d94280bfff77ee6bd16f4c78a42e51ba4577bf8c1174266aeaaa1bf86",
+			"bytes": 585
+		},
+		{
+			"path": "qa/ui/recordings/ambiguous/events/action-2/response.json",
+			"sha256": "a6b4b080be6f5becc9882b7423a803f845f624303c43be0fb861eee9cc25fbbc",
+			"bytes": 3298
+		},
+		{
+			"path": "qa/ui/recordings/ambiguous/events/action-3/request.json",
+			"sha256": "d8661a5a7589bd22d99aa8601865df127e8fcb1cefcd65f6d68e7a11a83cd8ba",
+			"bytes": 560
+		},
+		{
+			"path": "qa/ui/recordings/ambiguous/events/action-3/response.json",
+			"sha256": "58cec7b74a891a05b95014748fd98bb7198320740372b35573c8c778ae9f3027",
+			"bytes": 1603
+		},
+		{
+			"path": "qa/ui/recordings/ambiguous/events/action-6/request.json",
+			"sha256": "d422496622f089efc2fc6eefa0b41ca4804b638711eba2b2d129d7aea7b27fae",
+			"bytes": 448
+		},
+		{
+			"path": "qa/ui/recordings/ambiguous/events/action-6/response.json",
+			"sha256": "2473051a606e93dd122f6fdf680f9220a366d59430bcb2ec1f51e0d7aec8f725",
+			"bytes": 635
+		},
+		{
+			"path": "qa/ui/recordings/ambiguous/initial.json",
+			"sha256": "a9227128de68ce1a089e0c45e174548595caa3b05e20a2118634914538b42330",
+			"bytes": 45
+		},
+		{
+			"path": "qa/ui/recordings/ambiguous/manifest.json",
+			"sha256": "1f62cdcb0dce5ff5227e6071fdd28f989940748c7fd123e9cd69befdfab4edd6",
+			"bytes": 2942
+		},
+		{
+			"path": "qa/ui/recordings/ambiguous/raw-log.json",
+			"sha256": "9450b807ae1bdb1ef00fcc30721d470d63e272a120274d18e86a9f807342c6be",
+			"bytes": 9263
+		},
+		{
+			"path": "qa/ui/recordings/ambiguous/session.json",
+			"sha256": "d5fed35404950723bb7128d5ad83006ad04abfb17b0de0e7eb1d97419a7f44a5",
+			"bytes": 1136
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/.incomplete.json",
+			"sha256": "5820fb290212d3edcc46496417d72217c64b0eee976d387f272953b4b30cf9a2",
+			"bytes": 46
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/data.json",
+			"sha256": "eb8b9a65651d5b0911ca488436a5611472bf360d8f43e7eca8b833a53fc0fe19",
+			"bytes": 110
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-10/request.json",
+			"sha256": "d9ff628868d6401513375a674101596fbec06a603b379006d2651ffaca278984",
+			"bytes": 594
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-10/response.json",
+			"sha256": "7fd4a7e0b0cf351a946884e9b94c78ce9226e9bc143b24b1fbcd99830565db91",
+			"bytes": 3298
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-11/request.json",
+			"sha256": "13304348dd37c6f38d9bcd4e32f3da49ddcc3c444d6da10bd6a0d4853cdd5b47",
+			"bytes": 372
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-11/response.json",
+			"sha256": "5815f06387a525c61276995e6ce7fd44043c110a0392048666d493e898d2d93e",
+			"bytes": 2702
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-12/request.json",
+			"sha256": "7780e56fb8d1c3b0d8b94c10eb66583d22983946565db01510c60ad8f32efd6a",
+			"bytes": 542
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-12/response.json",
+			"sha256": "d7b958fb18cd19c4d74aea76b6c3dec21d7ff06ab6c413d447aff9a13423f9eb",
+			"bytes": 532
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-13/request.json",
+			"sha256": "a67868e82ca3559910ece02261c2e5c4b720ce315a7d31cf061018bb574a2d27",
+			"bytes": 558
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-13/response.json",
+			"sha256": "e84e8fa6c1ffb08ce6dc6fb8fa5d52ca881c76e1472c0b37e915d425fbd4adf6",
+			"bytes": 864
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-14/request.json",
+			"sha256": "bedb90b6d06918b395136d336c135581ba95d8147e2a658a1c0e4de8ddd95987",
+			"bytes": 372
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-14/response.json",
+			"sha256": "9e91fac9475ce8a54f49577b29100feed7fbb6d4ce16014a5f7fdc2acb5c48ff",
+			"bytes": 2702
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-15/request.json",
+			"sha256": "522ee259b39980763004c622881e3c0c39512fd3df3be2dce8c91f4087b50e82",
+			"bytes": 453
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-15/response.json",
+			"sha256": "0fbaed037c1918f6a99e36a649f43c250afba92a9f4e622d254f23c8b9196ab3",
+			"bytes": 536
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-16/request.json",
+			"sha256": "4cf9f4932e0f98f7f3b53357efc001557c5d0367ce25562287852a5784286b63",
+			"bytes": 590
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-16/response.json",
+			"sha256": "e663ecc6b9f4090b8a1c0cf6d0bbdac3a9c178b57cef0a37df1a2d1edfa75b3c",
+			"bytes": 626
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-17/request.json",
+			"sha256": "2850c26a10a8a45fa78c8ff2454356ac969f40377c2d72d7fab60311dcaaf0c9",
+			"bytes": 372
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-17/response.json",
+			"sha256": "f87bccad8cd5d4b30a02efdb4307593015ec6de01cd3290e097c77b44f63c5ea",
+			"bytes": 2733
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-18/request.json",
+			"sha256": "0e625a0459a384fe5a8d3ac607786646d0bbe456ad70cb7a1927fd9682031c33",
+			"bytes": 453
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-18/response.json",
+			"sha256": "899d09c86a8c96deadbc62c5719dd713203d02b18a22aaed3169692ef76d7233",
+			"bytes": 536
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-19/request.json",
+			"sha256": "4c063ef6989f18ee449507c11a77df7aa0fdee1f25a663e0e6b12485d9381cc3",
+			"bytes": 567
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-19/response.json",
+			"sha256": "8393d1200edf1fead3dec93ea4f50489806f53d97394f1275219e178d7aff1ae",
+			"bytes": 868
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-20/request.json",
+			"sha256": "e2d06c9e084db8d1a01020b47e2870d62f52d32e340750083b93adf3d8c666ce",
+			"bytes": 372
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-20/response.json",
+			"sha256": "8e882d4384dcb269e7b6dd21803cba51d517e43c544b64f34a29e1e0475de184",
+			"bytes": 2676
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-21/request.json",
+			"sha256": "2aba95397f1943086b6ccc723299533ba86a3381a70ba97747e310195b424619",
+			"bytes": 484
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-21/response.json",
+			"sha256": "a787d8d96538b23612eb9bec53ea51c9b060e23041a2a0d6a1fd2e4d7c5c2d1b",
+			"bytes": 724
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-22/request.json",
+			"sha256": "9e90c41cdaa50bfc093f975f83dfd88be1e66f46d2197f27ae4c112b7d5d4c5f",
+			"bytes": 372
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-22/response.json",
+			"sha256": "d17c9e5d7bd326b500597b733f0f1f87592b032d756935678d4ca0f6e8290286",
+			"bytes": 2617
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-23/request.json",
+			"sha256": "ad85d3232c2f3ee63e6567875e17524dae20c1932ef53c01ddbad9a4de0276c3",
+			"bytes": 621
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-23/response.json",
+			"sha256": "b2790aaa391789b630ca8b411f9620713fa0147798478f65fcdece3646ac244f",
+			"bytes": 621
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-25/request.json",
+			"sha256": "d03696956ca69047ae1209aaf010d58a46cceb02c9f6aa31b2999d499dbec727",
+			"bytes": 448
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/events/action-25/response.json",
+			"sha256": "1e47cc4d8a994f022abd838685b1269ea4bfe3dbb9cdcca7a911241991e317ec",
+			"bytes": 541
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/initial.json",
+			"sha256": "a9227128de68ce1a089e0c45e174548595caa3b05e20a2118634914538b42330",
+			"bytes": 45
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/manifest.json",
+			"sha256": "a580d873e0312963e587ba84f40ae2c2cacc90264d0b7d299763bff251752f61",
+			"bytes": 7589
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/raw-log.json",
+			"sha256": "1eb4e4e2170aca4f3191ad164ed0bb2005378431992f65ad190d7bee624879af",
+			"bytes": 39559
+		},
+		{
+			"path": "qa/ui/recordings/frame-v1/session.json",
+			"sha256": "616da8c139e970801ebc6607dab15d2f4b16ec916555377f1bc32fa566c2ccf7",
+			"bytes": 1129
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/.incomplete.json",
+			"sha256": "fd0c1a84941c9ecd870db618568c0575e6ab6d9019a3edab560dcc002db399e7",
+			"bytes": 46
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/data.json",
+			"sha256": "eb8b9a65651d5b0911ca488436a5611472bf360d8f43e7eca8b833a53fc0fe19",
+			"bytes": 110
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/events/action-29/request.json",
+			"sha256": "6251557a38128942e61a69c2fdff480f353922061d49af5cf854442fe58b0ec8",
+			"bytes": 589
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/events/action-29/response.json",
+			"sha256": "91326f0eb12f0b04dbbc0ae8f8a756362a4f4dbf79665e827a2679c0a6cd988d",
+			"bytes": 3426
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/events/action-30/request.json",
+			"sha256": "e536999cf15dabe9b22ecfa0bffdb54b5c1a2b71afdf2a0673312af34d5c2434",
+			"bytes": 372
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/events/action-30/response.json",
+			"sha256": "0b25c537884d200fa7c2981081f1c5ef371cbf5915ae773cdcebd79a17b2560d",
+			"bytes": 2830
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/events/action-31/request.json",
+			"sha256": "fb9ca386c3250d8f82e6ecffddcc77edfa659e3c6ceaeac5b2f88e44cfa17f44",
+			"bytes": 453
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/events/action-31/response.json",
+			"sha256": "ba8277ece41add6ddac4b53f23262a6820a6f19370d8e476ca6b771b8d532796",
+			"bytes": 552
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/events/action-32/request.json",
+			"sha256": "5caa5ea69ee1550e69fa0d274d155fd4a529e81882c667da17e8f0208dc204b7",
+			"bytes": 608
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/events/action-32/response.json",
+			"sha256": "57cab954348b0730cc3b4fbdd6fe57f48e5d54feba22deb569e06ff7c6b9401d",
+			"bytes": 642
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/events/action-33/request.json",
+			"sha256": "8a66c10d657e8cd290c38967bf59512bb80b851e0a4bf6de0ebbf649dfd70d90",
+			"bytes": 372
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/events/action-33/response.json",
+			"sha256": "a79ff2363be7d3d697cc85148344e5e00b0f2abc901d36b311d7bd891011b856",
+			"bytes": 2861
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/events/action-35/request.json",
+			"sha256": "77262041f5a5567314799911135a10398122e4d18bc2189983c482276a4c9e96",
+			"bytes": 448
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/events/action-35/response.json",
+			"sha256": "061b825d83d934d6ef7564e2b5c156e8511569e448ac2fdb073b2ddd89c1478c",
+			"bytes": 541
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/initial.json",
+			"sha256": "09f1fda2e0f379cc91031c36ff19cdb449ff8305671641af83cbce6522391005",
+			"bytes": 45
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/manifest.json",
+			"sha256": "905d686c897aa0863e2d7516e94e0e790f16075373d9187c758789f322bb40e7",
+			"bytes": 4079
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/raw-log.json",
+			"sha256": "3b91684e4896ad9c0b86ff08db69e42eaf105cd4ec71ecf0e73238747475f835",
+			"bytes": 17726
+		},
+		{
+			"path": "qa/ui/recordings/frame-v2/session.json",
+			"sha256": "112377d36aa56608064dd750b4ea8fb7a44f998482a27f6e5d42df8213ab8417",
+			"bytes": 1129
+		},
+		{
+			"path": "qa/ui/scopes/ambiguous/.incomplete.json",
+			"sha256": "5f056ca4809b6c58ca535751d06eb2f64f5cc0e3a26db43d334309873bc02314",
+			"bytes": 43
+		},
+		{
+			"path": "qa/ui/scopes/ambiguous/manifest.json",
+			"sha256": "bbff262819dd74bc4e59a2d7649b59c8c4b80ee882c2a2f5ff4381d7c45f2cd0",
+			"bytes": 1403
+		},
+		{
+			"path": "qa/ui/scopes/frame-v1/.incomplete.json",
+			"sha256": "b29a92c78925e3870ac7ab79c6136dd5866141c71339146badf5fb2bea289ffc",
+			"bytes": 42
+		},
+		{
+			"path": "qa/ui/scopes/frame-v1/manifest.json",
+			"sha256": "3d5688c602eb9de5b127c589a7848f5333451b1cce952d47f39def50485cc93e",
+			"bytes": 1412
+		},
+		{
+			"path": "qa/ui/scopes/frame-v2/.incomplete.json",
+			"sha256": "4f0237b5d949db1e009d899637528840c450440b4536f4497b3cfc8a4d048b48",
+			"bytes": 42
+		},
+		{
+			"path": "qa/ui/scopes/frame-v2/manifest.json",
+			"sha256": "6579af2e5dedf996d3a666530b0b5cf8cb771ca3a30a9d023c19c79ba5bb4961",
+			"bytes": 1407
+		},
+		{
+			"path": "qa/ui/scopes/locator-source/.incomplete.json",
+			"sha256": "9dbd38d2784113ea6f0c059d90eac8744be9c013175767ce2402bce4af5d98c6",
+			"bytes": 64
+		},
+		{
+			"path": "qa/ui/scopes/locator-source/campaign.json",
+			"sha256": "0c9127fba54b030b5f7aeb2a03a468598e4a080ed0a52db36dbbe53b773d2291",
+			"bytes": 701
+		},
+		{
+			"path": "qa/ui/scopes/locator-source/frozen.mjs",
+			"sha256": "f07cad393d22c4629c771ef7763de96b47d030b6730fbec222fd110da2b89cc5",
+			"bytes": 3939
+		},
+		{
+			"path": "qa/ui/scopes/locator-source/wrapper.mjs",
+			"sha256": "21d7ea68fdbc783e9503dd485309fbef25721e10393a5d58c3c65dc2880ef94c",
+			"bytes": 949
+		},
+		{
+			"path": "requests.json",
+			"sha256": "8a275b80cd5f195aec493726ce9dac3006e02c0b3fac79a3c5fbdb550667ac1f",
+			"bytes": 1418
+		},
+		{
+			"path": "result.json",
+			"sha256": "9f82655e611b5f59d92e75b3297d3c5be929a3e6acc4ed1b2fd3895672fa0e2d",
+			"bytes": 2580
+		},
+		{
+			"path": "tests/ambiguous.seed.spec.ts",
+			"sha256": "f3a5126ae8107e3c2390317401fcd612a0229dee554bd9e6510313d3dee2bbc3",
+			"bytes": 675
+		},
+		{
+			"path": "tests/frame-v1.seed.spec.ts",
+			"sha256": "f3a5126ae8107e3c2390317401fcd612a0229dee554bd9e6510313d3dee2bbc3",
+			"bytes": 675
+		},
+		{
+			"path": "tests/frame-v2.seed.spec.ts",
+			"sha256": "a46a90158c94fab282a59f6e57b1cd926a5fb6a7fe2320cff8d6466f93bbd9f0",
+			"bytes": 683
+		}
+	]
+}
