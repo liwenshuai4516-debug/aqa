@@ -40,6 +40,8 @@
 - [U05 定位重验证据](ui-testing-evidence/optimization-u05-locator-revalidation.json)：重复按钮、iframe及受控wrapper变化的原生录制检查，保留partial边界。
 - [U05 诊断输入准备](ui-testing-evidence/optimization-u05-probes.json)：13个错误副本及诊断契约，明确区分HTTP/静态检查与未执行的浏览器正反诊断。
 
+- [U04 目录/状态读取计量](ui-testing-evidence/optimization-u04-catalog.json)：真实历史批次的逐路径计数与变更重验，不代表整体性能验收。
+
 ## 功能设计提案
 
 - [Agent 评估中心统一技术方案与分期实施规范](agent-evaluation-design-plan.md)：内部任务与外部 Agent 合并为一个中心；统一证据、状态、独立核验及扩展契约；EC00–EC14 实施步骤、AC01–AC40 验收与分批执行约束；设计 2.1，功能待实施。

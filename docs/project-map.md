@@ -126,3 +126,5 @@ UI 多功能源码候选：`tests/ui-multifunction-candidate-test.mjs` 对 `test
 UI 定位重验：`tests/ui-locator-revalidation-test.mjs` 使用 `tests/fixtures/data-space/ui-locator-wrapper.mjs` 包裹冻结页面，通过真实 SDK/MCP 验证严格重复匹配、iframe、变化后旧定位拒绝与新定位生成；三分支保留 partial。
 
 UI 诊断输入准备：`tests/ui-multifunction-probes-test.mjs` 将 `tests/fixtures/data-space/ui-multifunction-probes.mjs` 的13个隔离变异与环境/配置纳入候选新修订，检查HTTP源码和静态契约，不运行未获批候选。
+
+UI 目录读取计量：`tests/ui-catalog-read-benchmark.mjs` 对归档真实run的1/8批样本统计catalog及view/analyze/execute状态查询的逐路径读取和扫描，验证损坏/删除/恢复，不启动浏览器。

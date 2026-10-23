@@ -419,3 +419,5 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 - `tests/ui-locator-revalidation-test.mjs`、`tests/fixtures/data-space/ui-locator-wrapper.mjs`：独立 wrapper 的重复按钮/frame/变化重验工程证据，内嵌冻结页面不变，不替代完整候选。
 
 - `tests/ui-multifunction-probes-test.mjs`、`tests/fixtures/data-space/ui-multifunction-probes.mjs`：13断言错误副本、HTTP隔离核对及待审诊断计划；不执行浏览器正反诊断。
+
+- `tests/ui-catalog-read-benchmark.mjs`：原生catalog/status的1/8历史批次计量、缓存重建与损坏证据识别；不授予批准，不执行浏览器。

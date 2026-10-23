@@ -412,3 +412,26 @@ A02-6/7 的上述合成运行时路径已有直接工程证据；A02-5 私密桥
 成功证据 `tests/scratch/ui-multifunction-probes/1792776816807/`；[摘要](ui-testing-evidence/optimization-u05-probes.json)与约55KB的[归档](ui-testing-evidence/optimization-u05-probes.tar.gz)保存228个文件、193组已回读核对引用及HTTP返回摘要。继承的file-index.json引用旧catalog，保留在原历史归档中，本轮归档不重复纳入它，改用当前逐文件索引；没有改写旧摘要。全量typecheck、3文件14单测、lint、协议结构通过；无tag的协议历史检查跳过。日志前缀 `tests/scratch/ui-optimization-u00/u05-probes-`。本轮仅候选准备和测试/文档，未重跑Electron，历史桌面结果不计入本轮。
 
 U05继续实施中：诊断输入已准备，独立评审、实际正反诊断、完整浏览器候选交接和真实环境验收未完成。原U00/U02前置、U03/U07/U09与M1/M2门禁仍保留，整目标没有标完成；U08未启动。
+
+### U04 目录与任务状态路径计量（2026-10-24）
+
+新增 `tests/ui-catalog-read-benchmark.mjs`，从已校验的8个真实原生run历史归档建立1/8批隔离样本，原批次摘要保持不变。测量 catalog、view/analyze/execute 的 status，每条路径1次首次查询+5次重复查询，共48次。查询任务通过原生workflow登记，未启动执行；私有批准目录故意缺失，catalog全部runtime_ready=false，独立gate明确以“评估没有经独立评估调用路径登记”拒绝。历史控制评审不是本轮真实模型批准。
+
+| 历史run数 | 查询路径       | 后5次中位数(ms) | 每次readFile调用 | 每次readdir调用 | 每次catalog替换 |
+| --------: | -------------- | --------------: | ---------------: | --------------: | --------------: |
+|         1 | catalog        |          14.976 |               45 |              38 |               1 |
+|         1 | status-view    |           0.138 |                1 |               0 |               0 |
+|         1 | status-analyze |           0.458 |                4 |               0 |               0 |
+|         1 | status-execute |          15.600 |               56 |              38 |               1 |
+|         8 | catalog        |          16.108 |               52 |              59 |               1 |
+|         8 | status-view    |           0.140 |                1 |               0 |               0 |
+|         8 | status-analyze |           0.398 |                4 |               0 |               0 |
+|         8 | status-execute |          16.712 |               63 |              59 |               1 |
+
+计数来自本轮进程内对实际fs/promises读文件/目录及原子替换的观察，调用保留原实现；时间包含观察开销。首次查询不是桌面冷启动，后续查询共享进程/文件系统缓存，不是完整Agent基线或20%优化结论。catalog/execute-status仍全量重建目录；两个规模均发现同一候选脚本在一次catalog中读取16次。追溯到原生引用验证及批准检查的重复读取，后续可评估单次核验内去重；本轮没有修改生产实现或增加跨请求缓存，也不能据此宣称整体主要瓶颈已确定。
+
+**3项工程检查通过**：上述读取/扫描计量；损坏一个run时准确列为invalid并保留另外7个、删除后不再列出、原字节恢复后重现8个、损坏catalog可重建；任务及run文件不被查询改写且0子进程/0浏览器/0模型/0正式runner。catalog缓存自身会原子替换，如实计入，不写成零磁盘写入。
+
+测试失败保留：首轮误认为execute-status必返回未批准blocker，而原契约只在status检查能力/活动run、在执行gate强制批准；调整为单独断言gate的确切拒绝，不把空status blocker视为运行就绪。随后错误使用WorkflowError.code而非category造成测试失败，修正字段后复验通过，均未计入通过次数。日志 `u04-catalog-first.log`、`u04-catalog-gate-final.log` 与最终 `u04-catalog-verified.log` 保留。
+
+最终证据 `tests/scratch/ui-catalog-read/1792777795663/`，见[汇总](ui-testing-evidence/optimization-u04-catalog.json)和约5KB的[计数及查询任务归档](ui-testing-evidence/optimization-u04-catalog.tar.gz)；原生run/资产继续引用不可变历史归档，8个run摘要重新核对，不重复复制依赖或批准。全量typecheck、4项工作流单测、lint、协议结构检查通过；无tag历史检查跳过。仅测量代码改动，未重跑Electron，未将历史桌面结果记成本轮。U04仍实施中，完整U00计量及是否值得跨请求索引仍待核定。

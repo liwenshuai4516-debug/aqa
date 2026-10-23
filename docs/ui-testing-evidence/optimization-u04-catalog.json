@@ -1,0 +1,147 @@
+{
+	"date": "2026-10-24",
+	"status": "component-measurement-passed-plan-in-progress",
+	"runtime": "0.1.3",
+	"checks": [
+		"Catalog detects corrupt/removed history, preserves other records, rediscovers restored history and rebuilds a corrupt cache without granting readiness",
+		"One/eight genuine historical runs measured for catalog and view/analyze/execute status; each path has one first and five repeated samples",
+		"Read-only status leaves task/run manifests unchanged; no browser, child process, model or formal run is started"
+	],
+	"aggregates": [
+		{
+			"history_size": 1,
+			"operation": "catalog",
+			"first_ms": 12.312375000000088,
+			"repeated_median_ms": 14.975957999999991,
+			"read_calls": [45, 45, 45, 45, 45, 45],
+			"directory_calls": [38, 38, 38, 38, 38, 38],
+			"catalog_replacements": [1, 1, 1, 1, 1, 1]
+		},
+		{
+			"history_size": 1,
+			"operation": "status-view",
+			"first_ms": 0.1482499999999618,
+			"repeated_median_ms": 0.13754099999994196,
+			"read_calls": [1, 1, 1, 1, 1, 1],
+			"directory_calls": [0, 0, 0, 0, 0, 0],
+			"catalog_replacements": [0, 0, 0, 0, 0, 0]
+		},
+		{
+			"history_size": 1,
+			"operation": "status-analyze",
+			"first_ms": 0.3825409999999465,
+			"repeated_median_ms": 0.45804199999997763,
+			"read_calls": [4, 4, 4, 4, 4, 4],
+			"directory_calls": [0, 0, 0, 0, 0, 0],
+			"catalog_replacements": [0, 0, 0, 0, 0, 0]
+		},
+		{
+			"history_size": 1,
+			"operation": "status-execute",
+			"first_ms": 16.032458999999903,
+			"repeated_median_ms": 15.59962500000006,
+			"read_calls": [56, 56, 56, 56, 56, 56],
+			"directory_calls": [38, 38, 38, 38, 38, 38],
+			"catalog_replacements": [1, 1, 1, 1, 1, 1]
+		},
+		{
+			"history_size": 8,
+			"operation": "catalog",
+			"first_ms": 17.413749999999936,
+			"repeated_median_ms": 16.108207999999877,
+			"read_calls": [52, 52, 52, 52, 52, 52],
+			"directory_calls": [59, 59, 59, 59, 59, 59],
+			"catalog_replacements": [1, 1, 1, 1, 1, 1]
+		},
+		{
+			"history_size": 8,
+			"operation": "status-view",
+			"first_ms": 0.15533400000003894,
+			"repeated_median_ms": 0.13979200000017045,
+			"read_calls": [1, 1, 1, 1, 1, 1],
+			"directory_calls": [0, 0, 0, 0, 0, 0],
+			"catalog_replacements": [0, 0, 0, 0, 0, 0]
+		},
+		{
+			"history_size": 8,
+			"operation": "status-analyze",
+			"first_ms": 1.0897500000000946,
+			"repeated_median_ms": 0.39829200000008314,
+			"read_calls": [4, 4, 4, 4, 4, 4],
+			"directory_calls": [0, 0, 0, 0, 0, 0],
+			"catalog_replacements": [0, 0, 0, 0, 0, 0]
+		},
+		{
+			"history_size": 8,
+			"operation": "status-execute",
+			"first_ms": 18.19491600000015,
+			"repeated_median_ms": 16.711541000000125,
+			"read_calls": [63, 63, 63, 63, 63, 63],
+			"directory_calls": [59, 59, 59, 59, 59, 59],
+			"catalog_replacements": [1, 1, 1, 1, 1, 1]
+		}
+	],
+	"limits": [
+		"Archived controlled-review authority is deliberately absent; readiness stays false",
+		"Instrumented same-process measurements include observer overhead and warm filesystem caches",
+		"First query is not cold desktop startup; these samples do not establish complete Agent workflow speed or a 20% improvement"
+	],
+	"model_calls": 0,
+	"browser_starts": 0,
+	"formal_runner_calls": 0,
+	"validation": {
+		"typecheck": "passed",
+		"vitest_passed": 4,
+		"lint": "passed",
+		"protocol_structure": "passed",
+		"protocol_history": "skipped: no tag",
+		"desktop": "not executed; measurement only"
+	},
+	"evidence": {
+		"directory": "tests/scratch/ui-catalog-read/1792777795663",
+		"archive": "docs/ui-testing-evidence/optimization-u04-catalog.tar.gz",
+		"archive_sha256": "f8bc18bea37bc79167d8a8b52094e205b2c41797ccc552fe14c6c7e924c76c3d",
+		"archive_bytes": 5014,
+		"verified_native_runs": 8,
+		"historical_archive": "docs/ui-testing-evidence/optimization-u04-history.tar.gz",
+		"historical_archive_sha256": "bcae95e240a6bc4c9cda1ef5fb9ab77379f70f93e5dafaf933cd78be76008658",
+		"reconstruction": "Measurement archive stores counters and six query-task manifests. Referenced native assets/runs and other source files remain in the immutable historical archive; no private approval authority is copied."
+	},
+	"file_index": [
+		{
+			"path": "measurement.json",
+			"sha256": "e7c34c2f7110254c92c6a0c068f90bd5eb829ecd7fae3d4fa51c374c86c45235",
+			"bytes": 134394
+		},
+		{
+			"path": "history-1/qa/ui/tasks/measure-view/manifest.json",
+			"sha256": "4f819df56a98177909478377b4a394ec0d703c483571698fc51d61f4d1b9cffd",
+			"bytes": 810
+		},
+		{
+			"path": "history-1/qa/ui/tasks/measure-analyze/manifest.json",
+			"sha256": "75df8aeaa0de2a373753e275c7d0974f4eab2ffbdb4b55d0f32503b782b9d774",
+			"bytes": 819
+		},
+		{
+			"path": "history-1/qa/ui/tasks/measure-execute/manifest.json",
+			"sha256": "1cbb7ba7d8ddb82faf9e9b783de239176699ee1112280da383433c06c337d05b",
+			"bytes": 800
+		},
+		{
+			"path": "history-8/qa/ui/tasks/measure-view/manifest.json",
+			"sha256": "15bf33c651f677d93e204ca6058a88c017aafce9e2df2cbc954aba1d4a1ae74d",
+			"bytes": 810
+		},
+		{
+			"path": "history-8/qa/ui/tasks/measure-analyze/manifest.json",
+			"sha256": "19b2378f4edc4da37d0e05583915e6a94a770409e16cdf9680698066cf744964",
+			"bytes": 819
+		},
+		{
+			"path": "history-8/qa/ui/tasks/measure-execute/manifest.json",
+			"sha256": "1df47bb7e0ee16742155429595d8ca1d75010d6f8b4c668f647aa2c2b63891b8",
+			"bytes": 800
+		}
+	]
+}
