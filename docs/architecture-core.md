@@ -20,7 +20,7 @@
 ### 对话过程与模型耗时
 
 - `UiMessage.durationMs` 透传 SDK 的模型请求开始至响应结束耗时，含网络等待和生成，不代表纯推理时间；旧记录或不提供该字段的引擎不估算、不补零。流式期间依据消息 timestamp 显示当前请求已用时间，结束后采用 SDK 测量值。
-- `web/src/chat-presentation.ts` 仅生成聊天展示投影：回合成功结束且存在最终文本回答时，移除中间助手消息和最终消息的 thinking 块，将各次模型 durationMs 汇总到结果上；不加工具时间。任一次缺少耗时则不显示不完整的总计。失败、中断、工具错误或无最终回答保留现场。
+- `web/src/chat-presentation.ts` 仅生成聊天展示投影：回合结束且存在正常终止的最终文本回答时，即使中途工具或模型请求报错，也移除中间助手消息、工具结果和最终消息的 thinking 块；技能调用只保留用户命令与要求，不展示加载正文。将各次模型 durationMs 汇总到结果上，不加工具时间；任一次缺少耗时则不显示不完整的总计。无最终回答的失败或中断保留现场提示。
 - 原始消息、会话文件和 trace 不修改；搜索、图片导出查看原始过程。`ModelTiming.tsx` 负责耗时显示及流式计时器清理；显示开关仅控制执行中的思考/工具展开。回归：`tests/unit/chat-presentation.test.ts`、`tests/unit/model-timing.test.ts`、`tests/chat-presentation-test.mjs`（固定消息、隔离浏览器，无真实模型调用）。
 
 本轮验收（2026-10-22）：

@@ -19,7 +19,7 @@ window.openFixtureExport=()=>openExportImage('a2');
 window.closeFixtureExport=closeExportImage;
 import '/src/styles.css';
 const messages = [
-{id:'u',role:'user',timestamp:1000,content:[{type:'text',text:'查询时间'}]},
+{id:'u',role:'user',timestamp:1000,content:[{type:'text',text:'<skill name="time-check" location="/fixture/SKILL.md">\\nFixture skill instructions\\n</skill>\\n\\n查询时间'}]},
 {id:'a1',role:'assistant',timestamp:2000,durationMs:9005,stopReason:'toolUse',content:[{type:'thinking',thinking:'正在分析并查询时间'},{type:'text',text:'我查一下当前时间。'},{type:'toolCall',id:'call',name:'bash',argumentsText:'{"command":"date"}'}]},
 {id:'t',role:'toolResult',toolCallId:'call',timestamp:11024,content:[{type:'text',text:'16:54'}]},
 {id:'a2',role:'assistant',timestamp:11027,durationMs:5388,stopReason:'stop',content:[{type:'thinking',thinking:'整理最终答案'},{type:'text',text:'现在是 16:54。'}]}
@@ -27,7 +27,7 @@ const messages = [
 const root=createRoot(document.getElementById('root'));
 window.renderFixture=(mode)=>{
  const running=mode==='running';
- const source=mode==='failed' ? [...messages.slice(0,-1),{...messages.at(-1),stopReason:'error',errorMessage:'Fixture failure'}] : messages;
+ const source=mode==='failed' ? [...messages.slice(0,-1),{...messages.at(-1),stopReason:'error',errorMessage:'Fixture failure'}] : mode==='recovered' ? messages.map(m=>m.id==='t'?{...m,isError:true}:m) : messages;
  root.render(React.createElement(LanguageProvider,null,React.createElement(MessageList,{state:{messages:running?source.slice(0,3):source,streamingMessage:null,isStreaming:running,queue:{steering:[],followUp:[]},sessionId:'fixture',conversationId:'fixture'},liveOutputs:new Map(),toolStatuses:new Map(),thinkingWrap:true,toolsWrap:true})));
 };
 window.renderFixture('running');
@@ -72,12 +72,15 @@ try {
 	await page.getByText("我查一下当前时间。", { exact: true }).waitFor();
 	assert.equal(await page.locator(".thinking-body").count(), 1);
 	assert.equal(await page.locator(".toolcall").count(), 1);
+	assert.equal(await page.locator(".skillcard").count(), 1);
 	checks.push("running process visible");
 	await page.screenshot({ path: fileURLToPath(new URL("running.png", evidence)) });
 	await page.evaluate(() => window.renderFixture("done"));
 	await page.getByText("现在是 16:54。", { exact: true }).waitFor();
 	assert.equal(await page.locator(".thinking").count(), 0);
 	assert.equal(await page.locator(".toolcall").count(), 0);
+	assert.equal(await page.locator(".skillcard").count(), 0);
+	await page.getByText("/skill:time-check 查询时间", { exact: true }).waitFor();
 	assert.equal(await page.getByText("我查一下当前时间。", { exact: true }).count(), 0);
 	assert.match(await page.locator(".model-timing").innerText(), /14\.4s/);
 	checks.push("completed final only; model timing 14.4s excludes tool time");
@@ -94,6 +97,10 @@ try {
 	await page.locator(".thinking").first().waitFor();
 	checks.push("export restores original process");
 	await page.evaluate(() => window.closeFixtureExport());
+	await page.evaluate(() => window.renderFixture("recovered"));
+	await page.waitForFunction(() => !document.querySelector(".thinking, .toolcall, .skillcard"));
+	assert.equal(await page.getByText("现在是 16:54。", { exact: true }).count(), 1);
+	checks.push("final answer hides intermediate tool errors and skill loading");
 	await page.evaluate(() => window.renderFixture("failed"));
 	await page.getByText("Fixture failure", { exact: true }).waitFor();
 	assert.equal(await page.locator(".toolcall").count(), 1);

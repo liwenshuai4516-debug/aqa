@@ -1,5 +1,6 @@
 /** Chat-only projection. Raw messages remain available to trace, search and export. */
 import type { UiMessage } from "./types";
+import { parseSkillBlock } from "./skill-block";
 
 export function presentChatMessages(messages: readonly UiMessage[], running: boolean): UiMessage[] {
 	const output: UiMessage[] = [];
@@ -8,15 +9,14 @@ export function presentChatMessages(messages: readonly UiMessage[], running: boo
 		const segment = messages.slice(start, end);
 		const assistants = segment.filter((m) => m.role === "assistant" && !m.customType);
 		const final = assistants.at(-1);
-		// Only a completed, successful answer can replace a process. Preserve failures,
-		// interruptions, tool-only runs and custom/system cards verbatim.
+		// A final answer replaces the process even if intermediate requests failed.
+		// Without an answer, keep interruptions and failures visible.
 		const compact =
 			!active &&
 			final?.stopReason === "stop" &&
 			!final.errorMessage &&
 			!final.content.some((b) => b.type === "toolCall") &&
-			final.content.some((b) => b.type === "text" && typeof b.text === "string" && b.text.trim()) &&
-			!segment.some((m) => m.isError || m.errorMessage || m.stopReason === "error" || m.stopReason === "aborted");
+			final.content.some((b) => b.type === "text" && typeof b.text === "string" && b.text.trim());
 		if (!compact || !final) {
 			output.push(...segment);
 			return;
@@ -33,7 +33,23 @@ export function presentChatMessages(messages: readonly UiMessage[], running: boo
 					content: m.content.filter((b) => b.type !== "thinking"),
 					durationMs: timed ? assistants.reduce((sum, a) => sum + a.durationMs!, 0) : undefined,
 				});
-			else if (m.role !== "assistant" || m.customType) output.push(m);
+			else if (m.role === "user") {
+				const text = m.content
+					.flatMap((b) => (b.type === "text" && "text" in b && typeof b.text === "string" ? [b.text] : []))
+					.join("\n");
+				const skill = parseSkillBlock(text);
+				output.push(
+					skill
+						? {
+								...m,
+								content: [
+									{ type: "text", text: `/skill:${skill.name}${skill.userMessage ? ` ${skill.userMessage}` : ""}` },
+									...m.content.filter((b) => b.type !== "text"),
+								],
+							}
+						: m,
+				);
+			} else if (m.role !== "toolResult" && (m.role !== "assistant" || m.customType)) output.push(m);
 		}
 	};
 	for (let i = 0; i < messages.length; i++) {
