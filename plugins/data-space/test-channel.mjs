@@ -351,6 +351,13 @@ export function createTestChannel({ host, store, commitStore }) {
 			...c,
 			nativeSource: {
 				key: sourceKey(asset, env, pending[i]),
+				workspace: asset.workspace,
+				engine: asset.engine,
+				projectId: env.systemId,
+				envId: env.id,
+				lineageId: asset.lineageId ?? null,
+				revision: asset.revision,
+				intakeRevision: s.revision + 1,
 				assetRef: asset.assetRef,
 				nativeCaseId: pending[i].id,
 				nativeModuleId: pending[i].moduleId ?? null,

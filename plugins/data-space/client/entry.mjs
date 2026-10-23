@@ -603,6 +603,11 @@ function onChange(e) {
 		renderOverlay();
 		return;
 	}
+	if (el.dataset.el === "case-version") {
+		S.caseVersion = el.value;
+		renderBody();
+		return;
+	}
 	if (el.dataset.el === "case-status") {
 		S.status = el.value;
 		renderBody();

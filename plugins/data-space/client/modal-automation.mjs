@@ -1,4 +1,5 @@
 import { BASE, S, esc, hooks, load, pathOfFeature, toast } from "./state.mjs";
+import { versionText } from "./case-versions.mjs";
 import { composeBrief } from "./brief.mjs";
 export function openAutomation(id) {
 	const c = S.cases.find((c) => c.id === id);
@@ -25,6 +26,7 @@ export function automationModalHtml() {
 	const records = S.runs.filter((r) => r.caseId === m.caseId && r.automation);
 	return `<div class="dsp-overlay"><div class="dsp-modal"><div class="dsp-modal-head"><span>自动化关联 · ${esc(m.title)}</span><button class="dsp-btn" data-act="close-modal">关闭</button></div>
 	<div class="dsp-modal-body">
+	${c?.nativeSource ? `<details><summary>${esc(versionText("source"))}</summary><pre style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(JSON.stringify(c.nativeSource, null, 2))}</pre></details>` : ""}
 	<p>关联原生 ${m.engine.toUpperCase()} 资产，继续使用原工作流的批准、预检与执行。结果从原生证据同步。引入执行将运行整个原生资产中的用例，请在发送草稿前核对范围。</p>
 	<label class="dsp-field"><span>资产引用（API 摘要 / UI 引用 JSON）</span><textarea data-f="assetText" rows="2">${esc(m.assetText)}</textarea></label>
 	<label class="dsp-field"><span>原生用例 ID</span><input data-f="nativeCaseId" value="${esc(m.nativeCaseId)}" /></label>

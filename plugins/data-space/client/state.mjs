@@ -91,6 +91,7 @@ export const S = {
 	status: "all",
 	/** 用例类型筛选：all | 具体类型 */
 	caseType: "all",
+	caseVersion: "recent",
 	envQ: "",
 	/** 环境页的项目筛选（systemId；空 = 全部项目）。 */
 	envScope: "",

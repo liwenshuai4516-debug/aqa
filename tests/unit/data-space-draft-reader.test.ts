@@ -168,7 +168,11 @@ it("reads independent native UI cases without approval, execution or asset regis
 		],
 	});
 	expect(await f.reader.list("ui", f.workspace)).toEqual([]);
-	expect(await f.reader.inspect("ui", f.workspace, f.assetRef)).toMatchObject({ executable: true, revision: "v1" });
+	expect(await f.reader.inspect("ui", f.workspace, f.assetRef)).toMatchObject({
+		executable: true,
+		revision: "v1",
+		lineageId: "asset1",
+	});
 });
 
 it.each(["manifest", "scope", "source", "rules"])(

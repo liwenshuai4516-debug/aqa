@@ -41,6 +41,8 @@ import {
 } from "./state.mjs";
 import { RUN_RANGES, RUN_SOURCES, envOptions, sourceLabel, stampText, verdictClass } from "./results.mjs";
 
+import { filterVersions, versionIndex, versionText } from "./case-versions.mjs";
+
 import { isIntroduced } from "./brief.mjs";
 
 export const ICON = {
@@ -293,7 +295,7 @@ const typeBadge = (t) => {
 	return `<span class="dsp-type ${cls}" title="用例类型">${esc(name)}</span>`;
 };
 
-function caseRow(c, showPath) {
+function caseRow(c, showPath, version) {
 	const steps = c.steps?.length ?? 0;
 	const briefed = isIntroduced(c);
 	return `<tr>
@@ -309,6 +311,7 @@ function caseRow(c, showPath) {
 							.join("")}</span>`
 					: ""
 			}</div>
+			${version?.revision ? `<div class="dsp-case-path" title="${esc(version.revision)}">${esc(versionText("revision"))} ${esc(version.revision.length > 20 ? version.revision.slice(0, 12) + "…" : version.revision)} · ${esc(versionText(!version.grouped ? "unknown" : version.recent ? "recent" : "history"))}</div>` : ""}
 			${showPath ? `<div class="dsp-case-path">${esc(pathText(c.featureId, " / "))}</div>` : ""}
 		</td>
 		<td class="dsp-type-cell">${typeBadge(c.type)}</td>
@@ -328,10 +331,11 @@ function caseRow(c, showPath) {
 }
 
 function caseTable(list, showPath) {
+	const versions = versionIndex(S.cases);
 	return `<div class="dsp-table-wrap"><table class="dsp-table case-table${showPath ? " wide" : ""}">
 		<colgroup><col style="width:86px"/><col style="width:auto"/><col style="width:82px"/><col style="width:64px"/><col style="width:74px"/><col style="width:104px"/><col style="width:52px"/><col style="width:104px"/><col style="width:212px"/></colgroup>
 		<thead><tr><th>编号</th><th>用例标题</th><th>类型</th><th>优先级</th><th>状态</th><th>最近结果</th><th>步骤</th><th>更新</th><th></th></tr></thead>
-		<tbody>${list.map((c) => caseRow(c, showPath)).join("")}</tbody></table></div>`;
+		<tbody>${list.map((c) => caseRow(c, showPath, versions.get(c.id))).join("")}</tbody></table></div>`;
 }
 
 function caseToolbar() {
@@ -341,8 +345,13 @@ function caseToolbar() {
 				`<button class="dsp-chip ${S.priority === p ? "on" : ""}" data-act="prio" data-id="${p}">${p === "all" ? "全部优先级" : p}</button>`,
 		)
 		.join("");
-	const counts = typeCounts();
-	const typeChips = [["all", "全部类型", S.cases.length], ...observedTypes().map((t) => [t, t, counts.get(t) ?? 0])]
+	const versionCases = filterVersions(S.cases, S.caseVersion);
+	const counts = new Map();
+	for (const c of versionCases) counts.set(c.type, (counts.get(c.type) ?? 0) + 1);
+	const typeChips = [
+		["all", "全部类型", versionCases.length],
+		...observedTypes().map((t) => [t, t, counts.get(t) ?? 0]),
+	]
 		.map(
 			([v, label, n]) =>
 				`<button class="dsp-chip ${S.caseType === v ? "on" : ""}" data-act="type" data-id="${esc(v)}">${esc(label)}<span class="dsp-chip-num">${n}</span></button>`,
@@ -350,6 +359,7 @@ function caseToolbar() {
 		.join("");
 	return `<div class="dsp-toolbar">
 		<input class="dsp-search" data-el="case-search" value="${esc(S.caseQ)}" placeholder="搜索编号 / 标题 / 类型 / 标签 / 负责人" />
+		<select data-el="case-version" aria-label="${esc(versionText("revision"))}" title="${esc(versionText("hint"))}">${["recent", "all"].map((value) => `<option value="${value}" ${S.caseVersion === value ? "selected" : ""}>${esc(versionText(value))}</option>`).join("")}</select>
 		<select data-el="case-status"><option value="all">全部状态</option>${CASE_STATUS.map((s) => `<option value="${esc(s)}" ${S.status === s ? "selected" : ""}>${esc(s)}</option>`).join("")}</select>
 		<div class="dsp-chips" style="margin:0">${chips}</div>
 		<div class="dsp-chips dsp-chips-sep" style="margin:0">${typeChips}</div>
@@ -357,7 +367,7 @@ function caseToolbar() {
 }
 
 function visibleCases(base) {
-	return base.filter(
+	return filterVersions(base, S.caseVersion, S.cases).filter(
 		(c) =>
 			caseMatches(c, S.caseQ) &&
 			(S.priority === "all" || c.priority === S.priority) &&

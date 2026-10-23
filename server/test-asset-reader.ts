@@ -12,6 +12,7 @@ export interface NativeTestAsset {
 	revision: string;
 	/** False for archival drafts; this field never grants execution approval. */
 	executable?: boolean;
+	lineageId?: string;
 	cases: Array<{
 		id: string;
 		moduleId?: string;
@@ -117,6 +118,7 @@ export class TestAssetReader {
 				assetRef: ref,
 				revision: draft ? ref.sha256 : asset.data.revision,
 				executable: !draft,
+				lineageId: draft ? undefined : asset.id,
 				cases: cases.data.cases.map((c: any) => ({
 					id: c.case_id,
 					moduleId: c.module_id,

@@ -435,6 +435,31 @@ it("imports by explicit envId without a channel and blocks mismatched addresses"
 	await expect(f.intake({ envId: "e" })).rejects.toThrow("不一致");
 	f.a.dispose();
 });
+it("persists verified lineage and intake order without rewriting metadata on duplicate import", async () => {
+	const f = fixture();
+	await f.a.idle();
+	f.asset.lineageId = "asset-family";
+	await f.intake({ envId: "e" });
+	const first = structuredClone(f.store().cases[0].nativeSource);
+	expect(first).toMatchObject({
+		workspace: f.cwd,
+		engine: "ui",
+		projectId: "s",
+		envId: "e",
+		lineageId: "asset-family",
+		revision: "v1",
+		intakeRevision: 2,
+	});
+	await f.intake({ envId: "e" });
+	expect(f.store().cases[0].nativeSource).toEqual(first);
+	f.asset.assetRef = { ...f.asset.assetRef, sha256: "d".repeat(64) };
+	f.asset.revision = "older-label";
+	await f.intake({ envId: "e" });
+	expect(f.store().cases[1].nativeSource.intakeRevision).toBeGreaterThan(first.intakeRevision);
+	expect(f.store().cases[0].nativeSource).toEqual(first);
+	f.a.dispose();
+});
+
 it("keeps one destination per project and engine across renames", async () => {
 	const f = fixture();
 	await f.a.idle();

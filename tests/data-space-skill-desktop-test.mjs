@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import electron from "electron";
+import { assetDigest } from "pi-ui-testing";
 import { ensureBuild } from "./lib/ensure-build.mjs";
 import { portUp } from "./lib/port-utils.mjs";
 import { launchNativeApp } from "./desktop/native-app.mjs";
@@ -349,6 +350,37 @@ try {
 	assert.equal((await readStore()).cases.length, 1);
 	result.checks.push(
 		"real Electron environment initialization, explicit mapped draft import by envId, read-only archive receipts before/after restart, separate binding, persisted channel and automatic native Playwright result recovery",
+	);
+
+	const originalAsset = await native.f.store.load(native.assetRef);
+	const nextAsset = { ...originalAsset, data: { ...originalAsset.data, revision: "v2" } };
+	nextAsset.data.content_sha256 = assetDigest(nextAsset);
+	const nextRef = await native.f.store.put(nextAsset);
+	const nextArchive = await request("/automation", { ...archiveInput, action: "import", assetRef: nextRef });
+	assert.equal(nextArchive.imported, 1);
+	const versioned = await readStore();
+	assert.equal(versioned.cases.length, 2);
+	assert.equal(versioned.cases[0].nativeSource.lineageId, versioned.cases[1].nativeSource.lineageId);
+	assert(versioned.cases[0].nativeSource.lineageId);
+	await page.locator("header button, .topbar button, nav button").filter({ hasText: "数据空间" }).first().click();
+	await page.locator('.dsp-nav button[data-tab="cases"]').click();
+	const selector = page.locator('[data-el="case-version"]');
+	await selector.waitFor();
+	const caseRows = page.locator(".case-table tbody tr");
+	await waitUntil(async () => (await caseRows.count()) === 1, "recent case version");
+	assert((await caseRows.innerText()).includes("v2"));
+	await selector.selectOption("all");
+	assert.equal(await caseRows.count(), 2);
+	const oldRow = caseRows.filter({ has: page.locator(`[data-act="edit-case"][data-id="${imported.caseIds[0]}"]`) });
+	await oldRow.locator('[data-act="automation-open"]').click();
+	await page.locator(".dsp-modal summary").filter({ hasText: "原生来源与修订" }).click();
+	assert((await page.locator(".dsp-modal").innerText()).includes(native.assetRef.sha256));
+	await page.locator(".dsp-modal summary").filter({ hasText: "原生执行记录与证据" }).click();
+	assert((await page.locator(".dsp-modal").innerText()).includes(syncReceipt.runId));
+	await page.screenshot({ path: join(output, "version-history.png") });
+	assert.equal((await readStore()).cases.length, 2);
+	result.checks.push(
+		"desktop recent/all imported revisions preserve old case bindings, native source refs and run evidence",
 	);
 	result.status = "PASS";
 } catch (error) {
