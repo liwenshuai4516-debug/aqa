@@ -22,6 +22,7 @@
 - 宿主：`server/test-asset-reader.ts` 只读核验原生文件；UI 复用 `ArtifactStore/reconcileRun`，API 复用已安装插件的 `inspectDraft` 确定性核验。`server/test-execution-notice.ts` 仅发执行引用，通知不代表测试通过。
 - `host.testing.inspect/read/list` 需 `tools` 权限，见 `plugin-sdk/README.md`。新增工具使用插件动态登记，不复制宿主工具目录或执行器。
 - 技能：`.pi/skills/data-space-testing/SKILL.md`，`/data` 发现，沿用原 UI/API 阶段技能。
+- 测试数据规范与结构化交付：[Skill 入口](../.pi/skills/data-space-testing/SKILL.md)、[结果交付约定](../.pi/skills/data-space-testing/references/result-output.md)。交付格式不替换工具参数或存储格式。
 - 显式登记：`npm run data-space:enable -- --agent-dir <应用目录> --data-dir <数据目录>`。保留已有设置、禁用选择；不同安装拒绝覆盖。当前项目技能由项目目录加载，应用跨工作区使用需显式登记。
 - 回归：`npm run test:data-space:native`、`npm run test:data-space:browser`；后者先通过统一构建检查器保证构建，不并发重建。断言失败保留证据，不 SKIP 或削弱断言。
 
@@ -43,3 +44,35 @@
 [本轮证据索引](data-space-integration-evidence.json) 保存各检查的范围、结果、原始日志/截图及归档位置与 SHA-256。原始合成目标与执行文件留在被忽略的 `tests/scratch/` 归档，避免复制依赖或把大量截图入库。历史失败日志保留，最终通过结果与其分开。
 
 提交与远端备份以本次 Git 提交和最终交付消息为准；既有 `.gitignore` 的 SFTP 忽略改动和 `plugins/db-client/package-lock.json` 不纳入本次提交。
+
+## 2026-10-23 测试数据规范 Skill
+
+设计范围：扩展现有 `data-space-testing`，保留 `/data`、应用级登记和四个插件工具；通过标准 frontmatter metadata 声明中文名称及 `data-space` 插件归属。入口负责定位和选择写入路径，按需引用交付字段约定；不新增 runner、数据表、后台调度或存储 schema，不改原 UI/API 工作流。
+
+当前能力核对：UI 工作流具备来源、设计批准、诊断、正式批次及独立报告评审；API 插件具备契约用例、评审、执行、持久化和分析。数据空间已经实现版本化绑定、原生证据核验、八态结果、幂等同步和历史补漏。规范主要补齐 Agent 的选择及表达：不混项目／环境，不用普通登记覆盖原生同步，不把工具成功当用例成功，不遗漏未匹配或未入库项。
+
+逐条自审以当前工具及源码为依据，以下是设计走查，**不是实际模型执行结果**：
+
+| 场景                         | 规范要求及复查结论                                                                      |
+| ---------------------------- | --------------------------------------------------------------------------------------- |
+| 只整理旧结果                 | 查询旧批次，不执行、绑定或回写；保留原 run 和父批次。                                   |
+| 原生结果已自动同步           | 同一 run 通过原生 sync 核对，duplicate 不算新执行；不用普通登记复制。                   |
+| 同步部分失败／无匹配         | 核对 imported、duplicate、errors、unmatched；0 条导入不能笼统声称成功。                 |
+| 多项目同名环境／编号冲突     | 保留所属项目，使用真实 ID；查询未暴露 ID 时列缺口，不读取私有存储补齐。                 |
+| 用例编辑后回写旧结果         | 先核对版本，过期绑定重新关联；明确普通登记没有比较写入保证，不能靠 Skill 声称解决并发。 |
+| 跳过、取消、不稳定或未知     | 八态交付不丢失；普通登记 schema 不支持的状态不强行改为阻塞或通过。                      |
+| 普通登记超时／部分成功       | 逐项核对回执，返回不明不盲目重发；任务名称不是幂等键。                                  |
+| 没有执行证据                 | results 为空，origin 为 null，具体缺口进入 gaps；无实际观察不登记结果。                 |
+| 部分范围、子集重跑及历史统计 | 计数明确范围与单位，不混父批次、过期记录或其他环境，不用概览冒充本轮统计。              |
+| 敏感参数／长备注             | 保留私有凭据引用，备注仅关键差异和短证据路径；不把报告 JSON 或密钥塞进 note。           |
+
+自审结论：保留一个 Skill、一个按需参考文件；删除重复的工具执行规则和无证据来源标签，复用宿主生成的绑定指纹及同步投影，不要求 Agent 再实现它们。普通查询无需输出整份报告，汇总字段按需使用。现有查询以文本为主、普通登记缺幂等键及版本比较写入、交付 JSON 无运行时强制校验，属于后续程序能力缺口，本次不伪装为已解决。
+
+本轮验收（macOS arm64、Node 23.10.0，开发态真实 Electron，独立工作区及临时 dataDir/agentDir）：
+
+- Skill validator 通过；两个本地链接和两个 JSON 示例检查通过，普通登记示例字段／结论与实际工具 schema 相容。未以此声称模型行为已验证。
+- `npm run typecheck`、`npm run lint`、`npm run check:protocol`、`git diff --check`、共享应用构建和桌面构建通过。协议版本 git 启发式因无 tag 跳过，非本轮通过项。
+- 六个现有测试文件共 90 项通过：data-space automation、integrity、runs、results、envs，以及 skill-capability-settings。覆盖幂等、过期、环境归属、写盘失败、状态及设置契约。
+- `PI_WEB_SMOKE_PREBUILT=1 node tests/data-space-skill-desktop-test.mjs`：四组检查通过，真实 Electron 跨工作区发现、`/data` 补全、单技能禁用持久性、插件关闭联动及恢复、四个工具管理。该入口须先具备当前 server/web/desktop 构建。
+- 桌面证据：`tests/scratch/data-space-skill-desktop/1792723568306/` 下 `result.json`、`skill.png`、`plugin-blocked.png`、`tools.png`。零模型调用、零业务请求，精确关闭本次应用实例；未执行实际模型遵循度、业务回写或其他平台验收。
+- 实际桌面应用专用 `agent/settings.json` 已有指向本仓库的 `data-space-testing` 登记，`data/plugins/data-space` 链接也指向本仓库；本轮仅核对相关配置字段和链接，未读取认证或业务数据、未覆盖个人安装。用户原窗口未自动操作或重启，执行 `/reload` 后可读取更新后的 Skill；不声称旧会话已刷新。
