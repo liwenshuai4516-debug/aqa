@@ -20,6 +20,7 @@
  * 运行：node tests/data-space-plugin-test.mjs（单跑会先确保 dist 就绪）
  */
 import { spawn } from "node:child_process";
+import { createServer } from "node:http";
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -53,7 +54,27 @@ ensureBuild(repoRoot, "data-space-plugin-test");
 const dataDir = mkdtempSync(join(tmpdir(), "pi-web-data-space-"));
 mkdirSync(join(dataDir, "plugins"), { recursive: true });
 cpSync(PLUGIN_SRC, join(dataDir, "plugins", "data-space"), { recursive: true });
+// 出站请求要过宿主白名单。这份**临时副本**额外授权 127.0.0.1，供下面的模拟登录接口使用；
+// 仓库里的真实清单不声明本机地址（用户环境不该默认放行本机）。
+const copiedManifest = join(dataDir, "plugins", "data-space", "manifest.json");
+const manifestCopy = JSON.parse(readFileSync(copiedManifest, "utf8"));
+manifestCopy.netAllowlist = ["127.0.0.1"];
+writeFileSync(copiedManifest, JSON.stringify(manifestCopy, null, "\t"));
 const storeFile = join(dataDir, "data-space", "store.json");
+
+/** 本地模拟登录接口：用来验证「脚本 → 出站请求 → 取值 → 落盘」整条链路。 */
+const loginHits = [];
+const loginServer = createServer((req, res) => {
+	let body = "";
+	req.on("data", (chunk) => (body += chunk));
+	req.on("end", () => {
+		loginHits.push({ url: req.url, method: req.method, body });
+		res.setHeader("content-type", "application/json");
+		res.end(JSON.stringify({ code: 0, data: { access_token: `tok-${loginHits.length}`, tenant: "qa-tenant" } }));
+	});
+});
+await new Promise((resolve) => loginServer.listen(0, "127.0.0.1", resolve));
+const loginPort = loginServer.address().port;
 
 let proc = null;
 let failures = 0;
@@ -265,6 +286,26 @@ try {
 			],
 			note: "测试用例创建",
 			isDefault: false,
+			// 内置脚本（0.12.0）：只验证清洗与读回，刷新要真实出网，这里不跑。
+			script: {
+				enabled: true,
+				ttlMinutes: 0,
+				steps: [
+					{
+						name: "登 录",
+						method: "post",
+						url: "/api/login",
+						headers: [{ key: "Content-Type", value: "application/json" }],
+						body: '{"u":"{{账号}}","p":"{{口令}}"}',
+						extract: [
+							{ key: "token", path: "data.access_token" },
+							{ key: "token", path: "data.other" },
+						],
+					},
+					// 没填地址 → 应被丢弃
+					{ name: "空步骤", url: "", extract: [{ key: "x", path: "a" }] },
+				],
+			},
 			createdAt: stamp,
 			updatedAt: stamp,
 		},
@@ -402,6 +443,40 @@ try {
 		probeEnv?.params,
 	);
 	check(!(after.envs ?? []).some((e) => e.id === "ghost-env"), "项目不存在的环境被丢弃");
+	// -- 内置脚本：清洗与读回 -------------------------------------------
+	check(
+		probeEnv?.script?.enabled === true && probeEnv?.script?.ttlMinutes === 1,
+		"环境脚本读回一致：TTL 夹到下限 1 分钟",
+		probeEnv?.script,
+	);
+	check(
+		probeEnv?.script?.steps?.length === 1 && probeEnv?.script?.steps?.[0]?.method === "POST",
+		"只留有地址的步骤，请求方法归一为大写",
+		probeEnv?.script?.steps,
+	);
+	check(
+		probeEnv?.script?.steps?.[0]?.extract?.length === 1 && probeEnv?.script?.steps?.[0]?.extract?.[0]?.secret === true,
+		"提取项同名去重，默认按敏感值处理",
+		probeEnv?.script?.steps?.[0]?.extract,
+	);
+	check(JSON.stringify(probeEnv?.dynamic) === "[]", "保存时不会带上动态值（服务端所有）", probeEnv?.dynamic);
+	const refreshBad = await postJson("/env/refresh", {});
+	check(refreshBad.status === 400, "POST /env/refresh 缺 envId → 400", { status: refreshBad.status });
+	const refreshGhost = await postJson("/env/refresh", { envId: "no-such-env" });
+	check(refreshGhost.body?.ok === false, "刷新不存在环境 → ok:false 并说明原因", refreshGhost.body);
+	const refreshProbe = await postJson("/env/refresh", { envId: "probe-env" });
+	check(
+		refreshProbe.status === 200 && refreshProbe.body?.ok === false && (refreshProbe.body?.dynamic ?? []).length === 0,
+		"主机未授权时刷新失败，且不回传任何动态值",
+		{ status: refreshProbe.status, body: refreshProbe.body },
+	);
+	check(
+		String(refreshProbe.body?.error ?? "").length > 0 &&
+			refreshProbe.body?.scriptRun?.ok === false &&
+			String(refreshProbe.body?.scriptRun?.error ?? "").length > 0,
+		"刷新失败把原因记在最近一次运行里（页面能直接看到为什么没取到值）",
+		{ error: refreshProbe.body?.error, scriptRun: refreshProbe.body?.scriptRun },
+	);
 
 	// -- 执行结果：POST /runs 回写 → 单独文件 → 重启后仍在 -------------------
 	check(Array.isArray(st?.runs) && (st?.runs?.length ?? -1) === 0, "初始快照带空的结果流水", st?.runs?.length);
@@ -710,9 +785,14 @@ try {
 	);
 	check(
 		new Set(demoRuns.filter((x) => x.taskId).map((x) => x.taskId)).size === 3 &&
-			demoRuns.some((x) => x.source === "manual"),
-		"示例记录含 3 个批量任务与手工单条",
-		new Set(demoRuns.filter((x) => x.taskId).map((x) => x.taskId)).size,
+			demoRuns.filter((x) => !x.taskId).length === 2 &&
+			demoRuns.every((x) => x.source === "demo"),
+		"示例记录含 3 个批量任务与 2 条单条登记，且都标为示例",
+		{
+			tasks: new Set(demoRuns.filter((x) => x.taskId).map((x) => x.taskId)).size,
+			single: demoRuns.filter((x) => !x.taskId).length,
+			otherSource: demoRuns.filter((x) => x.source !== "demo").length,
+		},
 	);
 	check(
 		JSON.parse(readFileSync(runsFile, "utf8"))?.runs?.length === 11,
@@ -735,11 +815,136 @@ try {
 		before: reset.cases?.length,
 	});
 	check((stAfterClear?.runs?.length ?? -1) === 0, "清空后快照不再带结果");
+	// -- 内置脚本：真实出网（本地模拟登录接口）→ 取值 → 落盘 -----------------
+	const beforeScript = await getState();
+	const scriptSystem = (beforeScript.body?.systems ?? [])[0]?.id;
+	const scriptEnvBody = {
+		id: "script-env",
+		systemId: scriptSystem,
+		name: "脚本环境",
+		baseUrl: `http://127.0.0.1:${loginPort}`,
+		params: [
+			{ key: "账号", value: "qa_script" },
+			{ key: "口令", value: "qa-pass", secret: true },
+		],
+		script: {
+			enabled: true,
+			ttlMinutes: 30,
+			steps: [
+				{
+					name: "登录",
+					method: "POST",
+					url: "/api/login",
+					headers: [{ key: "Content-Type", value: "application/json" }],
+					body: '{"username":"{{账号}}","password":"{{口令}}"}',
+					extract: [
+						{ key: "token", path: "data.access_token" },
+						{ key: "tenant", path: "data.tenant", secret: false },
+					],
+				},
+			],
+		},
+		note: "",
+		isDefault: false,
+	};
+	const scriptSaved = await postJson("/save", {
+		baseRevision: beforeScript.body.revision,
+		systems: beforeScript.body.systems,
+		modules: beforeScript.body.modules,
+		features: beforeScript.body.features,
+		cases: beforeScript.body.cases,
+		envs: [...(beforeScript.body.envs ?? []), scriptEnvBody],
+	});
+	check(scriptSaved.status === 200, "带内置脚本的环境保存成功", scriptSaved.status);
+	const savedRevision = scriptSaved.body?.revision;
+
+	const runOne = await postJson("/env/refresh", { envId: "script-env", force: true });
+	check(runOne.body?.ok === true, "环境脚本跑通并取到动态值", runOne.body);
+	check(
+		(runOne.body?.dynamic ?? []).length === 2 && (runOne.body?.dynamic ?? []).every((v) => !("value" in v)),
+		"刷新响应只回键与时间，不回传任何明文值",
+		runOne.body?.dynamic,
+	);
+	const lastHit = loginHits.at(-1);
+	check(lastHit?.method === "POST" && lastHit?.url === "/api/login", "脚本确实发出了登录请求", lastHit);
+	check(
+		String(lastHit?.body ?? "").includes("qa_script") && String(lastHit?.body ?? "").includes("qa-pass"),
+		"请求体里的 {{账号}} / {{口令}} 由环境参数替换",
+		lastHit?.body,
+	);
+
+	const afterRun = await getState();
+	const scriptEnvAfter = (afterRun.body?.envs ?? []).find((e) => e.id === "script-env");
+	const tokenItem = (scriptEnvAfter?.dynamic ?? []).find((v) => v.key === "token");
+	check((scriptEnvAfter?.dynamic ?? []).length === 2, "动态值落进环境快照", scriptEnvAfter?.dynamic);
+	check(tokenItem?.value === "", "敏感动态值下发给页面时被清空（明文不出服务端）", tokenItem);
+	check(
+		(scriptEnvAfter?.dynamic ?? []).find((v) => v.key === "tenant")?.value === "qa-tenant",
+		"非敏感动态值照常下发（租户这类要显示）",
+		scriptEnvAfter?.dynamic,
+	);
+	check(
+		Number.isFinite(Date.parse(String(tokenItem?.expiresAt ?? ""))) && Date.parse(tokenItem.expiresAt) > Date.now(),
+		"动态值带有效期（TTL 30 分钟）",
+		tokenItem?.expiresAt,
+	);
+	check(afterRun.body?.revision === savedRevision, "刷新动态值不推进内容 revision（页面草稿不会 409）", {
+		before: savedRevision,
+		after: afterRun.body?.revision,
+	});
+	const diskStore = JSON.parse(readFileSync(storeFile, "utf8"));
+	const diskToken = ((diskStore.envs ?? []).find((e) => e.id === "script-env")?.dynamic ?? []).find(
+		(v) => v.key === "token",
+	);
+	check(/^tok-\d+$/.test(String(diskToken?.value ?? "")), "明文 token 只留在服务端 store.json", diskToken);
+
+	const hitsBeforeCached = loginHits.length;
+	const runCached = await postJson("/env/refresh", { envId: "script-env", force: false });
+	check(
+		runCached.body?.ok === true && runCached.body?.cached === true,
+		"有效期内直接用缓存，不重复登录",
+		runCached.body,
+	);
+	check(loginHits.length === hitsBeforeCached, "缓存命中没有新增登录请求", loginHits.length - hitsBeforeCached);
+
+	// 提取表达式写错 → 失败但保留旧值，并把原因记进最近一次运行
+	const badScript = {
+		...scriptEnvBody,
+		script: {
+			...scriptEnvBody.script,
+			steps: [{ ...scriptEnvBody.script.steps[0], extract: [{ key: "token", path: "data.nope" }] }],
+		},
+	};
+	const badSaved = await postJson("/save", {
+		baseRevision: afterRun.body.revision,
+		systems: afterRun.body.systems,
+		modules: afterRun.body.modules,
+		features: afterRun.body.features,
+		cases: afterRun.body.cases,
+		envs: (afterRun.body.envs ?? []).map((e) => (e.id === "script-env" ? badScript : e)),
+	});
+	check(badSaved.status === 200, "改成错误提取表达式后保存成功", badSaved.status);
+	const runBad = await postJson("/env/refresh", { envId: "script-env", force: true });
+	check(
+		runBad.body?.ok === false && /没有取到值|失败/.test(String(runBad.body?.error ?? "")),
+		"取不到值时脚本报失败并说明原因",
+		runBad.body,
+	);
+	check(runBad.body?.scriptRun?.ok === false, "失败原因记在最近一次运行里", runBad.body?.scriptRun);
+	const afterBad = await getState();
+	const badEnv = (afterBad.body?.envs ?? []).find((e) => e.id === "script-env");
+	check((badEnv?.dynamic ?? []).length === 0, "脚本改了提取项后旧动态值被清掉（避免半新半旧）", badEnv?.dynamic);
+
 	sock.close();
 } catch (err) {
 	failures += 1;
 	console.error(`✗ 用例执行异常：${err instanceof Error ? err.message : String(err)}`);
 } finally {
+	try {
+		loginServer.close();
+	} catch {
+		/* 已关闭 */
+	}
 	try {
 		proc?.kill();
 	} catch {

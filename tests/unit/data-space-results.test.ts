@@ -192,6 +192,42 @@ describe("统计与按任务分组", () => {
 		expect(runStats(RUNS, { casesById: edited, isStale }).stale).toBe(2);
 	});
 
+	it("只有示例记录时按示例算通过率，并标明口径", () => {
+		const rows = [
+			{ ...RUNS[0], id: "d1", source: "demo", taskId: "td", taskName: "示例批次" },
+			{ ...RUNS[1], id: "d2", source: "demo", taskId: "td", taskName: "示例批次" },
+		];
+		const st = runStats(rows, { casesById, isStale });
+		expect(st.rateBasis).toBe("demo");
+		expect(st.demoEligible).toBe(2);
+		expect(st.demoPassed).toBe(1);
+		expect(st.eligible).toBe(0);
+		expect(st.passRate).toBe(50);
+	});
+
+	it("有真实记录时示例不进分母", () => {
+		const rows = [
+			{ ...RUNS[1], id: "r9", source: "manual" },
+			{ ...RUNS[0], id: "d1", source: "demo", taskId: "td", taskName: "示例批次" },
+			{ ...RUNS[0], id: "d2", source: "demo", taskId: "td", taskName: "示例批次" },
+		];
+		const st = runStats(rows, { casesById, isStale });
+		expect(st.rateBasis).toBe("real");
+		expect(st.eligible).toBe(1);
+		expect(st.currentPassed).toBe(0);
+		expect(st.demo).toBe(2);
+		expect(st.passRate).toBe(0);
+	});
+
+	it("示例全都过期时不拿过期结果凑通过率", () => {
+		const edited = new Map([["c1", { ...CASES[0], updatedAt: daysAgo(-1, 8) }]]);
+		const rows = [{ ...RUNS[0], id: "d1", source: "demo", taskId: "td", taskName: "示例批次" }];
+		const st = runStats(rows, { casesById: edited, isStale });
+		expect(st.demoEligible).toBe(0);
+		expect(st.rateBasis).toBe("real");
+		expect(st.passRate).toBe(0);
+	});
+
 	it("同 taskId 归为一个任务，无任务各自成组", () => {
 		const groups = groupRuns(RUNS, { casesById, isStale });
 		expect(groups).toHaveLength(2);

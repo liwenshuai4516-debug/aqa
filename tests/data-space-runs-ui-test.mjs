@@ -25,6 +25,7 @@ import { setTimeout as sleep } from "node:timers/promises";
 import { fileURLToPath } from "node:url";
 import { chromium } from "playwright-core";
 import { CHROME_PATH } from "./lib/chrome.mjs";
+import { VERDICTS } from "../plugins/data-space/runs.mjs";
 
 const REPO_ROOT = fileURLToPath(new globalThis.URL("../", import.meta.url));
 const PORT = 8970 + Math.floor(Math.random() * 20);
@@ -215,6 +216,23 @@ try {
 		await envModal.locator('.dsp-param input[data-pf="key"]').last().fill("口令");
 		await envModal.locator('.dsp-param input[data-pf="value"]').last().fill("e2e-pass");
 		await envModal.locator('.dsp-param input[data-pf="secret"]').last().check();
+		// 内置脚本：模板 → 改地址 → 启用（脚本只在这个环境被用到时才跑，保存时不发请求）
+		await envModal.locator('button[data-act="env-script-template"]').click();
+		await sleep(300);
+		check("「用登录模板」填入一个步骤", (await envModal.locator(".dsp-step-card").count()) === 1);
+		const scriptUrl = envModal.locator('input[data-esf="url"]').first();
+		await scriptUrl.fill("/api/login");
+		const extractKey = envModal.locator('input[data-exf="key"]').first();
+		const extractPath = envModal.locator('input[data-exf="path"]').first();
+		check(
+			"模板带出取 token 的提取项",
+			(await extractKey.inputValue()) === "token" && (await extractPath.inputValue()).length > 0,
+			{ key: await extractKey.inputValue(), path: await extractPath.inputValue() },
+		);
+		await envModal.locator('textarea[data-esf="body"]').first().fill('{"username":"{{账号}}","password":"{{口令}}"}');
+		await envModal.locator('input[data-script="ttlMinutes"]').fill("30");
+		await envModal.locator('input[data-script="enabled"]').check();
+		await sleep(200);
 		await envModal.locator('button[data-act="save-env"]').click();
 		await sleep(900);
 		check("保存后弹窗关闭", (await page.locator(".dsp-modal", { hasText: "新建环境" }).count()) === 0);
@@ -228,6 +246,19 @@ try {
 		const chipText = (await newRow.locator(".dsp-params-cell").innerText()).replace(/\s+/g, " ");
 		check("非敏感参数显示真值", chipText.includes("e2e_user"), chipText);
 		check("敏感参数只显示占位，明文不进列表", chipText.includes("••••") && !chipText.includes("e2e-pass"), chipText);
+		check("配了脚本的环境显示「⚡ 脚本」徽标", (await newRow.locator(".dsp-script-badge").count()) === 1);
+		check(
+			"行内「⚡」按钮可点（脚本可执行）",
+			await newRow.locator('button[data-act="run-env-script"]').first().isEnabled(),
+		);
+		const plainRow = page.locator(".dsp-table.ds tbody tr", { hasText: "预发环境" }).first();
+		if (await plainRow.count()) {
+			check(
+				"没有脚本的环境，「⚡」按钮置灰",
+				await plainRow.locator('button[data-act="run-env-script"]').first().isDisabled(),
+			);
+		}
+		check("保存后列表不出现动态值 chip（未跑过脚本）", (await newRow.locator(".dsp-param-chip.dyn").count()) === 0);
 
 		await newRow.locator('button[data-act="edit-env"]').first().click();
 		await sleep(400);
@@ -246,6 +277,12 @@ try {
 					(await editModal.locator('.dsp-param input[data-pf="value"]').first().inputValue()) === "e2e_user",
 			);
 			check("敏感勾选读回一致", await editModal.locator('.dsp-param input[data-pf="secret"]').last().isChecked());
+			check(
+				"脚本配置读回一致：地址 + 启用 + 有效期",
+				(await editModal.locator('input[data-esf="url"]').first().inputValue()) === "/api/login" &&
+					(await editModal.locator('input[data-script="enabled"]').isChecked()) &&
+					(await editModal.locator('input[data-script="ttlMinutes"]').inputValue()) === "30",
+			);
 			await editModal.locator('button[data-act="close-modal"]').first().click();
 			await sleep(300);
 		}
@@ -277,9 +314,11 @@ try {
 		.catch(() => false);
 	check("点「未执行」打开登记弹窗", modalOpen);
 	if (modalOpen) {
+		const verdictLabels = await modal.locator('button[data-act="result-verdict"]').allInnerTexts();
 		check(
-			"三个结论可选（通过 / 失败 / 阻塞）",
-			(await modal.locator('button[data-act="result-verdict"]').count()) === 3,
+			"结论枚举与 runs.mjs 一致（通过 / 失败 / 阻塞 …）",
+			VERDICTS.every((v) => verdictLabels.includes(v)) && verdictLabels.length === VERDICTS.length,
+			verdictLabels.join(" / "),
 		);
 		const envPick = modal.locator('select[data-f="env"]');
 		check("登记弹窗能选本次环境", (await envPick.count()) === 1);
@@ -405,7 +444,11 @@ try {
 	check("刷新后仍能看到「通过」结果", (await page.locator("button.dsp-result.pass").count()) > 0);
 
 	// -- 7) 引入对话：三档格式 + 引用档预览 ----------------------------------
-	await page.locator('button[data-act="brief-case"]').first().click();
+	// 表格行会落在吸顶表头下面，先滚到视口中部再点，避免点到表头
+	const briefBtn = page.locator('button[data-act="brief-case"]').first();
+	await briefBtn.evaluate((el) => el.scrollIntoView({ block: "center", inline: "nearest" }));
+	await sleep(200);
+	await briefBtn.click();
 	const brief = page.locator(".dsp-modal", { hasText: "引入" }).first();
 	const briefOpen = await brief
 		.waitFor({ timeout: 5000 })
@@ -471,7 +514,14 @@ try {
 	);
 	check("示例记录里有「可能过期」的那条", (await page.locator(".dsp-warn", { hasText: "可能过期" }).count()) >= 1);
 	const demoRate = (await page.locator(".dsp-stat", { hasText: "通过率" }).first().innerText()).replace(/\s+/g, " ");
-	check("示例记录让通过率不是 0% 也不是 100%", /\d+%/.test(demoRate) && !/\b(0|100)%/.test(demoRate), demoRate);
+	check(
+		"只有示例记录时按示例算通过率，并标明口径",
+		/\d+%/.test(demoRate) &&
+			!/\b(0|100)%/.test(demoRate) &&
+			demoRate.includes("示例记录") &&
+			demoRate.includes("还没有真实执行记录"),
+		demoRate,
+	);
 	await page.locator('button[data-act="runs-view"][data-id="task"]').click();
 	await sleep(350);
 	const taskNames = await page.locator(".dsp-task .dsp-task-name").allInnerTexts();

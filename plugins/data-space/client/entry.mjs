@@ -9,6 +9,7 @@ import { automationModalHtml, openAutomation, automationAction } from "./modal-a
 import { CSS } from "./style.mjs";
 import {
 	BASE,
+	ENV_SCRIPT_MAX,
 	S,
 	applyRuns,
 	applyStore,
@@ -20,7 +21,9 @@ import {
 	newId,
 	pathOfFeature,
 	persist,
+	refreshEnvScript,
 	runsCsvText,
+	scriptReadyOf,
 	toast,
 } from "./state.mjs";
 import {
@@ -38,7 +41,16 @@ import { openResultModal, resultModalHtml, saveResultNow } from "./modal-result.
 import { registerCaseMention } from "./mention.mjs";
 import { caseModalHtml, copyCase, deleteCase, openCaseModal, saveCase } from "./modal-case.mjs";
 import { deleteNode, nodeModalHtml, openNodeEdit, openNodeModal, saveNode } from "./modal-node.mjs";
-import { copyEnv, copyEnvParams, deleteEnv, envModalHtml, openEnvModal, saveEnv } from "./modal-env.mjs";
+import {
+	copyEnv,
+	copyEnvParams,
+	deleteEnv,
+	editableScript,
+	envModalHtml,
+	openEnvModal,
+	saveEnv,
+	scriptTemplate,
+} from "./modal-env.mjs";
 import { refreshPathSelects } from "./path-select.mjs";
 
 /* ------------------------------------------------------------------ 骨架 */
@@ -148,6 +160,62 @@ function closeModals() {
 /** 当前打开的是哪个弹窗（用来路由 data-f 输入）。 */
 function activeModal() {
 	return S.caseModal || S.envModal || S.nodeModal || S.resultModal || S.automationModal || null;
+}
+
+/* -------------------------------------------------------------- 环境脚本编辑 */
+
+/** 按 data-esi 取当前编辑的步骤（弹窗关掉后返回 null，避免改到已释放的对象）。 */
+function envScriptStep(el) {
+	const index = Number(el.dataset.esi);
+	return S.envModal?.script?.steps?.[index] ?? null;
+}
+
+/** 脚本里的文本输入：步骤字段 / 请求头 / 提取项，只改内存不重绘（保住焦点）。 */
+function applyEnvScriptInput(el) {
+	if (!S.envModal) return false;
+	if (el.dataset.esf && el.dataset.esi !== undefined) {
+		const step = envScriptStep(el);
+		if (!step) return false;
+		step[el.dataset.esf] = el.value;
+		return true;
+	}
+	if (el.dataset.ehf && el.dataset.ehi !== undefined) {
+		const header = envScriptStep(el)?.headers?.[Number(el.dataset.ehi)];
+		if (!header) return false;
+		header[el.dataset.ehf] = el.value;
+		return true;
+	}
+	if (el.dataset.exf && el.dataset.exi !== undefined) {
+		const item = envScriptStep(el)?.extract?.[Number(el.dataset.exi)];
+		if (!item) return false;
+		if (el.dataset.exf === "secret") item.secret = el.checked;
+		else item[el.dataset.exf] = el.value;
+		return true;
+	}
+	return false;
+}
+
+/** 脚本开关 / 有效期：只改标记，不重绘（否则输入到一半的步骤会丢焦点）。 */
+function applyEnvScriptToggle(el) {
+	const key = el.dataset.script;
+	const script = S.envModal?.script;
+	if (!script || !key) return false;
+	if (key === "ttlMinutes") script.ttlMinutes = Number(el.value) || 60;
+	else script[key] = el.checked;
+	return true;
+}
+
+/** 行内「⚡」：手动跑一次脚本（用户点了才跑，不自动登录）。 */
+async function runEnvScriptFor(id) {
+	const env = S.envs.find((e) => e.id === id);
+	if (!env) return;
+	if (!scriptReadyOf(env)) {
+		toast("这个环境没有可执行的脚本");
+		return;
+	}
+	toast("正在运行环境脚本…");
+	await refreshEnvScript(id);
+	if (S.nodes) render();
 }
 
 /* ------------------------------------------------------------------ 点击 */
@@ -354,6 +422,68 @@ function onClick(e) {
 		renderOverlay();
 		return;
 	}
+	if (act === "env-script-template") {
+		const m = S.envModal;
+		if (!m) return;
+		if (m.script.steps.length && !window.confirm("用登录模板替换当前脚本步骤？")) return;
+		m.script = scriptTemplate();
+		renderOverlay();
+		return;
+	}
+	if (act === "add-env-script-step") {
+		const script = S.envModal?.script;
+		if (!script) return;
+		if (script.steps.length >= ENV_SCRIPT_MAX.steps) {
+			toast(`一个脚本最多 ${ENV_SCRIPT_MAX.steps} 步`);
+			return;
+		}
+		script.steps.push({ name: "", method: "POST", url: "", headers: [], body: "", extract: [] });
+		renderOverlay();
+		return;
+	}
+	if (act === "del-env-script-step") {
+		S.envModal?.script.steps.splice(Number(hit.dataset.esi), 1);
+		renderOverlay();
+		return;
+	}
+	if (act === "add-env-script-header") {
+		const step = S.envModal?.script?.steps?.[Number(hit.dataset.esi)];
+		if (!step) return;
+		step.headers = Array.isArray(step.headers) ? step.headers : [];
+		if (step.headers.length >= ENV_SCRIPT_MAX.headers) {
+			toast(`一步最多 ${ENV_SCRIPT_MAX.headers} 个请求头`);
+			return;
+		}
+		step.headers.push({ key: "", value: "" });
+		renderOverlay();
+		return;
+	}
+	if (act === "del-env-script-header") {
+		S.envModal?.script?.steps?.[Number(hit.dataset.esi)]?.headers?.splice(Number(hit.dataset.ehi), 1);
+		renderOverlay();
+		return;
+	}
+	if (act === "add-env-script-extract") {
+		const step = S.envModal?.script?.steps?.[Number(hit.dataset.esi)];
+		if (!step) return;
+		step.extract = Array.isArray(step.extract) ? step.extract : [];
+		if (step.extract.length >= ENV_SCRIPT_MAX.extracts) {
+			toast(`一步最多 ${ENV_SCRIPT_MAX.extracts} 个提取项`);
+			return;
+		}
+		step.extract.push({ key: "", path: "", secret: true });
+		renderOverlay();
+		return;
+	}
+	if (act === "del-env-script-extract") {
+		S.envModal?.script?.steps?.[Number(hit.dataset.esi)]?.extract?.splice(Number(hit.dataset.exi), 1);
+		renderOverlay();
+		return;
+	}
+	if (act === "run-env-script") {
+		void runEnvScriptFor(id);
+		return;
+	}
 	if (act === "del-env") {
 		void deleteEnv(id);
 		return;
@@ -427,6 +557,7 @@ function onInput(e) {
 		renderBodyKeepFocus('[data-el="runs-search"]');
 		return;
 	}
+	if (S.envModal && applyEnvScriptInput(el)) return;
 	if (modal && el.dataset.f) {
 		modal[el.dataset.f] = el.value;
 		return;
@@ -450,6 +581,8 @@ function onChange(e) {
 		S.automationModal[el.dataset.f] = el.value;
 		return;
 	}
+	if (S.envModal && applyEnvScriptInput(el)) return;
+	if (S.envModal && applyEnvScriptToggle(el)) return;
 	// 敏感开关只改标记，不重绘：保住用户正在输入的焦点与滚动位置。
 	if (S.envModal && el.dataset.pi !== undefined && el.dataset.pf === "secret") {
 		const param = S.envModal.params[Number(el.dataset.pi)];
@@ -619,6 +752,10 @@ function normalizeImport(parsed) {
 		})),
 		note: e?.note || "",
 		isDefault: Boolean(e?.isDefault),
+		// 导入带脚本配置（接口地址与取值路径）；动态值是本机运行时缓存，导入不带。
+		script: editableScript({ script: e?.script }),
+		dynamic: [],
+		scriptRun: null,
 		createdAt: e?.createdAt || nowIso,
 		updatedAt: e?.updatedAt || nowIso,
 	}));

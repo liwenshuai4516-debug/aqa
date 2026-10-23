@@ -24,6 +24,7 @@ import { copyFileSync, existsSync, readFileSync, realpathSync, renameSync } from
 import { atomicJson } from "./durable.mjs";
 import { basename, join } from "node:path";
 import { buildDemoRuns } from "./demo-runs.mjs";
+import { SCRIPT_LIMITS, dynamicFresh, normalizeEnvDynamic, runEnvScript, scriptReady } from "./env-script.mjs";
 import { CASE_TYPES, MAX, migrateLegacy, normalizeStore, now, str } from "./model.mjs";
 import { VERDICTS, normalizeRuns } from "./runs.mjs";
 import { seedStore } from "./seed.mjs";
@@ -253,7 +254,132 @@ export default {
 			return { ok: true, recorded, unknown, runsRevision: runs.revision };
 		}
 
+		/**
+		 * 环境动态值只写回内存与磁盘，**不动内容 revision**：
+		 * 它是运行时缓存，不该让正在编辑页面的用户收到 409 而丢掉草稿。
+		 */
+		function commitEnvRuntime(next) {
+			persist(next);
+			store = next;
+			try {
+				host.broadcast({ kind: "env-dynamic", revision: store.revision });
+			} catch {
+				/* 没有客户端在线 */
+			}
+		}
+
+		/** 出站请求：走宿主 host.net.fetch（白名单 / 重定向复查 / 512KB / 15s）；主机未授权时申请一次。
+		 *  授权申请要等人点弹窗，必须自己封顶：工具调用没人盯着，不能卡在 120s 默认窗口。 */
+		async function fetchForEnv(env, url, init, permissionMs, ask) {
+			if (!host.net?.fetch) return { ok: false, error: "当前宿主不支持出站请求，无法执行环境脚本" };
+			let hostname = "";
+			try {
+				hostname = new URL(url).hostname;
+			} catch {
+				return { ok: false, error: "脚本地址无法解析" };
+			}
+			let baseHost = "";
+			try {
+				baseHost = env.baseUrl ? new URL(env.baseUrl).hostname : "";
+			} catch {
+				baseHost = "";
+			}
+			if (baseHost && hostname !== baseHost && !env.script?.allowForeignHost)
+				return {
+					ok: false,
+					error: `脚本地址指向了环境以外的主机 ${hostname}；确实需要（如统一认证）请在环境里勾选「允许其它主机」`,
+				};
+			let res = await host.net.fetch(url, init);
+			// 宿主白名单为空时会是「未授权」：当场向用户申请这个主机，批准后重试一次。
+			if (!res?.ok && /未授权|not authorized|denied/i.test(String(res.error))) {
+				// ask=false：自动刷新场景不弹窗，直接把未授权事实报回去。
+				const request = ask === false ? null : host.requestPermission;
+				if (!request) return res;
+				const pending = request({
+					family: "net",
+					hosts: [hostname],
+					reason: `运行环境「${str(env.name, 60)}」的内置脚本`,
+				});
+				if (!pending) return res;
+				const wait = Math.max(1000, Number(permissionMs) || PERMISSION_ASK_MS);
+				const answer = await Promise.race([
+					Promise.resolve(pending).catch(() => false),
+					new Promise((resolve) => setTimeout(() => resolve("pending"), wait)),
+				]);
+				if (answer === true) res = await host.net.fetch(url, init);
+				else if (answer === "pending")
+					return {
+						ok: false,
+						error: `主机 ${hostname} 还没授权：已在界面弹出授权请求，确认后再试一次`,
+					};
+			}
+			return res;
+		}
+
+		/** 失败后 60 秒内不自动重试：避免每个工具调用都把登录接口打一遍。 */
+		const SCRIPT_RETRY_MS = 60_000;
+		/** 授权弹窗默认等 8 秒（工具调用没人盯着）；页面手动刷新时给 20 秒。 */
+		const PERMISSION_ASK_MS = 8_000;
+
+		/**
+		 * 跑一个环境的内置脚本。
+		 *   - force=false 且动态值还在有效期 → 直接用缓存，不发请求；
+		 *   - 成功则把值写进 env.dynamic（带 at / expiresAt），同时记录 scriptRun；
+		 *   - 失败保留旧值，只记 scriptRun.error，让页面 / 工具能说清原因。
+		 */
+		async function refreshEnv(envId, { force = false, permissionMs = PERMISSION_ASK_MS, ask = true } = {}) {
+			const env = store.envs.find((e) => e.id === envId);
+			if (!env) return { ok: false, error: "环境不存在" };
+			const script = env.script ?? {};
+			if (!scriptReady(script)) return { ok: false, skipped: true, error: "这个环境没有启用内置脚本" };
+			const nowMs = Date.now();
+			if (!force && dynamicFresh(env, nowMs)) return { ok: true, cached: true, env, values: env.dynamic };
+			const last = env.scriptRun;
+			if (
+				!force &&
+				last?.ok === false &&
+				Number.isFinite(Date.parse(last.at)) &&
+				Date.parse(last.at) > nowMs - SCRIPT_RETRY_MS
+			)
+				return { ok: false, cached: true, error: `上次运行失败：${last.error}`, env };
+
+			const started = Date.now();
+			const result = await runEnvScript({
+				env,
+				script,
+				fetchText: (url, init) => fetchForEnv(env, url, init, permissionMs, ask),
+				deadlineMs: SCRIPT_LIMITS.deadlineMs,
+			});
+			const at = new Date().toISOString();
+			const ttl = Number(script.ttlMinutes) || SCRIPT_LIMITS.ttl.def;
+			const expiresAt = new Date(Date.now() + ttl * 60_000).toISOString();
+			const dynamic = result.ok
+				? normalizeEnvDynamic(result.values.map((v) => ({ ...v, at, expiresAt })))
+				: (env.dynamic ?? []);
+			const scriptRun = {
+				at,
+				ok: Boolean(result.ok),
+				error: result.ok ? "" : str(result.error, 300),
+				ms: Date.now() - started,
+			};
+			commitEnvRuntime({
+				...store,
+				envs: store.envs.map((e) => (e.id === envId ? { ...e, dynamic, scriptRun } : e)),
+			});
+			return { ...result, at, expiresAt, env: store.envs.find((e) => e.id === envId) };
+		}
+
 		const automation = createAutomation({ host, store: () => store, runs: () => runs, commitStore, commitRuns });
+		/**
+		 * 环境快照：脚本取回的敏感动态值（token / 会话）只留键与时间，明文不出服务端。
+		 * 页面只显示 ●●●● 与过期时间，够用；非敏感值（如租户）照常下发，页面要展示它。
+		 */
+		function envsForClient() {
+			return store.envs.map((e) => ({
+				...e,
+				dynamic: (e.dynamic ?? []).map((v) => (v.secret ? { ...v, value: "" } : v)),
+			}));
+		}
 		function snapshot() {
 			return {
 				ok: true,
@@ -269,7 +395,7 @@ export default {
 				modules: store.modules,
 				features: store.features,
 				cases: store.cases,
-				envs: store.envs,
+				envs: envsForClient(),
 				purged: store.purged ?? null,
 				storeVersion: store.version,
 				caseTypes: CASE_TYPES,
@@ -355,6 +481,32 @@ export default {
 			});
 		});
 
+		// 手动刷新环境动态值：页面上的「运行脚本」按钮走这里（用户点击才跑，不自动登录）
+		route("POST", "/env/refresh", async (req, res) => {
+			const body = req.body && typeof req.body === "object" ? req.body : {};
+			const envId = str(body.envId, 64);
+			if (!envId) {
+				res.status(400).json({ ok: false, error: "缺少 envId" });
+				return;
+			}
+			const out = await refreshEnv(envId, { force: body.force !== false, permissionMs: 20_000 });
+			const env = store.envs.find((e) => e.id === envId);
+			res.json({
+				ok: Boolean(out.ok),
+				cached: Boolean(out.cached),
+				error: out.error || "",
+				scriptRun: env?.scriptRun ?? null,
+				// 值不返回给页面：列表只展示占位与时间，明文不进 DOM 之外的任何地方。
+				dynamic: (env?.dynamic ?? []).map((v) => ({
+					key: v.key,
+					secret: Boolean(v.secret),
+					at: v.at,
+					expiresAt: v.expiresAt,
+				})),
+				steps: out.steps ?? [],
+			});
+		});
+
 		// 示例执行记录（演示用）：只允许在空台账上载入，避免假结论混进真实记录
 		route("POST", "/runs/demo", (req, res) => {
 			const body = req.body && typeof req.body === "object" ? req.body : {};
@@ -401,8 +553,10 @@ export default {
 				res.status(400).json({ ok: false, error: "需要 confirm:true 才能重置" });
 				return;
 			}
-			// Old runs remain an audit trail even after replacing the case library.
+			// 「恢复示例数据」回到出厂示例：用例 id 全部换新，旧流水已全部对不上，
+			// 留着只会变成一堆「可能过期」并挡住示例记录的载入，所以一并清空（与设置页文案一致）。
 			commitStore({ ...seedStore(), revision: store.revision + 1 });
+			if (runs.runs.length) commitRuns({ version: 1, revision: runs.revision + 1, runs: [] });
 			res.json(snapshot());
 		});
 
@@ -414,6 +568,7 @@ export default {
 					store: () => store,
 					runs: () => runs,
 					record: (entries, source, meta) => recordResults(entries, source, meta),
+					refreshEnv: (envId, opts) => refreshEnv(envId, opts),
 				});
 				tools.push({
 					name: "data_space_automation",

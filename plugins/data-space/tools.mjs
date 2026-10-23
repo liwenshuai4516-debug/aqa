@@ -1,4 +1,5 @@
 import { maskSecrets } from "./client/brief.mjs";
+import { dynamicFresh, dynamicSummary, scriptReady } from "./env-script.mjs";
 /**
  * 数据空间的 AI 工具（v2/v3）：查询用例 & 回写执行结果。
  *
@@ -10,6 +11,8 @@ import { maskSecrets } from "./client/brief.mjs";
  *   - 只读工具不写盘；回写工具只追加执行记录（runs.json），不改用例内容。
  *   - 环境只给名称 / 地址 / 参数名与非敏感值；标了 secret 的参数一律 `***`，
  *     不进模型上下文（要真实口令就让用户自己用，别让它猜）。
+ *   - 例外只有一处：环境内置脚本取到的动态值，在显式 action=refresh 时以明文返回，
+ *     供本次执行鉴权；调用方需明确告知不要回显、不要写盘。
  *   - 文本给模型看，不追求好看；一条用例一行，字段用 · 分隔，超量时明确说「只给了前 N 条」。
  */
 import { isStale, latestByCase, normalizeVerdict, parseAnchor, summarize } from "./runs.mjs";
@@ -117,10 +120,11 @@ function defaultEnvFor(store, featureId) {
 const envText = (env) => (env ? [env.name, env.baseUrl].filter(Boolean).join(" · ") : "");
 
 /**
- * 一个环境的完整块：名称 / 默认 / 地址 / 参数 / 敏感参数名 / 备注。
+ * 一个环境的完整块：名称 / 默认 / 地址 / 参数 / 敏感参数名 / 内置脚本 / 动态值 / 备注。
  * 敏感值连键值对都不给（只列名字），避免 `口令=***` 被下游脱敏规则二次改写后看不出原意。
+ * 动态值（脚本取回的 token…）同样只给名字；要明文得用 action=refresh。
  */
-function envBlock(env) {
+function envBlock(env, nowMs = Date.now()) {
 	const plain = [];
 	const secret = [];
 	for (const p of env.params ?? []) {
@@ -134,8 +138,42 @@ function envBlock(env) {
 	];
 	lines.push(`  参数：${plain.length ? plain.join(" · ") : "（未配置）"}`);
 	if (secret.length) lines.push(`  敏感：${secret.join("、")}（值不提供，需要时由用户本人填写或执行）`);
+	const script = env.script ?? {};
+	if (scriptReady(script)) {
+		const run = env.scriptRun;
+		const runText = run
+			? ` · 上次运行 ${String(run.at).slice(5, 16).replace("T", " ")} ${run.ok ? "成功" : `失败：${oneline(run.error || "未知错误")}`}`
+			: "";
+		lines.push(`  内置脚本：${script.steps.length} 步 · 有效期 ${script.ttlMinutes} 分钟${runText}`);
+	} else if (script.enabled) {
+		lines.push("  内置脚本：已启用但没有可执行的步骤（至少一步要填地址）");
+	}
+	const dyn = Array.isArray(env.dynamic) ? env.dynamic : [];
+	if (dyn.length) {
+		const items = dyn.map((v) => {
+			const note = dynamicSummary(v, nowMs);
+			const state = note ? `（${note}）` : "";
+			return v.secret ? `${v.key} 已取到${state}` : `${v.key}=${oneline(v.value) || "—"}${state}`;
+		});
+		lines.push(`  动态值：${items.join(" · ")}${dynamicFresh(env, nowMs) ? "" : "（已过期，下次使用时会重取）"}`);
+	}
 	if (str(env.note, 200)) lines.push(`  备注：${oneline(env.note)}`);
 	return lines.join("\n");
+}
+
+/**
+ * 只给 Agent 执行用的明文块：脚本刚取到的动态值。
+ * 与 envBlock 分开渲染，因为调用方会对 envBlock 部分做脱敏，而这一段就是要拿去做鉴权的。
+ */
+function dynamicPlainBlock(env, nowMs = Date.now()) {
+	const lines = (env.dynamic ?? []).map((v) => {
+		const note = dynamicSummary(v, nowMs);
+		return `- ${v.key} = ${oneline(v.value) || "（空）"}${note ? `  （${note}）` : ""}`;
+	});
+	return [
+		`环境「${str(env.name, 60)}」脚本刚取到的动态值（仅供本次执行使用；不要复述给用户、不要写进文件或当作结论）:`,
+		...lines,
+	].join("\n");
 }
 
 function resultTag(runsByCase, c) {
@@ -314,47 +352,103 @@ export function createDataSpaceTools(ctx) {
 			name: "data_space_env",
 			label: "查环境参数",
 			description:
-				"Read the Data Space environment address book: environments of a project (test / staging / production) with their base URL and parameters such as tenant, account or database. Values flagged as secret come back masked as ***; never guess them.",
-			promptSnippet: "the user's test environment URLs and parameters",
+				"Read the Data Space environment address book: environments of a project (test / staging / production) with base URL and parameters such as tenant, account or database. An environment may also carry a built-in script (declarative HTTP steps, e.g. login) that produces short-lived values like tokens; call with action=refresh to run it and receive those values in plain text. Values flagged as secret come back masked as ***; never guess them.",
+			promptSnippet: "the user's test environment URLs, parameters and script-produced tokens",
 			promptGuidelines: [
 				"Use data_space_env before executing or automating cases that need a base URL, tenant, account, billing period or other environment-specific parameter — do not invent these values.",
 				"Secret parameters are masked as ***; ask the user to fill them in themselves or to run that step locally instead of guessing.",
+				"When a token is needed use action=refresh: the script logs in and returns fresh values. Keep them for this run only — never echo, save or quote them.",
 			],
 			parameters: {
 				type: "object",
 				properties: {
 					project: {
 						type: "string",
-						description: "Project name, code or id (substring, case-insensitive). Omit for all projects.",
+						description: "Restrict to one project by name, code or id (substring). Omit to include every project.",
 					},
 					env: { type: "string", description: "Environment name or id (substring), e.g. 测试环境 / 预发环境." },
+					action: {
+						type: "string",
+						enum: ["list", "refresh"],
+						description:
+							"list (default): read environments and auto-refresh expired dynamic values. refresh: force running the environment script and return the values in plain text.",
+					},
 				},
 			},
-			execute(_id, params) {
+			async execute(_id, params) {
 				const p = params && typeof params === "object" ? params : {};
-				const store = ctx.store();
 				const project = str(p.project, 80);
 				const envWant = str(p.env, 80);
-				const groups = [];
-				let hit = 0;
-				for (const s of store.systems ?? []) {
-					if (project && !nameHit([s.id, s.name, s.code], project)) continue;
-					const list = (store.envs ?? []).filter(
-						(e) => e.systemId === s.id && (!envWant || nameHit([e.id, e.name], envWant)),
-					);
-					if (!list.length) continue;
-					hit += list.length;
-					const sorted = list.slice().sort((a, b) => Number(!!b.isDefault) - Number(!!a.isDefault));
-					groups.push(`### ${str(s.name, 60)}${s.code ? `（${s.code}）` : ""}\n${sorted.map(envBlock).join("\n")}`);
-				}
-				if (!groups.length) {
-					const scope = [project ? `项目「${project}」` : "", envWant ? `环境「${envWant}」` : ""]
-						.filter(Boolean)
-						.join(" · ");
+				const action = str(p.action, 12) === "refresh" ? "refresh" : "list";
+				const scope = [project ? `项目「${project}」` : "", envWant ? `环境「${envWant}」` : ""]
+					.filter(Boolean)
+					.join(" · ");
+				const match = (store) => {
+					const out = [];
+					for (const s of store.systems ?? []) {
+						if (project && !nameHit([s.id, s.name, s.code], project)) continue;
+						const list = (store.envs ?? []).filter(
+							(e) => e.systemId === s.id && (!envWant || nameHit([e.id, e.name], envWant)),
+						);
+						if (!list.length) continue;
+						out.push({
+							system: s,
+							envs: list.slice().sort((a, b) => Number(!!b.isDefault) - Number(!!a.isDefault)),
+						});
+					}
+					return out;
+				};
+				if (!match(ctx.store()).length) {
 					return `没有找到匹配的环境${scope ? `（${scope}）` : ""}。可以先用 data_space_cases 的 stats 看看有哪些项目，或让用户先在「环境」页建一条。`;
 				}
-				const head = `数据空间 · 环境 · 命中 ${hit} 个${project ? `（项目「${project}」）` : ""}${envWant ? `（环境「${envWant}」）` : ""}\n敏感参数以 *** 返回，需要真实值请让用户自己填或自己执行。`;
-				return maskSecrets(`${head}\n\n${groups.join("\n\n")}`);
+
+				// 脚本只在环境真被用到时才跑：命中环境里动态值已过期的，最多自动刷 3 个（失败有 60 秒冷却）。
+				const notes = [];
+				const candidates = match(ctx.store())
+					.flatMap((g) => g.envs)
+					.filter((e) => scriptReady(e.script));
+				const targets = action === "refresh" ? candidates : candidates.filter((e) => !dynamicFresh(e));
+				const refreshed = [];
+				if (!candidates.length && action === "refresh") notes.push("这些环境没有启用内置脚本，没有可取的动态值。");
+				if (targets.length && typeof ctx.refreshEnv === "function") {
+					if (targets.length > 3)
+						notes.push(`有 ${targets.length} 个环境的动态值需要更新，本次只处理前 3 个（可用 project / env 缩小范围）`);
+					for (const env of targets.slice(0, 3)) {
+						// 自动刷新不弹授权：列表查询不该把用户按在弹窗上，未授权就先把原因写回来。
+						const out = await ctx.refreshEnv(env.id, {
+							force: action === "refresh",
+							...(action === "refresh" ? {} : { ask: false }),
+						});
+						if (out?.ok && !out.cached) refreshed.push(env.id);
+						else if (!out?.ok) notes.push(`「${str(env.name, 60)}」动态值未更新：${oneline(out?.error || "未知错误")}`);
+					}
+				}
+
+				const store = ctx.store();
+				const groups = match(store);
+				const hit = groups.reduce((n, g) => n + g.envs.length, 0);
+				const nowMs = Date.now();
+				const body = groups
+					.map(
+						(g) =>
+							`### ${str(g.system.name, 60)}${g.system.code ? `（${g.system.code}）` : ""}\n${g.envs.map((e) => envBlock(e, nowMs)).join("\n")}`,
+					)
+					.join("\n\n");
+				const head = `数据空间 · 环境 · 命中 ${hit} 个${scope ? `（${scope}）` : ""}\n敏感参数以 *** 返回；脚本取到的动态值只给名字，需要明文用 action=refresh。`;
+				const tail = [
+					...notes.map((n) => `- ${n}`),
+					...(action === "refresh" ? [] : ["- 需要 Token / 会话之类的最新值时，用 action=refresh 让脚本现取。"]),
+				].join("\n");
+				// 脱敏只作用于环境描述部分；动态值明文块单独追加，不进脱敏链路。
+				const masked = maskSecrets(`${head}\n\n${body}${tail ? `\n\n${tail}` : ""}`);
+				const plain = refreshed
+					.map((id) => {
+						const env = (store.envs ?? []).find((e) => e.id === id);
+						return env ? dynamicPlainBlock(env, nowMs) : "";
+					})
+					.filter(Boolean)
+					.join("\n\n");
+				return plain ? `${masked}\n\n${plain}` : masked;
 			},
 		},
 		{

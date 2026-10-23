@@ -204,6 +204,25 @@ export const CSS = `
 .dsp-param-head { font-size: 11.5px; color: var(--text-faint, #8a8f98); }
 .dsp-param-secret { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; color: var(--text-faint, #8a8f98); white-space: nowrap; cursor: pointer; }
 .dsp-param-secret input { width: 14px; height: 14px; padding: 0; }
+/* 环境内置脚本：列表里的脚本徽标与动态值 chip（敏感值只留占位点） */
+.dsp-script-badge { font-size: 10.5px; line-height: 16px; padding: 0 5px; border-radius: 4px; color: var(--accent, #8b5cf6); border: 1px solid color-mix(in srgb, var(--accent, #8b5cf6) 45%, transparent); flex: none; white-space: nowrap; }
+.dsp-script-badge.bad { color: var(--red, #ef4444); border-color: color-mix(in srgb, var(--red, #ef4444) 45%, transparent); }
+.dsp-param-chip.dyn { border-color: color-mix(in srgb, var(--accent, #8b5cf6) 38%, transparent); color: var(--accent, #8b5cf6); }
+.dsp-param-chip.dyn b { color: var(--text-dim, #a4a9b3); }
+.dsp-param-chip.dyn.stale { opacity: 0.62; }
+/* 弹窗里的脚本编辑：步骤卡片 / 键值行 / 当前动态值 */
+.dsp-step-card { border: 1px solid var(--border, #2c2f36); border-radius: 9px; padding: 8px 10px; margin-bottom: 8px; background: var(--bg-elev2, #22242a); }
+.dsp-step-card .dsp-step-head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; color: var(--text-dim, #a4a9b3); }
+.dsp-step-card .dsp-step-head b { font-size: 12px; flex: none; }
+.dsp-step-card .dsp-step-head input { flex: 1 1 120px; min-width: 0; }
+.dsp-step-card .dsp-step-head select { flex: none; width: 90px; }
+.dsp-step-card .dsp-field { margin-bottom: 6px; }
+.dsp-step-card textarea { width: 100%; font-family: var(--mono, ui-monospace, SFMono-Regular, monospace); font-size: 11.5px; }
+.dsp-script-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) 54px 30px; gap: 6px; align-items: center; margin-bottom: 4px; }
+.dsp-script-row input { width: 100%; }
+.dsp-dyn-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 6px 0; }
+.dsp-dyn { display: inline-flex; align-items: baseline; gap: 4px; font-size: 11px; padding: 1px 6px; border-radius: 5px; border: 1px solid color-mix(in srgb, var(--accent, #8b5cf6) 35%, transparent); color: var(--text-dim, #a4a9b3); }
+.dsp-dyn i { font-style: normal; color: var(--text-faint, #8a8f98); font-size: 10.5px; }
 .dsp-run-case { display: flex; align-items: center; gap: 6px; min-width: 0; }
 .dsp-run-case b { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dsp-run-note { color: var(--text-faint, #8a8f98); font-size: 12px; }

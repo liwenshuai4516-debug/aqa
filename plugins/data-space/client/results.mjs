@@ -120,6 +120,10 @@ export function sortRunsDesc(runs) {
 /**
  * 统计一组流水。口径与概览一致：按「记录」算结论分布，通过率分母是记录数；
  * cases 是覆盖到的用例数（去重）；stale 是所引用例已更新、结论可能过期的记录数。
+ *
+ * 通过率只算真实记录：示例（demo）记录不参与，避免演示结论混进真实台账。
+ * 例外是台账里还没有任何真实记录时——这时用示例记录算通过率并在页面上标明，
+ * 否则载入示例后会出现「通过 8 条、通过率 0%」这种看不出效果的自相矛盾。
  */
 export function runStats(rows, opts = {}) {
 	const casesById = opts.casesById ?? new Map();
@@ -130,19 +134,31 @@ export function runStats(rows, opts = {}) {
 	let stale = 0;
 	let eligible = 0,
 		passed = 0;
+	let demoEligible = 0,
+		demoPassed = 0;
 	let lastAt = "";
 	for (const r of rows ?? []) {
-		if (r.source !== "demo" && !isStale(r, casesById.get(r.caseId))) {
+		const rowStale = isStale(r, casesById.get(r.caseId));
+		if (r.source === "demo") {
+			if (!rowStale) {
+				demoEligible++;
+				if (r.verdict === "通过") demoPassed++;
+			}
+		} else if (!rowStale) {
 			eligible++;
 			if (r.verdict === "通过") passed++;
 		}
 		counts[r.verdict] = (counts[r.verdict] ?? 0) + 1;
 		caseIds.add(r.caseId);
 		if (r.taskId) taskIds.add(r.taskId);
-		if (isStale(r, casesById.get(r.caseId))) stale += 1;
+		if (rowStale) stale += 1;
 		if (!lastAt || timeOf(r.at) > timeOf(lastAt)) lastAt = r.at;
 	}
 	const total = (rows ?? []).length;
+	// 真实记录为空时才回落到示例口径；一旦有真实记录，示例就不再影响通过率。
+	const rateOnDemo = eligible === 0 && demoEligible > 0;
+	const rateBase = rateOnDemo ? demoEligible : eligible;
+	const rateHit = rateOnDemo ? demoPassed : passed;
 	return {
 		total,
 		cases: caseIds.size,
@@ -152,8 +168,11 @@ export function runStats(rows, opts = {}) {
 		eligible,
 		currentPassed: passed,
 		demo: (rows ?? []).filter((r) => r.source === "demo").length,
+		demoEligible,
+		demoPassed,
+		rateBasis: rateOnDemo ? "demo" : "real",
 		lastAt,
-		passRate: eligible ? Math.round((passed / eligible) * 100) : 0,
+		passRate: rateBase ? Math.round((rateHit / rateBase) * 100) : 0,
 	};
 }
 

@@ -141,7 +141,7 @@ export function buildDemoRuns(store, opts = {}) {
 		.filter((c) => !used.has(c.id))
 		.slice(0, 2)
 		.forEach((c, i) => {
-			push(c, i === 0 ? "失败" : "通过", clock - (5 + i * 21) * HOUR, { source: "manual" });
+			push(c, i === 0 ? "失败" : "通过", clock - (5 + i * 21) * HOUR);
 		});
 
 	return out.sort((a, b) => String(a.at).localeCompare(String(b.at)));

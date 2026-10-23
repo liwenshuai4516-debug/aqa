@@ -5,9 +5,12 @@
  *   systems -> modules(systemId) -> features(moduleId) -> cases(featureId)
  *   envs(systemId)  每个项目自己的地址簿（测试 / 预发 / 生产…），同项目恰好一个默认
  *     env.params   环境参数（账号 / 租户 / 数据库…），键值对，secret 标记敏感值
+ *     env.script   内置脚本（声明式 HTTP 步骤），用到环境时取回 token 之类的动态值
+ *     env.dynamic  脚本取回的值 + 有效期，服务端写、页面只读（保存时按脚本原样保留）
  * 层级一律扁平父引用：搜索、移动、导入导出都比嵌套树简单，悬空引用在清洗时统一处理。
  */
 import { createHash, randomUUID } from "node:crypto";
+import { normalizeEnvDynamic, normalizeEnvScript, normalizeScriptRun } from "./env-script.mjs";
 
 /** 单文件上限，防止一份畸形 store 把页面顶爆（演示版够用，真实数据量大再拆文件）。 */
 export const MAX = {
@@ -222,6 +225,16 @@ export function normalizeStore(raw, previous) {
 		.map((e) => {
 			const eo = e && typeof e === "object" ? e : {};
 			const id = str(eo.id, 64) || uid();
+			const prev = prevEnvs.get(id);
+			const script = normalizeEnvScript(eo.script);
+			// 动态值是服务端写的东西：页面整份保存时按上一次的快照保留，不让一个旧标签页把刚取到的 token 冲掉。
+			// 脚本步骤改过就整组丢掉——半新半旧的动态值比没有更容易误导执行。
+			const stepsChanged = JSON.stringify(prev?.script?.steps ?? null) !== JSON.stringify(script.steps);
+			const dynamic = previous
+				? stepsChanged
+					? []
+					: normalizeEnvDynamic(prev?.dynamic)
+				: normalizeEnvDynamic(eo.dynamic);
 			return {
 				id,
 				systemId: str(eo.systemId, 64),
@@ -229,6 +242,9 @@ export function normalizeStore(raw, previous) {
 				// 末尾多余的斜杠会让拼接出来的路径出现 `//`，存的时候就去掉。
 				baseUrl: str(eo.baseUrl, 300).replace(/\/+$/, ""),
 				params: normalizeEnvParams(eo.params),
+				script,
+				dynamic,
+				scriptRun: previous ? normalizeScriptRun(prev?.scriptRun) : normalizeScriptRun(eo.scriptRun),
 				note: str(eo.note, 300),
 				isDefault: eo.isDefault === true || eo.isDefault === "true" || eo.isDefault === 1,
 				createdAt: str(eo.createdAt, 40) || prevEnvs.get(id)?.createdAt || now(),

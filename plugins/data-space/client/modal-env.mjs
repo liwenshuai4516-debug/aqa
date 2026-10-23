@@ -7,13 +7,18 @@ import {
 	ENV_PARAM_MAX,
 	ENV_PARAM_PRESETS,
 	ENV_PRESETS,
+	ENV_SCRIPT_MAX,
 	S,
+	dynamicOf,
+	dynamicTimeText,
+	dynamicValueText,
 	envsOf,
 	esc,
 	hooks,
 	newId,
 	paramsOf,
 	persist,
+	scriptOf,
 	toast,
 } from "./state.mjs";
 
@@ -43,6 +48,119 @@ function paramsSection(m) {
 	</div>`;
 }
 
+/* ------------------------------------------------------------ 内置脚本（动态值） */
+
+const SCRIPT_METHODS = ["POST", "GET", "PUT", "PATCH", "DELETE", "HEAD"];
+
+/** 一键模板：登录接口取 token。占位符用中文键，和「参数」里的常用写法对得上。 */
+export function scriptTemplate() {
+	return {
+		enabled: true,
+		ttlMinutes: 60,
+		allowForeignHost: false,
+		steps: [
+			{
+				name: "登录",
+				method: "POST",
+				url: "/api/login",
+				headers: [{ key: "Content-Type", value: "application/json" }],
+				body: '{\n  "username": "{{账号}}",\n  "password": "{{口令}}"\n}',
+				extract: [{ key: "token", path: "data.access_token", secret: true }],
+			},
+		],
+	};
+}
+
+/** 把环境里的脚本拷成可编辑对象（快照里的对象不能直接改，否则取消也改掉了）。 */
+export function editableScript(env) {
+	const s = scriptOf(env);
+	return {
+		enabled: s.enabled,
+		ttlMinutes: s.ttlMinutes,
+		allowForeignHost: s.allowForeignHost,
+		steps: s.steps.map((x) => ({
+			name: String(x?.name ?? ""),
+			method: String(x?.method || "POST").toUpperCase(),
+			url: String(x?.url ?? ""),
+			headers: (Array.isArray(x?.headers) ? x.headers : []).map((h) => ({
+				key: String(h?.key ?? ""),
+				value: String(h?.value ?? ""),
+			})),
+			body: String(x?.body ?? ""),
+			extract: (Array.isArray(x?.extract) ? x.extract : []).map((v) => ({
+				key: String(v?.key ?? ""),
+				path: String(v?.path ?? ""),
+				secret: v?.secret !== false,
+			})),
+		})),
+	};
+}
+
+function scriptHeaderRow(stepIndex, h, i) {
+	return `<div class="dsp-script-row">
+		<input data-esi="${stepIndex}" data-ehi="${i}" data-ehf="key" value="${esc(h.key)}" placeholder="请求头名，如 Authorization" />
+		<input data-esi="${stepIndex}" data-ehi="${i}" data-ehf="value" value="${esc(h.value)}" placeholder="值，可用 {{token}}" />
+		<button class="dsp-btn icon danger" data-act="del-env-script-header" data-esi="${stepIndex}" data-ehi="${i}" title="删除这个请求头">✕</button>
+	</div>`;
+}
+
+function scriptExtractRow(stepIndex, x, i) {
+	return `<div class="dsp-script-row">
+		<input data-esi="${stepIndex}" data-exi="${i}" data-exf="key" value="${esc(x.key)}" placeholder="存成什么名字，如 token" />
+		<input data-esi="${stepIndex}" data-exi="${i}" data-exf="path" value="${esc(x.path)}" placeholder="data.access_token 或 regex:token=([^&]+)" />
+		<label class="dsp-param-secret" title="敏感值：列表与 AI 对话里只显示 ●●●●"><input type="checkbox" data-esi="${stepIndex}" data-exi="${i}" data-exf="secret" ${x.secret ? "checked" : ""} /><span>敏感</span></label>
+		<button class="dsp-btn icon danger" data-act="del-env-script-extract" data-esi="${stepIndex}" data-exi="${i}" title="删除这个提取项">✕</button>
+	</div>`;
+}
+
+function scriptStepCard(step, i) {
+	const headers = Array.isArray(step.headers) ? step.headers : [];
+	const extracts = Array.isArray(step.extract) ? step.extract : [];
+	return `<div class="dsp-step-card">
+		<div class="dsp-step-head">
+			<b>步骤 ${i + 1}</b>
+			<input data-esi="${i}" data-esf="name" value="${esc(step.name)}" placeholder="名称，如「登录」" />
+			<select data-esi="${i}" data-esf="method">${SCRIPT_METHODS.map(
+				(m) => `<option value="${m}" ${step.method === m ? "selected" : ""}>${m}</option>`,
+			).join("")}</select>
+			<button class="dsp-btn icon danger" data-act="del-env-script-step" data-esi="${i}" title="删除这一步">✕</button>
+		</div>
+		<label class="dsp-field"><span>地址</span><input data-esi="${i}" data-esf="url" value="${esc(step.url)}" placeholder="/api/login 或完整 URL" /></label>
+		<div class="dsp-field"><span>请求头 · ${headers.length} 项</span>${headers.map((h, hi) => scriptHeaderRow(i, h, hi)).join("")}<button class="dsp-btn" data-act="add-env-script-header" data-esi="${i}" ${headers.length >= ENV_SCRIPT_MAX.headers ? "disabled" : ""}>＋ 请求头</button></div>
+		<label class="dsp-field"><span>请求体（JSON / 表单文本）</span><textarea rows="3" data-esi="${i}" data-esf="body" placeholder='{"username":"{{账号}}","password":"{{口令}}"}'>${esc(step.body)}</textarea></label>
+		<div class="dsp-field"><span>取哪些值 · ${extracts.length} 项</span>${extracts.map((x, xi) => scriptExtractRow(i, x, xi)).join("")}<button class="dsp-btn" data-act="add-env-script-extract" data-esi="${i}" ${extracts.length >= ENV_SCRIPT_MAX.extracts ? "disabled" : ""}>＋ 提取项</button></div>
+	</div>`;
+}
+
+function scriptSection(m) {
+	const s = m.script;
+	const dyn = dynamicOf(S.envs.find((e) => e.id === m.id));
+	const steps = s.steps;
+	return `<div class="dsp-section">
+		<div class="dsp-section-head"><span>内置脚本 · ${steps.length ? `${steps.length} 步` : "未配置"}</span><span class="dsp-inline">
+			<button class="dsp-btn" data-act="env-script-template" title="填入一个「登录接口取 Token」的例子，再按自己的接口改">用登录模板</button>
+			<button class="dsp-btn" data-act="add-env-script-step" ${steps.length >= ENV_SCRIPT_MAX.steps ? "disabled" : ""}>＋ 步骤</button>
+		</span></div>
+		<label class="dsp-check"><input type="checkbox" data-script="enabled" ${s.enabled ? "checked" : ""} /><span>启用：用到这个环境时自动跑一遍脚本，取回最新动态值（如 Token），不用每回先手工登录</span></label>
+		<div class="dsp-grid2">
+			<label class="dsp-field"><span>动态值有效期（分钟）</span><input type="number" min="1" max="1440" data-script="ttlMinutes" value="${s.ttlMinutes}" /></label>
+			<label class="dsp-check" title="默认只允许请求环境自身的地址"><input type="checkbox" data-script="allowForeignHost" ${s.allowForeignHost ? "checked" : ""} /><span>允许请求环境以外的主机（如统一认证中心）</span></label>
+		</div>
+		${steps.length ? steps.map(scriptStepCard).join("") : `<div class="dsp-empty-inline">还没有步骤。点「用登录模板」可以一键填一个「登录 → 取 token」的例子。</div>`}
+		${
+			dyn.length
+				? `<div class="dsp-dyn-row"><span class="dsp-muted">当前动态值：</span>${dyn
+						.map((v) => {
+							const time = dynamicTimeText(v);
+							return `<span class="dsp-dyn" title="${esc(time || "脚本取到的动态值")}">${esc(v.key)}=<b>${esc(dynamicValueText(v))}</b>${time ? `<i>${esc(time)}</i>` : ""}</span>`;
+						})
+						.join("")}</div>`
+				: ""
+		}
+		<div class="dsp-muted">脚本只做两件事：发一个 HTTP 请求、从响应里取字段（不做任意代码执行）。占位符 <code>{{账号}}</code> 取参数、<code>{{token}}</code> 取上一步结果；提取写 <code>data.access_token</code> 或 <code>regex:token=([^&]+)</code>。保存后，启用状态下用这个环境时才会去取新值。</div>
+	</div>`;
+}
+
 export function envModalHtml() {
 	const m = S.envModal;
 	if (!m) return "";
@@ -62,6 +180,7 @@ export function envModalHtml() {
 				</div>
 				<label class="dsp-field"><span>备注</span><input data-f="note" value="${esc(m.note)}" placeholder="例如「每次发版后重置数据」" /></label>
 				${paramsSection(m)}
+				${scriptSection(m)}
 				<label class="dsp-check"><input type="checkbox" data-f="isDefault" ${m.isDefault ? "checked" : ""} /><span>设为该项目的默认环境（登记结果时默认选中它）</span></label>
 				<div class="dsp-muted">地址与参数都只存在本地，刷新页面、重启应用都不会丢。</div>
 			</div>
@@ -84,6 +203,7 @@ export function openEnvModal(e) {
 			name: e.name || "",
 			baseUrl: e.baseUrl || "",
 			params: paramsOf(e).map((p) => ({ key: p.key, value: p.value, secret: !!p.secret })),
+			script: editableScript(e),
 			note: e.note || "",
 			isDefault: !!e.isDefault,
 			createdAt: e.createdAt || "",
@@ -98,6 +218,7 @@ export function openEnvModal(e) {
 			name: "",
 			baseUrl: "",
 			params: [],
+			script: editableScript(null),
 			note: "",
 			// 项目的第一个环境自动成为默认，省得用户再点一次。
 			isDefault: first,
@@ -150,18 +271,75 @@ export async function saveEnv() {
 		return;
 	}
 	const nowIso = new Date().toISOString();
+	// 脚本：空行 / 空提取行丢掉；没填地址的步骤跑不了，别静默存着。
+	const rawSteps = (m.script?.steps ?? []).map((s) => ({
+		name: String(s?.name ?? "").trim(),
+		method: String(s?.method || "POST").toUpperCase(),
+		url: String(s?.url ?? "").trim(),
+		headers: (s?.headers ?? [])
+			.map((h) => ({ key: String(h?.key ?? "").trim(), value: String(h?.value ?? "").trim() }))
+			.filter((h) => h.key),
+		body: String(s?.body ?? ""),
+		extract: (s?.extract ?? [])
+			.map((x) => ({
+				key: String(x?.key ?? "").trim(),
+				path: String(x?.path ?? "").trim(),
+				secret: x?.secret !== false,
+			}))
+			.filter((x) => x.key),
+	}));
+	const orphan = rawSteps.findIndex((s) => !s.url && s.extract.length);
+	if (orphan >= 0) {
+		toast(`步骤 ${orphan + 1} 填了提取项但没填地址`);
+		return;
+	}
+	const script = {
+		enabled: !!m.script?.enabled,
+		ttlMinutes: Math.min(1440, Math.max(1, Math.round(Number(m.script?.ttlMinutes) || 60))),
+		allowForeignHost: !!m.script?.allowForeignHost,
+		steps: rawSteps.filter((s) => s.url),
+	};
+	if (script.enabled && !script.steps.length) {
+		toast("脚本启用了，但还没有填地址的步骤");
+		return;
+	}
+	const noPath = script.steps.flatMap((s) => s.extract).find((x) => !x.path);
+	if (noPath) {
+		toast(`提取项 ${noPath.key} 还没填表达式（如 data.access_token）`);
+		return;
+	}
+	const dupKey = (() => {
+		const seen = new Set();
+		for (const s of script.steps)
+			for (const x of s.extract) {
+				const low = x.key.toLowerCase();
+				if (seen.has(low)) return x.key;
+				seen.add(low);
+			}
+		return "";
+	})();
+	if (dupKey) {
+		toast(`提取项重名：${dupKey}（同一脚本里名字不能重复）`);
+		return;
+	}
 	const item = {
 		id: m.id,
 		systemId: m.systemId,
 		name,
 		baseUrl: m.baseUrl.trim().replace(/\/+$/, ""),
 		params: named,
+		script,
 		note: m.note.trim(),
 		isDefault: !!m.isDefault,
 		createdAt: m.createdAt || nowIso,
 		updatedAt: nowIso,
 	};
 	const prev = S.envs.find((x) => x.id === m.id);
+	// 动态值是服务端取回的运行时缓存：保存在页面这一侧原样带上，等保存返回的快照再刷新。
+	if (prev) {
+		item.dynamic = prev.dynamic ?? [];
+		item.scriptRun = prev.scriptRun ?? null;
+	}
 	const from = prev?.systemId || item.systemId;
 	const idx = S.envs.findIndex((x) => x.id === m.id);
 	if (idx >= 0) S.envs[idx] = item;
@@ -208,6 +386,10 @@ export async function copyEnv(id) {
 		name,
 		isDefault: false,
 		params: paramsOf(e).map((p) => ({ ...p })),
+		// 脚本一并复制（接口地址、取值路径是配置）；动态值是取回的缓存，副本从零开始。
+		script: editableScript(e),
+		dynamic: [],
+		scriptRun: null,
 		createdAt: nowIso,
 		updatedAt: nowIso,
 	});

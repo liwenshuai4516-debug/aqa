@@ -237,6 +237,85 @@ export function paramText(p) {
 	return `${String(p?.key ?? "")}=${paramValueText(p)}`;
 }
 
+/* -------------------------------------------------------------- 环境内置脚本 */
+
+/** 与服务端同一组上限，页面先拦一下，别让人加到第 6 步才知道不行。 */
+export const ENV_SCRIPT_MAX = { steps: 5, headers: 12, extracts: 8 };
+
+/** 环境脚本（结构由服务端清洗）：页面只保证拿到能直接编辑的对象。 */
+export function scriptOf(env) {
+	const s = env?.script && typeof env.script === "object" ? env.script : {};
+	return {
+		enabled: !!s.enabled,
+		ttlMinutes: Number(s.ttlMinutes) || 60,
+		allowForeignHost: !!s.allowForeignHost,
+		steps: Array.isArray(s.steps) ? s.steps : [],
+	};
+}
+
+/** 能不能跑：启用了且至少一步有地址（与服务端 scriptReady 同口径）。 */
+export function scriptReadyOf(env) {
+	const s = scriptOf(env);
+	return s.enabled && s.steps.some((x) => String(x?.url ?? "").trim());
+}
+
+export function dynamicOf(env) {
+	return Array.isArray(env?.dynamic) ? env.dynamic : [];
+}
+
+/** 提取出的每个键都有值、且都未过期，才算新鲜（要么不用重跑，要么过期了才重跑）。 */
+export function dynamicFreshOf(env, nowMs = Date.now()) {
+	const list = dynamicOf(env);
+	if (!list.length) return false;
+	const keys = scriptOf(env)
+		.steps.flatMap((s) => (Array.isArray(s?.extract) ? s.extract : []))
+		.map((x) => String(x?.key ?? "").toLowerCase())
+		.filter(Boolean);
+	const got = new Set(list.map((v) => String(v?.key ?? "").toLowerCase()));
+	if (!keys.every((k) => got.has(k))) return false;
+	return list.every((v) => {
+		const t = Date.parse(String(v?.expiresAt ?? ""));
+		return !Number.isFinite(t) || t > nowMs;
+	});
+}
+
+/** 动态值的展示值：敏感值只给 ●●●●，token 不进可见文本与 title。 */
+export function dynamicValueText(v) {
+	if (v?.secret) return SECRET_MASK;
+	const s = String(v?.value ?? "").trim();
+	return s || "—";
+}
+
+/** 动态值的时间说明：`10-23 11:42 更新 · 12:42 过期`；已过期直接说。 */
+export function dynamicTimeText(v, nowMs = Date.now()) {
+	const parts = [];
+	if (v?.at) parts.push(`${fmtTime(v.at)} 更新`);
+	const exp = Date.parse(String(v?.expiresAt ?? ""));
+	if (Number.isFinite(exp)) parts.push(exp > nowMs ? `${fmtTime(v.expiresAt)} 过期` : "已过期");
+	return parts.join(" · ");
+}
+
+/** 手动跑一次环境脚本（页面按钮）；成功或失败都重载，让脚本状态同步到界面。 */
+export async function refreshEnvScript(envId) {
+	let ok = false;
+	try {
+		const r = await fetch(`${BASE}/env/refresh`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ envId, force: true }),
+		});
+		const d = await r.json().catch(() => null);
+		if (!d) toast("运行失败：插件服务没有响应");
+		else if (!d.ok) toast(`脚本未跑通：${d.error || "未知原因"}`);
+		else toast(d.cached ? "动态值还在有效期" : "已取到最新动态值");
+		ok = Boolean(d?.ok);
+	} catch {
+		toast("运行失败：无法连接插件服务");
+	}
+	await load();
+	return ok;
+}
+
 /** 用例编号：优先用项目 code，如 PMS-004；没有 code 用 CASE-004。 */
 export function nextCaseCode(systemId) {
 	const sys = systemOf(systemId);

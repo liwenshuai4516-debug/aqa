@@ -10,7 +10,12 @@ import {
 	casesOfSystem,
 	caseMatches,
 	defaultEnvOf,
+	dynamicFreshOf,
+	dynamicOf,
+	dynamicTimeText,
+	dynamicValueText,
 	envLabel,
+	envOfCase,
 	envsOf,
 	esc,
 	featureOf,
@@ -29,6 +34,8 @@ import {
 	resultStats,
 	runsGroups,
 	runsSummary,
+	scriptOf,
+	scriptReadyOf,
 	systemOf,
 	typeCounts,
 } from "./state.mjs";
@@ -322,7 +329,7 @@ function caseRow(c, showPath) {
 
 function caseTable(list, showPath) {
 	return `<div class="dsp-table-wrap"><table class="dsp-table case-table${showPath ? " wide" : ""}">
-		<colgroup><col style="width:86px"/><col style="width:auto"/><col style="width:82px"/><col style="width:64px"/><col style="width:74px"/><col style="width:104px"/><col style="width:52px"/><col style="width:104px"/><col style="width:196px"/></colgroup>
+		<colgroup><col style="width:86px"/><col style="width:auto"/><col style="width:82px"/><col style="width:64px"/><col style="width:74px"/><col style="width:104px"/><col style="width:52px"/><col style="width:104px"/><col style="width:212px"/></colgroup>
 		<thead><tr><th>编号</th><th>用例标题</th><th>类型</th><th>优先级</th><th>状态</th><th>最近结果</th><th>步骤</th><th>更新</th><th></th></tr></thead>
 		<tbody>${list.map((c) => caseRow(c, showPath)).join("")}</tbody></table></div>`;
 }
@@ -728,7 +735,13 @@ export function runsHtml() {
 
 	const stats = `<div class="dsp-stats">
 		${statCard("执行记录", st.total, `覆盖 ${st.cases} 条用例 · ${st.tasks} 个任务`)}
-		${statCard("通过率", `${st.passRate}%`, `有效非示例记录：通过 ${st.currentPassed} / ${st.eligible}；示例 ${st.demo}`)}
+		${statCard(
+			"通过率",
+			`${st.passRate}%`,
+			st.rateBasis === "demo"
+				? `示例记录：通过 ${st.demoPassed} / ${st.demoEligible}（还没有真实执行记录）`
+				: `有效非示例记录：通过 ${st.currentPassed} / ${st.eligible}；示例 ${st.demo}`,
+		)}
 		${statCard("需要跟进", needFollow, `失败 ${st["失败"]} · 阻塞 ${st["阻塞"]}`)}
 		${statCard("最近执行", fmtTime(st.lastAt), st.stale ? `${st.stale} 条结论已过期，建议重跑` : "结果均为最新")}
 	</div>`;
@@ -757,25 +770,44 @@ function shortParamValue(p) {
 /** 参数列：最多三个 chip（键 + 值），其余给 +N；敏感值只显示占位点。 */
 function envParamsCell(e) {
 	const ps = paramsOf(e);
-	if (!ps.length) return `<span class="dsp-muted">—</span>`;
+	const dyn = dynamicOf(e);
+	if (!ps.length && !dyn.length) return `<span class="dsp-muted">—</span>`;
 	const shown = ps.slice(0, 3);
-	return `<div class="dsp-params-cell">${shown
-		.map(
-			(p) =>
-				`<span class="dsp-param-chip${p.secret ? " secret" : ""}" title="${esc(paramText(p))}">${esc(p.key)}<b>${esc(shortParamValue(p))}</b></span>`,
-		)
-		.join(
-			"",
-		)}${ps.length > shown.length ? `<span class="dsp-param-more">+${ps.length - shown.length}</span>` : ""}</div>`;
+	const chips = shown.map(
+		(p) =>
+			`<span class="dsp-param-chip${p.secret ? " secret" : ""}" title="${esc(paramText(p))}">${esc(p.key)}<b>${esc(shortParamValue(p))}</b></span>`,
+	);
+	// 脚本取到的值单独一类：带闪电前缀，敏感值同样只给 ●●●●，title 里只有时间不含量。
+	const dynShown = dyn.slice(0, 2);
+	for (const v of dynShown) {
+		const time = dynamicTimeText(v);
+		chips.push(
+			`<span class="dsp-param-chip dyn${v.secret ? " secret" : ""}${dynamicFreshOf(e) ? "" : " stale"}" title="${esc(`脚本取的动态值${time ? ` · ${time}` : ""}`)}">⚡${esc(v.key)}<b>${esc(dynamicValueText(v))}</b></span>`,
+		);
+	}
+	const more = ps.length - shown.length + Math.max(0, dyn.length - dynShown.length);
+	return `<div class="dsp-params-cell">${chips.join("")}${more > 0 ? `<span class="dsp-param-more">+${more}</span>` : ""}</div>`;
+}
+
+/** 脚本徽标：启用且能跑才显示；跑失败过就标红，鼠标悬停能看上次错误。 */
+function scriptBadge(e) {
+	if (!scriptReadyOf(e)) return "";
+	const script = scriptOf(e);
+	const run = e.scriptRun;
+	const tip = run
+		? `内置脚本 ${script.steps.length} 步 · 上次运行 ${fmtTime(run.at)} ${run.ok ? "成功" : `失败：${run.error || "未知错误"}`}`
+		: `内置脚本 ${script.steps.length} 步 · 尚未运行`;
+	return `<span class="dsp-script-badge${run && !run.ok ? " bad" : ""}" title="${esc(tip)}">⚡ 脚本</span>`;
 }
 
 function envRow(e) {
 	const s = systemOf(e.systemId);
 	const params = paramsOf(e);
+	const canRun = scriptReadyOf(e);
 	return `<tr>
 		<td><div class="dsp-name-cell" data-act="edit-env" data-id="${esc(e.id)}"><span class="dsp-dot ${esc(s?.color || "gray")}"></span><b title="${esc(e.name)}">${esc(e.name)}</b>${
 			e.isDefault ? `<span class="dsp-default" title="该项目的默认环境">默认</span>` : ""
-		}</div></td>
+		}${scriptBadge(e)}</div></td>
 		<td class="dsp-muted" title="${esc(s?.name || "项目已删除")}">${esc(s?.name || "—")}</td>
 		<td class="dsp-url-cell" title="${esc(e.baseUrl || "")}">${
 			e.baseUrl ? `<span class="dsp-code">${esc(e.baseUrl)}</span>` : `<span class="dsp-muted">—</span>`
@@ -784,6 +816,7 @@ function envRow(e) {
 		<td class="dsp-muted" title="${esc(e.note || "")}">${esc(e.note || "—")}</td>
 		<td class="dsp-num-cell">${fmtTime(e.updatedAt)}</td>
 		<td><div class="dsp-row-actions">
+			<button class="dsp-btn icon" data-act="run-env-script" data-id="${esc(e.id)}" title="${canRun ? "运行内置脚本，刷新最新动态值（Token 等）" : "这个环境没有启用内置脚本"}" ${canRun ? "" : "disabled"}>⚡</button>
 			<button class="dsp-btn icon" data-act="edit-env" data-id="${esc(e.id)}" title="编辑（含参数）">${ICON.edit}</button>
 			<button class="dsp-btn icon" data-act="copy-env-params" data-id="${esc(e.id)}" title="复制参数（KEY=VALUE）" ${params.length ? "" : "disabled"}>${ICON.key}</button>
 			<button class="dsp-btn icon" data-act="copy-env" data-id="${esc(e.id)}" title="复制这个环境">${ICON.copy}</button>
@@ -808,7 +841,7 @@ export function envsHtml() {
 	const missing = S.systems.filter((s) => !defaultEnvOf(s.id));
 	return `
 	<div class="dsp-page-head">
-		<div><h3>环境<span class="dsp-num">${S.envs.length} 个</span></h3><div class="dsp-page-sub">每个项目一份地址簿：地址 + 测试参数（账号、租户、数据库…）。登记执行结果时选环境，回看时能分清这轮跑的是哪，AI 也能按需取参数。</div></div>
+		<div><h3>环境<span class="dsp-num">${S.envs.length} 个</span></h3><div class="dsp-page-sub">每个项目一份地址簿：地址 + 测试参数（账号、租户、数据库…）。环境还能挂一个「内置脚本」：用到这个环境时先去登录接口取回最新 Token，避免拿着过期凭据执行。登记执行结果时选环境，回看时能分清这轮跑的是哪，AI 也能按需取参数。</div></div>
 		<button class="dsp-btn primary" data-act="new-env">＋ 新建环境</button>
 	</div>
 	<div class="dsp-toolbar">
@@ -818,7 +851,7 @@ export function envsHtml() {
 	</div>
 	${
 		list.length
-			? `<div class="dsp-table-wrap"><table class="dsp-table ds"><colgroup><col style="width:20%"/><col style="width:15%"/><col style="width:auto"/><col style="width:26%"/><col style="width:18%"/><col style="width:100px"/><col style="width:140px"/></colgroup><thead><tr><th>名称</th><th>所属项目</th><th>地址</th><th>参数</th><th>备注</th><th>更新时间</th><th></th></tr></thead><tbody>${list
+			? `<div class="dsp-table-wrap"><table class="dsp-table ds"><colgroup><col style="width:20%"/><col style="width:15%"/><col style="width:auto"/><col style="width:26%"/><col style="width:18%"/><col style="width:100px"/><col style="width:172px"/></colgroup><thead><tr><th>名称</th><th>所属项目</th><th>地址</th><th>参数</th><th>备注</th><th>更新时间</th><th></th></tr></thead><tbody>${list
 					.map(envRow)
 					.join("")}</tbody></table></div>`
 			: `<div class="dsp-empty"><b>${S.envs.length ? "没有匹配的环境" : "还没有环境"}</b>${
