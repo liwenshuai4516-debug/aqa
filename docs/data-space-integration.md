@@ -94,6 +94,9 @@ OperationContract 失败发生在录制初始化，原始错误为 `seed test no
 复用四个既有 Data Space 工具；扩展 `data_space_automation`，插件版本 0.11.0。初始化是持久写入，沿用现有计划、只读、委派与禁用守卫；查询不建立通道。没有新 runner、批准路径、数据集库或结果数据库。
 
 - `initialize {engine,targetUrl?,systemId?,envId?,featureId?}`：至少提供一个目标条件，按 HTTP(S) 地址路径边界与明确 ID 匹配；仅唯一结果建立通道。无匹配返回 `missing-environment`，多匹配返回 `ambiguous` 和候选，默认标记不消歧。返回 `configured`、真实 ID、非敏感参数及敏感参数名称；network/authentication 保持 `not-checked`，不能宣称可登录。账号秘密不回传、不写入通道。当前仅环境参数可作为数据输入；旧数据集已移除，不声称支持不存在的数据集能力。
+
+0.16.0 扩展初始化的 `mode`（默认 `new`）及 `discovery`：`analyze`、`view` 或 `new/record + discovery=source` 返回 `not-required`，不选环境、不创建或改写通道、不发目标请求。其他模式仍须唯一匹配；初始化本身仍沿用宿主写操作守卫。`preparation` 分开记录配置、参数及网络/身份/角色/数据状态，未检查为 `unknown`；每次初始化重读当前参数。有效动态值优先于静态值，过期或失败返回 `refresh-required`，不退回同名静态值；显式刷新后须重新初始化。`parameterSources` 提供来源/有效期。秘密或反射秘密的公共值不交给模型；私密执行链尚未接通时 `privateExecution=not-ready`。`configured` 只是匹配成功，不能据此跳过原生运行前预检或宣称浏览器已登录。
+
 - `import {engine,assetRef}`：宿主从原生资产核验 hash、工作区、环境和原生用例。UI 候选与 API 已冻结资产导入草稿，保存步骤／预期摘要与原生引用。自动绑定版本，仍需原工作流的设计评估、诊断与执行许可。完整来源、断言、请求及超过台账字段限额的内容在原生资产保留。
 - 原生 `ui_case_design.candidate` 成功及 API review/import/restore 形成资产时，宿主发送仅含引用的事件自动导入。仅保存 cases、尚未形成资产的草稿不自动创建占位台账。事件失败可按原 assetRef 重试 import；技能要求核对回执。
 - 正式执行完成后自动导入缺失用例并同步原生结果。宿主进程重启／插件实际重新加载时扫描已有批次补同步；不会重放测试。资产生成事件丢失且未执行时，用 import 补归档；不声称重启会扫描所有未执行候选。

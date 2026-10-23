@@ -408,7 +408,7 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 - `qa/ui/`：本项目隔离服务、数据、Playwright fixture 与预检，维护见 [README](../qa/ui/README.md)。
 - `tests/ui-tool-guards-test.mjs`、`tests/ui-project-fixture-test.mjs`、`tests/ui-project-browser-test.mjs`：门禁、生命周期及真实浏览器验收。
 
-数据空间接入：`plugins/data-space/test-channel.mjs`（环境初始化与资产归档）、`plugins/data-space/automation.mjs`（关联与幂等同步）、`durable.mjs`（原子写）、`client/modal-automation.mjs`（管理入口）；`server/test-asset-reader.ts` / `test-execution-notice.ts`（原生证据桥）；`.pi/skills/data-space-testing/`；`scripts/enable-data-space.mjs`；`tests/data-space-{native,browser}-test.mjs`。
+数据空间接入：`plugins/data-space/test-channel.mjs`（环境初始化与资产归档）、`environment-preparation.mjs`（模式及非敏感参数准备回执）、`plugins/data-space/automation.mjs`（关联与幂等同步）、`durable.mjs`（原子写）、`client/modal-automation.mjs`（管理入口）；`server/test-asset-reader.ts` / `test-execution-notice.ts`（原生证据桥）；`.pi/skills/data-space-testing/`；`scripts/enable-data-space.mjs`；`tests/data-space-{native,browser}-test.mjs`。
 
 数据空间修订视图：`plugins/data-space/client/case-versions.mjs`（最近入库/全部版本及zh/en）；`client/modal-automation.mjs`（原生来源、修订及历史证据）。
 

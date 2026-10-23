@@ -124,6 +124,119 @@ it("selects an exact project/environment, returns data without secrets, and pers
 	next.dispose();
 });
 
+it("initialization reuses current public dynamic parameters without exposing private values or implying browser readiness", async () => {
+	const f = fixture();
+	try {
+		Object.assign(f.store().envs[0], {
+			script: {
+				enabled: true,
+				steps: [
+					{
+						url: "/login",
+						extract: [
+							{ key: "tenant", secret: false },
+							{ key: "session", secret: true },
+						],
+					},
+				],
+			},
+			scriptRun: { ok: true, at: "2026-10-23T00:00:00Z" },
+			dynamic: [
+				{ key: "tenant", value: "current-tenant", secret: false, expiresAt: "2099-01-01T00:00:00Z" },
+				{ key: "session", value: "private-session", secret: true, expiresAt: "2099-01-01T00:00:00Z" },
+			],
+		});
+		const result = await f.init({ mode: "execute" });
+		expect(result.parameters).toEqual({ tenant: "current-tenant" });
+		expect(result.privateParameterKeys).toEqual(["token", "session"]);
+		expect(result.preparation).toMatchObject({
+			mode: "execute",
+			checkedAt: expect.any(String),
+			configuration: { state: "ready" },
+			parameters: { state: "ready", dynamic: "reused" },
+			network: { state: "unknown" },
+			authentication: { state: "unknown" },
+			role: { state: "unknown" },
+			data: { state: "unknown" },
+			privateExecution: { state: "not-ready" },
+		});
+		expect(JSON.stringify(result)).not.toContain("private-session");
+		expect(readFileSync(join(f.cwd, "data-space/channels.json"), "utf8")).not.toContain("current-tenant");
+		f.store().envs[0].dynamic[0].value = "latest-tenant";
+		expect((await f.init({ mode: "execute" })).parameters.tenant).toBe("latest-tenant");
+	} finally {
+		f.a.dispose();
+	}
+});
+
+it("expired or failed dynamic preparation never falls back to the static value of the same key", async () => {
+	const f = fixture();
+	try {
+		Object.assign(f.store().envs[0], {
+			script: { enabled: true, steps: [{ url: "/login", extract: [{ key: "tenant", secret: false }] }] },
+			dynamic: [{ key: "tenant", value: "expired-tenant", secret: false, expiresAt: "2000-01-01T00:00:00Z" }],
+		});
+		for (const lastRun of [undefined, { ok: false }]) {
+			f.store().envs[0].scriptRun = lastRun;
+			const result = await f.init({ mode: "record" });
+			expect(result.parameters).toEqual({});
+			expect(result.preparation.parameters).toMatchObject({ state: "not-ready", dynamic: "refresh-required" });
+			expect(JSON.stringify(result)).not.toContain("expired-tenant");
+		}
+	} finally {
+		f.a.dispose();
+	}
+});
+
+it("analysis, view and source-only modes do not require environment selection or create channels", async () => {
+	const f = fixture();
+	try {
+		for (const input of [
+			{ mode: "analyze" },
+			{ mode: "view" },
+			{ mode: "new", discovery: "source" },
+			{ mode: "record", discovery: "source" },
+		]) {
+			const result = await f.a.call(f.cwd, { action: "initialize", engine: "ui", ...input });
+			expect(result).toMatchObject({
+				ok: true,
+				status: "not-required",
+				preparation: { mode: input.mode, browserRequired: false },
+			});
+			expect(result.channel).toBeUndefined();
+			expect(result.parameters).toBeUndefined();
+		}
+		expect(() => readFileSync(join(f.cwd, "data-space/channels.json"))).toThrow();
+		await f.init();
+		const previous = readFileSync(join(f.cwd, "data-space/channels.json"), "utf8");
+		await f.a.call(f.cwd, { action: "initialize", engine: "ui", mode: "view" });
+		expect(readFileSync(join(f.cwd, "data-space/channels.json"), "utf8")).toBe(previous);
+		await expect(f.init({ mode: "unsupported" })).rejects.toThrow(/模式/);
+	} finally {
+		f.a.dispose();
+	}
+});
+
+it("secret classification cannot be downgraded by dynamic metadata or reflected public parameters", async () => {
+	const f = fixture();
+	try {
+		f.store().envs[0].params.push({ key: "url", value: "reflected-private-value", secret: false });
+		f.store().envs[0].params.push({ key: "redirect", value: "https://example.test/new-private-token", secret: false });
+		Object.assign(f.store().envs[0], {
+			script: { enabled: true, steps: [{ url: "/login", extract: [{ key: "token", secret: false }] }] },
+			dynamic: [{ key: "token", value: "new-private-token", secret: false, expiresAt: "2099-01-01T00:00:00Z" }],
+		});
+		const result = await f.init();
+		expect(result.parameters).toEqual({ tenant: "qa" });
+		expect(result.preparation.parameters).toMatchObject({ state: "not-ready", blockedKeys: ["url", "redirect"] });
+		expect(result.privateParameterKeys).toContain("token");
+		expect(JSON.stringify(result)).not.toContain("new-private-token");
+		expect(JSON.stringify(result)).not.toContain("reflected-private-value");
+	} finally {
+		f.a.dispose();
+	}
+});
+
 it("archives native features by explicit mapping, retains unclassified cases and queries receipts without writes", async () => {
 	const f = fixture();
 	await f.a.idle();

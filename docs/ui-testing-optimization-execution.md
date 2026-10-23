@@ -235,3 +235,25 @@ A01-2/3/4 与 A01-5 的上述隔离工程路径已留证；A01-1 全部前置零
 初版测试把 start 返回 running 误当成已启动执行、预期自动 blocked；缺失文件时还预期一定创建新任务。该验收假设与现有契约不符：start 是登记、目录提供信息，实际准入由 UiRunService 强制，失败后使用已有 block 交接。保留 `u01-admission-assumptions.log`（1 子场景通过，3 子场景失败；父测试也计失败），据真实契约明确区分登记、runner 拒绝和持久化阻塞，未修改生产门禁或忽略 runner 失败。最终 `u01-admission-native-release.log`：4 子场景及父测试共 5 项通过，0 失败/跳过；运行命令 `node --import tsx --test tests/ui-workflow-admission-test.mjs`。全量类型、lint、协议、差异检查通过，清理仅预览。
 
 结合前述恢复及隔离桌面/数据空间对账，U01 更新为“工程回归通过，依赖待验”，不表示真实模型会自动正确执行所有交接，也不替代 U00/U09 的完整 Agent 流程基线和真实验收。下一步继续 U00 的计量及 U02 的完整环境/秘密执行链，再按依赖推进 U05/U03/U07；整计划保持进行中，U08 可选且未启动。
+
+### U02 续跑：模式化环境准备与当前动态参数回执（0.16.0）
+
+起点 `ff8acaf6a323360ac4954000d35559920d171aaf`。保留 `.gitignore` 与 db-client 锁的既有差异；没有 plan_update 工具，继续以本记录跟踪。沿用已读取的 skill-creator 维护现有两个入口，不增加重复工具或 runner。
+
+最小复现：初始化仅返回静态参数，忽略有效动态 tenant，分析/查看/仅源码模式还要求匹配环境并建通道；初版新增测试3项失败、20项原测试通过（`u02-preparation-before.log`）。新增 `environment-preparation.mjs`，初始化接受 mode/discovery；analyze、view、new/record+source 返回 not-required，不读环境、不改通道、不发目标请求。其他模式保留唯一项目/环境匹配与原宿主写操作守卫。configured 仍仅表示匹配成功。
+
+回执区分配置、参数及网络/身份/角色/数据，未检查保持 unknown。每次重新读取当前环境，有效动态公开值覆盖同名静态值；过期或脚本失败时返回 refresh-required，不退回同名静态值。刷新仍须显式调用原工具并遵守权限；不改变既有空有效期规则。parameterSources 保留来源和有效期，不把参数复制进 channels。秘密键按静态、脚本声明、动态三方合并分类，不能靠 dynamic.secret=false 降级；反射已知秘密的公共字段移除并标 not-ready，不能把脱敏占位值交给执行。
+
+扩大回归发现新增 guideline 为213字符，违反200字符限制，已缩短。进一步构造动态秘密被降级后反射到公开 URL 的反例，先复现1失败/23通过（`u02-preparation-reflection-before.log`）；修复时按合并后的秘密分类复用原脱敏器，未改变原始环境或全局函数。
+
+本轮实际验证（日志均在 `tests/scratch/ui-optimization-u00/`）：
+
+- 最终15文件238项单测通过（`u02-preparation-regression-final.log`），含模式跳过、已有通道字节不变、实时重读、过期/失败无回退、秘密降级和反射拒绝、原归档/结果/工具提示规则。早期63项为同范围子集，不累加计数。
+- 扩大版本守卫检查另外触发既有 `plugins/db-client/package-lock.json` 未递增版本；原日志 `u02-preparation-regression.log` 保留。该用户差异不改动、不暂存；本次 data-space 已从0.15.0升至0.16.0，没有独立package或已跟踪bundle。不能将整个工作区版本守卫写为通过。
+- 原生API/UI集成7项通过（`u02-preparation-native.log`），使用实际Newman/Playwright及控制评审，覆盖失败父链、取消、证据篡改、跨工作区拒绝和重启补同步；0付费模型、0真实业务请求。
+- 隔离Electron实际进程8项检查通过（`u02-preparation-desktop.log`），证据 `tests/scratch/data-space-skill-desktop/1792749824198/`。实际宿主调用确认三类跳过模式不创建channels；execute初始化返回当前动态tenant、unknown及私密未就绪，合成目标HTTP计数不变；技能/工具启停重载、真实原生run及重启归档仍通过。`version-history.png`已人工查看。后续匿名合成run不依赖私密参数，不能当作私密消费验证。
+- 全量typecheck、build、lint、插件专门oxlint、协议、两个Skill quick_validate、size及差异检查已执行；相关日志 `u02-preparation-*`。清理仅预览，保留失败证据及用户数据。
+
+边界：privateExecution 对含私密参数的环境明确 not-ready；尚未实现受控私密引用的浏览器消费、截图/trace/报告/归档全链路秘密隔离，不能把 HTTP token 猜测转换为 storageState。网络/身份/角色/数据的完整运行时预检仍须原生执行证据，本轮不授予就绪。A02-1/3/4/7 的上述工程子路径已有回归，A02-2沿用已留证的seed守卫，不冒充新开发。U02、U00、M1/M2与整计划仍未完成；U05/U03/U07/U09及完整计量继续待推进，U08未启动、保留串行。
+
+最终秘密分类修复后，Electron同路径8项再次通过，证据 `tests/scratch/data-space-skill-desktop/1792750012288/`（`u02-preparation-desktop-release.log`）；不将重复执行累加为16项。最终全量类型及lint通过（`u02-preparation-typecheck-release.log` / `u02-preparation-lint-release.log`）。无客户端代码变化，桌面沿用本轮串行构建；隔离插件链接实际加载0.16.0新模块，用户旧进程未刷新。

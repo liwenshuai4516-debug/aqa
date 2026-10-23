@@ -4,6 +4,7 @@ import { readFileSync, realpathSync } from "node:fs";
 import { join } from "node:path";
 import { atomicJson } from "./durable.mjs";
 import { MAX, normalizeStore, str } from "./model.mjs";
+import { environmentPreparation, preparationMode } from "./environment-preparation.mjs";
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const key = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 export function environmentUrl(value) {
@@ -53,6 +54,9 @@ export function createTestChannel({ host, store, commitStore }) {
 	};
 	function initialize(cwd, input) {
 		if (!["ui", "api"].includes(input.engine)) throw new Error("初始化需要 ui/api 引擎");
+		const mode = preparationMode(input);
+		if (!mode.channelRequired)
+			return { ok: true, status: "not-required", preparation: environmentPreparation(null, mode) };
 		const workspace = realpathSync(cwd),
 			s = store();
 		const target = input.targetUrl ? environmentUrl(input.targetUrl) : null;
@@ -98,13 +102,19 @@ export function createTestChannel({ host, store, commitStore }) {
 		// Retain explicit destination when a subsequent initialization only refreshes parameters.
 		if (existing && !input.featureId) channel.featureId = existing.featureId;
 		if (!same(existing, channel)) save([...channels.filter((c) => c !== existing), channel]);
+		const { publicParameters, privateParameterKeys, parameterSources, ...preparation } = environmentPreparation(
+			env,
+			mode,
+		);
 		return {
 			ok: true,
 			status: "configured",
 			channel,
 			revision: s.revision,
-			parameters: Object.fromEntries((env.params ?? []).filter((p) => !p.secret).map((p) => [p.key, p.value])),
-			privateParameterKeys: (env.params ?? []).filter((p) => p.secret).map((p) => p.key),
+			parameters: publicParameters,
+			privateParameterKeys,
+			parameterSources,
+			preparation,
 			checks: { network: "not-checked", authentication: "not-checked" },
 			features: s.features
 				.filter((f) => s.modules.some((m) => m.id === f.moduleId && m.systemId === env.systemId))

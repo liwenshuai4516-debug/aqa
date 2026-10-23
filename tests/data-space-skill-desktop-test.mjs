@@ -50,6 +50,23 @@ await writeFile(
 					{ key: "tenant", value: "fixture", secret: false },
 					{ key: "token", value: "synthetic-private", secret: true },
 				],
+				script: {
+					enabled: true,
+					steps: [
+						{
+							url: "/login",
+							extract: [
+								{ key: "tenant", secret: false },
+								{ key: "token", secret: true },
+							],
+						},
+					],
+				},
+				scriptRun: { ok: true, at: "2026-10-23T00:00:00Z" },
+				dynamic: [
+					{ key: "tenant", value: "runtime-fixture", secret: false, expiresAt: "2099-01-01T00:00:00Z" },
+					{ key: "token", value: "synthetic-dynamic-private", secret: true, expiresAt: "2099-01-01T00:00:00Z" },
+				],
 			},
 		],
 	}),
@@ -210,15 +227,33 @@ try {
 			},
 			{ path, body },
 		);
+	const preparationRequests = native.f.fixture.state.browserRequests;
+	for (const input of [{ mode: "analyze" }, { mode: "view" }, { mode: "record", discovery: "source" }]) {
+		const skipped = await request("/automation", { action: "initialize", engine: "ui", workspace, ...input });
+		assert.equal(skipped.status, "not-required");
+		assert.equal(skipped.channel, undefined);
+	}
+	await assert.rejects(readFile(join(dataDir, "data-space/channels.json")), { code: "ENOENT" });
 	const initialized = await request("/automation", {
 		action: "initialize",
 		engine: "ui",
+		mode: "execute",
 		targetUrl: native.f.fixture.url,
 		workspace,
 	});
 	assert.equal(initialized.status, "configured");
-	assert.equal(initialized.parameters.tenant, "fixture");
+	assert.equal(initialized.parameters.tenant, "runtime-fixture");
+	assert.equal(initialized.parameterSources.tenant.kind, "dynamic");
+	assert.equal(initialized.preparation.parameters.dynamic, "reused");
+	for (const check of ["network", "authentication", "role", "data"])
+		assert.equal(initialized.preparation[check].state, "unknown");
+	assert.equal(initialized.preparation.privateExecution.state, "not-ready");
 	assert(!JSON.stringify(initialized).includes("synthetic-private"));
+	assert(!JSON.stringify(initialized).includes("synthetic-dynamic-private"));
+	assert.equal(native.f.fixture.state.browserRequests, preparationRequests);
+	result.checks.push(
+		"mode-aware preparation skips historical/source-only channels, reuses current public parameters, preserves unknown browser readiness and performs no target requests",
+	);
 	// 原生资产已存在但未获用户确认：不得自动入库。
 	const readStore = async () => JSON.parse(await readFile(join(dataDir, "data-space/store.json"), "utf8"));
 	assert.equal((await readStore()).cases.length, 0, "generated assets must not be imported implicitly");

@@ -14,13 +14,13 @@ metadata:
 
 ## 先定位，后交接
 
-1. 开始新测试时，调用 `data_space_automation` 的 `initialize`，传 `engine` 和用户的 `targetUrl`（或明确的 `systemId` / `envId`），从结构化回执取得项目、环境 ID、`baseUrl`、非敏感 `parameters` 和 `privateParameterKeys`。`missing-environment` 时在数据空间补齐配置后重试；`ambiguous` 时用候选真实 ID 消歧，不能套用默认项。只读查询不初始化通道。
-2. `configured` 只表示配置匹配，不代表网络或登录成功。UI 录制前检查当前工作区 Playwright 依赖、配置的 testDir / project / baseURL 与相对 seed 路径，先收集 seed，再由浏览器确认目标页面和登录状态。把返回参数按业务含义用于测试数据；不得当作脚本或任意进程环境变量执行。API 仍走原生目标许可与预检。已有配置冲突时明确修正，不能悄悄切换目标。用例范围通过 `data_space_cases` 查询，优先真实 ID；`get` 不按 project 消歧，前 100 条不是全量。
+1. 开始新测试时，调用 `data_space_automation` 的 `initialize`，传 `engine`、当前 `mode` 和用户的 `targetUrl`（或明确的 `systemId` / `envId`），从结构化回执取得项目、环境 ID、`baseUrl`、非敏感 `parameters` 和 `privateParameterKeys`。`analyze`、`view` 或 `new/record` 配 `discovery=source` 返回 `not-required`，不选新环境、不建通道；普通查询不初始化。`missing-environment` 时补齐配置；`ambiguous` 时用候选真实 ID 消歧，不能套用默认项。
+2. 读取本次 `preparation` 与 `parameterSources`：有效动态值优先于同名静态值；`refresh-required` 时显式刷新再初始化，不能回退旧值或使用脱敏占位。`configured` 仅代表配置匹配，网络、身份、角色和数据未检查均为 `unknown`，仍须原生执行预检。UI 录制先核对 Playwright 依赖、配置、project 与相对 seed，再由浏览器验证前置条件；已有资产执行不新增录制 seed。参数不得当脚本或任意进程环境变量执行。API 沿用原目标许可与预检；配置冲突不能悄悄切换目标。用例范围通过 `data_space_cases` 查询，优先真实 ID；`get` 不按 project 消歧，前 100 条不是全量。
 3. 保留本次取得的 `revision`、用例引用和原生资产／批次引用。聊天锚点只帮助定位，不是版本锁或结果证据。写前发现用例已变更，先核对对应测试版本；原生关联过期需重新关联，不能把旧结论贴到新用例上。
 
 数据空间在同一 dataDir 内跨工作区共享，项目名、环境名不能单独充当全局身份。敏感参数只返回脱敏占位或名称；不使用 `***` 执行，不把密钥、cookies、storageState 或连接口令写进备注与结果。只有原工作流明确支持的私有引用才能用于执行；当前数据空间动态私密参数尚未接入浏览器执行链，遇到此依赖应阻塞，不经聊天传递秘密。
 
-初始化成功即建立持久通道，**不授权生成用例自动入库**。通道仅含工作区、引擎、项目、环境和归档位置，不复制环境参数。环境改动后重新初始化；`disconnect` 加 `engine` / `envId` 停止该通道的新交接，已绑定用例的结果同步仍沿原绑定（停止须逐项 `unbind`）。同地址多个通道不能自动判断归属，须按所选 `envId` 消歧。
+返回 `configured` 即建立持久通道，**不授权生成用例自动入库**。通道仅含工作区、引擎、项目、环境和归档位置，不复制环境参数。环境改动后重新初始化；`disconnect` 加 `engine` / `envId` 停止该通道的新交接，已绑定用例的结果同步仍沿原绑定（停止须逐项 `unbind`）。同地址多个通道不能自动判断归属，须按所选 `envId` 消歧。
 
 ## 生成用例后由用户选择入库
 

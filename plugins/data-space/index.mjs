@@ -577,7 +577,7 @@ export default {
 						"Initialize project test environments, import native cases after the user agrees, bind assets, or synchronize verified runs. Importing never approves or executes tests.",
 					promptSnippet: "Connect project environments, generated cases and native results.",
 					promptGuidelines: [
-						"Initialize with engine and targetUrl before discovery. Use returned environment IDs and nonsecret parameters; configured does not mean reachable or authenticated.",
+						"Initialize by mode; source-only, analyze and view need no channel. Check preparation, explicitly refresh stale parameters; configured never proves browser readiness.",
 						"Import only after the user agrees to record this batch. Pass the native UI cases ref or API draft ref, and the chosen envId so the project is taken from that environment.",
 						"Import stores draft cases only: no automation binding, execution or result. Native generation and execution events no longer archive assets on their own.",
 						"Use featureMappings for multiple native features. Query archive-status to check intake and classification separately; never relocate historical cases on retry.",
@@ -603,6 +603,16 @@ export default {
 								],
 							},
 							systemId: { type: "string" },
+							mode: {
+								type: "string",
+								enum: ["new", "record", "execute", "analyze", "view", "resume", "rerun-failed", "rerun-all"],
+								description: "Preparation mode for initialize; defaults to new.",
+							},
+							discovery: {
+								type: "string",
+								enum: ["source", "browser", "both"],
+								description: "Discovery input for new or record mode only.",
+							},
 							targetUrl: { type: "string" },
 							featureId: {
 								type: "string",
