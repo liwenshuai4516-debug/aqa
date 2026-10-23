@@ -370,3 +370,19 @@ A02-6/7 的上述合成运行时路径已有直接工程证据；A02-5 私密桥
 [本轮摘要](ui-testing-evidence/optimization-u02-private-capture.json)与约 67KB 的[公开证据归档](ui-testing-evidence/optimization-u02-private-capture.tar.gz)包含 89 个公开文件、68 个逐一核对的原生引用；归档再次逐文件回读校验 SHA-256。原始私密目录、认证文件、依赖和泄露前的原始捕获没有归档。全量类型检查、格式、lint、协议结构、体积预算与差异检查完成；协议 Git 历史启发式因无 tag 跳过，清理只预览。
 
 验收限制：本轮只证明已声明合成 cookie 及受测编码在原生诊断/正式捕获中的隔离。录制 MCP、运行中新生成的凭据、嵌套/自定义编码、业务敏感内容、脚本自行写文件及数据台账仍不在该修复覆盖内，不能宣称全链路秘密识别或认证环境就绪。数据空间私密桥接、真实环境与 U00 完整计量仍未完成，U02 保持实施中。U05 完整候选/独立设计评审、U03/U07/U09、M1/M2 与原真实模型/OperationContract门禁继续保留；U08 未启动。
+
+### U05 完整源码候选与断言映射（2026-10-24）
+
+继续复用冻结 `u00-1` 源码和已归档的多功能探索证据。先校验历史归档 SHA-256，并逐字节确认其中的页面声明仍与当前冻结文件一致；不重新录制 52 个既有动作，也不覆盖旧草稿、原任务或预算记录。原浏览器 partial 用于证明阻塞交接，因此本轮没有把它当作 complete；按原生已有源码发现路径另存**同一完整六功能、两角色的源码候选**，明确不作为浏览器链完成。
+
+新增 `tests/fixtures/data-space/ui-multifunction-candidate.ts`，对应查询/重置、取消与持久化、标签与展开、条件分页边界、权限隐藏、加载/空/错误六个 case，共 **13 个具名 test.step 断言**。预期来自冻结 declaration、固定初始数据和预登记合成输入，不将旧观察直接升级为需求。权限 case 分别确认 tester/viewer 身份且使用独立 context；取消后重载查询为空，保存后重载只出现一条；分页先加不匹配 a 的合成名称以区分实际过滤；加载顺序使用只读观察，与前轮状态证据的方法相同。上述是待审候选设计，**本轮没有执行脚本**。
+
+`tests/ui-multifunction-candidate-test.mjs` 使用安装版原生 ArtifactStore/checkDesign/UiWorkflowService 完成 **4 项工程检查**：六功能与13声明断言全部有来源及脚本绑定，TypeScript 静态问题为空；源码发现/候选交接停在 design-review，缺评审时不能完成、目录 runtime_ready=false；缺失断言绑定命中 D6，依赖版本变化命中 D3；两个旧 partial 录制及原 `u05-tester` 任务摘要完全不变。只在已核对的归档解包后观察候选阶段子进程，确认没有启动进程；0 浏览器、0 模型、0 正式 runner。此工程脚本直接调用原生服务，不宣称新增 SDK/MCP 或 Electron 端到端证据。
+
+候选 `u05-full-declaration/v1` 与阻塞任务 `u05-source-candidate` 的真实引用见[本轮摘要](ui-testing-evidence/optimization-u05-source-candidate.json)。约50KB的[归档](ui-testing-evidence/optimization-u05-source-candidate.tar.gz)含188个公开文件、158个逐一核对的来源引用，归档回读摘要一致；包含历史公开证据及两个明确命名的负向静态变体，不包含依赖、认证或任何批准记录。成功原始目录 `tests/scratch/ui-multifunction-candidate/1792774806866/`，日志前缀 `tests/scratch/ui-optimization-u00/u05-candidate-`。
+
+全量 typecheck、2文件 **20项 Vitest**、lint、协议结构、差异检查通过；协议历史启发式因无 tag 跳过。源码候选自身还由原生 TypeScript 检查器编译，不能用宿主 typecheck 代替。没有修改运行包或桌面生产实现，本轮不重复计前轮7项桌面通过。同期修正计划放行表 U02 行误填为任务分解表内容的问题，恢复与已保存证据一致的“实施中/0.1.3”，不改变原验收状态。
+
+剩余门禁：独立评审必须经原生工具调用当前模型，既有测试模型额度已耗尽，本轮没有代填评审或借新任务重置费用限制。全部断言的合理负向诊断副本、候选实际运行、完整浏览器候选交接仍待准备/放行；重复按钮/frame、部署变化与真实模型/OperationContract 条件仍未完成。源码候选补充 A05-6/7 的可审查材料，不等于独立设计批准、运行就绪或 U05 完成；U00/U02/U03/U07/U09、M1/M2 继续未完成，U08未启动。
+
+候选模板使用 `.ts` 而非 `.spec.ts` 文件名，避免普通 Playwright 发现误执行未获批候选；生成到原生产物内时才使用 candidate.spec.ts。模板更名后的同4项检查再次通过（`u05-candidate-template-check.log`），不重复累计检查数，归档内候选字节未变。

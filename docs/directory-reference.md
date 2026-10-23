@@ -408,6 +408,7 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 - `qa/ui/`：本项目隔离服务、数据、Playwright fixture 与预检，维护见 [README](../qa/ui/README.md)。
 - `tests/ui-tool-guards-test.mjs`、`tests/ui-project-fixture-test.mjs`、`tests/ui-project-browser-test.mjs`：门禁、生命周期及真实浏览器验收。
 - `tests/ui-private-evidence-test.mjs`：合成认证的原生诊断/正式捕获回归，扫描公开文件、附件正文和 trace；不使用真实秘密，不放行数据空间私密桥接。
+- `tests/ui-multifunction-candidate-test.mjs`、`tests/fixtures/data-space/ui-multifunction-candidate.ts`：冻结六功能的源码候选与原生静态门禁回归；不执行候选、不授予批准，保留原浏览器 partial。
 
 数据空间接入：`plugins/data-space/test-channel.mjs`（环境初始化与资产归档）、`environment-preparation.mjs`（模式及非敏感参数准备回执）、`plugins/data-space/automation.mjs`（关联与幂等同步）、`durable.mjs`（原子写）、`client/modal-automation.mjs`（管理入口）；`server/test-asset-reader.ts` / `test-execution-notice.ts`（原生证据桥）；`.pi/skills/data-space-testing/`；`scripts/enable-data-space.mjs`；`tests/data-space-{native,browser}-test.mjs`。
 

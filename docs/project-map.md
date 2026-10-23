@@ -115,6 +115,8 @@ UI 测试 P0：`server/extension-tool-policy.ts` 定义操作副作用，`server
 
 UI 私密捕获回归：`tests/ui-private-evidence-test.mjs` 使用原生包及合成认证验证诊断/正式执行的公开证据隔离；实现维护在上游，分发与安装位置见 [统一维护入口](../.pi/skills/ui-testing-workflow/references/maintenance.md)。
 
+UI 多功能源码候选：`tests/ui-multifunction-candidate-test.mjs` 对 `tests/fixtures/data-space/ui-multifunction-candidate.ts` 做原生映射/编译检查并保留评审门禁；候选不随该检查执行，原浏览器 partial 证据保持不变。
+
 数据空间与原生 UI/API 执行关联：`plugins/data-space/test-channel.mjs`（环境初始化与资产归档）、`environment-preparation.mjs`（模式及非敏感参数准备回执）、`plugins/data-space/automation.mjs`、`server/test-asset-reader.ts`（只读核验）、`server/test-execution-notice.ts`（完成引用及原生 UI 阶段的看板投影）。维护与验收见 [接入记录](data-space-integration.md)、[UI 优化执行记录](ui-testing-optimization-execution.md)。
 
 数据空间版本展示：`plugins/data-space/client/case-versions.mjs` 按明确来源和入库顺序投影列表；不变更原生批准、历史资产或执行记录。
