@@ -1,0 +1,192 @@
+{
+	"date": "2026-10-24",
+	"status": "single-call-reference-reuse-verified-plan-in-progress",
+	"runtime_version": "0.1.4",
+	"source_commit": "b31dd3c5dae980bcffe6708ece1145defedbe855",
+	"source_remote_push": "not-authorized-not-performed",
+	"package": {
+		"path": ".pi/skills/ui-testing-workflow/assets/pi-ui-testing-0.1.4.tgz",
+		"sha256": "8fac9e8174e0f54d84ba593400e9b06b0f968fe2aee4988cf50710df6e9cd43e"
+	},
+	"installed_validation_sha256": "a5ab05c0845c678250a259a44abf6595e62c77a0968b5c5c7627f1ca7123780e",
+	"change": "Deduplicate identical path+sha256 successful reads within one verifyReferences call; no cross-call cache",
+	"comparison": [
+		{
+			"history_size": 1,
+			"operation": "catalog",
+			"before_read_calls": 45,
+			"after_read_calls": 29,
+			"directory_calls": 38,
+			"before_repeated_median_ms": 14.975957999999991,
+			"after_repeated_median_ms": 16.27320899999995
+		},
+		{
+			"history_size": 1,
+			"operation": "status-view",
+			"before_read_calls": 1,
+			"after_read_calls": 1,
+			"directory_calls": 0,
+			"before_repeated_median_ms": 0.13754099999994196,
+			"after_repeated_median_ms": 0.191332999999986
+		},
+		{
+			"history_size": 1,
+			"operation": "status-analyze",
+			"before_read_calls": 4,
+			"after_read_calls": 4,
+			"directory_calls": 0,
+			"before_repeated_median_ms": 0.45804199999997763,
+			"after_repeated_median_ms": 0.5600419999998394
+		},
+		{
+			"history_size": 1,
+			"operation": "status-execute",
+			"before_read_calls": 56,
+			"after_read_calls": 40,
+			"directory_calls": 38,
+			"before_repeated_median_ms": 15.59962500000006,
+			"after_repeated_median_ms": 18.11920800000007
+		},
+		{
+			"history_size": 8,
+			"operation": "catalog",
+			"before_read_calls": 52,
+			"after_read_calls": 36,
+			"directory_calls": 59,
+			"before_repeated_median_ms": 16.108207999999877,
+			"after_repeated_median_ms": 16.843291999999792
+		},
+		{
+			"history_size": 8,
+			"operation": "status-view",
+			"before_read_calls": 1,
+			"after_read_calls": 1,
+			"directory_calls": 0,
+			"before_repeated_median_ms": 0.13979200000017045,
+			"after_repeated_median_ms": 0.24270800000022064
+		},
+		{
+			"history_size": 8,
+			"operation": "status-analyze",
+			"before_read_calls": 4,
+			"after_read_calls": 4,
+			"directory_calls": 0,
+			"before_repeated_median_ms": 0.39829200000008314,
+			"after_repeated_median_ms": 0.6087079999997513
+		},
+		{
+			"history_size": 8,
+			"operation": "status-execute",
+			"before_read_calls": 63,
+			"after_read_calls": 47,
+			"directory_calls": 59,
+			"before_repeated_median_ms": 16.711541000000125,
+			"after_repeated_median_ms": 19.54962499999965
+		}
+	],
+	"validation": {
+		"regression_before": {
+			"passed": 1,
+			"failed": 3
+		},
+		"native_passed": 61,
+		"native_skipped": 2,
+		"native_skipped_reason": "live design/result model reviews not authorized",
+		"sdk_mcp_passed": 19,
+		"desktop_passed": 7,
+		"vitest_passed": 14,
+		"typecheck": "passed",
+		"lint": "passed",
+		"protocol_structure": "passed",
+		"protocol_history": "skipped: no tag"
+	},
+	"model_calls": 0,
+	"real_business_requests": 0,
+	"limits": [
+		"Whole catalog still performs two independent checks of the candidate script and full directory reconstruction",
+		"Elapsed timings did not demonstrate improvement; host load differs, no total workflow speed claim",
+		"No atomic snapshot guarantee against external concurrent mutation",
+		"UI full candidate review, U00 complete baseline, U02 private bridge and M1/M2 gates remain incomplete"
+	],
+	"evidence": {
+		"archive": "docs/ui-testing-evidence/optimization-u04-reference-reuse.tar.gz",
+		"archive_sha256": "4a895cc1dda8c16558820ec596c672a03ddc818a53bdf046434f6b72bb57557a",
+		"archive_bytes": 475602,
+		"history_archive": "docs/ui-testing-evidence/optimization-u04-history.tar.gz",
+		"history_archive_sha256": "bcae95e240a6bc4c9cda1ef5fb9ab77379f70f93e5dafaf933cd78be76008658",
+		"desktop": "tests/scratch/ui-workflow-visibility/1792778701560",
+		"after": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-catalog-read/1792778657851"
+	},
+	"file_index": [
+		{
+			"path": "measurement-before.json",
+			"sha256": "e7c34c2f7110254c92c6a0c068f90bd5eb829ecd7fae3d4fa51c374c86c45235",
+			"bytes": 134394
+		},
+		{
+			"path": "measurement-after.json",
+			"sha256": "14c0e64ddeaa0b4afb75f2a6aab36b9543b46ac0a4f33f64ae4c07b6031f5fb0",
+			"bytes": 134369
+		},
+		{
+			"path": "reference-reads.test.mjs",
+			"sha256": "3006750a8dc9ed8180580f32ccbec9531fe56ed6d07f171ffc2113349ce88c1a",
+			"bytes": 2520
+		},
+		{
+			"path": "desktop-result.json",
+			"sha256": "b0a888650d02faf7f3c2f6a2e12ac74c6f7028e18d11bf68a5ee6c263e96aa7e",
+			"bytes": 780
+		},
+		{
+			"path": "discovery-restored.png",
+			"sha256": "da6d4b66cf7bb4d45a34b70e36a120a85ff345ead9836b3dc1bc3d31e31b4296",
+			"bytes": 472595
+		},
+		{
+			"path": "checks/before.log",
+			"sha256": "3e3e8c99572da2431a831fc2b384e0d4002dd172cf64f135500156e578448511",
+			"bytes": 2376
+		},
+		{
+			"path": "checks/native.log",
+			"sha256": "ee5acc051286a9d88b2ff04f2fb446b3448ed161b393ccaa246f3f18f9e7416b",
+			"bytes": 3566
+		},
+		{
+			"path": "checks/native-check.log",
+			"sha256": "f108603c5e71023c7c1a8134326b2077220e38ea28459ea222b061bb1425a6f0",
+			"bytes": 101
+		},
+		{
+			"path": "checks/native-regression.log",
+			"sha256": "cf9a37679f018b9107def540c666adb6f0702f20c12bb1c4af7f956e19135b16",
+			"bytes": 3650
+		},
+		{
+			"path": "checks/sdk.log",
+			"sha256": "05daedf7382fd421986ca710eb2acc8458065b38a8ddc0c50e0dbf5bc5ee6357",
+			"bytes": 1738
+		},
+		{
+			"path": "checks/typecheck.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "checks/unit.log",
+			"sha256": "800522500632646a0cdab092c8a07dab7b9eef0e32096131b4e71ce8eb6c6033",
+			"bytes": 198
+		},
+		{
+			"path": "checks/lint.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+			"bytes": 88
+		},
+		{
+			"path": "checks/protocol.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"bytes": 360
+		}
+	]
+}

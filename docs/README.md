@@ -41,6 +41,7 @@
 - [U05 诊断输入准备](ui-testing-evidence/optimization-u05-probes.json)：13个错误副本及诊断契约，明确区分HTTP/静态检查与未执行的浏览器正反诊断。
 
 - [U04 目录/状态读取计量](ui-testing-evidence/optimization-u04-catalog.json)：真实历史批次的逐路径计数与变更重验，不代表整体性能验收。
+- [U04 单次引用读取去重](ui-testing-evidence/optimization-u04-reference-reuse.json)：0.1.4源码修复、相同历史样本对比及安装/桌面回归；不声明整体提速。
 
 ## 功能设计提案
 

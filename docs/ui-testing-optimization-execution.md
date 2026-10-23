@@ -435,3 +435,26 @@ U05继续实施中：诊断输入已准备，独立评审、实际正反诊断�
 测试失败保留：首轮误认为execute-status必返回未批准blocker，而原契约只在status检查能力/活动run、在执行gate强制批准；调整为单独断言gate的确切拒绝，不把空status blocker视为运行就绪。随后错误使用WorkflowError.code而非category造成测试失败，修正字段后复验通过，均未计入通过次数。日志 `u04-catalog-first.log`、`u04-catalog-gate-final.log` 与最终 `u04-catalog-verified.log` 保留。
 
 最终证据 `tests/scratch/ui-catalog-read/1792777795663/`，见[汇总](ui-testing-evidence/optimization-u04-catalog.json)和约5KB的[计数及查询任务归档](ui-testing-evidence/optimization-u04-catalog.tar.gz)；原生run/资产继续引用不可变历史归档，8个run摘要重新核对，不重复复制依赖或批准。全量typecheck、4项工作流单测、lint、协议结构检查通过；无tag历史检查跳过。仅测量代码改动，未重跑Electron，未将历史桌面结果记成本轮。U04仍实施中，完整U00计量及是否值得跨请求索引仍待核定。
+
+### U04 单次引用核验去重与安装/桌面回归（2026-10-24）
+
+依据前轮catalog中同脚本读取16次的实测，从上游原生 `verifyReferences` 入手，仅增加一次调用内的成功引用集合。键包含path和sha256，只有路径边界与文件摘要均通过后才登记；同路径不同摘要不能复用，下一次调用/并发调用各自重新读取。未增加跨请求缓存、全局索引或新的批准路径；不承诺对外部并发文件修改提供原子快照。
+
+先加回归复现3项失败/1项通过（相同引用实际3次读取，两个并发调用共4次读取）；修复后4项通过，覆盖嵌套重复引用、冲突摘要拒绝、下一次调用的文件变更/删除/越界链接拒绝和并发核验独立性。上游源码本地提交 `b31dd3c5dae980bcffe6708ece1145defedbe855`，未推未经授权的上游远端。包升级 **0.1.4**，本项目清单/锁及当前分发包同步，安装版validation.js与源码编译结果逐字节一致；旧0.1.3可从Git恢复。来源及摘要见[维护入口](../.pi/skills/ui-testing-workflow/references/maintenance.md)。
+
+复用完全相同的8个历史run摘要和1/8批样本，48次查询与前轮逐次对比：
+
+| 历史run数 | 路径           | 每次readFile：修改前→后 | 同脚本读取：前→后 | 目录扫描 |
+| --------: | -------------- | ----------------------- | ----------------- | -------- |
+|         1 | catalog        | 45→29                   | 16→2              | 38，不变 |
+|         1 | execute-status | 56→40                   | 16→2              | 38，不变 |
+|         8 | catalog        | 52→36                   | 16→2              | 59，不变 |
+|         8 | execute-status | 63→47                   | 16→2              | 59，不变 |
+
+view/analyze的status仍分别1/4次文件读取、0目录扫描。catalog仍每次原子替换一次，同一脚本还需在两个独立核验调用各读一次，不能声称目录全局只读一次。篡改/删除/恢复、损坏catalog重建、未登记批准拒绝、查询不改写task/run及零浏览器均复验通过。当前计时**没有显示稳定提速**：新样本伴随其他隔离回归，不能用于成对耗时优化结论；仅报告确定性的读取次数减少，不宣称20%整体提效。
+
+本轮验证：上游10个测试文件合计**61通过、2跳过**，两项跳过为需额外模型授权的真实设计/结果评审，不能算通过；上游全量类型检查通过。宿主SDK/MCP **19项通过**、相关Vitest **14项通过**、全量typecheck/lint/协议结构通过，协议历史启发式因无tag跳过。隔离Electron **7项通过**，包含技能及快捷项发现、禁用/启用和重载持久性、MCP87工具连接/重连；使用已构建宿主和新安装原生包，未更改宿主生产代码。已查看本轮 `discovery-restored.png`，可见“UI 场景发现与录制”快捷项。没有读取个人凭据、操作个人窗口或新增模型调用；原生runner仅在隔离合成工程回归中执行。
+
+[本轮摘要](ui-testing-evidence/optimization-u04-reference-reuse.json)及约476KB[归档](ui-testing-evidence/optimization-u04-reference-reuse.tar.gz)保存前后逐路径计数、红绿回归日志、上游测试源码、桌面回执/截图及校验索引；原生历史资产仍引用已归档原文件，不复制依赖或私有批准。原始日志前缀 `tests/scratch/ui-optimization-u00/u04-reference-`，桌面证据 `tests/scratch/ui-workflow-visibility/1792778701560/`。
+
+此修改完成已实测的单次引用重复读取子项；U04仍实施中，U00完整基线与跨请求索引价值未核定。U05独立评审/实际诊断、U02私密桥接及U03/U07/U09、M1/M2原门禁保留，整计划没有标完成。
