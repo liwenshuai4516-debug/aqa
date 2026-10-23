@@ -2,7 +2,7 @@
 
 2026-10-23 起，本文件不再承载独立的实施要求。内部任务、外部客户端及 Agent 项目的评估统一归入 **Agent 评估中心**。
 
-请使用 [Agent 评估中心统一技术方案与分期实施规范 2.0](agent-evaluation-design-plan.md)：
+请使用 [Agent 评估中心统一技术方案与分期实施规范 2.1](agent-evaluation-design-plan.md)：
 
 - 第 4–8 节：共同架构、对象状态、证据、权限和规则。
 - 第 9 节：本地/CLI 接入、隔离、取消恢复、独立核验及 ATIF。
