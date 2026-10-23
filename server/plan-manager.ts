@@ -188,8 +188,11 @@ export class PlanManager {
 		let nextActive = current.activeStepId;
 		if (patch.status === "in_progress") {
 			nextActive = stepId;
+		} else if (current.activeStepId === stepId && patch.status === "failed") {
+			// 失败不能自动推进；前置条件修复后由用户或 Agent 显式恢复。
+			nextActive = null;
 		} else if (current.activeStepId === stepId && patch.status) {
-			// 当前活动步骤已完成或失败，自动推进到下一个待执行步骤
+			// 当前活动步骤离开执行态时推进，失败单独停止。
 			const nextPending = nextSteps.find((s) => s.status === "pending" || s.status === "in_progress");
 			nextActive = nextPending ? nextPending.id : null;
 		}

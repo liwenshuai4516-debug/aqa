@@ -60,6 +60,8 @@ export function makePlanUpdateTool(
 			"Use plan_update early on non-trivial tasks to outline decision-ready steps before coding",
 			"Per step: discovery conclusions, files to be touched (File Touch List), rollback strategy",
 			"Update step status as work progresses for real-time visibility",
+			"If a prerequisite fails, stop dependent stages; leave unexecuted steps pending with a blocking reason, not failed or done.",
+			"A partial or blocked report is not final delivery. Keep the delivery step incomplete until its acceptance criteria pass.",
 		],
 		parameters: Type.Object({
 			steps: Type.Array(

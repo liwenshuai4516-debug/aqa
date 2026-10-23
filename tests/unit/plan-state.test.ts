@@ -51,6 +51,20 @@ describe("结构化任务计划状态机与看板管理 (PlanManager / Plan Mode
 		expect(updated2?.activeStepId).toBe("step-2");
 	});
 
+	it("活动步骤失败后停止自动推进，并保留后续步骤为未执行", () => {
+		const pm = new PlanManager();
+		pm.setPlan("conv-1", [
+			{ id: "environment", title: "环境预检", status: "in_progress" },
+			{ id: "execute", title: "正式执行", status: "pending" },
+			{ id: "deliver", title: "最终交付", status: "pending" },
+		]);
+		const stopped = pm.updateStep("conv-1", "environment", { status: "failed", description: "浏览器不可用" });
+		expect(stopped?.activeStepId).toBeNull();
+		expect(stopped?.steps.map((step) => step.status)).toEqual(["failed", "pending", "pending"]);
+		// 修复前置条件后允许显式重试，不永久锁死看板。
+		expect(pm.updateStep("conv-1", "environment", { status: "in_progress" })?.activeStepId).toBe("environment");
+	});
+
 	it("updateStep 剥掉 patch 里的 id，title/description 与 setPlan 同口径截断", () => {
 		const pm = new PlanManager();
 		pm.setPlan("conv-1", [{ id: "step-1", title: "原标题", status: "in_progress", description: "原描述" }]);
