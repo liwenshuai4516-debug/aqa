@@ -38,6 +38,7 @@
 
 ## 功能设计提案
 
+- [外部 Agent 客户端与项目评估](external-agent-evaluation-design.md)：CLI 优先、Harbor/ATIF 与 Inspect 调研、外部执行和独立核验、能力覆盖、EX00–EX06 接入及 T01–T17 验收；当前为设计。
 - [Agent 评估中心工程设计与实施验收计划](agent-evaluation-design-plan.md)：可信证据、扩展契约、V1–V3 优先级、E00–E08 依赖及 A01–A25 验收；当前为设计，尚未实施。
 - [接口测试本机 OS/MCP 隔离补验](api-testing-evidence/isolation-local-mcp.md)：合成文件、进程继承与端口边界；真实目标仍未开放。
 - [接口测试当前完成审计](api-testing-evidence/completion-audit.md)：工程/实际模型证据、真实业务缺口和按需延后项。
