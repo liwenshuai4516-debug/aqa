@@ -35,8 +35,8 @@ await writeFile(
 		version: 3,
 		revision: 1,
 		systems: [{ id: "desktop-project", name: "Desktop channel" }],
-		modules: [],
-		features: [],
+		modules: [{ id: "desktop-module", systemId: "desktop-project", name: "Names" }],
+		features: [{ id: "desktop-save", moduleId: "desktop-module", name: "Save" }],
 		cases: [],
 		envs: [
 			{
@@ -220,7 +220,13 @@ try {
 	// 原生资产已存在但未获用户确认：不得自动入库。
 	const readStore = async () => JSON.parse(await readFile(join(dataDir, "data-space/store.json"), "utf8"));
 	assert.equal((await readStore()).cases.length, 0, "generated assets must not be imported implicitly");
+	const featureMappings = [{ nativeModuleId: "names", nativeFeatureId: "save", featureId: "desktop-save" }];
+	const archiveInput = { engine: "ui", assetRef: native.assetRef, envId: "desktop-env", workspace, featureMappings };
+	const pending = await request("/automation", { ...archiveInput, action: "archive-status" });
+	assert.equal(pending.counts.pending, 1);
+	assert.equal((await readStore()).cases.length, 0, "receipt query must not import");
 	const imported = await request("/automation", {
+		featureMappings,
 		action: "import",
 		engine: "ui",
 		assetRef: native.assetRef,
@@ -229,12 +235,19 @@ try {
 	});
 	assert.equal(imported.imported, 1);
 	assert.equal(imported.project.id, "desktop-project");
-	assert.equal(imported.featureName, "UI用例");
+	assert.equal(imported.featureName, "Save");
+	assert.equal(imported.classificationComplete, true);
+	assert.equal(imported.items[0].nativeModuleId, "names");
+	assert.equal(imported.items[0].featureId, "desktop-save");
 	const drafts = await readStore();
 	assert.equal(drafts.cases.length, 1);
 	assert.equal(drafts.cases[0].status, "草稿");
 	assert.equal(drafts.cases[0].automation, null, "import must not create an automation binding");
-	assert.equal(drafts.modules.find((m) => m.id === drafts.features[0].moduleId).name, "测试用例");
+	assert.equal(drafts.cases[0].featureId, "desktop-save");
+	const beforeQuery = JSON.stringify(drafts);
+	const archived = await request("/automation", { ...archiveInput, action: "archive-status" });
+	assert.equal(archived.counts.existing, 1);
+	assert.equal(JSON.stringify(await readStore()), beforeQuery);
 	const bound = await request("/automation", {
 		action: "bind",
 		caseId: imported.caseIds[0],
@@ -262,7 +275,11 @@ try {
 		"desktop channel recovery",
 		60000,
 	);
+	const recoveredReceipt = await request("/automation", { ...archiveInput, action: "archive-status" });
+	assert.equal(recoveredReceipt.classificationComplete, true);
+	assert.equal(recoveredReceipt.counts.existing, 1);
 	const repeated = await request("/automation", {
+		featureMappings,
 		action: "import",
 		engine: "ui",
 		assetRef: native.assetRef,
@@ -272,7 +289,7 @@ try {
 	assert.equal(repeated.duplicate, 1);
 	assert.equal((await readStore()).cases.length, 1);
 	result.checks.push(
-		"real Electron environment initialization, explicit draft import by envId, separate binding, persisted channel and automatic native Playwright result recovery",
+		"real Electron environment initialization, explicit mapped draft import by envId, read-only archive receipts before/after restart, separate binding, persisted channel and automatic native Playwright result recovery",
 	);
 	result.status = "PASS";
 } catch (error) {

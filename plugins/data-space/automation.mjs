@@ -143,14 +143,16 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 		if (disposed) throw new Error("数据空间已停用");
 		if (input.action === "initialize") return channel.initialize(cwd, input);
 		if (input.action === "disconnect") return channel.disconnect(cwd, input);
-		if (input.action === "import") {
+		if (input.action === "import" || input.action === "archive-status") {
 			const asset = await host.testing.inspect(input.engine, cwd, input.assetRef);
 			if (disposed) throw new Error("数据空间已停用");
+			if (input.action === "archive-status") return channel.receipt(asset, input);
 			return channel.intake(asset, {
 				envId: input.envId,
 				featureId: input.featureId,
 				moduleName: input.moduleName,
 				featureName: input.featureName,
+				featureMappings: input.featureMappings,
 			});
 		}
 		if (input.action === "bind") return bind(cwd, input);
@@ -158,7 +160,10 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 		if (input.action === "inspect") {
 			const asset = await host.testing.inspect(input.engine, cwd, input.assetRef);
 			// Keep the public picker payload compact; detailed cases are for host-side intake.
-			return { ...asset, cases: asset.cases.map(({ id, title }) => ({ id, title })) };
+			return {
+				...asset,
+				cases: asset.cases.map(({ id, title, moduleId, featureId }) => ({ id, title, moduleId, featureId })),
+			};
 		}
 		const c = find(input.caseId),
 			b = c?.automation;

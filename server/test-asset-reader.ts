@@ -14,6 +14,8 @@ export interface NativeTestAsset {
 	executable?: boolean;
 	cases: Array<{
 		id: string;
+		moduleId?: string;
+		featureId?: string;
 		title: string;
 		priority?: string;
 		preconditions?: string[];
@@ -117,6 +119,8 @@ export class TestAssetReader {
 				executable: !draft,
 				cases: cases.data.cases.map((c: any) => ({
 					id: c.case_id,
+					moduleId: c.module_id,
+					featureId: c.feature_id,
 					title: c.title ?? c.case_id,
 					priority: c.priority,
 					preconditions: c.preconditions,

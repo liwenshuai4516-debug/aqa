@@ -21,6 +21,12 @@
 
 `writeback.status=confirmed` 仅在本次全部目标有明确写入或重复确认时成立。`sync` 可能同步同一原生 run 的多条关联用例，回执计数不一定等于用户选中的条数；若缺少逐项信息，明确核对范围，不能把全批计数当成某条用例的成功证明。`duplicate` 表示已存在，不算新执行或新增记录。工具未核验时保留 `unknown`／`blocked`，不得从最近一条结果倒推某个历史 run 已同步。
 
+## 用例归档与执行同步分别核对
+
+生成用例入库可引用 `archive-status` / `import` 的真实归档回执，包含项目、环境、工作区、资产和修订、目标功能及逐项状态；这不是 run 同步回执。`new/existing/pending/stale` 为互斥归档状态，`unclassified` 为独立分类维度；`classificationComplete=false` 时保留归类缺口。旧数据没有映射元数据时不推断已归类。
+
+`itemsTruncated=true` 时全量计数仍有效，但前 100 条不能冒充全量逐项证据。`pending` 表示尚未入库，不是未执行或测试失败；`stale` 表示需核对归属，不迁移或覆盖历史。仍需使用原 `runRef` 的 `sync` 核对执行结果，归档 `ok` 和 `imported=0` 均不证明结果已同步。
+
 ## 状态与计数
 
 | 原生用例状态 | 交付 verdict |

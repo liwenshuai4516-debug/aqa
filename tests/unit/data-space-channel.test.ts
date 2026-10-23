@@ -123,6 +123,154 @@ it("selects an exact project/environment, returns data without secrets, and pers
 	});
 	next.dispose();
 });
+
+it("archives native features by explicit mapping, retains unclassified cases and queries receipts without writes", async () => {
+	const f = fixture();
+	await f.a.idle();
+	f.store().modules.push({ id: "m", systemId: "s", name: "Contracts" });
+	f.store().features.push({ id: "query", moduleId: "m", name: "Query" }, { id: "save", moduleId: "m", name: "Save" });
+	f.asset.cases = ["query", "save", "unknown"].map((id) => ({
+		...f.asset.cases[0],
+		id,
+		moduleId: "native",
+		featureId: id,
+	}));
+	const input = { engine: "ui", assetRef: f.asset.assetRef, envId: "e" };
+	const featureMappings = ["query", "save"].map((id) => ({
+		nativeModuleId: "native",
+		nativeFeatureId: id,
+		featureId: id,
+	}));
+	const imported = await f.a.call(f.cwd, { ...input, action: "import", featureMappings });
+	expect(imported).toMatchObject({ imported: 3, counts: { new: 3, unclassified: 1, stale: 0 } });
+	expect(f.store().cases.find((c: any) => c.nativeSource.nativeCaseId === "query").featureId).toBe("query");
+	expect(f.store().cases.find((c: any) => c.nativeSource.nativeCaseId === "save").featureId).toBe("save");
+	expect(f.store().cases.find((c: any) => c.nativeSource.nativeCaseId === "unknown").tags).toContain("待归类");
+	const before = JSON.stringify(f.store());
+	const channelBefore = readFileSync(join(f.cwd, "data-space/channels.json"), "utf8");
+	const receipt = await f.a.call(f.cwd, { ...input, action: "archive-status" });
+	expect(receipt).toMatchObject({
+		assetRef: f.asset.assetRef,
+		revision: "v1",
+		counts: { existing: 3, unclassified: 1 },
+	});
+	expect(JSON.stringify(f.store())).toBe(before);
+	expect(readFileSync(join(f.cwd, "data-space/channels.json"), "utf8")).toBe(channelBefore);
+	const repeated = await f.a.call(f.cwd, { ...input, action: "import", featureMappings });
+	expect(repeated).toMatchObject({ imported: 0, duplicate: 3 });
+	f.store().features.find((x: any) => x.id === "save").moduleId = "deleted";
+	expect(await f.a.call(f.cwd, { ...input, action: "archive-status" })).toMatchObject({
+		ok: false,
+		counts: { stale: 1 },
+	});
+	expect(f.store().cases).toHaveLength(3);
+	f.a.dispose();
+});
+
+it("rejects cross-project native mappings before any directory writes and never relocates historical cases", async () => {
+	const f = fixture();
+	await f.a.idle();
+	f.store().systems.push({ id: "s2", name: "PMS" });
+	f.store().envs.push({ ...f.store().envs[0], id: "e2", systemId: "s2" });
+	f.store().modules.push({ id: "mine", systemId: "s" }, { id: "other", systemId: "s2" });
+	f.store().features.push(
+		{ id: "f1", moduleId: "mine", name: "Same" },
+		{ id: "f2", moduleId: "mine", name: "Same" },
+		{ id: "foreign", moduleId: "other", name: "Same" },
+	);
+	f.asset.cases[0] = { ...f.asset.cases[0], moduleId: "native", featureId: "same" };
+	const input = { action: "import", engine: "ui", envId: "e", assetRef: f.asset.assetRef };
+	const map = (featureId: string) => [{ nativeModuleId: "native", nativeFeatureId: "same", featureId }];
+	const before = JSON.stringify(f.store());
+	await expect(f.a.call(f.cwd, { ...input, featureMappings: map("foreign") })).rejects.toThrow("项目");
+	expect(JSON.stringify(f.store())).toBe(before);
+	await f.a.call(f.cwd, { ...input, featureMappings: map("f1") });
+	expect(await f.a.call(f.cwd, { ...input, featureMappings: map("f2") })).toMatchObject({
+		ok: false,
+		imported: 0,
+		counts: { stale: 1 },
+	});
+	expect(f.store().cases[0].featureId).toBe("f1");
+	f.a.dispose();
+});
+
+it("pairs native module and feature IDs and validates mappings without partial intake", async () => {
+	const f = fixture();
+	await f.a.idle();
+	f.store().modules.push({ id: "m", systemId: "s" });
+	f.store().features.push({ id: "one", moduleId: "m" }, { id: "two", moduleId: "m" });
+	f.asset.cases = ["one", "two"].map((id) => ({ ...f.asset.cases[0], id, moduleId: id, featureId: "shared" }));
+	const featureMappings = ["one", "two"].map((id) => ({
+		nativeModuleId: id,
+		nativeFeatureId: "shared",
+		featureId: id,
+	}));
+	await expect(f.intake({ envId: "e", featureMappings: [...featureMappings, featureMappings[0]] })).rejects.toThrow(
+		"重复",
+	);
+	await expect(
+		f.intake({ envId: "e", featureMappings: [{ ...featureMappings[0], nativeModuleId: "missing" }] }),
+	).rejects.toThrow("不存在");
+	expect(f.store().cases).toHaveLength(0);
+	expect(await f.intake({ envId: "e", featureMappings })).toMatchObject({
+		classificationComplete: true,
+		counts: { new: 2 },
+	});
+	expect(f.store().cases.map((c: any) => c.featureId)).toEqual(["one", "two"]);
+	f.a.dispose();
+});
+it("counts every archived case even when receipt items are truncated", async () => {
+	const f = fixture();
+	await f.a.idle();
+	f.asset.cases = Array.from({ length: 105 }, (_, i) => ({ ...f.asset.cases[0], id: `N${i}` }));
+	const receipt = await f.intake({ envId: "e" });
+	expect(receipt).toMatchObject({
+		total: 105,
+		counts: { new: 105, unclassified: 105 },
+		itemsTruncated: true,
+		classificationComplete: false,
+	});
+	expect(receipt.items).toHaveLength(100);
+	const before = JSON.stringify(f.store());
+	const checked = await f.a.call(f.cwd, {
+		action: "archive-status",
+		engine: "ui",
+		assetRef: f.asset.assetRef,
+		envId: "e",
+	});
+	expect(checked.counts).toMatchObject({ new: 0, existing: 105, pending: 0 });
+	expect(JSON.stringify(f.store())).toBe(before);
+	f.a.dispose();
+});
+
+it("keeps archive-status read-only under plan, delegate, goal review and read-only permissions", () => {
+	expect(
+		extensionToolDenial(
+			"data_space_automation",
+			{ action: "archive-status" },
+			{
+				planMode: true,
+				delegateMode: true,
+				goalReview: true,
+				permission: "read-only",
+				uiDisabled: false,
+			},
+		),
+	).toBeUndefined();
+	expect(
+		extensionToolDenial(
+			"data_space_automation",
+			{ action: "import" },
+			{
+				planMode: true,
+				delegateMode: true,
+				goalReview: true,
+				permission: "read-only",
+				uiDisabled: false,
+			},
+		),
+	).toBeDefined();
+});
 it("never guesses among duplicate/default environments or mismatched URL paths", async () => {
 	const f = fixture();
 	await f.a.idle();

@@ -580,7 +580,7 @@ export default {
 						"Initialize with engine and targetUrl before discovery. Use returned environment IDs and nonsecret parameters; configured does not mean reachable or authenticated.",
 						"Import only after the user agrees to record this batch. Pass the native UI cases ref or API draft ref, and the chosen envId so the project is taken from that environment.",
 						"Import stores draft cases only: no automation binding, execution or result. Native generation and execution events no longer archive assets on their own.",
-						"Reuse one destination feature per project and engine; pass featureId only to override it. Drafts cannot be bound until the asset is frozen.",
+						"Use featureMappings for multiple native features. Query archive-status to check intake and classification separately; never relocate historical cases on retry.",
 						"Use route to obtain the original execution entry. Never replace native approval or preflight.",
 						"Use sync for an existing run after a synchronization error; do not replay execution.",
 					],
@@ -589,7 +589,17 @@ export default {
 						properties: {
 							action: {
 								type: "string",
-								enum: ["initialize", "disconnect", "import", "inspect", "bind", "unbind", "route", "sync"],
+								enum: [
+									"initialize",
+									"disconnect",
+									"import",
+									"archive-status",
+									"inspect",
+									"bind",
+									"unbind",
+									"route",
+									"sync",
+								],
 							},
 							systemId: { type: "string" },
 							targetUrl: { type: "string" },
@@ -597,6 +607,22 @@ export default {
 								type: "string",
 								description:
 									"Destination feature id; defaults to the destination already used by this project and engine.",
+							},
+							featureMappings: {
+								type: "array",
+								maxItems: 100,
+								description:
+									"Explicit native module/feature to destination feature mappings for import or archive-status.",
+								items: {
+									type: "object",
+									properties: {
+										nativeModuleId: { type: "string" },
+										nativeFeatureId: { type: "string" },
+										featureId: { type: "string" },
+									},
+									required: ["nativeModuleId", "nativeFeatureId", "featureId"],
+									additionalProperties: false,
+								},
 							},
 							moduleName: {
 								type: "string",

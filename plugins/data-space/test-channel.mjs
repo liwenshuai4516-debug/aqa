@@ -207,49 +207,138 @@ export function createTestChannel({ host, store, commitStore }) {
 		return feature.id;
 	}
 
+	const nativeKey = (c) => key([c.moduleId ?? "", c.featureId ?? ""]);
+	const sourceKey = (asset, env, c) => key([asset.workspace, asset.engine, asset.assetRef, env.id, c.id]);
+	const belongs = (s, systemId, featureId) =>
+		s.features.some((f) => f.id === featureId && s.modules.some((m) => m.id === f.moduleId && m.systemId === systemId));
+	function mappings(asset, target, input) {
+		if (
+			input.featureMappings !== undefined &&
+			(!Array.isArray(input.featureMappings) || input.featureMappings.length > 100)
+		)
+			throw new Error("featureMappings 须为至多 100 条明确映射");
+		const out = new Map();
+		if (input.featureId) {
+			if (!belongs(target.s, target.env.systemId, input.featureId))
+				throw new Error("目标功能不属于所选项目，未导入用例");
+			out.set("*", input.featureId);
+		}
+		for (const item of input.featureMappings ?? []) {
+			if (
+				!item ||
+				typeof item.nativeModuleId !== "string" ||
+				!item.nativeModuleId ||
+				typeof item.nativeFeatureId !== "string" ||
+				!item.nativeFeatureId ||
+				typeof item.featureId !== "string"
+			)
+				throw new Error("功能映射需要原生模块 ID、原生功能 ID 和目标功能 ID");
+			const mappingKey = nativeKey({ moduleId: item.nativeModuleId, featureId: item.nativeFeatureId });
+			if (out.has(mappingKey)) throw new Error("原生功能映射重复");
+			if (!asset.cases.some((c) => nativeKey(c) === mappingKey)) throw new Error("映射引用了资产中不存在的原生功能");
+			if (!belongs(target.s, target.env.systemId, item.featureId)) throw new Error("映射目标功能不属于所选项目");
+			out.set(mappingKey, item.featureId);
+		}
+		return out;
+	}
+	function archived(asset, env, c, s) {
+		return s.cases.find(
+			(x) =>
+				x.nativeSource?.key === sourceKey(asset, env, c) ||
+				(x.automation?.workspace === asset.workspace &&
+					x.automation.engine === asset.engine &&
+					x.automation.envId === env.id &&
+					x.automation.nativeCaseId === c.id &&
+					same(x.automation.assetRef, asset.assetRef)),
+		);
+	}
+	function receipt(asset, target, map, newIds = new Set()) {
+		const { s, env } = target;
+		const counts = { new: 0, existing: 0, pending: 0, stale: 0, unclassified: 0 };
+		const items = asset.cases.map((c) => {
+			const found = archived(asset, env, c, s);
+			let status = !found ? "pending" : newIds.has(found.id) ? "new" : "existing",
+				reason = null;
+			if (
+				found &&
+				(!belongs(s, env.systemId, found.featureId) ||
+					(found.nativeSource?.featureId && found.nativeSource.featureId !== found.featureId) ||
+					((map.get(nativeKey(c)) ?? map.get("*")) && (map.get(nativeKey(c)) ?? map.get("*")) !== found.featureId))
+			) {
+				status = "stale";
+				reason = "映射已改变，或原目录已删除/移动；未迁移历史用例";
+			}
+			counts[status]++;
+			const mappingState = found?.nativeSource?.mappingState ?? "unclassified";
+			if (found && mappingState === "unclassified") counts.unclassified++;
+			return {
+				nativeCaseId: c.id,
+				nativeModuleId: c.moduleId ?? null,
+				nativeFeatureId: c.featureId ?? null,
+				caseId: found?.id ?? null,
+				featureId: found?.featureId ?? null,
+				status,
+				mappingState,
+				reason,
+			};
+		});
+		const featureIds = [...new Set(items.filter((i) => i.caseId).map((i) => i.featureId))];
+		return {
+			ok: counts.stale === 0,
+			status: counts.stale
+				? "stale"
+				: counts.pending
+					? "pending"
+					: counts.unclassified
+						? "needs-classification"
+						: "archived",
+			project: { id: env.systemId, name: s.systems.find((p) => p.id === env.systemId)?.name },
+			env: { id: env.id, name: env.name },
+			workspace: asset.workspace,
+			engine: asset.engine,
+			assetRef: asset.assetRef,
+			revision: asset.revision,
+			executable: asset.executable !== false,
+			featureId: featureIds.length === 1 ? featureIds[0] : null,
+			featureName: featureIds.length === 1 ? (s.features.find((f) => f.id === featureIds[0])?.name ?? null) : null,
+			imported: counts.new,
+			duplicate: items.filter((i) => i.caseId && i.status !== "new").length,
+			counts,
+			total: items.length,
+			classificationComplete: counts.unclassified === 0 && counts.pending === 0 && counts.stale === 0,
+			items: items.slice(0, 100),
+			itemsTruncated: items.length > 100,
+		};
+	}
 	function intake(asset, input = {}) {
 		const target = resolve(asset, input);
 		if (!target) return { ok: false, imported: 0, unmatched: true };
+		const map = mappings(asset, target, input);
+		const previous = receipt(asset, target, map);
+		if (previous.items.some((item) => item.caseId && !belongs(target.s, target.env.systemId, item.featureId)))
+			throw new Error("上次使用的用例目录已被删除或移动，未导入用例");
+		if (previous.counts.stale) return previous;
 		const s = target.s,
 			env = target.env,
 			timestamp = new Date().toISOString(),
-			pending = asset.cases.filter(
-				(c) =>
-					!s.cases.some(
-						(x) =>
-							x.nativeSource?.key === key([asset.workspace, asset.engine, asset.assetRef, env.id, c.id]) ||
-							(x.automation?.workspace === asset.workspace &&
-								x.automation.engine === asset.engine &&
-								x.automation.envId === env.id &&
-								x.automation.nativeCaseId === c.id &&
-								same(x.automation.assetRef, asset.assetRef)),
-					),
-			);
+			pending = asset.cases.filter((c) => !archived(asset, env, c, s));
 		let modules = [...s.modules],
 			features = [...s.features];
-		const featureId = destination(target, asset, input, timestamp, modules, features);
-		const receipt = {
-			ok: true,
-			project: (() => {
-				const project = s.systems.find((p) => p.id === env.systemId);
-				return { id: project.id, name: project.name };
-			})(),
-			env: { id: env.id, name: env.name },
-			featureId,
-			featureName: features.find((f) => f.id === featureId).name,
-			executable: asset.executable !== false,
-		};
-		if (!pending.length) return { ...receipt, imported: 0, duplicate: asset.cases.length };
+		if (!pending.length) return previous;
+		const featureId = pending.some((c) => !map.has(nativeKey(c)))
+			? destination(target, asset, input, timestamp, modules, features)
+			: null;
 		if (s.cases.length + pending.length > MAX.cases) throw new Error("用例数量超过数据空间上限，未部分导入");
 		if (modules.length > MAX.modules || features.length > MAX.features) throw new Error("归档目录超过数据空间上限");
 		const drafts = pending.map((c) => ({
 			id: randomUUID(),
-			featureId,
+			featureId: map.get(nativeKey(c)) ?? featureId,
 			code: `DS-${key([asset.assetRef, env.id, c.id]).slice(0, 20)}`,
 			title: c.title || c.id,
 			priority: c.priority || "P2",
 			type: asset.engine === "ui" ? "UI" : "接口",
 			status: "草稿",
+			tags: !map.has(nativeKey(c)) && !input.featureId ? ["待归类"] : [],
 			preconditions: (c.preconditions ?? []).join("\n"),
 			steps: c.steps ?? [],
 			note: `原生 ${asset.engine} 用例 ${c.id}；修订 ${asset.revision}。完整断言与来源见原生资产。`,
@@ -261,9 +350,13 @@ export function createTestChannel({ host, store, commitStore }) {
 		const imported = normalized.map((c, i) => ({
 			...c,
 			nativeSource: {
-				key: key([asset.workspace, asset.engine, asset.assetRef, env.id, pending[i].id]),
+				key: sourceKey(asset, env, pending[i]),
 				assetRef: asset.assetRef,
 				nativeCaseId: pending[i].id,
+				nativeModuleId: pending[i].moduleId ?? null,
+				nativeFeatureId: pending[i].featureId ?? null,
+				featureId: c.featureId,
+				mappingState: map.has(nativeKey(pending[i])) || input.featureId ? "mapped" : "unclassified",
 			},
 		}));
 		commitStore({
@@ -275,9 +368,7 @@ export function createTestChannel({ host, store, commitStore }) {
 			updatedAt: timestamp,
 		});
 		return {
-			...receipt,
-			imported: imported.length,
-			duplicate: asset.cases.length - imported.length,
+			...receipt(asset, { ...target, s: store() }, map, new Set(imported.map((c) => c.id))),
 			caseIds: imported.slice(0, 100).map((c) => c.id),
 			caseIdsTruncated: imported.length > 100,
 		};
@@ -285,6 +376,12 @@ export function createTestChannel({ host, store, commitStore }) {
 	return {
 		initialize,
 		intake,
+		receipt(asset, input = {}) {
+			const target = resolve(asset, input);
+			return target
+				? receipt(asset, target, mappings(asset, target, input))
+				: { ok: false, status: "missing-environment", unmatched: true, imported: 0, assetRef: asset.assetRef };
+		},
 		list: () => channels,
 		disconnect(cwd, input) {
 			if (!input.envId || !["ui", "api"].includes(input.engine)) throw new Error("断开需要 engine 和 envId");
