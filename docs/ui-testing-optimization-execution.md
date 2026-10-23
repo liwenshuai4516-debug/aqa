@@ -277,3 +277,24 @@ A01-2/3/4 与 A01-5 的上述隔离工程路径已留证；A01-1 全部前置零
 A02-6/7 的上述合成运行时路径已有直接工程证据；A02-5 私密桥接和正式执行证据通道仍未实现。角色/初态的真实业务依据、当前OperationContract身份及诊断副本、真实模型条件、U00完整基线、U05/U03/U07及U09仍未放行，不因预检已有能力而关闭整计划；U08未启动。
 
 最终桌面9项再次通过，证据 `tests/scratch/data-space-skill-desktop/1792750736696/`（`u02-runtime-desktop-evidence.log`），不累加两轮数量。已人工查看 `identity-blocked.png`，本次截图实际显示“阻塞”及对应原生runId。当前仍无plan_update工具，执行记录继续作为进度入口；未伪造应用看板节点。
+
+### U05 续跑：按功能策略与原生 locator 生成接入（0.1.2）
+
+起点 `7084b7b8e88323a9ae81f26768ebab43f3b94f89`。此前轮已修改源码并产出实际回归证据，属于进展；本轮检查原安装进程终态后继续，没有重复安装或启动未确认结束的任务。保留 `.gitignore`、db-client 锁的用户差异。沿用 skill-creator 维护原有发现 Skill，不新增定位器库、探索阶段或 runner。
+
+先核对实际 Playwright 测试 MCP 的 `browser_generate_locator` 与 target 契约：target 可为快照 ref 或唯一 locator 字符串。原生 recordingTools 未允许生成工具，新回归先失败（invalid-input），日志 `tests/scratch/ui-optimization-u00/u05-locator-before.log`。维护源增加这一可选 action，最小7项必需 MCP 能力不变；不把 locator 生成成功当作唯一/可操作证明。新按需参考 `ui-discover-record/references/function-discovery.md` 说明概览、逐功能状态、同角色会话复用、早期 inventory.drafts、定位重验及范围/预算缺口，执行/分析/查看路径不读取该参考。
+
+原生真实 Pi/嵌套 MCP/Chromium 回归：从快照生成 Name 和 Save locator，实际严格 fill/click 成功；最终写脚本前保存有 observation 来源的单功能草稿并确认最终文件尚不存在。随后同一会话内导航重载、快照核对持久化，再复用原 Name locator 严格填值，没有重新找 ref。计量1次setup、2次locator生成、1次显式导航，录制13个原生动作，关闭后归属清理成功；生成草稿实际重放通过，仍须独立设计批准。初轮测试错误地假设 navigate 直接返回完整快照，实际只返回快照文件引用；保留失败日志 `u05-source-recording-final.log`，增加显式 snapshot 后通过，未削弱持久化断言。
+
+上游本地提交 `5c8c437d3b8ef1e121ee20a6cca80816c38a3771`；没有上游远端推送授权，未推送该仓库。从源码构建并打包0.1.2，SHA-256 `aef9f4544b31f7c4f312194e6db801a883fb5d76eb98a7456ab17dcccd6541fb`。同步项目 tgz、profile清单/锁、维护来源并通过原安装流程安装；没有改 node_modules 实现。原0.1.1可从Git及既有证据恢复。
+
+本轮实际执行，日志均位于 `tests/scratch/ui-optimization-u00/`：
+
+- 上游完整构建、类型检查、Skill quick_validate通过；构建后2文件15项原生回归通过、0失败/跳过（`u05-source-built-regression.log`），含来源、预算、去重、私密输入、旧会话拒绝及本轮定位复用，不是15条业务用例。
+- 当前安装包实际SDK/MCP集成通过（`u05-installed-integration.log`）：安装schema包含可选locator action，实际MCP生成定位并由真实严格click消费；独立依赖/相对seed、取消和执行守卫继续通过。没有把单独MCP点击冒充完整多功能录制。
+- 隔离Electron实际进程7项检查通过（`u05-desktop-visibility.log`），证据 `tests/scratch/ui-workflow-visibility/1792754754701/`。桌面管理页可见9技能；升级后的发现技能禁用/启用跨reload保持且联动 `/ui-discover`，MCP87工具可连接/重连。`discovery-restored.png`已人工查看，实际显示发现技能快捷项。没有操作用户正在使用的窗口、个人认证或模型。
+- 宿主全量typecheck、lint、协议通过（`u05-typecheck.log` / `u05-lint.log` / `u05-protocol.log`），相关2文件10项单测通过（`u05-unit.log`），size检查通过（`u05-size.log`）；目录布局首轮发现数据空间Skill超过8KB（`u05-layout.log`），修复后结果见下文。宿主无生产代码变化，使用已有构建；新包由隔离安装实际加载。0付费模型、0真实业务请求。
+
+本次覆盖A05-2/3/4/5的单功能工程子路径及按需策略，不关闭U05：冻结的六类多功能范围尚未通过完整Agent发现/状态/定位/候选链验证；重复按钮/frame、角色或部署变化重验、完整覆盖对照仍需补证。策略文字与控制协议回归不能证明真实模型遵循度；U00计量、U02私密执行/证据隔离、U03/U07和U09仍未完成。整goal保持进行中，U08未启动、保留串行。
+
+目录布局回归进一步暴露 data-space-testing 入口11867字节，超过宿主 skill 工具8KB硬上限，SDK发现与桌面列名正常却无法按名加载正文。没有提高上限或复制规则：将入库/绑定/同步详细章节原样移到 `references/native-handoff.md`，入口按相关意图加载，保留核心授权和重复执行边界。此为U06相关能力交付修复，纯Skill文档不升级插件。首轮失败证据保留；最终目录回归3项通过（`u05-layout-final.log`），宿主按名称实际加载五个入口，两个项目Skill quick_validate通过。入口正文降为5107字节。额外数据空间Electron9项通过（`u05-data-space-desktop.log`），证据 `tests/scratch/data-space-skill-desktop/1792755411313/`，包括技能启停/快捷发现、原生归档、版本及身份阻塞；0模型、0真实业务请求。没有因此将U06或整计划记为完成。

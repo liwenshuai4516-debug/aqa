@@ -5,7 +5,7 @@
 | 维护内容                                | 唯一位置                                                                         |
 | --------------------------------------- | -------------------------------------------------------------------------------- |
 | 技能名称、描述、调度入口                | `../SKILL.md`                                                                    |
-| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.1.tgz`                                              |
+| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.2.tgz`                                              |
 | 原生测试 MCP 适配                       | `../assets/mcp-extension.mjs`                                                    |
 | Chromium 执行配置                       | `../assets/playwright.config.mjs`                                                |
 | 录制 seed 前置校验                      | `../assets/recording-preflight.mjs`（由 MCP 执行钩子调用，不另建 runner）        |
@@ -15,8 +15,8 @@
 | 管理页与快捷发现的公共逻辑              | `server/skill/`、`server/settings-service.ts`、`server/slash-commands.ts`        |
 | 测试资产与执行证据                      | 被测工作区 `qa/ui/`，不写进技能目录                                              |
 
-原版包来源提交：`2e42b91379569dde4875447bb48333c0430b9aee`。
-SHA-256：`817ac2028836476419f459c379c12fbc1dcea0833a9e43cdc393cb1ac57ea9bd`。0.1.1 从维护源码重建：partial 报告交付保留阻塞及原任务续跑，Markdown 交付文件不再当 JSON 清单读取。原 0.1.0 包及摘要仍可从 Git 和本次基线证据恢复。
+原版包来源提交：`5c8c437d3b8ef1e121ee20a6cca80816c38a3771`。
+SHA-256：`aef9f4544b31f7c4f312194e6db801a883fb5d76eb98a7456ab17dcccd6541fb`。0.1.2 增加按功能探索参考及可选 browser_generate_locator 录制委派，严格交互核验并复用 locator，逐功能草稿使用既有 inventory.drafts；未改变产物 schema、runner 或批准门禁。继续保留 0.1.1 的修复：partial 报告交付保留阻塞及原任务续跑，Markdown 交付文件不再当 JSON 清单读取。原 0.1.0/0.1.1 包及摘要仍可从 Git 和本次基线证据恢复。
 
 ## 安装与发现
 

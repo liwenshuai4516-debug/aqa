@@ -166,6 +166,12 @@ try {
 		expected,
 	);
 	checks.push("all ten original workflow tools registered in a real SDK session");
+	const discoveryTool = session.getAllTools().find((tool) => tool.name === "ui_discover_record");
+	const actionSchema = discoveryTool.parameters.properties.request.anyOf.find(
+		(schema) => schema.properties.operation.const === "action",
+	);
+	assert.ok(actionSchema.properties.tool.enum.includes("browser_generate_locator"));
+	checks.push("installed native recording schema accepts optional MCP locator generation");
 	const invoke = (name, args, signal = new AbortController().signal) => {
 		const tool = session.agent.state.tools.find((entry) => entry.name === name);
 		assert.ok(tool, `Active tool missing: ${name}`);
@@ -282,6 +288,32 @@ try {
 		nestedCalls.some((call) => call.name === backend + "browser_snapshot" && call.parent === "integration-call"),
 	);
 	checks.push("real nested MCP call retains parent call identity through SDK hooks");
+	const targetRef = snapshot.content
+		.filter((part) => part.type === "text")
+		.map((part) => part.text)
+		.join("\n")
+		.match(/button "Capability smoke".*?\[ref=([^\]]+)\]/)?.[1];
+	assert.ok(targetRef, JSON.stringify(snapshot.content));
+	const locatorResult = await invoke("integration_native_call", {
+		tool: backend + "browser_generate_locator",
+		input: { element: "Capability smoke button", target: targetRef },
+	});
+	assert.equal(locatorResult.details.isError, false, JSON.stringify(locatorResult.content));
+	const locator = locatorResult.content
+		.filter((part) => part.type === "text")
+		.flatMap((part) => part.text.split("\n"))
+		.find((line) => line.startsWith("getBy"));
+	assert.ok(locator, JSON.stringify(locatorResult.content));
+	const clicked = await invoke("integration_native_call", {
+		tool: backend + "browser_click",
+		input: {
+			element: "Capability smoke button",
+			target: locator,
+			intent: "Validate generated locator by strict click",
+		},
+	});
+	assert.equal(clicked.details.isError, false, JSON.stringify(clicked.content));
+	checks.push("installed MCP generates an observed locator consumed by a real strict browser click");
 	const cancelled = new AbortController();
 	cancelled.abort();
 	let stopped = false;

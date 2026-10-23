@@ -116,6 +116,34 @@ try {
 	}
 	await page.screenshot({ path: join(output, "after-skills.png") });
 	result.checks.push("/reload displays the named entry and eight original phase skills, enabled in desktop settings");
+	const discoveryRow = () =>
+		page.locator(".settings-modal .set-row").filter({
+			has: page.locator('.set-row-name [title="ui-discover-record"]'),
+		});
+	await discoveryRow().getByRole("switch").click();
+	await page.locator(".set-close-btn").click();
+	await command("/reload", /已重新加载|Reloaded extensions/);
+	await page.getByRole("button", { name: /^(设置|Settings)$/ }).click();
+	await page.locator('.settings-tab[data-tab="skills"]').click();
+	assert.equal(await discoveryRow().getByRole("switch").getAttribute("aria-checked"), "false");
+	await page.locator(".set-close-btn").click();
+	await input.fill("/ui-discover");
+	assert.equal(await page.locator('.slash-name[title="/skill:ui-discover-record"]').count(), 0);
+	await input.fill("");
+	await page.getByRole("button", { name: /^(设置|Settings)$/ }).click();
+	await page.locator('.settings-tab[data-tab="skills"]').click();
+	await discoveryRow().getByRole("switch").click();
+	await page.locator(".set-close-btn").click();
+	await command("/reload", /已重新加载|Reloaded extensions/);
+	await input.fill("/ui-discover");
+	await page.locator('.slash-name[title="/skill:ui-discover-record"]').waitFor();
+	await page.screenshot({ path: join(output, "discovery-restored.png") });
+	await input.fill("");
+	result.checks.push(
+		"upgraded discovery skill disable/enable persists over desktop reload and gates its slash shortcut",
+	);
+	await page.getByRole("button", { name: /^(设置|Settings)$/ }).click();
+	await page.locator('.settings-tab[data-tab="skills"]').click();
 	await page.locator(".set-close-btn").click();
 	await input.fill("/ui");
 	const candidate = page
