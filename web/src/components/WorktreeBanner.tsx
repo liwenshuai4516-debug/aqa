@@ -30,9 +30,26 @@ export const WorktreeBanner: React.FC<WorktreeBannerProps> = ({ worktree, onSwit
 		return parts[parts.length - 1] || p;
 	};
 
+	/**
+	 * 删除确认：干净的工作树一次确认即可；有未提交修改时必须再确认一次才带 force，
+	 * 否则服务端会以「包含未提交的文件修改」拒绝，用户点垃圾桶永远删不掉。
+	 */
+	const confirmRemove = (path: string, name: string, dirty: boolean, count?: number) => {
+		if (!window.confirm(t("worktreeActionRemoveConfirm", { path: name }))) return;
+		if (!dirty) {
+			onRemove(path);
+			return;
+		}
+		const changes = count && count > 0 ? count : 1;
+		if (window.confirm(t("worktreeActionRemoveForceConfirm", { path: name, count: changes }))) {
+			onRemove(path, true);
+		}
+	};
+
 	// 状态一：当前工作区就是子工作树
 	if (worktree.isLinkedWorktree) {
 		const branchName = worktree.branch || getFolderName(worktree.currentPath);
+		const currentLinked = (worktree.linkedWorktrees || []).find((w) => w.path === worktree.currentPath);
 		return (
 			<div className="worktree-banner linked" role="region" aria-label={branchName}>
 				<div className="worktree-banner-info">
@@ -60,11 +77,14 @@ export const WorktreeBanner: React.FC<WorktreeBannerProps> = ({ worktree, onSwit
 						type="button"
 						className="worktree-banner-btn danger"
 						title={t("worktreeActionRemoveTip")}
-						onClick={() => {
-							if (window.confirm(t("worktreeActionRemoveConfirm", { path: branchName }))) {
-								onRemove(worktree.currentPath);
-							}
-						}}
+						onClick={() =>
+							confirmRemove(
+								worktree.currentPath,
+								branchName,
+								currentLinked?.isDirty ?? false,
+								currentLinked?.uncommittedCount,
+							)
+						}
 					>
 						🗑️ {t("worktreeActionRemove")}
 					</button>
@@ -115,11 +135,7 @@ export const WorktreeBanner: React.FC<WorktreeBannerProps> = ({ worktree, onSwit
 								type="button"
 								className="worktree-banner-btn danger"
 								title={t("worktreeActionRemoveTip")}
-								onClick={() => {
-									if (window.confirm(t("worktreeActionRemoveConfirm", { path: name }))) {
-										onRemove(wt.path);
-									}
-								}}
+								onClick={() => confirmRemove(wt.path, name, Boolean(wt.isDirty), wt.uncommittedCount)}
 							>
 								🗑️
 							</button>
@@ -153,11 +169,7 @@ export const WorktreeBanner: React.FC<WorktreeBannerProps> = ({ worktree, onSwit
 									<button
 										type="button"
 										className="worktree-banner-btn danger"
-										onClick={() => {
-											if (window.confirm(t("worktreeActionRemoveConfirm", { path: name }))) {
-												onRemove(wt.path);
-											}
-										}}
+										onClick={() => confirmRemove(wt.path, name, Boolean(wt.isDirty), wt.uncommittedCount)}
 									>
 										🗑️
 									</button>

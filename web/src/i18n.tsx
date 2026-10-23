@@ -2285,6 +2285,8 @@ export const zh = {
 	worktreeActionRemove: "移除工作树",
 	worktreeActionRemoveTip: "清理并移除该 Git 工作树",
 	worktreeActionRemoveConfirm: "确定移除工作树「{path}」吗？未提交的修改可能会丢失。",
+	worktreeActionRemoveForceConfirm:
+		"工作树「{path}」还有 {count} 处未提交的修改，强制删除会一并丢弃这些改动。确定继续吗？",
 	worktreeActionCollapse: "收起",
 	worktreeActionMore: "更多 ({count})",
 	sandboxPromoteTitle: "将沙盒另存为正式项目",
@@ -4662,6 +4664,8 @@ export const en: Record<keyof typeof zh, string> = {
 	worktreeActionRemove: "Remove Worktree",
 	worktreeActionRemoveTip: "Clean up and remove this Git worktree",
 	worktreeActionRemoveConfirm: 'Are you sure you want to remove worktree "{path}"? Uncommitted changes may be lost.',
+	worktreeActionRemoveForceConfirm:
+		'Worktree "{path}" still has {count} uncommitted change(s); forcing removal discards them. Continue?',
 	worktreeActionCollapse: "Collapse",
 	worktreeActionMore: "More ({count})",
 	sandboxPromoteTitle: "Save Sandbox as Formal Project",

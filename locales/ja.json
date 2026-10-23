@@ -2066,6 +2066,7 @@
 		"worktreeActionRemove": "Remove Worktree",
 		"worktreeActionRemoveTip": "Clean up and remove this Git worktree",
 		"worktreeActionRemoveConfirm": "Are you sure you want to remove worktree \"{path}\"? Uncommitted changes may be lost.",
+		"worktreeActionRemoveForceConfirm": "ワークツリー「{path}」には未コミットの変更が {count} 件あります。強制削除するとこれらの変更も失われます。削除しますか？",
 		"worktreeActionCollapse": "Collapse",
 		"worktreeActionMore": "More ({count})",
 		"sandboxPromoteTitle": "Save Sandbox as Formal Project",

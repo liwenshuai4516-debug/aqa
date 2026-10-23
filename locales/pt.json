@@ -2066,6 +2066,7 @@
 		"worktreeActionRemove": "Remover worktree",
 		"worktreeActionRemoveTip": "Limpa e remove este worktree do Git",
 		"worktreeActionRemoveConfirm": "Tem certeza de que quer remover o worktree \"{path}\"? Alterações não confirmadas podem ser perdidas.",
+		"worktreeActionRemoveForceConfirm": "O worktree \"{path}\" ainda tem {count} alterações não confirmadas. A remoção forçada irá descartá-las. Remover mesmo assim?",
 		"worktreeActionCollapse": "Recolher",
 		"worktreeActionMore": "Mais ({count})",
 		"sandboxPromoteTitle": "Salvar sandbox como projeto definitivo",

@@ -2066,6 +2066,7 @@
 		"worktreeActionRemove": "Worktree'yi Kaldır",
 		"worktreeActionRemoveTip": "Bu Git worktree'yi temizle ve kaldır",
 		"worktreeActionRemoveConfirm": "Worktree «{path}» kaldırılsın mı? Gönderilmemiş değişiklikler kaybolabilir.",
+		"worktreeActionRemoveForceConfirm": "\"{path}\" worktree dizininde hâlâ {count} gönderilmemiş değişiklik var. Zorla kaldırma bunları siler. Yine de kaldırılsın mı?",
 		"worktreeActionCollapse": "Daralt",
 		"worktreeActionMore": "Daha fazla ({count})",
 		"sandboxPromoteTitle": "Sandbox'ı Resmi Proje Olarak Kaydet",

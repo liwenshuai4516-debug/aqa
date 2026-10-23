@@ -2066,6 +2066,7 @@
 		"worktreeActionRemove": "移除工作樹",
 		"worktreeActionRemoveTip": "清理並移除該 Git 工作樹",
 		"worktreeActionRemoveConfirm": "確定移除工作樹「{path}」嗎？未提交的修改可能會丟失。",
+		"worktreeActionRemoveForceConfirm": "工作樹「{path}」還有 {count} 處未提交的修改，強制刪除會一併捨棄這些改動。確定繼續嗎？",
 		"worktreeActionCollapse": "收起",
 		"worktreeActionMore": "更多 ({count})",
 		"sandboxPromoteTitle": "將沙盒另存爲正式項目",
