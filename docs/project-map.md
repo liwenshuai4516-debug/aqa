@@ -113,6 +113,8 @@ API 能力接入：`scripts/enable-api-testing.mjs` 在明确的宿主 dataDir �
 
 UI 测试 P0：`server/extension-tool-policy.ts` 定义操作副作用，`server/extension-tool-gate.ts` 在 Pi SDK 工具调用前检查模式与只读权限；`qa/ui/` 维护本项目隔离服务、数据和浏览器 fixture。运行入口见 [fixture 维护](../qa/ui/README.md)，证据见 [P0 验收](ui-testing-p0-evidence.md)。
 
+UI 私密捕获回归：`tests/ui-private-evidence-test.mjs` 使用原生包及合成认证验证诊断/正式执行的公开证据隔离；实现维护在上游，分发与安装位置见 [统一维护入口](../.pi/skills/ui-testing-workflow/references/maintenance.md)。
+
 数据空间与原生 UI/API 执行关联：`plugins/data-space/test-channel.mjs`（环境初始化与资产归档）、`environment-preparation.mjs`（模式及非敏感参数准备回执）、`plugins/data-space/automation.mjs`、`server/test-asset-reader.ts`（只读核验）、`server/test-execution-notice.ts`（完成引用及原生 UI 阶段的看板投影）。维护与验收见 [接入记录](data-space-integration.md)、[UI 优化执行记录](ui-testing-optimization-execution.md)。
 
 数据空间版本展示：`plugins/data-space/client/case-versions.mjs` 按明确来源和入库顺序投影列表；不变更原生批准、历史资产或执行记录。

@@ -20,7 +20,9 @@ export async function setup(t, options) {
 		store = new ArtifactStore(root),
 		authority = join(fixture.agentDir, "private-reviews");
 	const requirement =
-		"R1: Saved Name persists after reload.\nAcceptance for this controlled fixture: start each case in a fresh non-persistent Playwright browser context with empty localStorage and no imported storageState. Enter the generated Name, click Save, then reload. The Saved names list must contain exactly one list item whose text is the original submitted Name, without normalization. Closing that owned context removes its localStorage; no external data is shared.";
+		"R1: Saved Name persists after reload.\nAcceptance for this controlled fixture: start each case in a fresh non-persistent Playwright browser context with empty localStorage " +
+		(options?.auth ? "and the declared synthetic cookie-only storageState. " : "and no imported storageState. ") +
+		"Enter the generated Name, click Save, then reload. The Saved names list must contain exactly one list item whose text is the original submitted Name, without normalization. Closing that owned context removes its localStorage; no external data is shared.";
 	const ref = { path: "requirements.md", sha256: sha256(requirement) };
 	await writeFile(join(root, ref.path), requirement);
 	const s = scope();
@@ -66,7 +68,9 @@ export async function setup(t, options) {
 		c.data.data_rules_ref = dataRules;
 		c.data.gaps = ["Boundary/invalid-input scenarios are outside the selected persistence scope and remain untested."];
 		c.data.cases[0].preconditions = [
-			"Fresh non-persistent context, empty localStorage, no imported storageState; only the owned generated Name is saved.",
+			options?.auth
+				? "Fresh non-persistent context, empty localStorage, declared synthetic cookie-only storageState; only the owned generated Name is saved."
+				: "Fresh non-persistent context, empty localStorage, no imported storageState; only the owned generated Name is saved.",
 		];
 		c.data.cases[0].assertions[0].expected = { from: "generated input key" };
 		if (options?.comparison) c.data.cases[0].assertions[0].comparison = options.comparison;
@@ -151,8 +155,11 @@ export function decision(input, kind = "approved", improvement = input.previous 
 }
 export const response = (input) => ({ raw: JSON.stringify(decision(input)), provider: "fixture", model: "protocol" });
 
-export async function prepareDiagnostic(t, { targetFault = false, globalSetupSource, testCode, comparison } = {}) {
-	const f = await setup(t, { discardPersistence: targetFault, testCode, comparison }),
+export async function prepareDiagnostic(
+	t,
+	{ targetFault = false, globalSetupSource, testCode, comparison, auth } = {},
+) {
+	const f = await setup(t, { discardPersistence: targetFault, testCode, comparison, auth }),
 		broken = await setupUiFixture({ discardPersistence: true });
 	t.after(() => broken.close());
 	const base = "qa/ui/assets/names/revisions/v1/probes";
@@ -175,7 +182,7 @@ export async function prepareDiagnostic(t, { targetFault = false, globalSetupSou
 		role: "tester",
 		identity: { selector: "h1", text: "Names" },
 		initial_state: { selector: "button", text: "Save" },
-		auth: { kind: "none" },
+		auth: auth ?? { kind: "none" },
 		isolation: "context",
 		timeout_ms: 500,
 	});

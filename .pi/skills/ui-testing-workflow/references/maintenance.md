@@ -5,7 +5,7 @@
 | 维护内容                                | 唯一位置                                                                         |
 | --------------------------------------- | -------------------------------------------------------------------------------- |
 | 技能名称、描述、调度入口                | `../SKILL.md`                                                                    |
-| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.2.tgz`                                              |
+| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.3.tgz`                                              |
 | 原生测试 MCP 适配                       | `../assets/mcp-extension.mjs`                                                    |
 | Chromium 执行配置                       | `../assets/playwright.config.mjs`                                                |
 | 录制 seed 前置校验                      | `../assets/recording-preflight.mjs`（由 MCP 执行钩子调用，不另建 runner）        |
@@ -15,8 +15,10 @@
 | 管理页与快捷发现的公共逻辑              | `server/skill/`、`server/settings-service.ts`、`server/slash-commands.ts`        |
 | 测试资产与执行证据                      | 被测工作区 `qa/ui/`，不写进技能目录                                              |
 
-原版包来源提交：`5c8c437d3b8ef1e121ee20a6cca80816c38a3771`。
-SHA-256：`aef9f4544b31f7c4f312194e6db801a883fb5d76eb98a7456ab17dcccd6541fb`。0.1.2 增加按功能探索参考及可选 browser_generate_locator 录制委派，严格交互核验并复用 locator，逐功能草稿使用既有 inventory.drafts；未改变产物 schema、runner 或批准门禁。继续保留 0.1.1 的修复：partial 报告交付保留阻塞及原任务续跑，Markdown 交付文件不再当 JSON 清单读取。原 0.1.0/0.1.1 包及摘要仍可从 Git 和本次基线证据恢复。
+原版包来源提交：`a4d69aae59fd451664f10e65e2f6ce769bbe3a24`（上游本地提交）。
+SHA-256：`991424fd5e7222de9d4f22070e9e083b0b6184a1ea06a70057935829c2e4385c`。0.1.3 将认证诊断/正式执行的原始捕获保存在工作区外的宿主私有目录，公开副本脱敏已知值并隐藏图片/二进制资源；真实失败保留，缺失原始附件时不声明完整证据。trace 读取绑定实际 Playwright 1.62.1，避免误用独立安装的 core 1.63.0。仍未覆盖录制、运行中新凭据、任意编码和脚本自行写文件；数据空间私密桥接继续 not-ready，不因该版本放行真实环境。
+
+保留 0.1.2 的按功能探索、locator 复用和逐功能草稿，以及 0.1.1 的 partial 交付恢复修复。未改变产物 schema 或批准门禁；旧包及摘要可从 Git 和既有基线证据恢复。原始私密目录不得纳入工作区归档、文档或提交。
 
 ## 安装与发现
 

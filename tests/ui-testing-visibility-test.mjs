@@ -77,7 +77,8 @@ try {
 		const after = notices.length;
 		await input.fill(text);
 		await input.press("Escape");
-		await input.press("Enter");
+		// 点击发送，避免 Enter 与异步更新的快捷菜单竞争而仅填入命令。
+		await page.locator("button.btn.send").click();
 		const deadline = Date.now() + 30_000;
 		while (!notices.slice(after).some((notice) => expected.test(notice)) && Date.now() < deadline) await delay(50);
 		const notice = notices.slice(after).find((notice) => expected.test(notice));
@@ -176,6 +177,7 @@ try {
 	await page?.screenshot({ path: join(output, "failure.png") }).catch(() => {});
 	process.exitCode = 1;
 } finally {
+	if (app) await writeFile(join(output, "desktop.log"), app.getLogs());
 	try {
 		await app?.close();
 	} catch (error) {
