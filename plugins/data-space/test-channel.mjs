@@ -3,7 +3,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { readFileSync, realpathSync } from "node:fs";
 import { join } from "node:path";
 import { atomicJson } from "./durable.mjs";
-import { caseFingerprint, MAX, normalizeStore } from "./model.mjs";
+import { MAX, normalizeStore, str } from "./model.mjs";
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const key = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
 export function environmentUrl(value) {
@@ -23,21 +23,33 @@ export function environmentUrl(value) {
 		throw new Error("环境地址必须是无凭据、查询参数和片段的 HTTP(S) URL");
 	return parsed.href.replace(/\/+$/, "");
 }
+/** 默认归档目录：模块「测试用例」，功能按引擎区分；目录 ID 持久化后跟随用户重命名。 */
+const DEFAULT_MODULE = "测试用例";
+const defaultFeature = (engine) => (engine === "ui" ? "UI用例" : "API用例");
 export function createTestChannel({ host, store, commitStore }) {
 	const file = host.dataDir ? join(host.dataDir, "data-space/channels.json") : null;
-	let channels = [];
+	let channels = [],
+		destinations = [];
 	if (file) {
 		try {
 			const saved = JSON.parse(readFileSync(file, "utf8"));
-			if (saved.version !== 1 || !Array.isArray(saved.channels)) throw new Error("测试通道文件格式不受支持");
+			// v1 只有通道；v2 追加按项目/引擎记住的用例目录，读取旧文件不改结构。
+			if (![1, 2].includes(saved.version) || !Array.isArray(saved.channels))
+				throw new Error("测试通道文件格式不受支持");
 			channels = saved.channels;
+			destinations = Array.isArray(saved.destinations) ? saved.destinations : [];
 		} catch (error) {
 			if (error.code !== "ENOENT") throw error;
 		}
 	}
-	const save = (next) => {
-		if (file) atomicJson(file, { version: 1, channels: next });
+	const save = (next, nextDestinations = destinations) => {
+		if (file) atomicJson(file, { version: 2, channels: next, destinations: nextDestinations });
 		channels = next;
+		destinations = nextDestinations;
+	};
+	const remember = (systemId, engine, featureId, names) => {
+		const kept = destinations.filter((d) => !(d.systemId === systemId && d.engine === engine));
+		save(channels, [...kept, { systemId, engine, featureId, ...names }]);
 	};
 	function initialize(cwd, input) {
 		if (!["ui", "api"].includes(input.engine)) throw new Error("初始化需要 ui/api 引擎");
@@ -119,66 +131,121 @@ export function createTestChannel({ host, store, commitStore }) {
 			throw new Error("测试通道环境已变更，请重新初始化");
 		return channel;
 	}
-	function intake(asset) {
-		const channel = select(asset);
-		if (!channel) return { ok: false, imported: 0, unmatched: true };
+	/**
+	 * 解析入库目标：显式 envId 决定项目；没有 envId 时沿用同地址的已初始化通道。
+	 * 环境被删除或地址不一致都直接阻塞，不静默改归属。
+	 */
+	function resolve(asset, input) {
 		const s = store(),
-			timestamp = new Date().toISOString();
-		const pending = asset.cases.filter(
-			(c) =>
-				!s.cases.some(
-					(x) =>
-						x.nativeSource?.key === key([asset.workspace, asset.engine, asset.assetRef, channel.envId, c.id]) ||
-						(x.automation?.workspace === asset.workspace &&
-							x.automation.engine === asset.engine &&
-							x.automation.envId === channel.envId &&
-							x.automation.nativeCaseId === c.id &&
-							same(x.automation.assetRef, asset.assetRef)),
-				),
-		);
-		if (!pending.length) return { ok: true, imported: 0, duplicate: asset.cases.length };
-		if (s.cases.length + pending.length > MAX.cases) throw new Error("用例数量超过数据空间上限，未部分导入");
-		let modules = [...s.modules],
-			features = [...s.features],
-			featureId = channel.featureId;
-		if (
-			featureId &&
-			!features.some(
-				(f) => f.id === featureId && modules.some((m) => m.id === f.moduleId && m.systemId === channel.systemId),
-			)
-		)
-			throw new Error("通道目标功能已删除或移动，请重新初始化");
-		if (!featureId) {
-			const moduleId = `ds-${key([channel.systemId, "native-import"]).slice(0, 24)}`;
-			featureId = `${moduleId}-${asset.engine}`;
-			if (!modules.some((m) => m.id === moduleId))
-				modules.push({
-					id: moduleId,
-					systemId: channel.systemId,
-					name: "自动化测试",
-					note: "原生测试资产归档",
-					createdAt: timestamp,
-				});
-			if (!features.some((f) => f.id === featureId))
-				features.push({
-					id: featureId,
-					moduleId,
-					name: `${asset.engine.toUpperCase()} 自动化导入`,
-					note: "按原生资产版本保留用例",
-					createdAt: timestamp,
-				});
+			base = environmentUrl(asset.environment.baseUrl),
+			envId = str(input.envId, 64);
+		if (envId) {
+			const env = s.envs.find((e) => e.id === envId);
+			if (!env || !s.systems.some((p) => p.id === env.systemId)) throw new Error("所选环境不存在或已删除，未导入用例");
+			if (environmentUrl(env.baseUrl) !== base) throw new Error("所选环境地址与原生用例目标不一致，未导入用例");
+			const channel =
+				channels.find((c) => c.workspace === asset.workspace && c.engine === asset.engine && c.envId === env.id) ??
+				null;
+			return { s, env, channel };
 		}
-		if (
-			!features.some(
-				(f) => f.id === featureId && modules.some((m) => m.id === f.moduleId && m.systemId === channel.systemId),
-			)
-		)
-			throw new Error("归档目录已移动到其他项目，请指定新的功能 ID");
+		const channel = select(asset);
+		return channel ? { s, env: s.envs.find((e) => e.id === channel.envId), channel } : null;
+	}
+
+	/** 目标功能：显式 ID > 记住的目录 ID > 通道目录 > 默认/自定义名称（不存在则建，存在则复用）。 */
+	function destination(target, asset, input, timestamp, modules, features) {
+		const systemId = target.env.systemId,
+			belongs = (id) =>
+				features.some((f) => f.id === id && modules.some((m) => m.id === f.moduleId && m.systemId === systemId)),
+			name = (id) => {
+				const feature = features.find((f) => f.id === id),
+					module = modules.find((m) => m.id === feature.moduleId);
+				return { moduleName: module.name, featureName: feature.name };
+			};
+		const wanted = str(input.featureId, 64);
+		if (wanted) {
+			if (!belongs(wanted)) throw new Error("目标功能不属于所选项目，未导入用例");
+			remember(systemId, asset.engine, wanted, name(wanted));
+			return wanted;
+		}
+		const remembered = destinations.find((d) => d.systemId === systemId && d.engine === asset.engine);
+		if (remembered) {
+			// 记住的是目录 ID：用户重命名后仍能用；被删除或改属时明确阻塞，不静默重建。
+			if (!belongs(remembered.featureId))
+				throw new Error("上次使用的用例目录已被删除或移动，请用 featureId 指定目标功能");
+			return remembered.featureId;
+		}
+		if (target.channel?.featureId && belongs(target.channel.featureId)) {
+			remember(systemId, asset.engine, target.channel.featureId, name(target.channel.featureId));
+			return target.channel.featureId;
+		}
+		const moduleName = str(input.moduleName, 60) || DEFAULT_MODULE,
+			featureName = str(input.featureName, 60) || defaultFeature(asset.engine);
+		let module = modules.find((m) => m.systemId === systemId && m.name === moduleName);
+		if (!module) {
+			module = {
+				id: `ds-${key([systemId, "module", moduleName]).slice(0, 24)}`,
+				systemId,
+				name: moduleName,
+				note: "原生测试用例归档",
+				createdAt: timestamp,
+			};
+			modules.push(module);
+		}
+		let feature = features.find((f) => f.moduleId === module.id && f.name === featureName);
+		if (!feature) {
+			feature = {
+				id: `${module.id}-${key([module.id, featureName]).slice(0, 16)}`,
+				moduleId: module.id,
+				name: featureName,
+				note: "按原生资产版本保留用例",
+				createdAt: timestamp,
+			};
+			features.push(feature);
+		}
+		remember(systemId, asset.engine, feature.id, { moduleName: module.name, featureName: feature.name });
+		return feature.id;
+	}
+
+	function intake(asset, input = {}) {
+		const target = resolve(asset, input);
+		if (!target) return { ok: false, imported: 0, unmatched: true };
+		const s = target.s,
+			env = target.env,
+			timestamp = new Date().toISOString(),
+			pending = asset.cases.filter(
+				(c) =>
+					!s.cases.some(
+						(x) =>
+							x.nativeSource?.key === key([asset.workspace, asset.engine, asset.assetRef, env.id, c.id]) ||
+							(x.automation?.workspace === asset.workspace &&
+								x.automation.engine === asset.engine &&
+								x.automation.envId === env.id &&
+								x.automation.nativeCaseId === c.id &&
+								same(x.automation.assetRef, asset.assetRef)),
+					),
+			);
+		let modules = [...s.modules],
+			features = [...s.features];
+		const featureId = destination(target, asset, input, timestamp, modules, features);
+		const receipt = {
+			ok: true,
+			project: (() => {
+				const project = s.systems.find((p) => p.id === env.systemId);
+				return { id: project.id, name: project.name };
+			})(),
+			env: { id: env.id, name: env.name },
+			featureId,
+			featureName: features.find((f) => f.id === featureId).name,
+			executable: asset.executable !== false,
+		};
+		if (!pending.length) return { ...receipt, imported: 0, duplicate: asset.cases.length };
+		if (s.cases.length + pending.length > MAX.cases) throw new Error("用例数量超过数据空间上限，未部分导入");
 		if (modules.length > MAX.modules || features.length > MAX.features) throw new Error("归档目录超过数据空间上限");
 		const drafts = pending.map((c) => ({
 			id: randomUUID(),
 			featureId,
-			code: `DS-${key([asset.assetRef, channel.envId, c.id]).slice(0, 20)}`,
+			code: `DS-${key([asset.assetRef, env.id, c.id]).slice(0, 20)}`,
 			title: c.title || c.id,
 			priority: c.priority || "P2",
 			type: asset.engine === "ui" ? "UI" : "接口",
@@ -190,22 +257,13 @@ export function createTestChannel({ host, store, commitStore }) {
 			updatedAt: timestamp,
 		}));
 		const normalized = normalizeStore({ ...s, modules, features, cases: drafts }, null).cases;
+		// 入库只保存草稿用例：不建立自动化关联、不执行、不生成结果（关联仍走独立 bind）。
 		const imported = normalized.map((c, i) => ({
 			...c,
 			nativeSource: {
-				key: key([asset.workspace, asset.engine, asset.assetRef, channel.envId, pending[i].id]),
+				key: key([asset.workspace, asset.engine, asset.assetRef, env.id, pending[i].id]),
 				assetRef: asset.assetRef,
 				nativeCaseId: pending[i].id,
-			},
-			automation: {
-				engine: asset.engine,
-				workspace: asset.workspace,
-				assetRef: asset.assetRef,
-				revision: asset.revision,
-				nativeCaseId: pending[i].id,
-				envId: channel.envId,
-				nativeEnvironmentId: asset.environment.id,
-				caseVersion: caseFingerprint(c),
 			},
 		}));
 		commitStore({
@@ -217,7 +275,7 @@ export function createTestChannel({ host, store, commitStore }) {
 			updatedAt: timestamp,
 		});
 		return {
-			ok: true,
+			...receipt,
 			imported: imported.length,
 			duplicate: asset.cases.length - imported.length,
 			caseIds: imported.slice(0, 100).map((c) => c.id),

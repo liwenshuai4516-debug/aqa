@@ -574,11 +574,13 @@ export default {
 					name: "data_space_automation",
 					label: "测试资产与原生结果关联",
 					description:
-						"Initialize project test environments, import native cases, bind assets, or synchronize verified runs. Does not approve or execute tests.",
+						"Initialize project test environments, import native cases after the user agrees, bind assets, or synchronize verified runs. Importing never approves or executes tests.",
 					promptSnippet: "Connect project environments, generated cases and native results.",
 					promptGuidelines: [
 						"Initialize with engine and targetUrl before discovery. Use returned environment IDs and nonsecret parameters; configured does not mean reachable or authenticated.",
-						"Import a generated asset to verify writeback. Native generation and execution events also synchronize automatically after initialization.",
+						"Import only after the user agrees to record this batch. Pass the native UI cases ref or API draft ref, and the chosen envId so the project is taken from that environment.",
+						"Import stores draft cases only: no automation binding, execution or result. Native generation and execution events no longer archive assets on their own.",
+						"Reuse one destination feature per project and engine; pass featureId only to override it. Drafts cannot be bound until the asset is frozen.",
 						"Use route to obtain the original execution entry. Never replace native approval or preflight.",
 						"Use sync for an existing run after a synchronization error; do not replay execution.",
 					],
@@ -591,7 +593,19 @@ export default {
 							},
 							systemId: { type: "string" },
 							targetUrl: { type: "string" },
-							featureId: { type: "string" },
+							featureId: {
+								type: "string",
+								description:
+									"Destination feature id; defaults to the destination already used by this project and engine.",
+							},
+							moduleName: {
+								type: "string",
+								description: "Destination module name when this project has no destination yet.",
+							},
+							featureName: {
+								type: "string",
+								description: "Destination feature name when this project has no destination yet; defaults by engine.",
+							},
 							caseId: { type: "string" },
 							engine: { type: "string", enum: ["ui", "api"] },
 							assetRef: { anyOf: [{ type: "string" }, { type: "object" }] },

@@ -3,7 +3,7 @@
 	"id": "data-space",
 	"name": "数据空间",
 	"nameEn": "Data Space",
-	"version": "0.12.4",
+	"version": "0.13.0",
 	"icon": "🗃️",
 	"iconSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><ellipse cx=\"12\" cy=\"5\" rx=\"8\" ry=\"3\"/><path d=\"M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5\"/><path d=\"M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6\"/></svg>",
 	"description": "测试资产工作台：初始化项目测试环境、自动归档原生用例，关联原生 UI/API 资产，按原工作流执行并从证据同步结果；支持版本核对、批次追溯与历史补同步。",

@@ -11,7 +11,18 @@ description: 通过 api-testing 插件准备并执行基于契约的 API 测试�
 
 当前以跑通基础流程为目标，为用户选定的每个接口生成 1–2 条简洁用例：先覆盖正常请求，资料充分时再补一条必填项缺失或简单边界用例，暂不追求完整覆盖。优先复用接口文档和现有测试数据；断言先检查文档已明确的成功状态、必要字段或字段类型，复杂业务规则后续逐步补充。信息不足时列出待补充项，继续生成其他资料完整的用例，不因缺少非关键规则阻塞整个任务；不确定的预期不写成确定断言。用例保留工具要求的 `id`、`operationId`、`request`、`status`、`checks`；检查使用 `kind`（`exists`/`type`/`enum`/`value`）、JSON `pointer` 及适用的 `value`。缺少执行必需的鉴权、数据或响应定义时，可保留草稿并说明暂不能执行的原因。
 
-调用 `prepare`，传入 `sourcePath`、`operationIds`、`cases`、`rules`、`baseUrl`，以及项目内新的 `outputPath`。将返回的 `workflowRef` 保存为 `runRef`，并保留证据路径。准备完成不代表获准执行。调用 `review`；根据结构化评审结果，仅对受影响用例调用 `revise`，保留原始契约和预期。每次修订输出到新目录，并须重新评审。不得通过创建替代工作流重置限制：每个工作流最多 3 次评审调用、2 次修订，截止时限为 180 秒。
+调用 `prepare`，传入 `sourcePath`、`operationIds`、`cases`、`rules`、`baseUrl`，以及项目内新的 `outputPath`。将返回的 `workflowRef` 保存为 `runRef`，并保留证据路径。准备完成不代表获准执行。
+
+生成用例并取得原生 draft 引用后，提供实际入库选项；用户尚未明确同意时不导入，用户已明确要求本批录入时直接办理，不重复询问：
+
+[[action:suggest:录入用例库,prompt=将本批生成的测试用例录入所选测试环境所属项目的用例库]]
+[[action:suggest:暂不录入,prompt=本批生成的测试用例暂不录入用例库]]
+
+用户选择录入后，读取数据空间 `data-space-testing` Skill，核对 `data_space_automation` 的实际 schema。显式调用 `import`，传 `engine: "api"`、工具实际返回且宿主支持的原生 draft 引用作为 `assetRef`；不把 `workflowRef`、执行 `runRef` 或自造 JSON 当作 draft 引用。按所选 `envId` 自动匹配所属 `systemId`，保留显式或既有通道 `featureId`；无指定目录时默认“测试用例 → API用例”，缺少则自动建立、存在则复用，重命名后跟随目录 ID。可选 `moduleName` / `featureName` / `envId` / `featureId` 以实际 schema 为准，缺少能力或引用时明确阻塞，不绕过核验。
+
+录入 draft 只保存草稿用例，不创建自动化绑定、不执行测试、不写执行结果，也不代表已冻结或获批。无受支持原生引用的人工用例暂不承诺任意 JSON 直接入库。正式批次结果仍走原 `sync`；暂不录入不改变原工作流的评审和执行规则。
+
+调用 `review`；根据结构化评审结果，仅对受影响用例调用 `revise`，保留原始契约和预期。每次修订输出到新目录，并须重新评审。不得通过创建替代工作流重置限制：每个工作流最多 3 次评审调用、2 次修订，截止时限为 180 秒。
 
 仅执行已批准的套件。用户要求复测时，使用同一 `runRef` 和明确的 `priorRunId` 调用 `retest`；不得自动重试失败或结果未知的请求。写入结果未知时，须先检查残留数据，再进行任何后续执行。取消仅停止本次运行，不会撤销已发生的数据变更。
 

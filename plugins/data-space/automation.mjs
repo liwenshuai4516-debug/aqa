@@ -33,6 +33,7 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 			throw new Error("自动化引擎与用例类型不一致");
 		const env = environment(c, input.envId);
 		const asset = await host.testing.inspect(input.engine, cwd, input.assetRef);
+		if (asset.executable === false) throw new Error("草稿用例尚未冻结，不能建立自动化关联");
 		if (!asset.cases.some((x) => x.id === input.nativeCaseId)) throw new Error("原生资产没有指定用例");
 		if (url(env.baseUrl) !== url(asset.environment.baseUrl)) throw new Error("项目环境地址与原生资产目标不一致");
 		// Recheck after IO: do not bind a changed case/version to a stale snapshot.
@@ -66,9 +67,7 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 		let native;
 		if (channel.list().some((c) => c.workspace === workspace && c.engine === engine)) {
 			native = await host.testing.read(engine, workspace, reference);
-			const asset = await host.testing.inspect(engine, workspace, native.assetRef);
 			if (disposed) throw new Error("数据空间已停用");
-			channel.intake(asset);
 		}
 		const candidates = store().cases.filter(
 			(c) => c.automation?.engine === engine && c.automation.workspace === workspace,
@@ -147,7 +146,12 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 		if (input.action === "import") {
 			const asset = await host.testing.inspect(input.engine, cwd, input.assetRef);
 			if (disposed) throw new Error("数据空间已停用");
-			return channel.intake(asset);
+			return channel.intake(asset, {
+				envId: input.envId,
+				featureId: input.featureId,
+				moduleName: input.moduleName,
+				featureName: input.featureName,
+			});
 		}
 		if (input.action === "bind") return bind(cwd, input);
 		if (input.action === "sync") return sync(cwd, input.engine, input.runRef);
@@ -197,15 +201,11 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 		};
 	}
 	const off = host.onToolEvent?.((ev) => {
-		if (ev.phase !== "end" || ev.isError || !ev.cwd || (!ev.testRun && !ev.testAsset)) return;
+		// 生成用例不自动入库：只有用户明确选择后才调 import；此处仅补同步原生执行结果。
+		if (ev.phase !== "end" || ev.isError || !ev.cwd || !ev.testRun) return;
 		queue = queue
 			.then(async () => {
 				if (disposed) return;
-				if (
-					ev.testAsset &&
-					channel.list().some((c) => c.workspace === realpathSync(ev.cwd) && c.engine === ev.testAsset.engine)
-				)
-					await call(ev.cwd, { action: "import", engine: ev.testAsset.engine, assetRef: ev.testAsset.reference });
 				if (ev.testRun) await sync(ev.cwd, ev.testRun.engine, ev.testRun.reference);
 			})
 			.catch((error) => {

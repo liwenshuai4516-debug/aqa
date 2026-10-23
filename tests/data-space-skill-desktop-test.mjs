@@ -217,13 +217,34 @@ try {
 	assert.equal(initialized.status, "configured");
 	assert.equal(initialized.parameters.tenant, "fixture");
 	assert(!JSON.stringify(initialized).includes("synthetic-private"));
+	// 原生资产已存在但未获用户确认：不得自动入库。
+	const readStore = async () => JSON.parse(await readFile(join(dataDir, "data-space/store.json"), "utf8"));
+	assert.equal((await readStore()).cases.length, 0, "generated assets must not be imported implicitly");
 	const imported = await request("/automation", {
 		action: "import",
 		engine: "ui",
 		assetRef: native.assetRef,
+		envId: "desktop-env",
 		workspace,
 	});
 	assert.equal(imported.imported, 1);
+	assert.equal(imported.project.id, "desktop-project");
+	assert.equal(imported.featureName, "UI用例");
+	const drafts = await readStore();
+	assert.equal(drafts.cases.length, 1);
+	assert.equal(drafts.cases[0].status, "草稿");
+	assert.equal(drafts.cases[0].automation, null, "import must not create an automation binding");
+	assert.equal(drafts.modules.find((m) => m.id === drafts.features[0].moduleId).name, "测试用例");
+	const bound = await request("/automation", {
+		action: "bind",
+		caseId: imported.caseIds[0],
+		engine: "ui",
+		assetRef: native.assetRef,
+		nativeCaseId: "C1",
+		envId: "desktop-env",
+		workspace,
+	});
+	assert.equal(bound.binding.nativeCaseId, "C1");
 	const executed = await native.service.start(native.request);
 	assert.equal(executed.run.data.exit_code, 0);
 	// Settings switches gate tools; only a real host restart reactivates plugins.
@@ -245,11 +266,13 @@ try {
 		action: "import",
 		engine: "ui",
 		assetRef: native.assetRef,
+		envId: "desktop-env",
 		workspace,
 	});
 	assert.equal(repeated.duplicate, 1);
+	assert.equal((await readStore()).cases.length, 1);
 	result.checks.push(
-		"real Electron environment initialization, native case import, persisted channel and automatic native Playwright result recovery",
+		"real Electron environment initialization, explicit draft import by envId, separate binding, persisted channel and automatic native Playwright result recovery",
 	);
 	result.status = "PASS";
 } catch (error) {

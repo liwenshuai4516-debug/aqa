@@ -1,5 +1,5 @@
 import { afterEach, expect, it } from "vitest";
-import { mkdtempSync, readFileSync, realpathSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { createAutomation } from "../../plugins/data-space/automation.mjs";
@@ -89,7 +89,16 @@ function fixture() {
 		emit: (ev: any) => listener({ phase: "end", cwd, ...ev }),
 		init: (extra = {}) =>
 			a.call(cwd, { action: "initialize", engine: "ui", targetUrl: "http://localhost:18980/pms/contracts", ...extra }),
-		intake: () => a.call(cwd, { action: "import", engine: "ui", assetRef: asset.assetRef }),
+		intake: (extra = {}) => a.call(cwd, { action: "import", engine: "ui", assetRef: asset.assetRef, ...extra }),
+		bind: (caseId?: string) =>
+			a.call(cwd, {
+				action: "bind",
+				caseId: caseId ?? s.cases[0]?.id,
+				engine: "ui",
+				assetRef: asset.assetRef,
+				nativeCaseId: "N1",
+				envId: "e",
+			}),
 	};
 }
 it("selects an exact project/environment, returns data without secrets, and persists the channel", async () => {
@@ -130,6 +139,8 @@ it("reads a run once within a sync, but verifies it again on the next request", 
 	const f = fixture();
 	await f.a.idle();
 	await f.init();
+	await f.intake();
+	await f.bind();
 	const originalRead = f.options.host.testing.read;
 	let reads = 0;
 	f.options.host.testing.read = async (...args: any[]) => {
@@ -154,6 +165,7 @@ it("continues recovery in an independent workspace after a directory listing fai
 	await f.a.idle();
 	await f.init();
 	await f.intake();
+	await f.bind();
 	f.a.dispose();
 	const missing = join(f.cwd, "missing");
 	f.store().cases.unshift({
@@ -177,14 +189,42 @@ it("continues recovery in an independent workspace after a directory listing fai
 		recovered.dispose();
 	}
 });
-it("automatically imports candidates and native results once without overwriting edits or granting approval", async () => {
+it("does not archive generated assets until the user asks for import", async () => {
 	const f = fixture();
 	await f.a.idle();
 	await f.init();
 	f.emit({ testAsset: { engine: "ui", reference: f.asset.assetRef } });
 	await f.a.idle();
-	expect(f.store().cases).toHaveLength(1);
+	expect(f.store().cases).toHaveLength(0);
+	expect(await f.intake()).toMatchObject({
+		imported: 1,
+		project: { id: "s", name: "PMS" },
+		env: { id: "e" },
+		featureName: "UI用例",
+	});
 	expect(f.store().cases[0]).toMatchObject({ status: "草稿", steps: [{ action: "Search", expect: "Rows match" }] });
+	// 入库只写草稿：不自动绑定，重复导入不增行也不覆盖人工编辑。
+	expect(f.store().cases[0].automation).toBeNull();
+	expect(await f.intake()).toMatchObject({ imported: 0, duplicate: 1 });
+	f.store().cases[0].title = "User edit";
+	expect(await f.intake()).toMatchObject({ imported: 0, duplicate: 1 });
+	expect(f.store().cases[0].title).toBe("User edit");
+	expect(f.store().modules).toMatchObject([{ systemId: "s", name: "测试用例" }]);
+	expect(f.store().features).toMatchObject([{ name: "UI用例" }]);
+	const previous = f.store();
+	const normalized = normalizeStore(
+		{ ...previous, cases: [{ ...previous.cases[0], nativeSource: { key: "forged" }, automation: null }] },
+		previous,
+	);
+	expect(normalized.cases[0].nativeSource).toEqual(previous.cases[0].nativeSource);
+	f.a.dispose();
+});
+it("imports native results once without granting approval", async () => {
+	const f = fixture();
+	await f.a.idle();
+	await f.init();
+	await f.intake();
+	await f.bind();
 	f.emit({ testRun: { engine: "ui", reference: "r1" } });
 	await f.a.idle();
 	expect(f.runs().runs).toHaveLength(1);
@@ -233,6 +273,82 @@ it("rejects cross-project destination and respects restricted tool modes", async
 		expect(extensionToolDenial("data_space_automation", { action }, state)).toBeDefined();
 	}
 	f.a.dispose();
+});
+it("imports by explicit envId without a channel and blocks mismatched addresses", async () => {
+	const f = fixture();
+	await f.a.idle();
+	expect(await f.intake({ envId: "e" })).toMatchObject({
+		imported: 1,
+		project: { id: "s", name: "PMS" },
+		env: { id: "e" },
+	});
+	await expect(f.intake({ envId: "missing" })).rejects.toThrow("不存在");
+	f.store().envs[0].baseUrl = "http://localhost:18999";
+	await expect(f.intake({ envId: "e" })).rejects.toThrow("不一致");
+	f.a.dispose();
+});
+it("keeps one destination per project and engine across renames", async () => {
+	const f = fixture();
+	await f.a.idle();
+	await f.init();
+	await f.intake({ moduleName: "自动化回归", featureName: "PMS UI" });
+	const feature = f.store().features[0];
+	expect(f.store().modules).toMatchObject([{ name: "自动化回归" }]);
+	expect(feature).toMatchObject({ name: "PMS UI" });
+	// 用户重命名目录：后续导入按记住的目录 ID 继续写入，不按旧名称重建
+	feature.name = "已重命名功能";
+	f.store().modules[0].name = "已重命名模块";
+	f.asset.assetRef = { ...f.asset.assetRef, sha256: "c".repeat(64) };
+	f.asset.revision = "v2";
+	await f.intake();
+	expect(f.store().features).toHaveLength(1);
+	expect(f.store().modules).toHaveLength(1);
+	expect(f.store().cases.every((c: any) => c.featureId === feature.id)).toBe(true);
+	expect(readFileSync(join(f.cwd, "data-space/channels.json"), "utf8")).toContain(feature.id);
+	f.a.dispose();
+});
+it("blocks a deleted destination and refuses cross-project features", async () => {
+	const f = fixture();
+	await f.a.idle();
+	await f.init();
+	await f.intake();
+	const feature = f.store().features[0],
+		module = f.store().modules[0];
+	f.store().features = [];
+	await expect(f.intake()).rejects.toThrow("已被删除或移动");
+	f.store().features = [{ ...feature }];
+	f.store().systems.push({ id: "s2", name: "Other" });
+	f.store().modules.push({ ...module, id: "m2", systemId: "s2" });
+	f.store().features.push({ ...feature, id: "f2", moduleId: "m2" });
+	await expect(f.intake({ featureId: "f2" })).rejects.toThrow("不属于所选项目");
+	expect(await f.intake({ featureId: feature.id })).toMatchObject({ imported: 0, duplicate: 1 });
+	f.a.dispose();
+});
+it("refuses to bind a draft native asset", async () => {
+	const f = fixture();
+	await f.a.idle();
+	await f.init();
+	await f.intake();
+	f.asset.executable = false;
+	await expect(f.bind()).rejects.toThrow("草稿");
+	f.asset.executable = true;
+	expect(await f.bind()).toMatchObject({ ok: true, binding: { envId: "e", nativeCaseId: "N1" } });
+	f.a.dispose();
+});
+it("still reads version 1 channel files", async () => {
+	const f = fixture();
+	await f.a.idle();
+	await f.init();
+	const saved = JSON.parse(readFileSync(join(f.cwd, "data-space/channels.json"), "utf8"));
+	f.a.dispose();
+	writeFileSync(join(f.cwd, "data-space/channels.json"), JSON.stringify({ version: 1, channels: saved.channels }));
+	const next = createAutomation(f.options);
+	await next.idle();
+	expect(await next.call(f.cwd, { action: "import", engine: "ui", assetRef: f.asset.assetRef })).toMatchObject({
+		imported: 1,
+		featureName: "UI用例",
+	});
+	next.dispose();
 });
 it("emits creation notices only for successful asset-producing calls", () => {
 	const result = {

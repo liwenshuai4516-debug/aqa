@@ -354,4 +354,6 @@ npm run data-space:enable -- --agent-dir <应用agent目录> --data-dir <应用d
 
 维护模块：`model.mjs` 层级与用例内容版本；`durable.mjs` 原子写；`runs.mjs` 历史与状态；`automation.mjs` 关联、幂等同步与补漏；`client/modal-automation.mjs` 交互；宿主 `server/test-asset-reader.ts` 只读核验原生证据，`server/test-execution-notice.ts` 仅发布执行引用。
 
-0.11.0 增加项目测试通道：`data_space_automation.initialize` 匹配环境并返回非敏感参数；原生资产事件自动导入草稿、批次事件自动同步结果。`import` 幂等补归档、`disconnect` 停止通道新归档。细节、边界和验收见 [接入说明](../../docs/data-space-integration.md)。
+0.11.0 增加项目测试通道：`data_space_automation.initialize` 匹配环境并返回非敏感参数；批次事件自动同步结果。`import` 幂等补归档、`disconnect` 停止通道新交接。细节、边界和验收见 [接入说明](../../docs/data-space-integration.md)。
+
+0.13.0 改为显式入库：生成 UI/API 用例后由用户选择“录入用例库”，未同意不导入；生成与执行事件不再隐式归档资产。`import` 接受可核验的 UI cases ref 与 API draft ref，按所选 `envId` 所属项目入库；未指定目录时默认“测试用例 → UI用例/API用例”，建后记住目录 ID，重命名继续沿用；重复导入同修订不增行、不覆盖人工编辑；入库只写草稿，不建立自动化绑定、不执行、不产生结果。草稿须先形成冻结资产才能 `bind`。

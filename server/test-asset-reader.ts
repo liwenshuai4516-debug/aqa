@@ -1,7 +1,7 @@
 /** Read-only adapters to native UI/API artifacts. Never approves or executes tests. */
 import { createHash } from "node:crypto";
 import { readFileSync, realpathSync, statSync, readdirSync, existsSync } from "node:fs";
-import { isAbsolute, join, relative, resolve } from "node:path";
+import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 export type TestEngine = "ui" | "api";
 export type TestFileRef = { path: string; sha256: string };
@@ -10,6 +10,8 @@ export interface NativeTestAsset {
 	workspace: string;
 	assetRef: string | TestFileRef;
 	revision: string;
+	/** False for archival drafts; this field never grants execution approval. */
+	executable?: boolean;
 	cases: Array<{
 		id: string;
 		title: string;
@@ -54,6 +56,17 @@ function fileRef(value: unknown, prefix: string): TestFileRef {
 		throw new Error("Invalid UI artifact reference");
 	return { path: ref.path, sha256: digest(ref.sha256) };
 }
+const apiCases = (cases: any[]): NativeTestAsset["cases"] =>
+	cases.map((c: any) => ({
+		id: c.id,
+		title: c.operationId ?? c.id,
+		steps: [
+			{
+				action: `调用 ${c.operationId}（请求数据见原生资产）`,
+				expect: `HTTP ${c.status}; ${JSON.stringify(c.checks ?? [])}`,
+			},
+		],
+	}));
 async function uiRuntime(): Promise<any> {
 	// Optional runtime: resolve from the host installation, never from a target workspace.
 	const name = "pi-ui-testing";
@@ -85,18 +98,23 @@ export class TestAssetReader {
 	async inspect(engine: TestEngine, workspace: string, reference: unknown): Promise<NativeTestAsset> {
 		workspace = realpathSync(workspace);
 		if (engine === "ui") {
-			const ref = fileRef(reference, "qa/ui/assets/");
+			const draft = (reference as TestFileRef | null)?.path?.startsWith("qa/ui/cases/") === true;
+			const ref = fileRef(reference, draft ? "qa/ui/cases/" : "qa/ui/assets/");
 			const { ArtifactStore } = await uiRuntime(),
 				store = new ArtifactStore(workspace);
 			const asset = await store.load(ref);
-			if (asset.kind !== "asset") throw new Error("Expected a native UI asset");
-			const cases = await store.load(asset.data.cases_ref),
-				scope = await store.load(asset.data.scope_ref);
+			if (asset.kind !== (draft ? "cases" : "asset")) throw new Error("Expected a native UI asset or cases draft");
+			const cases = draft ? asset : await store.load(asset.data.cases_ref),
+				scope = await store.load(cases.data.scope_ref);
+			if (cases.kind !== "cases" || scope.kind !== "scope") throw new Error("Invalid UI cases/scope kind");
+			if (!draft && JSON.stringify(asset.data.scope_ref) !== JSON.stringify(cases.data.scope_ref))
+				throw new Error("UI asset/cases scope differs");
 			return {
 				engine,
 				workspace,
 				assetRef: ref,
-				revision: asset.data.revision,
+				revision: draft ? ref.sha256 : asset.data.revision,
+				executable: !draft,
 				cases: cases.data.cases.map((c: any) => ({
 					id: c.case_id,
 					title: c.title ?? c.case_id,
@@ -114,6 +132,25 @@ export class TestAssetReader {
 			};
 		}
 		if (engine !== "api") throw new Error("Unsupported test engine");
+		if (reference && typeof reference === "object") {
+			const candidate = reference as TestFileRef;
+			if (typeof candidate.path !== "string" || !candidate.path.endsWith("/manifest.json"))
+				throw new Error("Invalid API draft manifest path");
+			const ref = { path: candidate.path, sha256: digest(candidate.sha256) };
+			if (hash(safeRead(workspace, ref.path)) !== ref.sha256) throw new Error("API draft manifest hash differs");
+			// Only the host-installed validator may interpret workspace-controlled draft data.
+			const { inspectDraft } = await import(pathToFileURL(join(this.dataDir, "plugins/api-testing/review.mjs")).href);
+			const inspected = await inspectDraft(workspace, dirname(resolve(workspace, ref.path)));
+			return {
+				engine,
+				workspace,
+				assetRef: ref,
+				revision: ref.sha256,
+				executable: false,
+				cases: apiCases(inspected.cases),
+				environment: { id: "", baseUrl: new URL(inspected.collection.item[0].request.url).origin },
+			};
+		}
 		const ref = digest(reference),
 			root = join(this.apiRoot(workspace), "suites", ref);
 		const meta = json(root, "asset.json");
@@ -151,16 +188,8 @@ export class TestAssetReader {
 			workspace,
 			assetRef: ref,
 			revision: ref,
-			cases: cases.map((c: any) => ({
-				id: c.id,
-				title: c.operationId ?? c.id,
-				steps: [
-					{
-						action: `调用 ${c.operationId}（请求数据见原生资产）`,
-						expect: `HTTP ${c.status}; ${JSON.stringify(c.checks ?? [])}`,
-					},
-				],
-			})),
+			executable: true,
+			cases: apiCases(cases),
 			environment: { id: "", baseUrl: meta.origin },
 		};
 	}
@@ -173,6 +202,7 @@ export class TestAssetReader {
 			const run = await store.load(ref, false);
 			if (run.kind !== "run") throw new Error("Expected native UI run");
 			const asset = await this.inspect(engine, workspace, run.data.asset_ref);
+			if (asset.executable === false) throw new Error("Native UI run cannot reference a draft");
 			const reconciled = await reconcileRun(workspace, ref);
 			return {
 				engine,
@@ -199,7 +229,9 @@ export class TestAssetReader {
 			run = json(root, "run.json");
 		if (run.runId !== reference || run.projectRoot !== workspace || run.status === "running")
 			throw new Error("API run owner differs or run is still active");
+		if (typeof run.assetRef !== "string") throw new Error("Native API run requires a frozen asset digest, not a draft");
 		const asset = await this.inspect(engine, workspace, run.assetRef);
+		if (asset.executable === false) throw new Error("Native API run cannot reference a draft");
 		const evidence: TestFileRef[] = [
 			{
 				path: `api-testing/assets/${hash(workspace)}/runs/${reference}/run.json`,
