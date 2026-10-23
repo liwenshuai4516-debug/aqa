@@ -413,3 +413,5 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 数据空间修订视图：`plugins/data-space/client/case-versions.mjs`（最近入库/全部版本及zh/en）；`client/modal-automation.mjs`（原生来源、修订及历史证据）。
 
 数据空间结果规范：`.pi/skills/data-space-testing/references/result-output.md`（Agent 交付约定，不是存储 schema）、同 Skill `scripts/validate-result.mjs`（只读一致性检查）；`tests/data-space-skill-desktop-test.mjs`（Electron 技能、插件归属和快捷发现验收）。
+
+Agent 评估 EC01：`plugins/agent-evaluation/schema.mjs`（运行校验）、`store.mjs`（单写者/幂等/授权/导出）、`durable.mjs`（原子持久化）、`tests/unit/agent-evaluation-store.test.ts`（隔离工程验收）；产品接线留待 EC02–EC04，见 [证据](agent-evaluation-evidence/EC01.md)。
