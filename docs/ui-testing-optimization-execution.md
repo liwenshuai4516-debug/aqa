@@ -159,3 +159,25 @@ A06-1/2 的新增路径与 A06-8 文档契约核对已留证；A06-3/4/5 仅上�
 - 全量类型、构建、lint、协议、size预算与差异检查通过，日志前缀 `u06-sync-`；无受影响的已跟踪bundle。技能契约重新核对：查询不写入、sync不重放、归档和执行回执分离、关联分母不冒充实例分母、动态私密执行链仍未完成。
 
 A06-3/4/5上述工程路径已回归。完整U06仍未放行：A06-6版本展示/历史筛选与A06-7结构化输出校验待实施；U00/U02以及真实目标/模型条件仍未放行。当前回执按现有绑定对账，不能为已删除且无现有绑定的历史版本推断完整映射。下一步先核对既有版本界面及交付格式校验，不以本轮局部通过关闭整计划。
+
+### U06 续跑：结构化交付一致性校验（A06-7 工程路径）
+
+起点 `ab9b8a7524784a67abee7c3aed9eb84eddbd4ba9`；本轮并行工具标签工作随后独立提交为 `3b7ff27`，不覆盖其改动。保留 `.gitignore` 与db-client锁的既有差异。复用原 data-space-testing，使用已读取的 skill-creator 维护规则；不新增同职责Skill、宿主工具、runner或结果库。
+
+新增 Skill 内 `scripts/validate-result.mjs`：只读指定交付JSON或直接校验对象，返回诊断及CLI退出码。校验必需字段、原生引用/父批次、项目/环境、功能/用例版本、八态、重复case、计数算术、原生同步逐项回执及confirmed条件。增加featureId/caseVersion到原生结果交付约定，未知项允许null但必须有gap；未知原生批次或项目身份不能确认写回。全批关联计数与本次项目子集分开，实例计数只检查算术并明确仍需原生明细对账。人工登记缺少原生逐项核验能力，不由此补造证明。
+
+校验通过仅说明输入内部一致，不证明证据字节、在线归属、独立评审、实际执行或模型遵循度；回执本身仍须来自原生工具。evidenceComplete与同步complete分开。脚本不联网、不写应用数据、不启动浏览器/runner、不读取环境凭据；CLI错误不回显输入正文。只复用交付字段，不将交付格式当作公开工具参数或底层存储格式。更新Skill入口、按需结果说明、地图/目录/文档导航；当前插件源码及bundle未变，不升级插件版本。
+
+本轮发现及修正：
+
+- 文档的“环境未确认”样例只有用例级gap，无法解释批次级未知；初次CLI真实拒绝（`u06-delivery-cli-valid.log`），补齐批次级gap后CLI通过（`u06-delivery-cli-valid-final.log`）。缺format的反例CLI退出1（`u06-delivery-cli-invalid.log`），符合预期，不计测试失败。
+- 第一轮Electron退出超时，保留 `u06-delivery-desktop.log`、证据 `tests/scratch/data-space-skill-desktop/1792746747809`；确认自建进程已退出后重试，没有重启仍运行的句柄或中断用户服务。
+- 第二轮Electron达到校验步骤，暴露夹具构造交付时使用/var别名而非宿主规范化/private/var路径，以及原生无父批次使用空字符串。保留失败 `u06-delivery-desktop-retry.log`、证据 `1792746881753`。交付改用宿主workspace，明确将“无父批次”的原生空串归一为null；原回执原样保留，不能把任意不同路径或不同父批次放宽为一致。
+
+验收（本轮实际执行，日志均在 `tests/scratch/ui-optimization-u00/`）：
+
+- 13文件221项相关单测通过（`u06-delivery-regression-final-all.log`）；新增11项覆盖合法、缺字段、跨项目/环境、资产/批次/父批次/版本冲突、计数/结论矛盾、八态、部分未知、截断、子集回执、无执行报告、嵌套错误输入及未知身份禁止confirmed。没有用全部工作区测试证明本轮结论。
+- Electron实际界面6项检查通过（`u06-delivery-desktop-normalized.log`），证据 `tests/scratch/data-space-skill-desktop/1792747010283`。真实原生Playwright合成run、重启恢复、sync-status回执生成交付JSON后校验通过；改成错误项目时拒绝。最终校验器再通过CLI读取该轮 `delivery.json`，证据 `u06-delivery-desktop-cli-final.log`。0模型、0真实业务请求。`delivery-validation.json`保留实际诊断，未宣称独立模型评审或业务目标通过。
+- 全量typecheck、lint、helper专门oxlint、协议、Skill quick_validate、size预算及差异检查通过（`u06-delivery-*`）。本轮只改Skill脚本/文档/验收脚本，沿用已有应用构建；不为了文档或离线脚本额外重建桌面，不将隔离验收说成用户旧进程已刷新。
+
+A06-7格式及工程回执对账路径已有证据，真实模型生成遵循度未执行。A06-6当前/历史版本界面仍待实施；U06及M1/M2保持未完成。U01桌面状态对账、U02私密执行与完整环境准备、U05功能探索、U03/U07、U09及完整计量仍需继续；真实目标/模型门禁不因本校验通过而放行。U08未启动、保留串行。

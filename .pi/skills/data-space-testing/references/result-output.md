@@ -11,8 +11,8 @@
 | `format`           | 固定 `data-space-result/v1`，仅标识交付约定。                                                                                                                                                                                                                  |
 | `context`          | `workspace`、`project`、`environment`：实际测试工作区、项目和环境。项目／环境是 `{id,name}`；取不到 ID 可为 `null`，名称须来自查询。仅在已有证据时附 `baseUrl`、`deploymentVersion`。不含环境参数值。                                                          |
 | `origin`           | `native`（原工作流证据）或 `observed`（明确观察的人工／AI 结果）；尚无结果证据为 `null`。它不等同于已成功入库的 `source`。                                                                                                                                     |
-| `native`           | 原生结果含 `{engine,assetRef,runRef,runId,parentRunId}`，原样保留引用类型。无原生批次为 `null`；没有父批次为 `null`。已知资产修订可附 `assetRevision`。                                                                                                        |
-| `results`          | 每条含 `{case,verdict,note}`，`case` 为已核对的台账 ID 或编号；原生结果再附 `nativeCaseId`。使用下述八态，描述实际观察，不复制整份用例步骤。                                                                                                                   |
+| `native`           | 原生结果含 `{engine,assetRef,runRef,runId,parentRunId}`，原样保留引用类型。无原生批次为 `null`；没有父批次为 `null`（原回执空字符串表示无父批次时，交付归一为 null，原回执保持原样）。已知资产修订可附 `assetRevision`。                                       |
+| `results`          | 每条含 `{case,verdict,note}`，`case` 为已核对的台账 ID 或编号；原生结果再附 `nativeCaseId`、`featureId`、`caseVersion`（目标功能 ID、绑定版本指纹；未知用 null 并留 gap）。使用下述八态，描述实际观察，不复制整份用例步骤。                                    |
 | `evidence`         | 真实证据引用数组，原生文件保留 `{path,sha256}`；普通观察文件可只有 `path`，不得补造摘要。API 与 UI 的路径根不同，沿用原工具说明，不猜为当前目录。空数组不证明证据完整。                                                                                        |
 | `evidenceComplete` | 原生工具核验值；未提供／未核验为 `null`。不能从 `completed`、有截图或同步成功推导为 `true`。                                                                                                                                                                   |
 | `reportReview`     | 原工具的独立报告评审状态／引用，无则 `null`。`execution-evidence-only` 不能写成独立报告获批。                                                                                                                                                                  |
@@ -84,6 +84,7 @@
 	"reportReview": null,
 	"writeback": { "method": "none", "status": "not-requested", "receipt": null },
 	"gaps": [
+		{ "case": null, "reason": "工作区、项目 ID 和环境未确认；未执行或回写。" },
 		{ "case": "SAMPLE-001", "reason": "只收到旧聊天编号；工作区、所属项目、执行环境和本次结果均未核验，未执行或回写。" }
 	]
 }
@@ -91,4 +92,12 @@
 
 ## 契约维护
 
-参数与限制以当前工具 schema 为准。维护本约定时核对 `plugins/data-space/tools.mjs`（查询／普通登记）、`automation.mjs`（绑定／同步／幂等）、`runs.mjs`（状态／过期）、`server/test-asset-reader.ts`（原生证据核验），不复制它们的存储 schema 或执行规则。用 `sync-status` 查询单个原生 run 的当前归档对账，`archive-status` 查询资产用例入库；两者均只读，不替代原生证据检查。`sync-status` 的 `complete` 是同步完整性，不能填入 `evidenceComplete`。回执按用例关联计数，不能直接填入按用例/实例计数的 summary。其余查询主要返回文本，未提供通用结构化历史明细查询；本约定不能补出接口未返回的字段，也不保证任意 Agent 输出已通过程序校验。
+参数与限制以当前工具 schema 为准。维护本约定时核对 `plugins/data-space/tools.mjs`（查询／普通登记）、`automation.mjs`（绑定／同步／幂等）、`runs.mjs`（状态／过期）、`server/test-asset-reader.ts`（原生证据核验），不复制它们的存储 schema 或执行规则。用 `sync-status` 查询单个原生 run 的当前归档对账，`archive-status` 查询资产用例入库；两者均只读，不替代原生证据检查。`sync-status` 的 `complete` 是同步完整性，不能填入 `evidenceComplete`。回执按用例关联计数，不能直接填入按用例/实例计数的 summary。其余查询主要返回文本，未提供通用结构化历史明细查询；本约定不能补出接口未返回的字段，只有实际运行校验器的交付才有结构一致性校验结论；校验器不证明证据真实性。
+
+## 离线一致性校验
+
+交付前使用本 Skill 的 `scripts/validate-result.mjs`。已有交付文件时运行 `node <Skill目录>/scripts/validate-result.mjs <delivery.json>`；文件可为一个批次对象或批次数组。它只读指定文件，输出 `{ok,reports}`，不通过时退出码为1；不向应用写入、不执行测试。未要求保存文件时可直接调用导出的 `validateResult(object)`，不要为校验另建长期台账。
+
+工作区使用宿主回执的规范化 workspace，避免将 macOS /var 与 /private/var 两种路径写成不同批次。核对必需字段、八态、case去重、summary算术、原生引用、同步计数和逐项项目/环境/功能/版本及结论。`writeback.receipt` 使用原生 `sync` / `sync-status` 的真实结构；不要自造简化计数来获得通过。批次回执可包含其他关联，交付结果只核对本次明确范围，summary不能照抄整批关联计数。被截断且缺少目标逐项回执时不能确认该用例，保留gap和非confirmed状态。
+
+合法的未知项可用null和gap通过结构检查；通过仅表示内部一致，不代表已执行、证据字节有效、真实归属核验或模型遵循度通过。实例统计只检查算术，须另以原生实例明细对账；人工登记不具备原生逐项版本回执，不能由此补造核验。格式错误、跨项目/环境、引用或版本冲突、状态/计数矛盾均应修正后再交付。相关合成正反例见 `tests/unit/data-space-delivery.test.ts`，桌面实际回执样例随该轮隔离验收证据保存。

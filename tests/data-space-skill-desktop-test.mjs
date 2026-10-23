@@ -11,6 +11,7 @@ import { launchNativeApp } from "./desktop/native-app.mjs";
 import { waitUntil } from "../qa/ui/project-environment.mjs";
 import { ready } from "./fixtures/data-space/ui-run-fixture.mjs";
 import { enableDataSpace } from "../scripts/enable-data-space.mjs";
+import { validateResult } from "../.pi/skills/data-space-testing/scripts/validate-result.mjs";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
 ensureBuild(repo, "data-space-skill-desktop");
@@ -287,6 +288,52 @@ try {
 	assert.equal(syncReceipt.items[0].projectId, "desktop-project");
 	assert.equal(syncReceipt.items[0].verdict, "通过");
 	assert.equal(await readFile(join(dataDir, "data-space/runs.json"), "utf8"), beforeSyncQuery);
+	const synced = syncReceipt.items[0];
+	const delivery = {
+		format: "data-space-result/v1",
+		context: {
+			workspace: syncReceipt.workspace,
+			project: { id: "desktop-project", name: "Desktop channel" },
+			environment: { id: "desktop-env", name: "Synthetic" },
+		},
+		origin: "native",
+		native: {
+			engine: "ui",
+			assetRef: native.assetRef,
+			runRef: executed.run_ref,
+			runId: syncReceipt.runId,
+			parentRunId: syncReceipt.parentRunId || null,
+		},
+		results: [
+			{
+				case: synced.caseId,
+				nativeCaseId: synced.nativeCaseId,
+				featureId: synced.featureId,
+				caseVersion: synced.caseVersion,
+				verdict: synced.verdict,
+				note: "Synthetic native run recovered after desktop restart",
+			},
+		],
+		evidence: [executed.run_ref],
+		evidenceComplete: null,
+		reportReview: null,
+		writeback: { method: "native-sync", status: "confirmed", receipt: syncReceipt },
+		gaps: [],
+	};
+	const validation = validateResult(delivery);
+	assert.equal(validation.ok, true, JSON.stringify(validation.errors));
+	assert.equal(
+		validateResult({
+			...delivery,
+			context: { ...delivery.context, project: { id: "wrong-project", name: "Synthetic" } },
+		}).ok,
+		false,
+	);
+	await writeFile(join(output, "delivery.json"), JSON.stringify(delivery, null, 2));
+	await writeFile(join(output, "delivery-validation.json"), JSON.stringify(validation, null, 2));
+	result.checks.push(
+		"native delivery reconciles desktop run references and case versions; cross-project delivery is rejected",
+	);
 	const recoveredReceipt = await request("/automation", { ...archiveInput, action: "archive-status" });
 	assert.equal(recoveredReceipt.classificationComplete, true);
 	assert.equal(recoveredReceipt.counts.existing, 1);
