@@ -4,11 +4,16 @@ import fs from "node:fs/promises";
 import { execFile } from "node:child_process";
 import { subscribe, unsubscribe } from "node:diagnostics_channel";
 import { syncBuiltinESMExports } from "node:module";
-import { join, relative } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { promisify } from "node:util";
 
+const args = process.argv.slice(2);
+assert.ok(
+	args.length === 0 || (args.length === 2 && args[0] === "--runtime"),
+	"Usage: [--runtime <extracted native package directory>]",
+);
 const repo = fileURLToPath(new URL("..", import.meta.url));
 const output = join(repo, "tests/scratch/ui-catalog-read", String(Date.now()));
 await fs.mkdir(output, { recursive: true });
@@ -24,8 +29,23 @@ for (const name of Object.keys(original))
 		return original[name](...args);
 	};
 syncBuiltinESMExports();
-const { ArtifactStore, UiWorkflowService, DesignReviewService, capabilities, sha256 } = await import("pi-ui-testing");
-const result = { status: "FAIL", samples: [], checks: [], modelCalls: 0, browserStarts: 0, formalRunnerCalls: 0 };
+const nativeEntry = args.length
+	? pathToFileURL(join(resolve(args[1]), "dist/index.js")).href
+	: import.meta.resolve("pi-ui-testing");
+const nativeDirectory = resolve(dirname(fileURLToPath(nativeEntry)), "..");
+const metadata = JSON.parse(await fs.readFile(join(nativeDirectory, "package.json"), "utf8"));
+const { ArtifactStore, UiWorkflowService, DesignReviewService, capabilities, sha256 } = await import(nativeEntry);
+const result = {
+	status: "FAIL",
+	nativeVersion: metadata.version,
+	nativeEntrySha256: sha256(await fs.readFile(fileURLToPath(nativeEntry))),
+	validationSha256: sha256(await fs.readFile(join(nativeDirectory, "dist/validation.js"))),
+	samples: [],
+	checks: [],
+	modelCalls: 0,
+	browserStarts: 0,
+	formalRunnerCalls: 0,
+};
 const children = [],
 	spawned = ({ process }) => children.push(process.spawnargs);
 let observing = false;
@@ -47,7 +67,7 @@ try {
 	result.sourceArchive = summary.evidence;
 	const runtime = {
 		tools: ["read", ...capabilities.map((c) => c.tool)],
-		skills: await fs.readdir(join(repo, "node_modules/pi-ui-testing/skills")),
+		skills: await fs.readdir(join(nativeDirectory, "skills")),
 	};
 	const compact = (counts, root) =>
 		Object.fromEntries(Object.entries(counts).map(([path, count]) => [relative(root, path), count]));

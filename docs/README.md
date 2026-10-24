@@ -44,6 +44,7 @@
 
 - [U04 目录/状态读取计量](ui-testing-evidence/optimization-u04-catalog.json)：真实历史批次的逐路径计数与变更重验，不代表整体性能验收。
 - [U04 单次引用读取去重](ui-testing-evidence/optimization-u04-reference-reuse.json)：0.1.4源码修复、相同历史样本对比及安装/桌面回归；不声明整体提速。
+- [U04 五组成对查询测量](ui-testing-evidence/optimization-u04-paired.json)：交替版本、480查询、全部耗时及失败留证；整体性能收益未证实。
 
 ## 功能设计提案
 

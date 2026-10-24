@@ -423,3 +423,4 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 - `tests/ui-function-discovery-test.mjs --complete-candidate`：冻结六功能的SDK/MCP完整录制与静态候选交接；默认运行验证partial、权限及预算耗尽缺口，均不调用评审模型。
 
 - `tests/ui-catalog-read-benchmark.mjs`：原生catalog/status的1/8历史批次计量、缓存重建与损坏证据识别；不授予批准，不执行浏览器。
+- `tests/ui-catalog-paired-benchmark.mjs`：固定原生版本与历史摘要的5组成对目录/状态测量，归档首次/重复样本及失败；不代表完整流程性能验收。

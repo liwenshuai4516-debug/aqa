@@ -130,3 +130,4 @@ UI 诊断续跑：`tests/fixtures/data-space/ui-probe-replay.mjs` 恢复声明�
 UI 浏览器候选：`tests/ui-function-discovery-test.mjs --complete-candidate` 复用六功能探索，保存完整录制、参数化草稿及静态候选；默认分支继续检查partial/预算缺口。
 
 UI 目录读取计量：`tests/ui-catalog-read-benchmark.mjs` 对归档真实run的1/8批样本统计catalog及view/analyze/execute状态查询的逐路径读取和扫描，验证损坏/删除/恢复，不启动浏览器。
+UI 成对查询计量：`tests/ui-catalog-paired-benchmark.mjs` 对固定历史资产交替运行0.1.3/0.1.4各5次，保留全部读取计数、耗时和失败，不执行浏览器/模型。
