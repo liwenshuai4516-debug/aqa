@@ -296,14 +296,17 @@ export function redact(value) {
 		return value
 			.replace(/\bBearer\s+[^\s"']+/gi, "Bearer [REDACTED]")
 			.replace(/\b(?:sk-|sk_|ghp_)[A-Za-z0-9_-]{12,}/g, "[REDACTED]");
-	if (Array.isArray(value)) return value.map(redact);
-	if (value && typeof value === "object")
-		return Object.fromEntries(
-			Object.entries(value).map(([k, v]) => [
-				k,
-				/^(password|secret|token|api[-_]?key|authorization|cookie|credential)$/i.test(k) ? "[REDACTED]" : redact(v),
-			]),
-		);
+	if (Array.isArray(value)) {
+		const clean = value.map(redact);
+		return clean.every((item, i) => item === value[i]) ? value : clean;
+	}
+	if (value && typeof value === "object") {
+		const entries = Object.entries(value).map(([k, v]) => [
+			k,
+			/^(password|secret|token|api[-_]?key|authorization|cookie|credential)$/i.test(k) ? "[REDACTED]" : redact(v),
+		]);
+		return entries.every(([k, v]) => v === value[k]) ? value : Object.fromEntries(entries);
+	}
 	return value;
 }
 export const transitions = {

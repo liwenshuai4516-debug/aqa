@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
 import { EvaluationStore } from "../../plugins/agent-evaluation/store.mjs";
-import { canonical, digest, validate } from "../../plugins/agent-evaluation/schema.mjs";
+import { canonical, digest, validate, redact } from "../../plugins/agent-evaluation/schema.mjs";
 
 const dirs: string[] = [],
 	stores: EvaluationStore[] = [];
@@ -102,6 +102,24 @@ afterEach(() => {
 });
 
 describe("EC01 contracts and immutable store", () => {
+	it("tracks nested redaction without altering already-sanitized inputs or caller arrays", () => {
+		const safe = { redaction: ["credentials-v1"], password: "[REDACTED]", nested: [{ text: "ordinary output" }] };
+		expect(redact(safe)).toBe(safe);
+		const raw = { safe, nested: [{ secret: "synthetic secret", text: "Bearer synthetic-token" }] },
+			before = structuredClone(raw);
+		const clean = redact(raw);
+		expect(clean).toEqual({ safe, nested: [{ secret: "[REDACTED]", text: "Bearer [REDACTED]" }] });
+		expect(raw).toEqual(before);
+		expect(redact(clean)).toBe(clean);
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const data = { ...f.evidence.data, content: "ordinary output", redaction: [] };
+		const r = write(store, ctx, "evidence", data);
+		expect(data.content).toBe("ordinary output");
+		expect(data.redaction).toEqual([]);
+		expect(r.redacted).toBe(false);
+	});
 	it("separates two task selections and preserves immutable revisions", () => {
 		const store = open(),
 			ctx = context();

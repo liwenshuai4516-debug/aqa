@@ -423,8 +423,9 @@ export class EvaluationStore {
 		}
 		// Sanitize once per synchronous write. The request digest describes the clean
 		// input before evidence metadata is annotated or its body moves into a blob.
-		const clean = redact(data),
-			redacted = canonical(clean) !== inputBytes;
+		const sanitized = redact(data),
+			redacted = sanitized !== data,
+			clean = { ...sanitized };
 		const requestDigest = digest({ kind, data: clean, schemaVersion, previousRef: previousRef ?? null });
 		const receipt = this.requests.get(digest([identity.domain, requestId]));
 		if (receipt) {

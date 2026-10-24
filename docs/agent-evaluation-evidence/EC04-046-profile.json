@@ -1,0 +1,128 @@
+{
+	"phase": "0.4.5 before identity-preserving redaction",
+	"scope": "Whole worker includes fixture/setup/cleanup; sampled wall time is not collect-only CPU or a gate result",
+	"rawProfile": "/tmp/evaluation-046-profile/CPU.20261024.130113.21920.0.001.cpuprofile",
+	"sha256": "5637d7c91d35222197ea91e5f82db5af8c5ec805b540bc3f48490b5a0fdc1945",
+	"samples": [
+		{
+			"function": "canonical",
+			"url": "file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/schema.mjs",
+			"line": 31,
+			"sampledMs": 231.213
+		},
+		{
+			"function": "fsync",
+			"url": "",
+			"line": 0,
+			"sampledMs": 208.624
+		},
+		{
+			"function": "",
+			"url": "",
+			"line": 0,
+			"sampledMs": 142.083
+		},
+		{
+			"function": "(idle)",
+			"url": "",
+			"line": 0,
+			"sampledMs": 125.79
+		},
+		{
+			"function": "update",
+			"url": "node:internal/crypto/hash",
+			"line": 107,
+			"sampledMs": 101.078
+		},
+		{
+			"function": "sourceItem",
+			"url": "file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/dist/server/agent/evaluation-evidence.js",
+			"line": 129,
+			"sampledMs": 61.999
+		},
+		{
+			"function": "",
+			"url": "file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-performance-test.mjs",
+			"line": 1,
+			"sampledMs": 60.083
+		},
+		{
+			"function": "(garbage collector)",
+			"url": "",
+			"line": 0,
+			"sampledMs": 43.917
+		},
+		{
+			"function": "(program)",
+			"url": "",
+			"line": 0,
+			"sampledMs": 22.042
+		},
+		{
+			"function": "lstat",
+			"url": "",
+			"line": 0,
+			"sampledMs": 18.208
+		},
+		{
+			"function": "collectScope",
+			"url": "file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/collect.mjs",
+			"line": 171,
+			"sampledMs": 15.293
+		},
+		{
+			"function": "open",
+			"url": "",
+			"line": 0,
+			"sampledMs": 15.164
+		},
+		{
+			"function": "CheckSchema",
+			"url": "file:///Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/typebox/build/schema/engine/schema.mjs",
+			"line": 257,
+			"sampledMs": 14.626
+		},
+		{
+			"function": "pairGaps",
+			"url": "file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/collect.mjs",
+			"line": 27,
+			"sampledMs": 11.292
+		},
+		{
+			"function": "existsSync",
+			"url": "",
+			"line": 0,
+			"sampledMs": 10.21
+		},
+		{
+			"function": "compileSourceTextModule",
+			"url": "node:internal/modules/esm/utils",
+			"line": 342,
+			"sampledMs": 9.958
+		},
+		{
+			"function": "Hash",
+			"url": "node:internal/crypto/hash",
+			"line": 66,
+			"sampledMs": 9.917
+		},
+		{
+			"function": "normalizeString",
+			"url": "node:path",
+			"line": 77,
+			"sampledMs": 8.917
+		},
+		{
+			"function": "#prepareWrite",
+			"url": "file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs",
+			"line": 397,
+			"sampledMs": 7.167
+		},
+		{
+			"function": "writeFileUtf8",
+			"url": "",
+			"line": 0,
+			"sampledMs": 6.459
+		}
+	]
+}
