@@ -133,12 +133,12 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.6" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.7" && p.active),
 			),
 		),
 	);
 	result.checks.push(
-		"Real app loads plugin 0.4.6 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Real app loads plugin 0.4.7 in explicitly registered app directories; seeded SDK history opened without a model prompt",
 	);
 	stage("settings and slash discovery");
 	const settings = async (tab) => {
@@ -213,7 +213,7 @@ try {
 							f.plugins.some(
 								(p) =>
 									p.id === "agent-evaluation" &&
-									p.version === "0.4.6" &&
+									p.version === "0.4.7" &&
 									p.agentTools?.some((tool) => tool.name === "agent_evaluation"),
 							),
 					),
@@ -230,7 +230,7 @@ try {
 	await candidate.waitFor();
 	await input.fill("");
 	result.checks.push(
-		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.6; skill, slash discovery and tool registration remain enabled",
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.7; skill, slash discovery and tool registration remain enabled",
 	);
 	stage("product diagnosis flow");
 	const openView = async () => {
@@ -400,6 +400,46 @@ try {
 		"Actual desktop re-scoring preserves the exact frozen snapshot/configuration and creates no attempt; revision keeps the selection and old reports/reviews, re-observes changed fixture bytes, and leaves added semantic requirements inconclusive",
 	);
 
+	stage("fixed-scope observation start, status, stop and scoring");
+	await writeFile(join(workspace, "result.json"), '{"ok":true}');
+	const observationAttemptsBefore = await names("attempts");
+	const oldReportIds = (await reports()).map((record) => record.id);
+	await page.locator('.aev [data-action="watch-start"]').click();
+	await page.locator('.aev [data-action="watch-score"]:not([disabled])').waitFor();
+	assert.match(await page.locator(".aev [data-observation]").innerText(), /Observing/);
+	await page.locator('.aev [data-action="watch-status"]').click();
+	await page.locator('.aev [data-action="watch-stop"]:not([disabled])').waitFor();
+	await page.screenshot({ path: join(output, "observation-en.png") });
+	await page.locator('.aev [data-action="watch-stop"]').click();
+	await page.locator('.aev [data-action="watch-dismiss"]:not([disabled])').waitFor();
+	assert.match(await page.locator(".aev [data-observation]").innerText(), /Stopped/);
+	assert.equal(await page.locator('.aev [data-action="watch-stop"]').count(), 0);
+	await page.locator('.aev [data-action="watch-score"]').click();
+	await waitForDifferentReport(original.id);
+	const observationReport = (await reports()).find((record) => !oldReportIds.includes(record.id));
+	assert.ok(observationReport);
+	assert.notDeepEqual(observationReport.data.snapshotRef, original.data.snapshotRef);
+	// A newly configured snapshot profile hashes the fully expanded configs; every rule/version/config must match.
+	assert.deepEqual(observationReport.data.configuration.rules, original.data.configuration.rules);
+	assert.equal(observationReport.data.configuration.profileVersion, original.data.configuration.profileVersion);
+	assert.deepEqual(await names("attempts"), observationAttemptsBefore);
+	assert.equal(await readFile(originalFile, "utf8"), originalBytes);
+	assert.match(await artifact.innerText(), /Pass/);
+	await page.locator('.aev [data-action="watch-dismiss"]').click();
+	await until(async () => (await page.locator(".aev [data-observation]").count()) === 0);
+	await page.locator('.aev [data-action="back"]').click();
+	await page.locator('.aev [data-action="open"][data-id="' + original.id + '"]:not([disabled])').click();
+	await page.locator('.aev [data-action="watch-start"]:not([disabled])').waitFor();
+	result.observationChecks = {
+		reportId: observationReport.id,
+		addedAttempts: 0,
+		oldReportUnchanged: true,
+		realRunEvents: "not executed; synthetic event behavior is covered separately by unit tests",
+	};
+	result.checks.push(
+		"Actual desktop observation starts from the fixed selection, returns a durable checkpoint, checks status, stops, scores a new snapshot with the original configuration and dismisses without changing the old report or executing a business task",
+	);
+
 	stage("language, theme, layout");
 	await page.evaluate(() => {
 		document.documentElement.lang = "zh-CN";
@@ -512,7 +552,7 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.6" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.7" && p.active),
 			),
 		),
 	);
@@ -531,7 +571,7 @@ try {
 	assert.equal(await skill().getByRole("switch").getAttribute("aria-checked"), "true");
 	await closeSettings();
 	result.checks.push(
-		"Graceful real Electron exit and a second native process load plugin 0.4.6 and preserve enabled skill/plugin registration",
+		"Graceful real Electron exit and a second native process load plugin 0.4.7 and preserve enabled skill/plugin registration",
 	);
 	result.checks.push(
 		"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",

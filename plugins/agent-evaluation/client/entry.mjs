@@ -23,7 +23,7 @@ export default {
 			snapshot,
 			reviews = [],
 			job;
-		let draft, revision;
+		let draft, revision, observation;
 		let view = "records",
 			error = "",
 			notice = "",
@@ -40,7 +40,7 @@ export default {
 		const field = (key, content) => `<div><span class="muted">${esc(t(key))}</span><p>${content}</p></div>`;
 		function render() {
 			if (closed) return;
-			root.innerHTML = `<style>${CSS}</style><header><div><h1>${esc(t("title"))}</h1><p class="muted">${esc(t(view === "detail" ? "detail" : "records"))}</p></div><div class="actions">${view !== "records" ? button("back", "back") : button("refresh", "refresh")}${view === "records" ? button("new", "new", `class="primary" ${!source?.choices.length ? "disabled" : ""}`) : ""}</div></header><div role="alert" tabindex="-1">${esc(error)}</div><div class="status" role="status" aria-live="polite">${esc(busy ? t("loading") : notice)}</div><main>${view === "new" ? newHtml() : view === "detail" ? detailHtml() : recordsHtml()}</main>`;
+			root.innerHTML = `<style>${CSS}</style><header><div><h1>${esc(t("title"))}</h1><p class="muted">${esc(t(view === "detail" ? "detail" : "records"))}</p></div><div class="actions">${view !== "records" ? button("back", "back") : button("refresh", "refresh")}${view === "records" ? button("new", "new", `class="primary" ${!source?.choices.length ? "disabled" : ""}`) : ""}</div></header><div role="alert" tabindex="-1">${esc(error)}</div><div class="status" role="status" aria-live="polite">${esc(busy ? t("loading") : notice)}</div>${observation ? observationHtml() : ""}<main>${view === "new" ? newHtml() : view === "detail" ? detailHtml() : recordsHtml()}</main>`;
 			if (busy)
 				root.querySelectorAll("button:not([data-action=back])").forEach((b) => {
 					b.disabled = true;
@@ -48,6 +48,25 @@ export default {
 		}
 		function recordsHtml() {
 			return `<p class="muted">${esc(t("hint"))}</p>${source ? `<p>${esc(source.sourceId)} · ${esc(source.clientVersion ?? t("unknown"))}</p>` : `<p>${esc(t("noSource"))}</p>`}${job ? jobHtml() : ""}${!page.items.length ? `<section class="empty">${esc(t("empty"))}</section>` : `<section class="table-wrap"><table><thead><tr>${["range", "source", "execution", "goal", "coverage", "updated"].map((k) => `<th scope="col">${esc(t(k))}</th>`).join("")}</tr></thead><tbody>${page.items.map((r, i) => `<tr><td><p>${esc(r.objectivePreview)}</p><small>${esc(r.taskRange?.startMessageId)} → ${esc(r.taskRange?.endMessageId)}</small><p>${button("open", "open", `data-index="${i}" data-id="${esc(r.id)}"`)}</p></td><td>Pi SDK<br>${esc(r.sourceVersion ?? t("unknown"))}</td><td>${badge(r.executionState)}<br>${badge(r.assessmentStage)}</td><td>${badge(r.summary?.goal)}<br>${badge(r.summary?.deliveryVerdict)}</td><td>${r.summary?.counts?.coverage == null ? esc(t("unknown")) : `${Math.round(r.summary.counts.coverage * 100)}%`}<br>${esc(t(r.evidenceCoverage ?? "unknown"))}</td><td>${esc(r.createdAt)}</td></tr>`).join("")}</tbody></table></section>`}<div class="actions">${button("first", "first")}${page.nextCursor ? button("next", "next") : ""}</div>`;
+		}
+		function observationHtml() {
+			return `<section data-observation><h2>${esc(t("observation"))} · ${esc(t(observation.state ?? "observing"))}</h2><p>${esc(t("observationHint"))}</p><p>${esc(observation.range)} · ${esc(t("evidence"))}: ${observation.latest?.evidenceCount ?? 0} · ${esc(t("gaps"))}: ${observation.latest?.gapCount ?? 0}</p><p>${esc(observation.error?.message ?? observation.lastError?.message ?? "")}</p><div class="actions">${button("watch-status", "checkObservation")}${observation.state !== "stopped" ? button("watch-stop", "stopObservation") : button("watch-dismiss", "dismissObservation")}${observation.latest?.checkpointRef ? button("watch-score", "scoreObservation") : ""}</div></section>`;
+		}
+		function detachObservation() {
+			if (!observation) return;
+			if (observation.state !== "stopped") {
+				try {
+					ctx.send({
+						action: "watchStop",
+						...observation.source,
+						watchId: observation.watchId,
+						requestId: crypto.randomUUID(),
+					});
+				} catch {
+					/* The server lease expires if the channel has already closed. */
+				}
+			}
+			observation = undefined;
 		}
 		function newHtml() {
 			const options = source.choices
@@ -62,7 +81,7 @@ export default {
 			if (!report) return "";
 			if (revision) return revisionHtml();
 			const d = report.data;
-			return `<section><h2>${esc(contract.data.objective)}</h2><div class="grid">${field("summary", badge(d.summary.deliveryVerdict))}${field("goal", badge(d.summary.goal))}${field("stage", badge(d.assessmentStage))}${field("coverage", badge(snapshot.data.coverage))}</div><p>${esc(contract.data.scope.startMessageId)} → ${esc(contract.data.scope.endMessageId)}</p><small>${esc(report.id)} · r${report.revision} · ${esc(report.createdAt)}</small><p>${esc(t("contractRevision"))}: ${esc(contract.revision)}</p><div class="actions">${button("export", "export")}${button("reevaluate", "reevaluate")}${button("revise", "revise")}</div><p class="muted">${esc(t("reevaluateHint"))}</p></section><section><h2>${esc(t("findings"))}</h2>${d.findings
+			return `<section><h2>${esc(contract.data.objective)}</h2><div class="grid">${field("summary", badge(d.summary.deliveryVerdict))}${field("goal", badge(d.summary.goal))}${field("stage", badge(d.assessmentStage))}${field("coverage", badge(snapshot.data.coverage))}</div><p>${esc(contract.data.scope.startMessageId)} → ${esc(contract.data.scope.endMessageId)}</p><small>${esc(report.id)} · r${report.revision} · ${esc(report.createdAt)}</small><p>${esc(t("contractRevision"))}: ${esc(contract.revision)}</p><div class="actions">${button("export", "export")}${button("reevaluate", "reevaluate")}${button("revise", "revise")}${!observation && snapshot.data.attemptRefs?.length ? button("watch-start", "startObservation") : ""}</div><p class="muted">${esc(t("reevaluateHint"))}</p></section><section><h2>${esc(t("findings"))}</h2>${d.findings
 				.map(
 					(f, index) =>
 						`<article><h3>${esc(f.ruleId)} · ${esc(f.conditionId ?? f.findingId)}</h3>${badge(f.verdict)}${badge(f.evidenceState)}<p><b>${esc(t("reason"))}</b> · ${esc(f.reason)}</p>${f.missingEvidence.length ? `<p><b>${esc(t("missing"))}</b> · ${esc(f.missingEvidence.join("; "))}</p>` : ""}<div class="actions">${f.evidenceRefs.map((_, j) => button("evidence", "evidence", `data-finding="${index}" data-evidence="${j}"`)).join("") || `<p>${esc(t("noEvidence"))}</p>`}</div><details><summary>${esc(t("reviews"))}</summary><p>${esc(t("reviewHint"))}</p><p>${esc(t("original"))}: ${esc(t(f.verdict))}</p>${
@@ -135,6 +154,7 @@ export default {
 			page = await rpc.request("list", { kind: "evaluations", limit: 20, ...(cursor ? { cursor } : {}) });
 		}
 		async function refresh() {
+			detachObservation();
 			rpc.select({});
 			source = undefined;
 			revision = undefined;
@@ -217,6 +237,54 @@ export default {
 				return;
 			}
 			void run(async () => {
+				if (action === "watch-start") {
+					const configs = reportConfigs(),
+						paths = [...new Set((configs.F01?.checks ?? []).map((check) => check.path))];
+					if (paths.length > 20) throw new Error(t("tooManyPaths"));
+					const watchId = crypto.randomUUID();
+					const selected = (observation = {
+						watchId,
+						source: { conversationId: source.conversationId, sessionId: source.sessionId },
+						configs,
+						range: `${contract.data.scope.startMessageId} → ${contract.data.scope.endMessageId}`,
+						state: "observing",
+					});
+					let value;
+					try {
+						value = await rpc.request("watchStart", {
+							ref: snapshot.data.attemptRefs[0],
+							artifactPaths: paths,
+							watchId,
+						});
+					} catch (error) {
+						if (
+							observation === selected &&
+							error.code &&
+							!["TIMEOUT", "EXECUTION_UNKNOWN", "IO_ERROR"].includes(error.code)
+						)
+							observation = undefined;
+						throw error;
+					}
+					if (observation === selected && !closed) Object.assign(selected, value);
+				}
+				if (action === "watch-dismiss" && observation?.state === "stopped") observation = undefined;
+				if (["watch-status", "watch-stop", "watch-score"].includes(action)) {
+					const selected = observation;
+					const value = await rpc.request(action === "watch-status" ? "watchStatus" : "watchStop", {
+						...selected.source,
+						watchId: selected.watchId,
+					});
+					if (observation !== selected || closed) return;
+					Object.assign(selected, value);
+					if (action === "watch-score") {
+						if (!observation.latest?.checkpointRef) throw new Error(t("noObservation"));
+						const sealed = await rpc.request("seal", { ref: observation.latest.checkpointRef });
+						job = await rpc.request("evaluate", { ref: sealed, configs: observation.configs });
+						view = "records";
+						await list();
+						await status();
+					}
+				}
 				if (action === "revise") {
 					const configs = reportConfigs();
 					revision = { contract: await completeContract(ref(contract)), configs };
@@ -422,8 +490,27 @@ export default {
 			if (view !== "new" && !revision && !root.querySelector("textarea:focus")) render();
 		});
 		languageObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
+		const heartbeat = setInterval(async () => {
+			const selected = observation;
+			if (!selected || selected.state === "stopped" || closed || busy) return;
+			try {
+				const value = await rpc.request("watchStatus", { ...selected.source, watchId: selected.watchId });
+				if (observation !== selected || closed) return;
+				Object.assign(selected, value);
+				const panel = root.querySelector("[data-observation]");
+				if (panel && !panel.contains(document.activeElement)) panel.outerHTML = observationHtml();
+			} catch (error) {
+				if (observation === selected && !closed && !error.stale && error.code !== "IN_PROGRESS") {
+					selected.error = { message: error.message };
+					const panel = root.querySelector("[data-observation]");
+					if (panel && !panel.contains(document.activeElement)) panel.outerHTML = observationHtml();
+				}
+			}
+		}, 15000);
 		void refresh();
 		return () => {
+			clearInterval(heartbeat);
+			detachObservation();
 			closed = true;
 			rpc.close();
 			languageObserver.disconnect();

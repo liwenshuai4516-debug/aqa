@@ -18,7 +18,7 @@ metadata:
 4. `evaluate` 引用封存快照，可带明确规则 configs；或引用既有 evaluation，精确复用其原快照、internal profile 和规则版本，此时不传 configs。旧配置缺失或规则版本不可用时停止，不用当前默认值替代。返回 jobId。`status` 查询结果，必要时 `cancel` 只取消评分。成功启动、保存报告和目标通过是不同状态。未完成或重启 unknown 不自动重试原任务。
 5. `list/get/readEvidence/export` 查看记录和来源；大记录缩小 limit，正文和脱敏导出用 offset 分页，直到 nextOffset 为 null。导出保留 manifestDigest，分页时不得混接不同 manifest。原证据不可覆写；新材料要新采集/新封存/新报告。
 
-所有请求必须提供唯一 requestId；同一操作失败重试保留原 requestId 和输入，避免重复写。明确重评使用新 requestId，不增加测试、CLI、模型或业务调用。工具没有 review 操作；不得传 human/owner 或冒充人工通过。
+所有请求必须提供唯一 requestId；同一操作失败重试保留原 requestId 和输入，避免重复写。明确重评使用新 requestId，不增加测试、CLI、模型或业务调用。持续观察只可在评估中心详情显式开启：固定原选区、明确子任务及原 F01 文件配置，启动和所选会话运行事件触发采集，不监听文件变更、不扩选新消息。页面可检查/停止并按最新持久检查点生成新报告；关闭视图请求停止，断连则最长60秒未续期停止。工具没有 watch 控制或 review 操作；不得传 human/owner 或冒充人工通过。
 
 F01 仅验证存在/格式/明确 schema/摘要，不能证明全部语义正确；F02 必须有同 attempt 原生执行关联，旧 run 与 SKIP 不计本次通过；F04 只核必要依赖；F05 自由文本留人工；F06 工具失败统计不等于 Agent 责任；F07 仅重复候选，合理轮询与修复后复验不扣分；F08 不把未知费用补零，不把工具区间当全任务时长，不把未观测时间当模型思考。
 

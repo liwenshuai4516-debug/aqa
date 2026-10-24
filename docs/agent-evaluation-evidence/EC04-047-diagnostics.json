@@ -1,0 +1,17 @@
+{
+	"desktopProfileAssertion": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-3JyuK9/result.json",
+		"sha256": "8d3fb3a425fbede38408a4551a292c3e8fa1013e4c62942f401eb7ce80df5776",
+		"status": "FAIL",
+		"cause": "Fresh snapshot scoring uses fully expanded rule configs, producing a different profileId. Saved rule ids/versions/configs and profileVersion are equal. Corrected the new-snapshot assertion; exact original-report re-scoring still requires the same profileId.",
+		"error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n+   profileId: 'internal-a23cf7270c8fecb10f68209610fede3fc26bad370ab7098efad3b8c',\n-   profileId: 'internal-6d6158a599a38d5f383bff6217c4f1fa1f8fcaa0e70dbb67903f979',\n    profileVersion: '1',\n    rules: [\n      {\n        config: {\n          checks: [\n\n    at file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:422:9"
+	},
+	"unitFixtureFailures": [
+		{
+			"rawPath": "/tmp/agent-evaluation-047-vitest-final.json",
+			"cause": "Fake timers were installed after mount, leaving the real heartbeat interval unaffected; installed before mount, then reran all 196 tests."
+		}
+	],
+	"actualModelCalls": 0,
+	"actualCliCalls": 0
+}

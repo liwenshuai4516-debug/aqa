@@ -122,6 +122,119 @@ async function diagnose(f: ReturnType<typeof fixture>) {
 	return { contractRef, attemptRef, collected, snapshotRef, reportRef: status.reportRef, report };
 }
 describe("EC04 product service", () => {
+	it("observes only the fixed selection, replays starts, stops idempotently and preserves reports", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const listeners = new Set<(event: any) => void>();
+		const off = vi.fn();
+		f.host.onRunEvent.mockImplementation((fn: any) => {
+			listeners.add(fn);
+			return () => {
+				listeners.delete(fn);
+				off();
+			};
+		});
+		const input = {
+			ref: scored.attemptRef,
+			watchId: "watch-1",
+			requestId: "watch-start",
+			artifactPaths: ["result.json"],
+		};
+		const started = await f.request("watchStart", input);
+		expect(started).toMatchObject({
+			state: "observing",
+			watchId: "watch-1",
+			latest: { checkpointRef: { kind: "evidence" } },
+		});
+		expect(listeners.size).toBe(1);
+		expect(await f.request("watchStart", input)).toEqual(started);
+		await expect(f.request("watchStart", { ...input, watchId: "changed" })).rejects.toMatchObject({
+			code: "VERSION_CONFLICT",
+		});
+		await expect(f.request("watchStart", { ...input, requestId: "another" })).rejects.toMatchObject({
+			code: "IN_PROGRESS",
+		});
+		await expect(f.request("watchStatus", { watchId: "wrong" })).rejects.toMatchObject({ code: "PERMISSION_DENIED" });
+		await expect(f.request("watchStop", { watchId: "watch-1" }, f.tool)).rejects.toMatchObject({
+			code: "PERMISSION_DENIED",
+		});
+		await expect(
+			f.request("watchStatus", { watchId: "watch-1" }, { channel: "ui", clientId: "other" }),
+		).rejects.toMatchObject({ code: "PERMISSION_DENIED" });
+		await expect(f.request("watchStatus", { watchId: "watch-1", sessionId: "other" })).rejects.toMatchObject({
+			code: "VERSION_CONFLICT",
+		});
+		const emit = [...listeners][0];
+		f.host.readEvaluationArtifact.mockClear();
+		emit({ conversationId: "unselected-child", type: "run_end" });
+		expect(f.host.readEvaluationArtifact).not.toHaveBeenCalled();
+		writeFileSync(join(f.workspace, "result.json"), "invalid JSON");
+		f.entries.push({
+			id: "new-task",
+			parentId: "a1",
+			type: "message",
+			message: { role: "user", content: "Unselected task" },
+		});
+		emit({ conversationId: "conv1", type: "run_end" });
+		let current: any;
+		await vi.waitFor(async () => {
+			current = await f.request("watchStatus", { watchId: "watch-1" });
+			expect(current.latest.checkpointRef).not.toEqual(started.latest.checkpointRef);
+		});
+		const stopped = await f.request("watchStop", { watchId: "watch-1" });
+		expect(stopped.state).toBe("stopped");
+		expect(listeners.size).toBe(0);
+		await f.request("watchStop", { watchId: "watch-1" });
+		expect(off).toHaveBeenCalledTimes(1);
+		f.host.readEvaluationArtifact.mockClear();
+		emit({ conversationId: "conv1", type: "run_end" });
+		expect(f.host.readEvaluationArtifact).not.toHaveBeenCalled();
+		const sealed = await f.request("seal", { ref: stopped.latest.checkpointRef });
+		const snapshot = await f.request("get", { ref: sealed });
+		expect(snapshot.data.attemptRefs).toEqual([scored.attemptRef]);
+		expect((await f.request("get", { ref: scored.reportRef })).sourceDigest).toBe(scored.report.sourceDigest);
+		expect((await f.request("list", { kind: "attempts" })).items).toHaveLength(1);
+		expect(f.host.readEvaluationNative).not.toHaveBeenCalled();
+	});
+	it("reports collection faults without inventing a checkpoint and can still stop", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const off = vi.fn();
+		f.host.onRunEvent.mockReturnValue(off);
+		vi.spyOn(f.service.collector!, "collect").mockRejectedValue(
+			Object.assign(new Error("synthetic disk error"), { code: "IO_ERROR" }),
+		);
+		const started = await f.request("watchStart", { ref: scored.attemptRef, watchId: "failed" });
+		expect(started).toMatchObject({ state: "observing", latest: null, error: { code: "IO_ERROR" } });
+		expect((await f.request("watchStop", { watchId: "failed" })).state).toBe("stopped");
+		expect(off).toHaveBeenCalledTimes(1);
+	});
+
+	it("expires unrenewed listeners, renews status leases and releases all listeners on close", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const off = vi.fn();
+		f.host.onRunEvent.mockReturnValue(off);
+		vi.useFakeTimers();
+		try {
+			await f.request("watchStart", { ref: scored.attemptRef, watchId: "lease" });
+			await vi.advanceTimersByTimeAsync(45000);
+			expect((await f.request("watchStatus", { watchId: "lease" })).state).toBe("observing");
+			await vi.advanceTimersByTimeAsync(45000);
+			expect(off).not.toHaveBeenCalled();
+			await vi.advanceTimersByTimeAsync(15000);
+			expect(off).toHaveBeenCalledTimes(1);
+			expect((await f.request("watchStatus", { watchId: "lease" })).state).toBe("stopped");
+			await f.request("watchStart", { ref: scored.attemptRef, watchId: "replacement" });
+			f.service.close();
+			expect(off).toHaveBeenCalledTimes(2);
+			await vi.advanceTimersByTimeAsync(60000);
+			expect(off).toHaveBeenCalledTimes(2);
+		} finally {
+			vi.useRealTimers();
+		}
+	});
+
 	it("lazily describes the authorized source, records actual SDK version, and never falls back to another owner", async () => {
 		const f = fixture();
 		const source = await f.request("describe");

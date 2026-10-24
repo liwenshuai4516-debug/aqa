@@ -21,7 +21,9 @@ export const toolActions = [
 ];
 export const requestSchema = T.Object(
 	{
-		action: T.Union([...toolActions, "review"].map((value) => T.Literal(value))),
+		action: T.Union(
+			[...toolActions, "review", "watchStart", "watchStatus", "watchStop"].map((value) => T.Literal(value)),
+		),
 		requestId: T.String({ pattern: "^[A-Za-z0-9_-]{1,128}$" }),
 		conversationId: T.Optional(string),
 		sessionId: T.Optional(string),
@@ -31,6 +33,7 @@ export const requestSchema = T.Object(
 		configs: T.Optional(T.Record(T.String(), T.Unknown())),
 		kind: T.Optional(string),
 		jobId: T.Optional(string),
+		watchId: T.Optional(string),
 		cursor: T.Optional(T.String({ maxLength: 256 })),
 		offset: T.Optional(T.Integer({ minimum: 0 })),
 		limit: T.Optional(T.Integer({ minimum: 1, maximum: 100 })),
@@ -78,6 +81,7 @@ export class EvaluationService {
 		this.closed = false;
 		this.pending = new Set();
 		this.controllers = new Set();
+		this.watches = new Map();
 	}
 	initialize() {
 		requireValue(!this.closed, "CAPABILITY_UNAVAILABLE", "Evaluation plugin is stopped");
@@ -98,7 +102,7 @@ export class EvaluationService {
 		requireValue(
 			trusted.channel !== "tool" || toolActions.includes(request.action),
 			"PERMISSION_DENIED",
-			"Agent tools cannot submit human reviews",
+			"Agent tools cannot submit human reviews or control UI observation",
 		);
 		let conversationId = trusted.conversationId ?? request.conversationId;
 		if (trusted.conversationId && request.conversationId)
@@ -162,6 +166,85 @@ export class EvaluationService {
 				...(previousRef ? { previousRef } : {}),
 			});
 		switch (request.action) {
+			case "watchStart": {
+				requireValue(trusted.channel === "ui", "PERMISSION_DENIED", "Observation requires the UI channel");
+				const previous = this.watches.get(trusted.clientId);
+				if (previous?.requestId === requestId) {
+					requireValue(
+						previous.watchId === request.watchId &&
+							digest(previous.input) ===
+								digest({ ref: request.ref, artifactPaths: request.artifactPaths ?? [], conversationId }),
+						"VERSION_CONFLICT",
+						"Observation request changed",
+					);
+					store.get(context, previous.input.ref);
+					return this.watchStatus(previous);
+				}
+				requireValue(
+					!previous || previous.stopped,
+					"IN_PROGRESS",
+					"Stop the current observation before starting another",
+				);
+				requireValue(
+					this.watches.has(trusted.clientId) || this.watches.size < 1000,
+					"LIMIT_EXCEEDED",
+					"Observation owner budget reached",
+				);
+				const attempt = store.get(context, request.ref);
+				requireValue(attempt.kind === "attempts", "INVALID_INPUT", "Observation attempt required");
+				const contract = store.get(context, attempt.data.contractRef);
+				requireValue(
+					contract.data.scope.sessionId === source.sessionId &&
+						(!attempt.data.sourceSessionId || attempt.data.sourceSessionId === source.sessionId),
+					"PERMISSION_DENIED",
+					"Observation selection differs from the open source",
+				);
+				requireValue(typeof request.watchId === "string", "INVALID_INPUT", "Observation identity required");
+				const entry = {
+					watchId: request.watchId,
+					requestId,
+					input: { ref: request.ref, artifactPaths: request.artifactPaths ?? [], conversationId },
+					stopped: false,
+					latest: null,
+					error: null,
+					handle: null,
+				};
+				entry.handle = this.collector.watch(
+					context,
+					{ attemptRef: request.ref, conversationId, requestId, artifactPaths: entry.input.artifactPaths },
+					(change) => {
+						if (entry.stopped || this.closed) return;
+						if (change.result) {
+							const result = change.result;
+							entry.latest = {
+								checkpointRef: result.checkpointRef,
+								coverage: result.coverage,
+								evidenceCount: result.evidenceRefs.length,
+								gapCount: result.gaps.length,
+								observedAt: result.observedAt,
+							};
+							entry.error = null;
+						} else entry.error = change.error;
+					},
+				);
+				this.watches.set(trusted.clientId, entry);
+				this.renewWatch(entry);
+				await entry.handle.refresh();
+				return this.watchStatus(entry);
+			}
+			case "watchStatus":
+			case "watchStop": {
+				const entry = this.watches.get(trusted.clientId);
+				requireValue(
+					entry && entry.watchId === request.watchId && entry.input.conversationId === conversationId,
+					"PERMISSION_DENIED",
+					"Observation unavailable for this sender and source",
+				);
+				store.get(context, entry.input.ref);
+				if (request.action === "watchStop") this.stopWatch(entry);
+				else if (!entry.stopped) this.renewWatch(entry);
+				return this.watchStatus(entry);
+			}
 			case "list": {
 				if (request.ref) store.get(context, request.ref);
 				const page = store.list(context, {
@@ -398,8 +481,29 @@ export class EvaluationService {
 			}
 		}
 	}
+	watchStatus(entry) {
+		return {
+			watchId: entry.watchId,
+			state: entry.stopped ? "stopped" : "observing",
+			...entry.handle.status(),
+			latest: entry.latest,
+			error: entry.error,
+		};
+	}
+	stopWatch(entry) {
+		if (entry.stopped) return;
+		entry.stopped = true;
+		clearTimeout(entry.timer);
+		entry.handle.stop();
+	}
+	renewWatch(entry) {
+		clearTimeout(entry.timer);
+		entry.timer = setTimeout(() => this.stopWatch(entry), 60000);
+		entry.timer.unref?.();
+	}
 	close() {
 		if (this.closed) return;
+		for (const entry of this.watches.values()) this.stopWatch(entry);
 		for (const controller of this.controllers) controller.abort();
 		this.collector?.close();
 		// Persist cancellation requests before invalidating identities and releasing the writer lock.

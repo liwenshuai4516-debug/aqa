@@ -73,7 +73,10 @@ async function openReport() {
 				evaluationSubject: "agent-task",
 			},
 		},
-		snapshot: { ...snapshotRef, data: { coverage: "partial", gaps: [] } },
+		snapshot: {
+			...snapshotRef,
+			data: { coverage: "partial", gaps: [], attemptRefs: [{ kind: "attempts", id: "attempt", revision: 1 }] },
+		},
 		report: {
 			...reportRef,
 			data: {
@@ -128,6 +131,101 @@ async function openReport() {
 	return { root, h, records, contractRef, snapshotRef, reportRef };
 }
 describe("evaluation client lifecycle", () => {
+	it("keeps observation scoped, scores the stopped durable checkpoint and allows dismissing it", async () => {
+		const { root, h, records } = await openReport();
+		root.querySelector<HTMLButtonElement>("[data-action=watch-start]")!.click();
+		const start = h.sent.at(-1);
+		expect(start).toMatchObject({
+			action: "watchStart",
+			conversationId: "conv",
+			sessionId: "session",
+			artifactPaths: ["result.json"],
+			ref: { kind: "attempts", id: "attempt" },
+		});
+		const checkpointRef = { kind: "evidence", id: "latest", revision: 1 };
+		h.reply(start, {
+			watchId: start.watchId,
+			state: "observing",
+			latest: { checkpointRef, evidenceCount: 2, gapCount: 1 },
+		});
+		await vi.waitFor(() =>
+			expect(root.querySelector<HTMLButtonElement>("[data-action=watch-score]")?.disabled).toBe(false),
+		);
+		root.querySelector<HTMLButtonElement>("[data-action=watch-score]")!.click();
+		const stop = h.sent.at(-1);
+		expect(stop).toMatchObject({
+			action: "watchStop",
+			watchId: start.watchId,
+			conversationId: "conv",
+			sessionId: "session",
+		});
+		h.reply(stop, { watchId: start.watchId, state: "stopped", latest: { checkpointRef } });
+		await vi.waitFor(() => expect(h.sent.at(-1).action).toBe("seal"));
+		expect(h.sent.at(-1).ref).toEqual(checkpointRef);
+		const sealed = { kind: "snapshots", id: "new-snapshot", revision: 1 };
+		h.reply(h.sent.at(-1), sealed);
+		await vi.waitFor(() => expect(h.sent.at(-1).action).toBe("evaluate"));
+		expect(h.sent.at(-1)).toMatchObject({
+			ref: sealed,
+			configs: { F01: records.report.data.configuration.rules[0].config },
+		});
+		h.reply(h.sent.at(-1), { jobId: "watch-score" });
+		await vi.waitFor(() => expect(h.sent.at(-1).action).toBe("status"));
+		h.reply(h.sent.at(-1), { state: "queued", jobId: "watch-score" });
+		await vi.waitFor(() =>
+			expect(root.querySelector<HTMLButtonElement>("[data-action=watch-dismiss]")?.disabled).toBe(false),
+		);
+		root.querySelector<HTMLButtonElement>("[data-action=watch-dismiss]")!.click();
+		await vi.waitFor(() => expect(root.querySelector("[data-observation]")).toBeNull());
+	});
+	it("renews observation, renders status faults and stops polling after unmount", async () => {
+		vi.useFakeTimers();
+		const { root, h } = await openReport();
+		root.querySelector<HTMLButtonElement>("[data-action=watch-start]")!.click();
+		const start = h.sent.at(-1);
+		h.reply(start, { state: "observing", watchId: start.watchId });
+		await vi.advanceTimersByTimeAsync(15000);
+		expect(h.sent.at(-1)).toMatchObject({
+			action: "watchStatus",
+			conversationId: "conv",
+			sessionId: "session",
+			watchId: start.watchId,
+		});
+		h.reply(h.sent.at(-1), { code: "IO_ERROR", message: "Status unavailable" }, false);
+		await vi.advanceTimersByTimeAsync(0);
+		expect(root.querySelector("[data-observation]")?.textContent).toContain("Status unavailable");
+		stops.pop()!();
+		const count = h.sent.length;
+		await vi.advanceTimersByTimeAsync(60000);
+		expect(h.sent.length).toBe(count);
+	});
+	it("allows a rejected start to be corrected and retried", async () => {
+		const { root, h } = await openReport();
+		root.querySelector<HTMLButtonElement>("[data-action=watch-start]")!.click();
+		h.reply(h.sent.at(-1), { code: "PERMISSION_DENIED", message: "Source unavailable" }, false);
+		await vi.waitFor(() =>
+			expect(root.querySelector<HTMLButtonElement>("[data-action=watch-start]")?.disabled).toBe(false),
+		);
+		expect(root.querySelector("[role=alert]")?.textContent).toContain("Source unavailable");
+		expect(root.querySelector("[data-observation]")).toBeNull();
+	});
+
+	it("stops a known observation identity even when unmounted before start replies", async () => {
+		const { root, h } = await openReport();
+		root.querySelector<HTMLButtonElement>("[data-action=watch-start]")!.click();
+		const start = h.sent.at(-1);
+		stops.pop()!();
+		expect(h.sent.at(-1)).toMatchObject({
+			action: "watchStop",
+			watchId: start.watchId,
+			conversationId: "conv",
+			sessionId: "session",
+		});
+		h.reply(start, { state: "observing", watchId: start.watchId });
+		await Promise.resolve();
+		expect(h.sent.filter((m) => m.action === "evaluate")).toHaveLength(0);
+	});
+
 	it("invalidates old-source replies and releases pending requests on unmount", async () => {
 		const h = harness(),
 			rpc = transport(h.ctx);
