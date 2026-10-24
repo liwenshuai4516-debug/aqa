@@ -1,0 +1,60 @@
+{
+	"originalRegression": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-Qz2xyn/result.json",
+		"sha256": "2c98d94ad2bce6087a642053470bd9d06d8f1c1ba1bab19819b320549fca14d8",
+		"status": "FAIL",
+		"stage": "reopen the original report after a full native restart",
+		"error": "AssertionError [ERR_ASSERTION]: Native client identity must survive full exit\n+ actual - expected\n\n+ 'ced36841-20f2-45db-924e-83d390f62803'\n- '8ecde700-3260-4c2b-a600-99f61e9d2317'\n\n    at file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:756:9",
+		"cause": "Original native client ID changes after a full exit; regression reproduced before the desktop implementation."
+	},
+	"sourceWait": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-NwoVCA/result.json",
+		"sha256": "30ee5dc9f961ffd0a8aceff8c3a9ce6c4250ea854bfcf526ba10bef9fd4956fc",
+		"status": "FAIL",
+		"stage": "reopen the original report after a full native restart",
+		"error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.aev [data-action=\"open\"][data-id=\"6e3d1eb2-d535-4ebb-a369-9902c3757459\"]:not([disabled])')\u001b[22m\n\n    at /Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:786:97",
+		"cause": "Identity restored; test raced source switching and read a stale fixed source."
+	},
+	"fixedSourceRefresh": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-jZPk0K/result.json",
+		"sha256": "c9cb75020dd60a0a79d2058c13a23d4ef3a03dcca9cd980c50efb35989294342",
+		"status": "FAIL",
+		"stage": "reopen the original report after a full native restart",
+		"error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.aev [data-action=\"open\"][data-id=\"8093b5b6-bf4d-4d47-b205-72e80935caf9\"]:not([disabled])')\u001b[22m\n\n    at /Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:806:97",
+		"cause": "Switch completed, but restored plugin view intentionally retained its old fixed source until explicit refresh."
+	},
+	"staleLocator": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-OL6yZn/result.json",
+		"sha256": "c697d54e30058b025b6ae76ab24596cea30e8325879f4171f196a2def35c82c7",
+		"status": "FAIL",
+		"stage": "reopen the original report after a full native restart",
+		"error": "locator.click: Target page, context or browser has been closed\n    at /Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:812:66",
+		"cause": "Original report loaded after explicit refresh; review locator was still bound to the closed first-process page."
+	},
+	"developmentWindow": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-tBWlMq/result.json",
+		"sha256": "5ed5e929fd1d78f48c7e93bed5d7b6633583a332b7ab0cf3f8ec898ff916a8d3",
+		"status": "FAIL",
+		"stage": "development URL cannot acquire the native identity",
+		"error": "Error: Native app failed to load before automation attached\n    at launchNativeApp (file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/desktop/native-app.mjs:42:11)\n    at async file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:841:8",
+		"cause": "History recovery passed. Legacy development URL does not set serverHealthy, so no normal window opens; standard native launcher timed out. Kept as a gap; final dedicated renderer probes IPC denial only."
+	},
+	"preloadHarness": {
+		"rawPath": "/tmp/agent-evaluation-native-identity-tests.json",
+		"sha256": "67a58052b6063866452e9fc44fe6f14e06455669b84fb47560f2145b0dfc3b0f",
+		"numPassedTests": 19,
+		"numFailedTests": 1,
+		"cause": "VM fixture omitted the CommonJS module global; supplied the real module shape, then targeted and complete tests passed."
+	},
+	"final": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-b4LeAc/result.json",
+		"sha256": "049853ec672edda931198896f5c6892ddbe2f87e242d111ffad52d5bf9261adb",
+		"status": "PASS",
+		"stage": "development URL cannot acquire the native identity",
+		"error": null,
+		"screenshot": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-b4LeAc/history-reopened.png",
+		"screenshotSha256": "c754a15a599e6aa9c113f7558e2fc41d7abcb37c6174e91f7925903cab9807cc"
+	},
+	"actualModelCalls": 0,
+	"actualCliCalls": 0
+}

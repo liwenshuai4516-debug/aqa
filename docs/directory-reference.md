@@ -74,6 +74,7 @@ pi-web-ui/
 ├── .github/workflows/desktop-release.yml  # tag 推送 → windows-latest 出 NSIS 安装包并附到 Release（签名以后加这里）
 ├── extensions/                 # pi 扩展：webui.ts（/webui 命令启动本机服务并打开浏览器）
 ├── plugin-sdk/                 # 插件 SDK、类型与脚手架使用说明
+├── desktop/client-identity.ts  # 主进程生成/持久化单窗口编号；main.ts/preload.cts仅向自有服务主窗口恢复
 ├── launcher/                   # Windows 便携版启动器
 ├── locales/                    # 可下载语言包（核心 zh/en 在 web/src/i18n.tsx）
 ├── assets/                     # 项目展示资源

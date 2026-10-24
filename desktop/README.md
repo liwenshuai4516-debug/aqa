@@ -25,7 +25,7 @@ npx electron-builder -c desktop/electron-builder.yml --mac --arm64 --publish nev
 
 默认数据位置为 Electron appData 下的 `Pi Agent Desktop/`，其中 `data/` 为业务数据、`agent/` 为模型配置和会话、`logs/` 为脱敏日志；`startup.json` 保存工作区，`ui-preferences.json` 只保存允许的界面偏好。不自动导入原 Web/CLI 凭据或会话，不宣称认证文件已加密。首次模型配置使用原设置页面。
 
-服务只监听 127.0.0.1，优先端口 8790，已占用则安全回退，不终止占用进程。每次启动随机生成鉴权令牌，并以原 cookie 流程交给界面；健康与身份校验通过才打开窗口。主题、语言和面板设置按明确白名单跨端口恢复，不复制身份或授权。
+服务只监听 127.0.0.1，优先端口 8790，已占用则安全回退，不终止占用进程。每次启动随机生成鉴权令牌，并以原 cookie 流程交给界面；健康与身份校验通过才打开窗口。主题、语言和面板设置按明确白名单跨端口恢复，不从界面偏好复制身份或授权。
 
 客户端自身启动不需要全局 Node/Pi CLI。用户项目的 Git、Shell、Python、MCP 等仍需原有外部环境；模型和市场需要网络及用户配置。DSH 引擎还需官方运行时树（本次验证 `@deepseek-ai/dsh@0.1.5-rc.3`），可由 `PI_WEB_DSH_RUNTIME` 指向其 node_modules；应用仅随包携带原适配器所需依赖，不内置完整官方 DSH 运行时。
 
@@ -34,6 +34,8 @@ npx electron-builder -c desktop/electron-builder.yml --mac --arm64 --publish nev
 ## 窗口、恢复与浏览器
 
 macOS 关闭窗口保留服务，Dock 激活重建窗口；重复实例聚焦原窗口。正常退出等待原服务落盘并清理自己的子进程。服务崩溃提示重新启动或退出；内存输出和 PTY 不会恢复。
+
+桌面主进程在同一userData的`client-identity`文件保存随机窗口编号（0600），在原界面读取sessionStorage之前仅恢复给自有服务的主窗口。不同应用目录、额外渲染窗口和开发URL不共享该编号；浏览器每标签页编号逻辑不变。它保持已有服务端授权域与逐会话校验，不从报告或请求认领旧编号、不自动迁移旧临时身份报告。文件损坏/链接会拒绝启动，保留原件，应退出后从完整应用数据备份恢复；备份须包含该文件。受限storage不可用时原界面仍退化为临时编号，不能保证跨重启回读。实际macOS arm64验证见[EC04身份恢复](../docs/agent-evaluation-evidence/EC04.md)。
 
 D02 已获批准：桌面设置 `PI_WEB_RESUME_INTERRUPTED=0`，保留中断记录、历史与手动恢复，不自动发送“继续”。Web/CLI 默认行为保留。
 

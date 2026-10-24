@@ -18,6 +18,7 @@
 		"workspace.ts",
 		"logging.ts",
 		"preferences.ts",
+		"client-identity.ts",
 		"sidecar.ts",
 		"process-lifecycle.ts"
 	]

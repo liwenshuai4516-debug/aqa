@@ -49,6 +49,16 @@ contextBridge.exposeInMainWorld("piDesktop", {
 	},
 });
 
+// The main process owns this single-window identity. Do not adopt an ID from UI storage or requests.
+const clientId = ipcRenderer.sendSync("pi-desktop:client-identity") as string | null;
+if (clientId && location.protocol === "http:") {
+	try {
+		sessionStorage.setItem("pi-web-client-id", clientId);
+	} catch {
+		/* Storage unavailable: the original UI falls back to a page-local identity. */
+	}
+}
+
 // Restore a strict preference allowlist synchronously, before the original React bundle reads storage.
 const saved = ipcRenderer.sendSync("pi-desktop:preferences-load") as {
 	keys: string[];

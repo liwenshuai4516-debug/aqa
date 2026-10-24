@@ -15,6 +15,7 @@ import { app, BrowserWindow, dialog, ipcMain, shell, type IpcMainInvokeEvent, ty
 import { spawn, type ChildProcess } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync, renameSync } from "node:fs";
 import { randomBytes } from "node:crypto";
+import { loadDesktopClientId } from "./client-identity.js";
 import { stopOwnedSidecar } from "./process-lifecycle.js";
 import { createLogStream, installDesktopLogging } from "./logging.js";
 import { DESKTOP_PREFERENCE_KEYS, sanitizePreferences } from "./preferences.js";
@@ -72,6 +73,7 @@ let windowPromise: Promise<void> | null = null;
 let recoveryPromise: Promise<void> | null = null;
 const preferencesPath = join(app.getPath("userData"), "ui-preferences.json");
 let preferences: Record<string, string> = {};
+let desktopClientId: string | null = null;
 try {
 	preferences = sanitizePreferences(JSON.parse(readFileSync(preferencesPath, "utf8")));
 } catch {
@@ -369,6 +371,8 @@ async function loadWindowUrl(window: BrowserWindow, url: string): Promise<void> 
 }
 
 async function createWindow(url: string): Promise<void> {
+	// Only the owned sidecar gets a stable native identity, never a development URL override.
+	desktopClientId = serverProc && serverHealthy ? loadDesktopClientId(app.getPath("userData")) : null;
 	mainWin = new BrowserWindow({
 		width: 1280,
 		height: 860,
@@ -521,6 +525,9 @@ let windowControlsWired = false;
 function wireWindowControls(): void {
 	if (windowControlsWired) return;
 	windowControlsWired = true;
+	ipcMain.on("pi-desktop:client-identity", (event) => {
+		event.returnValue = trustedSender(event) && serverProc && serverHealthy ? desktopClientId : null;
+	});
 	ipcMain.on("pi-desktop:preferences-load", (event) => {
 		event.returnValue = trustedSender(event) ? { keys: DESKTOP_PREFERENCE_KEYS, values: preferences } : null;
 	});

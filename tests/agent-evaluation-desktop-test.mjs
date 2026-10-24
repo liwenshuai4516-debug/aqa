@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createServer } from "node:net";
+import { createServer as createHttpServer } from "node:http";
 import { once } from "node:events";
 import { digest } from "../plugins/agent-evaluation/schema.mjs";
 import electron from "electron";
@@ -73,7 +74,7 @@ const result = {
 	actualModelCalls: 0,
 	actualCliCalls: 0,
 };
-let app, page;
+let app, page, overrideServer;
 async function until(fn, timeout = 30000) {
 	const end = Date.now() + timeout;
 	while (Date.now() < end) {
@@ -679,10 +680,39 @@ try {
 	result.checks.push(
 		"Plugin disabled state survives page reload and gates the owned skill; re-enable restores the skill",
 	);
+	stage("desktop identity is withheld from a secondary renderer");
+	const nativeClientId = await page.evaluate(() => sessionStorage.getItem("pi-web-client-id"));
+	const secondaryClientId = await app.evaluate(
+		async ({ BrowserWindow }, preload) => {
+			const primary = BrowserWindow.getAllWindows()[0];
+			const secondary = new BrowserWindow({
+				show: false,
+				webPreferences: { preload, contextIsolation: true, nodeIntegration: false, sandbox: true },
+			});
+			try {
+				await secondary.loadURL(primary.webContents.getURL());
+				return await secondary.webContents.executeJavaScript('sessionStorage.getItem("pi-web-client-id")');
+			} finally {
+				secondary.destroy();
+			}
+		},
+		join(repo, "dist/desktop/preload.cjs"),
+	);
+	assert.notEqual(secondaryClientId, nativeClientId);
+	result.secondaryRenderer = { distinctClientId: true };
+	result.checks.push(
+		"An actual secondary renderer with the same preload and service origin cannot obtain the main window native identity",
+	);
 	stage("full app restart persistence");
 	await writeFile(join(output, "app-first-process.log"), app.getLogs());
 	await app.close();
 	app = undefined;
+	const restartReservation = createServer().listen(0, "127.0.0.1");
+	await once(restartReservation, "listening");
+	const restartPort = restartReservation.address().port;
+	assert.ok(restartPort >= 8900 && restartPort !== port);
+	await new Promise((resolve) => restartReservation.close(resolve));
+	env.PI_WEB_PORT = String(restartPort);
 	app = await launchNativeApp({
 		executablePath: electron,
 		packaged: false,
@@ -750,6 +780,105 @@ try {
 		"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",
 	);
 
+	stage("reopen the original report after a full native restart");
+	const restartedClientId = await page.evaluate(() => sessionStorage.getItem("pi-web-client-id"));
+	result.historyChecks = {
+		originalPrincipalId: original.domain.principalId,
+		restartedClientId,
+		changedServicePort: restartPort !== port,
+	};
+	assert.equal(restartedClientId, original.domain.principalId, "Native client identity must survive full exit");
+	const historyAttempts = await names("attempts"),
+		historySnapshots = await names("snapshots"),
+		historyReports = await names("evaluations");
+	const restartSwitchOffset = await page.evaluate(() => window.__evaluationFrames.length);
+	await send({ type: "switch_session", path: sessionPath });
+	await until(() =>
+		page.evaluate(
+			({ offset, target }) =>
+				window.__evaluationFrames
+					.slice(offset)
+					.some((frame) => frame.type === "transition_progress" && frame.phase === "done" && frame.target === target),
+			{ offset: restartSwitchOffset, target: sessionPath },
+		),
+	);
+	await until(() => page.locator(".msg").filter({ hasText: "synthetic offline fixture" }).count());
+	await openView();
+	// The restored plugin view deliberately keeps its prior fixed source until an explicit refresh.
+	await page.locator('.aev [data-action="refresh"]:not([disabled])').click();
+	await page.locator('.aev [data-action="open"][data-id="' + original.id + '"]:not([disabled])').click();
+	await page.locator(".aev article h3").first().waitFor();
+	const historicalArtifact = page.locator(".aev article").filter({ has: page.locator("h3", { hasText: "F01" }) });
+	assert.equal(await page.locator(".aev [role=alert]").innerText(), "");
+	await historicalArtifact.locator("summary", { hasText: "Human reviews" }).click();
+	assert.match(await historicalArtifact.innerText(), /Original verdict: Pass/);
+	assert.match(await historicalArtifact.innerText(), /Manual semantic review is still needed/);
+	assert.equal(await readFile(originalFile, "utf8"), originalBytes);
+	await historicalArtifact.locator('[data-action="evidence"]').first().click();
+	await page.locator(".aev [data-evidence-panel] pre").waitFor();
+	assert.match(await page.locator(".aev [data-evidence-panel]").innerText(), /result.json/);
+	assert.deepEqual(await names("attempts"), historyAttempts);
+	assert.deepEqual(await names("snapshots"), historySnapshots);
+	assert.deepEqual(await names("evaluations"), historyReports);
+	result.historyChecks.reportReopened = true;
+	result.historyChecks.originalBytesUnchanged = true;
+	result.checks.push(
+		"Full native exit/restart restores the owned desktop client identity and reopens the original immutable report, review and evidence after explicit source authorization",
+	);
+
+	await page.screenshot({ path: join(output, "history-reopened.png") });
+	stage("development URL cannot acquire the native identity");
+	await writeFile(join(output, "app-restarted-process.log"), app.getLogs());
+	await app.close();
+	app = undefined;
+	overrideServer = createHttpServer((_req, res) => {
+		res.setHeader("Content-Type", "text/html");
+		res.end("<!doctype html><title>Isolated development override</title><p>Offline identity boundary probe</p>");
+	}).listen(0, "127.0.0.1");
+	await once(overrideServer, "listening");
+	const overridePort = overrideServer.address().port;
+	assert.ok(overridePort >= 8900);
+	page = undefined;
+	app = await launchNativeApp({
+		executablePath: electron,
+		packaged: false,
+		env: { ...env, PI_WEB_DESKTOP_URL: `http://127.0.0.1:${overridePort}` },
+		mainPath: join(repo, "dist/desktop/main.js"),
+		readyMarker: "[desktop] app ready",
+	});
+	// This legacy override does not set serverHealthy, so it creates no normal app window.
+	// Probe the actual IPC denial in an explicit renderer; do not claim override UI acceptance.
+	const overrideProbe = await app.evaluate(
+		async ({ BrowserWindow }, { preload, url }) => {
+			const normalWindowCount = BrowserWindow.getAllWindows().length;
+			const probe = new BrowserWindow({
+				show: false,
+				webPreferences: { preload, contextIsolation: true, nodeIntegration: false, sandbox: true },
+			});
+			try {
+				await probe.loadURL(url);
+				return {
+					clientId: await probe.webContents.executeJavaScript('sessionStorage.getItem("pi-web-client-id")'),
+					normalWindowCount,
+				};
+			} finally {
+				probe.destroy();
+			}
+		},
+		{ preload: join(repo, "dist/desktop/preload.cjs"), url: `http://127.0.0.1:${overridePort}` },
+	);
+	assert.equal(overrideProbe.clientId, null);
+	assert.equal(await readFile(join(userData, "client-identity"), "utf8"), `${nativeClientId}\n`);
+	result.developmentOverride = {
+		nativeIdentityWithheld: true,
+		originalIdentityUnchanged: true,
+		probeRenderer: true,
+		normalWindowCount: overrideProbe.normalWindowCount,
+	};
+	result.checks.push(
+		"A real renderer under development URL override receives no native client identity and cannot replace the persisted ID; probe-only, not override UI acceptance",
+	);
+
 	result.status = "PASS";
 } catch (error) {
 	result.status = "FAIL";
@@ -766,6 +895,7 @@ try {
 		await writeFile(join(output, "app.log"), app.getLogs());
 		await app.close();
 	}
+	if (overrideServer) await new Promise((resolve) => overrideServer.close(resolve));
 	await writeFile(join(output, "result.json"), JSON.stringify(result, null, 2));
 	console.log(JSON.stringify(result, null, 2));
 }
