@@ -130,6 +130,14 @@ describe("EC01 contracts and immutable store", () => {
 			/different input/,
 		);
 		expect(recovered.list(ctx, { kind: "contracts" }).items).toHaveLength(1);
+		expect(recovered.lookupRequest(ctx, "same-request")?.id).toBe(first.id);
+		expect(
+			recovered.lookupRequest(
+				context({ domain: { principalId: "other", workspaceId: "fixture-workspace" } }),
+				"same-request",
+			),
+		).toBeUndefined();
+		expect(() => recovered.lookupRequest(context({ sessionIds: ["s2"] }), "same-request")).toThrow(/Session selection/);
 	});
 	it("rejects unknown versions, invalid fields, and required inferred conditions", () => {
 		expect(() => validate("contracts", contract(), 2)).toThrow(/Unsupported/);
@@ -220,6 +228,7 @@ describe("EC01 contracts and immutable store", () => {
 		const r = write(recovered, ctx, "contracts", contract(), { requestId: "lost-reply" });
 		expect(r.revision).toBe(1);
 		expect(recovered.list(ctx, { kind: "contracts" }).items).toHaveLength(1);
+		expect(recovered.lookupRequest(ctx, "lost-reply")?.id).toBe(r.id);
 	});
 	it("retains damaged and future-schema originals and blocks new writes", () => {
 		const store = open(),
@@ -392,6 +401,41 @@ describe("EC01 contracts and immutable store", () => {
 		const reader = open({ dataDir: store.dataDir, readOnly: true, limits: { readItems: 2 } });
 		expect(() => reader.get(ctx, ref(f.snapshot))).toThrow(/read budget/);
 	});
+	it("budgets evidence separately from bounded authorization metadata without dropping reference checks", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const evidence = [
+			f.evidence,
+			...Array.from({ length: 3 }, (_, i) =>
+				write(store, ctx, "evidence", { ...f.evidence.data, sourceEventId: `extra-${i}` }),
+			),
+		];
+		const snapshot = write(store, ctx, "snapshots", { ...f.snapshot.data, evidenceRefs: evidence.map(ref) });
+		const overflowEvidence = write(store, ctx, "evidence", { ...f.evidence.data, sourceEventId: "overflow" });
+		const overflow = write(store, ctx, "snapshots", {
+			...f.snapshot.data,
+			evidenceRefs: [...evidence, overflowEvidence].map(ref),
+		});
+		store.close();
+		const reader = open({ dataDir: store.dataDir, readOnly: true, limits: { readItems: 4 } });
+		expect(reader.get(ctx, ref(snapshot)).data.evidenceRefs).toHaveLength(4);
+		expect(() => reader.get(ctx, ref(overflow))).toThrow(/read budget/);
+		expect(() => reader.get(context({ sessionIds: ["s2"] }), ref(snapshot))).toThrow(/Session selection/);
+		const path = join(store.root, "evidence", `${evidence[3].id}.1.json`);
+		const changed = JSON.parse(readFileSync(path, "utf8"));
+		changed.data.sourceLocator = "changed";
+		const { digest: _digest, ...unsigned } = changed;
+		changed.digest = digest(unsigned);
+		writeFileSync(path, JSON.stringify(changed));
+		expect(() => reader.get(ctx, ref(snapshot))).toThrow(/changed after sealing/);
+		changed.id = f.task.id;
+		const { digest: _changedDigest, ...changedUnsigned } = changed;
+		changed.digest = digest(changedUnsigned);
+		writeFileSync(path, JSON.stringify(changed));
+		expect(() => reader.get(ctx, ref(evidence[3]))).toThrow(/Record identity changed/);
+	});
+
 	it("preserves rule reports and only appends reviews from trusted humans", () => {
 		const store = open(),
 			ctx = context(),

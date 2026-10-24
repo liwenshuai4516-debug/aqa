@@ -222,12 +222,9 @@ export class EvaluationEngine {
 		const configuration = { profileId, profileVersion, rules: profile.rules },
 			configDigest = digest(configuration);
 		const requestDigest = digest({ snapshotRef, configuration, timeoutMs: this.timeoutMs });
-		const previous = recordsOf(this.store, context, "evidence").find(
-			(r) =>
-				r.data.producer === "evaluation-engine-v1" &&
-				r.data.kind === "evaluation-job" &&
-				r.data.sourceEventId === requestId,
-		);
+		// Durable request receipts already index this exact operation. Do not load every
+		// evidence record just to discover that a new scoring request has not run.
+		const previous = this.store.lookupRequest(context, `eval-job-${digest(requestId)}`);
 		if (previous) {
 			requireValue(
 				readEvidenceJson(this.store, context, refOf(previous)).requestDigest === requestDigest,

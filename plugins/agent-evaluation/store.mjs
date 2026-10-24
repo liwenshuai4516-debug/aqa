@@ -192,7 +192,7 @@ export class EvaluationStore {
 		context,
 		ref,
 		visited = new Set(),
-		budget = { bytes: 0, items: 0, started: performance.now(), cache: new Map() },
+		budget = { bytes: 0, items: 0, metadataItems: 0, started: performance.now(), cache: new Map() },
 	) {
 		validateRef(ref);
 		const identity = this.identity(context),
@@ -205,11 +205,15 @@ export class EvaluationStore {
 		requireValue(!visited.has(key(ref)), "STORE_CORRUPT", "Cyclic record references");
 		if (budget.cache.has(key(ref))) return budget.cache.get(key(ref));
 		budget.bytes += fs.lstatSync(entry.file).size;
-		budget.items += 1;
+		// The source-event budget must allow a full snapshot plus its authorization graph.
+		// Both categories remain independently bounded, with shared byte/time/depth limits.
+		if (ref.kind === "evidence") budget.items += 1;
+		else budget.metadataItems += 1;
 		requireValue(
 			visited.size < 64 &&
 				budget.bytes <= this.limits.readBytes &&
 				budget.items <= this.limits.readItems &&
+				budget.metadataItems <= this.limits.readItems &&
 				performance.now() - budget.started <= this.limits.readMs,
 			"LIMIT_EXCEEDED",
 			"Reference traversal exceeds read budget",
@@ -217,6 +221,7 @@ export class EvaluationStore {
 		const next = new Set(visited);
 		next.add(key(ref));
 		const record = this.load(entry.file);
+		requireValue(same(recordRef(record), ref), "STORE_CORRUPT", "Record identity changed");
 		requireValue(same(record.domain, identity.domain), "PERMISSION_DENIED", "Record domain changed");
 		if (record.kind === "contracts") {
 			const scope = record.data.scope;
@@ -263,6 +268,19 @@ export class EvaluationStore {
 		}
 		return { items, nextCursor: keys.some((k) => k > last) ? last : null };
 	}
+	lookupRequest(context, requestId) {
+		const identity = this.identity(context);
+		const receipt = this.requests.get(digest([identity.domain, requestId]));
+		if (!receipt) return undefined;
+		const record = this.get(context, receipt.ref);
+		requireValue(
+			record.request.id === requestId && record.request.digest === receipt.digest,
+			"STORE_CORRUPT",
+			"Request receipt changed",
+		);
+		return record;
+	}
+
 	write(context, { kind, data, requestId, schemaVersion = VERSION, previousRef = undefined }) {
 		const identity = this.identity(context, true);
 		requireValue(
@@ -276,6 +294,12 @@ export class EvaluationStore {
 			"Input exceeds record budget",
 		);
 		validate(kind, data, schemaVersion);
+		if (kind === "snapshots")
+			requireValue(
+				data.evidenceRefs.length <= this.limits.snapshotItems,
+				"LIMIT_EXCEEDED",
+				"Snapshot evidence budget reached",
+			);
 		if (previousRef) {
 			validateRef(previousRef);
 			requireValue(previousRef.kind === kind, "INVALID_INPUT", "Revision kind differs");

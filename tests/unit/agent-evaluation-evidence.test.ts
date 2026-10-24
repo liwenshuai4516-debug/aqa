@@ -310,6 +310,19 @@ describe("EC02 authorized SDK sources", () => {
 });
 
 describe("EC02 durable collector", () => {
+	it("accepts the exact configured snapshot boundary and rejects the next source event", async () => {
+		const f = collectorFixture({ store: { limits: { snapshotItems: 4 } } });
+		const collected = await f.collector.collect(f.context, f.args);
+		expect(collected.evidenceRefs).toHaveLength(3);
+		const sealed = f.collector.seal(f.context, collected.checkpointRef, "boundary-seal");
+		expect(sealed.data.evidenceRefs).toHaveLength(4);
+		f.entries.set("a2", entry("a2", "a1", { role: "user", content: "one extra selected entry" }));
+		f.entries.set("t1", { ...f.entries.get("t1")!, parentId: "a2" });
+		await expect(f.collector.collect(f.context, { ...f.args, requestId: "overflow" })).rejects.toThrow(
+			/Snapshot evidence budget/,
+		);
+	});
+
 	it("deduplicates replay and out-of-order delivery; seals an immutable checkpoint", async () => {
 		const f = collectorFixture();
 		const first = await f.collector.collect(f.context, f.args);

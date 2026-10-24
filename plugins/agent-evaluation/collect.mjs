@@ -89,15 +89,15 @@ export class EvidenceCollector {
 			"INVALID_INPUT",
 			"Select at most 20 distinct artifact paths",
 		);
-		const existing = recordsOf(store, context, "evidence");
 		const checkpointSource = `collection:${attempt.id}`;
 		const requestDigest = digest({ attemptRef, conversationId, nativeRefs, artifactPaths, liveEvents, liveTruncated });
-		const prior = existing.find((r) => r.data.sourceId === checkpointSource && r.data.sourceEventId === requestId);
+		const prior = store.lookupRequest(context, `checkpoint-${digest([attempt.id, requestId])}`);
 		if (prior) {
 			const body = readEvidenceJson(store, context, refOf(prior));
 			requireValue(body.requestDigest === requestDigest, "VERSION_CONFLICT", "Collection request changed");
 			return { ...body, checkpointRef: refOf(prior) };
 		}
+		const existing = recordsOf(store, context, "evidence");
 		const evidence = [],
 			attempts = [attemptRef],
 			gaps = liveTruncated ? ["live-queue-overflow; events missing"] : [],
@@ -126,7 +126,7 @@ export class EvidenceCollector {
 			if (!match) existing.push(record);
 			if (!evidence.some((e) => e.id === record.id)) evidence.push(refOf(record));
 			requireValue(
-				evidence.length < 1000,
+				evidence.length < store.limits.snapshotItems,
 				"LIMIT_EXCEEDED",
 				"Snapshot evidence budget reached; select a smaller range",
 			);
@@ -363,7 +363,7 @@ export class EvidenceCollector {
 			)
 				gaps.push(`live-start-not-observed:${r.data.sourceId}:${value.toolCallId}`);
 		}
-		requireValue(evidence.length < 1000, "LIMIT_EXCEEDED", "Snapshot evidence budget reached");
+		requireValue(evidence.length < store.limits.snapshotItems, "LIMIT_EXCEEDED", "Snapshot evidence budget reached");
 		const paired = pairGaps(
 			evidence.map((ref) => store.get(context, ref)),
 			store,
