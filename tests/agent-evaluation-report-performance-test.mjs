@@ -7,6 +7,7 @@ import { F06 } from "../plugins/agent-evaluation/evaluators/basic.mjs";
 const output = mkdtempSync(join(tmpdir(), "agent-evaluation-report-performance-"));
 const fixture = engineFixture({
 	rules: [F06],
+	packedEvidence: true,
 	evidence: Array.from({ length: 1000 }, (_, index) => ({
 		kind: "fixture-evidence",
 		value: { index, text: "offline evidence" },
@@ -59,6 +60,7 @@ try {
 	const result = {
 		status: passed ? "PASS" : "FAIL",
 		output,
+		storageFormat: "pack-v1",
 		scope: "1000 evidence snapshot; fixture construction excluded; five actual report/list/evidence reads",
 		checks,
 		rounds,

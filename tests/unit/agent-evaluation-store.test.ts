@@ -2,6 +2,8 @@ import { afterEach, describe, expect, it } from "vitest";
 import { mkdtempSync, rmSync, readFileSync, writeFileSync, readdirSync, symlinkSync, mkdirSync, cpSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
+import { spawnSync } from "node:child_process";
 import { EvaluationStore } from "../../plugins/agent-evaluation/store.mjs";
 import { canonical, digest, validate } from "../../plugins/agent-evaluation/schema.mjs";
 
@@ -389,6 +391,228 @@ describe("EC01 contracts and immutable store", () => {
 		expect(restored.lookupRequest(ctx, requestId)).toEqual(evidence);
 		expect(restored.readBlob(evidence)).toBe("Bearer [REDACTED]");
 	});
+	it("atomically packs logical evidence and restores exact receipts, unicode, empty and shared bodies", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const inputs = ["中文证据 🙂", "", "中文证据 🙂"].map((content, i) => ({
+			kind: "evidence",
+			data: { ...f.evidence.data, content, sourceEventId: `packed-${i}` },
+			requestId: `packed-${i}`,
+		}));
+		const records = store.writeEvidenceBatch(ctx, [...inputs, inputs[0]]);
+		const snapshot = write(store, ctx, "snapshots", { ...f.snapshot.data, evidenceRefs: records.slice(0, 3).map(ref) });
+		expect(records[3]).toEqual(records[0]);
+		expect(readdirSync(join(store.root, "evidence")).filter((p) => p.endsWith(".pack"))).toHaveLength(1);
+		records.forEach((record, i) => expect(store.readEvidence(ctx, ref(record)).text).toBe(inputs[i % 3].data.content));
+		store.close();
+		const restored = open({ dataDir: store.dataDir });
+		expect(restored.issues).toEqual([]);
+		expect(restored.get(ctx, ref(snapshot))).toEqual(snapshot);
+		expect(restored.writeEvidenceBatch(ctx, [...inputs, inputs[0]])).toEqual(records);
+		records.forEach((record) => expect(restored.lookupRequest(ctx, record.request.id)).toEqual(record));
+		expect(() => restored.get(context({ sessionIds: ["s2"] }), ref(records[0]))).toThrow(/authorized/);
+		expect(() =>
+			restored.get(context({ domain: { principalId: "other", workspaceId: "fixture-workspace" } }), ref(records[0])),
+		).toThrow(/domain/);
+		expect(restored.readBlob(f.evidence)).toBe("fixture bytes");
+	});
+	it.each(["afterBodySync", "beforePublish"])("preserves failed pack bytes without exposing records at %s", (stop) => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		store.fault = (stage: string) => {
+			if (stage === stop) throw new Error("injected batch failure");
+		};
+		const before = store.index!.size;
+		expect(() =>
+			store.writeEvidenceBatch(ctx, [
+				{ kind: "evidence", data: { ...f.evidence.data, content: "new bytes" }, requestId: "failed-batch" },
+			]),
+		).toThrow(/Batch write failed/);
+		expect(store.index!.size).toBe(before);
+		expect(store.lookupRequest(ctx, "failed-batch")).toBeUndefined();
+		expect(readdirSync(join(store.root, "evidence")).some((p) => p.includes(".pack.tmp-"))).toBe(true);
+		store.close();
+		const restored = open({ dataDir: store.dataDir });
+		expect(restored.issues!.length).toBeGreaterThan(0);
+		expect(restored.lookupRequest(ctx, "failed-batch")).toBeUndefined();
+		expect(() => write(restored, ctx, "contracts", contract())).toThrow(/repair/);
+	});
+	it("recovers all packed receipts after publication loses its reply", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const inputs = [0, 1].map((i) => ({
+			kind: "evidence",
+			data: { ...f.evidence.data, content: `body-${i}` },
+			requestId: `lost-batch-${i}`,
+		}));
+		store.fault = (stage: string) => {
+			if (stage === "afterPublish") throw new Error("reply lost");
+		};
+		expect(() => store.writeEvidenceBatch(ctx, inputs)).toThrow(/may be durable/);
+		const committed = inputs.map((input) => store.lookupRequest(ctx, input.requestId));
+		expect(committed.every(Boolean)).toBe(true);
+		store.close();
+		const restored = open({ dataDir: store.dataDir });
+		expect(restored.issues).toEqual([]);
+		expect(restored.writeEvidenceBatch(ctx, inputs)).toEqual(committed);
+		expect(readdirSync(join(store.root, "evidence")).filter((p) => p.endsWith(".pack"))).toHaveLength(1);
+	});
+	it.each(["afterBodySync", "beforePublish"])(
+		"retains unpublished evidence after a real process exit at %s",
+		(stop) => {
+			const store = open(),
+				ctx = context(),
+				f = fixture(store, ctx),
+				identity = contexts.get(ctx);
+			const input = { kind: "evidence", data: { ...f.evidence.data, content: "crash body" }, requestId: "crash-pack" };
+			store.close();
+			const url = pathToFileURL(join(process.cwd(), "plugins/agent-evaluation/store.mjs")).href;
+			const child = spawnSync(
+				process.execPath,
+				[
+					"--input-type=module",
+					"-e",
+					`
+import { EvaluationStore } from ${JSON.stringify(url)};
+const store = new EvaluationStore({dataDir:${JSON.stringify(store.dataDir)},authorize:()=>(${JSON.stringify(identity)}),fault(stage){if(stage===${JSON.stringify(stop)})process.exit(74);}});
+store.writeEvidenceBatch({},[${JSON.stringify(input)}]);
+`,
+				],
+				{ encoding: "utf8", timeout: 10000 },
+			);
+			expect(child.status, child.stderr).toBe(74);
+			const recovery = mkdtempSync(join(tmpdir(), "agent-evaluation-pack-recovery-"));
+			dirs.push(recovery);
+			cpSync(store.root, join(recovery, "agent-evaluation"), {
+				recursive: true,
+				filter: (path) => !path.endsWith("writer.lock"),
+			});
+			const restored = open({ dataDir: recovery });
+			expect(restored.issues).toHaveLength(1);
+			expect(restored.lookupRequest(ctx, "crash-pack")).toBeUndefined();
+			expect(restored.get(ctx, ref(f.snapshot))).toEqual(f.snapshot);
+			expect(readFileSync(join(store.root, "writer.lock"), "utf8")).toContain(String(child.pid));
+		},
+	);
+	it("rejects conflicting batch IDs and aggregate capacity before publishing any record", () => {
+		const store = open({ limits: { records: 6 } }),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const first = { kind: "evidence", data: { ...f.evidence.data, content: "one" }, requestId: "batch-conflict" };
+		expect(() => store.writeEvidenceBatch(ctx, [first, { ...first, data: { ...first.data, content: "two" } }])).toThrow(
+			/different input/,
+		);
+		expect(store.lookupRequest(ctx, first.requestId)).toBeUndefined();
+		expect(() => store.writeEvidenceBatch(ctx, [first, { ...first, requestId: "batch-second" }])).toThrow(/capacity/);
+		expect(store.lookupRequest(ctx, first.requestId)).toBeUndefined();
+		expect(readdirSync(join(store.root, "evidence")).filter((p) => p.includes(".pack"))).toEqual([]);
+	});
+	it("rejects altered packed bytes and malformed pack indices without indexing a partial pack", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const [record] = store.writeEvidenceBatch(ctx, [
+			{ kind: "evidence", data: { ...f.evidence.data, content: "packed bytes" }, requestId: "altered-pack" },
+		]);
+		const file = store.index!.get(`${record.kind}/${record.id}.1`).file,
+			bytes = readFileSync(file);
+		bytes[16] ^= 1;
+		writeFileSync(file, bytes);
+		expect(() => store.readEvidence(ctx, ref(record))).toThrow(/digest/);
+		const malformed = Buffer.from(bytes);
+		malformed.writeBigUInt64LE(1n << 63n, malformed.length - 8);
+		writeFileSync(file, malformed);
+		store.close();
+		const restored = open({ dataDir: store.dataDir });
+		expect(restored.issues).toHaveLength(1);
+		expect(restored.lookupRequest(ctx, "altered-pack")).toBeUndefined();
+		expect(readFileSync(file)).toEqual(malformed);
+	});
+	it("rechecks session authorization within batched reads and writes", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		let calls = 0;
+		store.authorize = (c: object) => {
+			const value = authorize(c);
+			return ++calls > 2 ? { ...value, sessionIds: [] } : value;
+		};
+		expect(() => store.getMany(ctx, [ref(f.evidence)])).toThrow(/authorization changed/);
+		calls = 0;
+		expect(() =>
+			store.writeEvidenceBatch(ctx, [
+				{ kind: "evidence", data: { ...f.evidence.data, content: "guarded body" }, requestId: "changing-auth" },
+			]),
+		).toThrow(/authorization changed/);
+		store.authorize = authorize;
+		expect(store.lookupRequest(ctx, "changing-auth")).toBeUndefined();
+		expect(readdirSync(join(store.root, "evidence")).filter((p) => p.includes(".pack"))).toEqual([]);
+	});
+	it("persists only sanitized packed bodies and honors tightened body limits before publication", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const [record] = store.writeEvidenceBatch(ctx, [
+			{
+				kind: "evidence",
+				data: { ...f.evidence.data, content: "Bearer fixture-packed-secret" },
+				requestId: "redacted-pack",
+			},
+		]);
+		const file = store.index!.get(`${record.kind}/${record.id}.1`).file;
+		expect(readFileSync(file, "utf8")).not.toContain("fixture-packed-secret");
+		expect(store.readEvidence(ctx, ref(record)).text).toBe("Bearer [REDACTED]");
+		expect(record.data.redaction).toContain("credentials-v1");
+		const limited = open({ limits: { evidenceBytes: 16 } }),
+			limitedFixture = fixture(limited, ctx);
+		expect(() =>
+			limited.writeEvidenceBatch(ctx, [
+				{
+					kind: "evidence",
+					data: { ...limitedFixture.evidence.data, content: "x".repeat(17) },
+					requestId: "over-body-limit",
+				},
+			]),
+		).toThrow(/configured byte limit/);
+		expect(limited.lookupRequest(ctx, "over-body-limit")).toBeUndefined();
+	});
+	it.each(["record-overlap", "body-overlap", "fractional-offset", "excess-count", "future-format"])(
+		"refuses the entire pack with %s",
+		(attack) => {
+			const store = open(),
+				ctx = context(),
+				f = fixture(store, ctx);
+			const inputs = ["one", "two"].map((content, i) => ({
+				kind: "evidence",
+				data: { ...f.evidence.data, content },
+				requestId: `range-${i}`,
+			}));
+			const [record] = store.writeEvidenceBatch(ctx, inputs),
+				file = store.index!.get(`${record.kind}/${record.id}.1`).file,
+				original = readFileSync(file);
+			const tableSize = Number(original.readBigUInt64LE(original.length - 8)),
+				tableStart = original.length - 8 - tableSize;
+			let index = JSON.parse(original.subarray(tableStart, original.length - 8).toString("utf8"));
+			if (attack === "record-overlap") index[1][0] = index[0][0];
+			if (attack === "body-overlap") index[1][2] = index[0][2] + 1;
+			if (attack === "fractional-offset") index[0][0] += 0.5;
+			if (attack === "excess-count") index = Array.from({ length: 1001 }, () => index[0]);
+			const table = Buffer.from(JSON.stringify(index)),
+				footer = Buffer.alloc(8);
+			footer.writeBigUInt64LE(BigInt(table.length));
+			const changed = Buffer.concat([original.subarray(0, tableStart), table, footer]);
+			if (attack === "future-format") Buffer.from("AEVPACK9").copy(changed);
+			writeFileSync(file, changed);
+			store.rebuild();
+			expect(store.issues).toHaveLength(1);
+			inputs.forEach((input) => expect(store.lookupRequest(ctx, input.requestId)).toBeUndefined());
+			expect(() => write(store, ctx, "contracts", contract())).toThrow(/repair/);
+			expect(readFileSync(file)).toEqual(changed);
+		},
+	);
 	it("rebuilds an index from backup with no business callback or execution", () => {
 		const store = open(),
 			ctx = context(),

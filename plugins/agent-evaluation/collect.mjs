@@ -2,7 +2,7 @@
  * Replays deduplicate against durable source revisions; a checkpoint is published last.
  * No evaluator, runner, model or business write API is available to this module.
  */
-import { digest, requireValue } from "./schema.mjs";
+import { canonical, digest, requireValue } from "./schema.mjs";
 import { piEvidenceAdapter } from "./adapters/pi.mjs";
 const refOf = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
 const same = (a, b) => digest(a) === digest(b);
@@ -104,7 +104,12 @@ export class EvidenceCollector {
 			gaps = liveTruncated ? ["live-queue-overflow; events missing"] : [],
 			watermarks = {};
 		const selectedCalls = new Map();
-		const remember = (data) => {
+		const writeInput = (data) => ({
+			kind: "evidence",
+			data,
+			requestId: `ev-${digest([attempt.id, data.attemptRef.id, data.sourceId, data.sourceEventId, data.sourceRevision])}`,
+		});
+		const remember = (data, committed = undefined) => {
 			signal?.throwIfAborted();
 			const revisions = existing.filter(
 				(r) =>
@@ -117,13 +122,7 @@ export class EvidenceCollector {
 				gaps.push(`conflicting-source:${data.sourceId}:${data.sourceEventId}`);
 				for (const r of revisions) if (!evidence.some((e) => e.id === r.id)) evidence.push(refOf(r));
 			}
-			const record =
-				match ??
-				store.write(context, {
-					kind: "evidence",
-					data,
-					requestId: `ev-${digest([attempt.id, data.attemptRef.id, data.sourceId, data.sourceEventId, data.sourceRevision])}`,
-				});
+			const record = match ?? committed ?? store.write(context, writeInput(data));
 			if (!match) existing.push(record);
 			if (!evidence.some((e) => e.id === record.id)) evidence.push(refOf(record));
 			requireValue(
@@ -132,6 +131,42 @@ export class EvidenceCollector {
 				"Snapshot evidence budget reached; select a smaller range",
 			);
 			return record;
+		};
+		const rememberPage = (data) => {
+			let pending = [],
+				bytes = 0;
+			const flush = () => {
+				if (!pending.length) return;
+				signal?.throwIfAborted();
+				const records = store.writeEvidenceBatch(context, pending.map(writeInput));
+				pending.forEach((item, i) => remember(item, records[i]));
+				pending = [];
+				bytes = 0;
+			};
+			for (const item of data) {
+				if (
+					existing.some(
+						(r) =>
+							r.data.attemptRef.id === item.attemptRef.id &&
+							r.data.sourceId === item.sourceId &&
+							r.data.sourceEventId === item.sourceEventId &&
+							r.data.sourceRevision === item.sourceRevision,
+					)
+				) {
+					flush();
+					remember(item);
+					continue;
+				}
+				const size = Buffer.byteLength(canonical(writeInput(item)));
+				if (bytes + size > store.limits.readBytes / 2) flush();
+				if (size > store.limits.readBytes / 2) {
+					remember(item);
+					continue;
+				}
+				pending.push(item);
+				bytes += size;
+			}
+			flush();
 		};
 		const collectScope = (scope, convId, scopeAttempt) => {
 			let cursor;
@@ -149,6 +184,7 @@ export class EvidenceCollector {
 				);
 				first ??= page;
 				gaps.push(...page.gaps);
+				const pageData = [];
 				for (const item of page.items) {
 					const data = {
 						attemptRef: scopeAttempt,
@@ -166,7 +202,7 @@ export class EvidenceCollector {
 						truncated: item.truncated,
 					};
 					if (item.content !== undefined) data.content = item.content;
-					remember(data);
+					pageData.push(data);
 					if (item.content) {
 						const message = JSON.parse(item.content).message;
 						if (message?.role === "assistant")
@@ -179,6 +215,7 @@ export class EvidenceCollector {
 									});
 					}
 				}
+				rememberPage(pageData);
 				// The caller-visible watermark is never committed before its referenced items.
 				if (page.items.length) watermarks[page.sourceId] = page.items.at(-1).sourceEventId;
 				cursor = page.nextCursor;
@@ -365,10 +402,7 @@ export class EvidenceCollector {
 				gaps.push(`live-start-not-observed:${r.data.sourceId}:${value.toolCallId}`);
 		}
 		requireValue(evidence.length < store.limits.snapshotItems, "LIMIT_EXCEEDED", "Snapshot evidence budget reached");
-		const paired = pairGaps(
-			evidence.map((ref) => store.get(context, ref)),
-			store,
-		);
+		const paired = pairGaps(store.getMany(context, evidence), store);
 		gaps.push(...paired);
 		const result = {
 			requestDigest,

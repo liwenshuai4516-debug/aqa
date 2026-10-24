@@ -28,13 +28,14 @@ export function evaluator(id, evaluate, manifest = {}) {
 		evaluate,
 	};
 }
-/** @param {{ rules: any[], conditions?: any[], evidence?: any[], budget?: any, configs?: any }} options */
+/** @param {{ rules: any[], conditions?: any[], evidence?: any[], budget?: any, configs?: any, packedEvidence?: boolean }} options */
 export function engineFixture({
 	rules,
 	conditions = [],
 	evidence = [{ kind: "artifact", value: { exists: true } }],
 	budget = {},
 	configs = {},
+	packedEvidence = false,
 }) {
 	const directory = mkdtempSync(join(tmpdir(), "evaluation-engine-")),
 		context = {};
@@ -86,8 +87,10 @@ export function engineFixture({
 		configDigest: digest({}),
 		state: "unknown",
 	});
-	const items = evidence.map((e, i) =>
-		write("evidence", {
+	const inputs = evidence.map((e, i) => ({
+		kind: "evidence",
+		requestId: `fixture-${++sequence}`,
+		data: {
 			attemptRef: ref(attempt),
 			sourceId: "fixture",
 			sourceEventId: String(i),
@@ -102,8 +105,12 @@ export function engineFixture({
 			redaction: [],
 			truncated: false,
 			...e.data,
-		}),
-	);
+		},
+	}));
+	const items =
+		packedEvidence && inputs.length
+			? store.writeEvidenceBatch(context, inputs)
+			: inputs.map((input) => store.write(context, input));
 	const snapshot = write("snapshots", {
 		contractRef: ref(contract),
 		attemptRefs: [ref(attempt)],

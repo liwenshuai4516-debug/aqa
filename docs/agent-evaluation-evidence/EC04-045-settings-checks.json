@@ -1,0 +1,284 @@
+{
+	"numTotalTests": 55,
+	"numPassedTests": 55,
+	"numFailedTests": 0,
+	"numPendingTests": 0,
+	"success": true,
+	"startTime": 1792817053506,
+	"files": [
+		{
+			"name": "plugin-settings-override.test.ts",
+			"status": "passed",
+			"tests": [
+				{
+					"name": "三层合并 无 overlay 无保存 → 全 default",
+					"status": "passed"
+				},
+				{
+					"name": "三层合并 overlay 覆盖默认（来源 override）；保存值覆盖 overlay（来源 stored）",
+					"status": "passed"
+				},
+				{
+					"name": "overlay 校验 坏值丢弃+警告并回落；未知键警告；secret 拒绝",
+					"status": "passed"
+				},
+				{
+					"name": "overlay 校验 坏文件整体忽略（非对象/数组/settings 非对象）；缺文件静默",
+					"status": "passed"
+				},
+				{
+					"name": "运行时视角 host.getSettings 同样走三层（插件行为与面板显示一致）",
+					"status": "passed"
+				},
+				{
+					"name": "保存路径重构锁 面板保存照旧：清洗+落盘+ secret 进加密 store",
+					"status": "passed"
+				}
+			]
+		},
+		{
+			"name": "plugin-settings.test.ts",
+			"status": "passed",
+			"tests": [
+				{
+					"name": "schema 解析 + 默认值 清单带 schema 与默认合并后的值",
+					"status": "passed"
+				},
+				{
+					"name": "schema 解析 + 默认值 坏字段被跳过（非法 type / 重复 key / 缺 key）",
+					"status": "passed"
+				},
+				{
+					"name": "optionsFrom（select 候选值由宿主动态提供） 合法源透传到清单；非法源当没写（回落静态 options）；只给 optionsFrom 没给 type 视为 select",
+					"status": "passed"
+				},
+				{
+					"name": "optionsFrom（select 候选值由宿主动态提供） 动态字段不做候选值校验（清单在浏览器侧现算），落盘后回读一致",
+					"status": "passed"
+				},
+				{
+					"name": "savePluginSettings 校验 + 原子落盘 + 保留 storage.json 其它键",
+					"status": "passed"
+				},
+				{
+					"name": "savePluginSettings number 越界 / select 非法值被拒",
+					"status": "passed"
+				},
+				{
+					"name": "savePluginSettings 未声明 schema 的插件保存被拒",
+					"status": "passed"
+				},
+				{
+					"name": "host.getSettings + onSettingsChanged getSettings 实时反映存值；onSettingsChanged 在保存后触发",
+					"status": "passed"
+				},
+				{
+					"name": "secret 类型（P0-4 加密存、浏览器只见有无） 清单 settingsValues：secret 只给有无布尔，不给明文",
+					"status": "passed"
+				},
+				{
+					"name": "secret 类型（P0-4 加密存、浏览器只见有无） 保存 secret → getSettings 给真值；磁盘无明文；空串不改",
+					"status": "passed"
+				},
+				{
+					"name": "secret 类型（P0-4 加密存、浏览器只见有无） onSettingsChanged 收到的 clean 含 secret 真值（插件可用，但不下发浏览器）",
+					"status": "passed"
+				}
+			]
+		},
+		{
+			"name": "settings-engine-tabs.test.ts",
+			"status": "passed",
+			"tests": [
+				{
+					"name": "设置面板多引擎动态自适应（分区条件隐藏与模型中枢集成） SettingsModalProps 声明了 onOpenManageModels 回调且在 App.tsx 中完成接线",
+					"status": "passed"
+				},
+				{
+					"name": "设置面板多引擎动态自适应（分区条件隐藏与模型中枢集成） SettingsTab 包含了通用的 models 分区",
+					"status": "passed"
+				},
+				{
+					"name": "设置面板多引擎动态自适应（分区条件隐藏与模型中枢集成） 正确声明了 isClaude、isDsh 和 isPi 引擎分支判断",
+					"status": "passed"
+				},
+				{
+					"name": "设置面板多引擎动态自适应（分区条件隐藏与模型中枢集成） 默认激活分区根据引擎自适应，避免切到不可见分区（Claude/DSH 默认进 models，Pi 默认进 prompt）",
+					"status": "passed"
+				},
+				{
+					"name": "设置面板多引擎动态自适应（分区条件隐藏与模型中枢集成） 具备导航纠偏机制：当切换引擎导致当前 tab 不在可用列表时，自动纠回首个可用分区",
+					"status": "passed"
+				},
+				{
+					"name": "设置面板多引擎动态自适应（分区条件隐藏与模型中枢集成） Claude 引擎下彻底隐藏一切无法生效的 Pi/DSH 独有分区",
+					"status": "passed"
+				},
+				{
+					"name": "设置面板多引擎动态自适应（分区条件隐藏与模型中枢集成） 全引擎通用呈现「模型与服务商」分区并提供引擎切换与管理入口",
+					"status": "passed"
+				}
+			]
+		},
+		{
+			"name": "settings-layout-icon-edit.test.ts",
+			"status": "passed",
+			"tests": [
+				{
+					"name": "设置面板「界面布局」编辑图标入口 SettingsModalProps 声明了 onOpenIconEdit 可选回调",
+					"status": "passed"
+				},
+				{
+					"name": "设置面板「界面布局」编辑图标入口 SettingsModal 组件解构并使用了 onOpenIconEdit",
+					"status": "passed"
+				},
+				{
+					"name": "设置面板「界面布局」编辑图标入口 界面布局 tab 包含编辑图标按钮，配置了图标、文案与点击事件",
+					"status": "passed"
+				},
+				{
+					"name": "设置面板「界面布局」编辑图标入口 App.tsx 将 setIconEditOpen 传递给 SettingsModal",
+					"status": "passed"
+				},
+				{
+					"name": "设置面板「界面布局」编辑图标入口 styles.css 中 IconEditor 的 z-index 高于模态遮罩（300），确保从设置弹窗打开时处于顶层",
+					"status": "passed"
+				}
+			]
+		},
+		{
+			"name": "settings-reload.test.ts",
+			"status": "passed",
+			"tests": [
+				{
+					"name": "目标模式总开关 on→off 只在 on→off 跃迁时调一次 onGoalModeDisabled",
+					"status": "passed"
+				},
+				{
+					"name": "SettingsService.applyRuntime success emits info notice",
+					"status": "passed"
+				},
+				{
+					"name": "SettingsService.applyRuntime failure logs + emits error notice",
+					"status": "passed"
+				},
+				{
+					"name": "SettingsService.applyRuntime streaming defers with info notice and no reload call",
+					"status": "passed"
+				}
+			]
+		},
+		{
+			"name": "settings-stale-extensions.test.ts",
+			"status": "passed",
+			"tests": [
+				{
+					"name": "disabledExtensions stale 剔除（issue #192） 卸载的扩展移出禁用记录并持久化；现存/列名/路径/加载中的保留",
+					"status": "passed"
+				},
+				{
+					"name": "disabledExtensions stale 剔除（issue #192） session 未就绪时保守跳过清理，且不复活幽灵",
+					"status": "passed"
+				},
+				{
+					"name": "disabledExtensions stale 剔除（issue #192） loader 中的 <inline:...> / hidden 内部扩展不进入设置面板，且残留的 inline 禁用记录被自动剔除",
+					"status": "passed"
+				},
+				{
+					"name": "explicit skill paths outside the workspace preserves disabled absolute skill across service restart, then prunes a deleted source",
+					"status": "passed"
+				},
+				{
+					"name": "explicit skill paths outside the workspace preserves disabled relative skill across service restart, then prunes a deleted source",
+					"status": "passed"
+				},
+				{
+					"name": "explicit skill paths outside the workspace preserves disabled file skill across service restart, then prunes a deleted source",
+					"status": "passed"
+				}
+			]
+		},
+		{
+			"name": "settings-template-locale.test.ts",
+			"status": "passed",
+			"tests": [
+				{
+					"name": "设置快照的内置模板按界面语言出视图 繁中界面（zh-TW / zh-HK / zh-Hant）：简介与提示词是繁中，英文字段不动",
+					"status": "passed"
+				},
+				{
+					"name": "设置快照的内置模板按界面语言出视图 简中 / 英文 / 未上报 / 宿主没接 getLocale：仍是出厂简中",
+					"status": "passed"
+				},
+				{
+					"name": "设置快照的内置模板按界面语言出视图 locale 取最新值（用户切换语言后下一次快照即换视图）",
+					"status": "passed"
+				},
+				{
+					"name": "设置快照的内置模板按界面语言出视图 只是视图：库不被改写，用户改过的字段与自建模板原样出现在繁中快照里",
+					"status": "passed"
+				},
+				{
+					"name": "繁中界面保存模板：库里不被改写成繁体 在繁中快照上只点启用开关 → 回传整个繁中视图，库里文字仍是出厂简中",
+					"status": "passed"
+				}
+			]
+		},
+		{
+			"name": "settings-tool-rows.test.ts",
+			"status": "passed",
+			"tests": [
+				{
+					"name": "设置「工具」页覆盖率 「其他」组每个目录项都自带文案 key（且 key 真存在），循环才画得出说明",
+					"status": "passed"
+				},
+				{
+					"name": "设置「工具」页覆盖率 设置页确实用目录循环画「其他」组（不是又手写回去）",
+					"status": "passed"
+				},
+				{
+					"name": "设置「工具」页覆盖率 「其他」组零手写例外：OTHER_AGENT_TOOLS 纯目录过滤，不跳过任何工具",
+					"status": "passed"
+				},
+				{
+					"name": "设置「工具」页覆盖率 设置页没有孤立残留手写的工具常量行",
+					"status": "passed"
+				},
+				{
+					"name": "设置「工具」页覆盖率 循环组里没有目录外的名字",
+					"status": "passed"
+				}
+			]
+		},
+		{
+			"name": "skill-capability-settings.test.ts",
+			"status": "passed",
+			"tests": [
+				{
+					"name": "capability-owned skills 等待重载时 skill 工具也不能加载已关闭插件的技能正文",
+					"status": "passed"
+				},
+				{
+					"name": "capability-owned skills 关闭插件连带停用技能并排序，重启后仍可见，重新开启恢复原单独偏好",
+					"status": "passed"
+				},
+				{
+					"name": "capability-owned skills 关闭任一 UI 配套扩展均禁用所有 UI 入口，并展示真实扩展加载失败",
+					"status": "passed"
+				},
+				{
+					"name": "capability-owned skills 第三方技能可以提供中文别名、双语说明和插件依赖，不修改规范技能 ID",
+					"status": "passed"
+				},
+				{
+					"name": "capability-owned skills 重载等待期间隐藏快捷入口，并拦截手工输入的旧技能命令",
+					"status": "passed"
+				},
+				{
+					"name": "capability-owned skills @中文别名补全保持原始技能引用",
+					"status": "passed"
+				}
+			]
+		}
+	]
+}

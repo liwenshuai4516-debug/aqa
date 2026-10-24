@@ -133,12 +133,12 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.4" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.5" && p.active),
 			),
 		),
 	);
 	result.checks.push(
-		"Real app loads plugin 0.4.4 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Real app loads plugin 0.4.5 in explicitly registered app directories; seeded SDK history opened without a model prompt",
 	);
 	stage("settings and slash discovery");
 	const settings = async (tab) => {
@@ -213,7 +213,7 @@ try {
 							f.plugins.some(
 								(p) =>
 									p.id === "agent-evaluation" &&
-									p.version === "0.4.4" &&
+									p.version === "0.4.5" &&
 									p.agentTools?.some((tool) => tool.name === "agent_evaluation"),
 							),
 					),
@@ -230,7 +230,7 @@ try {
 	await candidate.waitFor();
 	await input.fill("");
 	result.checks.push(
-		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.4; skill, slash discovery and tool registration remain enabled",
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.5; skill, slash discovery and tool registration remain enabled",
 	);
 	stage("product diagnosis flow");
 	const openView = async () => {
@@ -478,9 +478,17 @@ try {
 	});
 	page = await app.firstWindow();
 	await page.waitForSelector(".app");
-	await settings("plugins");
-	await page.getByRole("tab", { name: /插件列表|Plugin list/ }).click();
-	assert.equal(await plugin().getByRole("switch").getAttribute("aria-checked"), "true");
+	let holdRestartSettings = true;
+	const heldRestartSettings = [];
+	await page.routeWebSocket(/\/ws(?:\?|$)/, (socket) => {
+		const server = socket.connectToServer();
+		server.onMessage((message) => {
+			if (holdRestartSettings && JSON.parse(String(message)).type === "settings_state")
+				heldRestartSettings.push(() => socket.send(message));
+			else socket.send(message);
+		});
+		socket.onMessage((message) => server.send(message));
+	});
 	// The settings row omits version. Verify the live host plugin announcement after the restart.
 	await page.addInitScript(() => {
 		const Native = window.WebSocket;
@@ -488,6 +496,7 @@ try {
 		window.WebSocket = class extends Native {
 			constructor(...args) {
 				super(...args);
+				if (String(args[0]).includes("/ws")) window.__evaluationSocket = this;
 				this.addEventListener("message", (e) => {
 					try {
 						window.__evaluationFrames.push(JSON.parse(e.data));
@@ -496,7 +505,6 @@ try {
 			}
 		};
 	});
-	await closeSettings();
 	await page.reload();
 	await page.waitForSelector(".app");
 	await until(() =>
@@ -504,18 +512,29 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.4" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.5" && p.active),
 			),
 		),
 	);
-	await settings("plugins");
+	stage("settings opened before cold-start settings arrive");
+	await until(() => heldRestartSettings.length > 0);
+	await page.getByRole("button", { name: /^(设置|Settings)$/ }).click();
+	assert.equal(await page.locator(".settings-modal").count(), 0);
+	holdRestartSettings = false;
+	heldRestartSettings.splice(0).forEach((deliver) => deliver());
+	await page.locator(".settings-modal").waitFor({ timeout: 5000 });
+	await page.locator('.settings-tab[data-tab="plugins"]').click();
 	await page.getByRole("tab", { name: /插件列表|Plugin list/ }).click();
+	assert.equal(await plugin().getByRole("switch").getAttribute("aria-checked"), "true");
 	await closeSettings();
 	await settings("skills");
 	assert.equal(await skill().getByRole("switch").getAttribute("aria-checked"), "true");
 	await closeSettings();
 	result.checks.push(
-		"Graceful real Electron exit and a second native process load plugin 0.4.4 and preserve enabled skill/plugin registration",
+		"Graceful real Electron exit and a second native process load plugin 0.4.5 and preserve enabled skill/plugin registration",
+	);
+	result.checks.push(
+		"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",
 	);
 
 	result.status = "PASS";

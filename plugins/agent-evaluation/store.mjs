@@ -6,6 +6,7 @@ import * as fs from "node:fs";
 import { join, resolve, dirname } from "node:path";
 import { randomUUID, createHash } from "node:crypto";
 import { publishFile } from "./durable.mjs";
+import { encodePack, readPackIndex } from "./pack.mjs";
 import {
 	VERSION,
 	LIMITS,
@@ -108,8 +109,37 @@ export class EvaluationStore {
 			fs.closeSync(fd);
 		}
 	}
-	load(file) {
-		const raw = this.readFile(file);
+	readRange(file, offset, length) {
+		this.checkDirectory(this.root);
+		this.checkDirectory(dirname(file));
+		const fd = fs.openSync(file, fs.constants.O_RDONLY | NOFOLLOW);
+		try {
+			const stat = fs.fstatSync(fd);
+			requireValue(stat.isFile() && stat.nlink === 1, "PERMISSION_DENIED", "Storage links are forbidden");
+			requireValue(
+				Number.isSafeInteger(offset) &&
+					offset >= 0 &&
+					Number.isSafeInteger(length) &&
+					length >= 0 &&
+					length <= this.limits.recordBytes &&
+					stat.size <= this.limits.readBytes &&
+					offset + length <= stat.size,
+				"STORE_CORRUPT",
+				"Invalid packed read range",
+			);
+			const bytes = Buffer.alloc(length);
+			requireValue(
+				fs.readSync(fd, bytes, 0, length, offset) === length,
+				"STORE_CORRUPT",
+				"Evidence pack changed during read",
+			);
+			return bytes;
+		} finally {
+			fs.closeSync(fd);
+		}
+	}
+	load(file, segment = undefined) {
+		const raw = segment ? this.readRange(file, segment.offset, segment.length).toString("utf8") : this.readFile(file);
 		let record;
 		try {
 			record = JSON.parse(raw);
@@ -130,9 +160,39 @@ export class EvaluationStore {
 		);
 		return record;
 	}
+	packedEntries(file, size) {
+		const ranges = readPackIndex((offset, length) => this.readRange(file, offset, length), size, this.limits);
+		return ranges.map(([offset, length, blobOffset, blobLength]) => {
+			const segment = { offset, length },
+				record = this.load(file, segment);
+			requireValue(record.kind === "evidence", "STORE_CORRUPT", "Only evidence may be packed");
+			requireValue(
+				record.contentRef
+					? /^[a-f0-9]{64}$/.test(record.contentRef.sha256) &&
+							record.contentRef.size === blobLength &&
+							blobOffset !== null
+					: blobOffset === null,
+				"STORE_CORRUPT",
+				"Packed body differs from record",
+			);
+			return {
+				record,
+				entry: { file, ...segment, ref: recordRef(record), domain: record.domain },
+				blob: record.contentRef ? { file, offset: blobOffset, length: blobLength } : undefined,
+			};
+		});
+	}
+	indexPacked(entries) {
+		for (const { record, entry, blob } of entries) {
+			this.index.set(key(entry.ref), entry);
+			this.requests.set(digest([record.domain, record.request.id]), { ref: entry.ref, digest: record.request.digest });
+			if (blob) this.packedBlobs.set(this.blobPath(record), blob);
+		}
+	}
 	rebuild() {
 		this.index = new Map();
 		this.requests = new Map();
+		this.packedBlobs = new Map();
 		this.issues = [];
 		this.usedBytes = 0;
 		const scan = (dir) => {
@@ -152,6 +212,36 @@ export class EvaluationStore {
 				this.usedBytes += stat.size;
 				if (file === this.lock) continue;
 				if (dir === join(this.root, "blobs") && /^[a-f0-9]{64}-[a-f0-9]{64}\.blob$/.test(item.name)) continue;
+				if (dir === join(this.root, "evidence") && /^batch-[a-f0-9-]{36}\.pack$/.test(item.name)) {
+					try {
+						const entries = this.packedEntries(file, stat.size),
+							keys = new Set(),
+							requests = new Set();
+						requireValue(
+							this.index.size + entries.length <= this.limits.records,
+							"LIMIT_EXCEEDED",
+							"Too many persisted records",
+						);
+						for (const { record, entry } of entries) {
+							const recordKey = key(entry.ref),
+								requestKey = digest([record.domain, record.request.id]);
+							requireValue(
+								!this.index.has(recordKey) &&
+									!keys.has(recordKey) &&
+									!this.requests.has(requestKey) &&
+									!requests.has(requestKey),
+								"STORE_CORRUPT",
+								"Duplicate packed record or request ID",
+							);
+							keys.add(recordKey);
+							requests.add(requestKey);
+						}
+						this.indexPacked(entries);
+					} catch (error) {
+						this.issues.push({ code: error.code ?? "STORE_CORRUPT", file: item.name });
+					}
+					continue;
+				}
 				if (!item.name.endsWith(".json") || dir === this.root) {
 					this.issues.push({ code: "EVIDENCE_GAP", file: item.name });
 					continue;
@@ -197,6 +287,12 @@ export class EvaluationStore {
 		validateRef(ref);
 		const identity = this.identity(context),
 			entry = this.index.get(key(ref));
+		if (budget.authorization !== undefined)
+			requireValue(
+				budget.authorization === canonical([identity.domain, identity.sessionIds]),
+				"PERMISSION_DENIED",
+				"Read authorization changed",
+			);
 		requireValue(
 			entry && same(entry.domain, identity.domain),
 			"PERMISSION_DENIED",
@@ -204,7 +300,7 @@ export class EvaluationStore {
 		);
 		requireValue(!visited.has(key(ref)), "STORE_CORRUPT", "Cyclic record references");
 		if (budget.cache.has(key(ref))) return budget.cache.get(key(ref));
-		budget.bytes += fs.lstatSync(entry.file).size;
+		budget.bytes += entry.length ?? fs.lstatSync(entry.file).size;
 		// The source-event budget must allow a full snapshot plus its authorization graph.
 		// Both categories remain independently bounded, with shared byte/time/depth limits.
 		if (ref.kind === "evidence") budget.items += 1;
@@ -220,7 +316,7 @@ export class EvaluationStore {
 		);
 		const next = new Set(visited);
 		next.add(key(ref));
-		const record = this.load(entry.file);
+		const record = this.load(entry.file, entry.offset === undefined ? undefined : entry);
 		requireValue(same(recordRef(record), ref), "STORE_CORRUPT", "Record identity changed");
 		requireValue(same(record.domain, identity.domain), "PERMISSION_DENIED", "Record domain changed");
 		if (record.kind === "contracts") {
@@ -241,6 +337,23 @@ export class EvaluationStore {
 		}
 		budget.cache.set(key(ref), record);
 		return record;
+	}
+	getMany(context, refs) {
+		const identity = this.identity(context);
+		requireValue(
+			Array.isArray(refs) && refs.length <= this.limits.readItems,
+			"LIMIT_EXCEEDED",
+			"Too many record references",
+		);
+		const budget = {
+			bytes: 0,
+			items: 0,
+			metadataItems: 0,
+			started: performance.now(),
+			cache: new Map(),
+			authorization: canonical([identity.domain, identity.sessionIds]),
+		};
+		return refs.map((ref) => this.get(context, ref, new Set(), budget));
 	}
 	list(context, { kind = "contracts", cursor = "", limit = 50 } = {}) {
 		this.identity(context);
@@ -281,19 +394,22 @@ export class EvaluationStore {
 		return record;
 	}
 
-	write(context, { kind, data, requestId, schemaVersion = VERSION, previousRef = undefined }) {
+	#prepareWrite(context, { kind, data, requestId, schemaVersion = VERSION, previousRef = undefined }, sharedBudget) {
 		const identity = this.identity(context, true);
+		if (sharedBudget)
+			requireValue(
+				sharedBudget.authorization === canonical([identity.domain, identity.sessionIds]),
+				"PERMISSION_DENIED",
+				"Batch authorization changed",
+			);
 		requireValue(
 			typeof requestId === "string" && /^[A-Za-z0-9_-]{1,128}$/.test(requestId),
 			"INVALID_INPUT",
 			"Invalid request ID",
 		);
-		const inputBytes = canonical(data);
-		requireValue(
-			Buffer.byteLength(inputBytes) <= this.limits.recordBytes,
-			"LIMIT_EXCEEDED",
-			"Input exceeds record budget",
-		);
+		const inputBytes = canonical(data),
+			inputSize = Buffer.byteLength(inputBytes);
+		requireValue(inputSize <= this.limits.recordBytes, "LIMIT_EXCEEDED", "Input exceeds record budget");
 		validate(kind, data, schemaVersion);
 		if (kind === "snapshots")
 			requireValue(
@@ -317,7 +433,7 @@ export class EvaluationStore {
 				"VERSION_CONFLICT",
 				"Request ID already used with different input",
 			);
-			return this.get(context, receipt.ref);
+			return { existing: this.get(context, receipt.ref), inputSize };
 		}
 		requireValue(!this.readOnly, "PERMISSION_DENIED", "Store is read only");
 		requireValue(
@@ -335,9 +451,15 @@ export class EvaluationStore {
 				"PERMISSION_DENIED",
 				"Contract selection is not authorized",
 			);
-		// Reuse only within this synchronous write. Never retain authorized records across
+		// Reuse only within this synchronous commit. Never retain authorized records across
 		// requests: each later operation must recheck current bytes and session access.
-		const budget = { bytes: 0, items: 0, metadataItems: 0, started: performance.now(), cache: new Map() };
+		const budget = sharedBudget ?? {
+			bytes: 0,
+			items: 0,
+			metadataItems: 0,
+			started: performance.now(),
+			cache: new Map(),
+		};
 		const read = (ref) => this.get(context, ref, new Set(), budget);
 		for (const ref of references(kind, data)) read(ref);
 		let id = randomUUID(),
@@ -398,6 +520,11 @@ export class EvaluationStore {
 		const content = kind === "evidence" ? clean.content : undefined;
 		if (content !== undefined) {
 			record.contentRef = { sha256: contentHash(content), size: Buffer.byteLength(content) };
+			requireValue(
+				record.contentRef.size <= this.limits.evidenceBytes,
+				"LIMIT_EXCEEDED",
+				"Evidence exceeds configured byte limit",
+			);
 			delete clean.content;
 		}
 		record.digest = digest(record);
@@ -416,6 +543,12 @@ export class EvaluationStore {
 			"LIMIT_EXCEEDED",
 			"Evaluation store capacity reached",
 		);
+		return { record, bytes, content, inputSize };
+	}
+	write(context, input) {
+		const prepared = this.#prepareWrite(context, input);
+		if (prepared.existing) return prepared.existing;
+		const { record, bytes, content } = prepared;
 		const ref = recordRef(record),
 			file = join(this.root, `${key(ref)}.json`);
 		this.checkDirectory(dirname(file));
@@ -440,9 +573,82 @@ export class EvaluationStore {
 			);
 		}
 		this.index.set(key(ref), { file, ref, domain: record.domain });
-		this.requests.set(digest([identity.domain, requestId]), { ref, digest: requestDigest });
+		this.requests.set(digest([record.domain, record.request.id]), { ref, digest: record.request.digest });
 		this.usedBytes += Buffer.byteLength(bytes);
 		return structuredClone(record);
+	}
+	/** One synchronous, bounded commit. No provisional record escapes before both syncs and publication. */
+	writeEvidenceBatch(context, inputs) {
+		const identity = this.identity(context, true);
+		requireValue(
+			Array.isArray(inputs) && inputs.length > 0 && inputs.length <= this.limits.snapshotItems,
+			"LIMIT_EXCEEDED",
+			"Invalid evidence batch size",
+		);
+		const budget = {
+				bytes: 0,
+				items: 0,
+				metadataItems: 0,
+				started: performance.now(),
+				cache: new Map(),
+				authorization: canonical([identity.domain, identity.sessionIds]),
+			},
+			pending = new Map(),
+			result = [];
+		let inputSize = 0;
+		for (const input of inputs) {
+			requireValue(input.kind === "evidence" && !input.previousRef, "INVALID_INPUT", "Batch accepts new evidence only");
+			const prepared = this.#prepareWrite(context, input, budget);
+			inputSize += prepared.inputSize;
+			requireValue(inputSize <= this.limits.readBytes, "LIMIT_EXCEEDED", "Evidence batch input exceeds budget");
+			if (prepared.existing) {
+				result.push(prepared.existing);
+				continue;
+			}
+			const record = prepared.record,
+				requestKey = digest([record.domain, record.request.id]),
+				prior = pending.get(requestKey);
+			requireValue(
+				!prior || prior.record.request.digest === record.request.digest,
+				"VERSION_CONFLICT",
+				"Batch request ID already used with different input",
+			);
+			if (!prior) pending.set(requestKey, prepared);
+			result.push(prior?.record ?? record);
+		}
+		const items = [...pending.values()];
+		if (!items.length) return structuredClone(result);
+		const pack = encodePack(items, this.limits),
+			file = join(this.root, "evidence", `batch-${randomUUID()}.pack`);
+		requireValue(
+			this.index.size + items.length <= this.limits.records && this.usedBytes + pack.size <= this.limits.capacityBytes,
+			"LIMIT_EXCEEDED",
+			"Evaluation store capacity reached",
+		);
+		this.checkDirectory(dirname(file));
+		try {
+			publishFile(file, pack.body, this.fault, pack.manifest);
+		} catch (error) {
+			this.rebuild();
+			throw new EvaluationError(
+				error.published ? "EXECUTION_UNKNOWN" : "IO_ERROR",
+				error.published
+					? "Batch may be durable; query with the same request IDs"
+					: "Batch write failed; original temporary evidence preserved",
+			);
+		}
+		this.indexPacked(
+			items.map(({ record }, i) => {
+				const [offset, length, blobOffset, blobLength] = pack.index[i];
+				return {
+					record,
+					entry: { file, offset, length, ref: recordRef(record), domain: record.domain },
+					blob: record.contentRef ? { file, offset: blobOffset, length: blobLength } : undefined,
+				};
+			}),
+		);
+		this.usedBytes += pack.size;
+		return structuredClone(result);
 	}
 	validateRelations(kind, data, read) {
 		if (kind === "attempts") {
@@ -523,7 +729,10 @@ export class EvaluationStore {
 		return join(this.root, "blobs", `${digest(record.domain)}-${record.contentRef.sha256}.blob`);
 	}
 	readBlob(record) {
-		const content = this.readFile(this.blobPath(record), this.limits.evidenceBytes);
+		const packed = this.packedBlobs.get(this.blobPath(record));
+		const content = packed
+			? this.readRange(packed.file, packed.offset, packed.length).toString("utf8")
+			: this.readFile(this.blobPath(record), this.limits.evidenceBytes);
 		requireValue(
 			contentHash(content) === record.contentRef.sha256 && Buffer.byteLength(content) === record.contentRef.size,
 			"STORE_CORRUPT",

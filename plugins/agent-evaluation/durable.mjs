@@ -2,15 +2,20 @@
 import { openSync, closeSync, writeFileSync, fsyncSync, renameSync, existsSync, constants } from "node:fs";
 import { dirname } from "node:path";
 import { randomUUID } from "node:crypto";
-export function publishFile(file, bytes, fault = () => {}) {
+export function publishFile(file, bytes, fault = () => {}, manifest = []) {
 	const temp = `${file}.tmp-${randomUUID()}`;
 	let fd,
 		published = false;
 	try {
 		fault("beforeWrite");
 		fd = openSync(temp, constants.O_WRONLY | constants.O_CREAT | constants.O_EXCL | constants.O_NOFOLLOW, 0o600);
-		writeFileSync(fd, bytes);
+		for (const chunk of Array.isArray(bytes) ? bytes : [bytes]) writeFileSync(fd, chunk);
 		fsyncSync(fd);
+		if (manifest.length) {
+			fault("afterBodySync");
+			for (const chunk of manifest) writeFileSync(fd, chunk);
+			fsyncSync(fd);
+		}
 		closeSync(fd);
 		fd = undefined;
 		fault("beforePublish");

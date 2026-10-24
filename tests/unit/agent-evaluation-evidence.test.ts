@@ -367,7 +367,10 @@ describe("EC02 durable collector", () => {
 			if (stage === "beforeWrite" && ++count === 2) throw new Error("disk offline");
 		};
 		await expect(f.collector.collect(f.context, f.args)).rejects.toThrow(/Write failed/);
-		expect(recordsOf(f.store, f.context, "evidence")).toHaveLength(1);
+		// The first physical commit now contains the entire page, never its checkpoint.
+		const persisted = recordsOf(f.store, f.context, "evidence");
+		expect(persisted.map((r) => r.data.sourceEventId).sort()).toEqual(["a1", "t1", "u1"]);
+		expect(persisted.every((r) => r.data.producer === "pi-evidence-v1")).toBe(true);
 		f.store.fault = () => {};
 		const done = await f.collector.collect(f.context, f.args);
 		expect(done.evidenceRefs).toHaveLength(3);
@@ -405,7 +408,9 @@ await new EvidenceCollector(store,{readEvaluationEvidence:()=>(${JSON.stringify(
 		});
 		const store = new EvaluationStore({ dataDir: recovery, authorize: () => f.identity });
 		cleanup.push(() => store.close());
-		expect(recordsOf(store, f.context, "evidence")).toHaveLength(1);
+		const persisted = recordsOf(store, f.context, "evidence");
+		expect(persisted.map((r) => r.data.sourceEventId).sort()).toEqual(["a1", "t1", "u1"]);
+		expect(persisted.every((r) => r.data.producer === "pi-evidence-v1")).toBe(true);
 		const collector = new EvidenceCollector(store, f.host);
 		cleanup.push(() => collector.close());
 		const result = await collector.collect(f.context, f.args);

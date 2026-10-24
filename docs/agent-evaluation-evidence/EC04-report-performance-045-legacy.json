@@ -1,0 +1,63 @@
+{
+	"status": "PASS",
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-report-performance-NJ2CEz",
+	"scope": "1000 evidence snapshot; fixture construction excluded; five actual report/list/evidence reads",
+	"checks": {
+		"reportsCompleted": true,
+		"reportMedianMs": 810.8257910000029,
+		"listMedianMs": 21.72029200000543,
+		"evidenceMedianMs": 0.494790999997349
+	},
+	"rounds": [
+		{
+			"round": 0,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 897.7940000000017,
+			"listCount": 50,
+			"listMs": 22.64679099999921,
+			"evidenceChars": 37,
+			"evidenceMs": 0.5339999999996508
+		},
+		{
+			"round": 1,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 810.8257910000029,
+			"listCount": 50,
+			"listMs": 21.55975000000035,
+			"evidenceChars": 37,
+			"evidenceMs": 0.4780419999951846
+		},
+		{
+			"round": 2,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 813.1915420000005,
+			"listCount": 50,
+			"listMs": 21.956916999995883,
+			"evidenceChars": 37,
+			"evidenceMs": 0.494790999997349
+		},
+		{
+			"round": 3,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 810.135792000001,
+			"listCount": 50,
+			"listMs": 21.72029200000543,
+			"evidenceChars": 37,
+			"evidenceMs": 0.4917920000007143
+		},
+		{
+			"round": 4,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 809.4159579999978,
+			"listCount": 50,
+			"listMs": 21.453583000002254,
+			"evidenceChars": 37,
+			"evidenceMs": 0.5093750000014552
+		}
+	]
+}

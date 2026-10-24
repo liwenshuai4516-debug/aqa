@@ -2875,7 +2875,7 @@ export function App() {
 					onClose={() => setManageModelsOpen(false)}
 				/>
 			)}
-			{settingsOpen && (
+			{settingsOpen && chat.settings && (
 				<SettingsModal
 					chat={chat}
 					terminal={terminal}
