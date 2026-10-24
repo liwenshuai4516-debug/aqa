@@ -122,6 +122,94 @@ async function diagnose(f: ReturnType<typeof fixture>) {
 	return { contractRef, attemptRef, collected, snapshotRef, reportRef: status.reportRef, report };
 }
 describe("EC04 product service", () => {
+	it("pages only sealed redacted file text and never reopens a changed artifact", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const snapshot = await f.request("get", { ref: scored.snapshotRef });
+		const evidence = await Promise.all(snapshot.data.evidenceRefs.map((ref: any) => f.request("get", { ref })));
+		const artifact = evidence.find((r: any) => r.data.kind === "artifact-snapshot");
+		writeFileSync(join(f.workspace, "result.json"), "changed current file");
+		f.host.readEvaluationArtifact.mockClear();
+		const request = { ref: artifact, evidenceView: "artifact-text" };
+		const first = await f.request("readEvidence", {
+			...request,
+			ref: { kind: artifact.kind, id: artifact.id, revision: artifact.revision },
+		});
+		expect(first).toMatchObject({ text: '{"ok":true,"apiKey":"[REDACTED]"}', view: "artifact-text", nextOffset: null });
+		expect(first.text).not.toContain("synthetic-secret");
+		await expect(
+			f.request("readEvidence", { ref: scored.reportRef, evidenceView: "artifact-text" }),
+		).rejects.toMatchObject({ code: "EVIDENCE_GAP" });
+		const ref = snapshot.data.evidenceRefs.find((r: any) => r.id === artifact.id);
+		await expect(f.request("readEvidence", { ref, evidenceView: "native-run" })).rejects.toMatchObject({
+			code: "INVALID_INPUT",
+		});
+		await expect(
+			f.request("readEvidence", { ref, evidenceView: "artifact-text" }, { channel: "ui", clientId: "other" }),
+		).rejects.toMatchObject({ code: "PERMISSION_DENIED" });
+		await expect(f.request("readEvidence", { ref, evidenceView: "artifact-text", offset: 9999 })).rejects.toMatchObject(
+			{ code: "INVALID_INPUT" },
+		);
+		expect(f.host.readEvaluationArtifact).not.toHaveBeenCalled();
+		expect((await f.request("get", { ref: scored.reportRef })).sourceDigest).toBe(scored.report.sourceDigest);
+	});
+	it("paginates long sealed text, including empty files, and explains missing, binary and over-budget bodies", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const paths = ["long.txt", "empty.txt", "missing.txt", "binary.bin", "large.txt"];
+		const text = "中文\n".repeat(3000);
+		writeFileSync(join(f.workspace, paths[0]), text);
+		writeFileSync(join(f.workspace, paths[1]), "");
+		writeFileSync(join(f.workspace, paths[3]), Buffer.from([255, 254, 0]));
+		writeFileSync(join(f.workspace, paths[4]), "x".repeat(1024 * 1024 + 1));
+		const collected = await f.request("collect", { ref: scored.attemptRef, artifactPaths: paths });
+		const snapshotRef = await f.request("seal", { ref: collected.checkpointRef });
+		const checkpoint = await f.request("get", { ref: snapshotRef });
+		const records = await Promise.all(checkpoint.data.evidenceRefs.map((ref: any) => f.request("get", { ref })));
+		for (const [index, path] of paths.entries()) {
+			const record = records.find((r: any) => r.data.sourceLocator === path);
+			const ref = { kind: record.kind, id: record.id, revision: record.revision };
+			let offset = 0,
+				actual = "",
+				page: any;
+			do {
+				page = await f.request("readEvidence", { ref, evidenceView: "artifact-text", offset });
+				expect(page.text.length).toBeLessThanOrEqual(4096);
+				actual += page.text;
+				offset = page.nextOffset;
+			} while (offset !== null);
+			expect(actual).toBe(index === 0 ? text : "");
+			expect(page.unavailable).toBe([undefined, undefined, "file-missing", "file-nontext", "file-truncated"][index]);
+		}
+	});
+	it("opens a sealed native run without fetching live results or changing evidence", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const run = {
+			engine: "api",
+			runId: "offline-run",
+			complete: false,
+			at: "2026-10-24T00:00:00Z",
+			rows: [{ caseId: "case", instanceId: "one", status: "failed", evidenceComplete: false }],
+		};
+		f.host.readEvaluationNative.mockResolvedValue(run);
+		const collected = await f.request("collect", {
+			ref: scored.attemptRef,
+			nativeRefs: [{ engine: "api", reference: "offline-run" }],
+		});
+		const snapshotRef = await f.request("seal", { ref: collected.checkpointRef });
+		const checkpoint = await f.request("get", { ref: snapshotRef });
+		const records = await Promise.all(checkpoint.data.evidenceRefs.map((ref: any) => f.request("get", { ref })));
+		const record = records.find((r: any) => r.data.kind === "native-test-run");
+		f.host.readEvaluationNative.mockClear();
+		const ref = { kind: record.kind, id: record.id, revision: record.revision };
+		const page = await f.request("readEvidence", { ref, evidenceView: "native-run" });
+		expect(JSON.parse(page.text)).toEqual(run);
+		expect(page.view).toBe("native-run");
+		expect(f.host.readEvaluationNative).not.toHaveBeenCalled();
+		expect((await f.request("get", { ref })).sourceDigest).toBe(record.sourceDigest);
+	});
+
 	it("preflights installed configuration and bindings without collection, jobs or record changes", async () => {
 		const f = fixture(),
 			scored = await diagnose(f);

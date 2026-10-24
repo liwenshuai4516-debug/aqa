@@ -1,0 +1,97 @@
+{
+	"checks": [
+		{
+			"command": ["npm", "run", "lint"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 lint\n> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/\n\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "check:protocol"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 check:protocol\n> node scripts/check-protocol-sync.mjs\n\n✓ types.ts 是 protocol.ts 的 type-only re-export shim\n✓ protocol.ts 保持纯类型导出（无运行时代码）\n✓ 双端 PROTOCOL_VERSION 一致 (v33)\n· 跳过协议版本 git 启发式（无可用 tag 或浅检出环境）\n",
+			"stderr": "fatal: No names found, cannot describe anything.\n"
+		},
+		{
+			"command": ["npm", "run", "i18n:check"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 i18n:check\n> node scripts/i18n-diff.mjs --check-packs\n\nOK   de（v0.68.1）：缺 0，多余 0\nOK   es（v0.68.1）：缺 0，多余 0\nOK   fr（v0.68.1）：缺 0，多余 0\nOK   it（v0.68.1）：缺 0，多余 0\nOK   ja（v0.69.0）：缺 0，多余 0\nOK   ko（v0.68.1）：缺 0，多余 0\nOK   pt（v0.105.1）：缺 0，多余 0\nOK   ru（v0.68.1）：缺 0，多余 0\nOK   tr（v0.105.1）：缺 0，多余 0\nOK   zh-HK（v0.107.0）：缺 0，多余 0\nOK   zh-Hant（v0.107.0）：缺 0，多余 0\nOK   zh-TW（v0.107.0）：缺 0，多余 0\n12 个语言包 key 与 zh 一一对应。\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "size:check"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 size:check\n> node scripts/project-budget.mjs --check\n\n{\n  \"tracked\": {\n    \"AGENTS.md\": 8597,\n    \"docs/desktop-delivery/evidence\": 63696818,\n    \"assets/demo-video.mp4\": 20012405,\n    \"plugins/mermaid/client/vendor\": 5346437,\n    \"plugins/run-trace/client/vendor\": 568528\n  },\n  \"local\": {},\n  \"checks\": [\n    {\n      \"name\": \"AGENTS.md\",\n      \"bytes\": 8597,\n      \"limit\": 12000,\n      \"passed\": true\n    },\n    {\n      \"name\": \"docs/desktop-delivery/evidence\",\n      \"bytes\": 63696818,\n      \"limit\": 63696818,\n      \"passed\": true\n    },\n    {\n      \"name\": \"assets/demo-video.mp4\",\n      \"bytes\": 20012405,\n      \"limit\": 20012405,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/mermaid/client/vendor\",\n      \"bytes\": 5346437,\n      \"limit\": 5346437,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/run-trace/client/vendor\",\n      \"bytes\": 568528,\n      \"limit\": 568528,\n      \"passed\": true\n    },\n    {\n      \"name\": \"rootLockedPackages\",\n      \"count\": 612,\n      \"limit\": 650,\n      \"passed\": true\n    }\n  ],\n  \"rootLockedPackages\": 612\n}\n",
+			"stderr": ""
+		},
+		{
+			"command": ["git", "diff", "--check"],
+			"exitCode": 0,
+			"stdout": "",
+			"stderr": ""
+		}
+	],
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"protocolHistoryHeuristic": "skipped: no tags",
+	"pluginVersion": "0.4.11",
+	"typecheck": {
+		"command": "npm run typecheck",
+		"exitCode": 0,
+		"configurations": 5
+	},
+	"unit": {
+		"rawPath": "/tmp/EC04-0411-checks.json",
+		"sha256": "0b9ccf4d419a8e2574be61012a094183d0c4b13d4e96f32faba4cf2452259a20"
+	},
+	"desktop": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-LXdF02/result.json",
+		"sha256": "a04efb667aa31e46d279de6736ec1bee41f5f6b866d1de2e850fb04242e42cdd"
+	},
+	"visual": {
+		"file": {
+			"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-LXdF02/history-reopened.png",
+			"sha256": "e021295d83d74d84ede4a57fbfabcdc930c5b59162151a766179119d1f8a431b"
+		},
+		"inspected": true,
+		"finding": "Raw evidence has a dedicated bilingual label; sealed content, paging position and unavailable live navigation are readable."
+	},
+	"priorNativeRuns": [
+		{
+			"result": {
+				"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-g9dTf8/result.json",
+				"sha256": "eed1c325c3c7dba9b2b321cfb4d0064f010ab02fc4bd3c693e01b277687bee81"
+			},
+			"limitation": "Actual asserted plugin version 0.4.11; three narrative check labels still said 0.4.10. Preserved unchanged."
+		},
+		{
+			"result": {
+				"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-Uroajt/result.json",
+				"sha256": "27662a2a63a56c7a0958508f82bb505c186aa65922696d8db70e1c9440c248c1"
+			},
+			"limitation": "Old raw evidence label reused configuration/metrics wording. Dedicated label fixed and rerun."
+		}
+	],
+	"initialTargetedTests": {
+		"passed": 26,
+		"failed": 2,
+		"cause": "New test fixture read checkpoint metadata as a snapshot. Corrected fixture to seal before reading evidenceRefs; no production change for this failure."
+	},
+	"accidentalI18nDiff": {
+		"command": "node scripts/i18n-diff.mjs",
+		"exitCode": 1,
+		"reason": "No repository tags and no explicit base; actual language pack check passed."
+	},
+	"cleanPreview": {
+		"startItems": 0,
+		"endItems": 0,
+		"deleted": false
+	},
+	"remaining": {
+		"collectorPerformance": "FAIL from 0.4.10; not rerun, collector unchanged",
+		"nativeRunView": "engineering only; not actual desktop native-run acceptance",
+		"liveSourceNavigation": "not implemented",
+		"M1": "in progress",
+		"realCli": "user deferred"
+	}
+}

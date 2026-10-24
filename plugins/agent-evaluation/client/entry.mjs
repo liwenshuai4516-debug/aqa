@@ -99,7 +99,7 @@ export default {
 				)
 				.join(
 					"",
-				)}<div class="actions">${findingsOffset ? button("findings-first", "first") : ""}${report.pages.findings?.nextOffset != null ? button("findings-next", "next") : ""}</div></section>${evidence ? `<section tabindex="-1" data-evidence-panel><h2>${esc(t("evidence"))}</h2><p>${esc(evidence.record.data.sourceLocator)}</p><p>${esc(evidence.record.id)} · ${esc(evidence.record.data.sourceEventId)} · ${esc(evidence.record.data.origin)} · ${esc(evidence.record.data.availability)}</p><pre>${esc(evidence.text)}</pre>${evidence.nextOffset != null ? button("evidence-next", "next") : ""}</section>` : ""}<section><h2>${esc(t("config"))}</h2><p>${esc(t("costHint"))}</p><p>${esc(t("version"))}: ${esc(d.profileVersion)}</p><details><summary>${esc(t("raw"))}</summary><pre>${esc(JSON.stringify({ configuration: d.configuration, job: d.job, evaluatorVersions: d.evaluatorVersions }, null, 2))}</pre></details><h3>${esc(t("gaps"))}</h3><pre>${esc(snapshot.data.gaps.join("\n"))}</pre></section>`;
+				)}<div class="actions">${findingsOffset ? button("findings-first", "first") : ""}${report.pages.findings?.nextOffset != null ? button("findings-next", "next") : ""}</div></section>${evidence ? `<section tabindex="-1" data-evidence-panel><h2>${esc(t("evidence"))}</h2><p>${esc(evidence.record.data.sourceLocator)}</p><p>${esc(evidence.record.id)} · ${esc(evidence.record.data.sourceEventId)} · ${esc(evidence.record.data.origin)} · ${esc(evidence.record.data.availability)}</p><p class="muted">${esc(t("sealedEvidenceHint"))}</p><div class="actions">${button("evidence-raw", "evidenceRaw")}${evidence.record.data.kind === "artifact-snapshot" && evidence.record.data.producer === "artifact-reader-v1" ? button("evidence-artifact", "sealedFile") : ""}${evidence.record.data.kind === "native-test-run" && evidence.record.data.producer === "native-reader-v1" ? button("evidence-native", "sealedRun") : ""}</div><h3>${esc(t(evidence.view === "artifact-text" ? "sealedFile" : evidence.view === "native-run" ? "sealedRun" : "evidenceRaw"))}</h3>${evidence.unavailable ? `<p role="status">${esc(t(evidence.unavailable))}</p>` : `<pre>${esc(evidence.text)}</pre>`}<p>${esc(t("characterOffset"))}: ${evidence.offset}</p><div class="actions">${evidence.offset ? button("evidence-first", "first") : ""}${evidence.nextOffset != null ? button("evidence-next", "next") : ""}</div></section>` : ""}<section><h2>${esc(t("config"))}</h2><p>${esc(t("costHint"))}</p><p>${esc(t("version"))}: ${esc(d.profileVersion)}</p><details><summary>${esc(t("raw"))}</summary><pre>${esc(JSON.stringify({ configuration: d.configuration, job: d.job, evaluatorVersions: d.evaluatorVersions }, null, 2))}</pre></details><h3>${esc(t("gaps"))}</h3><pre>${esc(snapshot.data.gaps.join("\n"))}</pre></section>`;
 		}
 		function bindingRules() {
 			return (source?.rules ?? []).filter((rule) => conditionRuleIds.includes(rule.id));
@@ -226,10 +226,10 @@ export default {
 			job = await rpc.request("status", { jobId: job.jobId });
 			if (job.reportRef) await open(job.reportRef);
 		}
-		async function readEvidence(reference, offset = 0) {
+		async function readEvidence(reference, offset = 0, evidenceView = "raw") {
 			const record = await rpc.request("get", { ref: reference });
-			const body = await rpc.request("readEvidence", { ref: reference, offset });
-			evidence = { record, ...body };
+			const body = await rpc.request("readEvidence", { ref: reference, offset, evidenceView });
+			evidence = { record, ...body, view: evidenceView, offset };
 		}
 		root.addEventListener("click", (event) => {
 			const target = event.target.closest?.("button[data-action]");
@@ -380,7 +380,18 @@ export default {
 					await readEvidence(
 						report.data.findings[Number(target.dataset.finding)].evidenceRefs[Number(target.dataset.evidence)],
 					);
-				if (action === "evidence-next") await readEvidence(ref(evidence.record), evidence.nextOffset);
+				if (["evidence-raw", "evidence-artifact", "evidence-native"].includes(action))
+					await readEvidence(
+						ref(evidence.record),
+						0,
+						{ "evidence-raw": "raw", "evidence-artifact": "artifact-text", "evidence-native": "native-run" }[action],
+					);
+				if (action === "evidence-first" || action === "evidence-next")
+					await readEvidence(
+						ref(evidence.record),
+						action === "evidence-first" ? 0 : evidence.nextOffset,
+						evidence.view,
+					);
 				if (action === "export") {
 					let text = "",
 						offset = 0,

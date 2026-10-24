@@ -1,4 +1,24 @@
 const labels = {
+	evidenceRaw: ["原始证据", "Raw evidence"],
+	sealedFile: ["查看封存文件片段", "View sealed file content"],
+	sealedRun: ["查看封存批次结果", "View sealed run result"],
+	sealedEvidenceHint: [
+		"以下内容来自本报告的封存证据，可能已脱敏；不会重新读取当前文件或执行测试。实时来源跳转尚未接入。",
+		"This report’s sealed evidence may be redacted. Viewing it does not reread current files or run tests. Live source navigation is not yet available.",
+	],
+	characterOffset: ["字符起始位置", "Character offset"],
+	"file-missing": [
+		"采集时文件不存在。请确认产物路径后，另建观察记录补充证据。",
+		"The file was missing at collection time. Confirm its path and create a new observation to supply evidence.",
+	],
+	"file-truncated": [
+		"采集时文件超出正文预算，未封存文本。请提供预算内的产物并另建观察记录。",
+		"The file exceeded the collection text budget. Supply a smaller artifact and create a new observation.",
+	],
+	"file-nontext": [
+		"采集时未取得可读取文本；可在原始证据中核对文件存在性和摘要。",
+		"No readable text was captured. Check existence and digest in the raw evidence.",
+	],
 	title: ["Agent 评估中心", "Agent evaluation"],
 	records: ["评估记录", "Evaluations"],
 	detail: ["评估详情", "Evaluation details"],

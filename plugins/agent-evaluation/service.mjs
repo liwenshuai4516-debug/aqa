@@ -35,6 +35,7 @@ export const requestSchema = T.Object(
 		data: T.Optional(T.Record(T.String(), T.Unknown())),
 		configs: T.Optional(T.Record(T.String(), T.Unknown())),
 		kind: T.Optional(string),
+		evidenceView: T.Optional(T.Union([T.Literal("raw"), T.Literal("artifact-text"), T.Literal("native-run")])),
 		jobId: T.Optional(string),
 		watchId: T.Optional(string),
 		cursor: T.Optional(T.String({ maxLength: 256 })),
@@ -339,8 +340,60 @@ export class EvaluationService {
 			}
 			case "get":
 				return publicRecord(store.get(context, request.ref), request.offset, request.limit);
-			case "readEvidence":
-				return store.readEvidence(context, request.ref, { offset: request.offset ?? 0, maxChars: 4096 });
+			case "readEvidence": {
+				const view = request.evidenceView ?? "raw";
+				if (view === "raw")
+					return store.readEvidence(context, request.ref, { offset: request.offset ?? 0, maxChars: 4096 });
+				// Only decode the authorized, digest-checked sealed body. Never reopen a source path or run.
+				const record = store.get(context, request.ref),
+					data = record.data;
+				requireValue(record.kind === "evidence" && record.contentRef, "EVIDENCE_GAP", "Evidence body is unavailable");
+				requireValue(
+					view === "artifact-text"
+						? data.kind === "artifact-snapshot" && data.producer === "artifact-reader-v1"
+						: data.kind === "native-test-run" && data.producer === "native-reader-v1",
+					"INVALID_INPUT",
+					"This evidence does not support the selected view",
+				);
+				let body;
+				try {
+					body = JSON.parse(store.readBlob(record));
+				} catch (error) {
+					if (error.code) throw error;
+					requireValue(false, "EVIDENCE_GAP", "Sealed evidence is not valid JSON");
+				}
+				requireValue(
+					body && typeof body === "object" && !Array.isArray(body),
+					"EVIDENCE_GAP",
+					"Sealed evidence has no structured body",
+				);
+				let text, unavailable;
+				if (view === "artifact-text") {
+					requireValue(
+						body.path === data.sourceLocator,
+						"EVIDENCE_GAP",
+						"Sealed artifact path does not match its source",
+					);
+					unavailable = !body.exists
+						? "file-missing"
+						: typeof body.text !== "string"
+							? body.truncated
+								? "file-truncated"
+								: "file-nontext"
+							: undefined;
+					text = unavailable ? "" : body.text;
+				} else {
+					requireValue(
+						["api", "ui"].includes(body.engine) &&
+							typeof body.runId === "string" &&
+							data.sourceLocator === `native:${body.engine}:${body.runId}`,
+						"EVIDENCE_GAP",
+						"Sealed run does not match its source",
+					);
+					text = JSON.stringify(body, null, 2);
+				}
+				return { ...pageText(text, request.offset), view, unavailable, contentDigest: record.contentRef.sha256 };
+			}
 			case "export": {
 				const bundle = store.export(context, request.ref);
 				return { ...pageText(JSON.stringify(bundle, null, 2), request.offset), manifestDigest: bundle.manifestDigest };

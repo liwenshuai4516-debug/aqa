@@ -136,6 +136,74 @@ async function openReport() {
 	return { root, h, records, contractRef, snapshotRef, reportRef };
 }
 describe("evaluation client lifecycle", () => {
+	it.each([
+		["artifact-snapshot", "artifact-reader-v1", "evidence-artifact", "artifact-text"],
+		["native-test-run", "native-reader-v1", "evidence-native", "native-run"],
+	])(
+		"opens and pages %s in the same sealed record, with keyboard focus and escaped content",
+		async (kind, producer, action, view) => {
+			const { root, h, records } = await openReport();
+			const reference = { kind: "evidence", id: "e", revision: 1 };
+			records.report.data.findings = [
+				{
+					ruleId: "F01",
+					findingId: "finding",
+					verdict: "inconclusive",
+					evidenceState: "partial",
+					reason: "fixture",
+					missingEvidence: [],
+					evidenceRefs: [reference],
+				},
+			];
+			records.e = {
+				...reference,
+				data: { kind, producer, sourceLocator: "fixture", sourceEventId: "event", availability: "partial" },
+			};
+			const original = h.ctx.send;
+			h.ctx.send = (message: any) => {
+				if (message.action !== "readEvidence") return original(message);
+				h.sent.push(message);
+				queueMicrotask(() =>
+					h.reply(message, {
+						text: message.offset ? "last page" : '<img src=x onerror="alert(1)">',
+						nextOffset: message.offset ? null : 4096,
+					}),
+				);
+			};
+			root.querySelector<HTMLButtonElement>("[data-action=back]")!.click();
+			await vi.waitFor(() => expect(root.querySelector<HTMLButtonElement>("[data-action=open]")?.disabled).toBe(false));
+			root.querySelector<HTMLButtonElement>("[data-action=open]")!.click();
+			await vi.waitFor(() =>
+				expect(root.querySelector<HTMLButtonElement>("[data-action=evidence]")?.disabled).toBe(false),
+			);
+			root.querySelector<HTMLButtonElement>("[data-action=evidence]")!.click();
+			await vi.waitFor(() =>
+				expect(root.querySelector<HTMLButtonElement>(`[data-action=${action}]`)?.disabled).toBe(false),
+			);
+			const before = h.sent.length;
+			root.querySelector<HTMLButtonElement>(`[data-action=${action}]`)!.click();
+			await vi.waitFor(() =>
+				expect(root.querySelector<HTMLButtonElement>("[data-action=evidence-next]")?.disabled).toBe(false),
+			);
+			expect(root.querySelector("[data-evidence-panel] img")).toBeNull();
+			expect(root.querySelector("[data-evidence-panel] pre")?.textContent).toContain("<img");
+			expect(document.activeElement).toBe(root.querySelector("[data-evidence-panel]"));
+			root.querySelector<HTMLButtonElement>("[data-action=evidence-next]")!.click();
+			await vi.waitFor(() => expect(root.querySelector("[data-evidence-panel] pre")?.textContent).toBe("last page"));
+			root.querySelector<HTMLButtonElement>("[data-action=evidence-first]")!.click();
+			await vi.waitFor(() =>
+				expect(root.querySelector<HTMLButtonElement>("[data-action=evidence-next]")?.disabled).toBe(false),
+			);
+			const requests = h.sent.slice(before).filter((m: any) => m.action === "readEvidence");
+			expect(requests.map((m: any) => [m.ref, m.evidenceView, m.offset])).toEqual([
+				[reference, view, 0],
+				[reference, view, 4096],
+				[reference, view, 0],
+			]);
+			expect(h.sent.slice(before).every((m: any) => ["get", "readEvidence"].includes(m.action))).toBe(true);
+		},
+	);
+
 	it("edits installed checks on the sealed snapshot, preserves invalid inputs and never recollects", async () => {
 		const { root, h, reportRef, snapshotRef } = await openReport();
 		root.querySelector<HTMLButtonElement>("[data-action=configure]")!.click();
