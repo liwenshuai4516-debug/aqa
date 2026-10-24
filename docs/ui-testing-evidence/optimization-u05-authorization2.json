@@ -1,0 +1,196 @@
+{
+	"date": "2026-10-24",
+	"status": "additional-authorization-used-provider-still-402-no-approval",
+	"authorization": {
+		"authorization": "User confirmed service quota restored and authorized up to three additional reviews, total additional cost <= USD 1; deepseek/deepseek-v4-pro, max output 8192 tokens",
+		"at": "2026-10-24T04:37:08.284759+00:00",
+		"prior_native_attempts": 3,
+		"prior_provider_attempts": 2,
+		"prior_reserved_usd": 0.65555424,
+		"additional_native_limit": 3,
+		"additional_cost_usd": 1
+	},
+	"additional_native_attempts": 3,
+	"additional_provider_calls": 1,
+	"additional_reserved_usd": 0.79855512,
+	"invoice_cost": "unknown; reservation is not billing",
+	"decision_count": 0,
+	"diagnostics": "NOT RUN: no trusted approval",
+	"formal_execution": "NOT RUN: no runtime admission",
+	"history_preserved": true,
+	"attempts": [
+		{
+			"request": "u05-native-review-4",
+			"result": "original source task scope max_review_rounds=3 exhausted; no provider call"
+		},
+		{
+			"request": "u05-native-review-5",
+			"result": "new complete browser candidate evidence exceeds local 300000-byte guard; no provider call; native input 582352 bytes preserved"
+		},
+		{
+			"request": "preflight-6",
+			"result": "old mutable task reference digest stale; no native/provider call; recovered by native current snapshot and workflow.find, failure retained"
+		},
+		{
+			"request": "u05-native-review-6",
+			"result": "local limit raised to 650000, actual provider context 580390 bytes, full evidence retained; provider HTTP402/quota; no valid decision"
+		}
+	],
+	"limits": [
+		"Original source candidate approval cannot transfer to browser candidate or vice versa.",
+		"Complete browser candidate still lacks reviewed diagnostic plan; no diagnosis invoked.",
+		"No credentials, registry/model cache, private authority or dependencies archived.",
+		"No browser/Electron rerun in this test-harness change."
+	],
+	"validation": {
+		"typecheck": "PASS: all 5 configurations",
+		"vitest": "PASS: 3 files / 11 tests",
+		"lint": "PASS",
+		"protocol_structure": "PASS",
+		"protocol_history": "SKIP: no usable tag",
+		"size": "PASS",
+		"clean_preview": "PASS: no deletions",
+		"electron": "NOT RUN: harness/evidence-only change"
+	},
+	"file_index": [
+		{
+			"path": "browser-candidate/authorization2-blocked-task.json",
+			"sha256": "c404056fd4f8efaa42ba69d730239a9144632f9232be5cbf536cb5d06853b5c6",
+			"bytes": 2165
+		},
+		{
+			"path": "browser-candidate/current-task.json",
+			"sha256": "874d2c6e008479fd67abea1991c415abb9cd6e160bebafcdd2c2811e913c8a48",
+			"bytes": 1445
+		},
+		{
+			"path": "browser-candidate/native-review-5-authorization2.json",
+			"sha256": "3b460e74b66bc735a7a7529fb469a3a75599713b09976e28e43174adadcc16f6",
+			"bytes": 5186
+		},
+		{
+			"path": "browser-candidate/native-review-6-authorization2-preflight.json",
+			"sha256": "7c7314c83014e27f40c70dd302dfd0cc7a3bfb24c2ab2ceab750362bfb8f1477",
+			"bytes": 263
+		},
+		{
+			"path": "browser-candidate/native-review-6-authorization2.json",
+			"sha256": "0f3715e0fa6feb318518e5e65b8eab3e5d712dd881842bb40eb30c8980afb439",
+			"bytes": 6280
+		},
+		{
+			"path": "browser-candidate/qa/ui/assets/u05-browser-candidate/revisions/v1/reviews/design-7e03ca36-09a8-4089-aa0f-87b5041d9240/input.json",
+			"sha256": "67337a404fd2210e8c79817422fc88b4458bddfbded882c56670b6bc87573fc4",
+			"bytes": 582352
+		},
+		{
+			"path": "browser-candidate/qa/ui/assets/u05-browser-candidate/revisions/v1/reviews/design-7e03ca36-09a8-4089-aa0f-87b5041d9240/raw.json",
+			"sha256": "4935be014b5fb5382e70a7ca42df137b32556aa9c927adb5dd06be69d1c822c2",
+			"bytes": 159
+		},
+		{
+			"path": "browser-candidate/qa/ui/assets/u05-browser-candidate/revisions/v1/reviews/design-7e03ca36-09a8-4089-aa0f-87b5041d9240/static.json",
+			"sha256": "3565538aa781f4995b847ceca12f93a75f1993dc88e5d12774d40b766c741fea",
+			"bytes": 843
+		},
+		{
+			"path": "browser-candidate/qa/ui/assets/u05-browser-candidate/revisions/v1/reviews/design-e0d5e47c-a2b9-421a-a41f-7f11c868f55c/input.json",
+			"sha256": "e5603b5356214805ce392ba7ed97b78aeadf5717771988633eebb40f0fcf160c",
+			"bytes": 582352
+		},
+		{
+			"path": "browser-candidate/qa/ui/assets/u05-browser-candidate/revisions/v1/reviews/design-e0d5e47c-a2b9-421a-a41f-7f11c868f55c/raw.json",
+			"sha256": "58ae5de4b53f16c682d93db49a5f7955e2b653fbb6102c6051873c09bc68639d",
+			"bytes": 159
+		},
+		{
+			"path": "browser-candidate/qa/ui/assets/u05-browser-candidate/revisions/v1/reviews/design-e0d5e47c-a2b9-421a-a41f-7f11c868f55c/static.json",
+			"sha256": "3565538aa781f4995b847ceca12f93a75f1993dc88e5d12774d40b766c741fea",
+			"bytes": 843
+		},
+		{
+			"path": "budget.json",
+			"sha256": "4b6f8e3c5de1bc3b1a5bc2dce6eff682baff5351191809f9532a740efbc6e84c",
+			"bytes": 3528
+		},
+		{
+			"path": "logs/u05-authorization2-clean.log",
+			"sha256": "11edff7f359e5c0ad036bad6ca5caf7ef19274615efa33463fcabe76958226e5",
+			"bytes": 609
+		},
+		{
+			"path": "logs/u05-authorization2-lint.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+			"bytes": 88
+		},
+		{
+			"path": "logs/u05-authorization2-protocol.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"bytes": 360
+		},
+		{
+			"path": "logs/u05-authorization2-review4.log",
+			"sha256": "670c80ee6aa03d87ee8f1bbd106dcff6396309e5dd047a7416cc10eda10cfa0e",
+			"bytes": 3751
+		},
+		{
+			"path": "logs/u05-authorization2-review5.log",
+			"sha256": "6e5ed5c13d65167ca0b9f6e3e1f339b86e508fb19d7da41f0fccc7870fbe34f6",
+			"bytes": 5187
+		},
+		{
+			"path": "logs/u05-authorization2-review6-recovery.log",
+			"sha256": "7ed2e44142bcdb8ae7a73189d1be17a5f0aa0c98e032631919be8fb99bf4144b",
+			"bytes": 6281
+		},
+		{
+			"path": "logs/u05-authorization2-review6.log",
+			"sha256": "950ef3f94ee5087da68a8b22efcf33c867288333b15435135415fea2be754afb",
+			"bytes": 264
+		},
+		{
+			"path": "logs/u05-authorization2-size.log",
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+			"bytes": 1089
+		},
+		{
+			"path": "logs/u05-authorization2-typecheck.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "logs/u05-authorization2-vitest.log",
+			"sha256": "d5b92896eb7730e4e0756a7d0f216b93b2ba1ff13c3fb189d4277df8d04c039f",
+			"bytes": 189
+		},
+		{
+			"path": "source-diagnostic/authorization2-blocked-task.json",
+			"sha256": "8f891691d859f46086812d423b2700d4b5fca88f8da0ccc92bc7b82045862078",
+			"bytes": 2054
+		},
+		{
+			"path": "source-diagnostic/current-task.json",
+			"sha256": "b724650b9f5b20e5446894bebc788e98be8b67100fbb4e7fe768301271aac628",
+			"bytes": 1329
+		},
+		{
+			"path": "source-diagnostic/native-review-4-authorization2.json",
+			"sha256": "94c08a72b13eada24c9da0731cc93fce78026aaffaf9e9170332d20b6d7aa589",
+			"bytes": 3750
+		},
+		{
+			"path": "source/ui-multifunction-native-review.mjs",
+			"sha256": "29367a74753364286f9442e3effc754c0dd518766dc59e0e9368e776d57d7de6",
+			"bytes": 8518
+		}
+	],
+	"evidence": {
+		"archive": "docs/ui-testing-evidence/optimization-u05-authorization2.tar.gz",
+		"archive_sha256": "43169a20987562b746e628495f016b80fd1427b1a2d8a76c73e2a40342580522",
+		"archive_bytes": 115980,
+		"files": 26,
+		"roundtrip": "all indexed digests verified",
+		"prior_source_archive": "optimization-u05-native-continuation.tar.gz",
+		"prior_browser_archive": "optimization-u05-browser-candidate.tar.gz"
+	}
+}

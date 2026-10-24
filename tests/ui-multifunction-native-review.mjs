@@ -6,16 +6,16 @@ import { dirname, join, resolve } from "node:path";
 import { homedir } from "node:os";
 import { pathToFileURL, fileURLToPath } from "node:url";
 import { ModelRuntime } from "@earendil-works/pi-coding-agent";
-import { UiWorkflowService, capabilities } from "pi-ui-testing";
+import { ArtifactStore, UiWorkflowService, capabilities } from "pi-ui-testing";
 
 const [directory, operation] = process.argv.slice(2);
 assert.ok(
 	directory && ["review", "diagnose"].includes(operation),
 	"Usage: <prepared evidence directory> review|diagnose",
 );
-const output = resolve(directory),
-	root = join(output, "project");
+const output = resolve(directory);
 const prepared = JSON.parse(await readFile(join(output, "result.json"), "utf8"));
+const root = prepared.mode === "complete-browser-candidate" ? output : join(output, "project");
 assert.equal(prepared.status, "PASS");
 const installed = dirname(fileURLToPath(import.meta.resolve("pi-ui-testing")));
 const { registerDesignTools } = await import(pathToFileURL(join(installed, "design-extension.js")).href);
@@ -32,7 +32,10 @@ const ledgerPath = fileURLToPath(
 // One authorization ledger is shared across U05 revision directories. Never initialize/reset here.
 const ledger = JSON.parse(await readFile(ledgerPath, "utf8"));
 const number = ledger.native_attempts.length + 1;
-const resultFile = join(output, operation === "review" ? `native-review-${number}.json` : "native-diagnose.json");
+const resultFile = join(
+	output,
+	operation === "review" ? `native-review-${number}${ledger.result_suffix ?? ""}.json` : "native-diagnose.json",
+);
 assert.ok(!existsSync(resultFile), "Saved request exists; inspect status before continuation");
 const saveLedger = () => writeFileSync(ledgerPath, JSON.stringify(ledger, null, 2));
 const ctx = { cwd: root, sessionManager: { getSessionDir: () => output } };
@@ -43,7 +46,7 @@ const result = { operation, started_at: new Date().toISOString(), formalRunnerCa
 let running;
 try {
 	if (operation === "review") {
-		assert.ok(ledger.native_attempts.length < ledger.max_calls, "Shared three-review authorization exhausted");
+		assert.ok(ledger.native_attempts.length < ledger.max_calls, "Shared authorized review rounds exhausted");
 		const settings = JSON.parse(await readFile(join(homedir(), ".pi/agent/settings.json"), "utf8"));
 		assert.ok(!ledger.attempts.some((a) => a.status === "started"), "Unknown provider outcome; inspect before retry");
 		const runtime = await ModelRuntime.create({
@@ -54,6 +57,8 @@ try {
 			(m) => m.provider === settings.defaultProvider && m.id === settings.defaultModel,
 		);
 		assert.ok(model, "Current native model unavailable");
+		assert.equal(model.provider, "deepseek", "Authorized provider only");
+		assert.equal(model.id, "deepseek-v4-pro", "Authorized model only");
 		// Prices are the registry USD / million token rates; zero/unknown prices cannot authorize calls.
 		assert.ok(model.cost.input > 0 && model.cost.output > 0, "A priced current model is required");
 		ctx.model = model;
@@ -64,6 +69,7 @@ try {
 				assert.deepEqual(context.tools ?? [], [], "Independent reviewer must have no tools");
 				assert.ok(ledger.attempts.length < ledger.max_calls, "Shared call authorization exhausted");
 				const inputBytes = Buffer.byteLength(JSON.stringify(context));
+				result.input_bytes = inputBytes;
 				assert.ok(inputBytes <= ledger.max_input_bytes, "Review input exceeds bounded request size");
 				// Reserving one input token per UTF-8 byte is deliberately conservative for this source text.
 				const reserved = (inputBytes * model.cost.input + ledger.max_output_tokens * model.cost.output) / 1e6;
@@ -113,7 +119,8 @@ try {
 				return stream;
 			},
 		};
-		const current = await nativeWorkflow.find("u05-diagnostic-prepared");
+		const { artifact: originalTask } = await new ArtifactStore(root).snapshot(prepared.taskRef.path);
+		const current = await nativeWorkflow.find(originalTask.id);
 		const resumed = await nativeWorkflow.resumeTask(current.task_ref);
 		result.taskRef = resumed.task_ref;
 		const requestId = `u05-native-review-${number}`;
@@ -137,7 +144,10 @@ try {
 		result.budget = ledger;
 	} else {
 		const prior = JSON.parse(
-			await readFile(join(output, `native-review-${ledger.native_attempts.length}.json`), "utf8"),
+			await readFile(
+				join(output, `native-review-${ledger.native_attempts.length}${ledger.result_suffix ?? ""}.json`),
+				"utf8",
+			),
 		);
 		const response = JSON.parse(prior.tool.content.find((c) => c.type === "text").text);
 		assert.equal(response.output?.decision, "approved", "Trusted native design approval required");
