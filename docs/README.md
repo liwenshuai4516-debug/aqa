@@ -39,6 +39,7 @@
 - [U05 源码候选证据](ui-testing-evidence/optimization-u05-source-candidate.json)：六功能、13 断言的静态映射与评审阻塞；不代表设计获批或候选已执行。
 - [U05 定位重验证据](ui-testing-evidence/optimization-u05-locator-revalidation.json)：重复按钮、iframe及受控wrapper变化的原生录制检查，保留partial边界。
 - [U05 诊断输入准备](ui-testing-evidence/optimization-u05-probes.json)：13个错误副本及诊断契约，明确区分HTTP/静态检查与未执行的浏览器正反诊断。
+- [U05 原生评审续跑](ui-testing-evidence/optimization-u05-native-continuation.json)：14地址恢复与3轮错误记录；HTTP402额度阻塞，无批准，13浏览器诊断未执行。
 
 - [U04 目录/状态读取计量](ui-testing-evidence/optimization-u04-catalog.json)：真实历史批次的逐路径计数与变更重验，不代表整体性能验收。
 - [U04 单次引用读取去重](ui-testing-evidence/optimization-u04-reference-reuse.json)：0.1.4源码修复、相同历史样本对比及安装/桌面回归；不声明整体提速。
