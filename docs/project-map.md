@@ -131,3 +131,4 @@ UI 浏览器候选：`tests/ui-function-discovery-test.mjs --complete-candidate`
 
 UI 目录读取计量：`tests/ui-catalog-read-benchmark.mjs` 对归档真实run的1/8批样本统计catalog及view/analyze/execute状态查询的逐路径读取和扫描，验证损坏/删除/恢复，不启动浏览器。
 UI 成对查询计量：`tests/ui-catalog-paired-benchmark.mjs` 对固定历史资产交替运行0.1.3/0.1.4各5次，保留全部读取计数、耗时和失败，不执行浏览器/模型。
+UI 评审修订：`tests/ui-browser-review-revision.mjs` 按U05独立评审问题保存新的取消检查及逐测试origin候选，仅静态检查，不批准/执行。

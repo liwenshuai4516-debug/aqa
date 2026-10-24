@@ -57,10 +57,12 @@ try {
 			(m) => m.provider === settings.defaultProvider && m.id === settings.defaultModel,
 		);
 		assert.ok(model, "Current native model unavailable");
-		assert.equal(model.provider, "deepseek", "Authorized provider only");
-		assert.equal(model.id, "deepseek-v4-pro", "Authorized model only");
-		// Prices are the registry USD / million token rates; zero/unknown prices cannot authorize calls.
-		assert.ok(model.cost.input > 0 && model.cost.output > 0, "A priced current model is required");
+		assert.equal(model.provider, ledger.authorized_provider ?? "deepseek", "Authorized provider only");
+		assert.equal(model.id, ledger.authorized_model ?? "deepseek-v4-pro", "Authorized model only");
+		// Use the explicitly authorized conservative price bound, or a positive registry rate.
+		const inputRate = ledger.price_upper_bound_usd_per_million ?? model.cost.input;
+		const outputRate = ledger.price_upper_bound_usd_per_million ?? model.cost.output;
+		assert.ok(inputRate > 0 && outputRate > 0, "A positive authorized price bound is required");
 		ctx.model = model;
 		const pending = [];
 		ctx.modelRegistry = {
@@ -72,7 +74,7 @@ try {
 				result.input_bytes = inputBytes;
 				assert.ok(inputBytes <= ledger.max_input_bytes, "Review input exceeds bounded request size");
 				// Reserving one input token per UTF-8 byte is deliberately conservative for this source text.
-				const reserved = (inputBytes * model.cost.input + ledger.max_output_tokens * model.cost.output) / 1e6;
+				const reserved = (inputBytes * inputRate + ledger.max_output_tokens * outputRate) / 1e6;
 				assert.ok(
 					ledger.attempts.reduce((n, a) => n + a.reserved_usd, 0) + reserved <= ledger.max_cost_usd,
 					"Review cost ceiling reached",

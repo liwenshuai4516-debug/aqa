@@ -424,3 +424,4 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 
 - `tests/ui-catalog-read-benchmark.mjs`：原生catalog/status的1/8历史批次计量、缓存重建与损坏证据识别；不授予批准，不执行浏览器。
 - `tests/ui-catalog-paired-benchmark.mjs`：固定原生版本与历史摘要的5组成对目录/状态测量，归档首次/重复样本及失败；不代表完整流程性能验收。
+- `tests/ui-browser-review-revision.mjs`：按已保存的U05真实评审生成不可变v2候选与静态证据，保留原任务门禁。

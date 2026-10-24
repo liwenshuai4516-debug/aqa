@@ -1,0 +1,327 @@
+{
+	"date": "2026-10-24",
+	"status": "gpt-model-path-working-independent-review-revise-v2-static-only",
+	"provider": "gpt",
+	"model": "gpt-6.1-sol",
+	"route": "User-configured relay; existing credential resolved by native ModelRuntime, never printed or archived",
+	"default_model_change": "Pi settings defaultProvider=gpt/defaultModel=gpt-6.1-sol; private backup retained, no personal config archived",
+	"authorization": "third batch up to 3 reviews and additional USD 1; user switched model and supplied CNY pricing",
+	"pricing": {
+		"user_cny_per_million_values": [0.4, 2, 0.5, 0.02],
+		"column_mapping": "unknown; highest 2 CNY used for all token categories",
+		"conversion": {
+			"source": "https://open.er-api.com/v6/latest/USD",
+			"updated": "Sat, 24 Oct 2026 00:02:31 +0000",
+			"base": "USD",
+			"CNY_per_USD": 6.684864,
+			"budget_conversion_CNY_per_USD": 6,
+			"reason": "Use smaller denominator than retrieved rate to over-reserve USD."
+		},
+		"usd_per_million_bound": 0.3333333333333333
+	},
+	"additional_native_calls": 1,
+	"additional_provider_calls": 1,
+	"additional_reserved_usd": 0.19619399999999998,
+	"usage_tokens": {
+		"input": 164211,
+		"output": 2247,
+		"cacheRead": 0,
+		"cacheWrite": 0,
+		"reasoning": 196,
+		"totalTokens": 166458,
+		"cost": {
+			"input": 0,
+			"output": 0,
+			"cacheRead": 0,
+			"cacheWrite": 0,
+			"total": 0
+		}
+	},
+	"billing": "registry reports zero cost because custom provider has no prices; not a free-service claim; reservation retained",
+	"review": {
+		"ref": {
+			"path": "qa/ui/assets/u05-browser-candidate/revisions/v1/reviews/design-d37563df-b122-45ff-886a-0571b979d74b/manifest.json",
+			"sha256": "e276ddfc589a36d09235125dec136f53b3150ec5a4bfec95188fc9706628931d"
+		},
+		"decision": "revise",
+		"checked_rules": ["D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10"],
+		"issues": [
+			{
+				"id": "cancel-memory-write-undetected",
+				"rule": "D4",
+				"case_id": "C-edit",
+				"assertion_id": "A-edit-1",
+				"reason": "Cancel 后立即 reload 会销毁当前页面内存状态。若错误实现将填写的名称加入 names 但未写 localStorage，随后重载并搜索仍为 Empty，现有断言会通过，而冻结声明要求取消不写入。",
+				"evidence_refs": [
+					{
+						"path": "qa/ui/scopes/declaration/fixture.mjs",
+						"sha256": "f07cad393d22c4629c771ef7763de96b47d030b6730fbec222fd110da2b89cc5"
+					},
+					{
+						"path": "qa/ui/assets/u05-browser-candidate/revisions/v1/candidate.spec.ts",
+						"sha256": "0e0f9c3e0aec101d1bfb91ea0f2b3613b352101652fcc43bf37f65a300d6a8e1"
+					},
+					{
+						"path": "qa/ui/assets/u05-browser-candidate/revisions/v1/candidate.spec.ts",
+						"sha256": "0e0f9c3e0aec101d1bfb91ea0f2b3613b352101652fcc43bf37f65a300d6a8e1"
+					},
+					{
+						"path": "qa/ui/assets/u05-browser-candidate/revisions/v1/candidate.spec.ts",
+						"sha256": "0e0f9c3e0aec101d1bfb91ea0f2b3613b352101652fcc43bf37f65a300d6a8e1"
+					},
+					{
+						"path": "qa/ui/assets/u05-browser-candidate/revisions/v1/candidate.spec.ts",
+						"sha256": "0e0f9c3e0aec101d1bfb91ea0f2b3613b352101652fcc43bf37f65a300d6a8e1"
+					},
+					{
+						"path": "qa/ui/assets/u05-browser-candidate/revisions/v1/candidate.spec.ts",
+						"sha256": "0e0f9c3e0aec101d1bfb91ea0f2b3613b352101652fcc43bf37f65a300d6a8e1"
+					}
+				],
+				"fix_condition": "保留现有重载后检查，并在 reload 前通过 UI 查询取消名称，等待最终 Empty 且无业务行，证明当前会话也未加入该名称；必要时补充自有持久化状态未改变的检查。不得仅以关闭对话框替代不写入结果。",
+				"blocking": true
+			},
+			{
+				"id": "per-test-origin-not-implemented",
+				"rule": "D8",
+				"reason": "来源与 data-rules 明确规定 each test uses a new origin，但候选所有测试共用 page.goto('/?role=tester')，资产没有提供逐测试 origin 分配或服务器 fixture。独立浏览器 context 虽隔离存储，却不是独立 origin。",
+				"evidence_refs": [
+					{
+						"path": "qa/ui/scopes/declaration/fixture.mjs",
+						"sha256": "f07cad393d22c4629c771ef7763de96b47d030b6730fbec222fd110da2b89cc5"
+					},
+					{
+						"path": "qa/ui/assets/u05-browser-candidate/revisions/v1/data-rules.json",
+						"sha256": "75c7de5afbc0a44769317c9ef2486dfa8629126016f7a19beb66cda4cf67c3bb"
+					},
+					{
+						"path": "qa/ui/assets/u05-browser-candidate/revisions/v1/candidate.spec.ts",
+						"sha256": "0e0f9c3e0aec101d1bfb91ea0f2b3613b352101652fcc43bf37f65a300d6a8e1"
+					},
+					{
+						"path": "qa/ui/assets/u05-browser-candidate/revisions/v1/candidate.spec.ts",
+						"sha256": "0e0f9c3e0aec101d1bfb91ea0f2b3613b352101652fcc43bf37f65a300d6a8e1"
+					},
+					{
+						"path": "qa/ui/assets/u05-browser-candidate/revisions/v1/manifest.json",
+						"sha256": "f634e55c20980d0010d10d313f019c8ad4ab9b450acb6ce6f9f4d23ca28b424d"
+					}
+				],
+				"fix_condition": "纳入可审查的逐测试独立 origin 分配、访问和自有服务器清理 fixture/config，使现有 case 从声明初态可复跑，并同步登记依赖；不能仅把新 context 描述为新 origin 或删除冻结隔离要求。",
+				"blocking": true
+			}
+		]
+	},
+	"revision": {
+		"status": "PASS",
+		"assetRef": {
+			"path": "qa/ui/assets/u05-browser-candidate/revisions/v2/manifest.json",
+			"sha256": "997ecdd7787b97e36088dc8597af74ab95ff3d3e5c7f3db80ea8bf9762daeff7"
+		},
+		"priorAssetRef": {
+			"path": "qa/ui/assets/u05-browser-candidate/revisions/v1/manifest.json",
+			"sha256": "f634e55c20980d0010d10d313f019c8ad4ab9b450acb6ce6f9f4d23ca28b424d"
+		},
+		"reviewRef": {
+			"path": "qa/ui/assets/u05-browser-candidate/revisions/v1/reviews/design-d37563df-b122-45ff-886a-0571b979d74b/manifest.json",
+			"sha256": "e276ddfc589a36d09235125dec136f53b3150ec5a4bfec95188fc9706628931d"
+		},
+		"staticCheck": {
+			"asset_ref": {
+				"path": "qa/ui/assets/u05-browser-candidate/revisions/v2/manifest.json",
+				"sha256": "997ecdd7787b97e36088dc8597af74ab95ff3d3e5c7f3db80ea8bf9762daeff7"
+			},
+			"issues": [],
+			"coverage": {
+				"planned": [
+					"names/search/search-declared",
+					"names/edit/edit-declared",
+					"names/details/details-declared",
+					"names/paging/paging-declared",
+					"names/permission/permission-declared",
+					"names/states/states-declared"
+				],
+				"covered": [
+					"names/search/search-declared",
+					"names/edit/edit-declared",
+					"names/details/details-declared",
+					"names/paging/paging-declared",
+					"names/permission/permission-declared",
+					"names/states/states-declared"
+				],
+				"missing": []
+			},
+			"dependencies": [
+				{
+					"name": "playwright",
+					"version": "1.62.1"
+				}
+			]
+		},
+		"modelCalls": 0,
+		"browserStarts": 0,
+		"formalRunnerCalls": 0,
+		"reviewStatus": "NOT REVIEWED: original task native three-round loop exhausted; additional global authorization does not alter frozen scope"
+	},
+	"remaining_global_authorized_calls": 2,
+	"native_scope_gate": "Original task max_review_rounds=3 now exhausted including earlier two local failures; same-task review cannot proceed. No task/scope reset or forged approval.",
+	"diagnostics": "NOT RUN",
+	"formal_execution": "NOT RUN",
+	"browser_starts": 0,
+	"electron": "NOT RUN: test/source evidence only",
+	"validation": {
+		"typecheck": "PASS: all 5 configurations",
+		"vitest": "PASS: 3 files,11 tests",
+		"lint": "PASS",
+		"protocol_structure": "PASS",
+		"protocol_history": "SKIP: no usable tag",
+		"size": "PASS",
+		"clean_preview": "PASS: no deletion"
+	},
+	"prior_archive": "docs/ui-testing-evidence/optimization-u05-browser-candidate.tar.gz",
+	"excluded": ["credentials", "personal settings/backup", "model cache", "private review authority", "dependencies"],
+	"file_index": [
+		{
+			"path": "budget.json",
+			"sha256": "190dec4b1b0a01ebb51b993158c91974da36c0c99a4dbb1457e4579b33fdd86b",
+			"bytes": 5774
+		},
+		{
+			"path": "fx-rate.json",
+			"sha256": "0e87be3aebcc1a1b5944a26044e97ad3dbb41c4d5c5a4ece7159e933378c3d0c",
+			"bytes": 266
+		},
+		{
+			"path": "gpt-review-blocked-task.json",
+			"sha256": "470c59f32a11b45d93d380dcf3e9f97456c8acafbcc4f0817ecc00c5a6d55a31",
+			"bytes": 2165
+		},
+		{
+			"path": "logs/u05-gpt-clean.log",
+			"sha256": "11edff7f359e5c0ad036bad6ca5caf7ef19274615efa33463fcabe76958226e5",
+			"bytes": 609
+		},
+		{
+			"path": "logs/u05-gpt-review7.log",
+			"sha256": "38ac406df76073f1bbbb7b51d02e3647970efb8ea8782bf419cedc61a102e323",
+			"bytes": 7761
+		},
+		{
+			"path": "logs/u05-gpt-revision.log",
+			"sha256": "d6e000144080d374d1fc00562ffbb8bddfac287aa67ae9c3df8697624c75c4fe",
+			"bytes": 1752
+		},
+		{
+			"path": "logs/u05-gpt-static.log",
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+			"bytes": 1089
+		},
+		{
+			"path": "logs/u05-gpt-typecheck.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "logs/u05-gpt-unit.log",
+			"sha256": "08612f5c6865f9b0efec0b74a3615fcb2fd83ded5adfd017d9912535184ce538",
+			"bytes": 444
+		},
+		{
+			"path": "native-review-7-authorization3.json",
+			"sha256": "7bcf43dd1b157ace450d592d0c2e97573bd75b29da63df7fb942fb9bb4e20174",
+			"bytes": 7760
+		},
+		{
+			"path": "project/qa/ui/assets/u05-browser-candidate/revisions/v1/reviews/design-d37563df-b122-45ff-886a-0571b979d74b/.incomplete.json",
+			"sha256": "a171fa58496633830d655a01c5b555006880bd4483787364c87d200a8f5fa38a",
+			"bytes": 85
+		},
+		{
+			"path": "project/qa/ui/assets/u05-browser-candidate/revisions/v1/reviews/design-d37563df-b122-45ff-886a-0571b979d74b/input.json",
+			"sha256": "99177b96508ed39f3998147a6041512f43f93780189244cebfc766a3967bb8e0",
+			"bytes": 582352
+		},
+		{
+			"path": "project/qa/ui/assets/u05-browser-candidate/revisions/v1/reviews/design-d37563df-b122-45ff-886a-0571b979d74b/manifest.json",
+			"sha256": "e276ddfc589a36d09235125dec136f53b3150ec5a4bfec95188fc9706628931d",
+			"bytes": 29257
+		},
+		{
+			"path": "project/qa/ui/assets/u05-browser-candidate/revisions/v1/reviews/design-d37563df-b122-45ff-886a-0571b979d74b/raw.json",
+			"sha256": "2d2d75789855674b1ecaac1a7f01a4ee960d1854989cce4be2b8dc209150375a",
+			"bytes": 7474
+		},
+		{
+			"path": "project/qa/ui/assets/u05-browser-candidate/revisions/v1/reviews/design-d37563df-b122-45ff-886a-0571b979d74b/static.json",
+			"sha256": "3565538aa781f4995b847ceca12f93a75f1993dc88e5d12774d40b766c741fea",
+			"bytes": 843
+		},
+		{
+			"path": "project/qa/ui/assets/u05-browser-candidate/revisions/v2/.incomplete.json",
+			"sha256": "c933bc0e19b7da9688fd869647fed8e350d1e7f739ee87952fdd3f9e673a878b",
+			"bytes": 55
+		},
+		{
+			"path": "project/qa/ui/assets/u05-browser-candidate/revisions/v2/candidate.spec.ts",
+			"sha256": "d1ab7aa1d3f61cee087a8e03c3b4668c94b8ff4a61adf507f3f7cf2d899f742b",
+			"bytes": 8172
+		},
+		{
+			"path": "project/qa/ui/assets/u05-browser-candidate/revisions/v2/data-rules.json",
+			"sha256": "2a7675c477cf3c4fae523fe16e4f7a646ac5c7ecec5259638b46c1c528ffdf36",
+			"bytes": 718
+		},
+		{
+			"path": "project/qa/ui/assets/u05-browser-candidate/revisions/v2/lineage.json",
+			"sha256": "7acb11230ffd43460e9006cdd79cb3db5e13b4cd07de47cf8fcc8de481e5e1da",
+			"bytes": 4131
+		},
+		{
+			"path": "project/qa/ui/assets/u05-browser-candidate/revisions/v2/manifest.json",
+			"sha256": "997ecdd7787b97e36088dc8597af74ab95ff3d3e5c7f3db80ea8bf9762daeff7",
+			"bytes": 4891
+		},
+		{
+			"path": "project/qa/ui/assets/u05-browser-candidate/revisions/v2/origin.fixture.ts",
+			"sha256": "eb6cadc5289b64bd1f1de9b28e324bdc3c754e625027832f686f57650739b5e3",
+			"bytes": 1872
+		},
+		{
+			"path": "project/qa/ui/assets/u05-browser-candidate/revisions/v2/u05-replay-inputs.ts",
+			"sha256": "cac435e12b6e56b92b5dba886699cf598582bcf9762616927c4b7b8da863ce99",
+			"bytes": 96
+		},
+		{
+			"path": "project/qa/ui/cases/u05-browser-candidate-v2/manifest.json",
+			"sha256": "7b1cf41785589c80967c0185ef1be402d07a43368029036161f0c29c1743de1c",
+			"bytes": 17168
+		},
+		{
+			"path": "project/qa/ui/tasks/u05-tester/manifest.json",
+			"sha256": "9aa90df0cc3d09f7dffa2ca74b42e79a0b355acc9033caacc81dd15bd2333674",
+			"bytes": 1445
+		},
+		{
+			"path": "review-revision-v2.json",
+			"sha256": "50ab780aaf62c980ee3e4494d1b5e104a271db730253353d9b50058c22feea86",
+			"bytes": 1751
+		},
+		{
+			"path": "source/ui-browser-review-revision.mjs",
+			"sha256": "6f97d4cd3cdfe9d5fd892f3575611ac2772b05e4c9e2270125bb0c0de161a111",
+			"bytes": 7170
+		},
+		{
+			"path": "source/ui-multifunction-native-review.mjs",
+			"sha256": "d023fce02c481a847ed845315e750f719796e580c46cb9c0361fc67ebac40258",
+			"bytes": 8714
+		}
+	],
+	"evidence": {
+		"archive": "docs/ui-testing-evidence/optimization-u05-gpt-review.tar.gz",
+		"archive_sha256": "fe8bee2ee0bfc09c76e4b4b46f200259674f7cc384e646a7f287eb6e391c8f59",
+		"archive_bytes": 75122,
+		"files": 27,
+		"roundtrip": "all indexed file hashes verified"
+	}
+}

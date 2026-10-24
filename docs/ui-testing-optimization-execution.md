@@ -545,3 +545,17 @@ U04仍实施中，本轮补齐局部查询5组成对证据，未补齐完整U00�
 通过同一个原生ModelRuntime.getAuth(model)解析认证，仅对DeepSeek官方 `/user/balance` 与 `/models` 发起只读请求，均HTTP200；有效服务地址为 `https://api.deepseek.com/`，所选 `deepseek-v4-pro` 在官方模型列表中。余额接口实际返回is_available=false，余额低于零。因此持续402已定位到本调用路径的API账户额度，不能因别处额度恢复就判本账户可用；无证据需要更换endpoint或模型。初始化未刷新的getProviderAuthStatus缓存不作为认证失败依据，真实HTTP200才是本次请求事实。
 
 公开[额度路径诊断](ui-testing-evidence/optimization-u05-quota-path.json)只保存布尔余额结论、非秘密地址和状态码，精确账户余额仅留本机scratch，不提交个人财务明细、密钥或认证配置。未输出密钥，也未直接读取个人认证文件；没有模型请求、付款、充值或新的浏览器动作。用户需在该API账户完成充值，或说明已恢复额度的其他平台，以便继续核对；不会擅自购买额度或切换未授权服务。当前三次追加授权保留未用，充值确认后先重新核对官方余额，再续原生评审。U05及整计划仍未完成。
+
+### U05 切换用户配置的 gpt-6.1-sol 并取得独立评审（2026-10-24）
+
+用户要求改用已配置的ChatGPT模型，默认gpt-6.1-sol。通过原生ModelRuntime确认实际配置为gpt/gpt-6.1-sol，经用户配置的转发服务调用，不将其称为OpenAI官方直连。Pi settings仅修改defaultProvider/defaultModel，先保留本机0600权限备份；不改密钥、其他配置或运行中个人进程。新默认适用于后续读取配置的任务，不能宣称既有Pi会话已重新选择模型。
+
+用户提供Standard四个价格0.40/2.00/0.50/0.02元每百万tokens但未附列名；不猜映射，将所有输入/输出均按最大2元估算。汇率公开接口2026-10-24返回1美元兑6.684864元，预算采用更保守的6元；每输入UTF-8字节预留1 token并计最多8192输出。注册表零价格不当作免费。第三批授权1美元中本次预留0.196194美元，仍保留预留而非以零cost元数据扣为免费；本批仅调用1次，剩余全局授权2次。
+
+实际调用ui_design_review建立全新空工具Agent，模型返回stop，164211输入/2247输出tokens，耗时62656ms；原生校验引用与D1–D10结构后登记**revise**，这是有效独立决定，既非批准也非工具故障。旧HTTP402、两个本地输入拒绝及3轮预算历史均保留。评审指出两个阻塞问题：D4取消检查先reload会漏掉仅写入内存的错误；D8所有测试共用origin，未实现冻结声明的逐测试新origin。
+
+新增tests/ui-browser-review-revision.mjs仅按该评审生成不可变v2，保留v1及原评审。取消检查在reload前通过UI搜索取消名称并等待Empty/0行，再保留原reload后检查；新origin.fixture.ts从明确配置的loopback合成部署读取HTML（包含未来诊断变异），为每个测试分配自有监听origin，记录本worker用过端口并拒绝复用，finally关闭自有服务；不改变源服务。helper、fixture、数据规则、来源和评审lineage进入新修订，六case/13断言映射保留。原生TypeScript/来源/映射静态检查及再次回读通过；**v2未执行、未重评、未批准**。
+
+原任务u05-tester的原生scope最多3轮，前两次本地失败加本次有效revise已用尽；新增全局授权剩余2次并不能覆盖该原生冻结门禁。未新建任务/改scope/修改私有authority逃避限制，原任务仍blocked/design-review。后续需明确处理原生评审预算续授机制才能在同任务重评；本轮不擅改原生包或将新修订写成获批。正常/错误诊断、正式执行、真实环境及Electron端到端仍未执行。
+
+[GPT评审与v2索引](ui-testing-evidence/optimization-u05-gpt-review.json)及约75KB归档保留27文件：真实评审input/raw/static/manifest、v2全部文件及新cases、当前任务、共享预算、汇率来源、两个测试源码和检查日志，逐文件SHA与归档回读一致。个人settings备份、认证、模型cache、私有批准目录及依赖不归档。全量typecheck、3文件11项单测、lint、协议结构、size通过；无tag协议历史跳过，clean仅预览未删除。U05及整计划仍实施中，本轮已验证模型路径可用并落实修订，未宣称设计获批或正式通过。
