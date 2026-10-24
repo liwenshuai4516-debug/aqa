@@ -1,0 +1,49 @@
+{
+	"date": "2026-10-24",
+	"status": "root-cause-confirmed-provider-account-unavailable-waiting-top-up",
+	"provider": "deepseek",
+	"model": "deepseek-v4-pro",
+	"endpoint": "https://api.deepseek.com/",
+	"checks": [
+		{
+			"path": "/user/balance",
+			"http_status": 200,
+			"is_available": false,
+			"balance_below_zero": true,
+			"currency": "CNY"
+		},
+		{
+			"path": "/models",
+			"http_status": 200,
+			"selected_model_listed": true
+		}
+	],
+	"method": "Same native ModelRuntime.getAuth(model) resolution as review calls; read-only official balance/models requests, credentials held in memory, never printed or saved. No personal credential file read directly.",
+	"conclusion": "Official endpoint and model are available; same resolved API account is unavailable with negative balance. Do not change endpoint/model or retry reviews until account is funded.",
+	"model_calls": 0,
+	"native_review_calls": 0,
+	"additional_review_authorization": {
+		"authorization": "User requested resolving Pi quota path and additional review authorization; assistant stated same prior limits of up to 3 reviews and USD 1 total additional cost. No requests sent before balance readiness.",
+		"at": "2026-10-24T05:10:50.938832+00:00",
+		"prior_native_attempts": 6,
+		"prior_provider_attempts": 3,
+		"prior_reserved_usd": 1.45410936,
+		"additional_native_limit": 3,
+		"additional_cost_usd": 1
+	},
+	"ledger_summary": {
+		"native_used": 6,
+		"native_limit": 9,
+		"provider_calls": 3,
+		"additional_authorization_used": 0,
+		"additional_authorization_reserved_usd": 0
+	},
+	"privacy": "Exact account balance and model/auth configuration are omitted from this public evidence; detailed balance response retained only in local scratch.",
+	"limits": [
+		"No payment or account top-up performed.",
+		"Quota recovery not yet verified.",
+		"getProviderAuthStatus cache was not refreshed and is not used as an authentication verdict; both actual provider requests returned HTTP200.",
+		"No review decision, diagnosis, formal execution or Electron acceptance obtained."
+	],
+	"probe_source_sha256": "2b02a5b35a5b4492fc93fd07690aed141c0fbe6541a908705c6c8deaa51020b4"
+}

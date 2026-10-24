@@ -42,6 +42,7 @@
 - [U05 原生评审续跑](ui-testing-evidence/optimization-u05-native-continuation.json)：14地址恢复与3轮错误记录；HTTP402额度阻塞，无批准，13浏览器诊断未执行。
 - [U05 浏览器候选交接](ui-testing-evidence/optimization-u05-browser-candidate.json)：58动作完整录制、六功能/13断言静态候选；旧partial/预算分支保留，设计批准仍阻塞。
 - [U05 追加授权评审](ui-testing-evidence/optimization-u05-authorization2.json)：追加3次原生尝试、1次供应商请求仍HTTP402；未批准、未诊断。
+- [U05 官方额度路径核对](ui-testing-evidence/optimization-u05-quota-path.json)：同一原生认证路径的官方余额不可用；新增授权未消耗，待充值后续跑。
 
 - [U04 目录/状态读取计量](ui-testing-evidence/optimization-u04-catalog.json)：真实历史批次的逐路径计数与变更重验，不代表整体性能验收。
 - [U04 单次引用读取去重](ui-testing-evidence/optimization-u04-reference-reuse.json)：0.1.4源码修复、相同历史样本对比及安装/桌面回归；不声明整体提速。
