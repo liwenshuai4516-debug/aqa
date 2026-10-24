@@ -12,7 +12,9 @@ function harness() {
 	let receive: any;
 	const sent: any[] = [];
 	const ctx = {
-		send: (m: any) => sent.push(m),
+		send: (m: any) => {
+			sent.push(m);
+		},
 		onData: (fn: any) => {
 			receive = fn;
 			return vi.fn();
@@ -24,6 +26,106 @@ function harness() {
 		reply: (m: any, result: any, ok = true) =>
 			receive({ requestId: m.requestId, ok, ...(ok ? { result } : { error: result }) }),
 	};
+}
+async function openReport() {
+	document.documentElement.lang = "en";
+	const root = document.createElement("div");
+	document.body.append(root);
+	const h = harness();
+	const contractRef = { kind: "contracts", id: "contract", revision: 1 };
+	const snapshotRef = { kind: "snapshots", id: "snapshot", revision: 1 };
+	const reportRef = { kind: "evaluations", id: "report", revision: 1 };
+	const conditions = Array.from({ length: 21 }, (_, index) => ({
+		id: `c-${index}`,
+		statement: `Condition ${index}`,
+		sourceType: index === 20 ? "proposed" : "user",
+		sourceRef: "u",
+		required: index !== 20,
+		applicableWhen: "always",
+		...(index === 0 ? { ruleRef: "F01@1" } : {}),
+	}));
+	const records: any = {
+		contract: {
+			...contractRef,
+			sourceDigest: "contract-digest",
+			data: {
+				objective: "Original objective",
+				conditions,
+				constraints: [
+					{
+						id: "constraint",
+						statement: "Read-only task",
+						sourceType: "user",
+						sourceRef: "u",
+						required: true,
+						applicableWhen: "always",
+					},
+				],
+				scope: {
+					sessionId: "session",
+					startMessageId: "u",
+					endMessageId: "a",
+					childPolicy: "exclude",
+					childSessionIds: [],
+				},
+				environmentRefs: ["environment-1", "environment-2"],
+				provenance: "fixture",
+				evaluationSubject: "agent-task",
+			},
+		},
+		snapshot: { ...snapshotRef, data: { coverage: "partial", gaps: [] } },
+		report: {
+			...reportRef,
+			data: {
+				contractRef,
+				snapshotRef,
+				findings: [],
+				summary: { deliveryVerdict: "inconclusive", goal: "unknown" },
+				configuration: {
+					rules: [
+						{
+							id: "F01",
+							version: "1",
+							config: { checks: [{ conditionId: "c-0", path: "result.json", format: "json" }] },
+						},
+					],
+				},
+			},
+		},
+	};
+	h.ctx.send = (message: any) => {
+		h.sent.push(message);
+		let result: any;
+		if (message.action === "describe")
+			result = { conversationId: "conv", sessionId: "session", choices: [{ id: "u", preview: "Task", role: "user" }] };
+		if (message.action === "list")
+			result = {
+				items: message.kind === "reviews" ? [] : [{ ...reportRef, objectivePreview: "Original objective" }],
+				nextCursor: null,
+			};
+		if (message.action === "get") {
+			const record = records[message.ref.id];
+			result = { ...record, data: { ...record.data }, pages: {} };
+			for (const [field, value] of Object.entries(record.data))
+				if (Array.isArray(value)) {
+					const offset = message.offset ?? 0,
+						limit = message.limit ?? 20;
+					result.data[field] = value.slice(offset, offset + limit);
+					result.pages[field] = {
+						total: value.length,
+						nextOffset: offset + limit < value.length ? offset + limit : null,
+					};
+				}
+		}
+		if (result) queueMicrotask(() => h.reply(message, result));
+	};
+	stops.push(client.mount(root, h.ctx));
+	await vi.waitFor(() => expect(root.querySelector<HTMLButtonElement>("[data-action=open]")?.disabled).toBe(false));
+	root.querySelector<HTMLButtonElement>("[data-action=open]")!.click();
+	await vi.waitFor(() =>
+		expect(root.querySelector<HTMLButtonElement>("[data-action=reevaluate]")?.disabled).toBe(false),
+	);
+	return { root, h, records, contractRef, snapshotRef, reportRef };
 }
 describe("evaluation client lifecycle", () => {
 	it("invalidates old-source replies and releases pending requests on unmount", async () => {
@@ -97,5 +199,66 @@ describe("evaluation client lifecycle", () => {
 		expect(root.querySelector<HTMLTextAreaElement>("[name=objective]")?.value).toBe(objective.value);
 		expect(document.activeElement).toBe(root.querySelector("[role=alert]"));
 		expect(root.querySelector<HTMLButtonElement>("button[type=submit]")?.disabled).toBe(false);
+	});
+	it("requests a new score for the exact frozen snapshot and configuration without collecting", async () => {
+		const { root, h, reportRef } = await openReport();
+		const offset = h.sent.length;
+		root.querySelector<HTMLButtonElement>("[data-action=reevaluate]")!.click();
+		await vi.waitFor(() => expect(h.sent.at(-1)?.action).toBe("evaluate"));
+		const score = h.sent.at(-1);
+		expect(score.ref).toEqual(reportRef);
+		expect(score.configs).toBeUndefined();
+		h.reply(score, { code: "IO_ERROR", message: "Lost acknowledgement" }, false);
+		await vi.waitFor(() =>
+			expect(root.querySelector<HTMLButtonElement>("[data-action=reevaluate]")?.disabled).toBe(false),
+		);
+		root.querySelector<HTMLButtonElement>("[data-action=reevaluate]")!.click();
+		await vi.waitFor(() => expect(h.sent.filter((m) => m.action === "evaluate")).toHaveLength(2));
+		expect(h.sent.at(-1).requestId).toBe(score.requestId);
+		expect(
+			h.sent
+				.slice(offset)
+				.filter((m) => ["createContract", "reviseContract", "createAttempt", "collect", "seal"].includes(m.action)),
+		).toEqual([]);
+	});
+	it("loads every condition before revision and resumes partial saves without recreating the contract", async () => {
+		const { root, h, contractRef, records } = await openReport();
+		root.querySelector<HTMLButtonElement>("[data-action=revise]")!.click();
+		await vi.waitFor(() => expect(root.querySelector("[name=conditions-20-statement]")).not.toBeNull());
+		expect(h.sent.some((m) => m.action === "get" && m.ref.id === "contract" && m.offset === 20)).toBe(true);
+		expect(root.querySelector<HTMLTextAreaElement>("[name=conditions-0-statement]")!.readOnly).toBe(true);
+		root.querySelector<HTMLTextAreaElement>("[name=objective]")!.value = "<img src=x> Revised objective";
+		root.querySelector<HTMLTextAreaElement>("[name=conditions-1-statement]")!.value = "Revised manual requirement";
+		root.querySelector<HTMLInputElement>("[name=conditions-20-required]")!.checked = true;
+		root.querySelector<HTMLTextAreaElement>("[name=additionalConditions]")!.value = "Human confirms meaning";
+		const submit = () =>
+			root
+				.querySelector("form[data-form=revision]")!
+				.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+		submit();
+		await vi.waitFor(() => expect(h.sent.at(-1)?.action).toBe("reviseContract"));
+		const revision = h.sent.at(-1);
+		expect(revision.previousRef).toEqual(contractRef);
+		expect(revision.data.conditions).toHaveLength(22);
+		expect(revision.data.conditions[20]).toMatchObject({ id: "c-20", required: true, sourceType: "user" });
+		expect(revision.data.conditions[1].statement).toBe("Revised manual requirement");
+		expect(revision.data.conditions[0]).toEqual(records.contract.data.conditions[0]);
+		expect(revision.data.constraints).toEqual(records.contract.data.constraints);
+		expect(revision.data.environmentRefs).toEqual(records.contract.data.environmentRefs);
+		expect(revision.data.scope).toEqual(records.contract.data.scope);
+		h.reply(revision, { ...contractRef, revision: 2 });
+		await vi.waitFor(() => expect(h.sent.at(-1)?.action).toBe("createAttempt"));
+		h.reply(h.sent.at(-1), { kind: "attempts", id: "new-attempt", revision: 1 });
+		await vi.waitFor(() => expect(h.sent.at(-1)?.action).toBe("collect"));
+		const collect = h.sent.at(-1);
+		h.reply(collect, { code: "IO_ERROR", message: "Retry collection" }, false);
+		await vi.waitFor(() => expect(root.querySelector("[role=alert]")?.textContent).toContain("IO_ERROR"));
+		expect(root.querySelector<HTMLTextAreaElement>("[name=objective]")!.value).toBe("<img src=x> Revised objective");
+		expect(root.querySelector("img")).toBeNull();
+		submit();
+		await vi.waitFor(() => expect(h.sent.filter((m) => m.action === "collect")).toHaveLength(2));
+		expect(h.sent.at(-1).requestId).toBe(collect.requestId);
+		expect(h.sent.filter((m) => m.action === "reviseContract")).toHaveLength(1);
+		expect(h.sent.filter((m) => m.action === "createAttempt")).toHaveLength(1);
 	});
 });

@@ -175,6 +175,111 @@ describe("EC04 product service", () => {
 		await expect(f.request("review", { data }, f.tool)).rejects.toThrow(/human reviews/);
 		await expect(f.request("review", { data, human: true }, f.tool)).rejects.toThrow(/Invalid/);
 	});
+	it("re-scores frozen evidence without collection and diagnoses a separate contract revision", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const attemptsBefore = await f.request("list", { kind: "attempts" });
+		f.host.readEvaluationArtifact.mockClear();
+		f.host.readEvaluationEvidence.mockClear();
+		const configs = Object.fromEntries(scored.report.data.configuration.rules.map((r: any) => [r.id, r.config]));
+		const wait = async (job: any) => {
+			let status: any;
+			await vi.waitFor(async () => {
+				status = await f.request("status", { jobId: job.jobId });
+				expect(status.state).toBe("completed");
+			});
+			return f.request("get", { ref: status.reportRef });
+		};
+		const rescored = await wait(await f.request("evaluate", { ref: scored.reportRef }));
+		expect(rescored.data.configDigest).toBe(scored.report.data.configDigest);
+		await expect(f.request("evaluate", { ref: scored.reportRef, configs })).rejects.toThrow(/cannot override/);
+		expect(rescored.id).not.toBe(scored.report.id);
+		expect(rescored.data.snapshotRef).toEqual(scored.snapshotRef);
+		expect(rescored.data.configuration).toEqual(scored.report.data.configuration);
+		expect((await f.request("list", { kind: "attempts" })).items).toEqual(attemptsBefore.items);
+		expect(f.host.readEvaluationArtifact).not.toHaveBeenCalled();
+		expect(f.host.readEvaluationNative).not.toHaveBeenCalled();
+		expect(
+			f.host.readEvaluationEvidence.mock.calls.filter(([, query]: any[]) => query.mode === "collect"),
+		).toHaveLength(0);
+		const data = {
+			...f.contract,
+			objective: "Revised objective",
+			conditions: [
+				...f.contract.conditions,
+				{
+					id: "manual",
+					statement: "Human must review meaning",
+					sourceType: "user",
+					sourceRef: "human-ui",
+					required: true,
+					applicableWhen: "always",
+				},
+			],
+		};
+		const revised = await f.request("reviseContract", { previousRef: scored.contractRef, data });
+		expect(revised).toEqual({ ...scored.contractRef, revision: 2 });
+		await expect(f.request("reviseContract", { previousRef: scored.contractRef, data })).rejects.toThrow(/stale/);
+		const attempt = await f.request("createAttempt", { ref: revised });
+		expect(attempt.id).not.toBe(scored.attemptRef.id);
+		const collected = await f.request("collect", { ref: attempt, artifactPaths: ["result.json"] });
+		const snapshot = await f.request("seal", { ref: collected.checkpointRef });
+		const newReport = await wait(await f.request("evaluate", { ref: snapshot, configs }));
+		expect(newReport.data.contractRef).toEqual(revised);
+		expect(newReport.data.snapshotRef).not.toEqual(scored.snapshotRef);
+		expect(newReport.data.findings.some((r: any) => r.conditionId === "manual" && r.verdict === "inconclusive")).toBe(
+			true,
+		);
+		expect((await f.request("get", { ref: scored.reportRef })).sourceDigest).toBe(scored.report.sourceDigest);
+		expect((await f.request("get", { ref: scored.contractRef })).data.objective).toBe(f.contract.objective);
+		expect(f.host.readEvaluationArtifact).toHaveBeenCalledTimes(1);
+	});
+	it("restores the exact saved profile after restart and refuses missing or unavailable versions", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const context = f.service.authorize(f.ui, {}).context;
+		const persist = (data: any, requestId: string) => {
+			const record = f.service.store!.write(context, { kind: "evaluations", data, requestId });
+			return { kind: record.kind, id: record.id, revision: record.revision };
+		};
+		const { configuration: _configuration, ...legacyData } = scored.report.data;
+		const legacy = persist(legacyData, "legacy-no-config");
+		const configuration = {
+			...scored.report.data.configuration,
+			profileId: `internal-${"f".repeat(55)}`,
+			rules: scored.report.data.configuration.rules.map((r: any) => (r.id === "F01" ? { ...r, version: "999" } : r)),
+		};
+		const unavailable = persist(
+			{
+				...scored.report.data,
+				configuration,
+				profileVersion: `${configuration.profileId}@${configuration.profileVersion}`,
+				configDigest: digest(configuration),
+				evaluatorVersions: { ...scored.report.data.evaluatorVersions, F01: "999" },
+			},
+			"missing-version",
+		);
+		const changed = persist({ ...scored.report.data, configuration }, "mismatched-config-digest");
+		f.service.close();
+		const restarted = new EvaluationService(f.host);
+		cleanup.push(() => restarted.close());
+		let sequence = 0;
+		const request = (action: string, data: any) =>
+			restarted.dispatch(f.ui, { action, requestId: `restart-${++sequence}`, ...data });
+		await expect(request("evaluate", { ref: legacy })).rejects.toMatchObject({ code: "EVIDENCE_GAP" });
+		await expect(request("evaluate", { ref: unavailable })).rejects.toMatchObject({ code: "CAPABILITY_UNAVAILABLE" });
+		await expect(request("evaluate", { ref: changed })).rejects.toMatchObject({ code: "STORE_CORRUPT" });
+		const job = await request("evaluate", { ref: scored.reportRef });
+		let status: any;
+		await vi.waitFor(async () => {
+			status = await request("status", { jobId: job.jobId });
+			expect(status.state).toBe("completed");
+		});
+		const report = await request("get", { ref: status.reportRef });
+		expect(report.data.configuration).toEqual(scored.report.data.configuration);
+		expect(report.data.configDigest).toBe(scored.report.data.configDigest);
+		expect(report.data.snapshotRef).toEqual(scored.snapshotRef);
+	});
 	it("keeps Agent conditions proposed and rejects unverified message boundaries", async () => {
 		const f = fixture();
 		await expect(f.request("createContract", { data: f.contract }, f.tool)).rejects.toThrow(/proposals/);

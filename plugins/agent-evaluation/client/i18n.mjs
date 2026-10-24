@@ -2,6 +2,47 @@ const labels = {
 	title: ["Agent 评估中心", "Agent evaluation"],
 	records: ["评估记录", "Evaluations"],
 	detail: ["评估详情", "Evaluation details"],
+	reevaluate: ["按原快照重新评分", "Re-score original snapshot"],
+	reevaluateHint: [
+		"重新评分复用原证据与规则配置，不重新采集，也不运行原任务。",
+		"Re-scoring uses the original evidence and rule configuration. It does not collect again or run the original task.",
+	],
+	reevaluateStarted: [
+		"已按原快照提交新的评分，旧报告保留。",
+		"A new score was requested for the original snapshot. The previous report is retained.",
+	],
+	revise: ["修订目标与条件", "Revise objective and conditions"],
+	contractRevision: ["条件修订版本", "Contract revision"],
+	revisionHint: [
+		"本次确认会保存新修订，并重新读取固定选区与已配置文件，生成新报告。旧报告及人工意见保留。",
+		"Confirmation saves a new revision and reads the fixed selection and configured files again for a new report. Old reports and human reviews are retained.",
+	],
+	conditions: ["验收条件", "Acceptance conditions"],
+	constraints: ["行为约束", "Behavior constraints"],
+	required: ["确认为必须满足", "Confirm as mandatory"],
+	boundCheck: [
+		"此条件绑定既有核验，核验方式保持原配置。",
+		"This condition is bound to an existing check whose configuration is retained.",
+	],
+	additionalConditions: [
+		"新增文字条件（每行一项，需要人工复核）",
+		"Additional text conditions (one per line, require human review)",
+	],
+	saveRevision: ["确认修订并重新诊断", "Confirm revision and diagnose again"],
+	discardRevision: ["放弃编辑，返回原报告", "Discard edits and return to report"],
+	revisionSaved: [
+		"新修订已保存并提交诊断，旧报告保留。",
+		"The new revision was saved and submitted for diagnosis. Old reports are retained.",
+	],
+	missingConfig: [
+		"原报告缺少规则配置，无法自动修订诊断。",
+		"The original report has no rule configuration, so a revised diagnosis cannot be prepared automatically.",
+	],
+	revisionPathLimit: [
+		"原配置超过20个核验文件，请先调整规则配置后再修订。",
+		"The original configuration has more than 20 artifact paths. Adjust its rule configuration before revising.",
+	],
+	recordChanged: ["记录发生变化，请返回记录重新打开。", "The record changed. Return to records and reopen it."],
 	refresh: ["刷新当前会话", "Refresh current conversation"],
 	new: ["新建诊断", "New diagnosis"],
 	back: ["返回记录", "Back to records"],

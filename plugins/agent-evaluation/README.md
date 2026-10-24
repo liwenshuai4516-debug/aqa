@@ -1,6 +1,8 @@
-# Agent 评估中心 — EC01/EC02 工程基础
+# Agent 评估中心
 
-当前版本 0.3.0，实现统一契约、不可变仓库、受控源读取、证据采集和 EC03 评分基础；七条基础规则及默认 profile 仍在实施。尚未提供插件运行入口、工具、技能或页面，不要将此目录登记到实际应用；产品入口由 EC04 接入后统一验收。评估模块不调用模型或业务执行器。
+当前版本0.4.3，已实现统一契约、受控源读取、证据采集、七条基础规则、两页诊断、人工复核、脱敏导出，以及原快照重评和目标/条件修订入口。EC04/M1仍在进行：采集性能门禁未过，持续观察、规则配置与原生结果导航等产品路径仍有缺口，不代表M1已交付。评估模块不调用模型、原业务执行器或真实外部CLI。
+
+应用登记使用`scripts/enable-agent-evaluation.mjs --agent-dir <明确目录> --data-dir <明确目录>`，先隔离验证；不覆盖其他安装，不默认改个人目录。真实Electron阶段证据见[EC04](../../docs/agent-evaluation-evidence/EC04.md)。
 
 ## 文件与信任边界
 
@@ -9,7 +11,7 @@
 - `durable.mjs`：临时文件写入、fsync、原子发布及父目录 fsync；故障残片保留。
 - `collect.mjs` / `adapters/pi.mjs`：受控选区采集、来源去重/冲突、显式子任务、原生产物只读复核、checkpoint 与不可变封存。
 
-构造器必须接收可信宿主注入的 `authorize(context)`；返回 `domain={principalId,workspaceId}`、授权 `sessionIds`、`allowWrite`，人工入口另有 `human`，执行事实对账另有 `reconciled`。请求体不能生成这些权限。当前单测用 WeakMap 模拟不可伪造上下文，EC02 已在隔离真实 PluginManager/SDK 中验证可信 sender 与逐会话接线；实际产品入口与 Electron 接入仍待 EC04。
+构造器必须接收可信宿主注入的 `authorize(context)`；返回 `domain={principalId,workspaceId}`、授权 `sessionIds`、`allowWrite`，人工入口另有 `human`，执行事实对账另有 `reconciled`。请求体不能生成这些权限。当前单测用 WeakMap 模拟不可伪造上下文，EC02 已在隔离真实 PluginManager/SDK 中验证可信 sender 与逐会话接线；服务与产品入口在EC04接线，并已在独立目录的真实Electron验证；未覆盖项保留于逐项验收表。
 
 所有写操作均使用 requestId。授权先于幂等查询；同域同请求/同脱敏输入返回原记录，改变输入返回 VERSION_CONFLICT。请求回执与对象在同一文件发布；回执丢失后原请求查询不会再次创建记录。write 不提供 CLI、网络、运行器或业务写入能力；恢复不会自动启动任何任务。
 
@@ -21,7 +23,7 @@
 
 contract/target/attempt 可按 previousRef 新增 revision，陈旧 revision 拒绝写入；快照/报告/人审/证据不允许覆盖。重新执行另建 attempt；只读 get 不创建尝试。referenceDigests 固定每条依赖的摘要，旧引用变动不能被新摘要悄悄接受。哈希证明一致性，不证明第三方自报真实或抵抗全部宿主权限。
 
-资源限制来自 EC00；构造器测试覆盖只能收紧默认限制。引用遍历同时限制 8MiB、1,000 项、2 秒与 64 层；正文单项 1MiB，仓库 256MiB/10,000 元数据记录，导出 2MiB。大导出需选更小范围，不返回半份 manifest。记录/索引不承担任意大型归档。
+资源限制来自 EC00；构造器测试覆盖只能收紧默认限制。引用遍历分别限制1,000证据项与1,000授权元数据项，共用8MiB、2秒与64层；正文单项 1MiB，仓库 256MiB/10,000 元数据记录，导出 2MiB。大导出需选更小范围，不返回半份 manifest。记录/索引不承担任意大型归档。
 
 脱敏识别 credential 字段、Bearer 与已知 token 前缀；原文和请求摘要均不保存识别出的凭据值。无法自动识别任意无标记秘密，调用侧必须遵守不读取个人凭据及最小采集边界。导出是派生包，保留 sourceDigest 并重算派生记录摘要和 manifestDigest，不能用原摘要冒充脱敏字节校验。
 
@@ -76,3 +78,11 @@ F08 的 SDK usage 只有明确版本价格表才能估算；SDK 自报 cost 没�
 唯一技能位于 `skills/agent-evaluation/SKILL.md`；项目 `.pi/skills/agent-evaluation/` 仅引用原实现。使用 `npm run agent-evaluation:enable -- --agent-dir <明确 agentDir> --data-dir <明确 dataDir>` 登记，不覆盖其他安装，不改变既有禁用选择。没有打包 bundle，不引入客户端构建依赖；正式共享目录未发布新版本，不能靠旧 marketplace 源声称可安装。
 
 人工 review 仅可信 UI 通道；工具定义受执行侧门禁约束。分页投影使用 sourceDigest，导出附可验证派生 digest/manifestDigest，包含报告关联的独立 reviews。写超时重试保持请求身份；关闭视图不终止原任务，卸载插件清理监听并收尾评分。详细通过项、失败原件与剩余门禁见 [EC04](../../docs/agent-evaluation-evidence/EC04.md)。
+
+## EC04：修订与重评
+
+详情页“按原快照重新评分”调用`evaluate(ref=evaluation)`，恢复该报告的internal profile标识、精确规则版本和配置，不采集新证据、不创建attempt；旧报告与人工复核保持原记录。只支持能无损恢复的完整internal v1 profile；缺配置、配置摘要不符、profile冲突或旧规则未安装时拒绝，不猜测默认值。原`evaluate(ref=snapshot, configs=...)`仍可用，表示明确选择配置的新评分。
+
+“修订目标与条件”先读齐分页契约，再追加同一契约的新revision并附着新观察attempt；保持原消息/子任务边界和环境引用，重新采集指定文件，生成新snapshot/evaluation。绑定核验规则的条件文字只读，核验方式不会因改写文字改变；可确认必须项、修改文字条件和新增需人工复核的文字条件。已有profile配置继续用于新诊断；额外手工原生引用没有自动重放，源内可验证的原生关联仍由collector发现，缺证据按规则保留未知。
+
+保存中途失败时保留表单和已确认步骤，同输入重试复用requestId；原选区变更或契约revision陈旧由服务端拒绝。当前表单不能删除/重排既有条件或编辑绑定规则配置，相关配置产品入口仍待后续EC04接线。

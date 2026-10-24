@@ -1,6 +1,6 @@
 /** Real Electron, isolated data, seeded SDK history; no model, CLI or business execution. */
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -133,12 +133,12 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.2" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.3" && p.active),
 			),
 		),
 	);
 	result.checks.push(
-		"Real app loads plugin 0.4.2 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Real app loads plugin 0.4.3 in explicitly registered app directories; seeded SDK history opened without a model prompt",
 	);
 	stage("settings and slash discovery");
 	const settings = async (tab) => {
@@ -213,7 +213,7 @@ try {
 							f.plugins.some(
 								(p) =>
 									p.id === "agent-evaluation" &&
-									p.version === "0.4.2" &&
+									p.version === "0.4.3" &&
 									p.agentTools?.some((tool) => tool.name === "agent_evaluation"),
 							),
 					),
@@ -230,7 +230,7 @@ try {
 	await candidate.waitFor();
 	await input.fill("");
 	result.checks.push(
-		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.2; skill, slash discovery and tool registration remain enabled",
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.3; skill, slash discovery and tool registration remain enabled",
 	);
 	stage("product diagnosis flow");
 	const openView = async () => {
@@ -299,6 +299,105 @@ try {
 	assert.equal(exported.records.filter((r) => r.kind === "evaluations").length, 1);
 	result.checks.push(
 		"Actual Electron blob download reopens as a valid redacted export, including separate review and verifiable manifest",
+	);
+
+	stage("frozen re-scoring and contract revision");
+	const storeRoot = join(dataDir, "agent-evaluation");
+	const names = async (kind) => (await readdir(join(storeRoot, kind))).filter((file) => file.endsWith(".json"));
+	const reports = async () =>
+		Promise.all(
+			(await names("evaluations")).map(async (file) =>
+				JSON.parse(await readFile(join(storeRoot, "evaluations", file), "utf8")),
+			),
+		);
+	const [original] = await reports();
+	const originalFile = join(storeRoot, "evaluations", `${original.id}.1.json`);
+	const originalBytes = await readFile(originalFile, "utf8");
+	const attemptsBefore = await names("attempts"),
+		snapshotsBefore = await names("snapshots");
+	// Only this isolated fixture changes. Frozen re-scoring must keep the old valid bytes.
+	await writeFile(join(workspace, "result.json"), "invalid JSON from a later observation");
+	await page.locator('.aev [data-action="reevaluate"]').click();
+	const waitForDifferentReport = async (oldId) =>
+		until(async () => {
+			const error = await page.locator(".aev [role=alert]").innerText();
+			if (error) throw new Error(error);
+			if (await page.locator('.aev [data-action="status"]:not([disabled])').isVisible())
+				await page.locator('.aev [data-action="status"]').click();
+			return (
+				(await page.locator(".aev article h3").count()) > 0 &&
+				!(await page.locator(".aev small").first().innerText()).includes(oldId)
+			);
+		});
+	await waitForDifferentReport(original.id);
+	assert.match(await artifact.innerText(), /Pass/);
+	const rescored = (await reports()).find((record) => record.id !== original.id);
+	assert.ok(rescored);
+	assert.deepEqual(rescored.data.snapshotRef, original.data.snapshotRef);
+	assert.deepEqual(rescored.data.configuration, original.data.configuration);
+	assert.equal(rescored.data.configDigest, original.data.configDigest);
+	assert.deepEqual(await names("attempts"), attemptsBefore);
+	assert.deepEqual(await names("snapshots"), snapshotsBefore);
+	assert.equal(await readFile(originalFile, "utf8"), originalBytes);
+	assert.equal(await page.locator(".aev .review").count(), 0);
+	await page.locator('.aev [data-action="revise"]').click();
+	await page.locator('.aev form[data-form="revision"]').waitFor();
+	assert.equal(await page.locator('.aev [name="conditions-0-statement"]').getAttribute("readonly"), "");
+	await page.locator('.aev [name="objective"]').fill("Revised offline desktop diagnosis");
+	await page.locator('.aev [name="additionalConditions"]').fill("Human confirms semantic correctness");
+	assert.ok(
+		await page
+			.locator('.aev form[data-form="revision"] button[type="submit"]')
+			.evaluate((el) => el.getBoundingClientRect().height >= 36),
+	);
+	await page.screenshot({ path: join(output, "revision-en.png") });
+	await page.setViewportSize({ width: 800, height: 650 });
+	assert.equal(await page.locator(".aev").evaluate((el) => el.scrollWidth <= el.clientWidth), true);
+	await page.screenshot({ path: join(output, "revision-narrow.png") });
+	await page.setViewportSize({ width: 1280, height: 850 });
+	await page.locator('.aev form[data-form="revision"] button[type="submit"]').click();
+	await waitForDifferentReport(rescored.id);
+	assert.match(await artifact.innerText(), /Fail/);
+	const revised = (await reports()).find((record) => ![original.id, rescored.id].includes(record.id));
+	assert.ok(revised);
+	assert.equal(revised.data.contractRef.id, original.data.contractRef.id);
+	assert.equal(revised.data.contractRef.revision, 2);
+	assert.notDeepEqual(revised.data.snapshotRef, original.data.snapshotRef);
+	const contractFile = join(storeRoot, "contracts", `${revised.data.contractRef.id}.2.json`);
+	const revisedContract = JSON.parse(await readFile(contractFile, "utf8"));
+	const originalContract = JSON.parse(
+		await readFile(join(storeRoot, "contracts", `${original.data.contractRef.id}.1.json`), "utf8"),
+	);
+	assert.deepEqual(revisedContract.data.scope, originalContract.data.scope);
+	assert.equal(revisedContract.data.objective, "Revised offline desktop diagnosis");
+	const manual = revisedContract.data.conditions.find(
+		(condition) => condition.statement === "Human confirms semantic correctness",
+	);
+	assert.ok(manual);
+	assert.ok(
+		revised.data.findings.some((finding) => finding.conditionId === manual.id && finding.verdict === "inconclusive"),
+	);
+	assert.equal((await names("attempts")).length, attemptsBefore.length + 1);
+	assert.equal((await names("snapshots")).length, snapshotsBefore.length + 1);
+	assert.equal(await readFile(originalFile, "utf8"), originalBytes);
+	await page.locator('.aev [data-action="back"]').click();
+	await page.locator('.aev [data-action="open"][data-id="' + original.id + '"]:not([disabled])').click();
+	await artifact.locator("summary", { hasText: "Human reviews" }).click();
+	assert.match(await artifact.innerText(), /Manual semantic review is still needed/);
+	assert.match(await artifact.innerText(), /Original verdict: Pass/);
+	result.revisionChecks = {
+		originalId: original.id,
+		rescoredId: rescored.id,
+		revisedId: revised.id,
+		originalSnapshotRef: original.data.snapshotRef,
+		revisedSnapshotRef: revised.data.snapshotRef,
+		contractRevision: revised.data.contractRef.revision,
+		reScoreAddedAttempts: 0,
+		revisionAddedAttempts: 1,
+		originalBytesUnchanged: true,
+	};
+	result.checks.push(
+		"Actual desktop re-scoring preserves the exact frozen snapshot/configuration and creates no attempt; revision keeps the selection and old reports/reviews, re-observes changed fixture bytes, and leaves added semantic requirements inconclusive",
 	);
 
 	stage("language, theme, layout");
@@ -405,7 +504,7 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.2" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.3" && p.active),
 			),
 		),
 	);
@@ -416,7 +515,7 @@ try {
 	assert.equal(await skill().getByRole("switch").getAttribute("aria-checked"), "true");
 	await closeSettings();
 	result.checks.push(
-		"Graceful real Electron exit and a second native process load plugin 0.4.2 and preserve enabled skill/plugin registration",
+		"Graceful real Electron exit and a second native process load plugin 0.4.3 and preserve enabled skill/plugin registration",
 	);
 
 	result.status = "PASS";

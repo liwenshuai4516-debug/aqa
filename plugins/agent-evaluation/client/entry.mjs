@@ -23,7 +23,7 @@ export default {
 			snapshot,
 			reviews = [],
 			job;
-		let draft;
+		let draft, revision;
 		let view = "records",
 			error = "",
 			notice = "",
@@ -47,7 +47,7 @@ export default {
 				});
 		}
 		function recordsHtml() {
-			return `<p class="muted">${esc(t("hint"))}</p>${source ? `<p>${esc(source.sourceId)} · ${esc(source.clientVersion ?? t("unknown"))}</p>` : `<p>${esc(t("noSource"))}</p>`}${job ? jobHtml() : ""}${!page.items.length ? `<section class="empty">${esc(t("empty"))}</section>` : `<section class="table-wrap"><table><thead><tr>${["range", "source", "execution", "goal", "coverage", "updated"].map((k) => `<th scope="col">${esc(t(k))}</th>`).join("")}</tr></thead><tbody>${page.items.map((r, i) => `<tr><td><p>${esc(r.objectivePreview)}</p><small>${esc(r.taskRange?.startMessageId)} → ${esc(r.taskRange?.endMessageId)}</small><p>${button("open", "open", `data-index="${i}"`)}</p></td><td>Pi SDK<br>${esc(r.sourceVersion ?? t("unknown"))}</td><td>${badge(r.executionState)}<br>${badge(r.assessmentStage)}</td><td>${badge(r.summary?.goal)}<br>${badge(r.summary?.deliveryVerdict)}</td><td>${r.summary?.counts?.coverage == null ? esc(t("unknown")) : `${Math.round(r.summary.counts.coverage * 100)}%`}<br>${esc(t(r.evidenceCoverage ?? "unknown"))}</td><td>${esc(r.createdAt)}</td></tr>`).join("")}</tbody></table></section>`}<div class="actions">${button("first", "first")}${page.nextCursor ? button("next", "next") : ""}</div>`;
+			return `<p class="muted">${esc(t("hint"))}</p>${source ? `<p>${esc(source.sourceId)} · ${esc(source.clientVersion ?? t("unknown"))}</p>` : `<p>${esc(t("noSource"))}</p>`}${job ? jobHtml() : ""}${!page.items.length ? `<section class="empty">${esc(t("empty"))}</section>` : `<section class="table-wrap"><table><thead><tr>${["range", "source", "execution", "goal", "coverage", "updated"].map((k) => `<th scope="col">${esc(t(k))}</th>`).join("")}</tr></thead><tbody>${page.items.map((r, i) => `<tr><td><p>${esc(r.objectivePreview)}</p><small>${esc(r.taskRange?.startMessageId)} → ${esc(r.taskRange?.endMessageId)}</small><p>${button("open", "open", `data-index="${i}" data-id="${esc(r.id)}"`)}</p></td><td>Pi SDK<br>${esc(r.sourceVersion ?? t("unknown"))}</td><td>${badge(r.executionState)}<br>${badge(r.assessmentStage)}</td><td>${badge(r.summary?.goal)}<br>${badge(r.summary?.deliveryVerdict)}</td><td>${r.summary?.counts?.coverage == null ? esc(t("unknown")) : `${Math.round(r.summary.counts.coverage * 100)}%`}<br>${esc(t(r.evidenceCoverage ?? "unknown"))}</td><td>${esc(r.createdAt)}</td></tr>`).join("")}</tbody></table></section>`}<div class="actions">${button("first", "first")}${page.nextCursor ? button("next", "next") : ""}</div>`;
 		}
 		function newHtml() {
 			const options = source.choices
@@ -60,8 +60,9 @@ export default {
 		}
 		function detailHtml() {
 			if (!report) return "";
+			if (revision) return revisionHtml();
 			const d = report.data;
-			return `<section><h2>${esc(contract.data.objective)}</h2><div class="grid">${field("summary", badge(d.summary.deliveryVerdict))}${field("goal", badge(d.summary.goal))}${field("stage", badge(d.assessmentStage))}${field("coverage", badge(snapshot.data.coverage))}</div><p>${esc(contract.data.scope.startMessageId)} → ${esc(contract.data.scope.endMessageId)}</p><small>${esc(report.id)} · r${report.revision} · ${esc(report.createdAt)}</small><p>${button("export", "export")}</p></section><section><h2>${esc(t("findings"))}</h2>${d.findings
+			return `<section><h2>${esc(contract.data.objective)}</h2><div class="grid">${field("summary", badge(d.summary.deliveryVerdict))}${field("goal", badge(d.summary.goal))}${field("stage", badge(d.assessmentStage))}${field("coverage", badge(snapshot.data.coverage))}</div><p>${esc(contract.data.scope.startMessageId)} → ${esc(contract.data.scope.endMessageId)}</p><small>${esc(report.id)} · r${report.revision} · ${esc(report.createdAt)}</small><p>${esc(t("contractRevision"))}: ${esc(contract.revision)}</p><div class="actions">${button("export", "export")}${button("reevaluate", "reevaluate")}${button("revise", "revise")}</div><p class="muted">${esc(t("reevaluateHint"))}</p></section><section><h2>${esc(t("findings"))}</h2>${d.findings
 				.map(
 					(f, index) =>
 						`<article><h3>${esc(f.ruleId)} · ${esc(f.conditionId ?? f.findingId)}</h3>${badge(f.verdict)}${badge(f.evidenceState)}<p><b>${esc(t("reason"))}</b> · ${esc(f.reason)}</p>${f.missingEvidence.length ? `<p><b>${esc(t("missing"))}</b> · ${esc(f.missingEvidence.join("; "))}</p>` : ""}<div class="actions">${f.evidenceRefs.map((_, j) => button("evidence", "evidence", `data-finding="${index}" data-evidence="${j}"`)).join("") || `<p>${esc(t("noEvidence"))}</p>`}</div><details><summary>${esc(t("reviews"))}</summary><p>${esc(t("reviewHint"))}</p><p>${esc(t("original"))}: ${esc(t(f.verdict))}</p>${
@@ -77,6 +78,28 @@ export default {
 				.join(
 					"",
 				)}<div class="actions">${findingsOffset ? button("findings-first", "first") : ""}${report.pages.findings?.nextOffset != null ? button("findings-next", "next") : ""}</div></section>${evidence ? `<section tabindex="-1" data-evidence-panel><h2>${esc(t("evidence"))}</h2><p>${esc(evidence.record.data.sourceLocator)}</p><p>${esc(evidence.record.data.sourceEventId)} · ${esc(evidence.record.data.origin)} · ${esc(evidence.record.data.availability)}</p><pre>${esc(evidence.text)}</pre>${evidence.nextOffset != null ? button("evidence-next", "next") : ""}</section>` : ""}<section><h2>${esc(t("config"))}</h2><p>${esc(t("costHint"))}</p><p>${esc(t("version"))}: ${esc(d.profileVersion)}</p><details><summary>${esc(t("raw"))}</summary><pre>${esc(JSON.stringify({ configuration: d.configuration, job: d.job, evaluatorVersions: d.evaluatorVersions }, null, 2))}</pre></details><h3>${esc(t("gaps"))}</h3><pre>${esc(snapshot.data.gaps.join("\n"))}</pre></section>`;
+		}
+		function revisionHtml() {
+			const data = revision.contract.data;
+			return `<section><h2>${esc(t("revise"))}</h2><p>${esc(t("revisionHint"))}</p><p>${esc(data.scope.startMessageId)} → ${esc(data.scope.endMessageId)} · ${esc(t("contractRevision"))} ${revision.contract.revision}</p><form data-form="revision"><label>${esc(t("objective"))}<textarea name="objective" required maxlength="16384">${esc(data.objective)}</textarea></label>${["conditions", "constraints"].map((field) => `<fieldset><legend>${esc(t(field))}</legend>${data[field].map((c, index) => `<div class="condition"><label>${esc(c.id)}<textarea name="${field}-${index}-statement" required maxlength="16384" ${c.ruleRef ? "readonly" : ""}>${esc(c.statement)}</textarea></label>${c.ruleRef ? `<p class="muted">${esc(t("boundCheck"))} · ${esc(c.ruleRef)}</p>` : ""}<label class="check-label"><input type="checkbox" name="${field}-${index}-required" ${c.required ? "checked" : ""}>${esc(t("required"))}</label></div>`).join("")}</fieldset>`).join("")}<label>${esc(t("additionalConditions"))}<textarea name="additionalConditions" maxlength="24000"></textarea></label><p class="muted">${esc(t("conditionHint"))}</p><div class="actions"><button type="submit" class="primary">${esc(t("saveRevision"))}</button>${button("discard-revision", "discardRevision")}</div></form></section>`;
+		}
+		function reportConfigs() {
+			if (!report.data.configuration) throw new Error(t("missingConfig"));
+			return Object.fromEntries(report.data.configuration.rules.map((rule) => [rule.id, rule.config]));
+		}
+		async function completeContract(reference) {
+			const result = await rpc.request("get", { ref: reference, limit: 20 });
+			// Fetch every field before revising; a page projection must never delete unseen conditions.
+			for (const [field, page] of Object.entries(result.pages)) {
+				let offset = page.nextOffset;
+				while (offset != null) {
+					const part = await rpc.request("get", { ref: reference, offset, limit: 20 });
+					if (part.sourceDigest !== result.sourceDigest) throw new Error(t("recordChanged"));
+					result.data[field].push(...part.data[field]);
+					offset = part.pages[field].nextOffset;
+				}
+			}
+			return result;
 		}
 		async function run(fn, { preserve = false } = {}) {
 			const generation = rpc.generation;
@@ -114,6 +137,8 @@ export default {
 		async function refresh() {
 			rpc.select({});
 			source = undefined;
+			revision = undefined;
+			draft = undefined;
 			job = undefined;
 			report = undefined;
 			view = "records";
@@ -170,11 +195,13 @@ export default {
 			if (action === "back") {
 				rpc.select(source ? { conversationId: source.conversationId, sessionId: source.sessionId } : {});
 				view = "records";
+				revision = undefined;
 				busy = false;
 				void run(() => list());
 				return;
 			}
 			if (action === "new") {
+				draft = undefined;
 				view = "new";
 				error = "";
 				notice = "";
@@ -182,7 +209,26 @@ export default {
 				root.querySelector("textarea")?.focus();
 				return;
 			}
+			if (action === "discard-revision") {
+				revision = undefined;
+				draft = undefined;
+				render();
+				root.querySelector("[data-action=revise]")?.focus();
+				return;
+			}
 			void run(async () => {
+				if (action === "revise") {
+					const configs = reportConfigs();
+					revision = { contract: await completeContract(ref(contract)), configs };
+					draft = undefined;
+				}
+				if (action === "reevaluate") {
+					job = await rpc.request("evaluate", { ref: ref(report) });
+					view = "records";
+					await list();
+					await status();
+					notice = t("reevaluateStarted");
+				}
 				if (action === "first" || action === "next") await list(action === "next" ? page.nextCursor : undefined);
 				if (action === "open") await open(ref(page.items[Number(target.dataset.index)]));
 				if (action === "findings-first" || action === "findings-next")
@@ -219,6 +265,7 @@ export default {
 				}
 			}).then(() => {
 				if (action.startsWith("evidence") && !closed) root.querySelector("[data-evidence-panel]")?.focus();
+				if (action === "revise" && !closed) root.querySelector("form[data-form=revision] textarea")?.focus();
 			});
 		});
 		root.addEventListener("submit", (event) => {
@@ -244,13 +291,65 @@ export default {
 						notice = t("saved");
 						return;
 					}
-					const fingerprint = JSON.stringify([source.sessionId, values]);
+					const fingerprint = JSON.stringify([
+						form.dataset.form,
+						source.conversationId,
+						source.sessionId,
+						revision ? ref(revision.contract) : null,
+						values,
+					]);
 					if (draft?.fingerprint !== fingerprint) draft = { fingerprint, results: new Map() };
 					const steps = draft.results;
 					const step = async (action, data) => {
 						if (!steps.has(action)) steps.set(action, await rpc.request(action, data));
 						return steps.get(action);
 					};
+					if (form.dataset.form === "revision") {
+						const original = revision.contract.data;
+						const data = {
+							...original,
+							objective: values.objective,
+							provenance: `human-confirmed revision of ${revision.contract.id}.${revision.contract.revision}`,
+						};
+						for (const field of ["conditions", "constraints"])
+							data[field] = original[field].map((c, index) => {
+								const statement = c.ruleRef ? c.statement : values[`${field}-${index}-statement`];
+								const required = values[`${field}-${index}-required`] === "on";
+								const confirmed =
+									c.required !== required || c.statement !== statement || (required && c.sourceType === "proposed");
+								return {
+									...c,
+									statement,
+									required,
+									...(confirmed
+										? { sourceType: "user", sourceRef: `human-ui:${revision.contract.id}:${field}:${c.id}` }
+										: {}),
+								};
+							});
+						data.conditions.push(
+							...lines(values.additionalConditions).map((statement) => ({
+								id: `condition-${crypto.randomUUID()}`,
+								statement,
+								sourceType: "user",
+								sourceRef: `human-ui:${revision.contract.id}`,
+								required: true,
+								applicableWhen: "always",
+							})),
+						);
+						const paths = [...new Set((revision.configs.F01?.checks ?? []).map((check) => check.path))];
+						if (paths.length > 20) throw new Error(t("revisionPathLimit"));
+						const c = await step("reviseContract", { previousRef: ref(revision.contract), data });
+						const attempt = await step("createAttempt", { ref: c });
+						const collected = await step("collect", { ref: attempt, artifactPaths: paths });
+						const sealed = await step("seal", { ref: collected.checkpointRef });
+						job = await step("evaluate", { ref: sealed, configs: revision.configs });
+						view = "records";
+						await list();
+						await status();
+						revision = undefined;
+						notice = t("revisionSaved");
+						return;
+					}
 					const paths = [...new Set(lines(values.paths))];
 					if (paths.length > 20) throw new Error(t("paths"));
 					if (
@@ -320,7 +419,7 @@ export default {
 		});
 		const languageObserver = new MutationObserver(() => {
 			t = translator(document.documentElement.lang || "zh");
-			if (view !== "new" && !root.querySelector("textarea:focus")) render();
+			if (view !== "new" && !revision && !root.querySelector("textarea:focus")) render();
 		});
 		languageObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 		void refresh();

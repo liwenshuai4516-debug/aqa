@@ -320,28 +320,68 @@ export class EvaluationService {
 			case "seal":
 				return ref(this.collector.seal(context, request.ref, requestId));
 			case "evaluate": {
-				const configs = request.configs ?? {};
+				let snapshotRef = request.ref,
+					profile;
 				const known = this.registry.profile("internal", "1").rules.map((r) => r.id);
-				requireValue(
-					Object.keys(configs).every((id) => known.includes(id)),
-					"INVALID_INPUT",
-					"Unknown rule configuration",
-				);
-				const id = `internal-${digest(configs).slice(0, 55)}`;
+				if (request.ref?.kind === "evaluations") {
+					requireValue(
+						request.configs === undefined,
+						"INVALID_INPUT",
+						"Original report scoring cannot override configs",
+					);
+					const original = store.get(context, request.ref),
+						configuration = original.data.configuration;
+					requireValue(configuration, "EVIDENCE_GAP", "Original rule configuration is unavailable");
+					requireValue(
+						digest(configuration) === original.data.configDigest,
+						"STORE_CORRUPT",
+						"Original rule configuration digest differs",
+					);
+					requireValue(
+						configuration.profileVersion === "1" &&
+							(configuration.profileId === "internal" || /^internal-[a-f0-9]{55}$/.test(configuration.profileId)) &&
+							configuration.rules.length === known.length &&
+							known.every((id) => configuration.rules.some((r) => r.id === id)),
+						"CAPABILITY_UNAVAILABLE",
+						"Only complete internal profiles can be restored for exact re-scoring",
+					);
+					profile = {
+						...internalProfile(),
+						id: configuration.profileId,
+						version: configuration.profileVersion,
+						rules: configuration.rules,
+						required: configuration.rules.map(({ id, version }) => ({ id, version })),
+					};
+					snapshotRef = original.data.snapshotRef;
+				} else {
+					const configs = request.configs ?? {};
+					requireValue(
+						Object.keys(configs).every((id) => known.includes(id)),
+						"INVALID_INPUT",
+						"Unknown rule configuration",
+					);
+					profile = internalProfile(configs, { id: `internal-${digest(configs).slice(0, 55)}` });
+				}
+				const key = `${profile.id}@${profile.version}`;
 				if (!this.profiles) this.profiles = new Set();
-				if (!this.profiles.has(id)) {
+				if (key !== "internal@1" && !this.profiles.has(key)) {
 					requireValue(
 						this.profiles.size < 1000,
 						"LIMIT_EXCEEDED",
 						"Profile limit reached; reload the plugin before adding new configurations",
 					);
-					this.registry.registerProfile(internalProfile(configs, { id }));
-					this.profiles.add(id);
-				}
+					this.registry.registerProfile(profile);
+					this.profiles.add(key);
+				} else
+					requireValue(
+						digest(this.registry.profile(profile.id, profile.version).rules) === digest(profile.rules),
+						"VERSION_CONFLICT",
+						"Stored profile configuration conflicts with registered version",
+					);
 				const job = this.engine.start(context, {
-					snapshotRef: request.ref,
-					profileId: id,
-					profileVersion: "1",
+					snapshotRef,
+					profileId: profile.id,
+					profileVersion: profile.version,
 					requestId,
 				});
 				this.pending.add(job.done);

@@ -16,6 +16,10 @@ export const CSS = `
 .aev .primary { background: var(--accent); color: var(--accent-contrast, white); }
 .aev .primary:hover { background: var(--accent); filter: brightness(.95); }
 .aev label { display: grid; gap: 6px; margin: 12px 0; }
+.aev fieldset { border: 1px solid var(--border); border-radius: 6px; min-width: 0; margin: 12px 0; }
+.aev .check-label { display: flex; align-items: center; gap: 10px; min-height: 36px; }
+.aev input[type=checkbox] { min-height: 20px; width: 20px; flex: none; }
+.aev textarea[readonly] { color: var(--text-dim, var(--text)); }
 .aev textarea { width: 100%; min-height: 88px; resize: vertical; }
 .aev .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 16px; }
 .aev section, .aev article, .aev .panel { border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 16px; background: var(--bg-elev, var(--bg)); min-width: 0; }
