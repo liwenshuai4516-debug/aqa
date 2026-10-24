@@ -476,3 +476,23 @@ view/analyze的status仍分别1/4次文件读取、0目录扫描。catalog仍每
 公开[续跑证据索引](ui-testing-evidence/optimization-u05-native-continuation.json)与归档保留257文件，逐项核对207组不同path+sha256引用；2组已过期可变任务引用单列为历史，其中运行中快照保留，准备时任务快照未保存、不补造。当前block任务摘要另行验证。归档不含node_modules、认证/模型缓存、私有批准目录或过时继承索引。
 
 U05保持实施中。恢复供应商可用性及后续评审预算需明确处理，现有3轮历史不清零；当前没有可用批准，诊断与正式执行继续阻塞。U00全量计量、U02私密桥接/真实环境、U03/U07/U09及M1/M2仍未完成，U08未启动；此阶段成果不关闭最终交付。
+
+### U05 续跑：完整浏览器草稿与候选交接（2026-10-24）
+
+上一轮完成确切地址恢复及真实原生评审错误留证，属于进展；本轮没有重复付费请求。供应商HTTP402及3轮评审授权耗尽仍阻塞设计批准/诊断，但不阻塞补齐原未完成的浏览器录制草稿。原安装包保持0.1.4，未修改生产代码或运行包。
+
+扩展现有 `tests/ui-function-discovery-test.mjs --complete-candidate`：复用冻结u00-1六功能/13声明断言和60动作/120秒预算，在逐功能草稿后增加分页首页边界、详情收起的真实观察，通过MCP保存native log和参数化脚本，再走原生finish/checkpoint/candidate。输入值保存在同修订helper，生成脚本和归档recording draft旁均保存helper；未把常量隐藏当作数据独立性证明，角色/新context/初态/本地归属仍有单独依据。原默认partial/预算压力分支保留。
+
+完整录制 **5项工程检查通过**：58个动作（setup1、snapshot17、locator生成13、type6、click17、显式navigate1、read-log1、write-test1、close1），没有扩大60动作预算。首次查询草稿仍在其余五功能及最终脚本前落盘，历史草稿的Reset缺口不被覆盖；Query仍在同会话重载后严格复用。实际seed中检查Loading→Ready；viewer在独立beforeAll context确认身份及Add DOM存在/可访问匹配为0/隐藏，然后关闭；tester context随后新建并完成六功能MCP交互。内部seed步骤与viewer检查没有算成MCP动作，也不宣称viewer通过MCP录制。
+
+新的原生recording状态为complete，原生浏览器发现交接进入case-design；用冻结声明及既有源码候选生成的六case/13断言脚本通过静态检查，再交接到design-review。脚本包含对已观察流程的补充显式断言，并非逐字导出native log，**13条回放断言仍未执行**。可信批准缺失时checkpoint拒绝，任务显式blocked，catalog runtime_ready=false；新录制任务不重置评审额度。前轮共享账本与公开快照逐字段相等，新增模型/评审/诊断/正式runner/真实业务请求均为0，测试入口还对模型调用增加拒绝守卫。
+
+原默认分支另跑 **6项工程检查通过**：tester仍partial且不可进入case-design；viewer两动作预算耗尽在MCP前拒绝额外点击，允许close并保留step-budget/五功能未探索缺口；错误角色清单继续拒绝。历史归档摘要保持不变，没有将新的complete记录覆盖到旧partial或原评审修订。
+
+失败保留：前两次在seed内新建再关闭viewer context使Playwright测试MCP选择已关闭context；改为在beforeAll检查viewer、再创建tester context后恢复。随后两次write-test失败，定位到macOS临时工作区 `/var` 与配置规范化后的 `/private/var` 不同，生成文件根匹配失败；测试入口统一realpath后成功。临时更改进程cwd未解决，已撤去。未改node_modules或放宽MCP的写入范围守卫。前两次退出依赖SDK shutdown，没有补造partial/清理回执；后两次已有显式close和失败partial。所有失败分区归档，不计通过数。
+
+验证：全量typecheck、相关3文件 **31项Vitest**、lint、协议结构通过，协议历史无tag跳过。本轮仅扩展测试入口并保存证据，未重新执行Electron；这是实际SDK/MCP浏览器交接工程证据，不是桌面真实模型端到端或正式业务验收。日志 `tests/scratch/ui-optimization-u00/u05-browser-*`，成功目录 `tests/scratch/ui-browser-candidate/1792809587795/`，默认分支 `tests/scratch/ui-function-discovery/1792809547031/`。
+
+[浏览器候选索引](ui-testing-evidence/optimization-u05-browser-candidate.json)与约166KB归档保存646个文件，596组分区内path+sha256引用回读一致；另1组来源候选引用从已核对的旧归档验证，不复制历史依赖。归档回读逐文件核对，不含认证/模型配置、agent会话、私有批准目录或node_modules。
+
+本轮补齐完整浏览器录制草稿及原生设计交接工程缺口；U05继续实施中，独立评审、13诊断、真实环境及Electron端到端未放行。U00/U02与U03/U07/U09、M1/M2未完成，U08未启动；plan_update工具不可用，继续以本记录和第8节放行表登记，不创建虚假完成看板。

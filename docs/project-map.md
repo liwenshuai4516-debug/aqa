@@ -127,5 +127,6 @@ UI 定位重验：`tests/ui-locator-revalidation-test.mjs` 使用 `tests/fixture
 
 UI 诊断输入准备：`tests/ui-multifunction-probes-test.mjs` 将 `tests/fixtures/data-space/ui-multifunction-probes.mjs` 的13个隔离变异与环境/配置纳入候选新修订，检查HTTP源码和静态契约，不运行未获批候选。
 UI 诊断续跑：`tests/fixtures/data-space/ui-probe-replay.mjs` 恢复声明的合成地址；`tests/ui-multifunction-native-review.mjs` 使用共享授权账本调用原生独立评审/获批后诊断，保留错误和未执行边界。
+UI 浏览器候选：`tests/ui-function-discovery-test.mjs --complete-candidate` 复用六功能探索，保存完整录制、参数化草稿及静态候选；默认分支继续检查partial/预算缺口。
 
 UI 目录读取计量：`tests/ui-catalog-read-benchmark.mjs` 对归档真实run的1/8批样本统计catalog及view/analyze/execute状态查询的逐路径读取和扫描，验证损坏/删除/恢复，不启动浏览器。

@@ -420,5 +420,6 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 
 - `tests/ui-multifunction-probes-test.mjs`、`tests/fixtures/data-space/ui-multifunction-probes.mjs`：13断言错误副本、HTTP隔离核对及待审诊断计划；不执行浏览器正反诊断。
 - `tests/fixtures/data-space/ui-probe-replay.mjs`、`tests/ui-multifunction-native-review.mjs`：确切loopback地址恢复及显式授权的原生评审/诊断续跑；共享评审预算，未获批时不执行诊断。
+- `tests/ui-function-discovery-test.mjs --complete-candidate`：冻结六功能的SDK/MCP完整录制与静态候选交接；默认运行验证partial、权限及预算耗尽缺口，均不调用评审模型。
 
 - `tests/ui-catalog-read-benchmark.mjs`：原生catalog/status的1/8历史批次计量、缓存重建与损坏证据识别；不授予批准，不执行浏览器。

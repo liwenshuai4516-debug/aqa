@@ -1,10 +1,12 @@
 /** U05 controlled discovery through the installed native recording tool and real SDK/MCP.
  * No model decisions, design approval, formal runner or business-environment requests. */
 import assert from "node:assert/strict";
-import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, realpath, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { ArtifactStore, sha256 } from "pi-ui-testing";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+import { ArtifactStore, assetDigest, sha256 } from "pi-ui-testing";
 import {
 	createAgentSessionFromServices,
 	createAgentSessionServices,
@@ -16,10 +18,17 @@ import { enableUiTesting } from "../scripts/enable-ui-testing.mjs";
 import { setupUiFixture } from "./fixtures/data-space/ui-fixture.mjs";
 import { optimizationScope } from "./fixtures/data-space/ui-optimization-page.mjs";
 
+const completeCandidate = process.argv.includes("--complete-candidate");
 const repo = fileURLToPath(new URL("..", import.meta.url));
-const output = join(repo, "tests/scratch/ui-function-discovery", String(Date.now()));
+const output = join(
+	repo,
+	completeCandidate ? "tests/scratch/ui-browser-candidate" : "tests/scratch/ui-function-discovery",
+	String(Date.now()),
+);
 await mkdir(output, { recursive: true });
 const fixture = await setupUiFixture({ optimization: true });
+// macOS /var -> /private/var: MCP workspace root must match the canonical config testDir.
+fixture.project = await realpath(fixture.project);
 const store = new ArtifactStore(fixture.project);
 const envelope = (kind, id, data) => ({ schema_version: "1.0", kind, id, created_at: new Date().toISOString(), data });
 const text = (result) =>
@@ -31,14 +40,23 @@ const checks = [],
 	nested = [],
 	observed = new Map(),
 	locators = new Map();
-let session,
+let cleanupFailure,
+	recordingFinished = false,
+	session,
 	recording,
 	scopeRef,
 	inventory,
 	inventoryRef,
 	sequence = 0,
 	actionCount = 0;
-const result = { status: "FAIL", modelCalls: 0, formalRunnerCalls: 0, businessRequests: 0, checks };
+const result = {
+	status: "FAIL",
+	mode: completeCandidate ? "complete-browser-candidate" : "partial-and-budget",
+	modelCalls: 0,
+	formalRunnerCalls: 0,
+	businessRequests: 0,
+	checks,
+};
 try {
 	await mkdir(join(fixture.project, "tests"));
 	await writeFile(join(fixture.agentDir, "auth.json"), "{}");
@@ -61,6 +79,12 @@ try {
 		modelsStorePath: join(fixture.agentDir, "models-cache.json"),
 		refreshOnCreate: false,
 	});
+	// Controlled SDK/MCP verification must never turn into a paid model request.
+	for (const method of ["stream", "streamSimple", "complete", "completeSimple"])
+		runtime[method] = () => {
+			result.modelCalls++;
+			throw new Error("Model invocation is outside this engineering recording check");
+		};
 	const services = await createAgentSessionServices({
 		cwd: fixture.project,
 		agentDir: fixture.agentDir,
@@ -186,12 +210,31 @@ try {
 		assert.doesNotMatch(JSON.stringify(JSON.parse(draft).locators), /\[ref=|aria-ref=/);
 		return inventoryRef;
 	};
+	cleanupFailure = async () => {
+		if (!recording || recordingFinished) return;
+		await call("browser_close", { intent: "Cleanup owned context after failed recording branch" }, true);
+		result.failedPartial = await invoke({
+			operation: "finish",
+			session_ref: recording,
+			inventory_ref: inventoryRef,
+			initial_state: "Failed controlled recording branch; inspect saved seed and events",
+			completion: {
+				initial_state_rebuildable: true,
+				replaceable_data: true,
+				stable_locators: false,
+				assertion_sources: true,
+				cleanup_owned: true,
+			},
+			goal_reached: false,
+			gaps: ["Recording branch failed; retain error and observations, no further business actions"],
+		});
+	};
 	const start = async (role, maxSteps = optimizationScope.budget.actions) => {
 		scopeRef = await store.put(
 			envelope("scope", "scope-" + role, {
 				project_id: "u05-fixture",
 				environment_id: "isolated",
-				role,
+				role: completeCandidate ? "tester and viewer in separate contexts" : role,
 				goal: optimizationScope.budget.completion,
 				base_url: fixture.url,
 				allowed_actions: ["Declared fixture UI; own context localStorage only"],
@@ -206,7 +249,7 @@ try {
 				feature_id: f.id,
 				name: f.id,
 				entry: "/",
-				role,
+				role: completeCandidate ? "tester and viewer in separate contexts" : role,
 				actions: f.assertions,
 				scenarios: [{ scenario_id: f.id + "-declared", title: f.assertions.join("; ") }],
 				coverage: "discovered",
@@ -233,6 +276,24 @@ try {
 		const seedPath = "tests/" + role + ".seed.spec.ts";
 		const seedContent = `import {test,expect} from '@playwright/test';
 import {writeFile} from 'node:fs/promises';
+${
+	completeCandidate
+		? `let u05ViewerContext,u05ViewerObservation;
+test.beforeAll(async({browser})=>{
+ u05ViewerContext=await browser.newContext();
+ try{
+  const viewerPage=await u05ViewerContext.newPage();
+  await viewerPage.goto(${JSON.stringify(fixture.url + "/?role=viewer")});
+  await expect(viewerPage.locator('#identity')).toHaveText('Role: viewer');
+  await expect(viewerPage.getByRole('status')).toHaveText('Ready');
+  await expect(viewerPage.getByRole('button',{name:'Add',exact:true})).toHaveCount(0);
+  await expect(viewerPage.locator('#add')).toHaveCount(1);
+  await expect(viewerPage.locator('#add')).toBeHidden();
+  u05ViewerObservation={role:'viewer',identity:await viewerPage.locator('#identity').textContent(),accessibleAdd:await viewerPage.getByRole('button',{name:'Add',exact:true}).count(),domAdd:await viewerPage.locator('#add').count(),hidden:await viewerPage.locator('#add').isHidden()};
+ }finally{await u05ViewerContext.close();}
+});`
+		: ""
+}
 test('seed',async({page})=>{
  await page.addInitScript(()=>{
   const states: {status:string,rows:string[]}[]=[];
@@ -249,6 +310,12 @@ test('seed',async({page})=>{
  const states=await page.evaluate(()=>(window as any).__u05StatusObservations);
  expect(states).toEqual([{status:'Loading',rows:[]},{status:'Ready',rows:${JSON.stringify(optimizationScope.initialNames.slice(0, 2))}}]);
  await writeFile('qa/ui/recordings/${role}/loading-observation.json',JSON.stringify({role:${JSON.stringify(role)},states}));
+ ${
+		completeCandidate
+			? `expect(page.context()).not.toBe(u05ViewerContext);
+ await writeFile('qa/ui/recordings/${role}/viewer-observation.json',JSON.stringify({...u05ViewerObservation,separateContext:page.context()!==u05ViewerContext}));`
+			: ""
+ }
 });`;
 		await writeFile(join(fixture.project, seedPath), seedContent);
 		const seed = { path: seedPath, sha256: sha256(seedContent) };
@@ -272,6 +339,7 @@ test('seed',async({page})=>{
 		});
 		assert.equal(started.status, "completed", JSON.stringify(started));
 		recording = started.artifact_refs[0];
+		recordingFinished = false;
 		await call("generator_setup_page", {
 			seedFile: seedPath,
 			project: "chromium",
@@ -352,9 +420,29 @@ test('seed',async({page})=>{
 	await click("reset");
 	body = await snapshot("permission");
 	assert.match(body, /button "Add"/);
-	await save("permission", ["tester sees Add"], ["viewer context not observed in tester scope"]);
+	if (completeCandidate) {
+		const path = "qa/ui/recordings/tester/viewer-observation.json";
+		const bytes = await readFile(join(fixture.project, path));
+		assert.deepEqual(JSON.parse(bytes), {
+			role: "viewer",
+			identity: "Role: viewer",
+			accessibleAdd: 0,
+			domAdd: 1,
+			hidden: true,
+			separateContext: true,
+		});
+		observed.set("permission", [...observed.get("permission"), { path, sha256: sha256(bytes) }]);
+		await save("permission", ["tester sees Add", "seed confirms viewer Add hidden in a separate closed context"]);
+	} else await save("permission", ["tester sees Add"], ["viewer context not observed in tester scope"]);
 	await fill("query", "a");
 	await click("search");
+	if (completeCandidate) {
+		body = await snapshot("paging");
+		assert.match(body, /listitem(?: \[ref=[^\]]+\])?: Alpha/);
+		assert.match(body, /listitem(?: \[ref=[^\]]+\])?: Beta/);
+		assert.equal((body.match(/- listitem\b/g) || []).length, 2);
+		assert.match(body, /button "Previous" \[disabled\]/);
+	}
 	await locator("next", body, 'button "Next"');
 	await click("next");
 	body = await snapshot("paging");
@@ -382,7 +470,17 @@ test('seed',async({page})=>{
 	await click("details");
 	body = await snapshot("details");
 	assert.match(body, /Fixture version u00-1/);
-	await save("details", ["about selected", "details expanded"]);
+	if (completeCandidate) {
+		await click("details");
+		body = await snapshot("details");
+		assert.doesNotMatch(body, /Fixture version u00-1/);
+	}
+	await save(
+		"details",
+		completeCandidate
+			? ["about selected", "details expanded", "details collapsed"]
+			: ["about selected", "details expanded"],
+	);
 	await locator("list", body, 'tab "List"');
 	await click("list");
 	await fill("query", "Missing");
@@ -422,126 +520,306 @@ test('seed',async({page})=>{
 	checks.push(
 		"each feature keeps stable IDs and source/state references; newer drafts preserve immutable earlier gaps",
 	);
-	await call("browser_close", { intent: "Close owned tester context and discard localStorage" });
-	const partial = await invoke({
-		operation: "finish",
-		session_ref: recording,
-		inventory_ref: inventoryRef,
-		initial_state: "isolated tester context; frozen initial names",
-		completion: {
-			initial_state_rebuildable: true,
-			replaceable_data: true,
-			stable_locators: true,
-			assertion_sources: true,
-			cleanup_owned: true,
-		},
-		goal_reached: false,
-		gaps: [
-			...inventory.data.features.flatMap((f) => f.gaps.map((gap) => f.feature_id + ": " + gap)),
-			"Final script/design review not complete",
-		],
-	});
-	assert.equal(partial.status, "completed", JSON.stringify(partial));
-	const partialRef = partial.artifact_refs[0];
-	assert.equal((await store.load(partialRef)).data.status, "partial");
-	const beforeCheckpoint = nested.length;
-	const checkpoint = await workflow({
-		operation: "checkpoint",
-		task_ref: task.artifact_refs[0],
-		stage: "discover-record",
-		output_refs: [partialRef],
-	});
-	assert.equal(checkpoint.status, "blocked", JSON.stringify(checkpoint));
-	assert.match(JSON.stringify(checkpoint.errors), /完整/);
-	const taskStatus = await workflow({ operation: "status", task_id: "u05-tester" });
-	assert.equal(taskStatus.output.task.data.stage, "discover-record");
-	assert.deepEqual(taskStatus.output.task.data.completed_stages, []);
-	assert.equal(nested.length, beforeCheckpoint);
-	result.partialCheckpoint = checkpoint;
-	checks.push("partial recording cannot advance the workflow to case design; no additional MCP action is dispatched");
-	checks.push(
-		"six frozen features retain state evidence or explicit gaps, same tester recording reuses Query across reload and uses only one setup/one navigation",
-	);
-	observed.clear();
-	locators.clear();
-	await start("viewer", 2);
-	body = await snapshot("permission");
-	assert.match(body, /Role: viewer/);
-	assert.doesNotMatch(body, /button "Add"/);
-	const wrong = structuredClone(inventory);
-	wrong.id = "wrong-role";
-	wrong.data.features[0].role = "tester";
-	const refused = await invoke({ operation: "inventory", inventory: wrong });
-	assert.equal(refused.status, "blocked");
-	await save("permission", ["viewer Add hidden"], ["Tester observation remains in the original tester scope"]);
-	const before = nested.length;
-	const budget = await call(
-		"browser_click",
-		{ target: "getByRole('button', { name: 'Reset', exact: true })", intent: "Must be denied before execution" },
-		true,
-	);
-	assert.equal(budget.status, "blocked");
-	assert.match(JSON.stringify(budget), /step-budget/);
-	assert.equal(nested.length, before);
-	result.budgetRejection = budget;
-	await call("browser_close", { intent: "Cleanup remains allowed after the declared action budget" });
-	const viewerStatus = await invoke({ operation: "status", session_ref: recording });
-	assert.equal(viewerStatus.output.events.filter((e) => e.request.tool !== "browser_close").length, 2);
-	assert.equal(viewerStatus.output.events.filter((e) => e.request.tool === "browser_close").length, 1);
-	assert.equal(
-		viewerStatus.output.events.some((e) => e.request.tool === "browser_click"),
-		false,
-	);
-	const stopped = await invoke({
-		operation: "finish",
-		session_ref: recording,
-		inventory_ref: inventoryRef,
-		initial_state: "fresh viewer context",
-		completion: {
-			initial_state_rebuildable: true,
-			replaceable_data: true,
-			stable_locators: false,
-			assertion_sources: true,
-			cleanup_owned: true,
-		},
-		goal_reached: false,
-		gaps: ["step-budget", "Remaining features not explored in viewer scope"],
-	});
-	assert.equal(stopped.status, "completed", JSON.stringify(stopped));
-	assert.equal((await store.load(stopped.artifact_refs[0])).data.status, "partial");
-	assert.ok((await store.load(stopped.artifact_refs[0])).data.gaps.includes("step-budget"));
-	assert.equal((await store.load(partialRef)).data.status, "partial");
-	assert.deepEqual((await store.load(inventoryRef)).data.unexplored, ["Other products and undeclared roles"]);
-	assert.equal(inventory.data.features.filter((f) => f.coverage === "discovered").length, 5);
-	assert.ok(inventory.data.features.filter((f) => f.coverage === "discovered").every((f) => f.gaps.length));
-	assert.equal(
-		(await store.load(testerInventory)).data.features.find((f) => f.feature_id === "permission").role,
-		"tester",
-	);
-	checks.push(
-		"viewer uses a distinct context/scope, wrong-role inventory is rejected, exhausted budget sends zero extra MCP actions while cleanup and partial handoff remain possible",
-	);
-	result.status = "PASS";
-	result.tester = {
-		session: testerRecording,
-		partial: partialRef,
-		inventory: testerInventory,
-		firstDraft,
-		actions: testerEvents.length,
-		counts: Object.fromEntries(
-			[...new Set(testerEvents.map((e) => e.request.tool))].map((tool) => [
-				tool,
-				testerEvents.filter((e) => e.request.tool === tool).length,
-			]),
-		),
-	};
-	result.viewer = {
-		partial: stopped.artifact_refs[0],
-		inventory: inventoryRef,
-		actions: viewerStatus.output.events.length,
-	};
+
+	if (completeCandidate) {
+		const nativeLog = await call("generator_read_log");
+		assert.match(text(nativeLog.output), /getByRole|getByLabel/);
+		const helper = "export const replayInputs = {gamma:'Gamma',query:'a',missing:'Missing',owned:'U05-owned-item'};\n";
+		await writeFile(join(fixture.project, "tests/u05-replay-inputs.ts"), helper);
+		// The immutable recording draft keeps the same local import as the generated test.
+		await store.putFile("qa/ui/recordings/tester/u05-replay-inputs.ts", helper);
+		const originalCode = await readFile(join(repo, "tests/fixtures/data-space/ui-multifunction-candidate.ts"), "utf8");
+		let code = 'import {replayInputs} from "./u05-replay-inputs.ts";\n' + originalCode;
+		for (const [value, key] of [
+			["Gamma", "gamma"],
+			["a", "query"],
+			["Missing", "missing"],
+			["U05-owned-item", "owned"],
+		]) {
+			assert.ok(code.includes(JSON.stringify(value)));
+			code = code.replaceAll(JSON.stringify(value), "replayInputs." + key);
+		}
+		await call("generator_write_test", { fileName: "tests/tester.recorded.spec.ts", code });
+		await call("browser_close", {
+			intent: "Close owned tester context after recording; viewer seed context already closed",
+		});
+		const finished = await invoke({
+			operation: "finish",
+			session_ref: recording,
+			inventory_ref: inventoryRef,
+			initial_state: "New tester and separate viewer contexts, frozen Alpha/Beta/Gamma; own localStorage only",
+			completion: {
+				initial_state_rebuildable: true,
+				replaceable_data: true,
+				stable_locators: true,
+				assertion_sources: true,
+				cleanup_owned: true,
+			},
+			goal_reached: true,
+			gaps: [],
+		});
+		assert.equal(finished.status, "completed", JSON.stringify(finished));
+		const recordingRef = finished.artifact_refs[0];
+		recordingFinished = true;
+		const saved = await store.load(recordingRef);
+		assert.equal(saved.data.status, "complete", JSON.stringify(saved.data.gaps));
+		assert.deepEqual(saved.data.gaps, []);
+		assert.equal(saved.data.script_refs.length, 1);
+		assert.equal(await readFile(join(fixture.project, saved.data.script_refs[0].path), "utf8"), code);
+		const finalStatus = await invoke({ operation: "status", session_ref: recording });
+		assert.ok(finalStatus.output.events.length <= optimizationScope.budget.actions);
+		assert.ok(inventory.data.features.every((f) => f.gaps.length === 0));
+		let progress = await workflow({
+			operation: "checkpoint",
+			task_ref: task.artifact_refs[0],
+			stage: "discover-record",
+			output_refs: [inventoryRef, recordingRef],
+		});
+		assert.equal(progress.status, "completed", JSON.stringify(progress));
+		assert.equal(progress.output.next_stage, "case-design");
+		checks.push(
+			"Full six-feature recording saves synthesized parameterized script and native log within the original 60-action budget; browser handoff reaches case design",
+		);
+
+		const history = JSON.parse(
+			await readFile(join(repo, "docs/ui-testing-evidence/optimization-u05-source-candidate.json"), "utf8"),
+		);
+		const archive = join(repo, history.evidence.archive);
+		assert.equal(sha256(await readFile(archive)), history.evidence.archive_sha256);
+		const extract = async (path) => JSON.parse((await promisify(execFile)("tar", ["-xOf", archive, path])).stdout);
+		const old = await extract(history.asset_ref.path);
+		const cases = await extract(old.data.cases_ref.path);
+		cases.id = "u05-browser-candidate";
+		cases.created_at = new Date().toISOString();
+		cases.data.scope_ref = scopeRef;
+		cases.data.sources = [source];
+		const base = "qa/ui/assets/u05-browser-candidate/revisions/v1";
+		const dataRules = await store.putFile(
+			`${base}/data-rules.json`,
+			JSON.stringify({
+				inputs: optimizationScope.initialNames,
+				sideEffects: optimizationScope.sideEffects,
+				cleanup: optimizationScope.cleanup,
+				replayData: "replayInputs in immutable helper",
+				recording_ref: recordingRef,
+			}),
+		);
+		cases.data.data_rules_ref = dataRules;
+		cases.data.gaps = [
+			"Candidate synthesis is not execution: seed/browser observations support discovery; all thirteen script assertions require independent review and diagnostics.",
+		];
+		for (const c of cases.data.cases)
+			for (const a of c.assertions)
+				a.observation =
+					"Read the role-specific seed/browser evidence and generated source; this assertion in the synthesized replay candidate is not yet diagnosed.";
+		const casesRef = await store.put(cases);
+		const scriptRef = await store.putFile(`${base}/candidate.spec.ts`, code);
+		const helperRef = await store.putFile(`${base}/u05-replay-inputs.ts`, helper);
+		const provenance = await store.putFile(
+			`${base}/lineage.json`,
+			JSON.stringify({
+				prior_source_asset: history.asset_ref,
+				source_archive_sha256: history.evidence.archive_sha256,
+				role_evidence:
+					"Viewer identity and hidden Add from separate seed context; tester six-feature interactions from real MCP journal. Do not claim viewer MCP interactions.",
+				synthesis:
+					"Replay assertions are sourced from the frozen declaration; generated candidate includes additional explicit checks, not a byte-for-byte MCP-exported action log.",
+				budget:
+					"New recording evidence does not renew exhausted U05 native review authorization; share existing 3-round ledger. Historical partials remain unchanged.",
+			}),
+		);
+		const asset = envelope("asset", "u05-browser-candidate", {
+			...old.data,
+			revision: "v1",
+			scope_ref: scopeRef,
+			inventory_ref: inventoryRef,
+			cases_ref: casesRef,
+			recording_refs: [recordingRef],
+			files: [scriptRef, helperRef, sourceRef, dataRules, provenance],
+			bindings: old.data.bindings.map((b) => ({ ...b, script_ref: scriptRef })),
+			readiness: "design-only",
+			gaps: cases.data.gaps,
+		});
+		asset.data.content_sha256 = assetDigest(asset);
+		const candidate = await invoke({ operation: "candidate", asset }, "ui_case_design");
+		assert.equal(candidate.status, "completed", JSON.stringify(candidate));
+		assert.deepEqual(candidate.output.issues, [], JSON.stringify(candidate.output));
+		const assetRef = candidate.artifact_refs[0];
+		progress = await workflow({
+			operation: "checkpoint",
+			task_ref: progress.output.task_ref,
+			stage: "case-design",
+			output_refs: [assetRef],
+		});
+		assert.equal(progress.status, "completed", JSON.stringify(progress));
+		assert.equal(progress.output.next_stage, "design-review");
+		const gate = await workflow({
+			operation: "checkpoint",
+			task_ref: progress.output.task_ref,
+			stage: "design-review",
+			output_refs: [assetRef],
+		});
+		assert.equal(gate.status, "blocked");
+		const blocked = await workflow({
+			operation: "block",
+			task_ref: progress.output.task_ref,
+			reasons: [
+				"Native U05 three-review allowance exhausted; HTTP402 quota failure retained. No approved design, diagnosis or formal execution. New browser evidence does not reset review budget.",
+			],
+		});
+		assert.equal(blocked.status, "blocked", JSON.stringify(blocked));
+		const directory = await workflow({ operation: "catalog" });
+		assert.equal(directory.output.assets.find((a) => a.asset_ref.path === assetRef.path).runtime_ready, false);
+		assert.equal(sha256(await readFile(archive)), history.evidence.archive_sha256);
+		checks.push(
+			"Real browser recording maps all six cases/thirteen sourced assertions into statically valid candidate; approval gate remains blocked, no model/diagnostic/formal run",
+		);
+		Object.assign(result, {
+			status: "PASS",
+			recordingRef,
+			inventoryRef,
+			assetRef,
+			taskRef: blocked.output.task_ref,
+			scopeRef,
+			actions: finalStatus.output.events.length,
+			counts: Object.fromEntries(
+				[...new Set(finalStatus.output.events.map((e) => e.request.tool))].map((tool) => [
+					tool,
+					finalStatus.output.events.filter((e) => e.request.tool === tool).length,
+				]),
+			),
+			staticIssues: candidate.output.issues,
+			featureCount: 6,
+			assertionCount: 13,
+			sourceArchiveSha256: history.evidence.archive_sha256,
+		});
+	} else {
+		await call("browser_close", { intent: "Close owned tester context and discard localStorage" });
+		const partial = await invoke({
+			operation: "finish",
+			session_ref: recording,
+			inventory_ref: inventoryRef,
+			initial_state: "isolated tester context; frozen initial names",
+			completion: {
+				initial_state_rebuildable: true,
+				replaceable_data: true,
+				stable_locators: true,
+				assertion_sources: true,
+				cleanup_owned: true,
+			},
+			goal_reached: false,
+			gaps: [
+				...inventory.data.features.flatMap((f) => f.gaps.map((gap) => f.feature_id + ": " + gap)),
+				"Final script/design review not complete",
+			],
+		});
+		assert.equal(partial.status, "completed", JSON.stringify(partial));
+		const partialRef = partial.artifact_refs[0];
+		recordingFinished = true;
+		assert.equal((await store.load(partialRef)).data.status, "partial");
+		const beforeCheckpoint = nested.length;
+		const checkpoint = await workflow({
+			operation: "checkpoint",
+			task_ref: task.artifact_refs[0],
+			stage: "discover-record",
+			output_refs: [partialRef],
+		});
+		assert.equal(checkpoint.status, "blocked", JSON.stringify(checkpoint));
+		assert.match(JSON.stringify(checkpoint.errors), /完整/);
+		const taskStatus = await workflow({ operation: "status", task_id: "u05-tester" });
+		assert.equal(taskStatus.output.task.data.stage, "discover-record");
+		assert.deepEqual(taskStatus.output.task.data.completed_stages, []);
+		assert.equal(nested.length, beforeCheckpoint);
+		result.partialCheckpoint = checkpoint;
+		checks.push("partial recording cannot advance the workflow to case design; no additional MCP action is dispatched");
+		checks.push(
+			"six frozen features retain state evidence or explicit gaps, same tester recording reuses Query across reload and uses only one setup/one navigation",
+		);
+		observed.clear();
+		locators.clear();
+		await start("viewer", 2);
+		body = await snapshot("permission");
+		assert.match(body, /Role: viewer/);
+		assert.doesNotMatch(body, /button "Add"/);
+		const wrong = structuredClone(inventory);
+		wrong.id = "wrong-role";
+		wrong.data.features[0].role = "tester";
+		const refused = await invoke({ operation: "inventory", inventory: wrong });
+		assert.equal(refused.status, "blocked");
+		await save("permission", ["viewer Add hidden"], ["Tester observation remains in the original tester scope"]);
+		const before = nested.length;
+		const budget = await call(
+			"browser_click",
+			{ target: "getByRole('button', { name: 'Reset', exact: true })", intent: "Must be denied before execution" },
+			true,
+		);
+		assert.equal(budget.status, "blocked");
+		assert.match(JSON.stringify(budget), /step-budget/);
+		assert.equal(nested.length, before);
+		result.budgetRejection = budget;
+		await call("browser_close", { intent: "Cleanup remains allowed after the declared action budget" });
+		const viewerStatus = await invoke({ operation: "status", session_ref: recording });
+		assert.equal(viewerStatus.output.events.filter((e) => e.request.tool !== "browser_close").length, 2);
+		assert.equal(viewerStatus.output.events.filter((e) => e.request.tool === "browser_close").length, 1);
+		assert.equal(
+			viewerStatus.output.events.some((e) => e.request.tool === "browser_click"),
+			false,
+		);
+		const stopped = await invoke({
+			operation: "finish",
+			session_ref: recording,
+			inventory_ref: inventoryRef,
+			initial_state: "fresh viewer context",
+			completion: {
+				initial_state_rebuildable: true,
+				replaceable_data: true,
+				stable_locators: false,
+				assertion_sources: true,
+				cleanup_owned: true,
+			},
+			goal_reached: false,
+			gaps: ["step-budget", "Remaining features not explored in viewer scope"],
+		});
+		assert.equal(stopped.status, "completed", JSON.stringify(stopped));
+		recordingFinished = true;
+		assert.equal((await store.load(stopped.artifact_refs[0])).data.status, "partial");
+		assert.ok((await store.load(stopped.artifact_refs[0])).data.gaps.includes("step-budget"));
+		assert.equal((await store.load(partialRef)).data.status, "partial");
+		assert.deepEqual((await store.load(inventoryRef)).data.unexplored, ["Other products and undeclared roles"]);
+		assert.equal(inventory.data.features.filter((f) => f.coverage === "discovered").length, 5);
+		assert.ok(inventory.data.features.filter((f) => f.coverage === "discovered").every((f) => f.gaps.length));
+		assert.equal(
+			(await store.load(testerInventory)).data.features.find((f) => f.feature_id === "permission").role,
+			"tester",
+		);
+		checks.push(
+			"viewer uses a distinct context/scope, wrong-role inventory is rejected, exhausted budget sends zero extra MCP actions while cleanup and partial handoff remain possible",
+		);
+		result.status = "PASS";
+		result.tester = {
+			session: testerRecording,
+			partial: partialRef,
+			inventory: testerInventory,
+			firstDraft,
+			actions: testerEvents.length,
+			counts: Object.fromEntries(
+				[...new Set(testerEvents.map((e) => e.request.tool))].map((tool) => [
+					tool,
+					testerEvents.filter((e) => e.request.tool === tool).length,
+				]),
+			),
+		};
+		result.viewer = {
+			partial: stopped.artifact_refs[0],
+			inventory: inventoryRef,
+			actions: viewerStatus.output.events.length,
+		};
+	}
 	result.scope = { version: optimizationScope.version, declaration: sourceRef, budget: optimizationScope.budget };
 } catch (error) {
+	await cleanupFailure?.().catch((cleanupError) => {
+		result.cleanupError = cleanupError.message;
+	});
 	result.error = error.stack;
 	process.exitCode = 1;
 } finally {
