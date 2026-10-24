@@ -16,6 +16,8 @@ export const CSS = `
 .aev .primary { background: var(--accent); color: var(--accent-contrast, white); }
 .aev .primary:hover { background: var(--accent); filter: brightness(.95); }
 .aev label { display: grid; gap: 6px; margin: 12px 0; }
+.aev [data-configuration] .grid > label { min-width: 0; max-width: 100%; }
+.aev [data-configuration] input, .aev [data-configuration] select { width: 100%; min-width: 0; }
 .aev fieldset { border: 1px solid var(--border); border-radius: 6px; min-width: 0; margin: 12px 0; }
 .aev .check-label { display: flex; align-items: center; gap: 10px; min-height: 36px; }
 .aev input[type=checkbox] { min-height: 20px; width: 20px; flex: none; }

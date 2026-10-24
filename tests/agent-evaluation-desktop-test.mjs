@@ -133,12 +133,12 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.7" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.8" && p.active),
 			),
 		),
 	);
 	result.checks.push(
-		"Real app loads plugin 0.4.7 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Real app loads plugin 0.4.8 in explicitly registered app directories; seeded SDK history opened without a model prompt",
 	);
 	stage("settings and slash discovery");
 	const settings = async (tab) => {
@@ -213,7 +213,7 @@ try {
 							f.plugins.some(
 								(p) =>
 									p.id === "agent-evaluation" &&
-									p.version === "0.4.7" &&
+									p.version === "0.4.8" &&
 									p.agentTools?.some((tool) => tool.name === "agent_evaluation"),
 							),
 					),
@@ -230,7 +230,7 @@ try {
 	await candidate.waitFor();
 	await input.fill("");
 	result.checks.push(
-		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.7; skill, slash discovery and tool registration remain enabled",
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.8; skill, slash discovery and tool registration remain enabled",
 	);
 	stage("product diagnosis flow");
 	const openView = async () => {
@@ -440,11 +440,87 @@ try {
 		"Actual desktop observation starts from the fixed selection, returns a durable checkpoint, checks status, stops, scores a new snapshot with the original configuration and dismisses without changing the old report or executing a business task",
 	);
 
+	stage("sealed snapshot rule configuration");
+	const configurationAttemptsBefore = await names("attempts"),
+		configurationSnapshotsBefore = await names("snapshots");
+	const configurationReportIds = (await reports()).map((record) => record.id);
+	await page.locator('.aev [data-action="configure"]').click();
+	await page.locator('.aev form[data-form="configuration"]').waitFor();
+	assert.equal(await page.locator('.aev [data-action="config-add"][data-rule="F02"]').isDisabled(), true);
+	const schemaField = page.locator('.aev [name="config-F01-0-jsonSchema"]');
+	await schemaField.fill("invalid JSON");
+	await page.locator('.aev form[data-form="configuration"] button[type="submit"]').click();
+	await until(async () => (await page.locator('.aev [role="alert"]').innerText()).includes("Enter valid JSON"));
+	assert.equal(await schemaField.inputValue(), "invalid JSON");
+	assert.equal((await reports()).length, configurationReportIds.length);
+	await page.screenshot({ path: join(output, "configuration-invalid-en.png") });
+	await schemaField.fill('{"type":"object","required":["missing-from-frozen-fixture"]}');
+	await page
+		.locator(".aev [data-configuration] details")
+		.filter({ has: page.locator("summary", { hasText: "F07" }) })
+		.locator("summary")
+		.click();
+	await page.locator('.aev [name="config-pollingToolNames"]').fill("offline-poll");
+	await page.setViewportSize({ width: 800, height: 650 });
+	assert.equal(await page.locator(".aev").evaluate((el) => el.scrollWidth <= el.clientWidth), true);
+	assert.equal(
+		await page.locator(".aev [data-configuration]").evaluate((el) =>
+			[...el.querySelectorAll("label input,label select,label textarea")].every((control) => {
+				const bounds = control.getBoundingClientRect(),
+					label = control.parentElement.getBoundingClientRect();
+				return !bounds.width || (bounds.left >= label.left - 1 && bounds.right <= label.right + 1);
+			}),
+		),
+		true,
+	);
+	await page.screenshot({ path: join(output, "configuration-narrow-en.png") });
+	await page.setViewportSize({ width: 1280, height: 850 });
+	await page.locator('.aev form[data-form="configuration"] button[type="submit"]').click();
+	await waitForDifferentReport(original.id);
+	const configuredReport = (await reports()).find((record) => !configurationReportIds.includes(record.id));
+	assert.ok(configuredReport);
+	assert.deepEqual(configuredReport.data.snapshotRef, original.data.snapshotRef);
+	assert.deepEqual(configuredReport.data.contractRef, original.data.contractRef);
+	assert.notEqual(configuredReport.data.configDigest, original.data.configDigest);
+	assert.deepEqual(
+		configuredReport.data.configuration.rules.find((rule) => rule.id === "F07").config.pollingToolNames,
+		["offline-poll"],
+	);
+	assert.deepEqual(
+		configuredReport.data.configuration.rules.find((rule) => rule.id === "F01").config.checks[0].jsonSchema.required,
+		["missing-from-frozen-fixture"],
+	);
+	assert.deepEqual(await names("attempts"), configurationAttemptsBefore);
+	assert.deepEqual(await names("snapshots"), configurationSnapshotsBefore);
+	assert.equal(await readFile(originalFile, "utf8"), originalBytes);
+	assert.match(await artifact.innerText(), /Fail/);
+	result.configurationChecks = {
+		reportId: configuredReport.id,
+		sameSnapshot: true,
+		sameContract: true,
+		addedAttempts: 0,
+		addedSnapshots: 0,
+		changedConfigDigest: true,
+		originalBytesUnchanged: true,
+		invalidInputPreserved: true,
+	};
+	result.checks.push(
+		"Actual desktop configuration edits F01 structure and F07 polling through forms, retains malformed input without a report, then scores the original sealed snapshot with new persisted configs and no collection, attempt or snapshot; old report bytes remain unchanged",
+	);
+	await page.locator('.aev [data-action="back"]').click();
+	await page.locator('.aev [data-action="open"][data-id="' + original.id + '"]:not([disabled])').click();
+	await page.locator('.aev [data-action="configure"]:not([disabled])').waitFor();
+
 	stage("language, theme, layout");
 	await page.evaluate(() => {
 		document.documentElement.lang = "zh-CN";
 	});
 	await page.getByRole("heading", { name: "Agent 评估中心" }).waitFor();
+	await page.locator('.aev [data-action="configure"]').click();
+	await page.locator('.aev form[data-form="configuration"]').waitFor();
+	assert.match(await page.locator(".aev [data-configuration]").innerText(), /核验规则与费用配置/);
+	await page.screenshot({ path: join(output, "configuration-zh.png") });
+	await page.locator('.aev [data-action="discard-configuration"]').click();
 	await page.screenshot({ path: join(output, "detail-zh.png") });
 	await page.setViewportSize({ width: 800, height: 650 });
 	await page.screenshot({ path: join(output, "detail-narrow.png") });
@@ -552,7 +628,7 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.7" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.8" && p.active),
 			),
 		),
 	);
@@ -571,7 +647,7 @@ try {
 	assert.equal(await skill().getByRole("switch").getAttribute("aria-checked"), "true");
 	await closeSettings();
 	result.checks.push(
-		"Graceful real Electron exit and a second native process load plugin 0.4.7 and preserve enabled skill/plugin registration",
+		"Graceful real Electron exit and a second native process load plugin 0.4.8 and preserve enabled skill/plugin registration",
 	);
 	result.checks.push(
 		"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",

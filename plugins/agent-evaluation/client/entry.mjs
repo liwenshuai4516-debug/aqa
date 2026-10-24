@@ -1,5 +1,6 @@
 import { transport } from "./transport.mjs";
 import { translator } from "./i18n.mjs";
+import { configurationHtml, configurationRow, readConfiguration } from "./configuration.mjs";
 import { CSS } from "./style.mjs";
 const esc = (value) =>
 	String(value ?? "").replace(
@@ -23,7 +24,7 @@ export default {
 			snapshot,
 			reviews = [],
 			job;
-		let draft, revision, observation;
+		let draft, revision, observation, configuration;
 		let view = "records",
 			error = "",
 			notice = "",
@@ -40,7 +41,7 @@ export default {
 		const field = (key, content) => `<div><span class="muted">${esc(t(key))}</span><p>${content}</p></div>`;
 		function render() {
 			if (closed) return;
-			root.innerHTML = `<style>${CSS}</style><header><div><h1>${esc(t("title"))}</h1><p class="muted">${esc(t(view === "detail" ? "detail" : "records"))}</p></div><div class="actions">${view !== "records" ? button("back", "back") : button("refresh", "refresh")}${view === "records" ? button("new", "new", `class="primary" ${!source?.choices.length ? "disabled" : ""}`) : ""}</div></header><div role="alert" tabindex="-1">${esc(error)}</div><div class="status" role="status" aria-live="polite">${esc(busy ? t("loading") : notice)}</div>${observation ? observationHtml() : ""}<main>${view === "new" ? newHtml() : view === "detail" ? detailHtml() : recordsHtml()}</main>`;
+			root.innerHTML = `<style>${CSS}</style><header><div><h1>${esc(t("title"))}</h1><p class="muted">${esc(t(view === "detail" ? "detail" : "records"))}</p></div><div class="actions">${view !== "records" ? button("back", "back") : button("refresh", "refresh")}${view === "records" ? button("new", "new", `class="primary" ${!source?.choices.length ? "disabled" : ""}`) : ""}</div></header><div role="alert" tabindex="-1">${esc(error)}</div><div class="status" role="status" aria-live="polite">${esc(busy ? t("loading") : notice)}</div>${observation && !configuration ? observationHtml() : ""}<main>${view === "new" ? newHtml() : view === "detail" ? detailHtml() : recordsHtml()}</main>`;
 			if (busy)
 				root.querySelectorAll("button:not([data-action=back])").forEach((b) => {
 					b.disabled = true;
@@ -80,8 +81,10 @@ export default {
 		function detailHtml() {
 			if (!report) return "";
 			if (revision) return revisionHtml();
+			if (configuration)
+				return `<form data-form="configuration"><section><h2>${esc(t("configureRules"))}</h2><p>${esc(t("configureSnapshotHint"))}</p><p>${esc(configuration.contract.data.objective)}</p><p>${esc(report.id)} · ${esc(snapshot.id)}</p></section>${configurationHtml(configuration.configs, [...configuration.contract.data.conditions, ...configuration.contract.data.constraints], t, esc)}<div class="actions"><button type="submit" class="primary">${esc(t("saveConfiguration"))}</button>${button("discard-configuration", "discardRevision")}</div></form>`;
 			const d = report.data;
-			return `<section><h2>${esc(contract.data.objective)}</h2><div class="grid">${field("summary", badge(d.summary.deliveryVerdict))}${field("goal", badge(d.summary.goal))}${field("stage", badge(d.assessmentStage))}${field("coverage", badge(snapshot.data.coverage))}</div><p>${esc(contract.data.scope.startMessageId)} → ${esc(contract.data.scope.endMessageId)}</p><small>${esc(report.id)} · r${report.revision} · ${esc(report.createdAt)}</small><p>${esc(t("contractRevision"))}: ${esc(contract.revision)}</p><div class="actions">${button("export", "export")}${button("reevaluate", "reevaluate")}${button("revise", "revise")}${!observation && snapshot.data.attemptRefs?.length ? button("watch-start", "startObservation") : ""}</div><p class="muted">${esc(t("reevaluateHint"))}</p></section><section><h2>${esc(t("findings"))}</h2>${d.findings
+			return `<section><h2>${esc(contract.data.objective)}</h2><div class="grid">${field("summary", badge(d.summary.deliveryVerdict))}${field("goal", badge(d.summary.goal))}${field("stage", badge(d.assessmentStage))}${field("coverage", badge(snapshot.data.coverage))}</div><p>${esc(contract.data.scope.startMessageId)} → ${esc(contract.data.scope.endMessageId)}</p><small>${esc(report.id)} · r${report.revision} · ${esc(report.createdAt)}</small><p>${esc(t("contractRevision"))}: ${esc(contract.revision)}</p><div class="actions">${button("export", "export")}${button("reevaluate", "reevaluate")}${button("revise", "revise")}${button("configure", "configureRules", observation && observation.state !== "stopped" ? "disabled" : "")}${!observation && snapshot.data.attemptRefs?.length ? button("watch-start", "startObservation") : ""}</div><p class="muted">${esc(t("reevaluateHint"))}</p></section><section><h2>${esc(t("findings"))}</h2>${d.findings
 				.map(
 					(f, index) =>
 						`<article><h3>${esc(f.ruleId)} · ${esc(f.conditionId ?? f.findingId)}</h3>${badge(f.verdict)}${badge(f.evidenceState)}<p><b>${esc(t("reason"))}</b> · ${esc(f.reason)}</p>${f.missingEvidence.length ? `<p><b>${esc(t("missing"))}</b> · ${esc(f.missingEvidence.join("; "))}</p>` : ""}<div class="actions">${f.evidenceRefs.map((_, j) => button("evidence", "evidence", `data-finding="${index}" data-evidence="${j}"`)).join("") || `<p>${esc(t("noEvidence"))}</p>`}</div><details><summary>${esc(t("reviews"))}</summary><p>${esc(t("reviewHint"))}</p><p>${esc(t("original"))}: ${esc(t(f.verdict))}</p>${
@@ -96,7 +99,7 @@ export default {
 				)
 				.join(
 					"",
-				)}<div class="actions">${findingsOffset ? button("findings-first", "first") : ""}${report.pages.findings?.nextOffset != null ? button("findings-next", "next") : ""}</div></section>${evidence ? `<section tabindex="-1" data-evidence-panel><h2>${esc(t("evidence"))}</h2><p>${esc(evidence.record.data.sourceLocator)}</p><p>${esc(evidence.record.data.sourceEventId)} · ${esc(evidence.record.data.origin)} · ${esc(evidence.record.data.availability)}</p><pre>${esc(evidence.text)}</pre>${evidence.nextOffset != null ? button("evidence-next", "next") : ""}</section>` : ""}<section><h2>${esc(t("config"))}</h2><p>${esc(t("costHint"))}</p><p>${esc(t("version"))}: ${esc(d.profileVersion)}</p><details><summary>${esc(t("raw"))}</summary><pre>${esc(JSON.stringify({ configuration: d.configuration, job: d.job, evaluatorVersions: d.evaluatorVersions }, null, 2))}</pre></details><h3>${esc(t("gaps"))}</h3><pre>${esc(snapshot.data.gaps.join("\n"))}</pre></section>`;
+				)}<div class="actions">${findingsOffset ? button("findings-first", "first") : ""}${report.pages.findings?.nextOffset != null ? button("findings-next", "next") : ""}</div></section>${evidence ? `<section tabindex="-1" data-evidence-panel><h2>${esc(t("evidence"))}</h2><p>${esc(evidence.record.data.sourceLocator)}</p><p>${esc(evidence.record.id)} · ${esc(evidence.record.data.sourceEventId)} · ${esc(evidence.record.data.origin)} · ${esc(evidence.record.data.availability)}</p><pre>${esc(evidence.text)}</pre>${evidence.nextOffset != null ? button("evidence-next", "next") : ""}</section>` : ""}<section><h2>${esc(t("config"))}</h2><p>${esc(t("costHint"))}</p><p>${esc(t("version"))}: ${esc(d.profileVersion)}</p><details><summary>${esc(t("raw"))}</summary><pre>${esc(JSON.stringify({ configuration: d.configuration, job: d.job, evaluatorVersions: d.evaluatorVersions }, null, 2))}</pre></details><h3>${esc(t("gaps"))}</h3><pre>${esc(snapshot.data.gaps.join("\n"))}</pre></section>`;
 		}
 		function revisionHtml() {
 			const data = revision.contract.data;
@@ -122,14 +125,18 @@ export default {
 		}
 		async function run(fn, { preserve = false } = {}) {
 			const generation = rpc.generation;
+			const enabledButtons = preserve ? [...root.querySelectorAll("button:not(:disabled)")] : [];
 			busy = true;
 			error = "";
 			notice = "";
 			if (!preserve) render();
-			else
-				root.querySelectorAll("button").forEach((b) => {
+			else {
+				root.querySelector("[role=alert]").textContent = "";
+				root.querySelector(".status").textContent = t("loading");
+				enabledButtons.forEach((b) => {
 					b.disabled = true;
 				});
+			}
 			try {
 				await fn();
 			} catch (e) {
@@ -139,9 +146,10 @@ export default {
 					const alert = root.querySelector("[role=alert]");
 					alert.textContent = error;
 					alert.focus();
-					root.querySelectorAll("button").forEach((b) => {
-						b.disabled = false;
+					enabledButtons.forEach((b) => {
+						if (b.isConnected) b.disabled = false;
 					});
+					root.querySelector(".status").textContent = "";
 					busy = false;
 					return;
 				}
@@ -158,6 +166,7 @@ export default {
 			rpc.select({});
 			source = undefined;
 			revision = undefined;
+			configuration = undefined;
 			draft = undefined;
 			job = undefined;
 			report = undefined;
@@ -216,6 +225,7 @@ export default {
 				rpc.select(source ? { conversationId: source.conversationId, sessionId: source.sessionId } : {});
 				view = "records";
 				revision = undefined;
+				configuration = undefined;
 				busy = false;
 				void run(() => list());
 				return;
@@ -229,6 +239,44 @@ export default {
 				root.querySelector("textarea")?.focus();
 				return;
 			}
+			if (action === "config-add") {
+				const rule = target.dataset.rule,
+					rows = root.querySelector(`[data-config-rows="${rule}"]`);
+				if (rows.children.length >= 100) {
+					error = t("configurationLimit");
+					root.querySelector("[role=alert]").textContent = error;
+					return;
+				}
+				const index = Number(rows.dataset.nextIndex++);
+				rows.insertAdjacentHTML(
+					"beforeend",
+					configurationRow(
+						rule,
+						index,
+						{},
+						[...configuration.contract.data.conditions, ...configuration.contract.data.constraints],
+						t,
+						esc,
+					),
+				);
+				rows.lastElementChild.querySelector("select,input,textarea")?.focus();
+				return;
+			}
+			if (action === "config-remove") {
+				const row = target.closest("[data-config-row]"),
+					rows = row.parentElement;
+				row.remove();
+				rows.nextElementSibling?.focus();
+				return;
+			}
+			if (action === "discard-configuration") {
+				configuration = undefined;
+				draft = undefined;
+				render();
+				root.querySelector("[data-action=configure]")?.focus();
+				return;
+			}
+
 			if (action === "discard-revision") {
 				revision = undefined;
 				draft = undefined;
@@ -284,6 +332,10 @@ export default {
 						await list();
 						await status();
 					}
+				}
+				if (action === "configure") {
+					configuration = { configs: reportConfigs(), contract: await completeContract(ref(contract)) };
+					draft = undefined;
 				}
 				if (action === "revise") {
 					const configs = reportConfigs();
@@ -372,6 +424,17 @@ export default {
 						if (!steps.has(action)) steps.set(action, await rpc.request(action, data));
 						return steps.get(action);
 					};
+					if (form.dataset.form === "configuration") {
+						const configs = readConfiguration(form, t);
+						await step("validateConfiguration", { ref: ref(report), configs });
+						job = await step("evaluate", { ref: ref(snapshot), configs });
+						view = "records";
+						await list();
+						await status();
+						configuration = undefined;
+						notice = t("configurationSaved");
+						return;
+					}
 					if (form.dataset.form === "revision") {
 						const original = revision.contract.data;
 						const data = {
@@ -487,7 +550,7 @@ export default {
 		});
 		const languageObserver = new MutationObserver(() => {
 			t = translator(document.documentElement.lang || "zh");
-			if (view !== "new" && !revision && !root.querySelector("textarea:focus")) render();
+			if (view !== "new" && !revision && !configuration && !root.querySelector("textarea:focus")) render();
 		});
 		languageObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 		const heartbeat = setInterval(async () => {

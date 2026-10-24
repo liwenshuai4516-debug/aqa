@@ -5,6 +5,7 @@ import { EvaluationStore } from "./store.mjs";
 import { EvidenceCollector } from "./collect.mjs";
 import { EvaluationEngine } from "./evaluate.mjs";
 import { createInternalRegistry, internalProfile } from "./profiles/internal.mjs";
+import { validateConfigSchema } from "./registry.mjs";
 import { Ref, digest, requireValue } from "./schema.mjs";
 const ref = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
 const string = T.String({ minLength: 1, maxLength: 16384 });
@@ -22,7 +23,9 @@ export const toolActions = [
 export const requestSchema = T.Object(
 	{
 		action: T.Union(
-			[...toolActions, "review", "watchStart", "watchStatus", "watchStop"].map((value) => T.Literal(value)),
+			[...toolActions, "review", "watchStart", "watchStatus", "watchStop", "validateConfiguration"].map((value) =>
+				T.Literal(value),
+			),
 		),
 		requestId: T.String({ pattern: "^[A-Za-z0-9_-]{1,128}$" }),
 		conversationId: T.Optional(string),
@@ -102,7 +105,7 @@ export class EvaluationService {
 		requireValue(
 			trusted.channel !== "tool" || toolActions.includes(request.action),
 			"PERMISSION_DENIED",
-			"Agent tools cannot submit human reviews or control UI observation",
+			"Agent tools cannot submit human reviews or use UI-only controls",
 		);
 		let conversationId = trusted.conversationId ?? request.conversationId;
 		if (trusted.conversationId && request.conversationId)
@@ -166,6 +169,46 @@ export class EvaluationService {
 				...(previousRef ? { previousRef } : {}),
 			});
 		switch (request.action) {
+			case "validateConfiguration": {
+				const original = store.get(context, request.ref);
+				requireValue(original.kind === "evaluations", "INVALID_INPUT", "A report is required for configuration");
+				const snapshot = store.get(context, original.data.snapshotRef);
+				const contract = store.get(context, original.data.contractRef);
+				const configs = request.configs ?? {};
+				const profile = internalProfile(configs);
+				requireValue(
+					Object.keys(configs).every((id) => profile.rules.some((r) => r.id === id)),
+					"INVALID_INPUT",
+					"Unknown rule configuration",
+				);
+				const conditions = [...contract.data.conditions, ...contract.data.constraints];
+				for (const rule of profile.rules) {
+					this.registry.validateConfig(this.registry.evaluator(rule.id, rule.version), rule.config);
+					const seen = new Set();
+					for (const check of rule.config.checks ?? []) {
+						requireValue(
+							!seen.has(check.conditionId) &&
+								conditions.some(
+									(c) => c.id === check.conditionId && [rule.id, `${rule.id}@${rule.version}`].includes(c.ruleRef),
+								),
+							"INVALID_INPUT",
+							`${rule.id}: select a unique condition bound to this rule`,
+						);
+						seen.add(check.conditionId);
+						if (rule.id === "F01" && check.jsonSchema) validateConfigSchema(check.jsonSchema);
+						if (rule.id === "F05")
+							requireValue(
+								[check.claimEvidenceId, check.basisEvidenceId].every((id) =>
+									snapshot.data.evidenceRefs.some((e) => e.id === id),
+								),
+								"EVIDENCE_GAP",
+								"Claim and basis must belong to the selected snapshot",
+							);
+					}
+				}
+				return { valid: true, versions: profile.rules.map(({ id, version }) => ({ id, version })) };
+			}
+
 			case "watchStart": {
 				requireValue(trusted.channel === "ui", "PERMISSION_DENIED", "Observation requires the UI channel");
 				const previous = this.watches.get(trusted.clientId);

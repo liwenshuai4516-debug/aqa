@@ -1,0 +1,20 @@
+{
+	"desktopStaleAlert": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-QfnczE/result.json",
+		"sha256": "1abd1887c0ab50b99b1f48ff3433d04b2ea4bd9e956dab8bb2f6e4a0b799774e",
+		"error": "Error: JSON Schema (optional advanced check, no external references): Enter valid JSON\n    at file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:324:21\n    at async until (file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:80:7)\n    at async file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:469:2",
+		"status": "FAIL",
+		"cause": "Preserved form submissions cleared only the state variable, leaving the previous error visible. The catch also re-enabled previously disabled buttons. Fixed clearing the visible error/loading state and restoring only previously enabled buttons; added unit regressions and reran the same native scenario."
+	},
+	"visualControlOverlap": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-LwYmy9/configuration-narrow-en.png",
+		"status": "VISUAL_FAIL_DESPITE_NO_ROOT_OVERFLOW",
+		"cause": "Native select intrinsic width exceeded its grid label and overlapped the adjacent input. Added scoped min-width/width rules and an actual per-label control-boundary assertion. Final screenshot visually checked."
+	},
+	"typeInference": {
+		"status": "INITIAL_TYPECHECK_FAILED",
+		"cause": "JS empty-array inference exposed checks as never[] to the TS form test. Added the public parser return annotation, then full typecheck passed."
+	},
+	"actualModelCalls": 0,
+	"actualCliCalls": 0
+}

@@ -131,6 +131,61 @@ async function openReport() {
 	return { root, h, records, contractRef, snapshotRef, reportRef };
 }
 describe("evaluation client lifecycle", () => {
+	it("edits installed checks on the sealed snapshot, preserves invalid inputs and never recollects", async () => {
+		const { root, h, reportRef, snapshotRef } = await openReport();
+		root.querySelector<HTMLButtonElement>("[data-action=configure]")!.click();
+		await vi.waitFor(() => expect(root.querySelector("[data-configuration]")).not.toBeNull());
+		const offset = h.sent.length;
+		const schema = root.querySelector<HTMLTextAreaElement>('[name="config-F01-0-jsonSchema"]')!;
+		schema.value = "invalid JSON";
+		const submit = () =>
+			root
+				.querySelector('form[data-form="configuration"]')!
+				.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+		submit();
+		await vi.waitFor(() => expect(root.querySelector("[role=alert]")?.textContent).toContain("Enter valid JSON"));
+		expect(schema.value).toBe("invalid JSON");
+		expect(root.querySelector<HTMLButtonElement>('[data-action="config-add"][data-rule="F02"]')!.disabled).toBe(true);
+		expect(h.sent.length).toBe(offset);
+		schema.value = '{"type":"object","required":["ok"]}';
+		root.querySelector<HTMLButtonElement>('[data-action="config-add"][data-rule="F01"]')!.click();
+		expect(root.querySelectorAll('[data-config-row="F01"]')).toHaveLength(2);
+		expect(schema.value).toContain('"ok"');
+		root.querySelectorAll<HTMLButtonElement>('[data-config-row="F01"] [data-action="config-remove"]')[1].click();
+		submit();
+		await vi.waitFor(() => expect(h.sent.at(-1).action).toBe("validateConfiguration"));
+		const validation = h.sent.at(-1);
+		expect(root.querySelector("[role=alert]")?.textContent).toBe("");
+		expect(validation.ref).toEqual(reportRef);
+		expect(validation.configs.F01.checks[0]).toMatchObject({
+			conditionId: "c-0",
+			path: "result.json",
+			jsonSchema: { required: ["ok"] },
+		});
+		h.reply(validation, { valid: true });
+		await vi.waitFor(() => expect(h.sent.at(-1).action).toBe("evaluate"));
+		const scoring = h.sent.at(-1);
+		expect(scoring.ref).toEqual(snapshotRef);
+		expect(scoring.configs).toEqual(validation.configs);
+		h.reply(scoring, { code: "IO_ERROR", message: "Lost receipt" }, false);
+		await vi.waitFor(() =>
+			expect(root.querySelector<HTMLButtonElement>('button[type="submit"]')?.disabled).toBe(false),
+		);
+		expect(schema.value).toContain('"ok"');
+		submit();
+		await vi.waitFor(() => expect(h.sent.filter((m) => m.action === "evaluate")).toHaveLength(2));
+		expect(h.sent.at(-1).requestId).toBe(scoring.requestId);
+		expect(
+			h.sent.slice(offset).filter((m) => ["collect", "seal", "createAttempt", "reviseContract"].includes(m.action)),
+		).toHaveLength(0);
+		h.reply(h.sent.at(-1), { code: "IO_ERROR", message: "Still unavailable" }, false);
+		await vi.waitFor(() =>
+			expect(root.querySelector<HTMLButtonElement>('[data-action="discard-configuration"]')?.disabled).toBe(false),
+		);
+		root.querySelector<HTMLButtonElement>('[data-action="discard-configuration"]')!.click();
+		expect(root.querySelector("[data-configuration]")).toBeNull();
+	});
+
 	it("keeps observation scoped, scores the stopped durable checkpoint and allows dismissing it", async () => {
 		const { root, h, records } = await openReport();
 		root.querySelector<HTMLButtonElement>("[data-action=watch-start]")!.click();

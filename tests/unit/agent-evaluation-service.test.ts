@@ -122,6 +122,86 @@ async function diagnose(f: ReturnType<typeof fixture>) {
 	return { contractRef, attemptRef, collected, snapshotRef, reportRef: status.reportRef, report };
 }
 describe("EC04 product service", () => {
+	it("preflights installed configuration and bindings without collection, jobs or record changes", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		f.host.readEvaluationArtifact.mockClear();
+		const before = await f.request("list", { kind: "evaluations" });
+		const configs = {
+			F01: {
+				checks: [
+					{
+						conditionId: "artifact",
+						path: "result.json",
+						format: "json",
+						jsonSchema: { type: "object", required: ["ok"] },
+					},
+				],
+			},
+		};
+		expect(await f.request("validateConfiguration", { ref: scored.reportRef, configs })).toMatchObject({
+			valid: true,
+			versions: expect.arrayContaining([{ id: "F01", version: "1" }]),
+		});
+		await expect(f.request("validateConfiguration", { ref: scored.reportRef, configs }, f.tool)).rejects.toMatchObject({
+			code: "PERMISSION_DENIED",
+		});
+		await expect(
+			f.request("validateConfiguration", { ref: scored.reportRef, configs }, { channel: "ui", clientId: "other" }),
+		).rejects.toMatchObject({ code: "PERMISSION_DENIED" });
+		for (const bad of [
+			{ Unknown: {} },
+			{ F01: { checks: [{ conditionId: "unknown-condition", path: "result.json" }] } },
+			{ F01: { checks: [configs.F01.checks[0], configs.F01.checks[0]] } },
+			{ F01: { checks: [{ ...configs.F01.checks[0], jsonSchema: { $ref: "https://example.invalid/schema" } }] } },
+			{
+				F08: {
+					checks: [],
+					prices: [
+						{
+							model: "m",
+							provider: "p",
+							currency: "USD",
+							version: "test",
+							inputPerMillion: -1,
+							outputPerMillion: 0,
+							cacheReadPerMillion: 0,
+							cacheWritePerMillion: 0,
+						},
+					],
+					childWaitToolNames: [],
+				},
+			},
+		])
+			await expect(f.request("validateConfiguration", { ref: scored.reportRef, configs: bad })).rejects.toMatchObject({
+				code: "INVALID_INPUT",
+			});
+		expect(await f.request("list", { kind: "evaluations" })).toEqual(before);
+		expect(f.host.readEvaluationArtifact).not.toHaveBeenCalled();
+		expect((await f.request("get", { ref: scored.reportRef })).sourceDigest).toBe(scored.report.sourceDigest);
+	});
+	it("requires F05 claim and basis references from the selected sealed snapshot", async () => {
+		const f = fixture();
+		f.contract.conditions.push({ ...f.contract.conditions[0], id: "claim", ruleRef: "F05@1" });
+		const scored = await diagnose(f);
+		const snapshot = await f.request("get", { ref: scored.snapshotRef });
+		const check = {
+			conditionId: "claim",
+			claimEvidenceId: snapshot.data.evidenceRefs[0].id,
+			claimPath: "/ok",
+			basisEvidenceId: "foreign-evidence",
+			basisPath: "/exists",
+			expectedValue: true,
+		};
+		await expect(
+			f.request("validateConfiguration", { ref: scored.reportRef, configs: { F05: { checks: [check] } } }),
+		).rejects.toMatchObject({ code: "EVIDENCE_GAP" });
+		check.basisEvidenceId = snapshot.data.evidenceRefs[1].id;
+		expect(
+			await f.request("validateConfiguration", { ref: scored.reportRef, configs: { F05: { checks: [check] } } }),
+		).toMatchObject({ valid: true });
+	});
+
 	it("observes only the fixed selection, replays starts, stops idempotently and preserves reports", async () => {
 		const f = fixture(),
 			scored = await diagnose(f);
