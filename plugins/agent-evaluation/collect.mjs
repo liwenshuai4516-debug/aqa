@@ -8,14 +8,11 @@ const refOf = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
 const same = (a, b) => digest(a) === digest(b);
 
 export function readEvidenceJson(store, context, ref) {
-	let text = "",
-		offset = 0;
-	do {
-		const page = store.readEvidence(context, ref, { offset });
-		text += page.text;
-		offset = page.nextOffset;
-	} while (offset !== null);
-	return JSON.parse(text);
+	// Internal parsing consumes one already-bounded evidence blob. Paging is for the UI transport;
+	// re-reading and hashing the entire blob for every 12K page multiplies long-output work.
+	const record = store.get(context, ref);
+	requireValue(record.kind === "evidence" && record.contentRef, "EVIDENCE_GAP", "Evidence body is unavailable");
+	return JSON.parse(store.readBlob(record));
 }
 export function recordsOf(store, context, kind) {
 	let cursor = "",

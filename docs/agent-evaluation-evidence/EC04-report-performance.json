@@ -1,0 +1,78 @@
+{
+	"status": "FAIL",
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-report-performance-pg5DaA",
+	"scope": "1000 evidence snapshot; fixture construction excluded; five actual report/list/evidence reads",
+	"checks": {
+		"reportsCompleted": false,
+		"reportMedianMs": 165.76337499999863,
+		"listMedianMs": 32.969709000000876,
+		"evidenceMedianMs": 0.8643329999977141
+	},
+	"rounds": [
+		{
+			"round": 0,
+			"evidenceItems": 1000,
+			"reportError": {
+				"code": "LIMIT_EXCEEDED",
+				"message": "Reference traversal exceeds read budget"
+			},
+			"reportMs": 165.76337499999863,
+			"listCount": 50,
+			"listMs": 32.969709000000876,
+			"evidenceChars": 37,
+			"evidenceMs": 0.9457910000019183
+		},
+		{
+			"round": 1,
+			"evidenceItems": 1000,
+			"reportError": {
+				"code": "LIMIT_EXCEEDED",
+				"message": "Reference traversal exceeds read budget"
+			},
+			"reportMs": 158.6640830000033,
+			"listCount": 50,
+			"listMs": 23.57062500000029,
+			"evidenceChars": 37,
+			"evidenceMs": 0.5145830000001297
+		},
+		{
+			"round": 2,
+			"evidenceItems": 1000,
+			"reportError": {
+				"code": "LIMIT_EXCEEDED",
+				"message": "Reference traversal exceeds read budget"
+			},
+			"reportMs": 141.0872500000005,
+			"listCount": 50,
+			"listMs": 133.02445799999987,
+			"evidenceChars": 37,
+			"evidenceMs": 0.8643329999977141
+		},
+		{
+			"round": 3,
+			"evidenceItems": 1000,
+			"reportError": {
+				"code": "LIMIT_EXCEEDED",
+				"message": "Reference traversal exceeds read budget"
+			},
+			"reportMs": 434.53241699999853,
+			"listCount": 50,
+			"listMs": 53.67145800000071,
+			"evidenceChars": 37,
+			"evidenceMs": 0.712666999999783
+		},
+		{
+			"round": 4,
+			"evidenceItems": 1000,
+			"reportError": {
+				"code": "LIMIT_EXCEEDED",
+				"message": "Reference traversal exceeds read budget"
+			},
+			"reportMs": 295.9216669999987,
+			"listCount": 50,
+			"listMs": 25.68920899999648,
+			"evidenceChars": 37,
+			"evidenceMs": 0.9886250000017753
+		}
+	]
+}

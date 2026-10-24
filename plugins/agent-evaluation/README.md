@@ -67,4 +67,12 @@ contract/target/attempt 可按 previousRef 新增 revision，陈旧 revision 拒
 
 F08 的 SDK usage 只有明确版本价格表才能估算；SDK 自报 cost 没价格版本时单独保留且不计价，不假定币种或补零。模型思考时长始终不从未观测时间推断。当前评分作业自身的单调耗时单列在 `report.job.elapsedMs`，原任务与评分阶段不混计。
 
-插件版本 0.3.1；工程验证见 [EC03](../../docs/agent-evaluation-evidence/EC03.md)。产品页面、工具/技能管理和实际 Electron 接入仍待 EC04。
+插件版本 0.4.0；基础规则验证见 [EC03](../../docs/agent-evaluation-evidence/EC03.md)。EC04 页面/接入工程进行中，性能门禁尚未通过，不声明 M1 完成。
+
+## EC04 产品入口（阶段实现）
+
+`index.mjs` 通过原 plugin_message / 宿主工具上下文接 `service.mjs`，提供有界诊断操作；`client/{entry,transport,i18n,style}.mjs` 为记录/详情两页。当前明确选取最近窗口内的消息，支持文件存在/JSON 检查、证据分页、追加人审和脱敏导出。普通文字条件保留人工待判，原任务执行状态未知不补结束。
+
+唯一技能位于 `skills/agent-evaluation/SKILL.md`；项目 `.pi/skills/agent-evaluation/` 仅引用原实现。使用 `npm run agent-evaluation:enable -- --agent-dir <明确 agentDir> --data-dir <明确 dataDir>` 登记，不覆盖其他安装，不改变既有禁用选择。没有打包 bundle，不引入客户端构建依赖；正式共享目录未发布新版本，不能靠旧 marketplace 源声称可安装。
+
+人工 review 仅可信 UI 通道；工具定义受执行侧门禁约束。分页投影使用 sourceDigest，导出附可验证派生 digest/manifestDigest，包含报告关联的独立 reviews。写超时重试保持请求身份；关闭视图不终止原任务，卸载插件清理监听并收尾评分。详细通过项、失败原件与剩余门禁见 [EC04](../../docs/agent-evaluation-evidence/EC04.md)。

@@ -536,6 +536,20 @@ export class EvaluationStore {
 			collected.set(key(r), { ...content, digest: digest(content) });
 		};
 		visit(ref);
+		// Human reviews point back to the report and are not reachable through its immutable references.
+		if (ref.kind === "evaluations") {
+			for (const entry of this.index.values()) {
+				if (entry.ref.kind !== "reviews") continue;
+				let review;
+				try {
+					review = this.get(context, entry.ref);
+				} catch (error) {
+					if (error.code === "PERMISSION_DENIED") continue;
+					throw error;
+				}
+				if (key(review.data.evaluationRef) === key(ref)) visit(entry.ref);
+			}
+		}
 		const content = {
 			schemaVersion: VERSION,
 			derived: true,

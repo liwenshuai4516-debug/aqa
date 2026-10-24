@@ -75,14 +75,9 @@ function snapshotView(store, context, snapshot) {
 			"LIMIT_EXCEEDED",
 			"Snapshot read budget exceeded",
 		);
-		let text = "",
-			offset = 0;
-		if (record.contentRef)
-			do {
-				const page = store.readEvidence(context, ref, { offset });
-				text += page.text;
-				offset = page.nextOffset;
-			} while (offset !== null);
+		// get() above already validates this record and its authorization graph.
+		// The internal view is byte-bounded; do not re-read/hash a whole blob for every UI page.
+		const text = record.contentRef ? store.readBlob(record) : "";
 		let value = null;
 		try {
 			if (text) value = JSON.parse(text);

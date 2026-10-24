@@ -4028,6 +4028,7 @@ export class ClientSession {
 		return readEvaluationEvidence(
 			{
 				principalId: this.clientId,
+				clientVersion: VERSION,
 				workspaceId: createHash("sha256").update(realpathSync(target.cwd)).digest("hex"),
 				workspace: realpathSync(target.cwd),
 				conversationId: target.id,
@@ -8297,6 +8298,12 @@ export class ClientSession {
 											extensionToolEffect(tool.name, params) !== "query"
 										)
 											throw new Error("Plugin execution is blocked in this conversation mode");
+										if (
+											tool.name === "agent_evaluation" &&
+											(current.permissionPreset ?? this.settingsSvc.current.defaultPermissionPreset) === "read-only" &&
+											extensionToolEffect(tool.name, params) !== "query"
+										)
+											throw new Error("Evaluation writes are blocked by read-only permissions");
 										if (!presetAllowsPluginTools(current.agentPreset) || current.subagentBarsPluginTools)
 											throw new Error("Plugin tools are unavailable in this preset");
 										if (

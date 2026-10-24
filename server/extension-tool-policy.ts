@@ -14,6 +14,10 @@ const QUERIES: Record<string, readonly string[]> = {
 };
 export function extensionToolEffect(name: string, params: unknown): ExtensionToolEffect | undefined {
 	const action = params && typeof params === "object" ? (params as { action?: unknown }).action : undefined;
+	if (name === "agent_evaluation")
+		return ["describe", "list", "get", "readEvidence", "export", "status"].includes(action as string)
+			? "query"
+			: "asset-write";
 	if (name === "data_space_cases")
 		return action === undefined || ["list", "get", "stats"].includes(action as string) ? "query" : "asset-write";
 	if (name === "data_space_env") return action === undefined || action === "list" ? "query" : "asset-write";

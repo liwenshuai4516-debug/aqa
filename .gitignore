@@ -17,6 +17,7 @@ web/dist/
 !.pi/skills/api-test-analyze/
 !.pi/skills/ui-testing-workflow/
 !.pi/skills/data-space-testing/
+!.pi/skills/agent-evaluation/
 .pi-web/
 .pi-subagents/
 # WaterMate 应用注入的本地运行数据（会话、沙箱临时目录），不入库

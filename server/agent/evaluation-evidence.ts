@@ -17,6 +17,7 @@ interface SourceEntry {
 	message?: unknown;
 }
 export interface EvaluationSource {
+	clientVersion?: string;
 	principalId: string;
 	workspaceId: string;
 	workspace: string;
@@ -233,6 +234,7 @@ export function readEvaluationEvidence(
 		if (!source.children.some((c) => c.sessionId === child)) gaps.push(`missing-selected-child:${child}`);
 	const page: AgentEvaluationEvidencePage = {
 		schemaVersion: 1,
+		...(source.clientVersion ? { clientVersion: source.clientVersion } : {}),
 		principalId: source.principalId,
 		workspaceId: source.workspaceId,
 		workspace: source.workspace,

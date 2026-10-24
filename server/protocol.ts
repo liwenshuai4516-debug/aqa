@@ -4065,6 +4065,7 @@ export interface AgentEvaluationSourceItem {
 }
 export interface AgentEvaluationEvidencePage {
 	schemaVersion: 1;
+	clientVersion?: string;
 	principalId: string;
 	workspaceId: string;
 	workspace: string;

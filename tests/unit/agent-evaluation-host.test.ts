@@ -40,6 +40,9 @@ async function harness() {
 	symlinkSync(resolve("node_modules"), join(dir, "node_modules"), "dir");
 	const manifest = JSON.parse(readFileSync(join(plugin, "manifest.json"), "utf8"));
 	manifest.permissions = ["tools"];
+	// This host-reader probe deliberately has no UI; remove product contributions copied with the source.
+	manifest.view = false;
+	delete manifest.ui;
 	writeFileSync(join(plugin, "manifest.json"), JSON.stringify(manifest));
 	writeFileSync(
 		join(plugin, "index.mjs"),

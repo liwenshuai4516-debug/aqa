@@ -1,0 +1,25 @@
+---
+name: agent-evaluation
+description: 对明确选区的 Pi 任务做证据诊断、耗时与费用核对，查看或重评封存报告。不会启动外部客户端、模型或原业务测试；人工复核仅在 Agent 评估中心界面完成。
+metadata:
+  display-name: Agent 评估中心
+  description-zh: 对任务选区做只读证据诊断，保留来源、未知项和人工复核。
+  description-en: Diagnose selected task evidence with provenance, unknowns and separate human reviews.
+  plugin-id: agent-evaluation
+---
+
+# Agent 评估中心
+
+使用 `agent_evaluation` 工具；不可用时说明需启用同名插件及其工具、刷新当前会话。不要读取私有 session 文件、直接改仓库记录，或用另一套脚本代替评分规则。
+
+1. `describe` 获取当前宿主授权会话的 sessionId、消息 ID、预览与缺口；明确用户选择的起止消息和子任务范围，不能把整个会话自动当一个任务。后续请求带 sessionId，防止选区切换后误用旧状态。
+2. 通过 `createContract` 保存 objective、scope、conditions、constraints、environmentRefs、provenance 和 evaluationSubject。模型提出的条件必须 `sourceType:"proposed", required:false`，来源说明用 sourceRef 保留；用户在评估中心确认后通过 `reviseContract` 产生新修订。未知预期不要写成硬性失败标准。当前只支持 Pi 选区；不声称外部客户端已接入。
+3. `createAttempt` 引用冻结契约，只附着现有任务观察，不执行任务。`collect` 可选择明确 artifactPaths 和 nativeRefs，二者最多各 20 项；不要扫描凭据或无关文件。`seal` 引用返回的 checkpointRef，得到不可变 snapshotRef。缺原文、缺工具结束、旧批次、临时会话等缺口须保留。
+4. `evaluate` 引用快照，可带明确规则 configs；返回 jobId。`status` 查询结果，必要时 `cancel` 只取消评分。成功启动、保存报告和目标通过是不同状态。未完成或重启 unknown 不自动重试原任务。
+5. `list/get/readEvidence/export` 查看记录和来源；大记录缩小 limit，正文和脱敏导出用 offset 分页，直到 nextOffset 为 null。导出保留 manifestDigest，分页时不得混接不同 manifest。原证据不可覆写；新材料要新采集/新封存/新报告。
+
+所有请求必须提供唯一 requestId；同一操作失败重试保留原 requestId 和输入，避免重复写。明确重评使用新 requestId，不增加测试、CLI、模型或业务调用。工具没有 review 操作；不得传 human/owner 或冒充人工通过。
+
+F01 仅验证存在/格式/明确 schema/摘要，不能证明全部语义正确；F02 必须有同 attempt 原生执行关联，旧 run 与 SKIP 不计本次通过；F04 只核必要依赖；F05 自由文本留人工；F06 工具失败统计不等于 Agent 责任；F07 仅重复候选，合理轮询与修复后复验不扣分；F08 不把未知费用补零，不把工具区间当全任务时长，不把未观测时间当模型思考。
+
+字段、固定规则配置与可信边界按需阅读 [插件说明](../../README.md)。交付时分列目标状态、行为状态、交付门禁、覆盖率、错误/未知、人工复核及证据；工程夹具通过不得写成真实模型或 Electron 产品验收通过。
