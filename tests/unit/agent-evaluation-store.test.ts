@@ -253,6 +253,20 @@ describe("EC01 contracts and immutable store", () => {
 		writeFileSync(path, JSON.stringify({ ...f.evidence, data: { ...f.evidence.data, content: "changed" } }));
 		expect(() => store.get(ctx, ref(f.snapshot))).toThrow(/digest/);
 	});
+	it("revalidates referenced bytes and authorization on every write", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const data = { ...f.evidence.data, sourceEventId: "e2", content: "next observation" };
+		write(store, ctx, "evidence", data);
+		expect(() => write(store, context({ sessionIds: ["s2"] }), "evidence", data)).toThrow(/Session selection/);
+		const path = join(store.root, "attempts", `${f.attempt.id}.1.json`);
+		writeFileSync(
+			path,
+			JSON.stringify({ ...f.attempt, data: { ...f.attempt.data, configDigest: digest({ tampered: true }) } }),
+		);
+		expect(() => write(store, ctx, "evidence", { ...data, sourceEventId: "e3" })).toThrow(/digest/);
+	});
 	it("rejects traversal, file symlinks and directory symlinks", () => {
 		const store = open(),
 			ctx = context(),

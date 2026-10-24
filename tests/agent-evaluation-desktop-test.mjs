@@ -95,6 +95,7 @@ try {
 		mainPath: join(repo, "dist/desktop/main.js"),
 	});
 	page = await app.firstWindow();
+	await page.waitForSelector(".app");
 	await page.addInitScript(() => {
 		const Native = window.WebSocket;
 		window.__evaluationFrames = [];
@@ -132,12 +133,12 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.1" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.2" && p.active),
 			),
 		),
 	);
 	result.checks.push(
-		"Real app loads plugin 0.4.1 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Real app loads plugin 0.4.2 in explicitly registered app directories; seeded SDK history opened without a model prompt",
 	);
 	stage("settings and slash discovery");
 	const settings = async (tab) => {
@@ -169,6 +170,68 @@ try {
 	await page.screenshot({ path: join(output, "tools.png") });
 	await closeSettings();
 	result.checks.push("Skill, slash completion and agent_evaluation tool appear in actual desktop management");
+	stage("explicit reload and plugin rescan");
+	let frameOffset = await page.evaluate(() => window.__evaluationFrames.length);
+	await input.fill("/reload");
+	await page.locator("button.send").click();
+	await until(() =>
+		page.evaluate(
+			(offset) =>
+				window.__evaluationFrames
+					.slice(offset)
+					.some(
+						(f) =>
+							f.type === "notice" &&
+							f.level === "info" &&
+							[f.text, f.textEn].some((text) => /Reloaded extensions|已重新加载扩展/.test(text ?? "")),
+					),
+			frameOffset,
+		),
+	);
+	await settings("skills");
+	assert.equal(await skill().getByRole("switch").getAttribute("aria-checked"), "true");
+	await closeSettings();
+	await settings("plugins");
+	await page.getByRole("tab", { name: /插件列表|Plugin list/ }).click();
+	frameOffset = await page.evaluate(() => window.__evaluationFrames.length);
+	const previousEpoch = await page.evaluate(() =>
+		Math.max(...window.__evaluationFrames.filter((f) => f.type === "plugins").map((f) => f.epoch)),
+	);
+	await page
+		.locator(".settings-modal")
+		.getByRole("button", { name: /^(Rescan|重新扫描)$/ })
+		.click();
+	await until(() =>
+		page.evaluate(
+			({ offset, epoch }) =>
+				window.__evaluationFrames
+					.slice(offset)
+					.some(
+						(f) =>
+							f.type === "plugins" &&
+							f.epoch > epoch &&
+							f.plugins.some(
+								(p) =>
+									p.id === "agent-evaluation" &&
+									p.version === "0.4.2" &&
+									p.agentTools?.some((tool) => tool.name === "agent_evaluation"),
+							),
+					),
+			{ offset: frameOffset, epoch: previousEpoch },
+		),
+	);
+	assert.equal(await plugin().getByRole("switch").getAttribute("aria-checked"), "true");
+	await closeSettings();
+	await settings("tools");
+	await tool.waitFor();
+	assert.equal(await tool.getByRole("switch").getAttribute("aria-checked"), "true");
+	await closeSettings();
+	await input.fill("/agent-eval");
+	await candidate.waitFor();
+	await input.fill("");
+	result.checks.push(
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.2; skill, slash discovery and tool registration remain enabled",
+	);
 	stage("product diagnosis flow");
 	const openView = async () => {
 		await page.getByText("Agent evaluation", { exact: true }).first().click();
@@ -342,7 +405,7 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.1" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.2" && p.active),
 			),
 		),
 	);
@@ -353,7 +416,7 @@ try {
 	assert.equal(await skill().getByRole("switch").getAttribute("aria-checked"), "true");
 	await closeSettings();
 	result.checks.push(
-		"Graceful real Electron exit and a second native process load plugin 0.4.1 and preserve enabled skill/plugin registration",
+		"Graceful real Electron exit and a second native process load plugin 0.4.2 and preserve enabled skill/plugin registration",
 	);
 
 	result.status = "PASS";
@@ -363,7 +426,7 @@ try {
 	if (page)
 		await writeFile(
 			join(output, "frames.json"),
-			JSON.stringify(await page.evaluate(() => window.__evaluationFrames ?? []), null, 2),
+			JSON.stringify(await page.evaluate(() => window.__evaluationFrames ?? []).catch(() => []), null, 2),
 		);
 	process.exitCode = 1;
 	await page?.screenshot({ path: join(output, "failure.png") }).catch(() => {});

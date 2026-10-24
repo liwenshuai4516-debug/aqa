@@ -1,0 +1,26 @@
+{
+	"status": "PASS",
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-8y9Z2B",
+	"userData": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-8y9Z2B/desktop",
+	"agentDir": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-8y9Z2B/desktop/agent",
+	"dataDir": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-8y9Z2B/desktop/data",
+	"workspace": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-8y9Z2B/workspace",
+	"checks": [
+		"Real app loads plugin 0.4.2 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Skill, slash completion and agent_evaluation tool appear in actual desktop management",
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.2; skill, slash discovery and tool registration remain enabled",
+		"Actual desktop select/create/collect/seal/score, evidence paging, append human review and retain original verdict",
+		"Actual Electron blob download reopens as a valid redacted export, including separate review and verifiable manifest",
+		"Chinese/English live labels and narrow layout fit verified; screenshots retained for visual inspection",
+		"Actual light theme stylesheet loads; report remains readable with inherited foreground/background tokens",
+		"Plugin disabled state survives page reload and gates the owned skill; re-enable restores the skill",
+		"Graceful real Electron exit and a second native process load plugin 0.4.2 and preserve enabled skill/plugin registration"
+	],
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"stage": "full app restart persistence",
+	"lightColors": {
+		"color": "rgb(31, 35, 40)",
+		"background": "rgb(255, 255, 255)"
+	}
+}

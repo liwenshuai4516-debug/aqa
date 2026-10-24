@@ -330,7 +330,11 @@ export class EvaluationStore {
 				"PERMISSION_DENIED",
 				"Contract selection is not authorized",
 			);
-		for (const ref of references(kind, data)) this.get(context, ref);
+		// Reuse only within this synchronous write. Never retain authorized records across
+		// requests: each later operation must recheck current bytes and session access.
+		const budget = { bytes: 0, items: 0, metadataItems: 0, started: performance.now(), cache: new Map() };
+		const read = (ref) => this.get(context, ref, new Set(), budget);
+		for (const ref of references(kind, data)) read(ref);
 		let id = randomUUID(),
 			revision = 1;
 		if (previousRef) {
@@ -339,7 +343,7 @@ export class EvaluationStore {
 				"VERSION_CONFLICT",
 				"Sealed records are immutable; create a new object",
 			);
-			const previous = this.get(context, previousRef);
+			const previous = read(previousRef);
 			requireValue(
 				![...this.index.values()].some(
 					(e) => e.ref.kind === kind && e.ref.id === previousRef.id && e.ref.revision > previousRef.revision,
@@ -370,7 +374,7 @@ export class EvaluationStore {
 				);
 			}
 		}
-		this.validateRelations(context, kind, data);
+		this.validateRelations(kind, data, read);
 		const clean = redact(data),
 			redacted = !same(clean, data);
 		if (kind === "evidence" && redacted) clean.redaction = [...new Set([...clean.redaction, "credentials-v1"])];
@@ -383,9 +387,7 @@ export class EvaluationStore {
 			domain: identity.domain,
 			createdAt: new Date().toISOString(),
 			data: clean,
-			referenceDigests: Object.fromEntries(
-				references(kind, clean).map((ref) => [key(ref), this.get(context, ref).digest]),
-			),
+			referenceDigests: Object.fromEntries(references(kind, clean).map((ref) => [key(ref), read(ref).digest])),
 			redacted,
 			request: { id: requestId, digest: requestDigest },
 		};
@@ -439,21 +441,21 @@ export class EvaluationStore {
 		this.usedBytes += Buffer.byteLength(bytes);
 		return structuredClone(record);
 	}
-	validateRelations(context, kind, data) {
+	validateRelations(kind, data, read) {
 		if (kind === "attempts") {
-			const contract = this.get(context, data.contractRef);
+			const contract = read(data.contractRef);
 			requireValue(
 				!data.sourceSessionId ||
 					data.sourceSessionId === contract.data.scope.sessionId ||
 					(data.parentAttemptRef &&
 						contract.data.scope.childSessionIds.includes(data.sourceSessionId) &&
-						same(this.get(context, data.parentAttemptRef).data.contractRef, data.contractRef)),
+						same(read(data.parentAttemptRef).data.contractRef, data.contractRef)),
 				"INVALID_INPUT",
 				"Attempt session differs from contract",
 			);
 			if (data.previousAttemptRef)
 				requireValue(
-					this.get(context, data.previousAttemptRef).data.contractRef.id === data.contractRef.id,
+					read(data.previousAttemptRef).data.contractRef.id === data.contractRef.id,
 					"INVALID_INPUT",
 					"Retry must belong to the same task",
 				);
@@ -466,19 +468,19 @@ export class EvaluationStore {
 			);
 			for (const ref of data.attemptRefs)
 				requireValue(
-					same(this.get(context, ref).data.contractRef, data.contractRef),
+					same(read(ref).data.contractRef, data.contractRef),
 					"INVALID_INPUT",
 					"Snapshot task revision differs",
 				);
 			for (const ref of data.evidenceRefs)
 				requireValue(
-					data.attemptRefs.some((a) => a.id === this.get(context, ref).data.attemptRef.id),
+					data.attemptRefs.some((a) => a.id === read(ref).data.attemptRef.id),
 					"INVALID_INPUT",
 					"Evidence belongs to another attempt",
 				);
 		}
 		if (kind === "evaluations") {
-			const snapshot = this.get(context, data.snapshotRef);
+			const snapshot = read(data.snapshotRef);
 			requireValue(
 				same(snapshot.data.contractRef, data.contractRef),
 				"INVALID_INPUT",
@@ -491,12 +493,12 @@ export class EvaluationStore {
 		}
 		if (kind === "reviews") {
 			requireValue(
-				this.get(context, data.evaluationRef).data.findings.some((f) => f.findingId === data.findingId),
+				read(data.evaluationRef).data.findings.some((f) => f.findingId === data.findingId),
 				"INVALID_INPUT",
 				"Reviewed finding does not exist",
 			);
 			if (data.previousReviewRef) {
-				const previous = this.get(context, data.previousReviewRef).data;
+				const previous = read(data.previousReviewRef).data;
 				requireValue(
 					same(previous.evaluationRef, data.evaluationRef) && previous.findingId === data.findingId,
 					"INVALID_INPUT",

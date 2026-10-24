@@ -24,13 +24,14 @@ export function recordsOf(store, context, kind) {
 	} while (cursor);
 	return rows;
 }
-function pairGaps(records, store, context) {
+function pairGaps(records, store) {
 	const calls = new Set(),
 		results = new Set(),
 		gaps = [];
 	for (const r of records) {
 		if (r.data.producer !== "pi-evidence-v1" || !r.contentRef) continue;
-		const value = readEvidenceJson(store, context, refOf(r));
+		// The caller just authorized these records in this synchronous pass.
+		const value = JSON.parse(store.readBlob(r));
 		const message = value.message ?? value;
 		const prefix = `${r.data.attemptRef.id}:${r.data.sourceId}:`;
 		if (message.role === "assistant")
@@ -367,7 +368,6 @@ export class EvidenceCollector {
 		const paired = pairGaps(
 			evidence.map((ref) => store.get(context, ref)),
 			store,
-			context,
 		);
 		gaps.push(...paired);
 		const result = {
