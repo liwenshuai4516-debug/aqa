@@ -394,6 +394,16 @@ export class EvaluationStore {
 		return record;
 	}
 
+	#checkWriter() {
+		requireValue(!this.readOnly, "PERMISSION_DENIED", "Store is read only");
+		requireValue(
+			!this.issues.length,
+			"STORE_CORRUPT",
+			"Recovery issues require explicit repair; original files preserved",
+		);
+		this.checkDirectory(this.root);
+		requireValue(JSON.parse(this.readFile(this.lock)).nonce === this.nonce, "STORE_LOCKED", "Writer ownership changed");
+	}
 	#prepareWrite(context, { kind, data, requestId, schemaVersion = VERSION, previousRef = undefined }, sharedBudget) {
 		const identity = this.identity(context, true);
 		if (sharedBudget)
@@ -426,7 +436,14 @@ export class EvaluationStore {
 		const sanitized = redact(data),
 			redacted = sanitized !== data,
 			clean = { ...sanitized };
-		const requestDigest = digest({ kind, data: clean, schemaVersion, previousRef: previousRef ?? null });
+		// Hash the exact legacy canonical envelope, reusing the bounded serialized data.
+		// Keep the sanitized input digest distinct from later metadata/blob transformations.
+		const requestDigest = createHash("sha256")
+			.update('{"data":')
+			.update(redacted ? canonical(sanitized) : inputBytes)
+			.update(",")
+			.update(canonical({ kind, schemaVersion, previousRef: previousRef ?? null }).slice(1))
+			.digest("hex");
 		const receipt = this.requests.get(digest([identity.domain, requestId]));
 		if (receipt) {
 			requireValue(
@@ -436,14 +453,10 @@ export class EvaluationStore {
 			);
 			return { existing: this.get(context, receipt.ref), inputSize };
 		}
-		requireValue(!this.readOnly, "PERMISSION_DENIED", "Store is read only");
-		requireValue(
-			!this.issues.length,
-			"STORE_CORRUPT",
-			"Recovery issues require explicit repair; original files preserved",
-		);
-		this.checkDirectory(this.root);
-		requireValue(JSON.parse(this.readFile(this.lock)).nonce === this.nonce, "STORE_LOCKED", "Writer ownership changed");
+		if (!sharedBudget?.writerChecked) {
+			this.#checkWriter();
+			if (sharedBudget) sharedBudget.writerChecked = true;
+		}
 		if (kind === "reviews")
 			requireValue(identity.human === true, "PERMISSION_DENIED", "Human review requires trusted UI identity");
 		if (kind === "contracts")
@@ -593,6 +606,7 @@ export class EvaluationStore {
 				started: performance.now(),
 				cache: new Map(),
 				authorization: canonical([identity.domain, identity.sessionIds]),
+				writerChecked: false,
 			},
 			pending = new Map(),
 			result = [];
@@ -619,6 +633,14 @@ export class EvaluationStore {
 		}
 		const items = [...pending.values()];
 		if (!items.length) return structuredClone(result);
+		const finalIdentity = this.identity(context, true);
+		requireValue(
+			budget.authorization === canonical([finalIdentity.domain, finalIdentity.sessionIds]),
+			"PERMISSION_DENIED",
+			"Batch authorization changed",
+		);
+		// A synchronous batch shares preparation checks, but must recheck before publication.
+		this.#checkWriter();
 		const pack = encodePack(items, this.limits),
 			file = join(this.root, "evidence", `batch-${randomUUID()}.pack`);
 		requireValue(

@@ -457,6 +457,75 @@ describe("EC01 contracts and immutable store", () => {
 		expect(restored.lookupRequest(ctx, "failed-batch")).toBeUndefined();
 		expect(() => write(restored, ctx, "contracts", contract())).toThrow(/repair/);
 	});
+	it("refuses to publish a batch when writer ownership changes during preparation", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const original = store.validateRelations.bind(store);
+		store.validateRelations = (kind: any, data: any, read: any) => {
+			original(kind, data, read);
+			if (kind === "evidence" && data.sourceEventId === "late-change")
+				writeFileSync(store.lock, JSON.stringify({ pid: process.pid, nonce: "replacement-writer" }));
+		};
+		const before = store.index!.size;
+		const inputs = ["first-in-batch", "late-change"].map((sourceEventId) => ({
+			kind: "evidence",
+			data: { ...f.evidence.data, content: sourceEventId, sourceEventId },
+			requestId: sourceEventId,
+		}));
+		expect(() => store.writeEvidenceBatch(ctx, inputs)).toThrow(/Writer ownership changed/);
+		expect(store.index!.size).toBe(before);
+		expect(readdirSync(join(store.root, "evidence")).some((name) => name.includes(".pack"))).toBe(false);
+		inputs.forEach((input) => expect(store.lookupRequest(ctx, input.requestId)).toBeUndefined());
+	});
+	it.each(["read-only", "recovery", "write-permission"])("refuses publication after late %s revocation", (change) => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const original = store.validateRelations.bind(store);
+		store.validateRelations = (kind: any, data: any, read: any) => {
+			original(kind, data, read);
+			if (kind !== "evidence") return;
+			if (change === "read-only") store.readOnly = true;
+			if (change === "recovery") store.issues!.push({ file: "injected", reason: "late recovery issue" });
+			if (change === "write-permission") contexts.get(ctx).allowWrite = false;
+		};
+		const before = store.index!.size;
+		expect(() =>
+			store.writeEvidenceBatch(ctx, [
+				{ kind: "evidence", data: { ...f.evidence.data, content: "unpublished" }, requestId: "late-revocation" },
+			]),
+		).toThrow(
+			change === "read-only"
+				? /Store is read only/
+				: change === "recovery"
+					? /Recovery issues/
+					: /Local evaluation writes denied/,
+		);
+		expect(store.index!.size).toBe(before);
+		expect(store.lookupRequest(ctx, "late-revocation")).toBeUndefined();
+		expect(readdirSync(join(store.root, "evidence")).some((name) => name.includes(".pack"))).toBe(false);
+	});
+	it("replays existing packed receipts from a read-only store without acquiring a writer", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const input = {
+			kind: "evidence",
+			requestId: "read-only-replay",
+			data: { ...f.evidence.data, content: '中文 "\\\n bytes' },
+		};
+		const records = store.writeEvidenceBatch(ctx, [input]);
+		expect(records[0].request.digest).toBe(
+			digest({ kind: "evidence", data: input.data, schemaVersion: 1, previousRef: null }),
+		);
+		store.close();
+		const reader = open({ dataDir: store.dataDir, readOnly: true });
+		expect(reader.writeEvidenceBatch(ctx, [input])).toEqual(records);
+		expect(() => reader.writeEvidenceBatch(ctx, [{ ...input, requestId: "new-read-only-request" }])).toThrow(
+			/read only/,
+		);
+	});
 	it("recovers all packed receipts after publication loses its reply", () => {
 		const store = open(),
 			ctx = context(),

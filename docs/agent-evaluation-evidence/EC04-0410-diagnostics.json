@@ -1,0 +1,43 @@
+{
+	"baseline": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-performance-21kpvD/result.json",
+		"sha256": "d6da33a8f6a90d10c4045c49b8530f0054338bb26c7168d5fea74e388d629131"
+	},
+	"current": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-performance-rI6XM2/result.json",
+		"sha256": "65e6b95927d70b877b166093131b0b9e58e3a92dff2e2afc0d7bda7e062706ed"
+	},
+	"report": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-report-performance-yP6Any/result.json",
+		"sha256": "398ac9dba4207c7cc546ae180773704e1595d929cfa1db19a93493ee7ef66c85"
+	},
+	"desktop": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-RRDGXG/result.json",
+		"sha256": "740ec9880bbb126bdc3ef3de550d4195f0b455a2fc69748dcc95d860371fef2b"
+	},
+	"writerLockRegressionBefore": {
+		"rawPath": "/tmp/agent-evaluation-050-lock-before.json",
+		"sha256": "cb6b7598b182d6002e03979bbb9833fed543ec8b737b60d484f6125d038b6c53",
+		"numPassedTests": 0,
+		"numFailedTests": 1,
+		"numPendingTests": 39,
+		"cause": "An ownership change at the tail of batch preparation was not checked before publication. The new regression failed on the original store, then passed in the complete suite. Targeted skipped tests are not passes."
+	},
+	"legacyInputs": {
+		"rawPath": "/tmp/agent-evaluation-050-legacy.json",
+		"sha256": "d9e17450ae6e4bacf7be9a40ac30ba47312c3e2f2f44382113ed9e976ed1f45c"
+	},
+	"legacyReplay": {
+		"rawPath": "/tmp/agent-evaluation-050-legacy-replay.json",
+		"sha256": "9f38926942286a5a78fb41e498b071462a5f95a46045eca2aee88a46d75f9791"
+	},
+	"baselineSource": {
+		"path": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-050-baseline-fbapncve",
+		"commit": "4142095df7e954da8f4e2eda6e137823c47c092f",
+		"storeSha256": "e3bad32bbf8f775e8f9a08bfc82a02c6bd9689f1e203aa3ade3689adcb26b673",
+		"scope": "Only evaluator source/test scaffold copied. Dependencies and unchanged compiled host shared by links. No user data copied.",
+		"benchmarkOrder": "Current 30 runs, then isolated original 30 runs, sequentially; same shared compiled host/dependencies. No desktop/unit test ran during these measurements."
+	},
+	"actualModelCalls": 0,
+	"actualCliCalls": 0
+}
