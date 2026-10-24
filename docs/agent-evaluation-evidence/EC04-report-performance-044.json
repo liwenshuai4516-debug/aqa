@@ -1,0 +1,63 @@
+{
+	"status": "PASS",
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-report-performance-w4ChTv",
+	"scope": "1000 evidence snapshot; fixture construction excluded; five actual report/list/evidence reads",
+	"checks": {
+		"reportsCompleted": true,
+		"reportMedianMs": 803.864625000002,
+		"listMedianMs": 22.227082999997947,
+		"evidenceMedianMs": 0.48266700000385754
+	},
+	"rounds": [
+		{
+			"round": 0,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 861.5068749999991,
+			"listCount": 50,
+			"listMs": 23.47124999999869,
+			"evidenceChars": 37,
+			"evidenceMs": 0.5556250000008731
+		},
+		{
+			"round": 1,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 803.7746249999982,
+			"listCount": 50,
+			"listMs": 22.227082999997947,
+			"evidenceChars": 37,
+			"evidenceMs": 0.491042000001471
+		},
+		{
+			"round": 2,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 802.5364579999987,
+			"listCount": 50,
+			"listMs": 22.302166999998008,
+			"evidenceChars": 37,
+			"evidenceMs": 0.46908299999995506
+		},
+		{
+			"round": 3,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 803.864625000002,
+			"listCount": 50,
+			"listMs": 21.284208999997645,
+			"evidenceChars": 37,
+			"evidenceMs": 0.48033399999985704
+		},
+		{
+			"round": 4,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 804.4715000000033,
+			"listCount": 50,
+			"listMs": 22.00829099999828,
+			"evidenceChars": 37,
+			"evidenceMs": 0.48266700000385754
+		}
+	]
+}

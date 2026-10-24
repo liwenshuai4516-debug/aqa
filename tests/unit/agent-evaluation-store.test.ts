@@ -361,6 +361,34 @@ describe("EC01 contracts and immutable store", () => {
 		}
 		expect(store.get(ctx, ref(evidence)).data.redaction).toContain("credentials-v1");
 	});
+	it("keeps redacted evidence receipts stable across blob extraction, retries and restart", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx),
+			data = { ...f.evidence.data, content: "Bearer fixture-secret-value", redaction: [] },
+			before = structuredClone(data),
+			requestId = "redacted-blob-receipt";
+		const evidence = store.write(ctx, { kind: "evidence", data, requestId });
+		expect(data).toEqual(before);
+		expect(evidence.request.digest).toBe(
+			digest({
+				kind: "evidence",
+				data: { ...data, content: "Bearer [REDACTED]" },
+				schemaVersion: 1,
+				previousRef: null,
+			}),
+		);
+		expect(evidence.redacted).toBe(true);
+		expect(evidence.data.redaction).toEqual(["credentials-v1"]);
+		expect(evidence.data).not.toHaveProperty("content");
+		expect(store.readBlob(evidence)).toBe("Bearer [REDACTED]");
+		expect(store.write(ctx, { kind: "evidence", data, requestId })).toEqual(evidence);
+		store.close();
+		const restored = open({ dataDir: store.dataDir });
+		expect(restored.write(ctx, { kind: "evidence", data, requestId })).toEqual(evidence);
+		expect(restored.lookupRequest(ctx, requestId)).toEqual(evidence);
+		expect(restored.readBlob(evidence)).toBe("Bearer [REDACTED]");
+	});
 	it("rebuilds an index from backup with no business callback or execution", () => {
 		const store = open(),
 			ctx = context(),

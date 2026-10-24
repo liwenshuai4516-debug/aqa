@@ -1,0 +1,128 @@
+{
+	"phase": "0.4.3 before write sanitization reuse",
+	"scope": "Whole long/on worker CPU sample includes setup and cleanup; samples are not collect-only or a new gate result",
+	"rawProfile": "/tmp/agent-evaluation-044-profile/CPU.20261024.113927.4284.0.001.cpuprofile",
+	"rawProfileSha256": "4823b4e2521929a88cdecbca594bb77acdbc20663132114a9087f93d56f4bb56",
+	"topSamples": [
+		{
+			"function": "fsync",
+			"url": "",
+			"line": 0,
+			"sampledMs": 4271.912
+		},
+		{
+			"function": "canonical",
+			"url": "file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/schema.mjs",
+			"line": 31,
+			"sampledMs": 334.537
+		},
+		{
+			"function": "",
+			"url": "",
+			"line": 0,
+			"sampledMs": 146.878
+		},
+		{
+			"function": "update",
+			"url": "node:internal/crypto/hash",
+			"line": 107,
+			"sampledMs": 141.0
+		},
+		{
+			"function": "(idle)",
+			"url": "",
+			"line": 0,
+			"sampledMs": 123.335
+		},
+		{
+			"function": "open",
+			"url": "",
+			"line": 0,
+			"sampledMs": 120.536
+		},
+		{
+			"function": "lstat",
+			"url": "",
+			"line": 0,
+			"sampledMs": 76.085
+		},
+		{
+			"function": "sourceItem",
+			"url": "file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/dist/server/agent/evaluation-evidence.js",
+			"line": 129,
+			"sampledMs": 73.5
+		},
+		{
+			"function": "(garbage collector)",
+			"url": "",
+			"line": 0,
+			"sampledMs": 62.544
+		},
+		{
+			"function": "",
+			"url": "file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-performance-test.mjs",
+			"line": 1,
+			"sampledMs": 58.458
+		},
+		{
+			"function": "writeFileUtf8",
+			"url": "",
+			"line": 0,
+			"sampledMs": 36.999
+		},
+		{
+			"function": "CheckSchema",
+			"url": "file:///Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/typebox/build/schema/engine/schema.mjs",
+			"line": 257,
+			"sampledMs": 33.502
+		},
+		{
+			"function": "RegExp: \\b(?:sk-|sk_|ghp_)[A-Za-z0-9_-]{12,}",
+			"url": "",
+			"line": 0,
+			"sampledMs": 28.624
+		},
+		{
+			"function": "rmSync",
+			"url": "",
+			"line": 0,
+			"sampledMs": 23.5
+		},
+		{
+			"function": "rename",
+			"url": "",
+			"line": 0,
+			"sampledMs": 22.165
+		},
+		{
+			"function": "compileSourceTextModule",
+			"url": "node:internal/modules/esm/utils",
+			"line": 342,
+			"sampledMs": 20.958
+		},
+		{
+			"function": "realpathSync",
+			"url": "node:fs",
+			"line": 2712,
+			"sampledMs": 20.623
+		},
+		{
+			"function": "(program)",
+			"url": "",
+			"line": 0,
+			"sampledMs": 19.791
+		},
+		{
+			"function": "same",
+			"url": "file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs",
+			"line": 26,
+			"sampledMs": 18.876
+		},
+		{
+			"function": "",
+			"url": "file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/schema.mjs",
+			"line": 36,
+			"sampledMs": 15.415
+		}
+	]
+}

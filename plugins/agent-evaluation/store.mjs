@@ -288,8 +288,9 @@ export class EvaluationStore {
 			"INVALID_INPUT",
 			"Invalid request ID",
 		);
+		const inputBytes = canonical(data);
 		requireValue(
-			Buffer.byteLength(canonical(data)) <= this.limits.recordBytes,
+			Buffer.byteLength(inputBytes) <= this.limits.recordBytes,
 			"LIMIT_EXCEEDED",
 			"Input exceeds record budget",
 		);
@@ -304,7 +305,11 @@ export class EvaluationStore {
 			validateRef(previousRef);
 			requireValue(previousRef.kind === kind, "INVALID_INPUT", "Revision kind differs");
 		}
-		const requestDigest = digest({ kind, data: redact(data), schemaVersion, previousRef: previousRef ?? null });
+		// Sanitize once per synchronous write. The request digest describes the clean
+		// input before evidence metadata is annotated or its body moves into a blob.
+		const clean = redact(data),
+			redacted = canonical(clean) !== inputBytes;
+		const requestDigest = digest({ kind, data: clean, schemaVersion, previousRef: previousRef ?? null });
 		const receipt = this.requests.get(digest([identity.domain, requestId]));
 		if (receipt) {
 			requireValue(
@@ -375,8 +380,6 @@ export class EvaluationStore {
 			}
 		}
 		this.validateRelations(kind, data, read);
-		const clean = redact(data),
-			redacted = !same(clean, data);
 		if (kind === "evidence" && redacted) clean.redaction = [...new Set([...clean.redaction, "credentials-v1"])];
 		validate(kind, clean);
 		const record = {
