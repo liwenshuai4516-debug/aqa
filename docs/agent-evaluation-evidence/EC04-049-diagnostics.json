@@ -1,0 +1,23 @@
+{
+	"retryBefore": {
+		"rawPath": "/tmp/agent-evaluation-049-retry-before.json",
+		"sha256": "a41cc2825892b7df12fa8f73497a2adf71d45f0507dcecb5709e224415512964",
+		"numTotalTests": 11,
+		"numPassedTests": 0,
+		"numFailedTests": 1,
+		"numPendingTests": 10,
+		"success": false
+	},
+	"retryAfter": {
+		"rawPath": "/tmp/agent-evaluation-049-retry-after.json",
+		"sha256": "675aaa5c3aedda3ff07d29fe2b4f583da557e7983d4987ba535b93282f627c26",
+		"numTotalTests": 11,
+		"numPassedTests": 1,
+		"numFailedTests": 0,
+		"numPendingTests": 10,
+		"success": true
+	},
+	"cause": "Additional condition IDs were regenerated on every retry, changing the durable request data after a lost acknowledgement. IDs now persist in the unchanged form draft. Targeted skipped tests are not passes; the complete 205-test suite passed without skips.",
+	"actualModelCalls": 0,
+	"actualCliCalls": 0
+}

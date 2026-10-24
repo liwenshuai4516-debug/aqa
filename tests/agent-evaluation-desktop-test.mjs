@@ -133,12 +133,12 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.8" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.9" && p.active),
 			),
 		),
 	);
 	result.checks.push(
-		"Real app loads plugin 0.4.8 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Real app loads plugin 0.4.9 in explicitly registered app directories; seeded SDK history opened without a model prompt",
 	);
 	stage("settings and slash discovery");
 	const settings = async (tab) => {
@@ -213,7 +213,7 @@ try {
 							f.plugins.some(
 								(p) =>
 									p.id === "agent-evaluation" &&
-									p.version === "0.4.8" &&
+									p.version === "0.4.9" &&
 									p.agentTools?.some((tool) => tool.name === "agent_evaluation"),
 							),
 					),
@@ -230,7 +230,7 @@ try {
 	await candidate.waitFor();
 	await input.fill("");
 	result.checks.push(
-		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.8; skill, slash discovery and tool registration remain enabled",
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.9; skill, slash discovery and tool registration remain enabled",
 	);
 	stage("product diagnosis flow");
 	const openView = async () => {
@@ -511,6 +511,103 @@ try {
 	await page.locator('.aev [data-action="open"][data-id="' + original.id + '"]:not([disabled])').click();
 	await page.locator('.aev [data-action="configure"]:not([disabled])').waitFor();
 
+	stage("new rule binding remains unknown until checks are configured");
+	await page.locator('.aev [data-action="back"]').click();
+	await page.locator('.aev [data-action="open"][data-id="' + revised.id + '"]:not([disabled])').click();
+	await page.locator('.aev [data-action="revise"]:not([disabled])').click();
+	await page.locator('.aev form[data-form="revision"]').waitFor();
+	const bindingAttemptsBefore = await names("attempts"),
+		bindingSnapshotsBefore = await names("snapshots");
+	const bindingReportIds = (await reports()).map((record) => record.id);
+	await page.locator('.aev [name="additionalConditions"]').fill("result.json is a valid JSON object");
+	await page.locator('.aev [name="additionalRuleRef"]').selectOption("F01@1");
+	assert.deepEqual(
+		await page
+			.locator('.aev [name="additionalRuleRef"] option')
+			.evaluateAll((options) => options.map((option) => option.value)),
+		["", "F01@1", "F02@1", "F04@1", "F05@1", "F08@1"],
+	);
+	await page.screenshot({ path: join(output, "binding-revision-en.png") });
+	await page.locator('.aev form[data-form="revision"] button[type="submit"]').click();
+	await waitForDifferentReport(revised.id);
+	const bindingReport = (await reports()).find((record) => !bindingReportIds.includes(record.id));
+	assert.ok(bindingReport);
+	const bindingContract = JSON.parse(
+		await readFile(
+			join(
+				storeRoot,
+				"contracts",
+				`${bindingReport.data.contractRef.id}.${bindingReport.data.contractRef.revision}.json`,
+			),
+			"utf8",
+		),
+	);
+	assert.equal(bindingContract.revision, 3);
+	assert.deepEqual(bindingContract.data.scope, revisedContract.data.scope);
+	const bindingCondition = bindingContract.data.conditions.find(
+		(condition) => condition.statement === "result.json is a valid JSON object",
+	);
+	assert.ok(bindingCondition);
+	assert.equal(bindingCondition.ruleRef, "F01@1");
+	assert.equal(bindingCondition.sourceType, "user");
+	assert.equal(
+		bindingReport.data.findings.find((finding) => finding.conditionId === bindingCondition.id).verdict,
+		"inconclusive",
+	);
+	assert.equal(
+		bindingReport.data.configuration.rules
+			.find((rule) => rule.id === "F01")
+			.config.checks.some((check) => check.conditionId === bindingCondition.id),
+		false,
+	);
+	assert.equal((await names("attempts")).length, bindingAttemptsBefore.length + 1);
+	assert.equal((await names("snapshots")).length, bindingSnapshotsBefore.length + 1);
+	await page.locator('.aev [data-action="configure"]').click();
+	await page.locator('.aev form[data-form="configuration"]').waitFor();
+	await page.locator('.aev [data-action="config-add"][data-rule="F01"]').click();
+	const addedCheck = page.locator('.aev [data-config-row="F01"]').last();
+	await addedCheck.locator('[data-field="conditionId"]').selectOption(bindingCondition.id);
+	await addedCheck.locator('[data-field="path"]').fill("result.json");
+	await addedCheck.locator('[data-field="format"]').selectOption("json");
+	await addedCheck.locator('[data-field="jsonSchema"]').fill('{"type":"object"}');
+	await page.setViewportSize({ width: 800, height: 650 });
+	assert.equal(await page.locator(".aev").evaluate((el) => el.scrollWidth <= el.clientWidth), true);
+	await page.screenshot({ path: join(output, "binding-configuration-narrow.png") });
+	await page.setViewportSize({ width: 1280, height: 850 });
+	await page.locator('.aev form[data-form="configuration"] button[type="submit"]').click();
+	await waitForDifferentReport(bindingReport.id);
+	const bindingConfiguredReport = (await reports()).find(
+		(record) => !bindingReportIds.includes(record.id) && record.id !== bindingReport.id,
+	);
+	assert.ok(bindingConfiguredReport);
+	assert.equal(
+		bindingConfiguredReport.data.findings.find((finding) => finding.conditionId === bindingCondition.id).verdict,
+		"pass",
+	);
+	assert.deepEqual(bindingConfiguredReport.data.snapshotRef, bindingReport.data.snapshotRef);
+	assert.deepEqual(bindingConfiguredReport.data.contractRef, bindingReport.data.contractRef);
+	assert.equal((await names("attempts")).length, bindingAttemptsBefore.length + 1);
+	assert.equal((await names("snapshots")).length, bindingSnapshotsBefore.length + 1);
+	assert.equal(await readFile(originalFile, "utf8"), originalBytes);
+	assert.deepEqual(JSON.parse(await readFile(contractFile, "utf8")), revisedContract);
+	result.bindingChecks = {
+		conditionId: bindingCondition.id,
+		contractRevision: bindingContract.revision,
+		unconfiguredVerdict: "inconclusive",
+		configuredVerdict: "pass",
+		sameSnapshotForConfiguration: true,
+		revisionAddedAttempts: 1,
+		configurationAddedAttempts: 0,
+		oldReportUnchanged: true,
+		oldContractUnchanged: true,
+	};
+	result.checks.push(
+		"Actual desktop adds an installed rule binding in a new contract revision, keeps it inconclusive without configuration, then configures a matching artifact check on that sealed snapshot; the old contract/report remain unchanged and no task runs",
+	);
+	await page.locator('.aev [data-action="back"]').click();
+	await page.locator('.aev [data-action="open"][data-id="' + original.id + '"]:not([disabled])').click();
+	await page.locator('.aev [data-action="configure"]:not([disabled])').waitFor();
+
 	stage("language, theme, layout");
 	await page.evaluate(() => {
 		document.documentElement.lang = "zh-CN";
@@ -628,7 +725,7 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.8" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.9" && p.active),
 			),
 		),
 	);
@@ -647,7 +744,7 @@ try {
 	assert.equal(await skill().getByRole("switch").getAttribute("aria-checked"), "true");
 	await closeSettings();
 	result.checks.push(
-		"Graceful real Electron exit and a second native process load plugin 0.4.8 and preserve enabled skill/plugin registration",
+		"Graceful real Electron exit and a second native process load plugin 0.4.9 and preserve enabled skill/plugin registration",
 	);
 	result.checks.push(
 		"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",

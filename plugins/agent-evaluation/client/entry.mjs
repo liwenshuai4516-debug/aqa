@@ -1,6 +1,6 @@
 import { transport } from "./transport.mjs";
 import { translator } from "./i18n.mjs";
-import { configurationHtml, configurationRow, readConfiguration } from "./configuration.mjs";
+import { configurationHtml, configurationRow, readConfiguration, conditionRuleIds } from "./configuration.mjs";
 import { CSS } from "./style.mjs";
 const esc = (value) =>
 	String(value ?? "").replace(
@@ -101,9 +101,27 @@ export default {
 					"",
 				)}<div class="actions">${findingsOffset ? button("findings-first", "first") : ""}${report.pages.findings?.nextOffset != null ? button("findings-next", "next") : ""}</div></section>${evidence ? `<section tabindex="-1" data-evidence-panel><h2>${esc(t("evidence"))}</h2><p>${esc(evidence.record.data.sourceLocator)}</p><p>${esc(evidence.record.id)} · ${esc(evidence.record.data.sourceEventId)} · ${esc(evidence.record.data.origin)} · ${esc(evidence.record.data.availability)}</p><pre>${esc(evidence.text)}</pre>${evidence.nextOffset != null ? button("evidence-next", "next") : ""}</section>` : ""}<section><h2>${esc(t("config"))}</h2><p>${esc(t("costHint"))}</p><p>${esc(t("version"))}: ${esc(d.profileVersion)}</p><details><summary>${esc(t("raw"))}</summary><pre>${esc(JSON.stringify({ configuration: d.configuration, job: d.job, evaluatorVersions: d.evaluatorVersions }, null, 2))}</pre></details><h3>${esc(t("gaps"))}</h3><pre>${esc(snapshot.data.gaps.join("\n"))}</pre></section>`;
 		}
+		function bindingRules() {
+			return (source?.rules ?? []).filter((rule) => conditionRuleIds.includes(rule.id));
+		}
+		function bindingSelect(name, label = "bindingMethod") {
+			return `<label>${esc(t(label))}<select name="${name}"><option value="">${esc(t("manualBinding"))}</option>${bindingRules()
+				.map(
+					(rule) =>
+						`<option value="${esc(`${rule.id}@${rule.version}`)}">${esc(rule.id)} · ${esc(t(`cfg-${rule.id}`))} · v${esc(rule.version)}</option>`,
+				)
+				.join("")}</select></label>`;
+		}
+		function selectedBinding(value) {
+			if (!value) return undefined;
+			if (!bindingRules().some((rule) => `${rule.id}@${rule.version}` === value))
+				throw new Error(t("bindingUnavailable"));
+			return value;
+		}
+
 		function revisionHtml() {
 			const data = revision.contract.data;
-			return `<section><h2>${esc(t("revise"))}</h2><p>${esc(t("revisionHint"))}</p><p>${esc(data.scope.startMessageId)} → ${esc(data.scope.endMessageId)} · ${esc(t("contractRevision"))} ${revision.contract.revision}</p><form data-form="revision"><label>${esc(t("objective"))}<textarea name="objective" required maxlength="16384">${esc(data.objective)}</textarea></label>${["conditions", "constraints"].map((field) => `<fieldset><legend>${esc(t(field))}</legend>${data[field].map((c, index) => `<div class="condition"><label>${esc(c.id)}<textarea name="${field}-${index}-statement" required maxlength="16384" ${c.ruleRef ? "readonly" : ""}>${esc(c.statement)}</textarea></label>${c.ruleRef ? `<p class="muted">${esc(t("boundCheck"))} · ${esc(c.ruleRef)}</p>` : ""}<label class="check-label"><input type="checkbox" name="${field}-${index}-required" ${c.required ? "checked" : ""}>${esc(t("required"))}</label></div>`).join("")}</fieldset>`).join("")}<label>${esc(t("additionalConditions"))}<textarea name="additionalConditions" maxlength="24000"></textarea></label><p class="muted">${esc(t("conditionHint"))}</p><div class="actions"><button type="submit" class="primary">${esc(t("saveRevision"))}</button>${button("discard-revision", "discardRevision")}</div></form></section>`;
+			return `<section><h2>${esc(t("revise"))}</h2><p>${esc(t("revisionHint"))}</p><p>${esc(data.scope.startMessageId)} → ${esc(data.scope.endMessageId)} · ${esc(t("contractRevision"))} ${revision.contract.revision}</p><p>${esc(t("bindingHint"))}</p><form data-form="revision"><label>${esc(t("objective"))}<textarea name="objective" required maxlength="16384">${esc(data.objective)}</textarea></label>${["conditions", "constraints"].map((field) => `<fieldset><legend>${esc(t(field))}</legend>${data[field].map((c, index) => `<div class="condition"><label>${esc(c.id)}<textarea name="${field}-${index}-statement" required maxlength="16384" ${c.ruleRef ? "readonly" : ""}>${esc(c.statement)}</textarea></label>${c.ruleRef ? `<p class="muted">${esc(t("boundCheck"))} · ${esc(c.ruleRef)}</p>` : bindingSelect(`${field}-${index}-ruleRef`)}<label class="check-label"><input type="checkbox" name="${field}-${index}-required" ${c.required ? "checked" : ""}>${esc(t("required"))}</label></div>`).join("")}</fieldset>`).join("")}<label>${esc(t("additionalConditions"))}<textarea name="additionalConditions" maxlength="24000"></textarea></label>${bindingSelect("additionalRuleRef", "additionalBindingMethod")}<p class="muted">${esc(t("conditionHint"))}</p><div class="actions"><button type="submit" class="primary">${esc(t("saveRevision"))}</button>${button("discard-revision", "discardRevision")}</div></form></section>`;
 		}
 		function reportConfigs() {
 			if (!report.data.configuration) throw new Error(t("missingConfig"));
@@ -446,10 +464,15 @@ export default {
 							data[field] = original[field].map((c, index) => {
 								const statement = c.ruleRef ? c.statement : values[`${field}-${index}-statement`];
 								const required = values[`${field}-${index}-required`] === "on";
+								const ruleRef = c.ruleRef ?? selectedBinding(values[`${field}-${index}-ruleRef`]);
 								const confirmed =
-									c.required !== required || c.statement !== statement || (required && c.sourceType === "proposed");
+									c.required !== required ||
+									c.statement !== statement ||
+									ruleRef !== c.ruleRef ||
+									(required && c.sourceType === "proposed");
 								return {
 									...c,
+									...(ruleRef ? { ruleRef } : {}),
 									statement,
 									required,
 									...(confirmed
@@ -457,9 +480,13 @@ export default {
 										: {}),
 								};
 							});
+						const additional = lines(values.additionalConditions);
+						const additionalRule = selectedBinding(values.additionalRuleRef);
+						draft.conditionIds ??= additional.map(() => crypto.randomUUID());
 						data.conditions.push(
-							...lines(values.additionalConditions).map((statement) => ({
-								id: `condition-${crypto.randomUUID()}`,
+							...additional.map((statement, index) => ({
+								id: `condition-${draft.conditionIds[index]}`,
+								...(additionalRule ? { ruleRef: additionalRule } : {}),
 								statement,
 								sourceType: "user",
 								sourceRef: `human-ui:${revision.contract.id}`,

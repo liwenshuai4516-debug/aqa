@@ -13,8 +13,8 @@ const labels = {
 	],
 	editConfiguration: ["核验规则与费用配置（已安装 v1）", "Checks and pricing (installed v1)"],
 	configurationHint: [
-		"仅可选择已绑定对应规则的验收条件。缺少绑定时请保留为空；空检查不会通过任何条件。删除检查会使相应条件无法判断。新增绑定需先修订契约，当前文字修订入口尚不支持新增规则绑定。",
-		"Select conditions already bound to each rule. Leave checks empty when no binding exists; empty checks cannot pass a condition. Removing a check leaves that condition inconclusive. New bindings need a contract revision; the current wording revision form does not add rule bindings.",
+		"仅可选择已绑定对应规则的验收条件。缺少绑定时请保留为空；空检查不会通过任何条件。删除检查会使相应条件无法判断。新增绑定需先在“修订目标与条件”中确认，再从新报告配置检查。",
+		"Select conditions already bound to each rule. Leave checks empty when no binding exists; empty checks cannot pass a condition. Removing a check leaves that condition inconclusive. Confirm new bindings through “Revise objective and conditions”, then configure checks from the new report.",
 	],
 	saveConfiguration: ["确认配置并按原证据评分", "Confirm configuration and score sealed evidence"],
 	configurationSaved: [
@@ -124,6 +124,21 @@ const labels = {
 		"已按原快照提交新的评分，旧报告保留。",
 		"A new score was requested for the original snapshot. The previous report is retained.",
 	],
+	bindingMethod: ["核验方式（新绑定保存后需配置检查）", "Check method (configure checks after saving a new binding)"],
+	additionalBindingMethod: [
+		"新增条件的核验方式（适用于上方全部新增行）",
+		"Check method for all newly added lines above",
+	],
+	manualBinding: ["人工复核，不自动判断", "Human review, no automatic judgment"],
+	bindingUnavailable: [
+		"所选规则版本不可用于条件绑定，请刷新后重新选择。",
+		"The selected rule version is unavailable for condition binding. Refresh and select again.",
+	],
+	bindingHint: [
+		"未绑定的条件可选择已安装的核验规则；新增多项可分次选择不同方式。绑定只记录核验方式，不产生通过结论。保存并重新诊断后，在新报告中“调整规则并生成新报告”补充具体检查；未配置或缺证据仍无法判断。已有绑定和检查配置保持原样。",
+		"Choose an installed check method for an unbound condition. Add conditions in separate revisions when they need different methods. A binding alone cannot establish a pass. After saving and diagnosing, use “Adjust rules and create a new report” to configure checks. Missing configuration or evidence remains inconclusive. Existing bindings and configurations are retained.",
+	],
+
 	revise: ["修订目标与条件", "Revise objective and conditions"],
 	contractRevision: ["条件修订版本", "Contract revision"],
 	revisionHint: [
@@ -137,10 +152,7 @@ const labels = {
 		"此条件绑定既有核验，核验方式保持原配置。",
 		"This condition is bound to an existing check whose configuration is retained.",
 	],
-	additionalConditions: [
-		"新增文字条件（每行一项，需要人工复核）",
-		"Additional text conditions (one per line, require human review)",
-	],
+	additionalConditions: ["新增验收条件（每行一项）", "Additional acceptance conditions (one per line)"],
 	saveRevision: ["确认修订并重新诊断", "Confirm revision and diagnose again"],
 	discardRevision: ["放弃编辑，返回原报告", "Discard edits and return to report"],
 	revisionSaved: [

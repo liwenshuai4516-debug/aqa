@@ -100,7 +100,12 @@ async function openReport() {
 		h.sent.push(message);
 		let result: any;
 		if (message.action === "describe")
-			result = { conversationId: "conv", sessionId: "session", choices: [{ id: "u", preview: "Task", role: "user" }] };
+			result = {
+				conversationId: "conv",
+				sessionId: "session",
+				choices: [{ id: "u", preview: "Task", role: "user" }],
+				rules: ["F01", "F02", "F04", "F05", "F06", "F07", "F08"].map((id) => ({ id, version: "1" })),
+			};
 		if (message.action === "list")
 			result = {
 				items: message.kind === "reviews" ? [] : [{ ...reportRef, objectivePreview: "Original objective" }],
@@ -374,6 +379,82 @@ describe("evaluation client lifecycle", () => {
 				.filter((m) => ["createContract", "reviseContract", "createAttempt", "collect", "seal"].includes(m.action)),
 		).toEqual([]);
 	});
+	it("binds only installed check methods through a confirmed contract revision", async () => {
+		const { root, h, records, contractRef } = await openReport();
+		root.querySelector<HTMLButtonElement>('[data-action="revise"]')!.click();
+		await vi.waitFor(() => expect(root.querySelector('[name="conditions-20-ruleRef"]')).not.toBeNull());
+		expect(root.querySelector('[name="conditions-0-ruleRef"]')).toBeNull();
+		const additionalRule = root.querySelector<HTMLSelectElement>('[name="additionalRuleRef"]')!;
+		expect([...additionalRule.options].map((o) => o.value)).toEqual(["", "F01@1", "F02@1", "F04@1", "F05@1", "F08@1"]);
+		root.querySelector<HTMLTextAreaElement>('[name="additionalConditions"]')!.value = "New artifact requirement";
+		additionalRule.add(new Option("unsupported", "F99@1"));
+		additionalRule.value = "F99@1";
+		const submit = () =>
+			root
+				.querySelector('form[data-form="revision"]')!
+				.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+		const before = h.sent.length;
+		submit();
+		await vi.waitFor(() =>
+			expect(root.querySelector('[role="alert"]')?.textContent).toContain("unavailable for condition binding"),
+		);
+		expect(h.sent.length).toBe(before);
+		additionalRule.value = "F01@1";
+		root.querySelector<HTMLSelectElement>('[name="conditions-20-ruleRef"]')!.value = "F08@1";
+		root.querySelector<HTMLSelectElement>('[name="constraints-0-ruleRef"]')!.value = "F04@1";
+		submit();
+		await vi.waitFor(() => expect(h.sent.at(-1).action).toBe("reviseContract"));
+		const request = h.sent.at(-1);
+		expect(request.previousRef).toEqual(contractRef);
+		expect(request.data.conditions[0]).toEqual(records.contract.data.conditions[0]);
+		expect(request.data.conditions[20]).toMatchObject({
+			ruleRef: "F08@1",
+			required: false,
+			sourceType: "user",
+			sourceRef: "human-ui:contract:conditions:c-20",
+		});
+		expect(request.data.conditions.at(-1)).toMatchObject({
+			statement: "New artifact requirement",
+			ruleRef: "F01@1",
+			sourceType: "user",
+			required: true,
+		});
+		expect(request.data.constraints[0]).toMatchObject({
+			ruleRef: "F04@1",
+			sourceType: "user",
+			sourceRef: "human-ui:contract:constraints:constraint",
+		});
+		expect(request.data.scope).toEqual(records.contract.data.scope);
+		expect(request.data.environmentRefs).toEqual(records.contract.data.environmentRefs);
+		h.reply(request, { code: "IO_ERROR", message: "Synthetic stop after checking the revision request" }, false);
+		await vi.waitFor(() =>
+			expect(root.querySelector<HTMLButtonElement>('button[type="submit"]')?.disabled).toBe(false),
+		);
+	});
+
+	it("reuses generated condition IDs when the contract write acknowledgement is lost", async () => {
+		const { root, h } = await openReport();
+		root.querySelector<HTMLButtonElement>('[data-action="revise"]')!.click();
+		await vi.waitFor(() => expect(root.querySelector('[name="additionalConditions"]')).not.toBeNull());
+		root.querySelector<HTMLTextAreaElement>('[name="additionalConditions"]')!.value = "New frozen requirement";
+		const submit = () =>
+			root
+				.querySelector('form[data-form="revision"]')!
+				.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+		submit();
+		await vi.waitFor(() => expect(h.sent.at(-1).action).toBe("reviseContract"));
+		const original = h.sent.at(-1);
+		h.reply(original, { code: "IO_ERROR", message: "Receipt lost after durable write" }, false);
+		await vi.waitFor(() =>
+			expect(root.querySelector<HTMLButtonElement>('button[type="submit"]')?.disabled).toBe(false),
+		);
+		submit();
+		await vi.waitFor(() => expect(h.sent.filter((m) => m.action === "reviseContract")).toHaveLength(2));
+		const retried = h.sent.at(-1);
+		expect(retried.data).toEqual(original.data);
+		expect(retried.requestId).toBe(original.requestId);
+	});
+
 	it("loads every condition before revision and resumes partial saves without recreating the contract", async () => {
 		const { root, h, contractRef, records } = await openReport();
 		root.querySelector<HTMLButtonElement>("[data-action=revise]")!.click();

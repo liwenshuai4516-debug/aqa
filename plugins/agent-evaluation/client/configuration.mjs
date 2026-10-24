@@ -16,6 +16,7 @@ const fields = {
 		"cacheWritePerMillion",
 	],
 };
+export const conditionRuleIds = Object.keys(fields).filter((id) => id !== "prices");
 const optional = new Set(["format", "sha256", "jsonSchema", "caseIds"]);
 const numeric = new Set([
 	"maxAgentWallMs",

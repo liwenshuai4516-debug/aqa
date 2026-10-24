@@ -427,6 +427,78 @@ describe("EC04 product service", () => {
 		expect((await f.request("get", { ref: scored.contractRef })).data.objective).toBe(f.contract.objective);
 		expect(f.host.readEvaluationArtifact).toHaveBeenCalledTimes(1);
 	});
+	it("keeps newly bound conditions unknown until explicit checks are configured on the revised snapshot", async () => {
+		const f = fixture();
+		(f.contract.conditions as any[]).push({
+			id: "new-bound",
+			statement: "result.json exists at observation time",
+			sourceRef: "u1",
+			sourceType: "proposed",
+			required: false,
+			applicableWhen: "always",
+		});
+		const original = await diagnose(f);
+		f.host.readEvaluationArtifact.mockClear();
+		const data = {
+			...f.contract,
+			conditions: [
+				f.contract.conditions[0],
+				{
+					...f.contract.conditions[1],
+					ruleRef: "F01@1",
+					sourceType: "user",
+					sourceRef: "human-ui:proposal",
+					required: true,
+				},
+				{
+					id: "wall",
+					statement: "Agent wall time within the confirmed limit",
+					sourceType: "user",
+					sourceRef: "human-ui:wall",
+					required: true,
+					applicableWhen: "always",
+					ruleRef: "F08@1",
+				},
+			],
+		};
+		const contractRef = await f.request("reviseContract", { previousRef: original.contractRef, data });
+		const attemptRef = await f.request("createAttempt", { ref: contractRef });
+		const collected = await f.request("collect", { ref: attemptRef, artifactPaths: ["result.json"] });
+		const snapshotRef = await f.request("seal", { ref: collected.checkpointRef });
+		const wait = async (job: any) => {
+			let status: any;
+			await vi.waitFor(async () => {
+				status = await f.request("status", { jobId: job.jobId });
+				expect(status.state).toBe("completed");
+			});
+			return f.request("get", { ref: status.reportRef });
+		};
+		const configs = Object.fromEntries(
+			original.report.data.configuration.rules.map((r: any) => [r.id, structuredClone(r.config)]),
+		);
+		const unconfigured = await wait(await f.request("evaluate", { ref: snapshotRef, configs }));
+		for (const id of ["new-bound", "wall"])
+			expect(unconfigured.data.findings.find((r: any) => r.conditionId === id).verdict).toBe("inconclusive");
+		configs.F01.checks.push({ conditionId: "new-bound", path: "result.json" });
+		configs.F08.checks.push({ conditionId: "wall", maxAgentWallMs: 0 });
+		expect(
+			await f.request("validateConfiguration", {
+				ref: { kind: "evaluations", id: unconfigured.id, revision: unconfigured.revision },
+				configs,
+			}),
+		).toMatchObject({ valid: true });
+		const configured = await wait(await f.request("evaluate", { ref: snapshotRef, configs }));
+		expect(configured.data.findings.find((r: any) => r.conditionId === "new-bound").verdict).toBe("pass");
+		expect(configured.data.findings.find((r: any) => r.conditionId === "wall").verdict).toBe("inconclusive");
+		expect(configured.data.snapshotRef).toEqual(unconfigured.data.snapshotRef);
+		expect(configured.data.contractRef).toEqual(contractRef);
+		expect((await f.request("list", { kind: "attempts" })).items).toHaveLength(2);
+		expect(f.host.readEvaluationArtifact).toHaveBeenCalledTimes(1);
+		expect(f.host.readEvaluationNative).not.toHaveBeenCalled();
+		expect((await f.request("get", { ref: original.reportRef })).sourceDigest).toBe(original.report.sourceDigest);
+		expect((await f.request("get", { ref: original.contractRef })).data.conditions[1].ruleRef).toBeUndefined();
+	});
+
 	it("restores the exact saved profile after restart and refuses missing or unavailable versions", async () => {
 		const f = fixture(),
 			scored = await diagnose(f);
