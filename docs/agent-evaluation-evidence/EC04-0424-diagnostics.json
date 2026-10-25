@@ -1,0 +1,545 @@
+{
+	"scope": "EC04 exact JSON-string byte counting only for collector pack sizing; unchanged frozen workloads and thresholds; actual macOS arm64 Electron product regression; no real CLI/model/runner calls",
+	"timestamp": "2026-10-25T13:57:08.122022+00:00",
+	"baseline": "f7ff61b99d6cdd28f7bc610cea78ca8b904955d7",
+	"pluginVersion": "0.4.24",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/index.json",
+		"bytes": 48812,
+		"sha256": "39442a4db855a6011b860848a5514a732d3f8613a0ae1f686dfe42685a02a124"
+	},
+	"archiveFiles": 203,
+	"archiveScope": "Selected raw performance, microbenchmark, exact measured source files, owned synthetic SDK/native fixture stores and screenshots/logs. Excludes credentials/dependencies/caches/symlinks; originals retained.",
+	"change": "Collector counts exact JSON string UTF-8 bytes and serializes only the empty-body canonical envelope for packing estimates. Store still serializes full input and checks exact input/physical pack caps. No schema/digest/redaction/authorization/durability/checkpoint change.",
+	"correctness": {
+		"exhaustiveUTF16Units": 65536,
+		"additional": "Paired and lone surrogate boundaries, all-units string, control/quote/backslash text, Chinese/emoji and 200000 ASCII bytes; envelope arithmetic equals existing canonical byte length.",
+		"targetedTests": 30,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/files/validation/targeted-unit.log",
+			"bytes": 208,
+			"sha256": "e4743afce919027ef5e42cf47d3a18eeab0776aaea6e5c6cbebc2249626d62ee"
+		}
+	},
+	"formalComparison": {
+		"status": "FAIL",
+		"roundsPerPhase": 30,
+		"scope": "Baseline then candidate; each three frozen workloads x five off/on pairs in fresh workers; no app/unit/profiling concurrent; fixture construction excluded.",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/files/validation/comparison.json",
+			"bytes": 2678,
+			"sha256": "2834b0fa31b5827923eda2185c52e929282f54234a80f75dd5ce19858f94eaed"
+		},
+		"baseline": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/files/validation/baseline-performance.json",
+			"bytes": 8581,
+			"sha256": "7c53de10701b80b1ce7fbe31ed7f32efd1b2c1dab046b42ed04ec42b7f14fe7b"
+		},
+		"candidate": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/files/validation/candidate-performance.json",
+			"bytes": 8593,
+			"sha256": "77a6b64f2673c4ecb67a1451ac93f9952ef420012378251b5cedf394aebffe6c"
+		},
+		"baselineComparisons": [
+			{
+				"workload": "serial",
+				"wallDelta": 53.435291999999976,
+				"wallLimit": 50,
+				"cpuDelta": 49.842,
+				"cpuLimit": 50,
+				"rssDeltas": [5505024, 6045696, 2818048, 3489792, 5013504],
+				"pass": false
+			},
+			{
+				"workload": "parallel",
+				"wallDelta": 143.46404200000003,
+				"wallLimit": 50,
+				"cpuDelta": 175.16199999999998,
+				"cpuLimit": 50,
+				"rssDeltas": [28672000, 27230208, 26624000, 25919488, 28082176],
+				"pass": false
+			},
+			{
+				"workload": "long",
+				"wallDelta": 557.744166,
+				"wallLimit": 50,
+				"cpuDelta": 535.573,
+				"cpuLimit": 50,
+				"rssDeltas": [62619648, 62717952, 64356352, 64208896, 63750144],
+				"pass": false
+			}
+		],
+		"candidateComparisons": [
+			{
+				"workload": "serial",
+				"wallDelta": 55.73283300000003,
+				"wallLimit": 50,
+				"cpuDelta": 46.116,
+				"cpuLimit": 50,
+				"rssDeltas": [4472832, 4341760, 3391488, 3538944, 5046272],
+				"pass": false
+			},
+			{
+				"workload": "parallel",
+				"wallDelta": 143.66174999999996,
+				"wallLimit": 50,
+				"cpuDelta": 174.101,
+				"cpuLimit": 50,
+				"rssDeltas": [26378240, 27459584, 27082752, 27115520, 27934720],
+				"pass": false
+			},
+			{
+				"workload": "long",
+				"wallDelta": 520.927833,
+				"wallLimit": 50,
+				"cpuDelta": 489.564,
+				"cpuLimit": 50,
+				"rssDeltas": [62406656, 62472192, 67289088, 64978944, 62341120],
+				"pass": false
+			}
+		],
+		"sourceHashes": {
+			"baseline-schema.mjs": "b9f87eda3d93573fee8cd4919b9317bc462538ea728b2b503ca49d7fc74c1e5b",
+			"baseline-collect.mjs": "0d7b8c4c165775dde75b0130ac047c67a0b3270d3a463e71cc5d74fe5b5d2ef3",
+			"candidate-schema.mjs": "ca43aa97f6f0d08277a17e39946ee42b90723ecea400c36903a54d959da341c8",
+			"candidate-collect.mjs": "99178ea37dabe84839fa0559b7c4e1df4a2c04090dbbc1d2108a841f29a67a89"
+		},
+		"candidateSourceMatchesFinal": true,
+		"evidenceCounts": [40, 400, 200],
+		"allGapsEmpty": true,
+		"allDiskBudgetsPassed": true,
+		"candidateLongRssFailures": 1,
+		"candidateLongRssMaximumMiB": 64.171875,
+		"limits": "All three time gates still FAIL; parallel/long CPU still FAIL; one candidate long RSS delta exceeds 64MiB. Short wall does not improve; no overall performance PASS."
+	},
+	"typecheck": {
+		"status": "PASS",
+		"configs": 5,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/files/validation/typecheck-final.log",
+			"bytes": 251,
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+		}
+	},
+	"unit": {
+		"status": "PASS",
+		"files": 17,
+		"passed": 280,
+		"failed": 0,
+		"skipped": 0,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/files/validation/unit-final.log",
+			"bytes": 229,
+			"sha256": "7fe064fb64638e16c5891b312b19923bffed0d1d3dcb2825bac1294da01e1886"
+		}
+	},
+	"desktop": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/files/agent-evaluation-desktop-x2ZbYj/result.json",
+			"bytes": 15593,
+			"sha256": "dcaadc42cef70dd1fc1db1bab222023918721d888aab11b0c4c25b10c96699bf"
+		},
+		"originalOutput": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-x2ZbYj",
+		"checks": 23,
+		"evidenceMatrix": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/files/agent-evaluation-desktop-x2ZbYj/evidence-matrix.json",
+			"bytes": 8286,
+			"sha256": "7fdbb44173bf7fc953c76fdcd65eb78c9d1e8f5edde75fcf9a451358b8f4b0ba"
+		},
+		"characters": 160545,
+		"pages": [
+			{
+				"offset": 0,
+				"characters": 4096,
+				"sha256": "6c438611b9dd854ced14032ca95850e860eee4980a76f497a7dedf5eaab5cb4a"
+			},
+			{
+				"offset": 4096,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 8192,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 12288,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 16384,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 20480,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 24576,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 28672,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 32768,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 36864,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 40960,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 45056,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 49152,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 53248,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 57344,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 61440,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 65536,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 69632,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 73728,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 77824,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 81920,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 86016,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 90112,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 94208,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 98304,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 102400,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 106496,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 110592,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 114688,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 118784,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 122880,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 126976,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 131072,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 135168,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 139264,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 143360,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 147456,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 151552,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 155648,
+				"characters": 4096,
+				"sha256": "f302957da5220938a7e3e51a8718c79b9e00dc13ab2119e8cfc978f041720382"
+			},
+			{
+				"offset": 159744,
+				"characters": 801,
+				"sha256": "8f7d30cef1de550a9b83fbb778a451bfa6a601c42830db20baedb47fdc29fa71"
+			}
+		],
+		"actualModelCalls": 0,
+		"actualCliCalls": 0
+	},
+	"nativeDesktop": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/files/agent-evaluation-native-desktop-285omd/result.json",
+			"bytes": 3299,
+			"sha256": "ab9faff33d84461c708321672780769f6e54678e94bd7e2b78747cd1e6862ca6"
+		},
+		"originalOutput": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-native-desktop-285omd",
+		"checks": [
+			{
+				"engine": "api",
+				"synthetic": false,
+				"missingOriginal": "EVIDENCE_GAP",
+				"changedOriginal": "VERSION_CONFLICT",
+				"sealedTextRetained": true,
+				"fullSealedCharsVerified": 935,
+				"reportUnchanged": true,
+				"explicitRetryAfterRestoration": true,
+				"originalSourceUnchanged": true
+			},
+			{
+				"engine": "api",
+				"synthetic": false,
+				"runId": "0d4116d6-3953-4906-8865-f70717fbd8b2",
+				"rows": 1,
+				"status": "unknown",
+				"complete": false,
+				"reportUnchanged": true,
+				"historicalExecutionNotPassed": true,
+				"currentExecutionNotPassed": true
+			},
+			{
+				"engine": "ui",
+				"synthetic": false,
+				"runId": "run-1249f06947265e47b0d54258ae80b462",
+				"rows": 1,
+				"status": "passed",
+				"complete": true,
+				"reportUnchanged": true,
+				"historicalExecutionNotPassed": true,
+				"currentExecutionNotPassed": true
+			},
+			{
+				"engine": "ui",
+				"synthetic": true,
+				"pageSizes": [20, 20, 1],
+				"returnedToFirst": true,
+				"exactOrderedRows": [
+					"synthetic-01",
+					"synthetic-02",
+					"synthetic-03",
+					"synthetic-04",
+					"synthetic-05",
+					"synthetic-06",
+					"synthetic-07",
+					"synthetic-08",
+					"synthetic-09",
+					"synthetic-10",
+					"synthetic-11",
+					"synthetic-12",
+					"synthetic-13",
+					"synthetic-14",
+					"synthetic-15",
+					"synthetic-16",
+					"synthetic-17",
+					"synthetic-18",
+					"synthetic-19",
+					"synthetic-20",
+					"synthetic-21",
+					"synthetic-22",
+					"synthetic-23",
+					"synthetic-24",
+					"synthetic-25",
+					"synthetic-26",
+					"synthetic-27",
+					"synthetic-28",
+					"synthetic-29",
+					"synthetic-30",
+					"synthetic-31",
+					"synthetic-32",
+					"synthetic-33",
+					"synthetic-34",
+					"synthetic-35",
+					"synthetic-36",
+					"synthetic-37",
+					"synthetic-38",
+					"synthetic-39",
+					"synthetic-40",
+					"synthetic-41"
+				],
+				"allUnknownIncomplete": true,
+				"nativeRunnerCalls": 0
+			},
+			{
+				"engine": "ui",
+				"synthetic": true,
+				"missingOriginal": "EVIDENCE_GAP",
+				"changedOriginal": "EVIDENCE_GAP",
+				"sealedTextRetained": true,
+				"fullSealedCharsVerified": 6849,
+				"reportUnchanged": true,
+				"explicitRetryAfterRestoration": true,
+				"originalSourceUnchanged": true
+			},
+			{
+				"engine": "ui",
+				"synthetic": true,
+				"sourceFiles": 16,
+				"allSourceFilesUnchanged": true
+			},
+			{
+				"engine": "ui",
+				"synthetic": true,
+				"runId": "synthetic-unlaunched-plan",
+				"rows": 41,
+				"status": "unknown",
+				"complete": false,
+				"reportUnchanged": true,
+				"historicalExecutionNotPassed": false,
+				"currentExecutionNotPassed": true
+			}
+		],
+		"actualModelCalls": 0,
+		"actualCliCalls": 0,
+		"nativeRunnerCalls": 0
+	},
+	"quality": {
+		"lint": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/files/validation/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/files/validation/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"limitation": "Historical-tag heuristic skipped (no available Git tag); structural/v33 checks passed; skip not counted as pass."
+		},
+		"i18n": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/files/validation/i18n.log",
+				"bytes": 615,
+				"sha256": "80312d8da86db05c5343b06b015ff85dbb3f374e280ecc1b044c87014878d1cd"
+			}
+		},
+		"size": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/files/validation/size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			}
+		},
+		"diff": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0424/files/validation/diff.log",
+				"bytes": 0,
+				"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+			}
+		}
+	},
+	"limitations": [
+		"No current-version full rollback or scale rerun; fixture version assertions updated only; prior version evidence retains original scope.",
+		"41 native UI rows are an unlaunched pending plan, all unknown/incomplete; not executed-result multipage acceptance.",
+		"Microbenchmark numbers are exploratory only; early Unicode-regex counter had no benefit and was discarded before product change.",
+		"True CLI/model execution remains user-deferred; containment prerequisite unresolved."
+	],
+	"remaining": {
+		"EC04": "IN_PROGRESS",
+		"M1": "INCOMPLETE",
+		"AC39": "FAIL",
+		"EC06": "BLOCKED",
+		"EC07": "NOT_STARTED dependent EC06",
+		"EC08": "USER_DEFERRED",
+		"EC09": "NOT_STARTED dependent EC04"
+	}
+}

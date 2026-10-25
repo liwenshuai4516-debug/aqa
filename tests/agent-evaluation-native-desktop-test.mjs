@@ -151,8 +151,8 @@ try {
 	await until(() => page.evaluate(() => window.__nativeFrames.some((f) => f.type === "ready")));
 	const setup = page.locator(".setup-modal .modal-close");
 	if (await setup.isVisible()) await setup.click();
-	assert.match(app.getLogs(), /\[plugin:agent-evaluation\] activated \(v0\.4\.23\)/);
-	result.pluginVersion = "0.4.23";
+	assert.match(app.getLogs(), /\[plugin:agent-evaluation\] activated \(v0\.4\.24\)/);
+	result.pluginVersion = "0.4.24";
 	async function rpc(action, data = {}) {
 		const requestId = crypto.randomUUID();
 		await page.evaluate((m) => window.__nativeSocket.send(JSON.stringify(m)), {

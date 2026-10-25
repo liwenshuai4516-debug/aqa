@@ -60,6 +60,23 @@ export function canonical(value) {
 	return parts.join("");
 }
 export const digest = (value) => createHash("sha256").update(canonical(value)).digest("hex");
+/** Exact JSON string bytes without allocating an escaped copy of a long body. */
+export function jsonStringBytes(text) {
+	let bytes = Buffer.byteLength(text) + 2;
+	for (const match of text.matchAll(/["\\\u0000-\u001f]/g)) {
+		const character = match[0];
+		bytes += character.charCodeAt(0) < 32 && !"\b\t\n\f\r".includes(character) ? 5 : 1;
+	}
+	// UTF-8 replaces lone surrogates with three bytes; JSON emits six-byte \uXXXX.
+	// A valid pair stays as four UTF-8 bytes and needs no adjustment.
+	for (const match of text.matchAll(/[\ud800-\udfff]/g)) {
+		const code = match[0].charCodeAt(0),
+			neighbor = text.charCodeAt(match.index + (code < 0xdc00 ? 1 : -1)),
+			paired = code < 0xdc00 ? neighbor >= 0xdc00 && neighbor <= 0xdfff : neighbor >= 0xd800 && neighbor <= 0xdbff;
+		if (!paired) bytes += 3;
+	}
+	return bytes;
+}
 const str = T.String({ minLength: 1, maxLength: 16384 });
 const uuid = T.String({ pattern: "^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$" });
 const hash = T.String({ pattern: "^[a-f0-9]{64}$" });

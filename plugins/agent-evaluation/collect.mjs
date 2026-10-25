@@ -2,7 +2,7 @@
  * Replays deduplicate against durable source revisions; a checkpoint is published last.
  * No evaluator, runner, model or business write API is available to this module.
  */
-import { LIMITS, canonical, digest, requireValue } from "./schema.mjs";
+import { LIMITS, canonical, digest, jsonStringBytes, requireValue } from "./schema.mjs";
 import { piEvidenceAdapter } from "./adapters/pi.mjs";
 const refOf = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
 const same = (a, b) => digest(a) === digest(b);
@@ -162,7 +162,15 @@ export class EvidenceCollector {
 					remember(item);
 					continue;
 				}
-				const size = Buffer.byteLength(canonical(writeInput(item))) + overhead;
+				const input = writeInput(item);
+				// The empty-body envelope has the same ordering and escaping overhead.
+				// Count the original string exactly; the store still serializes and checks it.
+				const size =
+					(item.content === undefined
+						? Buffer.byteLength(canonical(input))
+						: Buffer.byteLength(canonical({ ...input, data: { ...item, content: "" } })) +
+							jsonStringBytes(item.content) -
+							2) + overhead;
 				if (bytes + size > store.limits.readBytes) flush();
 				if (size + 26 > store.limits.readBytes) {
 					remember(item);
