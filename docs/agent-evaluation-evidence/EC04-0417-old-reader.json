@@ -1,0 +1,22 @@
+{
+	"status": "PASS",
+	"writerVersion": "0.4.17",
+	"readerVersion": "0.4.16",
+	"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-engine-0aOv2U",
+	"newCheckpointInPack": true,
+	"oldReaderExactReplay": true,
+	"oldReaderNewSnapshot": true,
+	"sourceRecollection": false,
+	"allFilesUnchanged": true,
+	"files": {
+		"attempts/02155799-a0cd-4093-9677-54fa98008c8d.1.json": "aacb8790e3bd6f5a201a779c3b9ffddabfb7510b0a52a2ea75b2e187150e3c67",
+		"contracts/5a947175-8d1e-4ab7-b351-5510949aa779.1.json": "8816b8f22eca460d4da6c50bae50ad657438d3af00386c0ba20e4090757b5443",
+		"evidence/batch-984ae92d-eddf-4081-9b33-c4041a05cc62.pack": "0873870b876aedf0df6dd4b5d39b77793078e7dea4487efb9c682f433f42b7aa",
+		"evidence/batch-fda47168-d99b-45c9-b5ec-0e10ddafedaf.pack": "d17b4b6bdf4adbfb77b2b4590f50bbd71d07e2d26f686d181bce0a56ea6ad582",
+		"snapshots/72d4e36c-80d6-45f3-ab16-d1dd351d64e1.1.json": "48793a0739d51ba738ea5a5a97b47644a8cbcc85e2f515b3f8e19dfb8a58683b",
+		"snapshots/bc39ca43-e93e-4ee9-8ab8-e9a82b0fb810.1.json": "1aae75311c54c9f9200af0ae187d900bf773a6426e420edb897d465f4135fb31",
+		"targets/a5567045-2d59-4407-b0ec-8170797f9f70.1.json": "badbad344e63bba905c9fa3e04d596da439556e73efa766a28aa28ca311639e2"
+	},
+	"actualModelCalls": 0,
+	"actualCliCalls": 0
+}

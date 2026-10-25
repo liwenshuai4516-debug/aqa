@@ -29,13 +29,35 @@ export function requireValue(ok, code, message) {
 	if (!ok) throw new EvaluationError(code, message);
 }
 export function canonical(value) {
-	if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`;
-	if (value && typeof value === "object")
-		return `{${Object.keys(value)
-			.sort()
-			.map((k) => `${JSON.stringify(k)}:${canonical(value[k])}`)
-			.join(",")}}`;
-	return JSON.stringify(value);
+	if (!value || typeof value !== "object") return JSON.stringify(value);
+	// Join once at the root so a nested evidence body is not copied at every level.
+	const parts = [];
+	const append = (entry, objectValue = false) => {
+		if (Array.isArray(entry)) {
+			parts.push("[");
+			const length = entry.length;
+			for (let i = 0; i < length; i++) {
+				if (i) parts.push(",");
+				if (i in entry) append(entry[i]);
+			}
+			parts.push("]");
+		} else if (entry && typeof entry === "object") {
+			parts.push("{");
+			const keys = Object.keys(entry).sort();
+			keys.forEach((key, i) => {
+				if (i) parts.push(",");
+				parts.push(JSON.stringify(key), ":");
+				append(entry[key], true);
+			});
+			parts.push("}");
+		} else {
+			const encoded = JSON.stringify(entry);
+			// Preserve the legacy object interpolation versus array join semantics for undefined.
+			parts.push(objectValue ? String(encoded) : encoded);
+		}
+	};
+	append(value);
+	return parts.join("");
 }
 export const digest = (value) => createHash("sha256").update(canonical(value)).digest("hex");
 const str = T.String({ minLength: 1, maxLength: 16384 });

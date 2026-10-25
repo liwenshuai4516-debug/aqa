@@ -1,0 +1,64 @@
+{
+	"status": "PASS",
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-report-performance-KKemnw",
+	"storageFormat": "pack-v1",
+	"scope": "1000 evidence snapshot; fixture construction excluded; five actual report/list/evidence reads",
+	"checks": {
+		"reportsCompleted": true,
+		"reportMedianMs": 512.9547089999999,
+		"listMedianMs": 14.187209000000166,
+		"evidenceMedianMs": 0.34604200000012497
+	},
+	"rounds": [
+		{
+			"round": 0,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 528.2358330000001,
+			"listCount": 50,
+			"listMs": 14.253791999999976,
+			"evidenceChars": 37,
+			"evidenceMs": 0.3907080000000178
+		},
+		{
+			"round": 1,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 510.7844580000001,
+			"listCount": 50,
+			"listMs": 14.187209000000166,
+			"evidenceChars": 37,
+			"evidenceMs": 0.3212919999998576
+		},
+		{
+			"round": 2,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 518.6143750000001,
+			"listCount": 50,
+			"listMs": 13.482874999999922,
+			"evidenceChars": 37,
+			"evidenceMs": 0.35370800000009694
+		},
+		{
+			"round": 3,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 512.9547089999999,
+			"listCount": 50,
+			"listMs": 14.26541700000007,
+			"evidenceChars": 37,
+			"evidenceMs": 0.34604200000012497
+		},
+		{
+			"round": 4,
+			"evidenceItems": 1000,
+			"reportState": "completed",
+			"reportMs": 510.0057499999998,
+			"listCount": 50,
+			"listMs": 13.481791000000158,
+			"evidenceChars": 37,
+			"evidenceMs": 0.33370800000011513
+		}
+	]
+}

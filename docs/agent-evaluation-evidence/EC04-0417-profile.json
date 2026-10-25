@@ -1,0 +1,191 @@
+{
+	"scope": "Standalone instrumented runs, not performance gate; nested method timings overlap.",
+	"runs": {
+		"baseline-long": {
+			"workload": "long",
+			"enabled": true,
+			"elapsedMs": 772.410625,
+			"cpuMs": 581.05,
+			"peakRssBytes": 137707520,
+			"diskBytes": 20306357,
+			"inputBytes": 20049825,
+			"evidenceCount": 200,
+			"gaps": [],
+			"profile": {
+				"get": {
+					"calls": 824,
+					"elapsedMs": 29.47062600000254
+				},
+				"load": {
+					"calls": 231,
+					"elapsedMs": 20.044211000000416
+				},
+				"readFile": {
+					"calls": 48,
+					"elapsedMs": 5.145375999999715
+				},
+				"readRange": {
+					"calls": 400,
+					"elapsedMs": 25.06803200000104
+				},
+				"readBlob": {
+					"calls": 200,
+					"elapsedMs": 56.93149799999992
+				},
+				"write": {
+					"calls": 0,
+					"elapsedMs": 0
+				},
+				"writeEvidenceBatch": {
+					"calls": 8,
+					"elapsedMs": 319.87949999999995
+				}
+			}
+		},
+		"baseline-parallel": {
+			"workload": "parallel",
+			"enabled": true,
+			"elapsedMs": 162.197958,
+			"cpuMs": 211.37,
+			"peakRssBytes": 102744064,
+			"diskBytes": 612446,
+			"inputBytes": 103224,
+			"evidenceCount": 400,
+			"gaps": [],
+			"profile": {
+				"get": {
+					"calls": 1612,
+					"elapsedMs": 40.69238100000041
+				},
+				"load": {
+					"calls": 413,
+					"elapsedMs": 30.341081999999716
+				},
+				"readFile": {
+					"calls": 18,
+					"elapsedMs": 1.641458
+				},
+				"readRange": {
+					"calls": 800,
+					"elapsedMs": 40.149574000000314
+				},
+				"readBlob": {
+					"calls": 400,
+					"elapsedMs": 22.118414999999345
+				},
+				"write": {
+					"calls": 0,
+					"elapsedMs": 0
+				},
+				"writeEvidenceBatch": {
+					"calls": 2,
+					"elapsedMs": 72.65299999999996
+				}
+			}
+		},
+		"long": {
+			"workload": "long",
+			"enabled": true,
+			"elapsedMs": 757.48525,
+			"cpuMs": 550.98,
+			"peakRssBytes": 136544256,
+			"diskBytes": 20306357,
+			"inputBytes": 20049825,
+			"evidenceCount": 200,
+			"gaps": [],
+			"profile": {
+				"get": {
+					"calls": 824,
+					"elapsedMs": 29.118479000001855
+				},
+				"load": {
+					"calls": 231,
+					"elapsedMs": 19.664831000000902
+				},
+				"readFile": {
+					"calls": 48,
+					"elapsedMs": 4.868165999999633
+				},
+				"readRange": {
+					"calls": 400,
+					"elapsedMs": 24.072912999999858
+				},
+				"readBlob": {
+					"calls": 200,
+					"elapsedMs": 55.71216700000036
+				},
+				"write": {
+					"calls": 0,
+					"elapsedMs": 0
+				},
+				"writeEvidenceBatch": {
+					"calls": 8,
+					"elapsedMs": 317.31162600000005
+				}
+			}
+		},
+		"parallel": {
+			"workload": "parallel",
+			"enabled": true,
+			"elapsedMs": 154.788208,
+			"cpuMs": 178.816,
+			"peakRssBytes": 101728256,
+			"diskBytes": 612446,
+			"inputBytes": 103224,
+			"evidenceCount": 400,
+			"gaps": [],
+			"profile": {
+				"get": {
+					"calls": 1612,
+					"elapsedMs": 41.6539020000001
+				},
+				"load": {
+					"calls": 413,
+					"elapsedMs": 30.145786999999984
+				},
+				"readFile": {
+					"calls": 18,
+					"elapsedMs": 1.4403309999999863
+				},
+				"readRange": {
+					"calls": 800,
+					"elapsedMs": 39.6081250000002
+				},
+				"readBlob": {
+					"calls": 400,
+					"elapsedMs": 22.414446999999882
+				},
+				"write": {
+					"calls": 0,
+					"elapsedMs": 0
+				},
+				"writeEvidenceBatch": {
+					"calls": 2,
+					"elapsedMs": 66.138791
+				}
+			}
+		}
+	},
+	"raw": [
+		{
+			"path": "/private/tmp/agent-evaluation-0417-diagnostic/baseline-long.json",
+			"bytes": 548,
+			"sha256": "ea865f9c1af54117b99882a1a42524e95e72c50d77faf5d39bcd97eceb60cade"
+		},
+		{
+			"path": "/private/tmp/agent-evaluation-0417-diagnostic/baseline-parallel.json",
+			"bytes": 541,
+			"sha256": "efab3eb0f78ac9810f99d0b333f47f4bccf10939d100f8e785d33d44dd021fec"
+		},
+		{
+			"path": "/private/tmp/agent-evaluation-0417-diagnostic/long.json",
+			"bytes": 549,
+			"sha256": "a684d22af992598b7c3f4a941589fe6e50af79674e69c1bb26707e950fe28857"
+		},
+		{
+			"path": "/private/tmp/agent-evaluation-0417-diagnostic/parallel.json",
+			"bytes": 541,
+			"sha256": "62bcc25b02d0a327654b322c824d76122eb26cec7e207c98fe7670f9e615ba21"
+		}
+	]
+}

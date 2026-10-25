@@ -1,0 +1,27 @@
+{
+	"status": "PASS",
+	"sourceVersion": "0.4.16",
+	"readerVersion": "0.4.17",
+	"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-engine-25nPy4",
+	"kinds": 7,
+	"recordsRead": 9,
+	"exportUnchanged": true,
+	"requestReplayUnchanged": true,
+	"allFilesUnchanged": true,
+	"files": {
+		"attempts/e5882181-466f-49ea-b9a5-4c97b89667b4.1.json": "dfdd80d5859e01b3bcec6e7dfb8829598c3bf3d609bed159c9b91e85e02582d3",
+		"blobs/43a40e4886d9846cab5c43b4b852d230695bd1667ef353ea096b381203aa2a6f-5a85189c3acefb3c4df00f8cee07d140a63373b98f47243b1f0fe35db80e6259.blob": "5a85189c3acefb3c4df00f8cee07d140a63373b98f47243b1f0fe35db80e6259",
+		"blobs/43a40e4886d9846cab5c43b4b852d230695bd1667ef353ea096b381203aa2a6f-8063e5a51719c58189c7d5209a5f37b34d14764198145a3f84bfd11c062f11d2.blob": "8063e5a51719c58189c7d5209a5f37b34d14764198145a3f84bfd11c062f11d2",
+		"blobs/43a40e4886d9846cab5c43b4b852d230695bd1667ef353ea096b381203aa2a6f-e95c77c7b5094974586a3cba0566957aa5219c916b6258c6a715781314bc1f2d.blob": "e95c77c7b5094974586a3cba0566957aa5219c916b6258c6a715781314bc1f2d",
+		"contracts/5d036e7d-2dff-48d2-9c70-00401fd6dc28.1.json": "447958f8588a09a84864da6060484e9ef8e986d9126e835b849ca5e53b1440bb",
+		"evaluations/0ab4fec7-61ee-4e6b-acf6-0657e97a1179.1.json": "2c7673eb316d00ff342f2dac560721e0dd1f568454c4bd3b8ecce85d54ff32e7",
+		"evidence/4f87d6e9-e447-4a34-baa9-5720cd92dd8a.1.json": "08c6f4e171e7d10ed5893d71b23d72782395b3c8c19011c53065d72e8e295997",
+		"evidence/b4dfe474-727c-4cdd-9c1e-3d0870532e87.1.json": "6b3de61c50b6ed75a2f1216740b4e9e89f26f84bae55d2f67d2b8f3e43cee543",
+		"evidence/d76053a7-9e0f-44d7-a460-5700edc35b77.1.json": "6fbbd9f4cfe582cb106da785e4a0fb6af39328940809d45c4d8b697785d9bdfc",
+		"reviews/c60cbd94-8c59-401c-9f35-de9c25ad67dc.1.json": "45791e2d7d75ae45b2fefe66fd8ba49a611092f6babb3cffc5010800504d2013",
+		"snapshots/b9fe9ea5-5dd0-48c5-a362-821f8da630a0.1.json": "95ad4abdef09f7f715c8bfbf5419abaadbe1b8e836c66d1f4b0a8020e95fc352",
+		"targets/2f8e27fb-8bb9-4bf9-b3ed-a53c4c4e7ee9.1.json": "b7e7b903f7bd381664d4a82f7e86eea28f66df70fcd70aa3a1a9662c76435b1b"
+	},
+	"actualModelCalls": 0,
+	"actualCliCalls": 0
+}
