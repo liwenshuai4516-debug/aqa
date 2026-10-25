@@ -1,0 +1,281 @@
+{
+	"status": "PASS",
+	"scope": "Upstream model baseline only, not product importer or desktop acceptance.",
+	"commit": "6099b8cf2bfbbb3e7ff1eb2163bfc4524dbd9ba5",
+	"repository": "https://github.com/laude-institute/harbor",
+	"python": "3.11.0",
+	"pydantic": "2.13.4",
+	"sourceDirectory": "/tmp/EC05-harbor-source",
+	"loading": "Only model namespace packages loaded; Harbor runtime __init__ requires installed package metadata and was not used. Model files unmodified.",
+	"schemaSha256": "832e23d8522c152cc25fca6059044a8dc6c0863a955c4878ffc9581c22cf998d",
+	"sourceFiles": [
+		{
+			"path": "src/harbor/models/trajectories/__init__.py",
+			"bytes": 1108,
+			"sha256": "8eac32584166ff8f3a30d42027bc53793c4804fed7b07dcc4a94795557e11846"
+		},
+		{
+			"path": "src/harbor/models/trajectories/agent.py",
+			"bytes": 919,
+			"sha256": "ae26f91b1aa9cba2f9f308b3b1b6a8e92c0851bb191e4bd8df3042b49a0425c6"
+		},
+		{
+			"path": "src/harbor/models/trajectories/content.py",
+			"bytes": 5613,
+			"sha256": "568f8ac708141b63b5facb363274b93d8bb76ae36250bcee656781f189ad3426"
+		},
+		{
+			"path": "src/harbor/models/trajectories/final_metrics.py",
+			"bytes": 1265,
+			"sha256": "c4897c3b7f6d6be0d891d5fc9a72d13407d01c897c099e3ca195c50424734caf"
+		},
+		{
+			"path": "src/harbor/models/trajectories/metrics.py",
+			"bytes": 1396,
+			"sha256": "c6d724d80d250dd27fefc4462a3f70aff2333fe42775382cb8073b889becf165"
+		},
+		{
+			"path": "src/harbor/models/trajectories/observation.py",
+			"bytes": 453,
+			"sha256": "2bb40e781053428e172af45110b0119bda4143594d592e414e9af0a60f057d28"
+		},
+		{
+			"path": "src/harbor/models/trajectories/observation_result.py",
+			"bytes": 1544,
+			"sha256": "edbe26ca85aa8ef5f13a08a62d4d777d20832a7a5b67dcfa9162d6dbdaaf4c0a"
+		},
+		{
+			"path": "src/harbor/models/trajectories/step.py",
+			"bytes": 5319,
+			"sha256": "6d8cc176449e0d5be46b40fdc9802bcb417f6b11d295c111e670055552abaa4a"
+		},
+		{
+			"path": "src/harbor/models/trajectories/subagent_trajectory_ref.py",
+			"bytes": 3746,
+			"sha256": "207388b30eec20aaba3d21effb66f984caecfa0cb23dbaaa8fc055abd6347aea"
+		},
+		{
+			"path": "src/harbor/models/trajectories/tool_call.py",
+			"bytes": 841,
+			"sha256": "b28fc0526c45a5a253edaaaa305a8f53ac436e5fd44918fe4dadbe573214030b"
+		},
+		{
+			"path": "src/harbor/models/trajectories/trajectory.py",
+			"bytes": 8961,
+			"sha256": "74c3aa74f3de38cdcdf3727b771c7ad75d66c2f5a6b43ec7982ed5b1e56b6fbf"
+		}
+	],
+	"cases": [
+		{
+			"name": "minimal explicit ATIF-v1.8",
+			"expectedValid": true,
+			"accepted": true,
+			"pass_": true,
+			"errors": []
+		},
+		{
+			"name": "unknown version",
+			"expectedValid": false,
+			"accepted": false,
+			"pass_": true,
+			"errors": [
+				{
+					"loc": ["schema_version"],
+					"type": "literal_error"
+				}
+			]
+		},
+		{
+			"name": "missing agent",
+			"expectedValid": false,
+			"accepted": false,
+			"pass_": true,
+			"errors": [
+				{
+					"loc": ["agent"],
+					"type": "missing"
+				}
+			]
+		},
+		{
+			"name": "sequential step gap",
+			"expectedValid": false,
+			"accepted": false,
+			"pass_": true,
+			"errors": [
+				{
+					"loc": [],
+					"type": "value_error"
+				}
+			]
+		},
+		{
+			"name": "foreign call result",
+			"expectedValid": false,
+			"accepted": false,
+			"pass_": true,
+			"errors": [
+				{
+					"loc": [],
+					"type": "value_error"
+				}
+			]
+		},
+		{
+			"name": "extra root field",
+			"expectedValid": false,
+			"accepted": false,
+			"pass_": true,
+			"errors": [
+				{
+					"loc": ["undocumented"],
+					"type": "extra_forbidden"
+				}
+			]
+		},
+		{
+			"name": "invalid timestamp",
+			"expectedValid": false,
+			"accepted": false,
+			"pass_": true,
+			"errors": [
+				{
+					"loc": ["steps", 0, "timestamp"],
+					"type": "value_error"
+				}
+			]
+		},
+		{
+			"name": "user with agent tool calls",
+			"expectedValid": false,
+			"accepted": false,
+			"pass_": true,
+			"errors": [
+				{
+					"loc": ["steps", 0],
+					"type": "value_error"
+				}
+			]
+		},
+		{
+			"name": "deterministic dispatch with LLM metrics",
+			"expectedValid": false,
+			"accepted": false,
+			"pass_": true,
+			"errors": [
+				{
+					"loc": ["steps", 1],
+					"type": "value_error"
+				}
+			]
+		},
+		{
+			"name": "plain null observation content",
+			"expectedValid": true,
+			"accepted": true,
+			"pass_": true,
+			"errors": []
+		},
+		{
+			"name": "image with mismatching audio mime",
+			"expectedValid": false,
+			"accepted": false,
+			"pass_": true,
+			"errors": [
+				{
+					"loc": ["steps", 0, "message", "str"],
+					"type": "string_type"
+				},
+				{
+					"loc": ["steps", 0, "message", "list[function-after[validate_content_type(), ContentPart]]", 0],
+					"type": "value_error"
+				}
+			]
+		},
+		{
+			"name": "file reference remains declarative",
+			"expectedValid": true,
+			"accepted": true,
+			"pass_": true,
+			"errors": []
+		},
+		{
+			"name": "upstream accepts missing version by default",
+			"expectedValid": true,
+			"accepted": true,
+			"pass_": true,
+			"errors": []
+		},
+		{
+			"name": "upstream accepts supported older version",
+			"expectedValid": true,
+			"accepted": true,
+			"pass_": true,
+			"errors": []
+		},
+		{
+			"name": "shared session with unique child trajectory",
+			"expectedValid": true,
+			"accepted": true,
+			"pass_": true,
+			"errors": []
+		},
+		{
+			"name": "duplicate child trajectory IDs",
+			"expectedValid": false,
+			"accepted": false,
+			"pass_": true,
+			"errors": [
+				{
+					"loc": [],
+					"type": "value_error"
+				}
+			]
+		},
+		{
+			"name": "child missing trajectory ID",
+			"expectedValid": false,
+			"accepted": false,
+			"pass_": true,
+			"errors": [
+				{
+					"loc": [],
+					"type": "value_error"
+				}
+			]
+		},
+		{
+			"name": "session-only subagent reference is ambiguous",
+			"expectedValid": false,
+			"accepted": false,
+			"pass_": true,
+			"errors": [
+				{
+					"loc": ["steps", 1, "observation", "results", 0, "subagent_trajectory_ref", 0],
+					"type": "value_error"
+				}
+			]
+		},
+		{
+			"name": "raw unknown metadata permitted in extra",
+			"expectedValid": true,
+			"accepted": true,
+			"pass_": true,
+			"errors": []
+		}
+	],
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"networkCallsDuringValidation": 0,
+	"limitations": [
+		"Upstream version enum accepts older versions and omitted default; product importer must require an explicit exact supported version.",
+		"JSON Schema omits cross-field model validators; parser must implement them separately.",
+		"Upstream validates external paths as declarations, not filesystem permission; importer must never follow them.",
+		"No product import, idempotency, persistent raw source, or desktop UI validated."
+	],
+	"initialImportError": "PackageNotFoundError: No package metadata was found for harbor",
+	"script": {
+		"path": "/tmp/EC05-source-baseline.py",
+		"sha256": "21ec4fc34550b984f24782f0548c44cd7287f55ffae89427f34e583fc4cdf893"
+	}
+}

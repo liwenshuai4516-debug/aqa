@@ -1,0 +1,59 @@
+{
+	"scope": "Source baseline documentation; no production importer yet.",
+	"typecheck": {
+		"status": "PASS",
+		"configs": 5,
+		"path": "/tmp/EC05-baseline-typecheck.log",
+		"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+	},
+	"checks": [
+		{
+			"command": ["npm", "run", "lint"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 lint\n> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/\n\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "check:protocol"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 check:protocol\n> node scripts/check-protocol-sync.mjs\n\n✓ types.ts 是 protocol.ts 的 type-only re-export shim\n✓ protocol.ts 保持纯类型导出（无运行时代码）\n✓ 双端 PROTOCOL_VERSION 一致 (v33)\n· 跳过协议版本 git 启发式（无可用 tag 或浅检出环境）\n",
+			"stderr": "fatal: No names found, cannot describe anything.\n"
+		},
+		{
+			"command": ["npm", "run", "i18n:check"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 i18n:check\n> node scripts/i18n-diff.mjs --check-packs\n\nOK   de（v0.68.1）：缺 0，多余 0\nOK   es（v0.68.1）：缺 0，多余 0\nOK   fr（v0.68.1）：缺 0，多余 0\nOK   it（v0.68.1）：缺 0，多余 0\nOK   ja（v0.69.0）：缺 0，多余 0\nOK   ko（v0.68.1）：缺 0，多余 0\nOK   pt（v0.105.1）：缺 0，多余 0\nOK   ru（v0.68.1）：缺 0，多余 0\nOK   tr（v0.105.1）：缺 0，多余 0\nOK   zh-HK（v0.107.0）：缺 0，多余 0\nOK   zh-Hant（v0.107.0）：缺 0，多余 0\nOK   zh-TW（v0.107.0）：缺 0，多余 0\n12 个语言包 key 与 zh 一一对应。\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "size:check"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 size:check\n> node scripts/project-budget.mjs --check\n\n{\n  \"tracked\": {\n    \"AGENTS.md\": 8597,\n    \"docs/desktop-delivery/evidence\": 63696818,\n    \"assets/demo-video.mp4\": 20012405,\n    \"plugins/mermaid/client/vendor\": 5346437,\n    \"plugins/run-trace/client/vendor\": 568528\n  },\n  \"local\": {},\n  \"checks\": [\n    {\n      \"name\": \"AGENTS.md\",\n      \"bytes\": 8597,\n      \"limit\": 12000,\n      \"passed\": true\n    },\n    {\n      \"name\": \"docs/desktop-delivery/evidence\",\n      \"bytes\": 63696818,\n      \"limit\": 63696818,\n      \"passed\": true\n    },\n    {\n      \"name\": \"assets/demo-video.mp4\",\n      \"bytes\": 20012405,\n      \"limit\": 20012405,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/mermaid/client/vendor\",\n      \"bytes\": 5346437,\n      \"limit\": 5346437,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/run-trace/client/vendor\",\n      \"bytes\": 568528,\n      \"limit\": 568528,\n      \"passed\": true\n    },\n    {\n      \"name\": \"rootLockedPackages\",\n      \"count\": 612,\n      \"limit\": 650,\n      \"passed\": true\n    }\n  ],\n  \"rootLockedPackages\": 612\n}\n",
+			"stderr": ""
+		},
+		{
+			"command": ["git", "diff", "--check"],
+			"exitCode": 0,
+			"stdout": "",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "clean"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 clean\n> node scripts/clean-project.mjs\n\n仅预览；未删除文件。执行前先结束相关测试/构建进程。\n可清理 0 项，共 0.0 MiB。\n",
+			"stderr": ""
+		}
+	],
+	"localLinks": "PASS",
+	"productionCodeChanged": false,
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"relatedUnits": {
+		"numTotalTests": 66,
+		"numPassedTests": 66,
+		"numFailedTests": 0,
+		"numPendingTests": 0,
+		"path": "/tmp/EC05-baseline-checks.json",
+		"sha256": "9fe52dba025a65f54d791109365bbd8677de3c9806fdd326851477754acdd11b"
+	}
+}
