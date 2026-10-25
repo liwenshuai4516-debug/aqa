@@ -1,0 +1,50 @@
+{
+	"scope": "EC04 candidate retry environment diagnosis, no delivered product change",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-maintenance-sleep/index.json",
+		"bytes": 829,
+		"sha256": "b37098575f0dd41597b6e00ac78b2328581be5f49286852d34b7c10e5a7e7bd5"
+	},
+	"archiveFiles": 5,
+	"unit": {
+		"status": "FAIL",
+		"files": 17,
+		"passed": 280,
+		"failed": 1,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-maintenance-sleep/files/unit.log",
+			"bytes": 1182,
+			"sha256": "777a29337b29cd839bb52591ff4dcb9ed1c316f2e7dc0d197a536f6b3d18a88f"
+		},
+		"failure": "service collection fault test timed out; observed approximately 902s duration, not counted passed"
+	},
+	"power": {
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-maintenance-sleep/files/power-events.txt",
+			"bytes": 1313,
+			"sha256": "9075d046092ffbff28335a545985cba0b3887dd7e2165e3dd570342bd7a6a29a"
+		},
+		"sysctl": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-maintenance-sleep/files/sleep-state.txt",
+			"bytes": 153,
+			"sha256": "334a753dcb08527bf73aea429d56967e4ca794d1254330ec6bb35180063b6bce"
+		},
+		"assertions": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-maintenance-sleep/files/assertions.txt",
+			"bytes": 453,
+			"sha256": "9c53ef621721253d2c9dd4226af16bf89ad879809126ca5d0cef2a9f9ab80816"
+		},
+		"observed": "DarkWake maintenance windows about45s followed by Maintenance Sleep about904-909s; caffeinate -di assertions active; normal user wake not observed",
+		"notAssumed": "Not all prior timeouts universally attributed to sleep; current environment cannot support valid desktop or performance timing",
+		"action": "No OS power setting changed. No repeated dependent benchmark launched. User asked to open computer and confirm normal wake; required before retry."
+	},
+	"candidate": {
+		"patch": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-maintenance-sleep/files/candidate.patch",
+			"bytes": 13384,
+			"sha256": "16116ce7b54a100b79f2e63236d886f279eb845fcc42821c1095ed1424c623cb"
+		},
+		"status": "All nine candidate files restored to HEAD; plugin remains0.4.24; no regression or acceptance claim"
+	},
+	"overall": "Goal active/incomplete; AC39 failure and EC06 containment unresolved; CLI user-deferred; real model/CLI calls0"
+}
