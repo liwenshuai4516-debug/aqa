@@ -411,6 +411,14 @@ Electron macOS arm64 是主要交付对象；共享 UI 使用主题令牌、zh/e
 2. 加解析资源上限、路径/归档检查、重复导入幂等；接现有报告页，不新增独立报告模型。
 3. 完整/截断/未知版本/恶意包分别验证；导入期间业务与网络调用为零。不要求同时支持所有 trace 格式。
 
+#### EC05 实施契约补充（2026-10-25）
+
+首批支持显式ATIF-v1.8严格JSON profile，限制与官方来源见[EC05记录](agent-evaluation-evidence/EC05.md)。原始UTF-8字节在现有私有blob目录按域及摘要归档，新增evidence envelope可选originalRef（sha256/size）；普通证据、工具、评分器与导出只读脱敏副本，原文读取另须可信human授权并重新核验原证据引用。原包不编码进普通content来规避脱敏。副本与原包分别记摘要，不能混称同一字节。
+
+契约scope增加独立offline分支：sessionId仅为可信宿主授权锚点，packageDigest/format/converterVersion/trajectoryPointers冻结导入选择；外部session_id不参与宿主会话授权。沿用原七类记录及报告，不建平行模型。导入的attempt.state为unknown，表示未独立观察执行；不从轨迹结束或“通过”声明推导真实任务成功。完整转换不等于证据可信，快照保留target-reported与缺口。
+
+同一契约revision/原包摘要/转换器及来源声明复用确定性操作回执，中断后按原请求继续已完成阶段；新的来源声明须新契约revision，不静默替换。不同任务/契约revision不因同包合并。原包先落盘、引用后发布；未发布临时文件保留并按现有恢复门禁阻止继续，发布后丢回执可按原请求恢复。旧记录不迁移。新增originalRef对普通旧记录读取无影响；不识别offline scope的旧插件不能回读新离线契约，回滚前保留完整dataDir，不能把离线兼容当实际桌面降级验收。
+
 ### EC06：外部运行基础
 
 1. 以假 CLI 实现版本探测、argv/stdin 输入、隔离 prepare、持久启动意图/handle、status、cancel、cleanup；零模型费用。

@@ -82,7 +82,7 @@ const condition = obj({
 	ruleRef: optional(str),
 	verifierRef: optional(str),
 });
-const scope = obj({
+const piScope = obj({
 	source: T.Literal("pi"),
 	sessionId: str,
 	startMessageId: str,
@@ -92,6 +92,22 @@ const scope = obj({
 	childSessionIds: list(str, 100),
 	selectionDigest: optional(hash),
 });
+const offlineScope = obj({
+	source: T.Literal("offline"),
+	// This is the host authorization anchor, never an external ATIF session_id.
+	sessionId: str,
+	packageDigest: hash,
+	format: T.Literal("ATIF-v1.8"),
+	converterVersion: T.Literal("1"),
+	trajectoryPointers: T.Array(T.String({ minLength: 1, maxLength: 1024 }), {
+		minItems: 1,
+		maxItems: 20,
+		uniqueItems: true,
+	}),
+});
+const scope = T.Union([piScope, offlineScope]);
+export const scopeSessions = (scope) =>
+	scope.source === "offline" ? [scope.sessionId] : [scope.sessionId, ...scope.childSessionIds];
 const states = [
 	"queued",
 	"preparing",
@@ -278,7 +294,7 @@ export function validate(kind, value, version = VERSION) {
 			"Proposed conditions cannot be required",
 		);
 		requireValue(
-			value.scope.childPolicy !== "exclude" || value.scope.childSessionIds.length === 0,
+			value.scope.source !== "pi" || value.scope.childPolicy !== "exclude" || value.scope.childSessionIds.length === 0,
 			"INVALID_INPUT",
 			"Excluded child scope must be empty",
 		);

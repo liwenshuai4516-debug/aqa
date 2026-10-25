@@ -1,0 +1,292 @@
+{
+	"pluginVersion": "0.4.19",
+	"schemaVersion": 1,
+	"protocolVersion": 33,
+	"scope": "EC05 private raw archive and resumable offline transaction; service/UI import not delivered",
+	"typecheck": {
+		"status": "PASS",
+		"configs": 5,
+		"raw": {
+			"path": "/private/tmp/EC05-import-typecheck.log",
+			"bytes": 251,
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+		}
+	},
+	"units": {
+		"numTotalTests": 408,
+		"numPassedTests": 408,
+		"numFailedTests": 0,
+		"numPendingTests": 0
+	},
+	"checks": [
+		{
+			"command": ["npm", "run", "lint"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 lint\n> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/\n\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "check:protocol"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 check:protocol\n> node scripts/check-protocol-sync.mjs\n\n✓ types.ts 是 protocol.ts 的 type-only re-export shim\n✓ protocol.ts 保持纯类型导出（无运行时代码）\n✓ 双端 PROTOCOL_VERSION 一致 (v33)\n· 跳过协议版本 git 启发式（无可用 tag 或浅检出环境）\n",
+			"stderr": "fatal: No names found, cannot describe anything.\n"
+		},
+		{
+			"command": ["npm", "run", "i18n:check"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 i18n:check\n> node scripts/i18n-diff.mjs --check-packs\n\nOK   de（v0.68.1）：缺 0，多余 0\nOK   es（v0.68.1）：缺 0，多余 0\nOK   fr（v0.68.1）：缺 0，多余 0\nOK   it（v0.68.1）：缺 0，多余 0\nOK   ja（v0.69.0）：缺 0，多余 0\nOK   ko（v0.68.1）：缺 0，多余 0\nOK   pt（v0.105.1）：缺 0，多余 0\nOK   ru（v0.68.1）：缺 0，多余 0\nOK   tr（v0.105.1）：缺 0，多余 0\nOK   zh-HK（v0.107.0）：缺 0，多余 0\nOK   zh-Hant（v0.107.0）：缺 0，多余 0\nOK   zh-TW（v0.107.0）：缺 0，多余 0\n12 个语言包 key 与 zh 一一对应。\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "size:check"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 size:check\n> node scripts/project-budget.mjs --check\n\n{\n  \"tracked\": {\n    \"AGENTS.md\": 8597,\n    \"docs/desktop-delivery/evidence\": 63696818,\n    \"assets/demo-video.mp4\": 20012405,\n    \"plugins/mermaid/client/vendor\": 5346437,\n    \"plugins/run-trace/client/vendor\": 568528\n  },\n  \"local\": {},\n  \"checks\": [\n    {\n      \"name\": \"AGENTS.md\",\n      \"bytes\": 8597,\n      \"limit\": 12000,\n      \"passed\": true\n    },\n    {\n      \"name\": \"docs/desktop-delivery/evidence\",\n      \"bytes\": 63696818,\n      \"limit\": 63696818,\n      \"passed\": true\n    },\n    {\n      \"name\": \"assets/demo-video.mp4\",\n      \"bytes\": 20012405,\n      \"limit\": 20012405,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/mermaid/client/vendor\",\n      \"bytes\": 5346437,\n      \"limit\": 5346437,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/run-trace/client/vendor\",\n      \"bytes\": 568528,\n      \"limit\": 568528,\n      \"passed\": true\n    },\n    {\n      \"name\": \"rootLockedPackages\",\n      \"count\": 612,\n      \"limit\": 650,\n      \"passed\": true\n    }\n  ],\n  \"rootLockedPackages\": 612\n}\n",
+			"stderr": ""
+		},
+		{
+			"command": ["git", "diff", "--check"],
+			"exitCode": 0,
+			"stdout": "",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "clean"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 clean\n> node scripts/clean-project.mjs\n\n仅预览；未删除文件。执行前先结束相关测试/构建进程。\n可清理 0 项，共 0.0 MiB。\n",
+			"stderr": ""
+		}
+	],
+	"localLinks": "PASS",
+	"native": {
+		"result": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/result.json",
+			"bytes": 1253,
+			"sha256": "714985f258a98b2d4d6610baead49b671633748dd858a3319edf84b05f669cae"
+		},
+		"retainedFiles": [
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/attempts/051d1fd6-347b-42b2-a6f4-1a5f0dbf30bd.1.json",
+				"bytes": 1090,
+				"sha256": "82891bfaf64ccf097c388e34000ad6e9b886079bb5a33740ee4ee30ee527161a"
+			},
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/blobs/77c5eb0bf968a4a354ad18dcf94e9875bfdb59c55e87e27265299a69275b66c5-258fc34f5e9cc15ce4a932a2d793e83e3e2748fd32713d56f2941a3512308f3b.blob",
+				"bytes": 285,
+				"sha256": "258fc34f5e9cc15ce4a932a2d793e83e3e2748fd32713d56f2941a3512308f3b"
+			},
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/blobs/77c5eb0bf968a4a354ad18dcf94e9875bfdb59c55e87e27265299a69275b66c5-4166e6ab2ad71a9f1f2c2aee7e6d5168cc23b8f92da27b3af7a970fcb0852bf6.blob",
+				"bytes": 724,
+				"sha256": "4166e6ab2ad71a9f1f2c2aee7e6d5168cc23b8f92da27b3af7a970fcb0852bf6"
+			},
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/blobs/77c5eb0bf968a4a354ad18dcf94e9875bfdb59c55e87e27265299a69275b66c5-49434bdad351fcf55007af12baf0302decf7f9e5c2295a217faa633ed36d6ee4.blob",
+				"bytes": 862,
+				"sha256": "49434bdad351fcf55007af12baf0302decf7f9e5c2295a217faa633ed36d6ee4"
+			},
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/blobs/77c5eb0bf968a4a354ad18dcf94e9875bfdb59c55e87e27265299a69275b66c5-abb1b0f2f269de456ec9080a77aaa2963462d8424e332b0c49280f055e394e67.blob",
+				"bytes": 113,
+				"sha256": "abb1b0f2f269de456ec9080a77aaa2963462d8424e332b0c49280f055e394e67"
+			},
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/blobs/77c5eb0bf968a4a354ad18dcf94e9875bfdb59c55e87e27265299a69275b66c5-c1ddca712e033148336772da3771b99b8633f3b2c6f3b79b4cd1138ad0bcc296.blob",
+				"bytes": 723,
+				"sha256": "c1ddca712e033148336772da3771b99b8633f3b2c6f3b79b4cd1138ad0bcc296"
+			},
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/contracts/9ae1c66b-c61f-48bb-a018-2d8a310a3d83.1.json",
+				"bytes": 982,
+				"sha256": "7a4840b74586b9e0d6dc9a9d64157b74beda43bfd903fd134b149f4c6793b817"
+			},
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/evaluations/3d5a5e5a-26a0-495d-8b3c-68eba7afa855.1.json",
+				"bytes": 7026,
+				"sha256": "0c06e264e8bddd40c89bd3d578dab6028f220baed86b770bb81b16b6d6f05d01"
+			},
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/evidence/7462bad6-d6d4-4fc7-a16f-7db2e87fad1e.1.json",
+				"bytes": 1197,
+				"sha256": "0ce510032356d19291657d2351bedbbd7d4cc8f55a8477747f23d6b77ae92ced"
+			},
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/evidence/8e0f3d54-b41d-4778-a6a4-5db23c9d88ac.1.json",
+				"bytes": 1209,
+				"sha256": "6872b09a8eb763a40e171861baf73ddd7780acd261634e77961fa3f5fd536c1a"
+			},
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/evidence/batch-16b7d5d6-fcc0-4904-b4e5-eb23927ba620.pack",
+				"bytes": 2981,
+				"sha256": "92e36a64ae1b7149099d93d0eaab8436b8e51e2453702767d906d199b7c02d6c"
+			},
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/evidence/eefbb635-57cd-492f-bcd0-e529a42a672e.1.json",
+				"bytes": 1250,
+				"sha256": "11442d568651aa4f32d238dba9abc40ed03ef61b54c0f81a9f4f985cc1a0d09d"
+			},
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/evidence/efcffddf-c8ed-4931-9e2d-1d6255fb2948.1.json",
+				"bytes": 1366,
+				"sha256": "b153f78e5e7a825ae20f4dab6d6e554cb0c55f1507370ede000107fb3fd3425a"
+			},
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/snapshots/0f6cb269-65c0-44e5-9995-26422c45ce7b.1.json",
+				"bytes": 2037,
+				"sha256": "56e97dcffd97f3bbe51e91ae53422ca399d90961bf70f2e7138df8f65c5746e1"
+			},
+			{
+				"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR/agent-evaluation/targets/55d68afa-cd44-40a4-aced-fbe7ed04b102.1.json",
+				"bytes": 851,
+				"sha256": "369ac812f5c7c39d06fc5717318bacaefa7b48f39e2ae314302a3f5ea77b4354"
+			}
+		]
+	},
+	"desktop": {
+		"result": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-WOQzv4/result.json",
+			"bytes": 5861,
+			"sha256": "8dc1fa26e706ece6c2995facede8245ff2882495e7e145b707f955d25b3353ec"
+		},
+		"screenshot": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-WOQzv4/history-reopened.png",
+			"bytes": 247361,
+			"sha256": "322d426824ab4838750f85b699ed611ce8ad437a3df489b443dc4f13b3606f45"
+		},
+		"productionFiles": [
+			{
+				"relativePath": "import.mjs",
+				"sha256": "f59fb1d0049b5c02c269c1f5d6c21e9d4111dedcde4dd99c0134943e0c8382c6",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "store.mjs",
+				"sha256": "99de6363e84c65f451e30cd0b9b65502ed25cd143efb9ac6f39371a40599cdaf",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "schema.mjs",
+				"sha256": "b9f87eda3d93573fee8cd4919b9317bc462538ea728b2b503ca49d7fc74c1e5b",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "collect.mjs",
+				"sha256": "48572856542d20917f30235acdc1a878345a15b1562bde8dbcb6f2171258e493",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "service.mjs",
+				"sha256": "6a52e8428e1cdff210f8fe874b706d665345636becd22b023844d8147949d186",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "adapters/atif.mjs",
+				"sha256": "c1801f02653c8ba5665a608f4f836883d92a183b43a97fb48e435776f166780e",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "adapters/atif/schema.json",
+				"sha256": "832e23d8522c152cc25fca6059044a8dc6c0863a955c4878ffc9581c22cf998d",
+				"equalToWorktree": true
+			}
+		]
+	},
+	"performance": {
+		"status": "FAIL",
+		"raw": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-performance-ik3LGh/result.json",
+			"bytes": 8622,
+			"sha256": "62f2dffd540a725ff8a12448b51d75302c9db115c3a2d38b3a902432f60e383a"
+		}
+	},
+	"baseline": {
+		"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/EC05-0418-baseline-z6ldaf74",
+		"commit": "12e01285ec3182d207a125b9d8de72415f0e2303",
+		"sourceVersion": "0.4.18",
+		"scope": "Trusted source/fixture only; shared unchanged dependency/build links, no user data."
+	},
+	"compatibilityScripts": [
+		{
+			"path": "/private/tmp/EC05-import-legacy-read.mjs",
+			"bytes": 2479,
+			"sha256": "5291651bb2ec3f403a9fe36de7dc06abd6f59c24fc6dd7d6bf959c262847ca9b"
+		},
+		{
+			"path": "/private/tmp/EC05-import-old-reader.mjs",
+			"bytes": 3291,
+			"sha256": "30918e663283374d187683df512d65a6c6263496af60214fd8c9bd95c0f83935"
+		},
+		{
+			"path": "/private/tmp/EC05-import-installed-check.mjs",
+			"bytes": 3046,
+			"sha256": "a436d7ccad5da9215abaeaf67ec377dcc3f8b85b8a62f25424cb359f970ba351"
+		}
+	],
+	"compatibilitySetup": {
+		"path": "/private/tmp/EC05-import-compatibility.py",
+		"bytes": 1794,
+		"sha256": "1528d969b684c4d4a91e952147bc25470888d60c3df1f701c2c82393bd8d20f2"
+	},
+	"initialCorrections": [
+		"First targeted run: 53 passed, one broad no-pass assertion failed because advisory F07 is pass with unconfirmed nature; corrected the assertion to required conditions and source trust, without changing production scoring.",
+		"First typecheck rejected possibly undefined initialized store.index and a missing fixture conversationId; corrected test types and request shape.",
+		"Compatibility source setup initially used unavailable Python tar filter and unresolved /var versus /private paths; extraction restricted to validated regular files/directories with resolved base.",
+		"First old-reader receipt labels retained 0.4.17/0.4.16 despite using actual 0.4.19/0.4.18 code; original retained, script corrected and rerun.",
+		"Final preflight explicitly checks tightened raw-byte budget before intent publication; final full 408 tests, native and desktop rerun.",
+		"Actual client version kept unknown; ATIF schema version is format metadata, not observed software identity. Final 408 tests, native pipeline and actual desktop rerun, with distinct final result paths."
+	],
+	"initialOldReader": {
+		"path": "/private/tmp/EC05-import-old-reader-initial.json",
+		"bytes": 1299,
+		"sha256": "70fdb1800767983da51eb11841da69dcda135e31944a4ea66366466f62118695"
+	},
+	"limitations": [
+		"First targeted failure and initial typecheck raw files were overwritten by reruns; observed failure details remain in conversation tool outputs and this correction list, not claimed as retained raw originals.",
+		"Legacy Pi records and new Pi checkpoint formats are bidirectionally compatible, but old 0.4.18 refuses new offline scope.",
+		"Expected rollback refusal is a documented compatibility boundary, not successful desktop rollback acceptance.",
+		"No service import action/upload/UI/human confirmation or actual desktop offline report yet.",
+		"Collection gate still FAIL; no threshold relaxed or evidence removed.",
+		"Protocol git-history heuristic skipped because no tags."
+	],
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"activeDesktop": {
+		"result": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-MHlWJD/result.json",
+			"bytes": 7445,
+			"sha256": "0996336fd4902aafe49222d1778dcdf512d3e65f9e791af00653a1448d4df80d"
+		},
+		"screenshot": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-MHlWJD/active-job-cancelled.png",
+			"bytes": 106870,
+			"sha256": "4dcc5d0f01de8f7c651e6bfb865922b09bb2c3ed094a06a813fdf3ee1063b490"
+		},
+		"productionFiles": [
+			{
+				"relativePath": "import.mjs",
+				"sha256": "f59fb1d0049b5c02c269c1f5d6c21e9d4111dedcde4dd99c0134943e0c8382c6",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "store.mjs",
+				"sha256": "99de6363e84c65f451e30cd0b9b65502ed25cd143efb9ac6f39371a40599cdaf",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "schema.mjs",
+				"sha256": "b9f87eda3d93573fee8cd4919b9317bc462538ea728b2b503ca49d7fc74c1e5b",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "collect.mjs",
+				"sha256": "48572856542d20917f30235acdc1a878345a15b1562bde8dbcb6f2171258e493",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "service.mjs",
+				"sha256": "6a52e8428e1cdff210f8fe874b706d665345636becd22b023844d8147949d186",
+				"equalToWorktree": true
+			}
+		],
+		"scope": "Isolated F01 injection only; actual cancellation, Rescan, client disable and late completion regression."
+	}
+}

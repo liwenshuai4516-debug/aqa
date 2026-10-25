@@ -1,0 +1,9 @@
+{
+	"status": "PASS",
+	"scope": "Actually installed importer/store resource loading and exact native transaction replay; no UI import yet",
+	"installed": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-WOQzv4/desktop/data/plugins/agent-evaluation",
+	"originalBytesExact": true,
+	"allFilesUnchanged": true,
+	"actualModelCalls": 0,
+	"actualCliCalls": 0
+}

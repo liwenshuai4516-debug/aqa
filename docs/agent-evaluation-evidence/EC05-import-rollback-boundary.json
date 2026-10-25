@@ -1,0 +1,32 @@
+{
+	"status": "PASS",
+	"scope": "Expected older-plugin refusal of new offline scope; not downgrade acceptance",
+	"readerVersion": "0.4.18",
+	"sourceVersion": "0.4.19",
+	"offlineScopeSupported": false,
+	"oldReaderRefused": true,
+	"allFilesUnchanged": true,
+	"issues": [
+		{
+			"code": "INVALID_INPUT",
+			"file": "9ae1c66b-c61f-48bb-a018-2d8a310a3d83.1.json"
+		}
+	],
+	"files": {
+		"attempts/051d1fd6-347b-42b2-a6f4-1a5f0dbf30bd.1.json": "82891bfaf64ccf097c388e34000ad6e9b886079bb5a33740ee4ee30ee527161a",
+		"blobs/77c5eb0bf968a4a354ad18dcf94e9875bfdb59c55e87e27265299a69275b66c5-258fc34f5e9cc15ce4a932a2d793e83e3e2748fd32713d56f2941a3512308f3b.blob": "258fc34f5e9cc15ce4a932a2d793e83e3e2748fd32713d56f2941a3512308f3b",
+		"blobs/77c5eb0bf968a4a354ad18dcf94e9875bfdb59c55e87e27265299a69275b66c5-4166e6ab2ad71a9f1f2c2aee7e6d5168cc23b8f92da27b3af7a970fcb0852bf6.blob": "4166e6ab2ad71a9f1f2c2aee7e6d5168cc23b8f92da27b3af7a970fcb0852bf6",
+		"blobs/77c5eb0bf968a4a354ad18dcf94e9875bfdb59c55e87e27265299a69275b66c5-49434bdad351fcf55007af12baf0302decf7f9e5c2295a217faa633ed36d6ee4.blob": "49434bdad351fcf55007af12baf0302decf7f9e5c2295a217faa633ed36d6ee4",
+		"blobs/77c5eb0bf968a4a354ad18dcf94e9875bfdb59c55e87e27265299a69275b66c5-abb1b0f2f269de456ec9080a77aaa2963462d8424e332b0c49280f055e394e67.blob": "abb1b0f2f269de456ec9080a77aaa2963462d8424e332b0c49280f055e394e67",
+		"blobs/77c5eb0bf968a4a354ad18dcf94e9875bfdb59c55e87e27265299a69275b66c5-c1ddca712e033148336772da3771b99b8633f3b2c6f3b79b4cd1138ad0bcc296.blob": "c1ddca712e033148336772da3771b99b8633f3b2c6f3b79b4cd1138ad0bcc296",
+		"contracts/9ae1c66b-c61f-48bb-a018-2d8a310a3d83.1.json": "7a4840b74586b9e0d6dc9a9d64157b74beda43bfd903fd134b149f4c6793b817",
+		"evaluations/3d5a5e5a-26a0-495d-8b3c-68eba7afa855.1.json": "0c06e264e8bddd40c89bd3d578dab6028f220baed86b770bb81b16b6d6f05d01",
+		"evidence/7462bad6-d6d4-4fc7-a16f-7db2e87fad1e.1.json": "0ce510032356d19291657d2351bedbbd7d4cc8f55a8477747f23d6b77ae92ced",
+		"evidence/8e0f3d54-b41d-4778-a6a4-5db23c9d88ac.1.json": "6872b09a8eb763a40e171861baf73ddd7780acd261634e77961fa3f5fd536c1a",
+		"evidence/batch-16b7d5d6-fcc0-4904-b4e5-eb23927ba620.pack": "92e36a64ae1b7149099d93d0eaab8436b8e51e2453702767d906d199b7c02d6c",
+		"evidence/eefbb635-57cd-492f-bcd0-e529a42a672e.1.json": "11442d568651aa4f32d238dba9abc40ed03ef61b54c0f81a9f4f985cc1a0d09d",
+		"evidence/efcffddf-c8ed-4931-9e2d-1d6255fb2948.1.json": "b153f78e5e7a825ae20f4dab6d6e554cb0c55f1507370ede000107fb3fd3425a",
+		"snapshots/0f6cb269-65c0-44e5-9995-26422c45ce7b.1.json": "56e97dcffd97f3bbe51e91ae53422ca399d90961bf70f2e7138df8f65c5746e1",
+		"targets/55d68afa-cd44-40a4-aced-fbe7ed04b102.1.json": "369ac812f5c7c39d06fc5717318bacaefa7b48f39e2ae314302a3f5ea77b4354"
+	}
+}

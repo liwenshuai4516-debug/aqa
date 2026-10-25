@@ -72,7 +72,7 @@ export class EvidenceCollector {
 			attempt = store.get(context, attemptRef),
 			contract = store.get(context, attempt.data.contractRef);
 		requireValue(
-			attempt.kind === "attempts" && contract.kind === "contracts",
+			attempt.kind === "attempts" && contract.kind === "contracts" && contract.data.scope.source === "pi",
 			"INVALID_INPUT",
 			"Attempt and contract required",
 		);

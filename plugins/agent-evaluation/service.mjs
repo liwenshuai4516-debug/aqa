@@ -564,7 +564,9 @@ export class EvaluationService {
 			case "createAttempt": {
 				const contract = store.get(context, request.ref);
 				requireValue(
-					contract.kind === "contracts" && contract.data.scope.sessionId === source.sessionId,
+					contract.kind === "contracts" &&
+						contract.data.scope.source === "pi" &&
+						contract.data.scope.sessionId === source.sessionId,
 					"INVALID_INPUT",
 					"A contract reference is required",
 				);

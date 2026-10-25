@@ -1,0 +1,44 @@
+{
+	"status": "PASS",
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-import-IBJtlR",
+	"scope": "Native offline importer/store/scorer only; no UI import or external client acceptance",
+	"snapshotRef": {
+		"kind": "snapshots",
+		"id": "0f6cb269-65c0-44e5-9995-26422c45ce7b",
+		"revision": 1
+	},
+	"attemptRef": {
+		"kind": "attempts",
+		"id": "051d1fd6-347b-42b2-a6f4-1a5f0dbf30bd",
+		"revision": 1
+	},
+	"sourceRef": {
+		"kind": "evidence",
+		"id": "efcffddf-c8ed-4931-9e2d-1d6255fb2948",
+		"revision": 1
+	},
+	"manifestRef": {
+		"kind": "evidence",
+		"id": "7462bad6-d6d4-4fc7-a16f-7db2e87fad1e",
+		"revision": 1
+	},
+	"rawSha256": "49434bdad351fcf55007af12baf0302decf7f9e5c2295a217faa633ed36d6ee4",
+	"evidenceCount": 4,
+	"coverage": "partial",
+	"reportRef": {
+		"kind": "evaluations",
+		"id": "3d5a5e5a-26a0-495d-8b3c-68eba7afa855",
+		"revision": 1
+	},
+	"deliveryVerdict": "inconclusive",
+	"assessmentStage": "provisional",
+	"restartIdempotent": true,
+	"originalBytesExact": true,
+	"originalMode": "0600",
+	"exportRedacted": true,
+	"forbiddenCalls": [],
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"networkCallsDuringImport": 0,
+	"businessProcessesDuringImport": 0
+}

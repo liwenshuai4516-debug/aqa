@@ -1,0 +1,22 @@
+{
+	"status": "PASS",
+	"writerVersion": "0.4.19",
+	"readerVersion": "0.4.18",
+	"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-engine-Buyrnp",
+	"newCheckpointInPack": true,
+	"oldReaderExactReplay": true,
+	"oldReaderNewSnapshot": true,
+	"sourceRecollection": false,
+	"allFilesUnchanged": true,
+	"files": {
+		"attempts/c0daa967-fe59-47a4-a41e-09794069feb8.1.json": "f9e3ef6dd3c9264e5414af55f4ee6c0482072ed910501e7ca22723ac5510e915",
+		"contracts/95e2e468-af3b-4375-a8ae-5a4fd004a229.1.json": "4b539de2401c6c67feac78c36220276121568b421116489353f38762e2fa229b",
+		"evidence/batch-474c152a-d956-43ab-9a01-32542574ab15.pack": "81d80e2786c7b44e7618a06ae6eb08c9e81c6cc7dbf5544767b9c06fe47214f3",
+		"evidence/batch-91dd2e1c-dede-4ec7-b714-1c93bb22051f.pack": "71e2749816142c124b2c18b04ab37f0adbae23e68710519e45e4c0d5368d1450",
+		"snapshots/755f8ab9-580f-4b2c-926d-baa5b1af5583.1.json": "4f6a2d2219623a66c417b82bbd6046dd8b542d53bba9e7be303eca366c669711",
+		"snapshots/f22a179a-e786-4d9c-a559-1faba711110d.1.json": "58671f4ad43fb0c79d2d071dac375908ee68afbf79c6f4ea30fb696cf68e3a96",
+		"targets/455f3f11-3435-4d2e-9501-dc89a53045dc.1.json": "48247336f88f20f77f3ddf052fa7b184f167d83ec786297eed19f08efc831ce4"
+	},
+	"actualModelCalls": 0,
+	"actualCliCalls": 0
+}

@@ -424,3 +424,5 @@ Agent 评估 EC04：`service.mjs`（操作/授权/分页）、`index.mjs`（UI/�
 `plugins/agent-evaluation/pack.mjs` 为 EC04 物理批量证据格式与范围校验；逻辑 schema 不变，旧 JSON/blob 兼容读取，`store.mjs`/`durable.mjs` 负责发布、恢复和逐引用授权。相关断点/丢回执/真实进程退出验证在 store/evidence 单测。
 
 EC05：`plugins/agent-evaluation/adapters/atif.mjs`（有界解析/转换）、`adapters/atif/{schema.json,README.md,LICENSE.txt}`（官方格式来源与严格profile）；`tests/unit/agent-evaluation-atif.test.ts`和`tests/agent-evaluation-atif-test.mjs`覆盖边界及禁止IO探针。尚未接service/存储/报告，见[EC05记录](agent-evaluation-evidence/EC05.md)。
+
+EC05 `plugins/agent-evaluation/import.mjs`负责离线来源校验、确定性阶段回执和封存；store新增受授权原包读写，schema新增offline scope。`tests/unit/agent-evaluation-import.test.ts`覆盖权限/恢复/子进程退出与不提权评分；`tests/agent-evaluation-import-test.mjs`为零业务原生集成，非桌面导入验收。

@@ -21,6 +21,7 @@ import {
 	references,
 	redact,
 	transitions,
+	scopeSessions,
 } from "./schema.mjs";
 
 const key = (ref) => `${ref.kind}/${ref.id}.${ref.revision}`;
@@ -322,7 +323,7 @@ export class EvaluationStore {
 		if (record.kind === "contracts") {
 			const scope = record.data.scope;
 			requireValue(
-				[scope.sessionId, ...scope.childSessionIds].every((id) => identity.sessionIds.includes(id)),
+				scopeSessions(scope).every((id) => identity.sessionIds.includes(id)),
 				"PERMISSION_DENIED",
 				"Session selection is not authorized",
 			);
@@ -404,7 +405,12 @@ export class EvaluationStore {
 		this.checkDirectory(this.root);
 		requireValue(JSON.parse(this.readFile(this.lock)).nonce === this.nonce, "STORE_LOCKED", "Writer ownership changed");
 	}
-	#prepareWrite(context, { kind, data, requestId, schemaVersion = VERSION, previousRef = undefined }, sharedBudget) {
+	#prepareWrite(
+		context,
+		{ kind, data, requestId, schemaVersion = VERSION, previousRef = undefined },
+		sharedBudget,
+		originalBytes,
+	) {
 		const identity = this.identity(context, true);
 		if (sharedBudget)
 			requireValue(
@@ -438,11 +444,20 @@ export class EvaluationStore {
 			clean = { ...sanitized };
 		// Hash the exact legacy canonical envelope, reusing the bounded serialized data.
 		// Keep the sanitized input digest distinct from later metadata/blob transformations.
+		const originalRef =
+			originalBytes === undefined ? undefined : { sha256: contentHash(originalBytes), size: originalBytes.length };
 		const requestDigest = createHash("sha256")
 			.update('{"data":')
 			.update(redacted ? canonical(sanitized) : inputBytes)
 			.update(",")
-			.update(canonical({ kind, schemaVersion, previousRef: previousRef ?? null }).slice(1))
+			.update(
+				canonical({
+					kind,
+					schemaVersion,
+					previousRef: previousRef ?? null,
+					...(originalRef ? { originalRef } : {}),
+				}).slice(1),
+			)
 			.digest("hex");
 		const receipt = this.requests.get(digest([identity.domain, requestId]));
 		if (receipt) {
@@ -461,7 +476,7 @@ export class EvaluationStore {
 			requireValue(identity.human === true, "PERMISSION_DENIED", "Human review requires trusted UI identity");
 		if (kind === "contracts")
 			requireValue(
-				[data.scope.sessionId, ...data.scope.childSessionIds].every((id) => identity.sessionIds.includes(id)),
+				scopeSessions(data.scope).every((id) => identity.sessionIds.includes(id)),
 				"PERMISSION_DENIED",
 				"Contract selection is not authorized",
 			);
@@ -531,6 +546,7 @@ export class EvaluationStore {
 			request: { id: requestId, digest: requestDigest },
 		};
 		if (kind === "reviews") record.reviewer = identity.domain.principalId;
+		if (originalRef) record.originalRef = originalRef;
 		const content = kind === "evidence" ? clean.content : undefined;
 		if (content !== undefined) {
 			record.contentRef = { sha256: contentHash(content), size: Buffer.byteLength(content) };
@@ -552,6 +568,9 @@ export class EvaluationStore {
 			this.index.size < this.limits.records &&
 				this.usedBytes +
 					Buffer.byteLength(bytes) +
+					(originalRef && originalRef.sha256 !== record.contentRef?.sha256 && !fs.existsSync(this.originalPath(record))
+						? originalRef.size
+						: 0) +
 					(content === undefined || fs.existsSync(this.blobPath(record)) ? 0 : record.contentRef.size) <=
 					this.limits.capacityBytes,
 			"LIMIT_EXCEEDED",
@@ -560,13 +579,52 @@ export class EvaluationStore {
 		return { record, bytes, content, inputSize };
 	}
 	write(context, input) {
-		const prepared = this.#prepareWrite(context, input);
+		return this.#publishPrepared(this.#prepareWrite(context, input));
+	}
+	/** Only an explicit human import can retain original bytes outside ordinary redacted evidence. */
+	writeOriginalEvidence(context, input, originalBytes) {
+		const identity = this.identity(context, true);
+		requireValue(identity.human === true, "PERMISSION_DENIED", "Original archive requires trusted human import");
+		requireValue(
+			input.kind === "evidence" &&
+				input.data?.kind === "atif-source" &&
+				input.data.producer === "atif-import-v1" &&
+				input.data.origin === "target-reported",
+			"INVALID_INPUT",
+			"Original archive requires ATIF source evidence",
+		);
+		requireValue(
+			originalBytes instanceof Uint8Array &&
+				originalBytes.byteLength > 0 &&
+				originalBytes.byteLength <= this.limits.evidenceBytes,
+			"LIMIT_EXCEEDED",
+			"Original source exceeds archive budget",
+		);
+		const bytes = Buffer.from(originalBytes);
+		requireValue(
+			Buffer.from(bytes.toString("utf8")).equals(bytes),
+			"INVALID_INPUT",
+			"Original source must be valid UTF-8",
+		);
+		return this.#publishPrepared(this.#prepareWrite(context, input, undefined, bytes), bytes);
+	}
+	#publishPrepared(prepared, originalBytes) {
+		if (prepared.existing && originalBytes !== undefined) this.#readOriginal(prepared.existing);
 		if (prepared.existing) return prepared.existing;
 		const { record, bytes, content } = prepared;
 		const ref = recordRef(record),
 			file = join(this.root, `${key(ref)}.json`);
 		this.checkDirectory(dirname(file));
 		try {
+			if (originalBytes !== undefined) {
+				const original = this.originalPath(record);
+				this.checkDirectory(dirname(original));
+				if (fs.existsSync(original)) this.#readOriginal(record);
+				else {
+					publishFile(original, originalBytes, (stage) => this.fault(`original:${stage}`));
+					this.usedBytes += originalBytes.length;
+				}
+			}
 			if (content !== undefined) {
 				const blob = this.blobPath(record);
 				this.checkDirectory(dirname(blob));
@@ -676,6 +734,12 @@ export class EvaluationStore {
 	validateRelations(kind, data, read) {
 		if (kind === "attempts") {
 			const contract = read(data.contractRef);
+			if (contract.data.scope.source === "offline")
+				requireValue(
+					!data.sourceSessionId && read(data.targetRef).data.kind === "offline",
+					"INVALID_INPUT",
+					"Offline attempts cannot claim a host execution session",
+				);
 			requireValue(
 				!data.sourceSessionId ||
 					data.sourceSessionId === contract.data.scope.sessionId ||
@@ -762,6 +826,43 @@ export class EvaluationStore {
 			"Evidence content digest mismatch",
 		);
 		return content;
+	}
+	originalPath(record) {
+		requireValue(
+			record.kind === "evidence" &&
+				/^[a-f0-9]{64}$/.test(record.originalRef?.sha256) &&
+				Number.isSafeInteger(record.originalRef.size) &&
+				record.originalRef.size > 0 &&
+				record.originalRef.size <= this.limits.evidenceBytes,
+			"STORE_CORRUPT",
+			"Invalid original archive reference",
+		);
+		return join(this.root, "blobs", `${digest(record.domain)}-${record.originalRef.sha256}.blob`);
+	}
+	#readOriginal(record) {
+		let text;
+		try {
+			text = this.readFile(this.originalPath(record), this.limits.evidenceBytes);
+		} catch (error) {
+			if (error instanceof EvaluationError) throw error;
+			throw new EvaluationError("STORE_CORRUPT", "Original archive is unavailable; retained files require inspection");
+		}
+		requireValue(
+			contentHash(text) === record.originalRef.sha256 && Buffer.byteLength(text) === record.originalRef.size,
+			"STORE_CORRUPT",
+			"Original archive digest mismatch",
+		);
+		return text;
+	}
+	readOriginal(context, ref) {
+		requireValue(
+			this.identity(context).human === true,
+			"PERMISSION_DENIED",
+			"Original source is restricted to trusted human access",
+		);
+		const record = this.get(context, ref);
+		requireValue(record.originalRef, "EVIDENCE_GAP", "No original archive for this evidence");
+		return this.#readOriginal(record);
 	}
 	readEvidence(context, ref, { offset = 0, maxChars = 12000 } = {}) {
 		const record = this.get(context, ref);
