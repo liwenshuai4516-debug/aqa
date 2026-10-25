@@ -1,0 +1,161 @@
+{
+	"scope": "AC04 actual macOS arm64 Electron single-principal session/workspace rejection matrix over owned sources; no product changes, native runner or model execution",
+	"timestamp": "2026-10-25T14:18:05.874958+00:00",
+	"baseline": "2199a4cdf0fb3eaa28fc2bd4018d71f6d3997101",
+	"pluginVersion": "0.4.24",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/index.json",
+		"bytes": 19370,
+		"sha256": "b158b43cf8d3a35b7f3de1ead84df95e52ca30e69c3d7d3b68b2c5255ab6253a"
+	},
+	"archiveFiles": 103,
+	"actualDesktop": {
+		"status": "PASS",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-native-desktop-zkbBsQ",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/files/desktop/result.json",
+			"bytes": 4004,
+			"sha256": "b276c519cc872ce32887957a74946b55b72bf95747b92ff704ec324d99bd0d92"
+		},
+		"log": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/files/desktop/app.log",
+			"bytes": 1866,
+			"sha256": "72733e5bc247351675a099724450932562ed8363af2fd264333a420711b87118"
+		},
+		"flags": ["--source-errors", "--native-matrix", "--access-matrix"],
+		"sources": [
+			"historical API one-row unknown/incomplete",
+			"historical UI one-row passed/complete, not current execution",
+			"synthetic never-launched UI 41-row unknown/incomplete plan"
+		],
+		"access": {
+			"selectedContexts": 6,
+			"samePrincipal": true,
+			"perSource": ["same workspace other unselected session", "other workspace other unselected session"],
+			"permissionDenied": 42,
+			"versionConflict": 6,
+			"invalidInput": 6,
+			"totalRejected": 54,
+			"noResultOnEveryRejectedReply": true,
+			"oldReportAbsentFromList": true,
+			"entireStoreBeforeAfterEqual": true,
+			"originalReportAndSealedReadRestored": true
+		},
+		"previousAssertionsRetained": [
+			"source missing/changed rejection, sealed full text unchanged and explicit retry",
+			"41-row UI pending plan exact 20/20/1 ordered pagination and return first",
+			"16 owned UI source files unchanged",
+			"old reports unchanged and F02 inconclusive"
+		]
+	},
+	"probes": {
+		"api": {
+			"replies": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/files/desktop/api-access-probes.json",
+				"bytes": 8040,
+				"sha256": "29cf612645c170589ee05bc111cd85c75e5333000112a99f8d88973030e573df"
+			},
+			"before": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/files/desktop/api-access-store-before.json",
+				"bytes": 2709,
+				"sha256": "8bcffc9cce94b5c3cf61b434f5a328ccaf39132a248cefb2b4313e89087e928a"
+			},
+			"after": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/files/desktop/api-access-store-after.json",
+				"bytes": 2709,
+				"sha256": "8bcffc9cce94b5c3cf61b434f5a328ccaf39132a248cefb2b4313e89087e928a"
+			}
+		},
+		"ui": {
+			"replies": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/files/desktop/ui-access-probes.json",
+				"bytes": 8036,
+				"sha256": "da1a5236b340843f6f8fdc76412a1b796fbccc61c7c9696740942450af6db16b"
+			},
+			"before": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/files/desktop/ui-access-store-before.json",
+				"bytes": 5283,
+				"sha256": "630c204db34f2d487e196db6c736c0b88a4e6a53d990218fa9fd3f30fc8e14de"
+			},
+			"after": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/files/desktop/ui-access-store-after.json",
+				"bytes": 5283,
+				"sha256": "630c204db34f2d487e196db6c736c0b88a4e6a53d990218fa9fd3f30fc8e14de"
+			}
+		},
+		"ui-synthetic": {
+			"replies": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/files/desktop/ui-synthetic-access-probes.json",
+				"bytes": 8056,
+				"sha256": "4ac5e3978bd0c9128fe64adee6d40932a4e6e3d67f25ef5801c1ce3c40719e96"
+			},
+			"before": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/files/desktop/ui-synthetic-access-store-before.json",
+				"bytes": 7857,
+				"sha256": "d0fc662d6f251523b6bccf4720f2d8f0b6355b5858fd409987635597214dfae8"
+			},
+			"after": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/files/desktop/ui-synthetic-access-store-after.json",
+				"bytes": 7857,
+				"sha256": "d0fc662d6f251523b6bccf4720f2d8f0b6355b5858fd409987635597214dfae8"
+			}
+		}
+	},
+	"failureRetained": {
+		"reason": "Test helper extraction initially left transition wait outside its offset scope: ReferenceError before authorization assertions. Corrected helper only; no guard/expected error/assertion weakening. Failed result/log/screenshot retained.",
+		"result": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/files/failed-scope/result.json",
+			"bytes": 852,
+			"sha256": "59af79fc74dc1eb981afdb051741ce5004cd08ae47ef4398bc7bd8113288a7c7"
+		}
+	},
+	"validation": {
+		"typecheck": {
+			"status": "PASS",
+			"configurations": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/files/typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"unit": {
+			"status": "PASS",
+			"files": 4,
+			"passed": 99,
+			"failed": 0,
+			"skipped": 0,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-access/files/unit.log",
+				"bytes": 224,
+				"sha256": "c788be027d444514fb9579c52528e7145d0892b8735adb559e029f1e26dbd410"
+			}
+		},
+		"lint": "PASS",
+		"protocol": "structure and v33 PASS; historical-tag heuristic SKIP (no tags)",
+		"i18n": "PASS; 12 language packs",
+		"size": "PASS",
+		"diff": "PASS",
+		"clean": "preview only; no deletion",
+		"performance": "not rerun; no collector/product change; prior formal FAIL retained"
+	},
+	"boundaries": [
+		"One trusted desktop principal only; does not establish two-principal/window isolation",
+		"Request data identity fields cannot grant old selection access; top-level unknown principalId rejected by request schema",
+		"Does not establish tool-channel impersonation/human-review negative matrix",
+		"Actual executed-result mixed status UI/API multi-page run acceptance remains unexecuted",
+		"Native pending plan is synthetic and never launched; does not establish executed tests passed"
+	],
+	"externalCalls": {
+		"realCLI": 0,
+		"models": 0,
+		"nativeRunner": 0,
+		"businessExecution": 0
+	},
+	"overall": "EC04/M1 and goal incomplete; AC39 performance FAIL, EC06 containment prerequisite unresolved, EC07/EC09 dependent stages held, EC08 user-deferred"
+}

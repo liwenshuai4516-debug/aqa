@@ -1,4 +1,4 @@
-/** Real Electron reads historical results and an optional owned, never-launched plan; no runner/model/CLI. */
+/** Real Electron reads historical results and optional owned plan/access probes; no runner/model/CLI. */
 import assert from "node:assert/strict";
 import { mkdtemp, mkdir, readFile, writeFile, symlink, cp, rename } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -14,6 +14,7 @@ import { launchNativeApp } from "./desktop/native-app.mjs";
 const fixture = resolve(process.argv[2] ?? "missing-fixture");
 const sourceErrors = process.argv.includes("--source-errors");
 const nativeMatrix = process.argv.includes("--native-matrix");
+const accessMatrix = process.argv.includes("--access-matrix");
 const summary = JSON.parse(await readFile(join(fixture, "summary.json"), "utf8"));
 assert.equal(summary.status, "PASS");
 assert.match(summary.scope, /local synthetic targets/);
@@ -99,6 +100,7 @@ const result = {
 	nativeRunnerCalls: 0,
 	sourceErrors,
 	nativeMatrix,
+	accessMatrix,
 };
 let app, page;
 async function until(fn) {
@@ -153,7 +155,7 @@ try {
 	if (await setup.isVisible()) await setup.click();
 	assert.match(app.getLogs(), /\[plugin:agent-evaluation\] activated \(v0\.4\.24\)/);
 	result.pluginVersion = "0.4.24";
-	async function rpc(action, data = {}) {
+	async function rpc(action, data = {}, expectedError = undefined) {
 		const requestId = crypto.randomUUID();
 		await page.evaluate((m) => window.__nativeSocket.send(JSON.stringify(m)), {
 			type: "plugin_message",
@@ -168,16 +170,18 @@ try {
 			);
 			return !!reply;
 		});
+		if (expectedError) {
+			assert.equal(reply.ok, false, JSON.stringify(reply));
+			assert.equal(reply.error?.code, expectedError, JSON.stringify(reply));
+			assert.equal(Object.hasOwn(reply, "result"), false, "Rejected request exposed a result");
+			return reply;
+		}
 		assert.equal(reply.ok, true, JSON.stringify(reply.error));
 		return reply.result;
 	}
-	for (const source of sources) {
-		const { engine, run } = source;
+	async function switchSource(path) {
 		const offset = await page.evaluate(() => window.__nativeFrames.length);
-		await page.evaluate(
-			(path) => window.__nativeSocket.send(JSON.stringify({ type: "switch_session", path })),
-			source.path,
-		);
+		await page.evaluate((path) => window.__nativeSocket.send(JSON.stringify({ type: "switch_session", path })), path);
 		await until(() =>
 			page.evaluate(
 				(offset) =>
@@ -185,6 +189,10 @@ try {
 				offset,
 			),
 		);
+	}
+	for (const source of sources) {
+		const { engine, run } = source;
+		await switchSource(source.path);
 		const described = await rpc("describe");
 		assert.equal(described.sessionId, source.sessionId);
 		const bound = { conversationId: described.conversationId, sessionId: described.sessionId };
@@ -403,6 +411,115 @@ try {
 			currentExecutionNotPassed: true,
 		});
 		await page.locator('.aev [data-action="back"]').click();
+		if (accessMatrix) {
+			const { nativeMatrixFiles } = await import("./fixtures/agent-evaluation/native-matrix.mjs");
+			const originalReport = await rpc("get", { ...bound, ref: status.reportRef }),
+				frozen = await rpc("get", { ...bound, ref: snapshot }),
+				records = await Promise.all(frozen.data.evidenceRefs.map((ref) => rpc("get", { ...bound, ref }))),
+				native = records.find((record) => record.data.kind === "native-test-run"),
+				nativeRef = { kind: native.kind, id: native.id, revision: native.revision },
+				storeBefore = await nativeMatrixFiles(join(dataDir, "agent-evaluation"));
+			await writeFile(join(output, `${label}-access-store-before.json`), JSON.stringify(storeBefore, null, 2));
+			const probes = [];
+			for (const mode of ["same-workspace-other-session", "other-workspace"]) {
+				const probeSession = `denied-${label}-${mode}`,
+					probePath = join(agentDir, `sessions/${probeSession}.jsonl`),
+					workspace = mode === "other-workspace" ? join(output, `denied-workspace-${label}`) : source.workspace;
+				await mkdir(workspace, { recursive: true });
+				const entries = (await readFile(source.path, "utf8")).trim().split("\n").map(JSON.parse);
+				entries[0].id = probeSession;
+				entries[0].cwd = workspace;
+				entries[1].message.content[0].text = "Owned authorization probe only; no execution requested";
+				await writeFile(probePath, entries.map(JSON.stringify).join("\n") + "\n");
+				await switchSource(probePath);
+				const current = await rpc("describe");
+				assert.equal(current.sessionId, probeSession);
+				assert.equal(current.principalId, described.principalId);
+				if (mode === "other-workspace") assert.notEqual(current.workspaceId, described.workspaceId);
+				else assert.equal(current.workspaceId, described.workspaceId);
+				const selected = { conversationId: current.conversationId, sessionId: current.sessionId };
+				const rejected = [];
+				for (const [action, data] of [
+					["get", { ref: status.reportRef }],
+					["get", { ref: snapshot }],
+					["readEvidence", { ref: nativeRef, evidenceView: "native-run" }],
+					["inspectNativeRun", { ref: nativeRef }],
+					["export", { ref: status.reportRef }],
+					["collect", { ref: attempt }],
+					[
+						"get",
+						{
+							ref: status.reportRef,
+							data: {
+								principalId: "forged-owner",
+								workspaceId: source.workspace,
+								sessionIds: [source.sessionId],
+								human: true,
+							},
+						},
+					],
+				]) {
+					rejected.push({ action, reply: await rpc(action, { ...selected, ...data }, "PERMISSION_DENIED") });
+				}
+				const stale = await rpc(
+						"get",
+						{ ...selected, sessionId: source.sessionId, ref: status.reportRef },
+						"VERSION_CONFLICT",
+					),
+					forged = await rpc(
+						"get",
+						{ ...selected, ref: status.reportRef, principalId: "forged-owner" },
+						"INVALID_INPUT",
+					),
+					visible = await rpc("list", { ...selected, kind: "evaluations" });
+				assert.equal(
+					visible.items.some((row) => row.id === status.reportRef.id),
+					false,
+				);
+				assert.deepEqual(await nativeMatrixFiles(join(dataDir, "agent-evaluation")), storeBefore);
+				assert.equal(await readFile(reportFile, "utf8"), before);
+				probes.push({
+					mode,
+					original: {
+						principalId: described.principalId,
+						workspaceId: described.workspaceId,
+						sessionId: source.sessionId,
+					},
+					selected: {
+						principalId: current.principalId,
+						workspaceId: current.workspaceId,
+						sessionId: current.sessionId,
+					},
+					rejected,
+					stale,
+					forged,
+					oldReportAbsentFromList: true,
+					entireStoreUnchanged: true,
+				});
+			}
+			await switchSource(source.path);
+			const restored = await rpc("describe");
+			assert.equal(restored.sessionId, source.sessionId);
+			const restoredBound = { conversationId: restored.conversationId, sessionId: restored.sessionId };
+			assert.deepEqual(await rpc("get", { ...restoredBound, ref: status.reportRef }), originalReport);
+			const reopened = await rpc("readEvidence", { ...restoredBound, ref: nativeRef, evidenceView: "native-run" });
+			assert.equal(reopened.text, JSON.stringify(run, null, 2).slice(0, 4096));
+			assert.deepEqual(await nativeMatrixFiles(join(dataDir, "agent-evaluation")), storeBefore);
+			await writeFile(
+				join(output, `${label}-access-store-after.json`),
+				JSON.stringify(await nativeMatrixFiles(join(dataDir, "agent-evaluation")), null, 2),
+			);
+			await writeFile(join(output, `${label}-access-probes.json`), JSON.stringify(probes, null, 2));
+			result.checks.push({
+				engine,
+				synthetic: source.synthetic,
+				accessProbes: probes.length,
+				rejectedPerProbe: 9,
+				oldReportAbsentFromList: true,
+				entireStoreUnchanged: true,
+				originalSourceReopened: true,
+			});
+		}
 	}
 	result.status = "PASS";
 } catch (error) {
