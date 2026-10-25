@@ -1,0 +1,149 @@
+{
+	"scope": "EC04 v0.4.24 collect-only durability attribution; no product or frozen performance harness change; not a formal off/on acceptance run",
+	"timestamp": "2026-10-25T14:07:45.681476+00:00",
+	"baseline": "905f5f81637c81e98b5224bca1681b16b90423ea",
+	"pluginVersion": "0.4.24",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-durability-profile/index.json",
+		"bytes": 4818,
+		"sha256": "a7f3196168e5174474dc2c9646ceb8c1f71694fa497157b9b41458dd41d1fcd8"
+	},
+	"archiveFiles": 30,
+	"raw": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-durability-profile/files/durability.json",
+		"bytes": 32418,
+		"sha256": "a9db8b9c87515b40685b21b6ff3c7c0b46fb3acdef685c7c2aac3bceb88b2ca6"
+	},
+	"cpuProfile": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-durability-profile/files/long.cpuprofile",
+		"bytes": 106890,
+		"sha256": "49a0f6a455f9492734980f6683a795378992dff99b025ee056bf6dde8f5423ba"
+	},
+	"profileSummary": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-durability-profile/files/self-times.json",
+		"bytes": 2694,
+		"sha256": "304dcc4a38c4fa6af4f2856138a3f82c3f3af2ec7289cf31cec986333c177bdf"
+	},
+	"scopeBoundary": "Only fsyncSync calls during collect are individually timed; fixture construction is excluded. Full-process CPU profile includes startup/fixture and is not collect-only. Wrappers restored; real sync and publication order preserved. Sequential fresh processes, no concurrent tests/app.",
+	"rounds": 15,
+	"roundsPerWorkload": 5,
+	"mode": "enabled-only instrumented attribution; not a replacement for frozen off/on acceptance",
+	"summary": [
+		{
+			"workload": "serial",
+			"collectMedianMs": 51.960500000000025,
+			"syncMedianMs": 26.956998,
+			"syncCounts": [6, 6, 6, 6, 6],
+			"syncTimesMs": [25.12016699999998, 28.352208999999988, 26.946624999999983, 26.956998, 28.065875000000005],
+			"otherMedianMs": 25.01387500000004
+		},
+		{
+			"workload": "parallel",
+			"collectMedianMs": 144.87558299999998,
+			"syncMedianMs": 26.99737399999998,
+			"syncCounts": [6, 6, 6, 6, 6],
+			"syncTimesMs": [27.938500999999974, 27.63337599999994, 26.99737399999998, 26.516417999999987, 26.772124000000133],
+			"otherMedianMs": 117.878209
+		},
+		{
+			"workload": "long",
+			"collectMedianMs": 524.893125,
+			"syncMedianMs": 66.40712500000006,
+			"syncCounts": [12, 12, 12, 12, 12],
+			"syncTimesMs": [60.82958299999996, 67.02208300000018, 66.59370900000005, 65.54591799999997, 66.40712500000006],
+			"otherMedianMs": 457.8710419999999
+		}
+	],
+	"correctness": {
+		"evidenceCounts": [40, 400, 200],
+		"allGapsEmpty": true,
+		"lastStage": "afterPublish",
+		"finalStageSyncCountMatches": true
+	},
+	"interpretation": "All five long-output collect-only sync totals exceed 50ms on this machine; remaining processing independently far exceeds threshold. Neither a universal lower bound nor a claim that all anonymous CPU frames are serialization. Requires substantive work in both persistence layout and other processing, preserving authorization/digests/durability.",
+	"formalAcceptance": {
+		"AC39": "FAIL retained from EC04-0424-diagnostics.json; no new formal comparison",
+		"M1": "incomplete",
+		"EC06": "containment prerequisite blocked",
+		"EC08": "user-deferred real CLI"
+	},
+	"externalCalls": {
+		"realCLI": 0,
+		"models": 0,
+		"nativeRunner": 0,
+		"businessExecution": 0
+	},
+	"sources": {
+		"dist/server/agent/evaluation-evidence.js": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-durability-profile/files/sources/dist/server/agent/evaluation-evidence.js",
+			"bytes": 13645,
+			"sha256": "d08723d3724284e195994148aa2b802aed76b88acaa2e20b59250c735d16f231"
+		},
+		"plugins/agent-evaluation/pack.mjs": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-durability-profile/files/sources/plugins/agent-evaluation/pack.mjs",
+			"bytes": 3966,
+			"sha256": "68c7f4655e083a92445e57297975c1b873b9a2eb1c7ad9346151f5b33646ad9c"
+		},
+		"plugins/agent-evaluation/schema.mjs": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-durability-profile/files/sources/plugins/agent-evaluation/schema.mjs",
+			"bytes": 13024,
+			"sha256": "ca43aa97f6f0d08277a17e39946ee42b90723ecea400c36903a54d959da341c8"
+		},
+		"plugins/agent-evaluation/durable.mjs": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-durability-profile/files/sources/plugins/agent-evaluation/durable.mjs",
+			"bytes": 1299,
+			"sha256": "4eae3a4896a6412f6b1e21c42d8f92a047bcb3c9046b33537b9becb5ce324a4f"
+		},
+		"plugins/agent-evaluation/store.mjs": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-durability-profile/files/sources/plugins/agent-evaluation/store.mjs",
+			"bytes": 34667,
+			"sha256": "09e94c97937fb2966c543ecc2d15288e87c0a2985320caf593441b87b26242d2"
+		},
+		"plugins/agent-evaluation/collect.mjs": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-durability-profile/files/sources/plugins/agent-evaluation/collect.mjs",
+			"bytes": 21698,
+			"sha256": "99178ea37dabe84839fa0559b7c4e1df4a2c04090dbbc1d2108a841f29a67a89"
+		},
+		"tests/agent-evaluation-performance-test.mjs": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-durability-profile/files/sources/tests/agent-evaluation-performance-test.mjs",
+			"bytes": 6801,
+			"sha256": "8834b6dd267eb7548369293a0543867330cdb95e810311478a43f720c4a0f47c"
+		},
+		"tests/fixtures/agent-evaluation/engine.mjs": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-durability-profile/files/sources/tests/fixtures/agent-evaluation/engine.mjs",
+			"bytes": 4798,
+			"sha256": "8d610437b48f2e3fce9d47886219f2bdd39f3074bbe76f73f5a492c5280e6034"
+		},
+		"server/agent/evaluation-evidence.ts": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-durability-profile/files/sources/server/agent/evaluation-evidence.ts",
+			"bytes": 13490,
+			"sha256": "78337812b611d3f957a14196e6cb79241a87be0d32bad9c196c7c2d7a58479c7"
+		}
+	},
+	"validation": {
+		"archive": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-durability-checks/index.json",
+			"bytes": 1243,
+			"sha256": "e4596fd5f7c0ef4b8f2e9ed8f69562b879fdf126471d00b602a293d4b5175cb8"
+		},
+		"typecheck": "PASS; all five configurations; exit 0",
+		"unit": {
+			"files": 2,
+			"passed": 73,
+			"failed": 0,
+			"skipped": 0
+		},
+		"lint": "PASS",
+		"protocol": "structure and v33 PASS; historical-tag heuristic SKIP (no tag)",
+		"i18n": "PASS",
+		"size": "PASS",
+		"diff": "PASS",
+		"clean": "preview only; 0 removable entries",
+		"desktop": "not rerun; no product changes; prior 0.4.24 evidence retains its original scope"
+	}
+}
