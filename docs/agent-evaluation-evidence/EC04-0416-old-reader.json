@@ -1,0 +1,22 @@
+{
+	"status": "PASS",
+	"writerVersion": "0.4.16",
+	"readerVersion": "0.4.15",
+	"directory": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-engine-N3pAFE",
+	"newCheckpointInPack": true,
+	"oldReaderExactReplay": true,
+	"oldReaderNewSnapshot": true,
+	"sourceRecollection": false,
+	"allFilesUnchanged": true,
+	"files": {
+		"attempts/d499f170-8be8-4571-83e7-e5393bd6ba47.1.json": "bf9b581eef0b1e84de43fd02b47bb651ba46c99da0a50e97ea3ec23a8a45e5b7",
+		"contracts/821221f4-e914-42d3-b8e1-4cf1e6202be8.1.json": "85120f6600555ec28ec052e69cd2640fa81a9a4ae41fcb6f8a5b3f32c257980a",
+		"evidence/batch-4f22b00a-a44b-4c04-9c4f-24f327018a12.pack": "84e922ab0a90edeec400ec4fef068979e3cff653bd5b58dc5da414aa35a26dcf",
+		"evidence/batch-66285032-729b-46b7-9b13-8fe5b9f2d5e6.pack": "9d2968a93ac9251a55ebc3b73a7353e7aeec7d11e9335775af2dfae43f4ce093",
+		"snapshots/a86ef720-06c4-4ecd-b319-402a04ea313c.1.json": "f11cde5db550bb2d2b78e735e378ec7136c0a7de762265893af62fd9a0dff93d",
+		"snapshots/c1fcdd92-2537-4ba0-a81a-4c1edc4bfc27.1.json": "2be1fa6e75aa8c35f597be6fe4a8b4859278eb5c1e1d111d0239db21380eb567",
+		"targets/e861ec09-79b9-4919-bbbc-43d982922e2f.1.json": "276c49b553fc6cea6fea9ad16bb31f34a0a9b87b5c7462d70cdb9cb240ee3301"
+	},
+	"actualModelCalls": 0,
+	"actualCliCalls": 0
+}

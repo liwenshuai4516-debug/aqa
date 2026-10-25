@@ -1,6 +1,6 @@
 /** Versioned evaluation records. Runtime validation only; wire types belong in server/protocol.ts. */
 import { Type as T } from "typebox";
-import { Check } from "typebox/value";
+import { Compile } from "typebox/compile";
 import { createHash } from "node:crypto";
 
 export const VERSION = 1;
@@ -232,9 +232,17 @@ export const schemas = {
 		reason: str,
 	}),
 };
+// Compile only these bundled record schemas. Caller-supplied evaluator schemas are not compiled here.
+const validators = Object.fromEntries(Object.entries(schemas).map(([kind, schema]) => [kind, Compile(schema)]));
+const refValidator = Compile(Ref),
+	domainValidator = Compile(Domain);
 export function validate(kind, value, version = VERSION) {
 	requireValue(version === VERSION, "SCHEMA_UNSUPPORTED", "Unsupported evaluation schema version");
-	requireValue(Object.hasOwn(schemas, kind) && Check(schemas[kind], value), "INVALID_INPUT", `Invalid ${kind} record`);
+	requireValue(
+		Object.hasOwn(validators, kind) && validators[kind].Check(value),
+		"INVALID_INPUT",
+		`Invalid ${kind} record`,
+	);
 	if (kind === "contracts") {
 		const conditions = [...value.conditions, ...value.constraints];
 		requireValue(
@@ -266,10 +274,10 @@ export function validate(kind, value, version = VERSION) {
 		);
 }
 export function validateRef(value) {
-	requireValue(Check(Ref, value), "INVALID_INPUT", "Invalid record reference");
+	requireValue(refValidator.Check(value), "INVALID_INPUT", "Invalid record reference");
 }
 export function validateDomain(value) {
-	requireValue(Check(Domain, value), "PERMISSION_DENIED", "Trusted domain is unavailable");
+	requireValue(domainValidator.Check(value), "PERMISSION_DENIED", "Trusted domain is unavailable");
 }
 export function references(kind, data) {
 	switch (kind) {

@@ -323,6 +323,20 @@ describe("EC02 durable collector", () => {
 		);
 	});
 
+	it.each([false, true])("publishes the final checkpoint durably with a tightened budget=%s", async (tightened) => {
+		const f = collectorFixture(tightened ? { store: { limits: { readBytes: 4 * 1024 ** 2 } } } : {});
+		const result = await f.collector.collect(f.context, f.args);
+		const checkpoint = f.store.get(f.context, result.checkpointRef);
+		const path = f.store.index!.get(`evidence/${checkpoint.id}.1`).file;
+		expect(path.endsWith(".pack")).toBe(!tightened);
+		expect(readEvidenceJson(f.store, f.context, result.checkpointRef).evidenceRefs).toEqual(result.evidenceRefs);
+		f.store.close();
+		const reopened = new EvaluationStore({ dataDir: f.source.workspace, authorize: () => f.identity });
+		cleanup.push(() => reopened.close());
+		const collector = new EvidenceCollector(reopened, f.host);
+		cleanup.push(() => collector.close());
+		expect(await collector.collect(f.context, f.args)).toEqual(result);
+	});
 	it("deduplicates replay and out-of-order delivery; seals an immutable checkpoint", async () => {
 		const f = collectorFixture();
 		const first = await f.collector.collect(f.context, f.args);
@@ -366,7 +380,7 @@ describe("EC02 durable collector", () => {
 		f.store.fault = (stage: string) => {
 			if (stage === "beforeWrite" && ++count === 2) throw new Error("disk offline");
 		};
-		await expect(f.collector.collect(f.context, f.args)).rejects.toThrow(/Write failed/);
+		await expect(f.collector.collect(f.context, f.args)).rejects.toMatchObject({ code: "IO_ERROR" });
 		// The first physical commit now contains the entire page, never its checkpoint.
 		const persisted = recordsOf(f.store, f.context, "evidence");
 		expect(persisted.map((r) => r.data.sourceEventId).sort()).toEqual(["a1", "t1", "u1"]);

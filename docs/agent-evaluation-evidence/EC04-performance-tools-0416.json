@@ -1,0 +1,366 @@
+{
+	"status": "FAIL",
+	"scope": "offline task workload then explicit historical collector; no models/CLI; excludes fixture construction",
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-performance-BtQwGk",
+	"rows": [
+		{
+			"round": 0,
+			"workload": "serial",
+			"enabled": false,
+			"elapsedMs": 24.66833299999999,
+			"cpuMs": 3.612,
+			"peakRssBytes": 74678272,
+			"diskBytes": 0,
+			"inputBytes": 10185
+		},
+		{
+			"round": 0,
+			"workload": "serial",
+			"enabled": true,
+			"elapsedMs": 77.32583299999999,
+			"cpuMs": 44.711,
+			"peakRssBytes": 79462400,
+			"diskBytes": 62482,
+			"inputBytes": 10185,
+			"evidenceCount": 40,
+			"gaps": []
+		},
+		{
+			"round": 1,
+			"workload": "serial",
+			"enabled": false,
+			"elapsedMs": 25.924667,
+			"cpuMs": 0.901,
+			"peakRssBytes": 74694656,
+			"diskBytes": 0,
+			"inputBytes": 10185
+		},
+		{
+			"round": 1,
+			"workload": "serial",
+			"enabled": true,
+			"elapsedMs": 74.447,
+			"cpuMs": 45.433,
+			"peakRssBytes": 78790656,
+			"diskBytes": 62482,
+			"inputBytes": 10185,
+			"evidenceCount": 40,
+			"gaps": []
+		},
+		{
+			"round": 2,
+			"workload": "serial",
+			"enabled": false,
+			"elapsedMs": 25.00079199999999,
+			"cpuMs": 0.916,
+			"peakRssBytes": 76185600,
+			"diskBytes": 0,
+			"inputBytes": 10185
+		},
+		{
+			"round": 2,
+			"workload": "serial",
+			"enabled": true,
+			"elapsedMs": 75.247042,
+			"cpuMs": 45.951,
+			"peakRssBytes": 77676544,
+			"diskBytes": 62482,
+			"inputBytes": 10185,
+			"evidenceCount": 40,
+			"gaps": []
+		},
+		{
+			"round": 3,
+			"workload": "serial",
+			"enabled": false,
+			"elapsedMs": 24.991625,
+			"cpuMs": 0.917,
+			"peakRssBytes": 75431936,
+			"diskBytes": 0,
+			"inputBytes": 10185
+		},
+		{
+			"round": 3,
+			"workload": "serial",
+			"enabled": true,
+			"elapsedMs": 75.49575000000002,
+			"cpuMs": 47.914,
+			"peakRssBytes": 77332480,
+			"diskBytes": 62482,
+			"inputBytes": 10185,
+			"evidenceCount": 40,
+			"gaps": []
+		},
+		{
+			"round": 4,
+			"workload": "serial",
+			"enabled": false,
+			"elapsedMs": 25.741874999999993,
+			"cpuMs": 0.811,
+			"peakRssBytes": 73777152,
+			"diskBytes": 0,
+			"inputBytes": 10185
+		},
+		{
+			"round": 4,
+			"workload": "serial",
+			"enabled": true,
+			"elapsedMs": 79.85470800000002,
+			"cpuMs": 48.981,
+			"peakRssBytes": 77217792,
+			"diskBytes": 62482,
+			"inputBytes": 10185,
+			"evidenceCount": 40,
+			"gaps": []
+		},
+		{
+			"round": 0,
+			"workload": "parallel",
+			"enabled": false,
+			"elapsedMs": 13.67308300000002,
+			"cpuMs": 1.13,
+			"peakRssBytes": 72777728,
+			"diskBytes": 0,
+			"inputBytes": 103224
+		},
+		{
+			"round": 0,
+			"workload": "parallel",
+			"enabled": true,
+			"elapsedMs": 156.606916,
+			"cpuMs": 207.366,
+			"peakRssBytes": 102825984,
+			"diskBytes": 612446,
+			"inputBytes": 103224,
+			"evidenceCount": 400,
+			"gaps": []
+		},
+		{
+			"round": 1,
+			"workload": "parallel",
+			"enabled": false,
+			"elapsedMs": 13.07245900000001,
+			"cpuMs": 3.933,
+			"peakRssBytes": 75743232,
+			"diskBytes": 0,
+			"inputBytes": 103224
+		},
+		{
+			"round": 1,
+			"workload": "parallel",
+			"enabled": true,
+			"elapsedMs": 154.394833,
+			"cpuMs": 205.695,
+			"peakRssBytes": 102531072,
+			"diskBytes": 612446,
+			"inputBytes": 103224,
+			"evidenceCount": 400,
+			"gaps": []
+		},
+		{
+			"round": 2,
+			"workload": "parallel",
+			"enabled": false,
+			"elapsedMs": 13.664375000000007,
+			"cpuMs": 1.143,
+			"peakRssBytes": 72957952,
+			"diskBytes": 0,
+			"inputBytes": 103224
+		},
+		{
+			"round": 2,
+			"workload": "parallel",
+			"enabled": true,
+			"elapsedMs": 155.783792,
+			"cpuMs": 207.529,
+			"peakRssBytes": 103202816,
+			"diskBytes": 612446,
+			"inputBytes": 103224,
+			"evidenceCount": 400,
+			"gaps": []
+		},
+		{
+			"round": 3,
+			"workload": "parallel",
+			"enabled": false,
+			"elapsedMs": 13.54287500000001,
+			"cpuMs": 3.998,
+			"peakRssBytes": 75595776,
+			"diskBytes": 0,
+			"inputBytes": 103224
+		},
+		{
+			"round": 3,
+			"workload": "parallel",
+			"enabled": true,
+			"elapsedMs": 157.223666,
+			"cpuMs": 208.915,
+			"peakRssBytes": 102547456,
+			"diskBytes": 612446,
+			"inputBytes": 103224,
+			"evidenceCount": 400,
+			"gaps": []
+		},
+		{
+			"round": 4,
+			"workload": "parallel",
+			"enabled": false,
+			"elapsedMs": 13.255166000000003,
+			"cpuMs": 4.097,
+			"peakRssBytes": 74514432,
+			"diskBytes": 0,
+			"inputBytes": 103224
+		},
+		{
+			"round": 4,
+			"workload": "parallel",
+			"enabled": true,
+			"elapsedMs": 162.16704199999998,
+			"cpuMs": 209.172,
+			"peakRssBytes": 102645760,
+			"diskBytes": 612446,
+			"inputBytes": 103224,
+			"evidenceCount": 400,
+			"gaps": []
+		},
+		{
+			"round": 0,
+			"workload": "long",
+			"enabled": false,
+			"elapsedMs": 129.527917,
+			"cpuMs": 3.246,
+			"peakRssBytes": 74694656,
+			"diskBytes": 0,
+			"inputBytes": 20049825
+		},
+		{
+			"round": 0,
+			"workload": "long",
+			"enabled": true,
+			"elapsedMs": 765.511833,
+			"cpuMs": 568.898,
+			"peakRssBytes": 137936896,
+			"diskBytes": 20306357,
+			"inputBytes": 20049825,
+			"evidenceCount": 200,
+			"gaps": []
+		},
+		{
+			"round": 1,
+			"workload": "long",
+			"enabled": false,
+			"elapsedMs": 127.412792,
+			"cpuMs": 2.486,
+			"peakRssBytes": 73236480,
+			"diskBytes": 0,
+			"inputBytes": 20049825
+		},
+		{
+			"round": 1,
+			"workload": "long",
+			"enabled": true,
+			"elapsedMs": 768.892916,
+			"cpuMs": 574.479,
+			"peakRssBytes": 137871360,
+			"diskBytes": 20306357,
+			"inputBytes": 20049825,
+			"evidenceCount": 200,
+			"gaps": []
+		},
+		{
+			"round": 2,
+			"workload": "long",
+			"enabled": false,
+			"elapsedMs": 127.76204099999998,
+			"cpuMs": 2.492,
+			"peakRssBytes": 73302016,
+			"diskBytes": 0,
+			"inputBytes": 20049825
+		},
+		{
+			"round": 2,
+			"workload": "long",
+			"enabled": true,
+			"elapsedMs": 760.495666,
+			"cpuMs": 572.19,
+			"peakRssBytes": 137297920,
+			"diskBytes": 20306357,
+			"inputBytes": 20049825,
+			"evidenceCount": 200,
+			"gaps": []
+		},
+		{
+			"round": 3,
+			"workload": "long",
+			"enabled": false,
+			"elapsedMs": 125.20700000000002,
+			"cpuMs": 2.564,
+			"peakRssBytes": 73793536,
+			"diskBytes": 0,
+			"inputBytes": 20049825
+		},
+		{
+			"round": 3,
+			"workload": "long",
+			"enabled": true,
+			"elapsedMs": 761.0350000000001,
+			"cpuMs": 552.296,
+			"peakRssBytes": 144162816,
+			"diskBytes": 20306357,
+			"inputBytes": 20049825,
+			"evidenceCount": 200,
+			"gaps": []
+		},
+		{
+			"round": 4,
+			"workload": "long",
+			"enabled": false,
+			"elapsedMs": 125.546042,
+			"cpuMs": 5.367,
+			"peakRssBytes": 74104832,
+			"diskBytes": 0,
+			"inputBytes": 20049825
+		},
+		{
+			"round": 4,
+			"workload": "long",
+			"enabled": true,
+			"elapsedMs": 765.594875,
+			"cpuMs": 571.275,
+			"peakRssBytes": 138362880,
+			"diskBytes": 20306357,
+			"inputBytes": 20049825,
+			"evidenceCount": 200,
+			"gaps": []
+		}
+	],
+	"comparisons": [
+		{
+			"workload": "serial",
+			"wallDelta": 50.494958000000025,
+			"wallLimit": 50,
+			"cpuDelta": 45.035000000000004,
+			"cpuLimit": 50,
+			"rssDeltas": [4784128, 4096000, 1490944, 1900544, 3440640],
+			"pass": false
+		},
+		{
+			"workload": "parallel",
+			"wallDelta": 143.064041,
+			"wallLimit": 50,
+			"cpuDelta": 203.596,
+			"cpuLimit": 50,
+			"rssDeltas": [30048256, 26787840, 30244864, 26951680, 28131328],
+			"pass": false
+		},
+		{
+			"workload": "long",
+			"wallDelta": 638.099041,
+			"wallLimit": 50,
+			"cpuDelta": 568.711,
+			"cpuLimit": 50,
+			"rssDeltas": [63242240, 64634880, 63995904, 70369280, 64258048],
+			"pass": false
+		}
+	]
+}

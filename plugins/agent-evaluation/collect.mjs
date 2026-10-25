@@ -2,7 +2,7 @@
  * Replays deduplicate against durable source revisions; a checkpoint is published last.
  * No evaluator, runner, model or business write API is available to this module.
  */
-import { canonical, digest, requireValue } from "./schema.mjs";
+import { LIMITS, canonical, digest, requireValue } from "./schema.mjs";
 import { piEvidenceAdapter } from "./adapters/pi.mjs";
 const refOf = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
 const same = (a, b) => digest(a) === digest(b);
@@ -415,7 +415,7 @@ export class EvidenceCollector {
 			observedAt: new Date().toISOString(),
 		};
 		signal?.throwIfAborted();
-		const checkpoint = store.write(context, {
+		const checkpointInput = {
 			kind: "evidence",
 			data: {
 				attemptRef,
@@ -433,7 +433,14 @@ export class EvidenceCollector {
 				truncated: false,
 			},
 			requestId: `checkpoint-${digest([attempt.id, requestId])}`,
-		});
+		};
+		// The final checkpoint is still a separate commit after every source item. A single-item
+		// pack preserves body-before-index durability using one atomic file for body and index.
+		// Keep the legacy path for tightened read budgets that may not fit a physical pack.
+		const checkpoint =
+			store.limits.readBytes === LIMITS.readBytes
+				? store.writeEvidenceBatch(context, [checkpointInput])[0]
+				: store.write(context, checkpointInput);
 		return { ...result, checkpointRef: refOf(checkpoint) };
 	}
 	seal(context, checkpointRef, requestId) {

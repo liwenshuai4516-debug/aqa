@@ -85,7 +85,7 @@ if (process.argv[2] === "--worker") {
 	});
 	const profile = {};
 	if (process.env.EVALUATION_PROFILE === "1") {
-		for (const name of ["get", "load", "readFile", "readBlob", "write"]) {
+		for (const name of ["get", "load", "readFile", "readRange", "readBlob", "write", "writeEvidenceBatch"]) {
 			const original = f.store[name].bind(f.store);
 			profile[name] = { calls: 0, elapsedMs: 0 };
 			f.store[name] = (...args) => {
