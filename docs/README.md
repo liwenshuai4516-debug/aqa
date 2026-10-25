@@ -104,3 +104,5 @@ Agent评估离线导入依据与当前边界见 [EC05记录](agent-evaluation-ev
 [EC04 长证据桌面补验](agent-evaluation-evidence/EC04-evidence-matrix-diagnostics.json)：40页精确回读、真实读取错误恢复与小样本界面耗时；完整性能/回滚门禁仍未完成。
 
 [EC04 插件回滚与完整数据恢复](agent-evaluation-evidence/EC04-rollback-diagnostics.json)：实际Electron的0.4.20→0.4.19 revert、完整userData恢复和0.4.18未知格式写入拒绝；限相同宿主，不代表全宿主降级保证。
+
+[EC04 实际SDK工具人审边界](agent-evaluation-evidence/EC04-tool-channel-diagnostics.json)：本地确定性SSE驱动实际Electron/SDK，get正对照、两种review输入schema拒绝及可信UI只追加一条review；无真实模型调用，不替代性能或完整M1验收。

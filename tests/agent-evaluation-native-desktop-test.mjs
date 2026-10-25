@@ -1,4 +1,4 @@
-/** Real Electron reads historical results and optional owned plan/access probes; no runner/model/CLI. */
+/** Real Electron reads owned fixtures and optional scripted tool probes; no runner/real model/CLI. */
 import assert from "node:assert/strict";
 import { mkdtemp, mkdir, readFile, writeFile, symlink, cp, rename } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -16,6 +16,7 @@ const sourceErrors = process.argv.includes("--source-errors");
 const nativeMatrix = process.argv.includes("--native-matrix");
 const accessMatrix = process.argv.includes("--access-matrix");
 const principalMatrix = process.argv.includes("--principal-matrix");
+const toolMatrix = process.argv.includes("--tool-matrix");
 const summary = JSON.parse(await readFile(join(fixture, "summary.json"), "utf8"));
 assert.equal(summary.status, "PASS");
 assert.match(summary.scope, /local synthetic targets/);
@@ -103,8 +104,9 @@ const result = {
 	nativeMatrix,
 	accessMatrix,
 	principalMatrix,
+	toolMatrix,
 };
-let app, page;
+let app, page, scriptedTools;
 async function until(fn) {
 	const end = Date.now() + 30000;
 	while (Date.now() < end) {
@@ -114,6 +116,10 @@ async function until(fn) {
 	throw new Error("Timed out");
 }
 try {
+	if (toolMatrix) {
+		const { createToolChannelFixture } = await import("./fixtures/agent-evaluation/tool-channel.mjs");
+		scriptedTools = await createToolChannelFixture(agentDir);
+	}
 	app = await launchNativeApp({
 		executablePath: electron,
 		packaged: false,
@@ -666,6 +672,132 @@ try {
 				originalOwnerRecovered: true,
 			});
 		}
+		if (toolMatrix && source === sources.at(-1)) {
+			const { nativeMatrixFiles } = await import("./fixtures/agent-evaluation/native-matrix.mjs");
+			const selected = await rpc("describe"),
+				selectedBound = { conversationId: selected.conversationId, sessionId: selected.sessionId },
+				originalReport = await rpc("get", { ...selectedBound, ref: status.reportRef }),
+				storeBefore = await nativeMatrixFiles(join(dataDir, "agent-evaluation")),
+				reviewData = {
+					evaluationRef: status.reportRef,
+					findingId: originalReport.data.findings[0].findingId,
+					decision: "inconclusive",
+					reason: "Explicit synthetic UI control, not an Agent human review",
+				},
+				steps = [
+					{ id: "tool-positive-read", args: { action: "get", ref: status.reportRef }, allowed: true },
+					{ id: "tool-denied-review", args: { action: "review", data: reviewData }, allowed: false },
+					{
+						id: "tool-denied-spoof",
+						args: { action: "review", data: reviewData, human: true, channel: "ui", principalId: selected.principalId },
+						allowed: false,
+					},
+				],
+				results = [];
+			await page.evaluate(() =>
+				window.__nativeSocket.send(
+					JSON.stringify({ type: "set_model", modelId: "offline-tool-fixture/offline-tool-fixture" }),
+				),
+			);
+			await until(() =>
+				page.evaluate(() =>
+					window.__nativeFrames.some(
+						(frame) =>
+							["snapshot", "snapshot_delta"].includes(frame.type) && frame.state?.model?.id === "offline-tool-fixture",
+					),
+				),
+			);
+			for (const step of steps) {
+				const args = { requestId: crypto.randomUUID(), ...selectedBound, ...step.args };
+				scriptedTools.select(step.id, args);
+				await page.evaluate(
+					(text) => window.__nativeSocket.send(JSON.stringify({ type: "prompt", text })),
+					`Offline deterministic tool-channel probe ${step.id}; execute only the scripted fixture response`,
+				);
+				let transcript, toolResult;
+				await until(async () => {
+					transcript = (await readFile(source.path, "utf8")).trim().split("\n").map(JSON.parse);
+					toolResult = transcript.find(
+						(entry) =>
+							entry.type === "message" && entry.message?.role === "toolResult" && entry.message.toolCallId === step.id,
+					)?.message;
+					return (
+						!!toolResult &&
+						transcript.some(
+							(entry) =>
+								entry.message?.role === "assistant" &&
+								entry.message.content?.some(
+									(block) => block.type === "text" && block.text === `SCRIPTED_FIXTURE_DONE:${step.id}`,
+								),
+						)
+					);
+				});
+				assert.equal(toolResult.toolName, "agent_evaluation");
+				assert.equal(toolResult.isError === true, !step.allowed, JSON.stringify(toolResult));
+				if (step.allowed) assert.deepEqual(JSON.parse(toolResult.content[0].text), originalReport);
+				else {
+					const text = toolResult.content.map((block) => block.text ?? "").join("\n");
+					assert.ok(text.startsWith('Validation failed for tool "agent_evaluation":'), text);
+					assert.ok(text.includes("- action: must be equal to one of the allowed values"), text);
+					if (step.id === "tool-denied-spoof")
+						assert.ok(text.includes("- root: must not have additional properties"), text);
+				}
+				assert.deepEqual(await nativeMatrixFiles(join(dataDir, "agent-evaluation")), storeBefore);
+				assert.equal((await rpc("list", { ...selectedBound, kind: "reviews", ref: status.reportRef })).items.length, 0);
+				assert.equal(await readFile(reportFile, "utf8"), before);
+				results.push({ id: step.id, args, allowed: step.allowed, toolResult });
+			}
+			assert.equal(scriptedTools.observations.filter((entry) => entry.error).length, 0);
+			assert.equal(scriptedTools.observations.length, 6);
+			for (const observed of scriptedTools.observations) {
+				assert.ok(observed.toolSchema.properties.action.enum.includes("get"));
+				assert.equal(observed.toolSchema.properties.action.enum.includes("review"), false);
+			}
+			const afterDenied = await nativeMatrixFiles(join(dataDir, "agent-evaluation"));
+			assert.deepEqual(afterDenied, storeBefore);
+			const reviewRef = await rpc("review", { ...selectedBound, data: reviewData }),
+				review = await rpc("get", { ...selectedBound, ref: reviewRef });
+			assert.equal(review.reviewer, selected.principalId);
+			assert.deepEqual(review.data, reviewData);
+			assert.equal((await rpc("list", { ...selectedBound, kind: "reviews", ref: status.reportRef })).items.length, 1);
+			assert.equal(await readFile(reportFile, "utf8"), before);
+			const afterHuman = await nativeMatrixFiles(join(dataDir, "agent-evaluation"));
+			assert.deepEqual(
+				afterHuman.filter((entry) => storeBefore.some((old) => old.path === entry.path)),
+				storeBefore,
+			);
+			assert.deepEqual(
+				afterHuman.filter((entry) => !storeBefore.some((old) => old.path === entry.path)).map((entry) => entry.path),
+				[`reviews/${reviewRef.id}.1.json`],
+			);
+			await writeFile(
+				join(output, "tool-channel-probes.json"),
+				JSON.stringify(
+					{
+						results,
+						observations: scriptedTools.observations,
+						storeBefore,
+						afterDenied,
+						afterHuman,
+						reviewRef,
+						review,
+						originalReportUnchanged: true,
+					},
+					null,
+					2,
+				),
+			);
+			result.checks.push({
+				toolChannel: true,
+				realModelCalls: 0,
+				localScriptedResponses: 6,
+				positiveRead: true,
+				rejectedHumanReviewAttempts: 2,
+				storeUnchangedAfterEachTool: true,
+				humanUIControlAppended: true,
+				originalReportUnchanged: true,
+			});
+		}
 	}
 	result.status = "PASS";
 } catch (error) {
@@ -677,6 +809,13 @@ try {
 	if (app) {
 		await writeFile(join(output, "app.log"), app.getLogs());
 		await app.close();
+	}
+	if (scriptedTools) {
+		await writeFile(
+			join(output, "tool-channel-observations.json"),
+			JSON.stringify(scriptedTools.observations, null, 2),
+		);
+		await scriptedTools.close();
 	}
 	await writeFile(join(output, "result.json"), JSON.stringify(result, null, 2));
 	console.log(JSON.stringify(result, null, 2));

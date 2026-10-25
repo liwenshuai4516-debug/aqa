@@ -1,0 +1,130 @@
+{
+	"scope": "AC18/AC04 actual macOS arm64 Electron -> original Pi SDK -> agent_evaluation tool; local scripted SSE only, no real model; exact SDK schema rejection and trusted UI positive control",
+	"timestamp": "2026-10-25T14:44:19.809646+00:00",
+	"baseline": "0b1b46a21deca82763c16363f138eaf6a46c62e4",
+	"pluginVersion": "0.4.24",
+	"sdkVersion": "1.2.0 bundled (actual sidecar log)",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-tool-channel/index.json",
+		"bytes": 20653,
+		"sha256": "a90856218b80dd9f2a2381a6c9a06bf43af682c049d36f3d41f88ed1867847fa"
+	},
+	"archiveFiles": 110,
+	"actualDesktop": {
+		"status": "PASS",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-native-desktop-SGtbx5",
+		"result": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-tool-channel/files/desktop/result.json",
+			"bytes": 5071,
+			"sha256": "e434eb7a8601e74c8b8f8d1a060ae0760a2a54c35d96c30086483bf494879740"
+		},
+		"log": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-tool-channel/files/desktop/app.log",
+			"bytes": 1866,
+			"sha256": "4791cba235a476c39515f130582b37c84aa8ee7a7c4129bb4ef0e46a4f63b977"
+		},
+		"flags": ["--source-errors", "--native-matrix", "--access-matrix", "--principal-matrix", "--tool-matrix"],
+		"toolMatrix": {
+			"actualSDKToolAttempts": 3,
+			"positiveGetMatchesUIReportProjection": true,
+			"rejectedReviewAttempts": 2,
+			"rejectionLayer": "SDK input schema, before plugin service dispatch; not a service PERMISSION_DENIED claim",
+			"exactPlainReviewError": "Validation failed for tool \"agent_evaluation\":\n  - action: must be equal to one of the allowed values",
+			"exactSpoofErrorAlsoRequires": "root must not have additional properties (human/channel/principalId also rejected)",
+			"actualToolSchemas": 6,
+			"getPresentReviewAbsentInEverySchema": true,
+			"reviewCountAfterEachTool": 0,
+			"entireStoreAfterEveryToolUnchanged": true,
+			"trustedUIControl": "Same valid review data appended exactly one review; reviewer stamped from trusted principal, all previous files and original report unchanged"
+		},
+		"retainedRegressions": {
+			"selectionAndPrincipalRejections": 81,
+			"nativeSourceErrorsAndFullSealedText": "PASS within existing API one-row/UI pending plan scope",
+			"uiNeverLaunchedPlanPagination": "41 rows, 20/20/1, exact order and return first; all unknown/incomplete",
+			"uiSourceFilesUnchanged": 16
+		}
+	},
+	"raw": {
+		"toolProbes": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-tool-channel/files/desktop/tool-channel-probes.json",
+			"bytes": 100494,
+			"sha256": "bbaf267203ff137fe9b3ee3f60805dbb5b408368a55ec7a29b602dc2eda6f148"
+		},
+		"scriptedObservations": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-tool-channel/files/desktop/tool-channel-observations.json",
+			"bytes": 45283,
+			"sha256": "38c2d1b589d242c561050675e891e05c0b2f0023cb955377cf484f76a1b411e7"
+		},
+		"sdkTranscript": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-tool-channel/files/sessions/native-desktop-ui-2.jsonl",
+			"bytes": 83452,
+			"sha256": "ce4cbad9db81e9270938e22065d40aea45e6c282f801540427f76cfb70e00d20"
+		},
+		"runner": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-tool-channel/files/source/tests/agent-evaluation-native-desktop-test.mjs",
+			"bytes": 33505,
+			"sha256": "5665eb440f11b2cda7e6b107329dbb55ad3602865837021a24d45ea5eac92bfd"
+		},
+		"fixture": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-tool-channel/files/source/tests/fixtures/agent-evaluation/tool-channel.mjs",
+			"bytes": 3089,
+			"sha256": "483b45d9363fc5cac5cb9dc6f4c2059c531accee641bcb890cc1ce75ea36768e"
+		}
+	},
+	"localScriptedTransport": {
+		"SSEresponses": 6,
+		"address": "loopback only; owned ephemeral port >=8900",
+		"dummyKey": "literal synthetic placeholder only; auth/models configuration excluded from archive",
+		"notAModel": "Predetermined tool calls and fixed final text, no inference or external provider calls; no usage/cost benchmark claim"
+	},
+	"validation": {
+		"typecheck": {
+			"status": "PASS",
+			"configurations": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-tool-channel/files/typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"unit": {
+			"status": "PASS",
+			"files": 5,
+			"passed": 105,
+			"failed": 0,
+			"skipped": 0,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-tool-channel/files/unit-final.log",
+				"bytes": 227,
+				"sha256": "f493ac8f77de3bd3fce34daef572f06d3551a3195d1da83d5c37acd5dfd9ae60"
+			}
+		},
+		"lint": "PASS",
+		"protocol": "structure/v33 PASS; historical-tag heuristic SKIP (no tags)",
+		"i18n": "PASS; 12 language packs",
+		"size": "PASS",
+		"diff": "PASS",
+		"clean": "preview only; no deletion",
+		"performance": "not rerun; unchanged collector; previous formal AC39 FAIL retained"
+	},
+	"boundaries": [
+		"UI positive control uses actual trusted UI/WebSocket transport with synthetic review data; does not claim a human approved a real business outcome",
+		"SDK schema refusal proves exposed tool cannot accept review/human fields; service-direct bypass remains covered by engineering unit tests, not a desktop schema-bypass test",
+		"Does not claim every downstream guard executed after SDK validation already refused the call",
+		"Positive SDK get performs actual registered tool execution; two invalid review calls terminate at input validation",
+		"No real CLI/model/native runner/business operations; owned evaluation fixtures and one synthetic UI review are written",
+		"No product/version changes; real mixed-status multi-row native run acceptance remains unexecuted"
+	],
+	"externalCalls": {
+		"realCLI": 0,
+		"realModels": 0,
+		"nativeRunner": 0,
+		"businessExecution": 0
+	},
+	"overall": "EC04/M1 and overall goal incomplete; AC39 performance FAIL and EC06 containment gate unresolved; EC07/EC09 dependent stages held; real CLI user-deferred"
+}
