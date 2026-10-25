@@ -1,0 +1,137 @@
+{
+	"scope": "EC04 per-request bounded list graph reuse; actual macOS arm64 Electron scale regression; no real CLI/model calls",
+	"baseline": "14dc6982156b858ad84446c45e254e172b24f73c",
+	"pluginVersion": "0.4.22",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-list/index.json",
+		"bytes": 98263,
+		"sha256": "a7c87e428d8bccc85b447591af02d6ef37cc787316a8b8900e16b22889268f5f"
+	},
+	"archiveFiles": 382,
+	"archiveScope": "Local verified selected synthetic stores/SDK fixture and raw logs/screenshots; no credentials/dependencies/caches/symlinks; originals retained",
+	"change": "List validates each root under original bounds and projects rows from the same synchronous bounded authorized graph. Shared reads do not cross requests. If an additional root no longer fits, discard graph and read that root under a fresh original budget; an oversized individual root still fails. Corruption/auth errors are not retried as budget failures.",
+	"reproduction": {
+		"status": "EXPECTED_FAILURE",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-list/files/validation/reproduction.log",
+			"bytes": 1190,
+			"sha256": "09ad509c545959adfdc531e4d9d70655a2bd4851d3c275b95b7723ff19a230d9"
+		},
+		"recordLoadsBefore": 6107,
+		"expectedUpperBound": 530,
+		"selectedTests": 1,
+		"unselectedTests": 25
+	},
+	"desktop": {
+		"status": "PASS",
+		"checks": 23,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-list/files/agent-evaluation-desktop-zt0M1L/result.json",
+			"bytes": 11822,
+			"sha256": "baac71241e3bb1b5b4fd0199c032fb5c5497ed49f1702a273b259096ec6f2a7d"
+		},
+		"scale": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-list/files/agent-evaluation-desktop-zt0M1L/scale.json",
+			"bytes": 4861,
+			"sha256": "83ea16f65da2a24ff9516cfe69a34ed2315838ae5d323e08e3b25b7695d1045e"
+		},
+		"syntheticReports": 50,
+		"listedRecords": 58,
+		"actualPageSizes": [20, 20, 18],
+		"evidenceItems": 1000,
+		"reportFindings": 7,
+		"durationsMs": {
+			"report": [297, 273.10000014305115, 282, 214.69999980926514, 280.5],
+			"list": [651.6000001430511, 643.4000000953674, 508.7000000476837, 497.2000000476837, 495.7000000476837]
+		},
+		"mediansMs": {
+			"report": 280.5,
+			"list": 508.7000000476837
+		},
+		"previousListMedianMs": 3399,
+		"listReductionPercent": 85.03383347903255,
+		"timingScope": "UI action through transport/async render/two frames; descriptive, distinct from EC00 server-only gates",
+		"sessionBytesUnchanged": true,
+		"reportCountUnchangedDuringReads": true
+	},
+	"reportReadPerformance": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-list/files/agent-evaluation-report-performance-0hqLMO/result.json",
+			"bytes": 1722,
+			"sha256": "bb2d9c60f2705360d90eebd46e5f7b4577eeb752daf5a9dab64f24f7e08da7b5"
+		},
+		"scope": "1000 evidence snapshot; fixture construction excluded; five actual report/list/evidence reads",
+		"checks": {
+			"reportsCompleted": true,
+			"reportMedianMs": 665.5233750000002,
+			"listMedianMs": 5.271708000000217,
+			"evidenceMedianMs": 0.40891700000020137
+		},
+		"notes": "1000-evidence snapshot with F06; five rounds; list50 is raw evidence metadata, not 50 report rows or native render"
+	},
+	"typecheck": {
+		"status": "PASS",
+		"configs": 5,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-list/files/validation/typecheck.log",
+			"bytes": 1182,
+			"sha256": "d4400aed509394df5a9a9b69c11f7146881bd3c086b919ce168b6adfec49c17b"
+		}
+	},
+	"unit": {
+		"status": "PASS",
+		"files": 17,
+		"tests": 278,
+		"skipped": 0,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-list/files/validation/unit.log",
+			"bytes": 229,
+			"sha256": "f017fadb38ee5c4c3e9c0af37ebc431c971d49290ee57aba5ef2added6c122c8"
+		},
+		"coverage": [
+			"shared list graph deduplication",
+			"no cache reuse between requests; tampered contract is detected",
+			"authorization selection changes",
+			"independent root budget rollover",
+			"oversized individual root still rejected",
+			"existing store/evidence/engine/client/service/import/upload/host/enable/version guards"
+		]
+	},
+	"quality": {
+		"lint": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-list/files/validation/lint.log",
+			"bytes": 88,
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+		},
+		"protocol": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-list/files/validation/protocol.log",
+			"bytes": 360,
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+		},
+		"i18n": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-list/files/validation/i18n.log",
+			"bytes": 615,
+			"sha256": "80312d8da86db05c5343b06b015ff85dbb3f374e280ecc1b044c87014878d1cd"
+		},
+		"size": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-list/files/validation/size.log",
+			"bytes": 1089,
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+		},
+		"diff": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-list/files/validation/diff.log",
+			"bytes": 0,
+			"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+		}
+	},
+	"remaining": [
+		"Actual mixed-history UI list median remains about509ms; no new UI latency threshold invented.",
+		"Frozen collector performance remains FAIL; collector path unchanged, no new collection baseline claimed.",
+		"EC04/M1 remaining boundary matrix not complete; EC09 dependent work held.",
+		"EC06 process-tree containment still BLOCKED; EC07 dependent work held. Real EC08 deferred by user.",
+		"0.4.22 rollback fixture version literals updated; complete rollback was not re-executed this round; earlier 0.4.20 evidence remains version-scoped."
+	],
+	"actualCliCalls": 0,
+	"actualModelCalls": 0
+}

@@ -356,8 +356,22 @@ export class EvaluationStore {
 		};
 		return refs.map((ref) => this.get(context, ref, new Set(), budget));
 	}
-	list(context, { kind = "contracts", cursor = "", limit = 50 } = {}) {
-		this.identity(context);
+	list(
+		context,
+		{ kind = "contracts", cursor = "", limit = 50 } = {},
+		project = (record, _read) => ({ ...recordRef(record), createdAt: record.createdAt, digest: record.digest }),
+	) {
+		const identity = this.identity(context);
+		const freshBudget = () => ({
+			bytes: 0,
+			items: 0,
+			metadataItems: 0,
+			started: performance.now(),
+			cache: new Map(),
+			authorization: canonical([identity.domain, identity.sessionIds]),
+		});
+		let budget = freshBudget();
+		const read = (ref) => this.get(context, ref, new Set(), budget);
 		requireValue(
 			KINDS.includes(kind) &&
 				typeof cursor === "string" &&
@@ -372,12 +386,23 @@ export class EvaluationStore {
 		let last = cursor;
 		for (const k of keys) {
 			last = k;
+			let record;
 			try {
-				const r = this.get(context, this.index.get(k).ref);
-				items.push({ ...recordRef(r), createdAt: r.createdAt, digest: r.digest });
+				// Reuse only this synchronous list's bounded, authorized graph. A different
+				// root that no longer fits is read afresh under the original per-root limits.
+				const retained = budget.cache.size > 0;
+				try {
+					record = read(this.index.get(k).ref);
+				} catch (error) {
+					if (error.code !== "LIMIT_EXCEEDED" || !retained) throw error;
+					budget = freshBudget();
+					record = read(this.index.get(k).ref);
+				}
 			} catch (error) {
 				if (error.code !== "PERMISSION_DENIED") throw error;
+				continue;
 			}
+			items.push(project(record, read));
 			if (items.length === limit) break;
 		}
 		return { items, nextCursor: keys.some((k) => k > last) ? last : null };

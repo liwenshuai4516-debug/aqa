@@ -390,52 +390,49 @@ export class EvaluationService {
 			}
 			case "list": {
 				if (request.ref) store.get(context, request.ref);
-				const page = store.list(context, {
-					kind: request.kind ?? "evaluations",
-					cursor: request.cursor ?? "",
-					limit: request.limit ?? 50,
-				});
-				return {
-					...page,
-					items: page.items
-						.filter(
-							(item) =>
-								!request.ref ||
-								digest(store.get(context, ref(item)).data.evaluationRef ?? null) === digest(request.ref),
-						)
-						.map((item) => {
-							const record = store.get(context, ref(item)),
-								data = record.data;
-							const contract = data.contractRef ? store.get(context, data.contractRef).data : undefined;
-							const snapshot = data.snapshotRef ? store.get(context, data.snapshotRef).data : undefined;
-							const attempt = snapshot?.attemptRefs?.[0] ? store.get(context, snapshot.attemptRefs[0]).data : undefined;
-							const target = attempt ? store.get(context, attempt.targetRef).data : undefined;
-							return {
-								...item,
-								objectivePreview: (data.objective ?? contract?.objective)?.slice(0, 160),
-								sourceVersion: target?.clientVersion,
-								executionState: attempt?.state,
-								evidenceCoverage: snapshot?.coverage,
-								taskRange: contract?.scope,
-								state: data.state,
-								assessmentStage: data.assessmentStage,
-								summary: data.summary
-									? {
-											deliveryVerdict: data.summary.deliveryVerdict,
-											goal: data.summary.goal,
-											behavior: data.summary.behavior,
-											counts: data.summary.counts,
-										}
-									: undefined,
-								scope: data.scope,
-								...(item.kind === "reviews" ? { review: data, reviewer: record.reviewer } : {}),
-								contractRef: data.contractRef,
-								snapshotRef: data.snapshotRef,
-								profileVersion: data.profileVersion,
-								job: data.job,
-							};
-						}),
-				};
+				const page = store.list(
+					context,
+					{
+						kind: request.kind ?? "evaluations",
+						cursor: request.cursor ?? "",
+						limit: request.limit ?? 50,
+					},
+					(record, read) => {
+						const data = record.data;
+						if (request.ref && digest(data.evaluationRef ?? null) !== digest(request.ref)) return undefined;
+						const contract = data.contractRef ? read(data.contractRef).data : undefined;
+						const snapshot = data.snapshotRef ? read(data.snapshotRef).data : undefined;
+						const attempt = snapshot?.attemptRefs?.[0] ? read(snapshot.attemptRefs[0]).data : undefined;
+						const target = attempt ? read(attempt.targetRef).data : undefined;
+						return {
+							...ref(record),
+							createdAt: record.createdAt,
+							digest: record.digest,
+							objectivePreview: (data.objective ?? contract?.objective)?.slice(0, 160),
+							sourceVersion: target?.clientVersion,
+							executionState: attempt?.state,
+							evidenceCoverage: snapshot?.coverage,
+							taskRange: contract?.scope,
+							state: data.state,
+							assessmentStage: data.assessmentStage,
+							summary: data.summary
+								? {
+										deliveryVerdict: data.summary.deliveryVerdict,
+										goal: data.summary.goal,
+										behavior: data.summary.behavior,
+										counts: data.summary.counts,
+									}
+								: undefined,
+							scope: data.scope,
+							...(record.kind === "reviews" ? { review: data, reviewer: record.reviewer } : {}),
+							contractRef: data.contractRef,
+							snapshotRef: data.snapshotRef,
+							profileVersion: data.profileVersion,
+							job: data.job,
+						};
+					},
+				);
+				return { ...page, items: page.items.filter(Boolean) };
 			}
 			case "get":
 				return publicRecord(store.get(context, request.ref), request.offset, request.limit);

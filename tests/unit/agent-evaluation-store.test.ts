@@ -102,6 +102,39 @@ afterEach(() => {
 });
 
 describe("EC01 contracts and immutable store", () => {
+	it("rolls a bounded list graph between independent roots without relaxing an individual read limit", () => {
+		const store = open(),
+			ctx = context();
+		const rows = Array.from({ length: 3 }, () => fixture(store, ctx));
+		const reader = open({ dataDir: store.dataDir, readOnly: true, limits: { readItems: 4 } });
+		const page = reader.list(ctx, { kind: "snapshots" }, (record, read) => ({
+			id: record.id,
+			objective: read(record.data.contractRef).data.objective,
+		}));
+		expect(page.items.map((r: any) => r.id).sort()).toEqual(rows.map((r) => r.snapshot.id).sort());
+		expect(page.items.every((r: any) => r.objective === contract().objective)).toBe(true);
+		expect(() =>
+			reader.getMany(
+				ctx,
+				rows.map((r) => ref(r.snapshot)),
+			),
+		).toThrow(/read budget/);
+		const smaller = open({ dataDir: store.dataDir, readOnly: true, limits: { readItems: 3 } });
+		expect(() => smaller.list(ctx, { kind: "snapshots" })).toThrow(/read budget/);
+	});
+	it("does not reuse a list graph after the trusted session selection changes", () => {
+		const store = open(),
+			ctx = context();
+		const first = fixture(store, ctx);
+		write(store, ctx, "snapshots", { ...first.snapshot.data, sealedAt: "2026-10-23T00:00:02Z" });
+		const page = store.list(ctx, { kind: "snapshots" }, (record) => {
+			contexts.set(ctx, { ...authorize(ctx), sessionIds: [] });
+			return ref(record);
+		});
+		expect(page.items).toHaveLength(1);
+		expect(store.list(ctx, { kind: "snapshots" }).items).toHaveLength(0);
+	});
+
 	it("tracks nested redaction without altering already-sanitized inputs or caller arrays", () => {
 		const safe = { redaction: ["credentials-v1"], password: "[REDACTED]", nested: [{ text: "ordinary output" }] };
 		expect(redact(safe)).toBe(safe);

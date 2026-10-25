@@ -124,44 +124,51 @@ async function diagnose(f: ReturnType<typeof fixture>) {
 	const report = await f.request("get", { ref: status.reportRef });
 	return { contractRef, attemptRef, collected, snapshotRef, reportRef: status.reportRef, report };
 }
+function scaleSnapshot(f: ReturnType<typeof fixture>, scored: Awaited<ReturnType<typeof diagnose>>, count = 1000) {
+	const { context } = f.service.authorize(f.ui, { action: "get" });
+	const store = f.service.store!;
+	const items = store.writeEvidenceBatch(
+		context,
+		Array.from({ length: count }, (_, index) => ({
+			kind: "evidence",
+			requestId: `scale-evidence-${index}`,
+			data: {
+				attemptRef: scored.attemptRef,
+				sourceId: "synthetic-scale",
+				sourceEventId: String(index),
+				sourceLocator: `synthetic:${index}`,
+				producer: "synthetic-scale-v1",
+				availability: "available",
+				origin: "harness-observed",
+				kind: "fixture-evidence",
+				observedAt: "2026-10-25T00:00:00Z",
+				content: JSON.stringify({ index }),
+				redaction: [],
+				truncated: false,
+			},
+		})),
+	);
+	const refs = items.map((r: any) => ({ kind: r.kind, id: r.id, revision: r.revision }));
+	const saved = store.write(context, {
+		kind: "snapshots",
+		requestId: "scale-snapshot",
+		data: {
+			...store.get(context, scored.snapshotRef).data,
+			evidenceRefs: refs,
+			coverage: "partial",
+			gaps: ["synthetic-scale-fixture; not SDK collection"],
+		},
+	});
+
+	return { saved, refs, context, store };
+}
 describe("EC04 product service", () => {
 	it("pages a 1000-evidence snapshot below the response budget without carrying unseen reference digests", async () => {
 		const f = fixture(),
 			scored = await diagnose(f);
 		const { context } = f.service.authorize(f.ui, { action: "get" });
 		const store = f.service.store!;
-		const items = store.writeEvidenceBatch(
-			context,
-			Array.from({ length: 1000 }, (_, index) => ({
-				kind: "evidence",
-				requestId: `scale-evidence-${index}`,
-				data: {
-					attemptRef: scored.attemptRef,
-					sourceId: "synthetic-scale",
-					sourceEventId: String(index),
-					sourceLocator: `synthetic:${index}`,
-					producer: "synthetic-scale-v1",
-					availability: "available",
-					origin: "harness-observed",
-					kind: "fixture-evidence",
-					observedAt: "2026-10-25T00:00:00Z",
-					content: JSON.stringify({ index }),
-					redaction: [],
-					truncated: false,
-				},
-			})),
-		);
-		const refs = items.map((r: any) => ({ kind: r.kind, id: r.id, revision: r.revision }));
-		const saved = store.write(context, {
-			kind: "snapshots",
-			requestId: "scale-snapshot",
-			data: {
-				...store.get(context, scored.snapshotRef).data,
-				evidenceRefs: refs,
-				coverage: "partial",
-				gaps: ["synthetic-scale-fixture; not SDK collection"],
-			},
-		});
+		const { saved, refs } = scaleSnapshot(f, scored);
 		const reference = { kind: saved.kind, id: saved.id, revision: saved.revision };
 		const file = join(f.dir, "agent-evaluation/snapshots", `${saved.id}.${saved.revision}.json`),
 			before = readFileSync(file);
@@ -190,6 +197,51 @@ describe("EC04 product service", () => {
 		await expect(f.request("get", { ref: reference }, { channel: "ui", clientId: "other" })).rejects.toMatchObject({
 			code: "PERMISSION_DENIED",
 		});
+	});
+
+	it("validates shared report graphs once per list request and rechecks durable bytes on the next request", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const { saved, context, store } = scaleSnapshot(f, scored, 500);
+		const original = store.get(context, scored.reportRef);
+		const expected = [original.id];
+		for (let index = 0; index < 4; index++) {
+			const row = store.write(context, {
+				kind: "evaluations",
+				requestId: `shared-report-${index}`,
+				data: {
+					...original.data,
+					snapshotRef: { kind: saved.kind, id: saved.id, revision: saved.revision },
+					findings: [],
+				},
+			});
+			expected.push(row.id);
+		}
+		const load = vi.spyOn(store, "load");
+		const page = await f.request("list", { kind: "evaluations", limit: 50 });
+		expect(page.items.map((r: any) => r.id).sort()).toEqual(expected.sort());
+		expect(
+			page.items.every((r: any) => r.objectivePreview === f.contract.objective && r.sourceVersion === "fixture-sdk"),
+		).toBe(true);
+		const reads = load.mock.calls.length;
+		// 503 evidence records plus the small metadata graph, independent of report count.
+		expect(reads).toBeLessThan(530);
+		load.mockClear();
+		await f.request("list", { kind: "evaluations", limit: 50 });
+		expect(load.mock.calls.length).toBe(reads);
+		const file = join(f.dir, "agent-evaluation/contracts", `${scored.contractRef.id}.1.json`),
+			before = readFileSync(file);
+		const tampered = JSON.parse(before.toString());
+		tampered.data.objective = "tampered after first list";
+		writeFileSync(file, JSON.stringify(tampered));
+		await expect(f.request("list", { kind: "evaluations", limit: 50 })).rejects.toMatchObject({
+			code: "STORE_CORRUPT",
+		});
+		writeFileSync(file, before);
+		expect((await f.request("list", { kind: "evaluations", limit: 50 })).items).toHaveLength(5);
+		await expect(
+			f.request("list", { kind: "evaluations", limit: 50 }, { channel: "ui", clientId: "other" }),
+		).rejects.toMatchObject({ code: "PERMISSION_DENIED" });
 	});
 
 	it("locates an authorized SDK evidence record without recollection or report mutation", async () => {
