@@ -76,3 +76,7 @@ EC05在已明确JSON profile和macOS arm64范围完成，详见[阶段记录与A
 ## EC04 单身份桌面选区拒绝
 
 [实际Electron证据](EC04-native-access-diagnostics.json)：3来源×同工作区另一会话/另一工作区共6选区，42次PERMISSION_DENIED、6次旧session VERSION_CONFLICT、6次顶层伪造身份INVALID_INPUT，均无结果返回；旧报告不在当前列表，3组整个评估仓库前后摘要相等，返回原来源后回读正常。只覆盖单桌面身份，不替代双身份或工具冒充人审验证。原生源故障/41项未启动计划分页回归保留；99项回归、五配置typecheck通过，103份选定原件归档，首轮夹具作用域错误保留且不计通过。无产品变化，AC39/M1和外部隔离阻塞不变。
+
+## EC04 第二原生窗口身份隔离
+
+[实际Electron证据](EC04-native-principal-diagnostics.json)：同一自有sidecar第二原生窗口由原preload/UI生成不同client身份；3来源合法过户后workspace/SDK session相同，但原身份报告/证据/导出/采集仍拒绝，旧来源owner访问也拒绝。新增27次PERMISSION_DENIED，连同54次选区矩阵本轮共81次预期拒绝；仓库摘要不变，过户回主窗口后原报告恢复回读。105项相关单测、五配置typecheck及原生故障/分页回归通过，110份原件归档；首轮等待错误保留。不是双OS用户、工具冒充人审或产品多窗口功能验收。无产品变化，AC39/M1及隔离阻塞仍未关闭。

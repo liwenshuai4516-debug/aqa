@@ -1,0 +1,132 @@
+{
+	"scope": "AC04 actual macOS arm64 Electron second-window principal isolation with legitimate SDK source ownership transfer; no product changes or model/runner execution",
+	"timestamp": "2026-10-25T14:30:16.401895+00:00",
+	"baseline": "00ef02b0d27788bb0d0018ee9aefdbb383f7755d",
+	"pluginVersion": "0.4.24",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-principal/index.json",
+		"bytes": 20568,
+		"sha256": "74a23776ccd99c80cb1cf0f6bd57d877f70ac5bd5df91d6b7206efb03e08da08"
+	},
+	"archiveFiles": 110,
+	"actualDesktop": {
+		"status": "PASS",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-native-desktop-Hc3pN8",
+		"result": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-principal/files/desktop/result.json",
+			"bytes": 4760,
+			"sha256": "faeaf837f47518b5510f5d5574f08ca35d1d7fb856697789c5c603507282b5a4"
+		},
+		"log": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-principal/files/desktop/app.log",
+			"bytes": 1866,
+			"sha256": "fa379d3dccbd6bfdb60c10efb9c4f7467dff854cc634a569190fc96b8d49b634"
+		},
+		"flags": ["--source-errors", "--native-matrix", "--access-matrix", "--principal-matrix"],
+		"principalMatrix": {
+			"sources": 3,
+			"secondNativeWindow": true,
+			"originalPreloadAndUIClientIdentity": true,
+			"differentPrincipal": true,
+			"identicalWorkspaceAndSDKSessionAfterTransfer": true,
+			"foreignReferencePermissionDenied": 21,
+			"previousSourceOwnerPermissionDenied": 6,
+			"totalNewRejections": 27,
+			"allRejectedRepliesHaveNoResult": true,
+			"peerListsEmpty": true,
+			"entireEvaluationStoreUnchanged": true,
+			"originalReportAndSealedFirstPageRecovered": true
+		},
+		"retainedSelectionMatrix": {
+			"contexts": 6,
+			"exactRejections": 54,
+			"totalWithPrincipalMatrix": 81
+		},
+		"retainedOtherRegressions": [
+			"API historical one-row source errors, full sealed read and explicit restore/retry",
+			"UI historical one-row result not current-task execution",
+			"UI 41-row never-launched pending plan 20/20/1 exact paging and first-page return, source errors, full sealed read and 16 source files unchanged"
+		]
+	},
+	"principalProbes": {
+		"api": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-principal/files/desktop/api-principal-probes.json",
+			"bytes": 9522,
+			"sha256": "f3912ec60645cc31f831cdd3d3008ec132baf46d412060cde21be0573d49c4a9"
+		},
+		"ui": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-principal/files/desktop/ui-principal-probes.json",
+			"bytes": 14928,
+			"sha256": "f534664d3a30b791d3c8ed295d6fca8d903ddb80b2f5a2e720c716f01d00e064"
+		},
+		"ui-synthetic": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-principal/files/desktop/ui-synthetic-principal-probes.json",
+			"bytes": 20336,
+			"sha256": "2ebbcd9489f1cf67627a51faafe1c07c0a314559b8663b17aff33c2dcf240acf"
+		}
+	},
+	"testSource": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-principal/files/source/tests/agent-evaluation-native-desktop-test.mjs",
+		"bytes": 27628,
+		"sha256": "679a7c12cabcd123d7397df0a15c2d7e3a99671969558ff10ac520d117dbd74b"
+	},
+	"failureRetained": {
+		"result": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-principal/files/failed-transition/result.json",
+			"bytes": 1735,
+			"sha256": "51b6b75315a03e5c05e76982f871f3440af4c8c52187e154dabb9d41d5e5b70d"
+		},
+		"reason": "Runner waited for ordinary transition_progress.done on the existing auto-takeover path, which publishes a selected-session snapshot instead. Corrected only the transfer wait to a new snapshot with exact SDK session ID; subsequent principal/workspace/session and permission assertions remain unchanged."
+	},
+	"validation": {
+		"typecheck": {
+			"status": "PASS",
+			"configurations": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-principal/files/typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"unit": {
+			"status": "PASS",
+			"files": 5,
+			"passed": 105,
+			"failed": 0,
+			"skipped": 0,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-principal/files/unit.log",
+				"bytes": 227,
+				"sha256": "8c00e4183f9f1344401787168fbdb1f1cf85e23f61e193798674e8bb4f2f595c"
+			}
+		},
+		"lint": "PASS",
+		"protocol": "structure/v33 PASS; historical-tag heuristic SKIP (no tag)",
+		"i18n": "PASS; 12 language packs",
+		"size": "PASS",
+		"diff": "PASS",
+		"clean": "preview only; no deletion",
+		"performance": "not rerun; collector/product unchanged; previous formal AC39 FAIL retained"
+	},
+	"boundaries": [
+		"Native second BrowserWindow is test setup within the owned Electron instance; no claim that product exposes a multi-window management feature",
+		"Principals are actual client identities under one owned sidecar; not two OS accounts or independent authenticated users",
+		"Source ownership legitimately transfers via existing switch_session auto-takeover; no second transcript writer created",
+		"Source transfer does not transfer persisted evaluation ownership; original domain is never rewritten",
+		"UI transport rejection only; does not establish tool-channel human-review impersonation matrix",
+		"SDK selected source legitimately moves back to main; remaining foreign peer references lose source access",
+		"Executed multi-row API/UI mixed-result acceptance remains unexecuted; synthetic UI plan was never launched"
+	],
+	"externalCalls": {
+		"realCLI": 0,
+		"models": 0,
+		"nativeRunner": 0,
+		"businessExecution": 0
+	},
+	"overall": "EC04/M1 and overall goal incomplete; AC39 performance FAIL and EC06 containment blocker retained; EC07/EC09 dependent stages held; real CLI user-deferred"
+}

@@ -15,6 +15,7 @@ const fixture = resolve(process.argv[2] ?? "missing-fixture");
 const sourceErrors = process.argv.includes("--source-errors");
 const nativeMatrix = process.argv.includes("--native-matrix");
 const accessMatrix = process.argv.includes("--access-matrix");
+const principalMatrix = process.argv.includes("--principal-matrix");
 const summary = JSON.parse(await readFile(join(fixture, "summary.json"), "utf8"));
 assert.equal(summary.status, "PASS");
 assert.match(summary.scope, /local synthetic targets/);
@@ -101,6 +102,7 @@ const result = {
 	sourceErrors,
 	nativeMatrix,
 	accessMatrix,
+	principalMatrix,
 };
 let app, page;
 async function until(fn) {
@@ -130,7 +132,7 @@ try {
 	});
 	page = await app.firstWindow();
 	await page.waitForSelector(".app");
-	await page.addInitScript(() => {
+	const captureFrames = () => {
 		const Native = window.WebSocket;
 		window.__nativeFrames = [];
 		window.WebSocket = class extends Native {
@@ -147,7 +149,8 @@ try {
 			}
 		};
 		localStorage.setItem("pi-web-ui:lang", "en");
-	});
+	};
+	await page.addInitScript(captureFrames);
 	await page.reload();
 	await page.waitForSelector(".app");
 	await until(() => page.evaluate(() => window.__nativeFrames.some((f) => f.type === "ready")));
@@ -155,16 +158,16 @@ try {
 	if (await setup.isVisible()) await setup.click();
 	assert.match(app.getLogs(), /\[plugin:agent-evaluation\] activated \(v0\.4\.24\)/);
 	result.pluginVersion = "0.4.24";
-	async function rpc(action, data = {}, expectedError = undefined) {
+	async function rpc(action, data = {}, expectedError = undefined, targetPage = page) {
 		const requestId = crypto.randomUUID();
-		await page.evaluate((m) => window.__nativeSocket.send(JSON.stringify(m)), {
+		await targetPage.evaluate((m) => window.__nativeSocket.send(JSON.stringify(m)), {
 			type: "plugin_message",
 			pluginId: "agent-evaluation",
 			payload: { action, requestId, ...data },
 		});
 		let reply;
 		await until(async () => {
-			reply = await page.evaluate(
+			reply = await targetPage.evaluate(
 				(id) => window.__nativeFrames.find((f) => f.type === "plugin_data" && f.payload?.requestId === id)?.payload,
 				requestId,
 			);
@@ -179,15 +182,61 @@ try {
 		assert.equal(reply.ok, true, JSON.stringify(reply.error));
 		return reply.result;
 	}
-	async function switchSource(path) {
-		const offset = await page.evaluate(() => window.__nativeFrames.length);
-		await page.evaluate((path) => window.__nativeSocket.send(JSON.stringify({ type: "switch_session", path })), path);
+	async function switchSource(path, targetPage = page, expectedSession = undefined) {
+		const offset = await targetPage.evaluate(() => window.__nativeFrames.length);
+		await targetPage.evaluate(
+			(path) => window.__nativeSocket.send(JSON.stringify({ type: "switch_session", path })),
+			path,
+		);
 		await until(() =>
-			page.evaluate(
-				(offset) =>
-					window.__nativeFrames.slice(offset).some((f) => f.type === "transition_progress" && f.phase === "done"),
-				offset,
+			targetPage.evaluate(
+				({ offset, expectedSession }) =>
+					window.__nativeFrames
+						.slice(offset)
+						.some((f) =>
+							expectedSession
+								? f.type === "snapshot" && f.state?.sessionId === expectedSession
+								: f.type === "transition_progress" && f.phase === "done",
+						),
+				{ offset, expectedSession },
 			),
+		);
+	}
+	let peer;
+	if (principalMatrix) {
+		const existing = new Set(app.context().pages());
+		await app.evaluate(async ({ BrowserWindow }, url) => {
+			const main = BrowserWindow.getAllWindows()[0];
+			const second = new BrowserWindow({
+				width: 1200,
+				height: 800,
+				webPreferences: {
+					preload: main.webContents.getLastWebPreferences().preload,
+					contextIsolation: true,
+					nodeIntegration: false,
+					sandbox: true,
+				},
+			});
+			await second.loadURL(url);
+		}, page.url());
+		await until(
+			() =>
+				!!app
+					.context()
+					.pages()
+					.find((candidate) => !existing.has(candidate)),
+		);
+		peer = app
+			.context()
+			.pages()
+			.find((candidate) => !existing.has(candidate));
+		await peer.waitForSelector(".app");
+		await peer.addInitScript(captureFrames);
+		await peer.reload();
+		await until(() => peer.evaluate(() => window.__nativeFrames.some((frame) => frame.type === "ready")));
+		assert.notEqual(
+			await peer.evaluate(() => sessionStorage.getItem("pi-web-client-id")),
+			await page.evaluate(() => sessionStorage.getItem("pi-web-client-id")),
 		);
 	}
 	for (const source of sources) {
@@ -518,6 +567,103 @@ try {
 				oldReportAbsentFromList: true,
 				entireStoreUnchanged: true,
 				originalSourceReopened: true,
+			});
+		}
+		if (principalMatrix) {
+			const { nativeMatrixFiles } = await import("./fixtures/agent-evaluation/native-matrix.mjs");
+			const current = await rpc("describe"),
+				mainBound = { conversationId: current.conversationId, sessionId: current.sessionId },
+				originalReport = await rpc("get", { ...mainBound, ref: status.reportRef }),
+				frozen = await rpc("get", { ...mainBound, ref: snapshot }),
+				records = await Promise.all(frozen.data.evidenceRefs.map((ref) => rpc("get", { ...mainBound, ref }))),
+				native = records.find((record) => record.data.kind === "native-test-run"),
+				nativeRef = { kind: native.kind, id: native.id, revision: native.revision },
+				storeBefore = await nativeMatrixFiles(join(dataDir, "agent-evaluation")),
+				peerRpc = (action, data = {}, error = undefined) => rpc(action, data, error, peer);
+			await switchSource(source.path, peer, source.sessionId);
+			const selected = await peerRpc("describe");
+			assert.notEqual(selected.principalId, current.principalId);
+			assert.equal(selected.workspaceId, current.workspaceId);
+			assert.equal(selected.sessionId, current.sessionId);
+			assert.equal(selected.principalId, await peer.evaluate(() => sessionStorage.getItem("pi-web-client-id")));
+			const selectedBound = { conversationId: selected.conversationId, sessionId: selected.sessionId },
+				rejected = [];
+			for (const [action, data] of [
+				["get", { ref: status.reportRef }],
+				["get", { ref: snapshot }],
+				["readEvidence", { ref: nativeRef, evidenceView: "native-run" }],
+				["inspectNativeRun", { ref: nativeRef }],
+				["export", { ref: status.reportRef }],
+				["collect", { ref: attempt }],
+				[
+					"get",
+					{
+						ref: status.reportRef,
+						data: {
+							principalId: current.principalId,
+							workspaceId: current.workspaceId,
+							sessionIds: [current.sessionId],
+							human: true,
+						},
+					},
+				],
+			])
+				rejected.push({ action, reply: await peerRpc(action, { ...selectedBound, ...data }, "PERMISSION_DENIED") });
+			const visible = await peerRpc("list", { ...selectedBound, kind: "evaluations" });
+			assert.equal(
+				visible.items.some((row) => row.id === status.reportRef.id),
+				false,
+			);
+			const oldOwner = await rpc("describe", mainBound, "PERMISSION_DENIED");
+			assert.deepEqual(await nativeMatrixFiles(join(dataDir, "agent-evaluation")), storeBefore);
+			await peer.screenshot({ path: join(output, `${label}-second-window.png`) });
+			await switchSource(source.path, page, source.sessionId);
+			const restored = await rpc("describe");
+			assert.equal(restored.principalId, current.principalId);
+			assert.equal(restored.sessionId, current.sessionId);
+			const restoredBound = { conversationId: restored.conversationId, sessionId: restored.sessionId };
+			assert.deepEqual(await rpc("get", { ...restoredBound, ref: status.reportRef }), originalReport);
+			assert.equal(
+				(await rpc("readEvidence", { ...restoredBound, ref: nativeRef, evidenceView: "native-run" })).text,
+				JSON.stringify(run, null, 2).slice(0, 4096),
+			);
+			const peerLostSource = await peerRpc("describe", selectedBound, "PERMISSION_DENIED"),
+				storeAfter = await nativeMatrixFiles(join(dataDir, "agent-evaluation"));
+			assert.deepEqual(storeAfter, storeBefore);
+			assert.equal(await readFile(reportFile, "utf8"), before);
+			await writeFile(
+				join(output, `${label}-principal-probes.json`),
+				JSON.stringify(
+					{
+						original: {
+							principalId: current.principalId,
+							workspaceId: current.workspaceId,
+							sessionId: current.sessionId,
+						},
+						selected: {
+							principalId: selected.principalId,
+							workspaceId: selected.workspaceId,
+							sessionId: selected.sessionId,
+						},
+						rejected,
+						visible,
+						oldOwner,
+						peerLostSource,
+						storeBefore,
+						storeAfter,
+					},
+					null,
+					2,
+				),
+			);
+			result.checks.push({
+				engine,
+				synthetic: source.synthetic,
+				secondWindowDifferentPrincipal: true,
+				sameWorkspaceAndSDKSession: true,
+				rejected: 9,
+				entireStoreUnchanged: true,
+				originalOwnerRecovered: true,
 			});
 		}
 	}
