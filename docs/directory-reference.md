@@ -429,3 +429,5 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 - `tests/ui-browser-diagnostic-prepare.mjs`：完整录制候选的不可变诊断输入准备；14错误探针覆盖13断言，保留旧失败、不调用模型或执行诊断。
 
 - `tests/ui-browser-approved-run.mjs`：已有浏览器候选的可信设计/诊断门禁、独立正式执行及原生结果对账；合成环境仅恢复声明地址。
+
+- `tests/ui-approved-baseline-measure.mjs`：原获批六功能资产的现行正式回归、宿主读取/目录计数和旧报告/view测量；保留首次生成、失败链与嵌套浏览器未测项。
