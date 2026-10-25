@@ -134,3 +134,5 @@ EC05 持久化：`plugins/agent-evaluation/import.mjs`复用既有记录/快照/
 EC05 产品上传：`plugins/agent-evaluation/upload.mjs`维护有界临时原字节、身份绑定、分块重试与过期清除；`service.mjs`的人审专用动作连接原有import/store/engine，`client/`提供上传预览/确认与离线报告来源/损失/原包分页。`tests/unit/agent-evaluation-upload.test.ts`覆盖资源/权限边界；`tests/fixtures/agent-evaluation/offline-import.mjs`在实际Electron主用例中验证文件上传和跨进程回读。
 
 EC06 隔离可行性：`tests/agent-evaluation-isolation-test.mjs` 与 `tests/fixtures/agent-evaluation/isolation-probe.mjs` 仅运行原生 macOS 零模型探针，保存文件/网络拒绝及逃逸子进程取消反例；诊断 PASS 不代表执行后端获批，见 [EC06](agent-evaluation-evidence/EC06.md)。
+
+EC04 桌面可选补验：`tests/agent-evaluation-desktop-test.mjs --evidence-matrix`复用`tests/fixtures/agent-evaluation/evidence-matrix.mjs`，验证160K合成证据完整分页、真实缺文件/恢复、窄屏与小样本绘制耗时；不改产品，不替代性能或完整回滚门禁，见[记录](agent-evaluation-evidence/EC04.md)。

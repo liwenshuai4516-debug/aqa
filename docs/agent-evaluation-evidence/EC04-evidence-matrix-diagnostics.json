@@ -1,0 +1,215 @@
+{
+	"scope": "EC04 actual Electron long-evidence and read-error/render subset; production plugin remains 0.4.20",
+	"baseline": "0a21cb8fd8c4db91535286b70f888f9d2a5d0da4",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-evidence-matrix/index.json",
+		"bytes": 34641,
+		"sha256": "ff6ba3e366a9152ef29152e7f7258b4d4a4a54621652015566368c816f468d72"
+	},
+	"archiveFiles": 144,
+	"archiveScope": "Local-only verified copy; raw failure and successful native run preserved; excludes caches/dependencies/credentials/symlinks; originals retained",
+	"desktop": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-evidence-matrix/files/agent-evaluation-desktop-Y3ekH6/result.json",
+			"bytes": 15617,
+			"sha256": "29845f15a81d5ef31ff41949376eacdb6062d2376c2dbc7fc2efbeafce1bc48e"
+		},
+		"checks": 23,
+		"platform": "macOS arm64",
+		"nativeCompleteRestart": {
+			"originalPrincipalId": "d58ff839-47af-4743-a3fb-cdd4dc2e3858",
+			"restartedClientId": "d58ff839-47af-4743-a3fb-cdd4dc2e3858",
+			"changedServicePort": true,
+			"reportReopened": true,
+			"originalBytesUnchanged": true
+		}
+	},
+	"matrix": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-evidence-matrix/files/agent-evaluation-desktop-Y3ekH6/evidence-matrix.json",
+			"bytes": 8310,
+			"sha256": "2fbad7ab304bdb8b78f612cd23e56a342407174412d73844fc500785660b0cf7"
+		},
+		"expectedCharacters": 160545,
+		"expectedSha256": "03672c8320eb29f1aa5d9f5e3ede8eb62ac8cc4ccbc2783bbc91aa4c247ed251",
+		"pageCount": 40,
+		"listRows": 1,
+		"reportFindings": 7,
+		"durationsMs": {
+			"list": [16.600000143051147, 14.099999904632568, 14.799999952316284, 14.599999904632568, 13.700000047683716],
+			"report": [23.40000009536743, 22.5, 24, 23.59999990463257, 16],
+			"evidence": [15.200000047683716, 15.799999952316284, 15.299999952316284, 15.799999952316284, 15.399999856948853]
+		},
+		"mediansMs": {
+			"list": 14.599999904632568,
+			"report": 23.40000009536743,
+			"evidence": 15.399999856948853
+		},
+		"latencyScope": "actual macOS arm64 Electron, synthetic 160K assistant evidence; latency includes transport/render/two animation frames",
+		"latencyAcceptance": "Measured only; no new UI threshold invented; not 50-row/1000-item UI coverage and not server-only EC00 timing",
+		"layout": {
+			"rootFits": true,
+			"panelFits": true,
+			"preFits": true,
+			"characters": 4096
+		},
+		"readFailure": "Real ENOENT from temporarily withheld fixture pack; original bytes restored in finally; explicit UI retry succeeded",
+		"readOnlyRecordCountsUnchanged": true,
+		"oldReportBytesUnchanged": true,
+		"installed": [
+			{
+				"file": "manifest.json",
+				"sha256": "f431c999fd033e5e92ad08d16fcdf1d7bd83778eab119aa1013ab90cd5578305"
+			},
+			{
+				"file": "index.mjs",
+				"sha256": "0af3c81a3023477010b80a44cb488b4b798e21720dc0cb297db5509298dc0560"
+			},
+			{
+				"file": "service.mjs",
+				"sha256": "b5750eb1c28a17732e57200f2fe596fe3a018d5f5663f3f9996ec3fcb706437a"
+			},
+			{
+				"file": "store.mjs",
+				"sha256": "99de6363e84c65f451e30cd0b9b65502ed25cd143efb9ac6f39371a40599cdaf"
+			},
+			{
+				"file": "collect.mjs",
+				"sha256": "48572856542d20917f30235acdc1a878345a15b1562bde8dbcb6f2171258e493"
+			},
+			{
+				"file": "client/entry.mjs",
+				"sha256": "9d4f6bee611eee510355c181d3dc85efc83ba4a787c9e509b25254dbb10135ac"
+			},
+			{
+				"file": "client/transport.mjs",
+				"sha256": "77481ebc7d42980cb0be09aa19e98d6d28783a0a028d318bee375e82e373023b"
+			},
+			{
+				"file": "client/style.mjs",
+				"sha256": "298a3786588e1f5736d82cc2894586bf7f5ef3dc3237d14f5175f8ad39146fa4"
+			}
+		]
+	},
+	"firstFailure": {
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-evidence-matrix/files/agent-evaluation-desktop-51E6DE/result.json",
+			"bytes": 1813,
+			"sha256": "1dc0a012529af43feb9a4bd60c875f4fac54b12fd7c364a3a5165593136bb345"
+		},
+		"reason": "Test fixture searched UUID text, matching both record pack and checkpoint reference; fixed to exact record identity via existing pack index. Product and acceptance assertions unchanged."
+	},
+	"typecheck": {
+		"status": "PASS",
+		"configs": 5,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-evidence-matrix/files/typecheck-final.log",
+			"bytes": 251,
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+		}
+	},
+	"unit": {
+		"total": 113,
+		"passed": 113,
+		"failed": 0,
+		"pending": 0,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-evidence-matrix/files/units.json",
+			"bytes": 42158,
+			"sha256": "60fc70b59bec306b26d2bf1bda4da304a4e6be7e1e8591f5c4af1939fa9cf516"
+		}
+	},
+	"quality": [
+		{
+			"status": "fulfilled",
+			"value": {
+				"cmd": "npm run lint",
+				"chunk_id": "0414c1",
+				"wall_time_seconds": 0.470113375,
+				"exit_code": 0,
+				"original_token_count": 22,
+				"output": "\n> pi-web-ui@0.109.0 lint\n> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/\n\n"
+			}
+		},
+		{
+			"status": "fulfilled",
+			"value": {
+				"cmd": "npm run check:protocol",
+				"chunk_id": "18f59a",
+				"wall_time_seconds": 0.400772709,
+				"exit_code": 0,
+				"original_token_count": 90,
+				"output": "\n> pi-web-ui@0.109.0 check:protocol\n> node scripts/check-protocol-sync.mjs\n\n✓ types.ts 是 protocol.ts 的 type-only re-export shim\n✓ protocol.ts 保持纯类型导出（无运行时代码）\n✓ 双端 PROTOCOL_VERSION 一致 (v33)\nfatal: No names found, cannot describe anything.\n· 跳过协议版本 git 启发式（无可用 tag 或浅检出环境）\n"
+			}
+		},
+		{
+			"status": "fulfilled",
+			"value": {
+				"cmd": "npm run i18n:check",
+				"chunk_id": "18101d",
+				"wall_time_seconds": 0.446632583,
+				"exit_code": 0,
+				"original_token_count": 154,
+				"output": "\n> pi-web-ui@0.109.0 i18n:check\n> node scripts/i18n-diff.mjs --check-packs\n\nOK   de（v0.68.1）：缺 0，多余 0\nOK   es（v0.68.1）：缺 0，多余 0\nOK   fr（v0.68.1）：缺 0，多余 0\nOK   it（v0.68.1）：缺 0，多余 0\nOK   ja（v0.69.0）：缺 0，多余 0\nOK   ko（v0.68.1）：缺 0，多余 0\nOK   pt（v0.105.1）：缺 0，多余 0\nOK   ru（v0.68.1）：缺 0，多余 0\nOK   tr（v0.105.1）：缺 0，多余 0\nOK   zh-HK（v0.107.0）：缺 0，多余 0\nOK   zh-Hant（v0.107.0）：缺 0，多余 0\nOK   zh-TW（v0.107.0）：缺 0，多余 0\n12 个语言包 key 与 zh 一一对应。\n"
+			}
+		},
+		{
+			"status": "fulfilled",
+			"value": {
+				"cmd": "npm run size:check",
+				"chunk_id": "571231",
+				"wall_time_seconds": 0.412019792,
+				"exit_code": 0,
+				"original_token_count": 273,
+				"output": "\n> pi-web-ui@0.109.0 size:check\n> node scripts/project-budget.mjs --check\n\n{\n  \"tracked\": {\n    \"AGENTS.md\": 8597,\n    \"docs/desktop-delivery/evidence\": 63696818,\n    \"assets/demo-video.mp4\": 20012405,\n    \"plugins/mermaid/client/vendor\": 5346437,\n    \"plugins/run-trace/client/vendor\": 568528\n  },\n  \"local\": {},\n  \"checks\": [\n    {\n      \"name\": \"AGENTS.md\",\n      \"bytes\": 8597,\n      \"limit\": 12000,\n      \"passed\": true\n    },\n    {\n      \"name\": \"docs/desktop-delivery/evidence\",\n      \"bytes\": 63696818,\n      \"limit\": 63696818,\n      \"passed\": true\n    },\n    {\n      \"name\": \"assets/demo-video.mp4\",\n      \"bytes\": 20012405,\n      \"limit\": 20012405,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/mermaid/client/vendor\",\n      \"bytes\": 5346437,\n      \"limit\": 5346437,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/run-trace/client/vendor\",\n      \"bytes\": 568528,\n      \"limit\": 568528,\n      \"passed\": true\n    },\n    {\n      \"name\": \"rootLockedPackages\",\n      \"count\": 612,\n      \"limit\": 650,\n      \"passed\": true\n    }\n  ],\n  \"rootLockedPackages\": 612\n}\n"
+			}
+		},
+		{
+			"status": "fulfilled",
+			"value": {
+				"cmd": "git diff --check",
+				"chunk_id": "6ae6b8",
+				"wall_time_seconds": 0.015682333,
+				"exit_code": 0,
+				"original_token_count": 0,
+				"output": ""
+			}
+		},
+		{
+			"status": "fulfilled",
+			"value": {
+				"cmd": "npm run clean",
+				"chunk_id": "525a20",
+				"wall_time_seconds": 0.408440792,
+				"exit_code": 0,
+				"original_token_count": 43,
+				"output": "\n> pi-web-ui@0.109.0 clean\n> node scripts/clean-project.mjs\n\n仅预览；未删除文件。执行前先结束相关测试/构建进程。\n可清理 0 项，共 0.0 MiB。\n"
+			}
+		}
+	],
+	"visualInspection": [
+		"long-evidence-narrow.png: 800x650, unbroken text wraps inside evidence; HTML shown literally; vertical paging remains below current viewport",
+		"evidence-read-error.png: actual read error visible with wrapped path; old provisional report retained, no blank view"
+	],
+	"performanceDiagnostic": {
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-evidence-matrix/files/long-profile.json",
+			"bytes": 556,
+			"sha256": "11b216a7d8322b42256d47cb138f90b5b6da7a16b48df1164e88911c0279dae9"
+		},
+		"scope": "One unchanged-production long worker under CPU profiler; whole CPU profile includes startup/fixture/cleanup, not formal five-round gate",
+		"formalGate": "Not rerun: collector/store unchanged; previously recorded FAIL remains"
+	},
+	"notExecuted": [
+		"Full desktop downgrade/backup restore acceptance",
+		"50-row/1000-item actual UI render matrix",
+		"Remaining full error/size/locale/theme boundary matrix",
+		"EC06/EC07 lifecycle: containment prerequisite blocked",
+		"Real Agent CLI/model calls (user deferred)"
+	],
+	"overallGoal": "active; EC04/M1 incomplete, EC06 blocked",
+	"actualModelCalls": 0,
+	"actualCliCalls": 0
+}

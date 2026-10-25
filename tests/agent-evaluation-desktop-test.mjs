@@ -14,6 +14,8 @@ import { ensureBuild } from "./lib/ensure-build.mjs";
 import { launchNativeApp } from "./desktop/native-app.mjs";
 import { verifyOfflineImport, reopenOfflineImport } from "./fixtures/agent-evaluation/offline-import.mjs";
 import { installActiveJobProbe, verifyActiveJobs } from "./fixtures/agent-evaluation/active-jobs.mjs";
+import { longEvidenceText, verifyEvidenceMatrix } from "./fixtures/agent-evaluation/evidence-matrix.mjs";
+const evidenceMatrix = process.argv.includes("--evidence-matrix");
 const repo = fileURLToPath(new URL("..", import.meta.url));
 ensureBuild(repo, "agent-evaluation-desktop");
 const output = await mkdtemp(join(tmpdir(), "agent-evaluation-desktop-"));
@@ -49,7 +51,12 @@ await writeFile(
 			message: {
 				role: "assistant",
 				timestamp: 1792800002000,
-				content: [{ type: "text", text: "Offline source navigation fixture; no model was called." }],
+				content: [
+					{
+						type: "text",
+						text: evidenceMatrix ? longEvidenceText : "Offline source navigation fixture; no model was called.",
+					},
+				],
 				stopReason: "stop",
 				model: "offline-fixture",
 				provider: "fixture",
@@ -350,6 +357,22 @@ try {
 	const [original] = await reports();
 	const originalFile = join(storeRoot, "evaluations", `${original.id}.1.json`);
 	const originalBytes = await readFile(originalFile, "utf8");
+	if (evidenceMatrix) {
+		stage("actual Electron long evidence, read-error recovery and painted latency matrix");
+		result.evidenceMatrix = await verifyEvidenceMatrix({
+			page,
+			output,
+			dataDir,
+			repo,
+			original,
+			exported,
+			names,
+			until,
+		});
+		result.checks.push(
+			"Actual Electron pages the complete long evidence, escapes markup/redacts the fixture secret, measures five painted list/report/evidence actions, preserves the sealed view on a real missing-pack error and recovers by explicit retry without creating records",
+		);
+	}
 	const attemptsBefore = await names("attempts"),
 		snapshotsBefore = await names("snapshots");
 	// Only this isolated fixture changes. Frozen re-scoring must keep the old valid bytes.

@@ -100,3 +100,5 @@ UI 测试日常修改、安装与升级统一从 [技能维护入口](../.pi/ski
 Agent评估离线导入依据与当前边界见 [EC05记录](agent-evaluation-evidence/EC05.md)；官方格式诊断不代表产品导入完成。
 
 [EC06 原生隔离诊断](agent-evaluation-evidence/EC06.md)：零模型合成 CLI 复现逃逸子进程取消缺口；后端门禁阻塞，不代表正式执行能力。
+
+[EC04 长证据桌面补验](agent-evaluation-evidence/EC04-evidence-matrix-diagnostics.json)：40页精确回读、真实读取错误恢复与小样本界面耗时；完整性能/回滚门禁仍未完成。
