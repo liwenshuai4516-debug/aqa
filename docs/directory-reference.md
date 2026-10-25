@@ -422,3 +422,5 @@ Agent 评估 EC03 基础：`plugins/agent-evaluation/registry.mjs`（三类扩�
 Agent 评估 EC04：`service.mjs`（操作/授权/分页）、`index.mjs`（UI/工具通道）、`client/{entry,transport,configuration,i18n,style}.mjs`（页面/生命周期/双语/主题）、`scripts/enable-agent-evaluation.mjs`（显式登记）；`tests/fixtures/agent-evaluation/active-jobs.mjs`为隔离规则延迟/迟到结果探针（desktop-test的--active-jobs）；service/client/enable 单测及 `tests/agent-evaluation-{desktop,native-desktop,performance}-test.mjs` 记录真实桌面与固定性能对照，性能失败保留，见 [EC04](agent-evaluation-evidence/EC04.md)。
 
 `plugins/agent-evaluation/pack.mjs` 为 EC04 物理批量证据格式与范围校验；逻辑 schema 不变，旧 JSON/blob 兼容读取，`store.mjs`/`durable.mjs` 负责发布、恢复和逐引用授权。相关断点/丢回执/真实进程退出验证在 store/evidence 单测。
+
+EC05：`plugins/agent-evaluation/adapters/atif.mjs`（有界解析/转换）、`adapters/atif/{schema.json,README.md,LICENSE.txt}`（官方格式来源与严格profile）；`tests/unit/agent-evaluation-atif.test.ts`和`tests/agent-evaluation-atif-test.mjs`覆盖边界及禁止IO探针。尚未接service/存储/报告，见[EC05记录](agent-evaluation-evidence/EC05.md)。

@@ -1,0 +1,99 @@
+{
+	"status": "PASS",
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-BOea4Z",
+	"userData": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-BOea4Z/desktop",
+	"agentDir": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-BOea4Z/desktop/agent",
+	"dataDir": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-BOea4Z/desktop/data",
+	"workspace": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-BOea4Z/workspace",
+	"checks": [
+		"Real app loads plugin 0.4.18 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Skill, slash completion and agent_evaluation tool appear in actual desktop management",
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.18; skill, slash discovery and tool registration remain enabled",
+		"Actual desktop switches between sealed file text and original evidence, retaining keyboard focus",
+		"Actual desktop select/create/collect/seal/score, evidence paging, append human review and retain original verdict",
+		"Actual Electron blob download reopens as a valid redacted export, including separate review and verifiable manifest",
+		"Actual desktop re-scoring preserves the exact frozen snapshot/configuration and creates no attempt; revision keeps the selection and old reports/reviews, re-observes changed fixture bytes, and leaves added semantic requirements inconclusive",
+		"Actual desktop observation starts from the fixed selection, returns a durable checkpoint, checks status, stops, scores a new snapshot with the original configuration and dismisses without changing the old report or executing a business task",
+		"Actual desktop configuration edits F01 structure and F07 polling through forms, retains malformed input without a report, then scores the original sealed snapshot with new persisted configs and no collection, attempt or snapshot; old report bytes remain unchanged",
+		"Actual desktop adds an installed rule binding in a new contract revision, keeps it inconclusive without configuration, then configures a matching artifact check on that sealed snapshot; the old contract/report remain unchanged and no task runs",
+		"Chinese/English live labels and narrow layout fit verified; screenshots retained for visual inspection",
+		"Actual light theme stylesheet loads; report remains readable with inherited foreground/background tokens",
+		"Plugin disabled state survives page reload and gates the owned skill; re-enable restores the skill",
+		"An actual secondary renderer with the same preload and service origin cannot obtain the main window native identity",
+		"Graceful real Electron exit and a second native process load plugin 0.4.18 and preserve enabled skill/plugin registration",
+		"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",
+		"After full native restart, sealed file view retains original bytes despite later workspace changes",
+		"Full native exit/restart restores the owned desktop client identity and reopens the original immutable report, review and evidence after explicit source authorization",
+		"Actual desktop resolves a sealed SDK evidence entry to the exact visible source message after restart, highlights it, refuses a foreign target and creates no report/attempt/snapshot",
+		"A real renderer under development URL override receives no native client identity and cannot replace the persisted ID; probe-only, not override UI acceptance"
+	],
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"stage": "development URL cannot acquire the native identity",
+	"revisionChecks": {
+		"originalId": "e457b18f-4879-482f-9704-96da07936e64",
+		"rescoredId": "91c9640f-1701-496a-ae75-d39fe19d7e96",
+		"revisedId": "faf53e82-6d3d-4f2c-b883-438e283ec7d7",
+		"originalSnapshotRef": {
+			"id": "792c6f47-b06c-4849-86c0-9f8770674738",
+			"kind": "snapshots",
+			"revision": 1
+		},
+		"revisedSnapshotRef": {
+			"id": "d626a313-6a52-4531-9c2b-111e8ff924be",
+			"kind": "snapshots",
+			"revision": 1
+		},
+		"contractRevision": 2,
+		"reScoreAddedAttempts": 0,
+		"revisionAddedAttempts": 1,
+		"originalBytesUnchanged": true
+	},
+	"observationChecks": {
+		"reportId": "b7605409-b046-4681-b55f-c6c6df33f516",
+		"addedAttempts": 0,
+		"oldReportUnchanged": true,
+		"realRunEvents": "not executed; synthetic event behavior is covered separately by unit tests"
+	},
+	"configurationChecks": {
+		"reportId": "348e3640-05aa-4dea-846a-93647056f1a9",
+		"sameSnapshot": true,
+		"sameContract": true,
+		"addedAttempts": 0,
+		"addedSnapshots": 0,
+		"changedConfigDigest": true,
+		"originalBytesUnchanged": true,
+		"invalidInputPreserved": true
+	},
+	"bindingChecks": {
+		"conditionId": "condition-4225aa75-d6f0-49af-b667-dbe3a7c61646",
+		"contractRevision": 3,
+		"unconfiguredVerdict": "inconclusive",
+		"configuredVerdict": "pass",
+		"sameSnapshotForConfiguration": true,
+		"revisionAddedAttempts": 1,
+		"configurationAddedAttempts": 0,
+		"oldReportUnchanged": true,
+		"oldContractUnchanged": true
+	},
+	"lightColors": {
+		"color": "rgb(31, 35, 40)",
+		"background": "rgb(255, 255, 255)"
+	},
+	"secondaryRenderer": {
+		"distinctClientId": true
+	},
+	"historyChecks": {
+		"originalPrincipalId": "9eab2cf4-7052-4d85-b2c1-7678b25afb71",
+		"restartedClientId": "9eab2cf4-7052-4d85-b2c1-7678b25afb71",
+		"changedServicePort": true,
+		"reportReopened": true,
+		"originalBytesUnchanged": true
+	},
+	"developmentOverride": {
+		"nativeIdentityWithheld": true,
+		"originalIdentityUnchanged": true,
+		"probeRenderer": true,
+		"normalWindowCount": 0
+	}
+}

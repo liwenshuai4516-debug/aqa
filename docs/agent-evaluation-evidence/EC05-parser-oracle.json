@@ -1,0 +1,744 @@
+{
+	"status": "PASS",
+	"scope": "Pinned official model differential on shared explicit ATIF-v1.8 profile; extra product rejection boundaries tested separately.",
+	"commit": "6099b8cf2bfbbb3e7ff1eb2163bfc4524dbd9ba5",
+	"cases": [
+		{
+			"name": "complete",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "missing agent",
+			"upstreamValid": false,
+			"productValid": false,
+			"errorCode": "INVALID_INPUT",
+			"matches": true
+		},
+		{
+			"name": "bad role",
+			"upstreamValid": false,
+			"productValid": false,
+			"errorCode": "INVALID_INPUT",
+			"matches": true
+		},
+		{
+			"name": "step starts at 2",
+			"upstreamValid": false,
+			"productValid": false,
+			"errorCode": "INVALID_INPUT",
+			"matches": true
+		},
+		{
+			"name": "orphan tool result",
+			"upstreamValid": false,
+			"productValid": false,
+			"errorCode": "INVALID_INPUT",
+			"matches": true
+		},
+		{
+			"name": "image missing source",
+			"upstreamValid": false,
+			"productValid": false,
+			"errorCode": "INVALID_INPUT",
+			"matches": true
+		},
+		{
+			"name": "text missing text",
+			"upstreamValid": false,
+			"productValid": false,
+			"errorCode": "INVALID_INPUT",
+			"matches": true
+		},
+		{
+			"name": "text with source",
+			"upstreamValid": false,
+			"productValid": false,
+			"errorCode": "INVALID_INPUT",
+			"matches": true
+		},
+		{
+			"name": "audio with image mime",
+			"upstreamValid": false,
+			"productValid": false,
+			"errorCode": "INVALID_INPUT",
+			"matches": true
+		},
+		{
+			"name": "valid image",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "valid audio",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "non-agent metrics",
+			"upstreamValid": false,
+			"productValid": false,
+			"errorCode": "INVALID_INPUT",
+			"matches": true
+		},
+		{
+			"name": "no-LLM with reasoning",
+			"upstreamValid": false,
+			"productValid": false,
+			"errorCode": "INVALID_INPUT",
+			"matches": true
+		},
+		{
+			"name": "invalid timestamp",
+			"upstreamValid": false,
+			"productValid": false,
+			"errorCode": "INVALID_INPUT",
+			"matches": true
+		},
+		{
+			"name": "session-only child ref",
+			"upstreamValid": false,
+			"productValid": false,
+			"errorCode": "INVALID_INPUT",
+			"matches": true
+		},
+		{
+			"name": "external ref is only data",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "extra injection stays data",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "untracked call count",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "empty steps",
+			"upstreamValid": false,
+			"productValid": false,
+			"errorCode": "INVALID_INPUT",
+			"matches": true
+		},
+		{
+			"name": "noninteger step",
+			"upstreamValid": false,
+			"productValid": false,
+			"errorCode": "INVALID_INPUT",
+			"matches": true
+		},
+		{
+			"name": "optional variation 0",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 1",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 2",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 3",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 4",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 5",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 6",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 7",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 8",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 9",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 10",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 11",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 12",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 13",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 14",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 15",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 16",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 17",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 18",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 19",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 20",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 21",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 22",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 23",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 24",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 25",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 26",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 27",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 28",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 29",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 30",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 31",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 32",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 33",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 34",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 35",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 36",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 37",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 38",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 39",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 40",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 41",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 42",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 43",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 44",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 45",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 46",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 47",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 48",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 49",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 50",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 51",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 52",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 53",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 54",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 55",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 56",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 57",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 58",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 59",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 60",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 61",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 62",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 63",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 64",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 65",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 66",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 67",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 68",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 69",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 70",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 71",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 72",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 73",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 74",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 75",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 76",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 77",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 78",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 79",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 80",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 81",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 82",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 83",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 84",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 85",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 86",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 87",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 88",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 89",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 90",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 91",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 92",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 93",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 94",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 95",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 96",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 97",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 98",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		},
+		{
+			"name": "optional variation 99",
+			"upstreamValid": true,
+			"productValid": true,
+			"matches": true
+		}
+	],
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"networkCallsDuringValidation": 0
+}

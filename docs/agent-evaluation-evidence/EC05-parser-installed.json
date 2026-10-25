@@ -1,0 +1,8 @@
+{
+	"status": "PASS",
+	"scope": "Installed parser/resources only; not UI import",
+	"rawSha256": "defe05e3824c8530c9bc902f8341dd713dc6e4a32c8b54f38c146d31ce663417",
+	"origin": "target-reported",
+	"events": 1,
+	"pluginPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-BOea4Z/desktop/data/plugins/agent-evaluation"
+}
