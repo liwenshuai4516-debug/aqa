@@ -1571,6 +1571,7 @@ export interface EngineService {
 		((clientId: string, query: AgentEvaluationEvidenceQuery) => AgentEvaluationEvidencePage) | undefined;
 	/** 模型切换成功通知（#542；pi 引擎。dsh 引擎暂无——插件订不到事件但快照照旧可读）。 */
 	onClientModelChanged?: ((snap: PluginConversationSnapshot) => void) | undefined;
+	onClientPluginsDisabled?: ((clientId: string, pluginIds: string[]) => void) | undefined;
 	/** 插件无头调用 agent（pi 引擎；dsh 引擎暂无，host.chat 明确拒绝）。 */
 	chatFromPlugin?:
 		((pluginId: string, req: PluginChatRequest) => Promise<{ conversationId: string; clientId: string }>) | undefined;
@@ -2205,6 +2206,7 @@ wireEngineHooks = (svc: EngineService) => {
 	svc.onRunEvent = (ev) => pluginMgr.emitRunEvent(ev);
 	svc.onConversationChanged = () => pluginMgr.emitConversationChanged();
 	svc.onClientModelChanged = (snap) => pluginMgr.emitClientModelChanged(snap);
+	svc.onClientPluginsDisabled = (id, ids) => pluginMgr.emitClientPluginsDisabled(id, ids);
 	svc.pluginToolsProvider = () => [...pluginMgr.getAgentTools(), ...mcpBridge.getTools()];
 	svc.pluginCommandsProvider = () => pluginMgr.listCommands();
 	svc.pluginBgTasksProvider = () => pluginMgr.bgTasks();

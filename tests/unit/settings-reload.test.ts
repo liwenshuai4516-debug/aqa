@@ -192,3 +192,35 @@ describe("SettingsService.applyRuntime", () => {
 		expect(svc.hasPendingReload()).toBe(false);
 	});
 });
+
+describe("client plugin disable lifecycle", () => {
+	it("notifies before asynchronous reload and replays authoritative disabled state on push", async () => {
+		let release!: () => void;
+		const onPluginsDisabled = vi.fn();
+		const stateStore = makeHost().stateStore;
+		stateStore.saveSettings = vi.fn();
+		const host = makeHost({
+			stateStore,
+			onPluginsDisabled,
+			reloadSession: () =>
+				new Promise<void>((r) => {
+					release = r;
+				}),
+		});
+		const svc = new SettingsService(host, templates);
+		const pending = svc.set({ disabledPlugins: ["agent-evaluation"] });
+		expect(onPluginsDisabled).toHaveBeenCalledWith(["agent-evaluation"]);
+		await vi.waitFor(() => expect(release).toBeTypeOf("function"));
+		release();
+		await pending;
+		onPluginsDisabled.mockClear();
+		svc.push();
+		expect(onPluginsDisabled).toHaveBeenCalledWith(["agent-evaluation"]);
+		release = undefined as unknown as () => void;
+		const enable = svc.set({ disabledPlugins: [] });
+		await vi.waitFor(() => expect(release).toBeTypeOf("function"));
+		expect(onPluginsDisabled).toHaveBeenCalledWith([]);
+		release();
+		await enable;
+	});
+});

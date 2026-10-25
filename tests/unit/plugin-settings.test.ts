@@ -2,7 +2,7 @@
  * 插件声明式设置（manifest "settings" schema）单测：schema 解析校验、
  * 默认值合并、savePluginSettings 持久化 + 通知、host.getSettings 读取。
  */
-import { describe, expect, it, beforeEach, afterEach } from "vitest";
+import { describe, expect, it, beforeEach, afterEach, vi } from "vitest";
 import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -205,5 +205,36 @@ describe("secret 类型（P0-4 加密存、浏览器只见有无）", () => {
 		h.onSettingsChanged((v) => received.push(v));
 		mgr.savePluginSettings("sec", { apiKey: "sk-abc" });
 		expect(received).toEqual([{ apiKey: "sk-abc", name: "demo" }]);
+	});
+});
+
+describe("trusted client disable lifecycle", () => {
+	it("notifies only the named plugin, isolates failures and disposes retained callbacks", async () => {
+		const first = await makePlugin("first", {});
+		const second = await makePlugin("second", {});
+		const calls: string[] = [];
+		const off = first.onClientDisabled((id) => calls.push(id));
+		const foreign = second.onClientDisabled(() => {
+			throw new Error("Foreign callback must not run");
+		});
+		mgr.emitClientPluginsDisabled("owner", ["first", "first", "missing"]);
+		expect(calls).toEqual(["owner"]);
+		off();
+		off();
+		mgr.emitClientPluginsDisabled("owner", ["first"]);
+		expect(calls).toHaveLength(1);
+		const error = vi.spyOn(console, "error").mockImplementation(() => {});
+		first.onClientDisabled(() => {
+			throw new Error("isolated");
+		});
+		first.onClientDisabled((id) => calls.push(id));
+		mgr.emitClientPluginsDisabled("other", ["first"]);
+		expect(calls).toEqual(["owner", "other"]);
+		expect(error).toHaveBeenCalledOnce();
+		error.mockRestore();
+		foreign();
+		mgr.dispose();
+		mgr.emitClientPluginsDisabled("owner", ["first"]);
+		expect(calls).toHaveLength(2);
 	});
 });

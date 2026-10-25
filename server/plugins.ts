@@ -439,6 +439,8 @@ export interface PluginHost {
 	 *  只在这会话的模型**真的变了**时触发（重复选同一个模型 / 重连重放
 	 *  set_model 不重复发；切换失败不发）。返回注销函数。 */
 	onClientModelChanged(handler: (snap: PluginConversationSnapshot) => void): () => void;
+	/** Trusted settings notification for this plugin only. Repeated disabled snapshots are allowed. */
+	onClientDisabled(handler: (clientId: string) => void): () => void;
 	/** 无头调用：把外部通道文本投给 agent（微信等，无浏览器也能跑）。
 	 *  fire-and-forget，运行结果经 onRunEvent(run_end) 按 conversationId 关联。
 	 *  需要能力 "chat"（manifest.permissions）。宿主未接 chatProvider 时拒绝。 */
@@ -893,6 +895,7 @@ interface LoadedPlugin {
 	convChangeHandlers: Set<() => void>;
 	/** 模型切换订阅（host.onClientModelChanged，#542）。错误占位行可缺省。 */
 	modelChangeHandlers?: Set<(snap: PluginConversationSnapshot) => void>;
+	clientDisabledHandlers?: Set<(clientId: string) => void>;
 	/** onAttach 钩子（新客户端接入时逐个回调）。 */
 	attachHandlers: Set<(clientId: string) => void>;
 	/** onCwdChange 钩子（工作区切换时逐个回调）。 */
@@ -2511,6 +2514,21 @@ export class PluginManager {
 		return snap ? copySnapshotForPlugins(snap) : null;
 	}
 
+	/** Authoritative settings lifecycle; a plugin can only observe its own disabled clients. */
+	emitClientPluginsDisabled(clientId: string, pluginIds: string[]): void {
+		for (const id of new Set(pluginIds)) {
+			const plugin = this.loaded.get(id);
+			// eslint-disable-next-line unicorn/no-useless-spread -- snapshot: handlers may unsubscribe mid-emit
+			for (const handler of [...(plugin?.clientDisabledHandlers ?? [])]) {
+				try {
+					handler(clientId);
+				} catch (error) {
+					console.error(`[plugin:${id}] client-disabled handler failed:`, error);
+				}
+			}
+		}
+	}
+
 	/** agent-service 调：某客户端的对话模型切换成功（#542）—— 订阅
 	 *  host.onClientModelChanged 的插件立即收到新快照（异常隔离，不会拖慢切换）。 */
 	emitClientModelChanged(snap: PluginConversationSnapshot): void {
@@ -3454,6 +3472,7 @@ export class PluginManager {
 		const runHandlers = new Set<(ev: PluginRunEvent) => void>();
 		const convChangeHandlers = new Set<() => void>();
 		const modelChangeHandlers = new Set<(snap: PluginConversationSnapshot) => void>();
+		const clientDisabledHandlers = new Set<(clientId: string) => void>();
 		const attachHandlers = new Set<(clientId: string) => void>();
 		const cwdHandlers = new Set<(cwd: string) => void>();
 		const httpRoutes = new Map<string, (req: Request, res: Response) => void>();
@@ -3851,6 +3870,10 @@ export class PluginManager {
 			onConversationChanged: (h) => {
 				convChangeHandlers.add(h);
 				return () => convChangeHandlers.delete(h);
+			},
+			onClientDisabled: (handler) => {
+				clientDisabledHandlers.add(handler);
+				return effects.add("clientDisabled", () => clientDisabledHandlers.delete(handler));
 			},
 			onClientModelChanged: (h) => {
 				modelChangeHandlers.add(h);
@@ -5004,6 +5027,7 @@ export class PluginManager {
 				runHandlers,
 				convChangeHandlers,
 				modelChangeHandlers,
+				clientDisabledHandlers,
 				attachHandlers,
 				cwdHandlers,
 				effects,

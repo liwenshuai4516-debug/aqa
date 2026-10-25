@@ -245,6 +245,12 @@ export const HOST_METHODS: ReadonlyArray<CatalogHostMethod> = [
 		example: `host.onConversationChanged(() => {})`,
 	},
 	{
+		name: "onClientDisabled",
+		needs: "-",
+		summary: "订阅本插件的客户端禁用状态，用于停止该客户端活动任务；可能重复通知",
+		example: `host.onClientDisabled((clientId) => {})`,
+	},
+	{
 		name: "onClientModelChanged",
 		needs: "-",
 		summary: "订阅模型切换成功（回调带 clientId/对话/model；失败与重复不发）",

@@ -874,6 +874,7 @@ export class ClientSession {
 	/** index.ts 注入：某客户端的对话模型切换成功（#542）——直接转发给
 	 *  PluginManager.emitClientModelChanged（插件用 host.onClientModelChanged 订阅）。 */
 	onClientModelChanged: ((snap: PluginConversationSnapshot) => void) | undefined = undefined;
+	onClientPluginsDisabled: ((clientId: string, pluginIds: string[]) => void) | undefined = undefined;
 	/** index.ts 注入：读取插件当前注册的 AI 工具（attach 时拷贝到每个新会话）。 */
 	pluginToolsProvider: (() => PluginAgentTool[]) | undefined = undefined;
 	/** index.ts 经 AgentService 注入：内置调度存储（定时任务 Agent 工具用；未注入时工具直接报错）。 */
@@ -2457,6 +2458,7 @@ export class ClientSession {
 			{
 				clientId,
 				stateStore,
+				onPluginsDisabled: (ids) => this.onClientPluginsDisabled?.(clientId, ids),
 				emit: (msg) => this.emit(msg),
 				flushSnapshot: () => this.flushSnapshot(),
 				isDisposed: () => this.disposed,

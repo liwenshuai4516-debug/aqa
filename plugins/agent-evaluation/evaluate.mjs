@@ -500,6 +500,11 @@ export class EvaluationEngine {
 			throw error;
 		}
 	}
+	stopClient(clientId) {
+		for (const job of this.#jobs.values())
+			if (job.context.clientId === clientId && !["completed", "failed", "cancelled"].includes(job.state))
+				this.cancel(job.context, job.id);
+	}
 	close() {
 		this.#closed = true;
 		for (const job of this.#jobs.values())

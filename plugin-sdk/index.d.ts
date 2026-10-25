@@ -214,6 +214,7 @@ export interface PluginHost {
 	onConversationChanged(handler: () => void): () => void;
 	/** 订阅模型切换成功（回调带 clientId / conversationId / model / isSubagent… 的快照）。 */
 	onClientModelChanged(handler: (snap: unknown) => void): () => void;
+	onClientDisabled(handler: (clientId: string) => void): () => void;
 	registerAgentTool(tool: PluginAgentTool): () => void;
 	/** 注册一个供 AI 调用的工具（单参数 execute(args) 兼容接口，内部适配并转调 registerAgentTool）。 */
 	registerTool(tool: {

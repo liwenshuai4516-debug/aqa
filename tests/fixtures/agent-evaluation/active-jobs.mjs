@@ -53,6 +53,7 @@ export async function verifyActiveJobs({
 	until,
 	settings,
 	closeSettings,
+	plugin,
 	reports,
 	names,
 	originalFile,
@@ -82,7 +83,7 @@ export async function verifyActiveJobs({
 	}
 	const attempts = await names("attempts"),
 		snapshots = await names("snapshots");
-	for (const action of ["cancel", "reload"]) {
+	for (const action of ["cancel", "reload", "disable"]) {
 		const gate = join(output, `active-${action}`);
 		await writeFile(probe.control, JSON.stringify({ gate }));
 		const frameOffset = await page.evaluate(() => window.__evaluationFrames.length);
@@ -98,16 +99,27 @@ export async function verifyActiveJobs({
 		);
 		assert.ok(job?.jobId);
 		assert.equal((await rpc("status", { jobId: job.jobId })).state, "running");
+		let watch;
+		if (action === "disable") {
+			const attemptRef = (await reports())[0].data.snapshotRef;
+			const snapshot = await rpc("get", { ref: attemptRef });
+			watch = await rpc("watchStart", { ref: snapshot.data.attemptRefs[0], watchId: "disable-watch" });
+			assert.equal(watch.state, "observing");
+		}
 		const oldLock = JSON.parse(await readFile(join(dataDir, "agent-evaluation/writer.lock"), "utf8"));
 		if (action === "cancel") {
 			await page.locator('.aev [data-action="cancel"]:not([disabled])').click();
 		} else {
 			await settings("plugins");
 			await page.getByRole("tab", { name: /插件列表|Plugin list/ }).click();
-			await page
-				.locator(".settings-modal")
-				.getByRole("button", { name: /^(Rescan|重新扫描)$/ })
-				.click();
+			if (action === "disable") {
+				await plugin().getByRole("switch").click();
+				await until(async () => (await plugin().getByRole("switch").getAttribute("aria-checked")) === "false");
+			} else
+				await page
+					.locator(".settings-modal")
+					.getByRole("button", { name: /^(Rescan|重新扫描)$/ })
+					.click();
 		}
 		let terminal;
 		await until(async () => {
@@ -122,7 +134,11 @@ export async function verifyActiveJobs({
 			terminal.data.findings.some((f) => f.ruleId === "F01" && f.error === "CANCELLED" && f.verdict === "inconclusive"),
 		);
 		await until(() => exists(gate + ".aborted"));
-		if (action === "reload") {
+		if (action === "disable") {
+			await plugin().getByRole("switch").click();
+			await until(async () => (await plugin().getByRole("switch").getAttribute("aria-checked")) === "true");
+		}
+		if (action !== "cancel") {
 			await closeSettings();
 			await openView();
 			await page.locator('.aev [data-action="open"]:not([disabled])').first().waitFor();
@@ -134,6 +150,7 @@ export async function verifyActiveJobs({
 				return page.locator('.aev [data-action="reevaluate"]:not([disabled])').isVisible();
 			});
 		}
+		if (action === "disable") assert.equal((await rpc("watchStatus", { watchId: watch.watchId })).state, "stopped");
 		const before = await reports();
 		const lock = await readFile(join(dataDir, "agent-evaluation/writer.lock"), "utf8");
 		if (action === "reload") assert.notEqual(JSON.parse(lock).nonce, oldLock.nonce);
@@ -154,10 +171,11 @@ export async function verifyActiveJobs({
 			lateResultIgnored: true,
 			oldReportUnchanged: true,
 			writerReplaced: action === "reload",
+			observationStopped: action === "disable" ? true : undefined,
 			replacementLockPreserved: true,
 		});
 		await writeFile(probe.control, "{}");
-		if (action === "reload") {
+		if (action !== "cancel") {
 			await page.locator(`.aev [data-action="open"][data-id="${terminal.id}"]:not([disabled])`).click();
 		}
 	}

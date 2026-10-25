@@ -74,6 +74,7 @@ export class AgentService {
 	onConversationChanged: (() => void) | undefined = undefined;
 	/** index.ts 注入：模型切换成功通知钩子（#542），attach 时拷贝到每个新会话。 */
 	onClientModelChanged: ((snap: PluginConversationSnapshot) => void) | undefined = undefined;
+	onClientPluginsDisabled: ((clientId: string, pluginIds: string[]) => void) | undefined = undefined;
 	/** index.ts 注入：读取插件当前注册的 AI 工具（attach 时拷贝到每个新会话）。 */
 	pluginToolsProvider: (() => PluginAgentTool[]) | undefined = undefined;
 	/** index.ts 注入：读取插件当前注册的斜杠命令（attach 时拷贝到每个新会话）。 */
@@ -1250,6 +1251,7 @@ export class AgentService {
 		cs.onRunEvent = this.onRunEvent;
 		cs.onConversationChanged = () => this.onConversationChanged?.();
 		cs.onClientModelChanged = (snap) => this.onClientModelChanged?.(snap);
+		cs.onClientPluginsDisabled = (id, ids) => this.onClientPluginsDisabled?.(id, ids);
 		cs.pluginToolsProvider = this.pluginToolsProvider;
 		cs.refreshPluginTools();
 		cs.pluginCommandsProvider = this.pluginCommandsProvider;

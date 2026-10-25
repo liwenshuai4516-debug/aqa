@@ -103,6 +103,8 @@ export interface SettingsHost {
 	getApprovalPolicy?: () => UiApprovalPolicyState;
 	/** 可选：目标模式总开关 on→off 时调 —— 停掉在飞的目标/调研（否则循环照跑照派）。 */
 	onGoalModeDisabled?: () => void;
+	/** Authoritative per-client disabled plugins, also replayed on settings push/preset restore. */
+	onPluginsDisabled?: (pluginIds: string[]) => void;
 	/** 可选：历史对话列表过滤偏好（如 showForkedParentSessions）变化时立即重推历史列表。 */
 	onSessionsFilterChanged?: () => void;
 	/** 可选：查询 MCP 服务器列表与配置文件路径（设置面板展示）。 */
@@ -284,7 +286,11 @@ export class SettingsService {
 		}
 		return false;
 	}
+	private notifyPluginsDisabled(): void {
+		this.host.onPluginsDisabled?.([...(this.settings.disabledPlugins ?? [])]);
+	}
 	push(): void {
+		this.notifyPluginsDisabled();
 		const disabledSkills = new Set(this.settings.disabledSkills);
 		const reviewDisabledSkills = new Set(this.settings.reviewDisabledSkills);
 		const disabledExts = new Set(this.settings.disabledExtensions);
@@ -708,6 +714,7 @@ export class SettingsService {
 		// Owner toggles also reload the SDK skill catalog; individual preferences stay intact.
 		if (partial.disabledPlugins !== undefined) {
 			this.settings.disabledPlugins = partial.disabledPlugins;
+			this.notifyPluginsDisabled();
 		}
 		// UI 布局偏好只是渲染层的事（顶栏/底栏/右键菜单由前端拼），同样不需 reload。
 		if (partial.uiLayout !== undefined) {

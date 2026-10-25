@@ -190,3 +190,7 @@ export default definePlugin({
 ## Agent 评估只读接口（SDK 0.1.5）
 
 宿主提供 `readEvaluationEvidence`（明确 SDK 选区）、`readEvaluationNative`（原生结果引用）与 `readEvaluationArtifact`（明确工作区相对文件）。这些接口均要求 tools 权限、可信发送方与所属会话；不支持的引擎返回不可用，不退回全局快照。artifact 参数为 `{conversationId,sessionId,path}`；返回观察时间、存在状态及有界脱敏正文/摘要，truncated 表示正文不全。不得用导入请求中的 owner/workspace 覆盖宿主身份。mock 默认返回不可用，测试须显式注入实现。`onRunEvent` 的可选 clockEpoch/monotonicAt 表示进程内单调来源，不能跨进程拼接。
+
+## 客户端禁用通知（SDK 0.1.6）
+
+`host.onClientDisabled((clientId) => { /* stop this client's active work */ })` 订阅当前插件的权威禁用状态，返回幂等注销函数。设置推送或恢复可能重复通知；处理应幂等，并保留其他客户端工作。宿主自动在插件卸载或激活失败时注销此订阅。该通知来自服务端设置，不通过可由插件发送的 events bus；它不授予新的读取或写入权限。旧宿主无此方法，依赖它的插件须在激活时检查并明确要求升级。

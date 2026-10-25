@@ -10,7 +10,10 @@ const bounded = (value) => {
 };
 export default {
 	activate(host) {
+		if (typeof host.onClientDisabled !== "function")
+			throw new Error("Agent evaluation requires host.onClientDisabled; upgrade the host");
 		const service = new EvaluationService(host);
+		const offDisabled = host.onClientDisabled((clientId) => service.stopClient(clientId));
 		const off = host.onMessage(async (request, from) => {
 			if (!from) return;
 			let result;
@@ -54,6 +57,7 @@ export default {
 			},
 		});
 		return () => {
+			offDisabled();
 			off();
 			unregister();
 			service.close();

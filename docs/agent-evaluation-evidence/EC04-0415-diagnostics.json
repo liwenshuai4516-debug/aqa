@@ -1,0 +1,122 @@
+{
+	"pluginVersion": "0.4.15",
+	"frontendHostApiVersion": 15,
+	"backendHostApiVersion": 2,
+	"sdkVersion": "0.1.6",
+	"protocolVersion": 33,
+	"scope": "EC04 per-client settings disable, internal/offline only",
+	"typecheck": {
+		"status": "PASS",
+		"configs": 5
+	},
+	"units": {
+		"numTotalTests": 352,
+		"numPassedTests": 352,
+		"numFailedTests": 0,
+		"numPendingTests": 0
+	},
+	"checks": [
+		{
+			"command": ["npm", "run", "lint"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 lint\n> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/\n\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "check:protocol"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 check:protocol\n> node scripts/check-protocol-sync.mjs\n\n✓ types.ts 是 protocol.ts 的 type-only re-export shim\n✓ protocol.ts 保持纯类型导出（无运行时代码）\n✓ 双端 PROTOCOL_VERSION 一致 (v33)\n· 跳过协议版本 git 启发式（无可用 tag 或浅检出环境）\n",
+			"stderr": "fatal: No names found, cannot describe anything.\n"
+		},
+		{
+			"command": ["npm", "run", "i18n:check"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 i18n:check\n> node scripts/i18n-diff.mjs --check-packs\n\nOK   de（v0.68.1）：缺 0，多余 0\nOK   es（v0.68.1）：缺 0，多余 0\nOK   fr（v0.68.1）：缺 0，多余 0\nOK   it（v0.68.1）：缺 0，多余 0\nOK   ja（v0.69.0）：缺 0，多余 0\nOK   ko（v0.68.1）：缺 0，多余 0\nOK   pt（v0.105.1）：缺 0，多余 0\nOK   ru（v0.68.1）：缺 0，多余 0\nOK   tr（v0.105.1）：缺 0，多余 0\nOK   zh-HK（v0.107.0）：缺 0，多余 0\nOK   zh-Hant（v0.107.0）：缺 0，多余 0\nOK   zh-TW（v0.107.0）：缺 0，多余 0\n12 个语言包 key 与 zh 一一对应。\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "size:check"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 size:check\n> node scripts/project-budget.mjs --check\n\n{\n  \"tracked\": {\n    \"AGENTS.md\": 8597,\n    \"docs/desktop-delivery/evidence\": 63696818,\n    \"assets/demo-video.mp4\": 20012405,\n    \"plugins/mermaid/client/vendor\": 5346437,\n    \"plugins/run-trace/client/vendor\": 568528\n  },\n  \"local\": {},\n  \"checks\": [\n    {\n      \"name\": \"AGENTS.md\",\n      \"bytes\": 8597,\n      \"limit\": 12000,\n      \"passed\": true\n    },\n    {\n      \"name\": \"docs/desktop-delivery/evidence\",\n      \"bytes\": 63696818,\n      \"limit\": 63696818,\n      \"passed\": true\n    },\n    {\n      \"name\": \"assets/demo-video.mp4\",\n      \"bytes\": 20012405,\n      \"limit\": 20012405,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/mermaid/client/vendor\",\n      \"bytes\": 5346437,\n      \"limit\": 5346437,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/run-trace/client/vendor\",\n      \"bytes\": 568528,\n      \"limit\": 568528,\n      \"passed\": true\n    },\n    {\n      \"name\": \"rootLockedPackages\",\n      \"count\": 612,\n      \"limit\": 650,\n      \"passed\": true\n    }\n  ],\n  \"rootLockedPackages\": 612\n}\n",
+			"stderr": ""
+		},
+		{
+			"command": ["git", "diff", "--check"],
+			"exitCode": 0,
+			"stdout": "",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "clean"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 clean\n> node scripts/clean-project.mjs\n\n仅预览；未删除文件。执行前先结束相关测试/构建进程。\n可清理 0 项，共 0.0 MiB。\n",
+			"stderr": ""
+		}
+	],
+	"activeProbe": {
+		"result": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-isGGXT/result.json",
+			"bytes": 7445,
+			"sha256": "5640893ba8130c23d7f329a105ae81376ff94af44b66f9dc722125905f755fbc"
+		},
+		"screenshot": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-isGGXT/active-job-cancelled.png",
+			"bytes": 107237,
+			"sha256": "205cef00619883b82589668ec160d623c0c0fe2023bd71050f05ad535697159c"
+		},
+		"productionFiles": [
+			{
+				"relativePath": "index.mjs",
+				"sha256": "6f3dac5b3935fedbb728d72f460bec4161117560dd2b4ce715ece8ca8a9e0adc",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "evaluate.mjs",
+				"sha256": "55b8972a17d8eba1dd04d5056a624ca2b2c372e0cda1be23bd991932c25045b3",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "service.mjs",
+				"sha256": "79b86a4ab94f27e00dd1c93d32c14af306606258ceddf4b8e590f50d7cbc7320",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "store.mjs",
+				"sha256": "213a61159b85cff8a4b19444e391db42da353bc785ce1ca7c98f471b87634edc",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "collect.mjs",
+				"sha256": "2d29704d4e4440a4d389db132950aa39fd9effc842a8434ee5a406960746b71d",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "client/entry.mjs",
+				"sha256": "b3a0dee194c4a390829cbf3174bfbad8ef97685373744523d93a5491b0cc8eb4",
+				"equalToWorktree": true
+			},
+			{
+				"relativePath": "client/transport.mjs",
+				"sha256": "77481ebc7d42980cb0be09aa19e98d6d28783a0a028d318bee375e82e373023b",
+				"equalToWorktree": true
+			}
+		]
+	},
+	"normalDesktop": {
+		"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-Jl2CuE/result.json",
+		"bytes": 5861,
+		"sha256": "5a518d8cead1baeea334faa59db2f7cffa778d4b07e8a88251ba42adab7336a3"
+	},
+	"limitations": [
+		"Dual-client isolation is an engineering test; actual Electron probe covers one native client.",
+		"F01 delay/timeout exists only in the isolated probe copy.",
+		"Collector performance gate remains FAILED; not rerun in this change.",
+		"No real CLI/model/business execution, no personal installation or package release.",
+		"Protocol git-history heuristic skipped because no tags."
+	],
+	"initialFailures": [
+		"New service test reproduced missing stopClient method.",
+		"Initial typecheck required synchronizing the SDK mock interface with new host method.",
+		"New settings test initially omitted required templates dependency; corrected the fixture, preserving production assertions."
+	]
+}

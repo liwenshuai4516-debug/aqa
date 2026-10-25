@@ -93,7 +93,7 @@ export class EvaluationService {
 		this.registry = createInternalRegistry();
 		this.closed = false;
 		this.pending = new Set();
-		this.controllers = new Set();
+		this.controllers = new Map();
 		this.watches = new Map();
 	}
 	initialize() {
@@ -598,7 +598,7 @@ export class EvaluationService {
 			}
 			case "collect": {
 				const controller = new AbortController();
-				this.controllers.add(controller);
+				this.controllers.set(controller, trusted.clientId);
 				try {
 					const collected = await this.collector.collect(context, {
 						attemptRef: request.ref,
@@ -720,10 +720,17 @@ export class EvaluationService {
 		entry.timer = setTimeout(() => this.stopWatch(entry), 60000);
 		entry.timer.unref?.();
 	}
+	stopClient(clientId) {
+		if (this.closed) return;
+		const watch = this.watches.get(clientId);
+		if (watch) this.stopWatch(watch);
+		for (const [controller, owner] of this.controllers) if (owner === clientId) controller.abort();
+		this.engine?.stopClient(clientId);
+	}
 	close() {
 		if (this.closed) return;
 		for (const entry of this.watches.values()) this.stopWatch(entry);
-		for (const controller of this.controllers) controller.abort();
+		for (const controller of this.controllers.keys()) controller.abort();
 		this.collector?.close();
 		// Persist cancellation requests before invalidating identities and releasing the writer lock.
 		this.engine?.close();

@@ -62,6 +62,7 @@ function fixture() {
 			throw new Error("No native reference in fixture");
 		}),
 		onRunEvent: vi.fn(() => () => {}),
+		onClientDisabled: vi.fn(() => () => {}),
 	};
 	const service = new EvaluationService(host);
 	cleanup.push(() => service.close());
@@ -739,6 +740,59 @@ describe("EC04 product service", () => {
 		expect(report.data.configuration).toEqual(scored.report.data.configuration);
 		expect(report.data.configDigest).toBe(scored.report.data.configDigest);
 		expect(report.data.snapshotRef).toEqual(scored.snapshotRef);
+	});
+	it("stops only the disabled client's scoring and observation, then permits explicit re-enable", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const read = f.host.readEvaluationEvidence.getMockImplementation();
+		const disabled = new Set<string>();
+		f.host.readEvaluationEvidence.mockImplementation((clientId: string, query: any) => {
+			if (disabled.has(clientId)) throw Object.assign(new Error("Disabled"), { code: "CAPABILITY_UNAVAILABLE" });
+			return { ...read("owner", query), principalId: clientId };
+		});
+		const other = { channel: "ui", clientId: "second" };
+		const secondContract = await f.request("createContract", { data: f.contract }, other);
+		const secondAttempt = await f.request("createAttempt", { ref: secondContract }, other);
+		const secondCollected = await f.request("collect", { ref: secondAttempt }, other);
+		const secondSnapshot = await f.request("seal", { ref: secondCollected.checkpointRef }, other);
+		await f.request("watchStart", { ref: scored.attemptRef, watchId: "first-watch" });
+		await f.request("watchStart", { ref: secondAttempt, watchId: "second-watch" }, other);
+		const evaluator = f.service.registry.evaluator.bind(f.service.registry),
+			original = evaluator("F01", "1");
+		const calls: Array<{ signal: AbortSignal; release: (v: any) => void }> = [];
+		vi.spyOn(f.service.registry, "evaluator").mockImplementation((id: string, version: string) =>
+			id === "F01"
+				? {
+						...original,
+						evaluate: (_c: any, _v: any, _cfg: any, signal: AbortSignal) =>
+							new Promise((resolve) => calls.push({ signal, release: resolve })),
+					}
+				: evaluator(id, version),
+		);
+		const first = await f.request("evaluate", { ref: scored.snapshotRef });
+		const second = await f.request("evaluate", { ref: secondSnapshot }, other);
+		await vi.waitFor(() => expect(calls).toHaveLength(2));
+		disabled.add("owner");
+		f.service.stopClient("owner");
+		f.service.stopClient("owner");
+		expect(calls[0].signal.aborted).toBe(true);
+		expect(calls[1].signal.aborted).toBe(false);
+		expect(f.service.watches.get("owner").stopped).toBe(true);
+		expect(f.service.watches.get("second").stopped).toBe(false);
+		await expect(f.request("evaluate", { ref: scored.snapshotRef })).rejects.toMatchObject({
+			code: "CAPABILITY_UNAVAILABLE",
+		});
+		disabled.delete("owner");
+		await vi.waitFor(async () => expect((await f.request("status", { jobId: first.jobId })).state).toBe("cancelled"));
+		const cancelled = await f.request("status", { jobId: first.jobId });
+		calls[0].release([]);
+		calls[1].release([]);
+		await vi.waitFor(async () =>
+			expect((await f.request("status", { jobId: second.jobId }, other)).state).toBe("completed"),
+		);
+		expect(await f.request("status", { jobId: first.jobId })).toEqual(cancelled);
+		expect((await f.request("watchStart", { ref: scored.attemptRef, watchId: "re-enabled" })).state).toBe("observing");
+		expect(f.service.closed).toBe(false);
 	});
 	it.each(["queued", "running"])(
 		"seals %s scoring cancellation before synchronous plugin shutdown releases the store",
