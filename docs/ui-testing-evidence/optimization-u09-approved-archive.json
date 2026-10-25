@@ -1,0 +1,276 @@
+{
+	"date": "2026-10-25",
+	"status": "ELECTRON_APPROVED_SIX_FEATURE_ARCHIVE_AND_RESTART_PASSED_FULL_WORKFLOW_PENDING",
+	"plan_complete": false,
+	"versions": {
+		"native": "0.1.7",
+		"data_space": "0.16.0",
+		"desktop": "macOS arm64 unpackaged Electron; reused verified build, not rebuilt by smoke"
+	},
+	"model_calls": 0,
+	"new_target_executions": 0,
+	"fee_ledger_unchanged": true,
+	"samples": [
+		{
+			"status": "FAIL",
+			"checks": [
+				"Explicit envId and six module/feature mappings import exactly six unbound drafts; same-name other-project features remain untouched",
+				"Archive-status is read-only, repeat import adds no cases; separate bindings and selected old-run sync create exactly six passed rows without rerunning target",
+				"Real Electron host restart recovers six distinct case/instance/version links; sync-status reads the same batch without changing runs.json",
+				"Actual desktop shows all six feature cases and immutable asset/run references; existing-run sync button reports 0 new / 6 duplicate and preserves six result rows"
+			],
+			"error": "AssertionError [ERR_ASSERTION]: [\"writeback.receipt.workspace: does not match this batch\"]\n\nfalse !== true\n\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/tests/ui-approved-archive-desktop-test.mjs:316:9",
+			"case_count": 6,
+			"passed_result_count": 6,
+			"distinct_result_keys": 6,
+			"source_refs": [
+				{
+					"path": "qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/manifest.json",
+					"sha256": "4035c2e18a883293b9846177cb861583918e180a85f5ad9c495c48747877563a"
+				},
+				{
+					"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/manifest.json",
+					"sha256": "1ce89c8b4ddfc293ed4778f4567827e35b8c2d803f6e7227018d62272568eb28"
+				},
+				{
+					"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/manifest.json",
+					"sha256": "1dc7083769cf19e07a5df07ed586b54667f3ceb2e739783411ee28bd026c4d6b"
+				},
+				{
+					"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/reviews/result-3887c58d-2958-41b1-bdff-e533c6bdb095/manifest.json",
+					"sha256": "8b76c45c06fb8b79a0060e87f181e73687f93f6aada9597ae10136ef101e4571"
+				},
+				{
+					"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/delivery/8b76c45c06fb8b79a0060e87f181e73687f93f6aada9597ae10136ef101e4571.md",
+					"sha256": "e2f575c267224517753c779b566fecf4c840acaabe9f74c1574a2a3605411aff"
+				}
+			],
+			"projection": "Public qa only, no original tasks/catalog, only selected formal run, no private approval authority; empty-authority gate rejected",
+			"workspace": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/u05-approved-desktop-TRDHZc/project"
+		},
+		{
+			"status": "PASS",
+			"checks": [
+				"Explicit envId and six module/feature mappings import exactly six unbound drafts; same-name other-project features remain untouched",
+				"Archive-status is read-only, repeat import adds no cases; separate bindings and selected old-run sync create exactly six passed rows without rerunning target",
+				"Real Electron host restart recovers six distinct case/instance/version links; sync-status reads the same batch without changing runs.json",
+				"Actual desktop shows all six feature cases and immutable asset/run references; existing-run sync button reports 0 new / 6 duplicate and preserves six result rows",
+				"Six-row structured delivery reconciles actual desktop receipt and original native review; cross-project contradictory delivery is rejected"
+			],
+			"error": null,
+			"case_count": 6,
+			"passed_result_count": 6,
+			"distinct_result_keys": 6,
+			"source_refs": [
+				{
+					"path": "qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/manifest.json",
+					"sha256": "4035c2e18a883293b9846177cb861583918e180a85f5ad9c495c48747877563a"
+				},
+				{
+					"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/manifest.json",
+					"sha256": "1ce89c8b4ddfc293ed4778f4567827e35b8c2d803f6e7227018d62272568eb28"
+				},
+				{
+					"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/manifest.json",
+					"sha256": "1dc7083769cf19e07a5df07ed586b54667f3ceb2e739783411ee28bd026c4d6b"
+				},
+				{
+					"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/reviews/result-3887c58d-2958-41b1-bdff-e533c6bdb095/manifest.json",
+					"sha256": "8b76c45c06fb8b79a0060e87f181e73687f93f6aada9597ae10136ef101e4571"
+				},
+				{
+					"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/delivery/8b76c45c06fb8b79a0060e87f181e73687f93f6aada9597ae10136ef101e4571.md",
+					"sha256": "e2f575c267224517753c779b566fecf4c840acaabe9f74c1574a2a3605411aff"
+				}
+			],
+			"projection": "Public qa only, no original tasks/catalog, only selected formal run, no private approval authority; empty-authority gate rejected",
+			"workspace": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/u05-approved-desktop-vGe8fo/project"
+		}
+	],
+	"source_independent_approval": "Original DesignReviewService/ResultReviewService gates passed before public projection; never cloned authority",
+	"original_approved_archive_verified": {
+		"path": "docs/ui-testing-evidence/optimization-u05-approved-run.tar.gz",
+		"sha256": "d37b968889023896b42fffd0c0a939c559af50b0c81d09edf23384f8849e3e9d",
+		"bytes": 1187726,
+		"files": 224,
+		"roundtrip_verified": true
+	},
+	"delivery": {
+		"cases": 6,
+		"complete_evidence": true,
+		"report_review": {
+			"report_ref": {
+				"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/manifest.json",
+				"sha256": "1dc7083769cf19e07a5df07ed586b54667f3ceb2e739783411ee28bd026c4d6b"
+			},
+			"review_ref": {
+				"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/reviews/result-3887c58d-2958-41b1-bdff-e533c6bdb095/manifest.json",
+				"sha256": "8b76c45c06fb8b79a0060e87f181e73687f93f6aada9597ae10136ef101e4571"
+			},
+			"decision": "approved",
+			"verified_in_original_authority": true
+		},
+		"format_validation": "passed; consistency check only, independent approval and byte integrity checked separately",
+		"cross_project_contradiction": "rejected"
+	},
+	"validation": {
+		"typecheck": "passed",
+		"vitest": "72 passed in 5 files; first unmatched shell glob did not run tests, log retained",
+		"lint": "passed",
+		"protocol": "structure passed; no-tag history skip",
+		"desktop": "5 checks passed after realpath correction; first failure retained",
+		"size": "passed",
+		"clean": "preview only; no deletion"
+	},
+	"limits": [
+		"Only archival/mapping/binding/sync/query/restart stages executed in Electron",
+		"Discovery/design/independent review/original formal target run came from earlier native entries, not a new desktop full chain",
+		"Public projection has no execution approval authority; archival does not grant execute permission",
+		"Initial path-normalization failure source was not frozen separately; actual logs, persisted data and images retained",
+		"Original U00/U02 gates, real OperationContract conditions, U03/U07 and M1/M2 remain incomplete"
+	],
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-u09-approved-archive.tar.gz",
+		"sha256": "5d5fa45c3c79afb03c92fb241ef54da95270a9c4e6604ec479c965d6e05d36ab",
+		"bytes": 1955848,
+		"files": 27,
+		"roundtrip_verified": true
+	},
+	"files": [
+		{
+			"path": "docs/ui-testing-evidence/optimization-u05-approved-run.json",
+			"sha256": "3de9588aede85ec3047fb9b19a708d6b3d1c85eb6e907d5d8b904fa3b2dfa1cd",
+			"bytes": 108830
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924067382/desktop.log",
+			"sha256": "2acf3dcf4a39f698e594a4d27cd3448a4078f8e7728427b50eb26ba3b3c4103c",
+			"bytes": 3705
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924067382/failure.png",
+			"sha256": "712c516eefc28c71049b67779f0a2d01ad2416b32442bb38a13f8e07c81fd000",
+			"bytes": 352738
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924067382/result.json",
+			"sha256": "fd136e2c073ad632ee7daa9fb62a370f362c47489258c1fd280f67af15f56429",
+			"bytes": 9950
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924067382/runs.json",
+			"sha256": "48808c460ee3cd5ea5bda76ee3fe6ce9b372e542f59d49f90699b565c59b4d14",
+			"bytes": 28535
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924067382/six-features.png",
+			"sha256": "05c63da9b67145930bcee04beddf81c47507e92d60c6cd7e6c0c298e64fc1619",
+			"bytes": 461852
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924067382/source-and-run.png",
+			"sha256": "712c516eefc28c71049b67779f0a2d01ad2416b32442bb38a13f8e07c81fd000",
+			"bytes": 352738
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924067382/store.json",
+			"sha256": "003efa5fb14590163c7163490514e1fa98d0f866e7843e26209456c4e5590ec1",
+			"bytes": 18990
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924122498/delivery-validation.json",
+			"sha256": "6ff85aed95477b4c924043a4a9b0e3e7b6830ee2f11848f6ae77e52c4d48250c",
+			"bytes": 166
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924122498/delivery.json",
+			"sha256": "e18c15ae82b57691066b7b985a0cb2393039db53678c721b37f83fbb53cae90a",
+			"bytes": 9240
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924122498/desktop.log",
+			"sha256": "7c56796175c33bf54dd3a05923e104463594dcb7d7953b749d8d2a154c3501b9",
+			"bytes": 3835
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924122498/harness.mjs",
+			"sha256": "1c7f1f5d2312d2dc9ea3ebe1cec05697a57836717676ed995f1aadae843b4a52",
+			"bytes": 15089
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924122498/result.json",
+			"sha256": "55a8eb14d709f4685478aec28d5b0b606ec92a855db4b0ba741edd81250d8685",
+			"bytes": 9875
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924122498/runs.json",
+			"sha256": "16793196c842c5783dc053253a832ac0db90e42e195ece3e7c5838264c4140aa",
+			"bytes": 31551
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924122498/six-features.png",
+			"sha256": "60afc6ceb4fce8efbb7764ce98082fc33ca5925177b2e92e3ad56eec87f9bf4f",
+			"bytes": 461173
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924122498/source-and-run.png",
+			"sha256": "e7d816f2b81d0f134fcd7e52f9e8df0f1c6a0c2305ab2df8b1c3593f6aef2a91",
+			"bytes": 351602
+		},
+		{
+			"path": "tests/scratch/ui-approved-archive-desktop/1792924122498/store.json",
+			"sha256": "52ce2b9a2cd17939282e83e273c76c6fa5b5203ed4a78ab018357179c41c6bc2",
+			"bytes": 20793
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/archive-u09-approved-desktop.py",
+			"sha256": "47146e2867eb3d9614d507cae17c5ee1a40706c9638a574a2e5dc551b07af31c",
+			"bytes": 5229
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u09-approved-archive-clean.log",
+			"sha256": "11edff7f359e5c0ad036bad6ca5caf7ef19274615efa33463fcabe76958226e5",
+			"bytes": 609
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u09-approved-archive-desktop-final.log",
+			"sha256": "96049ca643f94b26a0886df29da81418f41e8d05e1f850add1042ca7d395c698",
+			"bytes": 9987
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u09-approved-archive-desktop.log",
+			"sha256": "03d7d6cebc6fab5d1f7cf3ddebee0819a9f1141b492504bceeb09878ba4cf593",
+			"bytes": 10062
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u09-approved-archive-lint.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u09-approved-archive-protocol.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"bytes": 360
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u09-approved-archive-size.log",
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+			"bytes": 1089
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u09-approved-archive-typecheck.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u09-approved-archive-unit-final.log",
+			"sha256": "df38bab0c86a09639746414ea86388881de079972ba74f497938a92dadbf9b00",
+			"bytes": 443
+		},
+		{
+			"path": "tests/ui-approved-archive-desktop-test.mjs",
+			"sha256": "1c7f1f5d2312d2dc9ea3ebe1cec05697a57836717676ed995f1aadae843b4a52",
+			"bytes": 15089
+		}
+	]
+}

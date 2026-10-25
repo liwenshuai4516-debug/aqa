@@ -655,3 +655,25 @@ tests/lib/ui-baseline-child-observer.mjs导出可停用的observePlaywrightApi�
 同request查询及旧report/view的零子进程、旧获批四项摘要不变继续通过；新基准任务仍在analyze保留“未分析/评审/交付”，不继承旧报告批准。模型预算账本未变、0付费调用，自建源服务关闭。全量typecheck、51单测、lint、协议结构、size与差异检查通过；协议历史无tag跳过。clean仅预览，无删除；本轮仅测试观测器，未重跑Electron。
 
 [API观测证据](ui-testing-evidence/optimization-u00-api-observer.json)保留本轮校准、实际进程API聚合、冻结计划、完整新run与原生对账、来源摘要和验证日志；与先前原始归档分别校验，不含私有authority/认证或依赖。U00仍缺首次生成及旧失败分析/重跑的完整同范围基线、完整优化前后配对、真实目标/Electron业务准入。尚未收到此前角色/测试数据/预期依据位置的答复，不擅读个人凭据或从HTTP200推断身份。U03/U07和最终验收继续保留原前置门禁，整体目标未完成。
+
+### U06/U09 续跑：真实独立批准六功能产物的 Electron 归档与恢复（2026-10-25）
+
+承接d47ad4b的API计量证据，转向原计划的桌面交付。新增tests/ui-approved-archive-desktop-test.mjs，先在原工作区通过DesignReviewService.gate和ResultReviewService.gate核对真实私有登记，逐项核验原asset/run/report/结果评审/交付5个摘要。复用原正式6passed、13断言批次run-09346f68358a862ad2ccb7533c644ad7，0新模型/0目标执行，不生成控制批准或新候选，不把既有历史通过称为本轮浏览器业务执行。
+
+隔离project/agent/data目录，空auth和models，剔除继承的模型/云认证环境变量。只复制公开qa材料，排除原任务/目录缓存，并仅保留选定正式run，避免本轮归档操作卷入其他历史批次；原工作区及所有旧run不删除、不移动。私有authority及个人配置不复制。公开投影中的同一review无法通过空authority执行门禁，实测review-rejected，明确这份投影只用于旧证据归档，不能冒充已迁移执行授权；独立批准事实仅由原私有登记和既有原件证明。
+
+真实Electron（macOS arm64，未打包开发壳，使用已有验证构建/ensureBuild预建模式，不自行构建）完成两次宿主启动。data-space0.16.0，六功能search/edit/details/paging/permission/states各有明确映射；另设同名模块/功能及同名环境的第二项目，显式envId锁定本项目。initialize只返回configured，network/authentication/role/data仍unknown，不将源地址配置当业务就绪。
+
+5项桌面检查实际通过：
+
+- 明确导入6条草稿，原生case/feature一一映射，第二项目无用例，初始automation为空；archive-status不写store，重复import新增0/重复6。
+- 分别绑定六case后，仅同步原正式run，产生6条通过结果；不重新启动目标浏览器或执行脚本。
+- 真实关闭并重启Electron，仍只有6条唯一结果；sync-status对账complete、existing=6、项目与结论正确，查询前后runs.json字节一致。
+- 实际桌面用例库展示6条，自动化窗口可见原asset摘要/runId；点击“同步已有批次（不重跑）”显示“已同步0条，重复6条”，结果仍6条；截图实际核看通过。
+- 结构化六例交付与回执、caseVersion、feature、原run/报告评审引用一致；跨项目矛盾交付反例校验拒绝。格式校验器仅证明一致性，完整证据及独立批准另由前述原生gate和摘要核验支持，未将格式检查当新批准。
+
+第一次执行已通过前4项，但交付校验报writeback.receipt.workspace不一致：macOS /var临时路径被回执规范为/private/var；保留真实失败、全部回执、隔离store/runs和截图。测试创建临时目录后统一realpath，再从头执行的新隔离桌面样本5/5通过，不放松校验器。最终测试在启动前保存实际harness源码；首次失败未另存完整源码，不补造历史源码。两轮原始证据和各自原生引用分别保留。
+
+[桌面获批产物归档索引](ui-testing-evidence/optimization-u09-approved-archive.json)及归档保留失败/成功两轮真实桌面截图、日志、回执、数据快照、结构化交付、源码及检查日志；逐文件与原始5个引用摘要核验，预算账本与U05获批归档一致。typecheck、5文件72项单测、lint、协议结构、size和差异检查通过；初次单测文件通配符无匹配、未启动测试，原日志保留，按真实文件名运行后的结果另记，不将空执行计为通过；协议历史无tag跳过。开始与结束clean仅预览、无删除，关闭自建Electron，不修改个人安装或上游。
+
+本轮补齐U06/U09的六功能真实获批产物→桌面归档/重启恢复子链。原发现、设计、独立评审和正式执行来自此前原生测试入口，不能写成已在Electron完成整条链路。M1/M2、U00完整基线、U02私密映射和OperationContract真实准入、U03/U07等门禁继续保留；此前真实角色/数据/预期依据位置询问尚无答复，整计划不关闭。

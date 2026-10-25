@@ -433,3 +433,5 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 - `tests/ui-approved-baseline-measure.mjs`：原获批六功能资产的现行正式回归、宿主读取/目录计数和旧报告/view测量；保留首次生成、失败链与嵌套浏览器未测项。
 
 - `tests/lib/ui-baseline-child-observer.mjs`：U00测试专用Node预载观察器，按工作区Playwright 1.62.1解析同源监听，记录无路径/参数的FS、子进程及API计数；只由显式--observe-children启用。
+
+- `tests/ui-approved-archive-desktop-test.mjs`：已获独立批准的六功能证据在真实Electron中的归档/绑定/同步/重启检查；需要预建应用，不执行目标或新增评审。
