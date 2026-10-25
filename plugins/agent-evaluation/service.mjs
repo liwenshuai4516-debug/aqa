@@ -8,7 +8,7 @@ import { AtifUploads } from "./upload.mjs";
 import { importAtif } from "./import.mjs";
 import { createInternalRegistry, internalProfile } from "./profiles/internal.mjs";
 import { validateConfigSchema } from "./registry.mjs";
-import { Ref, digest, requireValue } from "./schema.mjs";
+import { Ref, digest, requireValue, references } from "./schema.mjs";
 const ref = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
 const string = T.String({ minLength: 1, maxLength: 16384 });
 export const queryActions = [
@@ -98,7 +98,15 @@ function publicRecord(record, offset = 0, limit = 20) {
 			data[field] = rows.slice(offset, offset + limit);
 			pages[field] = { total: rows.length, offset, nextOffset: offset + limit < rows.length ? offset + limit : null };
 		}
-	return { ...value, sourceDigest, projection: true, data, pages };
+	// A projection carries only the digests of references visible on this page.
+	// The complete immutable record remains in the store/export with its original digest.
+	const referenceDigests = Object.fromEntries(
+		references(record.kind, data).map((reference) => {
+			const key = `${reference.kind}/${reference.id}.${reference.revision}`;
+			return [key, record.referenceDigests[key]];
+		}),
+	);
+	return { ...value, referenceDigests, sourceDigest, projection: true, data, pages };
 }
 export class EvaluationService {
 	constructor(host) {

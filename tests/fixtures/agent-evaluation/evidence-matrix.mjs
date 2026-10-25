@@ -13,7 +13,7 @@ const sha = (text) => createHash("sha256").update(text).digest("hex");
 const median = (values) => [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];
 // Measure the actual UI action through its asynchronous reply/render and two animation frames.
 // This includes transport and rendering; it is not the server-only EC00 latency metric.
-async function paintedAction(page, selector, readySelector) {
+export async function paintedAction(page, selector, readySelector) {
 	return page.evaluate(
 		async ({ selector, readySelector }) => {
 			const root = document.querySelector(".aev"),

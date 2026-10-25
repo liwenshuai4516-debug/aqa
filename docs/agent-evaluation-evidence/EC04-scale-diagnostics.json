@@ -1,0 +1,136 @@
+{
+	"scope": "EC04 native 50-report/1000-evidence scale matrix and projection response fix; macOS arm64; no real CLI or models",
+	"baseline": "d095433242962ce46b4c1bc61a5f605b8806e038",
+	"pluginVersion": "0.4.21",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-scale/index.json",
+		"bytes": 287363,
+		"sha256": "70c47ea5e35ea63aeecad7021eb1365727af8c65f99c419b79c523dba283eb23"
+	},
+	"archiveFiles": 1103,
+	"archiveScope": "Local verified copy of selected synthetic durable stores, SDK fixture, screenshots/logs, failures and validation; originals retained; credentials/caches/dependencies/symlinks excluded",
+	"desktop": {
+		"status": "PASS",
+		"checks": 23,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-scale/files/agent-evaluation-desktop-WPLpH3/result.json",
+			"bytes": 11836,
+			"sha256": "d16fd980cf0fcd7eac277855aa2026d6251a013e13c60a24734420649a42c364"
+		}
+	},
+	"scale": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-scale/files/agent-evaluation-desktop-WPLpH3/scale.json",
+			"bytes": 4875,
+			"sha256": "8c49befd2c4f2dd684f2cbb4adf0c383704f5af93868685bb52469f0c2bc7027"
+		},
+		"syntheticReports": 50,
+		"actualListedRecords": 58,
+		"actualPageSizes": [20, 20, 18],
+		"evidenceItems": 1000,
+		"reportFindings": 7,
+		"uiSnapshotProjection": {
+			"total": 1000,
+			"returned": 20
+		},
+		"nativeReferencePages": 20,
+		"mediansMs": {
+			"report": 223.09999990463257,
+			"list": 3399
+		},
+		"durationsMs": {
+			"report": [228.40000009536743, 223.09999990463257, 215.20000004768372, 223.19999980926514, 214.59999990463257],
+			"list": [3461.4000000953674, 3397.7000000476837, 3399, 3403.7000000476837, 3396]
+		},
+		"generationMedianMs": 599.1330000000016,
+		"timingScope": "UI action through asynchronous reply/render and two animation frames; descriptive, not EC00 server-only thresholds; seven default rules, partial synthetic source coverage",
+		"sessionBytesUnchanged": true,
+		"reportCountUnchangedDuringReads": true
+	},
+	"failures": [
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-scale/files/agent-evaluation-desktop-tRSOno/result.json",
+				"bytes": 6771,
+				"sha256": "985c14fccf70df9f62349decad212e673912b0a31b8cd18685bbe911e5c9b8b3"
+			},
+			"reason": "Fixture clicked Refresh before initial source loading enabled it; added explicit enabled-state wait, no product change."
+		},
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-scale/files/agent-evaluation-desktop-btWeUt/result.json",
+				"bytes": 6708,
+				"sha256": "201946f4ad3b313639274afb8612257cc8591cbf58807cb45f95ad2203cc05a8"
+			},
+			"reason": "Actual product defect: snapshot get retained 1002 reference digests despite a 20-ref data projection, exceeding 48KiB plugin response bound. LIMIT_EXCEEDED shown in real UI; test timed out awaiting detail. Fixed public projection only; original records/export/auth validation unchanged."
+		}
+	],
+	"regressionReproduction": {
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-scale/files/validation/reproduction.log",
+			"bytes": 1283,
+			"sha256": "b243f4463a7a8cb447b57e0e12dccde55137e8ec859d151eb867b38f9e7a1b4b"
+		},
+		"status": "EXPECTED_FAILURE",
+		"observedBytes": 121892,
+		"limitBytes": 49152,
+		"selectedTests": 1,
+		"unselectedTests": 24
+	},
+	"typecheck": {
+		"status": "PASS",
+		"configs": 5,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-scale/files/validation/typecheck.log",
+			"bytes": 251,
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+		}
+	},
+	"unit": {
+		"status": "PASS",
+		"files": 9,
+		"tests": 141,
+		"skipped": 0,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-scale/files/validation/unit.log",
+			"bytes": 227,
+			"sha256": "6fccd28b7b3b2d6fbebd19dab69246245f23de86e02325059985ea69b2264b15"
+		}
+	},
+	"quality": {
+		"lint": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-scale/files/validation/lint.log",
+			"bytes": 88,
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+		},
+		"protocol": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-scale/files/validation/protocol.log",
+			"bytes": 360,
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+		},
+		"i18n": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-scale/files/validation/i18n.log",
+			"bytes": 615,
+			"sha256": "80312d8da86db05c5343b06b015ff85dbb3f374e280ecc1b044c87014878d1cd"
+		},
+		"size": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-scale/files/validation/size.log",
+			"bytes": 1089,
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+		},
+		"diff": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-scale/files/validation/diff.log",
+			"bytes": 0,
+			"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+		}
+	},
+	"remaining": [
+		"Actual list navigation median 3399ms is slow; repeated graph validation remains to be profiled/optimized without bypassing authorization or reusing caches across requests.",
+		"Frozen collection performance remains FAIL; no collection-path change, no new formal collection run claimed.",
+		"EC04/M1 incomplete; full remaining boundary matrix remains; EC06 process containment remains BLOCKED and EC07 dependent work held.",
+		"Real EC08 CLI/model runs deferred by user; no whole-host/packaged rollback claim."
+	],
+	"actualModelCalls": 0,
+	"actualCliCalls": 0
+}

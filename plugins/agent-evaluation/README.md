@@ -1,6 +1,6 @@
 # Agent 评估中心
 
-当前版本0.4.20，已实现统一契约、受控源读取、证据采集、七条基础规则、两页诊断、人工复核、脱敏导出，以及原快照重评、Pi目标/条件修订和固定选区观察入口、人工确认的离线ATIF上传与统一报告。EC04/M1仍在进行：采集性能门禁未过，原生结果完整错误矩阵、桌面回滚及完整渲染验收等产品路径仍有缺口，不代表M1已交付。评估模块不调用模型、原业务执行器或真实外部CLI。
+当前版本0.4.21，已实现统一契约、受控源读取、证据采集、七条基础规则、两页诊断、人工复核、脱敏导出，以及原快照重评、Pi目标/条件修订和固定选区观察入口、人工确认的离线ATIF上传与统一报告。EC04/M1仍在进行：采集性能门禁未过，原生结果完整错误矩阵、桌面回滚及完整渲染验收等产品路径仍有缺口，不代表M1已交付。评估模块不调用模型、原业务执行器或真实外部CLI。
 
 证据采集按有界批次持久化为 `evidence/batch-*.pack`；正文同步后再写记录清单并同步，原子发布完成才确认请求和推进检查点。每条逻辑证据保留原引用、摘要、授权域及幂等回执，正文按范围读取并核对摘要。旧 JSON/blob 不改写；未知/半写包原件保留并阻止新写入。尚不认识 pack 的旧版插件不能读取新 pack，不宣称可无损自动降级；备份应包含完整评估目录。同步批次只复用本次准备期间的写入环境检查，发布前再核对写锁、恢复状态与写入/会话授权；不跨请求缓存。请求摘要复用已序列化的清洁输入，保持原canonical envelope字节语义，旧版回执可精确重放。
 
@@ -156,3 +156,7 @@ watchStart/watchStatus/watchStop 仅可信 UI 通道，模型工具不可控制�
 UI-only动作：uploadStart（byteLength/sha256）、uploadChunk（uploadId/offset/base64）、uploadPreview、uploadDiscard、createImportContract（确认与所选文档，scope由宿主生成）、importAtif（已冻结契约/原包/来源确认）、readOriginal（授权后4096字符页）。每条请求重新核对用户/工作区/会话；上传字段与外部session_id不能授权。工具只可通过既有动作查看脱敏记录或重评，不可调用上述UI动作。Pi createContract/reviseContract/createAttempt/watchStart明确拒绝offline输入。此流程不启动Agent、模型、测试执行器，也不跟随外部媒体或文件引用。
 
 实现、实际Electron与剩余验收见[EC05阶段记录](../../docs/agent-evaluation-evidence/EC05.md)。完整计划/M1仍未完成；实际CLI按用户决定暂缓。
+
+## 0.4.21：快照分页引用摘要
+
+`get`分页投影仅包含当前可见引用的`referenceDigests`，避免1000证据快照携带完整摘要表导致48KiB响应拒绝。`sourceDigest`仍指向原记录；完整记录、逐引用授权/摘要校验和导出不变。真实桌面规模验证与剩余性能门禁见[EC04记录](../../docs/agent-evaluation-evidence/EC04.md)。

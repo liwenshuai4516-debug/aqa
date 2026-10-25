@@ -64,7 +64,7 @@ export async function verifyRollback({
 	const result = {
 		status: "running",
 		scope:
-			"macOS arm64 actual Electron, plugin-only 0.4.20 -> 0.4.19 revert; explicit unsupported 0.4.18 and complete same-path userData restore",
+			"macOS arm64 actual Electron, plugin-only 0.4.21 -> 0.4.19 revert; explicit unsupported 0.4.18 and complete same-path userData restore",
 		phases: [],
 		actualModelCalls: 0,
 		actualCliCalls: 0,
@@ -241,7 +241,7 @@ export async function verifyRollback({
 			assert.deepEqual(await manifest(join(dataDir, "plugins/agent-evaluation")), await manifest(source));
 		}
 		await phase("compatible revert to 0.4.19");
-		await replacePlugin(join(code, "plugins/agent-evaluation"), "retained-plugin-0420");
+		await replacePlugin(join(code, "plugins/agent-evaluation"), "retained-plugin-0421");
 		await launch("0.4.19");
 		await openOriginal();
 		await page.screenshot({ path: join(directory, "compatible-rollback.png") });
@@ -262,21 +262,21 @@ export async function verifyRollback({
 		}
 		await phase("complete backup restore and current-version reopen");
 		await restore("compatible");
-		await launch("0.4.20");
+		await launch("0.4.21");
 		await openOriginal();
 		await reopenOfflineImport({ page, until, fixture: offline });
 		await page.screenshot({ path: join(directory, "restored-private-original.png") });
 		await stop("restored");
 		await unchanged();
 		result.phases.push({
-			version: "0.4.20",
+			version: "0.4.21",
 			status: "PASS",
 			scope:
 				"Exact complete userData restore before launch; Pi report/review/sealed file and human-confirmed offline original reopen without new evidence/attempt/snapshot/report/review",
 		});
 		await phase("unsupported older format preserves data and refuses");
 		const old18 = await sourceVersion(join(directory, "unsupported-0418"), "12e0128");
-		await replacePlugin(old18, "retained-plugin-restored-0420");
+		await replacePlugin(old18, "retained-plugin-restored-0421");
 		await launch("0.4.18");
 		await openOriginal();
 		await page.locator('.aev [data-action="back"]').click();
@@ -300,19 +300,19 @@ export async function verifyRollback({
 		});
 		await phase("restore after unsupported downgrade");
 		await restore("unsupported");
-		await launch("0.4.20");
+		await launch("0.4.21");
 		await openOriginal();
 		await reopenOfflineImport({ page, until, fixture: offline });
 		// Close before final immutable-tree verification; return a fresh current process for the caller's remaining checks.
 		await stop("final-restored");
 		await unchanged();
 		result.phases.push({
-			version: "0.4.20",
+			version: "0.4.21",
 			status: "PASS",
 			scope:
 				"Second full restore returns original identity, Pi report/review/sealed file and original offline bytes; all durable evaluation and seeded SDK files unchanged",
 		});
-		await launch("0.4.20");
+		await launch("0.4.21");
 		await openOriginal();
 		result.status = "PASS";
 		result.immutableStoreManifest = baselineStore;

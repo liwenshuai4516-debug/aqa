@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync, existsSync } from "node:fs";
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync, existsSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { EvaluationService } from "../../plugins/agent-evaluation/service.mjs";
@@ -125,6 +125,73 @@ async function diagnose(f: ReturnType<typeof fixture>) {
 	return { contractRef, attemptRef, collected, snapshotRef, reportRef: status.reportRef, report };
 }
 describe("EC04 product service", () => {
+	it("pages a 1000-evidence snapshot below the response budget without carrying unseen reference digests", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const { context } = f.service.authorize(f.ui, { action: "get" });
+		const store = f.service.store!;
+		const items = store.writeEvidenceBatch(
+			context,
+			Array.from({ length: 1000 }, (_, index) => ({
+				kind: "evidence",
+				requestId: `scale-evidence-${index}`,
+				data: {
+					attemptRef: scored.attemptRef,
+					sourceId: "synthetic-scale",
+					sourceEventId: String(index),
+					sourceLocator: `synthetic:${index}`,
+					producer: "synthetic-scale-v1",
+					availability: "available",
+					origin: "harness-observed",
+					kind: "fixture-evidence",
+					observedAt: "2026-10-25T00:00:00Z",
+					content: JSON.stringify({ index }),
+					redaction: [],
+					truncated: false,
+				},
+			})),
+		);
+		const refs = items.map((r: any) => ({ kind: r.kind, id: r.id, revision: r.revision }));
+		const saved = store.write(context, {
+			kind: "snapshots",
+			requestId: "scale-snapshot",
+			data: {
+				...store.get(context, scored.snapshotRef).data,
+				evidenceRefs: refs,
+				coverage: "partial",
+				gaps: ["synthetic-scale-fixture; not SDK collection"],
+			},
+		});
+		const reference = { kind: saved.kind, id: saved.id, revision: saved.revision };
+		const file = join(f.dir, "agent-evaluation/snapshots", `${saved.id}.${saved.revision}.json`),
+			before = readFileSync(file);
+		expect(Object.keys(saved.referenceDigests)).toHaveLength(1002);
+		const returned: any[] = [];
+		for (let offset = 0; offset < 1000; offset += 50) {
+			const part = await f.request("get", { ref: reference, offset, limit: 50 });
+			expect(Buffer.byteLength(JSON.stringify(part))).toBeLessThan(48 * 1024);
+			expect(part.sourceDigest).toBe(saved.digest);
+			expect(part.projection).toBe(true);
+			expect(part.digest).toBeUndefined();
+			const visible = [part.data.contractRef, ...part.data.attemptRefs, ...part.data.evidenceRefs];
+			expect(part.referenceDigests).toEqual(
+				Object.fromEntries(
+					visible.map((r: any) => {
+						const key = `${r.kind}/${r.id}.${r.revision}`;
+						return [key, saved.referenceDigests[key]];
+					}),
+				),
+			);
+			expect(part.pages.evidenceRefs.total).toBe(1000);
+			returned.push(...part.data.evidenceRefs);
+		}
+		expect(returned).toEqual(refs);
+		expect(readFileSync(file)).toEqual(before);
+		await expect(f.request("get", { ref: reference }, { channel: "ui", clientId: "other" })).rejects.toMatchObject({
+			code: "PERMISSION_DENIED",
+		});
+	});
+
 	it("locates an authorized SDK evidence record without recollection or report mutation", async () => {
 		const f = fixture(),
 			scored = await diagnose(f);
