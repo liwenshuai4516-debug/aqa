@@ -60,3 +60,7 @@ EC05在已明确JSON profile和macOS arm64范围完成，详见[阶段记录与A
 [本轮证据](EC04-native-source-diagnostics.json)、[AC01–AC20逐项表](EC04-acceptance-audit.md)：实际Electron读取API独立副本，缺源/合法内容变更分别拒绝为EVIDENCE_GAP/VERSION_CONFLICT，封存文本与原报告不变，恢复后显式重试通过；API/UI各一行历史run不冒充当前执行。原生run多页、UI源故障及其余桌面负向矩阵仍待补。16文件272项回归、完整五配置类型检查通过；不改产品或版本。
 
 核对原始日志发现0.4.22/0.4.23两份类型检查均有TS2345，旧索引和EC04正文误报PASS，已更正对应索引为FAIL，原件/hash保留；本轮修复仅补测试投影字段，并独立重跑通过。历史整体质量声明以此纠正为准，不能倒填通过。采集性能仍FAIL，M1未完成，外部执行仍暂缓。
+
+## EC04 未启动原生计划分页
+
+[实际Electron证据](EC04-native-matrix-diagnostics.json)：通过原ArtifactStore登记41项合成pending计划，未启动runner/浏览器/模型。共享原生reader返回41项unknown/incomplete，桌面20/20/1页逐项读回并返回首页，无重复/遗漏；UI清单缺失/变更均EVIDENCE_GAP，封存全文按页精确回读、恢复后显式重试、全部16个源文件前后摘要一致。API旧一行副本故障回归通过；4文件88项单测及五配置typecheck通过，产品维持0.4.23。未声称已执行结果的混合状态分页或API多页通过，AC39失败与M1未完成保持。

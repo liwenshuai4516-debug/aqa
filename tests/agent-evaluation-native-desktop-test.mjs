@@ -1,4 +1,4 @@
-/** Real Electron reads prior synthetic native results; no runner, model, CLI or workspace writes. */
+/** Real Electron reads historical results and an optional owned, never-launched plan; no runner/model/CLI. */
 import assert from "node:assert/strict";
 import { mkdtemp, mkdir, readFile, writeFile, symlink, cp, rename } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -13,6 +13,7 @@ import { ensureBuild } from "./lib/ensure-build.mjs";
 import { launchNativeApp } from "./desktop/native-app.mjs";
 const fixture = resolve(process.argv[2] ?? "missing-fixture");
 const sourceErrors = process.argv.includes("--source-errors");
+const nativeMatrix = process.argv.includes("--native-matrix");
 const summary = JSON.parse(await readFile(join(fixture, "summary.json"), "utf8"));
 assert.equal(summary.status, "PASS");
 assert.match(summary.scope, /local synthetic targets/);
@@ -33,15 +34,20 @@ await enableAgentEvaluation(repo, { agentDir, dataDir });
 await symlink(join(repo, "plugins/api-testing"), join(dataDir, "plugins/api-testing"), "dir");
 const reader = new TestAssetReader(dataDir),
 	sources = [];
-for (const item of ledger.store.cases) {
-	const { engine, workspace } = item.automation;
-	const references = await reader.list(engine, workspace);
+const definitions = ledger.store.cases.map((item) => item.automation);
+if (nativeMatrix) {
+	const { createNativeMatrix } = await import("./fixtures/agent-evaluation/native-matrix.mjs");
+	definitions.push(await createNativeMatrix(output));
+}
+for (const definition of definitions) {
+	const { engine, workspace, synthetic = false } = definition;
+	const references = definition.reference ? [definition.reference] : await reader.list(engine, workspace);
 	let selected;
 	for (const reference of references) {
 		try {
 			const run = await reader.read(engine, workspace, reference);
 			if (run.rows.length) {
-				selected = { engine, workspace, reference, run };
+				selected = { engine, workspace, reference, run, synthetic, sourceFiles: definition.sourceFiles };
 				break;
 			}
 		} catch (error) {
@@ -50,7 +56,7 @@ for (const item of ledger.store.cases) {
 		}
 	}
 	assert.ok(selected, `No readable ${engine} original`);
-	const sessionId = `native-desktop-${engine}`,
+	const sessionId = `native-desktop-${engine}-${sources.length}`,
 		path = join(agentDir, `sessions/${sessionId}.jsonl`);
 	await writeFile(
 		path,
@@ -63,7 +69,12 @@ for (const item of ledger.store.cases) {
 				timestamp: "2026-10-24T00:00:01Z",
 				message: {
 					role: "user",
-					content: [{ type: "text", text: `Inspect historical ${engine} results; no execution requested` }],
+					content: [
+						{
+							type: "text",
+							text: `Inspect ${synthetic ? "synthetic never-launched plan" : "historical " + engine + " results"}; no execution requested`,
+						},
+					],
 					timestamp: 1792800001000,
 				},
 			},
@@ -87,6 +98,7 @@ const result = {
 	actualCliCalls: 0,
 	nativeRunnerCalls: 0,
 	sourceErrors,
+	nativeMatrix,
 };
 let app, page;
 async function until(fn) {
@@ -188,7 +200,7 @@ try {
 					childPolicy: "exclude",
 					childSessionIds: [],
 				},
-				objective: `Read historical ${engine} run`,
+				objective: source.synthetic ? "Read synthetic never-launched UI plan" : `Read historical ${engine} run`,
 				conditions: [
 					{
 						id: "native",
@@ -202,7 +214,9 @@ try {
 				],
 				constraints: [],
 				environmentRefs: [],
-				provenance: "human-confirmed synthetic read-only fixture",
+				provenance: source.synthetic
+					? "synthetic never-launched UI plan; no runner or approved execution outcome"
+					: "human-confirmed synthetic read-only fixture",
 				evaluationSubject: "agent-task",
 			},
 		});
@@ -239,41 +253,110 @@ try {
 		assert.match(await detail.innerText(), new RegExp(run.runId));
 		assert.equal(await detail.locator("tbody tr").count(), Math.min(run.rows.length, 20));
 		assert.ok((await detail.innerText()).toLowerCase().includes(run.rows[0].status.toLowerCase()));
-		await page.screenshot({ path: join(output, `${engine}-native-run.png`) });
-		if (sourceErrors && engine === "api") {
-			const originalFile = join(fixture, "data", run.evidence[0].path),
-				copiedFile = join(dataDir, run.evidence[0].path),
+		const label = source.synthetic ? `${engine}-synthetic` : engine;
+		if (source.synthetic) {
+			assert.equal(run.rows.length, 41);
+			assert.equal(run.complete, false);
+			assert.ok(run.rows.every((row) => row.status === "unknown" && row.evidenceComplete === false));
+			const displayed = [],
+				pageSizes = [];
+			for (const offset of [0, 20, 40]) {
+				await until(async () => (await detail.innerText()).includes(`${offset + 1}–${Math.min(offset + 20, 41)} / 41`));
+				const cells = await detail
+					.locator("tbody tr")
+					.evaluateAll((rows) => rows.map((row) => [...row.cells].map((cell) => cell.textContent)));
+				assert.deepEqual(
+					cells,
+					run.rows.slice(offset, offset + 20).map((row) => [row.caseId, row.instanceId, "Unknown", "Partial"]),
+				);
+				pageSizes.push(cells.length);
+				displayed.push(...cells.map((row) => row[0]));
+				await page.screenshot({ path: join(output, `${label}-page-${offset}.png`) });
+				if (offset < 40) await detail.locator('[data-action="evidence-run-next"]:not([disabled])').click();
+			}
+			assert.equal(new Set(displayed).size, 41);
+			assert.deepEqual(
+				displayed,
+				run.rows.map((row) => row.caseId),
+			);
+			assert.equal(await detail.locator('[data-action="evidence-run-next"]').count(), 0);
+			await detail.locator('[data-action="evidence-run-first"]:not([disabled])').click();
+			await until(async () => (await detail.innerText()).includes("1–20 / 41"));
+			assert.equal(await detail.locator("tbody tr").count(), 20);
+			assert.equal(await detail.locator('[data-action="evidence-run-first"]').count(), 0);
+			result.checks.push({
+				engine,
+				synthetic: true,
+				pageSizes,
+				returnedToFirst: true,
+				exactOrderedRows: displayed,
+				allUnknownIncomplete: true,
+				nativeRunnerCalls: 0,
+			});
+		}
+		await page.screenshot({ path: join(output, `${label}-native-run.png`) });
+		if (sourceErrors && (engine === "api" || source.synthetic)) {
+			const copiedFile =
+					engine === "api" ? join(dataDir, run.evidence[0].path) : join(source.workspace, source.reference.path),
+				originalFile = source.synthetic ? copiedFile : join(fixture, "data", run.evidence[0].path),
 				originalBytes = await readFile(originalFile),
 				copiedBytes = await readFile(copiedFile);
 			assert.deepEqual(copiedBytes, originalBytes);
 			await page.locator('.aev [data-action="evidence-native"]:not([disabled])').click();
 			const sealed = page.locator(".aev [data-evidence-panel] pre");
-			await until(async () => (await sealed.innerText()) === JSON.stringify(run, null, 2));
+			await until(async () => (await sealed.innerText()) === JSON.stringify(run, null, 2).slice(0, 4096));
 			const sealedText = await sealed.innerText();
+			const frozen = await rpc("get", { ...bound, ref: snapshot }),
+				records = await Promise.all(frozen.data.evidenceRefs.map((ref) => rpc("get", { ...bound, ref }))),
+				native = records.find((record) => record.data.kind === "native-test-run"),
+				nativeRef = { kind: native.kind, id: native.id, revision: native.revision },
+				expectedText = JSON.stringify(run, null, 2);
+			async function verifySealedRun() {
+				let text = "",
+					nextOffset = 0;
+				do {
+					const body = await rpc("readEvidence", {
+						...bound,
+						ref: nativeRef,
+						evidenceView: "native-run",
+						offset: nextOffset,
+					});
+					assert.equal(body.contentDigest, native.contentRef.sha256);
+					assert.equal(body.totalChars, expectedText.length);
+					text += body.text;
+					assert.ok(text.length <= expectedText.length);
+					if (body.nextOffset != null) assert.ok(body.nextOffset > nextOffset);
+					nextOffset = body.nextOffset;
+				} while (nextOffset != null);
+				assert.equal(text, expectedText);
+			}
+			await verifySealedRun();
 			const openRun = () => page.locator('.aev [data-action="evidence-run"]:not([disabled])').click();
-			async function expectError(code) {
+			async function expectError(code, scenario) {
 				await openRun();
 				await until(async () => (await page.locator('.aev [role="alert"]').innerText()).includes(code));
 				assert.equal(await page.locator(".aev [data-native-run]").count(), 0);
 				assert.equal(await sealed.innerText(), sealedText);
 				assert.equal(await readFile(reportFile, "utf8"), before);
+				await verifySealedRun();
 				await page.locator('.aev [role="alert"]').scrollIntoViewIfNeeded();
-				await page.screenshot({ path: join(output, `api-${code}.png`) });
+				await page.screenshot({ path: join(output, `${label}-${scenario}-${code}.png`) });
 			}
 			await rename(copiedFile, `${copiedFile}.held`);
 			try {
-				await expectError("EVIDENCE_GAP");
+				await expectError("EVIDENCE_GAP", "missing");
 			} finally {
 				await rename(`${copiedFile}.held`, copiedFile);
 			}
 			await openRun();
 			await page.locator(".aev [data-native-run] tbody tr").first().waitFor();
 			const changed = JSON.parse(copiedBytes);
-			changed.finishedAt = "2026-10-25T00:00:00.000Z";
-			assert.notEqual(changed.finishedAt, run.at);
+			if (engine === "api") changed.finishedAt = "2026-10-25T00:00:00.000Z";
+			else changed.created_at = "2026-10-25T00:00:00.000Z";
+			assert.notEqual(engine === "api" ? changed.finishedAt : changed.created_at, run.at);
 			await writeFile(copiedFile, JSON.stringify(changed, null, 2) + "\n");
 			try {
-				await expectError("VERSION_CONFLICT");
+				await expectError(engine === "api" ? "VERSION_CONFLICT" : "EVIDENCE_GAP", "changed");
 			} finally {
 				await writeFile(copiedFile, copiedBytes);
 			}
@@ -283,25 +366,41 @@ try {
 			assert.equal(await sealed.innerText(), sealedText);
 			assert.deepEqual(await readFile(originalFile), originalBytes);
 			assert.deepEqual(await readFile(copiedFile), copiedBytes);
+			await verifySealedRun();
 			result.checks.push({
 				engine,
+				synthetic: source.synthetic,
 				missingOriginal: "EVIDENCE_GAP",
-				changedOriginal: "VERSION_CONFLICT",
+				changedOriginal: engine === "api" ? "VERSION_CONFLICT" : "EVIDENCE_GAP",
 				sealedTextRetained: true,
+				fullSealedCharsVerified: expectedText.length,
 				reportUnchanged: true,
 				explicitRetryAfterRestoration: true,
 				originalSourceUnchanged: true,
 			});
 		}
 		assert.equal(await readFile(reportFile, "utf8"), before);
+		if (source.synthetic) {
+			const { nativeMatrixFiles } = await import("./fixtures/agent-evaluation/native-matrix.mjs");
+			assert.deepEqual(await nativeMatrixFiles(source.workspace), source.sourceFiles);
+			await writeFile(join(output, "ui-source-files.json"), JSON.stringify(source.sourceFiles, null, 2));
+			result.checks.push({
+				engine,
+				synthetic: true,
+				sourceFiles: source.sourceFiles.length,
+				allSourceFilesUnchanged: true,
+			});
+		}
 		result.checks.push({
 			engine,
+			synthetic: source.synthetic,
 			runId: run.runId,
 			rows: run.rows.length,
 			status: run.rows[0].status,
 			complete: run.complete,
 			reportUnchanged: true,
-			historicalExecutionNotPassed: true,
+			historicalExecutionNotPassed: !source.synthetic,
+			currentExecutionNotPassed: true,
 		});
 		await page.locator('.aev [data-action="back"]').click();
 	}

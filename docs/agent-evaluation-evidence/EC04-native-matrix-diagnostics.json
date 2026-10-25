@@ -1,0 +1,264 @@
+{
+	"scope": "EC04 actual macOS arm64 Electron UI never-launched synthetic native plan: 41 rows, pages 20/20/1, missing/changed manifest, restoration and immutable sealed text. Not native test execution acceptance.",
+	"timestamp": "2026-10-25T13:37:15.571989+00:00",
+	"baseline": "179fcf56f566681b21e977d09522a797951fd153",
+	"pluginVersion": "0.4.23",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-matrix/index.json",
+		"bytes": 37934,
+		"sha256": "a96dfd7d7df3ee7e67a8a8b553ff147fd2cff0932ffb985f8288f82ea6194a17"
+	},
+	"archiveFiles": 148,
+	"archiveScope": "Selected owned synthetic source plan, frozen native source packages, sealed evaluation records, SDK fixture messages, logs, screenshots and exact test sources. No credentials/dependencies/caches/symlinks. Originals retained.",
+	"desktop": {
+		"status": "PASS",
+		"originalOutput": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-native-desktop-MDYqmd",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-matrix/files/agent-evaluation-native-desktop-MDYqmd/result.json",
+			"bytes": 3299,
+			"sha256": "309bd431c4a6c2e78c2c2c3080f62fd59000b1928df51c56c830dc348751f877"
+		},
+		"log": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-matrix/files/agent-evaluation-native-desktop-MDYqmd/app.log",
+			"bytes": 1866,
+			"sha256": "858b093917e0b75e5f505a54335aa4ae968614d0df9f8bfccb1b7b0f762c66fb"
+		},
+		"checks": [
+			{
+				"engine": "api",
+				"synthetic": false,
+				"missingOriginal": "EVIDENCE_GAP",
+				"changedOriginal": "VERSION_CONFLICT",
+				"sealedTextRetained": true,
+				"fullSealedCharsVerified": 935,
+				"reportUnchanged": true,
+				"explicitRetryAfterRestoration": true,
+				"originalSourceUnchanged": true
+			},
+			{
+				"engine": "api",
+				"synthetic": false,
+				"runId": "0d4116d6-3953-4906-8865-f70717fbd8b2",
+				"rows": 1,
+				"status": "unknown",
+				"complete": false,
+				"reportUnchanged": true,
+				"historicalExecutionNotPassed": true,
+				"currentExecutionNotPassed": true
+			},
+			{
+				"engine": "ui",
+				"synthetic": false,
+				"runId": "run-1249f06947265e47b0d54258ae80b462",
+				"rows": 1,
+				"status": "passed",
+				"complete": true,
+				"reportUnchanged": true,
+				"historicalExecutionNotPassed": true,
+				"currentExecutionNotPassed": true
+			},
+			{
+				"engine": "ui",
+				"synthetic": true,
+				"pageSizes": [20, 20, 1],
+				"returnedToFirst": true,
+				"exactOrderedRows": [
+					"synthetic-01",
+					"synthetic-02",
+					"synthetic-03",
+					"synthetic-04",
+					"synthetic-05",
+					"synthetic-06",
+					"synthetic-07",
+					"synthetic-08",
+					"synthetic-09",
+					"synthetic-10",
+					"synthetic-11",
+					"synthetic-12",
+					"synthetic-13",
+					"synthetic-14",
+					"synthetic-15",
+					"synthetic-16",
+					"synthetic-17",
+					"synthetic-18",
+					"synthetic-19",
+					"synthetic-20",
+					"synthetic-21",
+					"synthetic-22",
+					"synthetic-23",
+					"synthetic-24",
+					"synthetic-25",
+					"synthetic-26",
+					"synthetic-27",
+					"synthetic-28",
+					"synthetic-29",
+					"synthetic-30",
+					"synthetic-31",
+					"synthetic-32",
+					"synthetic-33",
+					"synthetic-34",
+					"synthetic-35",
+					"synthetic-36",
+					"synthetic-37",
+					"synthetic-38",
+					"synthetic-39",
+					"synthetic-40",
+					"synthetic-41"
+				],
+				"allUnknownIncomplete": true,
+				"nativeRunnerCalls": 0
+			},
+			{
+				"engine": "ui",
+				"synthetic": true,
+				"missingOriginal": "EVIDENCE_GAP",
+				"changedOriginal": "EVIDENCE_GAP",
+				"sealedTextRetained": true,
+				"fullSealedCharsVerified": 6849,
+				"reportUnchanged": true,
+				"explicitRetryAfterRestoration": true,
+				"originalSourceUnchanged": true
+			},
+			{
+				"engine": "ui",
+				"synthetic": true,
+				"sourceFiles": 16,
+				"allSourceFilesUnchanged": true
+			},
+			{
+				"engine": "ui",
+				"synthetic": true,
+				"runId": "synthetic-unlaunched-plan",
+				"rows": 41,
+				"status": "unknown",
+				"complete": false,
+				"reportUnchanged": true,
+				"historicalExecutionNotPassed": false,
+				"currentExecutionNotPassed": true
+			}
+		],
+		"actualModelCalls": 0,
+		"actualCliCalls": 0,
+		"nativeRunnerCalls": 0,
+		"businessExecutions": 0
+	},
+	"sourceIntegrity": {
+		"status": "PASS",
+		"files": 16,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-matrix/files/agent-evaluation-native-desktop-MDYqmd/ui-source-files.json",
+			"bytes": 2671,
+			"sha256": "11436d67e43af62767b21c6800c008993194dde9cf8804ce4d523f2667c7aacf"
+		},
+		"method": "Recursively hash all owned native source files before reader/app actions and compare exact ordered path/byte/hash list afterward; temporary faults restored in finally."
+	},
+	"typecheck": {
+		"status": "PASS",
+		"configs": 5,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-matrix/files/validation/ec04-native-matrix-typecheck-final.log",
+			"bytes": 251,
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+		}
+	},
+	"unit": {
+		"status": "PASS",
+		"files": 4,
+		"passed": 88,
+		"failed": 0,
+		"skipped": 0,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-matrix/files/validation/ec04-native-matrix-unit.log",
+			"bytes": 225,
+			"sha256": "71ab776ccd9c5e86d3d74aaaea726fd89c3a78194ba6a4846d2f31c4290fd69f"
+		},
+		"scope": "Existing service/client/host/rules regressions; counts not combined with historical runs."
+	},
+	"quality": {
+		"lint": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-matrix/files/validation/ec04-native-matrix-lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-matrix/files/validation/ec04-native-matrix-protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"limitation": "No Git tag: historical version heuristic skipped; structural/v33 checks passed. Skip not counted as pass."
+		},
+		"i18n": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-matrix/files/validation/ec04-native-matrix-i18n.log",
+				"bytes": 615,
+				"sha256": "80312d8da86db05c5343b06b015ff85dbb3f374e280ecc1b044c87014878d1cd"
+			}
+		},
+		"size": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-matrix/files/validation/ec04-native-matrix-size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			}
+		},
+		"diff": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-matrix/files/validation/ec04-native-matrix-diff.log",
+				"bytes": 0,
+				"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+			}
+		}
+	},
+	"initialFixtureFailure": {
+		"status": "FAIL",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-matrix/files/validation/ec04-native-matrix-desktop.log",
+			"bytes": 1211,
+			"sha256": "f62bfabee938c478ffb30be8416f80902375f54e5dd6c20f63be81c115713e2e"
+		},
+		"beforeAppLaunch": true,
+		"cause": "Declared cases reused assertion A1; official ArtifactStore rejects globally duplicate assertion IDs. Corrected each declared ID and step reference; no schema or validator changes."
+	},
+	"sources": [
+		{
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-matrix/files/validation/source/agent-evaluation-native-desktop-test.mjs",
+			"bytes": 16879,
+			"sha256": "26b55f0d14a7b3052814052109496d45b9ae4ed1455e9e7026a73d131f03b8f1"
+		},
+		{
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-matrix/files/validation/source/native-matrix.mjs",
+			"bytes": 4444,
+			"sha256": "171f805fa8bea385b37ce0425d4b09d6396db0a76869a17a2e6815c41b38c43f"
+		}
+	],
+	"limits": [
+		"UI plan is registered pending with no PID, command, output refs, design approval or browser execution; all 41 rows unknown/incomplete.",
+		"UI missing/changed manifest both yield EVIDENCE_GAP because stored ref digest no longer validates. API legal changed timestamp yields VERSION_CONFLICT; these are distinct checks.",
+		"Only one historical API/UI row is replayed read-only; no new historical runs and no 20+ executed native result rows claimed.",
+		"API native run multipage and mixed UI executed-status pagination remain unexecuted in actual Electron.",
+		"English/dark desktop scope only for this added matrix; previous language/theme evidence remains version-scoped.",
+		"Collector not changed; no new performance/rollback run."
+	],
+	"remaining": {
+		"EC04": "IN_PROGRESS",
+		"M1": "INCOMPLETE",
+		"AC39": "FAIL retained original comparison",
+		"EC06": "BLOCKED containment",
+		"EC07": "NOT_STARTED",
+		"EC08": "USER_DEFERRED real CLI",
+		"EC09": "NOT_STARTED dependency EC04"
+	}
+}
