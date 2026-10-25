@@ -1,0 +1,202 @@
+{
+	"scope": "EC04 fixed collection workload comparison and bounded physical batch packing; macOS arm64 native product regression; no real CLI/model calls",
+	"baseline": "0c7b623957c82d3379d4d3d41fcee25d52382c1a",
+	"pluginVersion": "0.4.23",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/index.json",
+		"bytes": 31806,
+		"sha256": "faa8a1b7724cf5cd932914ff413d0f66eb79e7249531b8a5dd45542d32a88a6a"
+	},
+	"archiveFiles": 142,
+	"archiveScope": "Local verified selected synthetic stores/SDK fixture, raw CPU profiles, counters, original failures, before/after fixed workload and native evidence; excludes credentials/dependencies/caches/symlinks; originals retained",
+	"change": "Collector reserves 26 bytes per pack plus 1024 bytes and the exact canonical owner-domain size per item for v1 record/index overhead. The existing exact store input and encodePack physical 8MiB checks remain authoritative. Body-before-index sync and checkpoint-last commits, logical schema and digests unchanged.",
+	"reproduction": {
+		"status": "EXPECTED_FAILURE",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/validation/packing-reproduction.log",
+			"bytes": 1338,
+			"sha256": "2360986cc8803bf24daf9d714333f353cf1f8f06381fc164b41127b9f60cec7d"
+		},
+		"beforePacks": 3,
+		"afterPacks": 2,
+		"scenario": "13 selected messages, 6 complete tool pairs, 4.5MB raw output; one source pack and one final checkpoint, exact body reread and same-request replay",
+		"selectedTests": 1,
+		"unselectedTests": 26
+	},
+	"formalComparison": {
+		"status": "FAIL",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/validation/comparison.json",
+			"bytes": 18962,
+			"sha256": "e50cc87dbae935d51e63e2f996230207c23bbb530866f5fd5d7a2486fe013d4b"
+		},
+		"baseline": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/validation/baseline-performance.json",
+			"bytes": 8564,
+			"sha256": "b9df2f59c040a928a06ecb8c518483ffe3503c17ee7470415f83751f5f0a0324"
+		},
+		"candidate": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/validation/candidate-performance.json",
+			"bytes": 8617,
+			"sha256": "e624a81a1937f8099745e57d1ad586ff1c4bce304ff1267f0168d283cbfec23a"
+		},
+		"baselineSourceSha256": "48572856542d20917f30235acdc1a878345a15b1562bde8dbcb6f2171258e493",
+		"candidateSourceSha256": "0d7b8c4c165775dde75b0130ac047c67a0b3270d3a463e71cc5d74fe5b5d2ef3",
+		"baselineComparisons": [
+			{
+				"workload": "serial",
+				"wallDelta": 51.55158300000002,
+				"wallLimit": 50,
+				"cpuDelta": 48.428,
+				"cpuLimit": 50,
+				"rssDeltas": [5242880, 4505600, 5242880, 3112960, 3145728],
+				"pass": false
+			},
+			{
+				"workload": "parallel",
+				"wallDelta": 143.202833,
+				"wallLimit": 50,
+				"cpuDelta": 173.879,
+				"cpuLimit": 50,
+				"rssDeltas": [26804224, 26968064, 25853952, 28721152, 26968064],
+				"pass": false
+			},
+			{
+				"workload": "long",
+				"wallDelta": 618.707416,
+				"wallLimit": 50,
+				"cpuDelta": 537.454,
+				"cpuLimit": 50,
+				"rssDeltas": [63995904, 61358080, 61931520, 61440000, 68878336],
+				"pass": false
+			}
+		],
+		"candidateComparisons": [
+			{
+				"workload": "serial",
+				"wallDelta": 51.39504199999996,
+				"wallLimit": 50,
+				"cpuDelta": 48.104,
+				"cpuLimit": 50,
+				"rssDeltas": [2015232, 2850816, 2342912, 4308992, 3915776],
+				"pass": false
+			},
+			{
+				"workload": "parallel",
+				"wallDelta": 142.43208399999997,
+				"wallLimit": 50,
+				"cpuDelta": 176.291,
+				"cpuLimit": 50,
+				"rssDeltas": [27115520, 27131904, 28360704, 26886144, 30228480],
+				"pass": false
+			},
+			{
+				"workload": "long",
+				"wallDelta": 556.036292,
+				"wallLimit": 50,
+				"cpuDelta": 530.3059999999999,
+				"cpuLimit": 50,
+				"rssDeltas": [60162048, 66125824, 63995904, 61652992, 62390272],
+				"pass": false
+			}
+		],
+		"execution": "Each complete baseline then candidate run: three frozen paired-call workloads, five on/off rounds each, fresh worker processes; fixture creation excluded; no concurrent desktop/unit/profile tasks. Only collector code switched within this task and candidate restored in finally. Later changes were version labels/tests/docs, not measured collector code.",
+		"interpretation": "Long wall delta about619->556ms (~10% reduction); CPU and small workloads remain over frozen limits; all candidate long RSS deltas <=64MiB, baseline one exceeds it. No threshold relaxation or rerun selection."
+	},
+	"profiles": {
+		"scope": "Exploratory/counter observations only; CPU samples include startup/fixture/cleanup and nested timings are not additive; not formal acceptance",
+		"before": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/validation/long-before.json",
+			"bytes": 541,
+			"sha256": "b6b5fe6996d6dab80c73ffadbdbb5b75dec2fd945400c69dff0d1f00214d6ecb"
+		},
+		"after": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/validation/long-after.json",
+			"bytes": 552,
+			"sha256": "2c50ca221ce7d33bf79804e1540c871e87b7b3c083a97dc6bc4608abac829ada"
+		},
+		"longBatchCommitsBefore": 8,
+		"longBatchCommitsAfter": 4,
+		"longEvidenceCount": 200,
+		"longGaps": [],
+		"discardedExperiment": {
+			"patch": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/validation/discarded-size-experiment.patch",
+				"bytes": 890,
+				"sha256": "c8365799820580829f509768376033666080b4acfe55e9c754685689495bcc17"
+			},
+			"reason": "Native JSON.stringify size-estimation experiment had no stable CPU benefit in exploratory observations; reverted completely before the accepted batch-packing comparison."
+		}
+	},
+	"desktop": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/agent-evaluation-desktop-uYv3Wz/result.json",
+			"bytes": 15572,
+			"sha256": "e8b08385d17d13cbaea0b7d94881a512245d4b6bbc048e3c67193a9980b1850f"
+		},
+		"checks": 23,
+		"longEvidence": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/agent-evaluation-desktop-uYv3Wz/evidence-matrix.json",
+			"bytes": 8265,
+			"sha256": "8ee174848cdb6a165e3d8b458a0475f222c1384c84b646d5774ae0ee005e749b"
+		},
+		"characters": 160545,
+		"pages": 40,
+		"scope": "Actual Electron 0.4.23 management/enable/reload/disable/restart, diagnosis/review/export/offline import, source navigation and long evidence/error/retry matrix. No full new-version rollback or scale rerun claimed."
+	},
+	"typecheck": {
+		"status": "PASS",
+		"configs": 5,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/validation/typecheck.log",
+			"bytes": 1182,
+			"sha256": "d4400aed509394df5a9a9b69c11f7146881bd3c086b919ce168b6adfec49c17b"
+		}
+	},
+	"unit": {
+		"status": "PASS",
+		"files": 17,
+		"tests": 279,
+		"skipped": 0,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/validation/unit.log",
+			"bytes": 229,
+			"sha256": "946362f1b1ca3577845c3ddcf86c27edf668a0ef8aa5b80788bf0a7cf9f58cbc"
+		}
+	},
+	"quality": {
+		"lint": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/validation/lint.log",
+			"bytes": 88,
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+		},
+		"protocol": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/validation/protocol.log",
+			"bytes": 360,
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+		},
+		"i18n": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/validation/i18n.log",
+			"bytes": 615,
+			"sha256": "80312d8da86db05c5343b06b015ff85dbb3f374e280ecc1b044c87014878d1cd"
+		},
+		"size": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/validation/size.log",
+			"bytes": 1089,
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+		},
+		"diff": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-0423/files/validation/diff.log",
+			"bytes": 0,
+			"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+		}
+	},
+	"remaining": [
+		"EC04/M1 incomplete: fixed collector wall/CPU gates remain FAIL; remaining native boundary matrix not complete.",
+		"EC06 containment remains BLOCKED; EC07 dependent work held; EC09 awaits EC04.",
+		"Real EC08 CLI/model runs deferred by user."
+	],
+	"actualCliCalls": 0,
+	"actualModelCalls": 0
+}

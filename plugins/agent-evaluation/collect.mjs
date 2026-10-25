@@ -133,15 +133,20 @@ export class EvidenceCollector {
 			return record;
 		};
 		const rememberPage = (data) => {
+			// A v1 envelope, reference digest, content descriptor and range-index entry
+			// add less than 1KiB plus the exact owner-domain encoding per source item.
+			// Raw body bytes cannot exceed their JSON-escaped input. Keep both the
+			// store's exact input cap and encodePack's exact physical cap authoritative.
+			const overhead = 1024 + Buffer.byteLength(canonical(attempt.domain));
 			let pending = [],
-				bytes = 0;
+				bytes = 26; // Header, footer and index-array delimiters.
 			const flush = () => {
 				if (!pending.length) return;
 				signal?.throwIfAborted();
 				const records = store.writeEvidenceBatch(context, pending.map(writeInput));
 				pending.forEach((item, i) => remember(item, records[i]));
 				pending = [];
-				bytes = 0;
+				bytes = 26;
 			};
 			for (const item of data) {
 				if (
@@ -157,9 +162,9 @@ export class EvidenceCollector {
 					remember(item);
 					continue;
 				}
-				const size = Buffer.byteLength(canonical(writeInput(item)));
-				if (bytes + size > store.limits.readBytes / 2) flush();
-				if (size > store.limits.readBytes / 2) {
+				const size = Buffer.byteLength(canonical(writeInput(item))) + overhead;
+				if (bytes + size > store.limits.readBytes) flush();
+				if (size + 26 > store.limits.readBytes) {
 					remember(item);
 					continue;
 				}

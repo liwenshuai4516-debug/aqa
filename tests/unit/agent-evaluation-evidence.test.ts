@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from "vitest";
-import { cpSync, existsSync, mkdtempSync, rmSync } from "node:fs";
+import { cpSync, existsSync, mkdtempSync, rmSync, readdirSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -156,6 +156,58 @@ function collectorFixture(options: any = {}) {
 }
 
 describe("EC02 authorized SDK sources", () => {
+	it("packs a bounded 4.5MB selected tool chain without splitting at half the physical limit", async () => {
+		const f = collectorFixture();
+		const text = "x".repeat(750000);
+		let parent = "a1";
+		for (let i = 2; i <= 6; i++) {
+			const call = `call${i}`,
+				result = `result${i}`;
+			f.entries.set(
+				call,
+				entry(call, parent, {
+					role: "assistant",
+					content: [{ type: "toolCall", id: `tool${i}`, name: "read", arguments: { path: `fixture${i}.txt` } }],
+				}),
+			);
+			f.entries.set(
+				result,
+				entry(result, call, {
+					role: "toolResult",
+					toolCallId: `tool${i}`,
+					toolName: "read",
+					content: [{ type: "text", text }],
+					isError: false,
+				}),
+			);
+			parent = result;
+		}
+		f.entries.set(
+			"t1",
+			entry("t1", parent, {
+				role: "toolResult",
+				toolCallId: "tool1",
+				toolName: "read",
+				content: [{ type: "text", text }],
+				isError: false,
+			}),
+		);
+		const collected = await f.collector.collect(f.context, f.args);
+		expect(collected.evidenceRefs).toHaveLength(13);
+		expect(collected.gaps).toEqual([]);
+		const directory = join(f.source.workspace, "agent-evaluation/evidence");
+		const packs = readdirSync(directory).filter((file) => file.endsWith(".pack"));
+		// One source commit and one final durable checkpoint, each within the frozen 8MiB cap.
+		expect(packs).toHaveLength(2);
+		for (const file of packs) expect(statSync(join(directory, file)).size).toBeLessThanOrEqual(8 * 1024 ** 2);
+		const bodies = collected.evidenceRefs.map((reference: any) => readEvidenceJson(f.store, f.context, reference));
+		expect(
+			bodies.filter((body: any) => body.message.role === "toolResult").map((body: any) => body.message.content[0].text),
+		).toEqual(Array(6).fill(text));
+		expect(await f.collector.collect(f.context, f.args)).toEqual(collected);
+		expect(readdirSync(directory).filter((file) => file.endsWith(".pack"))).toEqual(packs);
+	});
+
 	it("derives native execution links from selected calls and rejects forged or status-only references", () => {
 		const { source, query, entries } = sourceFixture();
 		const runId = "00000000-0000-4000-8000-000000000001";
