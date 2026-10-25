@@ -1,0 +1,163 @@
+{
+	"scope": "EC04 AC01-AC20 evidence coverage audit; actual Electron API copied-original missing/changed/recovery; no product change or runner/model/CLI execution",
+	"timestamp": "2026-10-25T13:22:35.674899+00:00",
+	"baseline": "b6135628f888a40662cbf4096c28d6630bb4dfe3",
+	"pluginVersion": "0.4.23",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-source/index.json",
+		"bytes": 45980,
+		"sha256": "4c18639191e444430a2ebd9d085b9ebf9f41adda7a09162b7b8bc29c78b028b3"
+	},
+	"archiveFiles": 161,
+	"archiveScope": "Selected synthetic native results, owned copied API assets, sealed evaluation store, SDK fixture messages, screenshots and raw logs. Excludes credentials/dependencies/Chromium caches/symlinks; originals retained.",
+	"desktop": {
+		"status": "PASS",
+		"originalOutput": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-native-desktop-4gYB4l",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-source/files/agent-evaluation-native-desktop-4gYB4l/result.json",
+			"bytes": 1095,
+			"sha256": "895320561558ed512509fe51b568312df6c8ea417f397358ac2dcf451ed528dd"
+		},
+		"log": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-source/files/agent-evaluation-native-desktop-4gYB4l/app.log",
+			"bytes": 1866,
+			"sha256": "d1c456511f9d383ac01a4e30b1f7c961f24471d0112ca534fa3a9cd2c717df8f"
+		},
+		"checks": [
+			{
+				"engine": "api",
+				"missingOriginal": "EVIDENCE_GAP",
+				"changedOriginal": "VERSION_CONFLICT",
+				"sealedTextRetained": true,
+				"reportUnchanged": true,
+				"explicitRetryAfterRestoration": true,
+				"originalSourceUnchanged": true
+			},
+			{
+				"engine": "api",
+				"runId": "0d4116d6-3953-4906-8865-f70717fbd8b2",
+				"rows": 1,
+				"status": "unknown",
+				"complete": false,
+				"reportUnchanged": true,
+				"historicalExecutionNotPassed": true
+			},
+			{
+				"engine": "ui",
+				"runId": "run-1249f06947265e47b0d54258ae80b462",
+				"rows": 1,
+				"status": "passed",
+				"complete": true,
+				"reportUnchanged": true,
+				"historicalExecutionNotPassed": true
+			}
+		],
+		"verifiedPluginVersion": "0.4.23",
+		"actualModelCalls": 0,
+		"actualCliCalls": 0,
+		"nativeRunnerCalls": 0,
+		"limits": [
+			"API/UI historical runs each contain one row, not a multipage native row matrix.",
+			"Only API owned copies receive source file faults; UI original remains read-only.",
+			"No full current rollback/scale/collector performance rerun; history remains version-scoped."
+		]
+	},
+	"typecheck": {
+		"status": "PASS",
+		"configs": 5,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-source/files/validation/ec04-native-source-typecheck-final.log",
+			"bytes": 251,
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+		},
+		"initialFailure": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-source/files/validation/ec04-native-source-typecheck.log",
+			"bytes": 1182,
+			"sha256": "d4400aed509394df5a9a9b69c11f7146881bd3c086b919ce168b6adfec49c17b"
+		},
+		"repair": "Test projections return full default metadata plus existing assertions; no product change or assertion removal."
+	},
+	"unit": {
+		"status": "PASS",
+		"files": 16,
+		"passed": 272,
+		"failed": 0,
+		"skipped": 0,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-source/files/validation/ec04-native-source-unit.log",
+			"bytes": 229,
+			"sha256": "bfbbfb619559e1a04d301645a49d138f4d617a503ec8e4caddea8cd4bb295320"
+		}
+	},
+	"quality": {
+		"lint": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-source/files/validation/ec04-native-source-lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-source/files/validation/ec04-native-source-protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"limitation": "Historical-tag heuristic skipped because no Git tag; structural/version checks passed; skipped not counted as pass."
+		},
+		"i18n": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-source/files/validation/ec04-native-source-i18n.log",
+				"bytes": 615,
+				"sha256": "80312d8da86db05c5343b06b015ff85dbb3f374e280ecc1b044c87014878d1cd"
+			}
+		},
+		"size": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-source/files/validation/ec04-native-source-size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			}
+		},
+		"diff": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-source/files/validation/ec04-native-source-diff.log",
+				"bytes": 0,
+				"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+			}
+		}
+	},
+	"historicalCorrections": [
+		"EC04-list-diagnostics.json typecheck PASS corrected to FAIL; original raw log/hash unchanged.",
+		"EC04-0423-diagnostics.json typecheck PASS corrected to FAIL; original raw log/hash unchanged."
+	],
+	"intermediateFailure": {
+		"status": "FAIL",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-native-source/files/agent-evaluation-native-desktop-1VX8oa/result.json",
+			"bytes": 2944,
+			"sha256": "a90e4fe03e6ab59fbc3a4da9f2570f3b59eb53791498252175bbf1158498c089"
+		},
+		"cause": "Fixture waited only for runId which also appeared in old raw JSON before async sealed-run rendering completed. Capture now waits for exact pretty native JSON; assertion of exact retained text unchanged."
+	},
+	"acceptance": "EC04-acceptance-audit.md",
+	"unchangedGates": {
+		"EC04": "IN_PROGRESS",
+		"M1": "INCOMPLETE",
+		"AC39": "FAIL from retained frozen collector baseline/candidate comparison",
+		"EC06": "BLOCKED containment prerequisite",
+		"EC07": "NOT_STARTED dependent on EC06",
+		"EC08": "USER_DEFERRED real CLI",
+		"EC09": "NOT_STARTED dependent on EC04"
+	}
+}

@@ -1,6 +1,6 @@
 /** Real Electron reads prior synthetic native results; no runner, model, CLI or workspace writes. */
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, readFile, writeFile, symlink } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, writeFile, symlink, cp, rename } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -12,6 +12,7 @@ import { enableAgentEvaluation } from "../scripts/enable-agent-evaluation.mjs";
 import { ensureBuild } from "./lib/ensure-build.mjs";
 import { launchNativeApp } from "./desktop/native-app.mjs";
 const fixture = resolve(process.argv[2] ?? "missing-fixture");
+const sourceErrors = process.argv.includes("--source-errors");
 const summary = JSON.parse(await readFile(join(fixture, "summary.json"), "utf8"));
 assert.equal(summary.status, "PASS");
 assert.match(summary.scope, /local synthetic targets/);
@@ -24,8 +25,8 @@ const userData = join(output, "desktop"),
 	dataDir = join(userData, "data");
 await mkdir(join(agentDir, "sessions"), { recursive: true });
 await mkdir(join(dataDir, "api-testing"), { recursive: true });
-// Original workspace ownership and original bytes are preserved; only an isolated read path is added.
-await symlink(join(fixture, "data/api-testing/assets"), join(dataDir, "api-testing/assets"), "dir");
+// Keep the original workspace identity. Fault injection touches only this owned copy.
+await cp(join(fixture, "data/api-testing/assets"), join(dataDir, "api-testing/assets"), { recursive: true });
 await writeFile(join(agentDir, "auth.json"), "{}");
 await writeFile(join(agentDir, "models.json"), '{"providers":{}}');
 await enableAgentEvaluation(repo, { agentDir, dataDir });
@@ -85,6 +86,7 @@ const result = {
 	actualModelCalls: 0,
 	actualCliCalls: 0,
 	nativeRunnerCalls: 0,
+	sourceErrors,
 };
 let app, page;
 async function until(fn) {
@@ -137,6 +139,8 @@ try {
 	await until(() => page.evaluate(() => window.__nativeFrames.some((f) => f.type === "ready")));
 	const setup = page.locator(".setup-modal .modal-close");
 	if (await setup.isVisible()) await setup.click();
+	assert.match(app.getLogs(), /\[plugin:agent-evaluation\] activated \(v0\.4\.23\)/);
+	result.pluginVersion = "0.4.23";
 	async function rpc(action, data = {}) {
 		const requestId = crypto.randomUUID();
 		await page.evaluate((m) => window.__nativeSocket.send(JSON.stringify(m)), {
@@ -224,7 +228,7 @@ try {
 		await page.getByText("Agent evaluation", { exact: true }).first().click();
 		await page.locator(".aev").waitFor();
 		const refresh = page.locator('.aev [data-action="refresh"]');
-		if (await refresh.isVisible()) await refresh.click();
+		if (await refresh.isVisible()) await page.locator('.aev [data-action="refresh"]:not([disabled])').click();
 		await page.locator('.aev [data-action="open"]:not([disabled])').first().click();
 		const finding = page.locator(".aev article").filter({ has: page.locator("h3", { hasText: "F02" }) });
 		assert.match(await finding.innerText(), /Inconclusive/i);
@@ -236,6 +240,59 @@ try {
 		assert.equal(await detail.locator("tbody tr").count(), Math.min(run.rows.length, 20));
 		assert.ok((await detail.innerText()).toLowerCase().includes(run.rows[0].status.toLowerCase()));
 		await page.screenshot({ path: join(output, `${engine}-native-run.png`) });
+		if (sourceErrors && engine === "api") {
+			const originalFile = join(fixture, "data", run.evidence[0].path),
+				copiedFile = join(dataDir, run.evidence[0].path),
+				originalBytes = await readFile(originalFile),
+				copiedBytes = await readFile(copiedFile);
+			assert.deepEqual(copiedBytes, originalBytes);
+			await page.locator('.aev [data-action="evidence-native"]:not([disabled])').click();
+			const sealed = page.locator(".aev [data-evidence-panel] pre");
+			await until(async () => (await sealed.innerText()) === JSON.stringify(run, null, 2));
+			const sealedText = await sealed.innerText();
+			const openRun = () => page.locator('.aev [data-action="evidence-run"]:not([disabled])').click();
+			async function expectError(code) {
+				await openRun();
+				await until(async () => (await page.locator('.aev [role="alert"]').innerText()).includes(code));
+				assert.equal(await page.locator(".aev [data-native-run]").count(), 0);
+				assert.equal(await sealed.innerText(), sealedText);
+				assert.equal(await readFile(reportFile, "utf8"), before);
+				await page.locator('.aev [role="alert"]').scrollIntoViewIfNeeded();
+				await page.screenshot({ path: join(output, `api-${code}.png`) });
+			}
+			await rename(copiedFile, `${copiedFile}.held`);
+			try {
+				await expectError("EVIDENCE_GAP");
+			} finally {
+				await rename(`${copiedFile}.held`, copiedFile);
+			}
+			await openRun();
+			await page.locator(".aev [data-native-run] tbody tr").first().waitFor();
+			const changed = JSON.parse(copiedBytes);
+			changed.finishedAt = "2026-10-25T00:00:00.000Z";
+			assert.notEqual(changed.finishedAt, run.at);
+			await writeFile(copiedFile, JSON.stringify(changed, null, 2) + "\n");
+			try {
+				await expectError("VERSION_CONFLICT");
+			} finally {
+				await writeFile(copiedFile, copiedBytes);
+			}
+			await openRun();
+			await page.locator(".aev [data-native-run] tbody tr").first().waitFor();
+			assert.equal(await page.locator('.aev [role="alert"]').innerText(), "");
+			assert.equal(await sealed.innerText(), sealedText);
+			assert.deepEqual(await readFile(originalFile), originalBytes);
+			assert.deepEqual(await readFile(copiedFile), copiedBytes);
+			result.checks.push({
+				engine,
+				missingOriginal: "EVIDENCE_GAP",
+				changedOriginal: "VERSION_CONFLICT",
+				sealedTextRetained: true,
+				reportUnchanged: true,
+				explicitRetryAfterRestoration: true,
+				originalSourceUnchanged: true,
+			});
+		}
 		assert.equal(await readFile(reportFile, "utf8"), before);
 		result.checks.push({
 			engine,

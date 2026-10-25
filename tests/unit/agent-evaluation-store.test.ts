@@ -108,7 +108,9 @@ describe("EC01 contracts and immutable store", () => {
 		const rows = Array.from({ length: 3 }, () => fixture(store, ctx));
 		const reader = open({ dataDir: store.dataDir, readOnly: true, limits: { readItems: 4 } });
 		const page = reader.list(ctx, { kind: "snapshots" }, (record, read) => ({
-			id: record.id,
+			...ref(record),
+			createdAt: record.createdAt,
+			digest: record.digest,
 			objective: read(record.data.contractRef).data.objective,
 		}));
 		expect(page.items.map((r: any) => r.id).sort()).toEqual(rows.map((r) => r.snapshot.id).sort());
@@ -129,7 +131,7 @@ describe("EC01 contracts and immutable store", () => {
 		write(store, ctx, "snapshots", { ...first.snapshot.data, sealedAt: "2026-10-23T00:00:02Z" });
 		const page = store.list(ctx, { kind: "snapshots" }, (record) => {
 			contexts.set(ctx, { ...authorize(ctx), sessionIds: [] });
-			return ref(record);
+			return { ...ref(record), createdAt: record.createdAt, digest: record.digest };
 		});
 		expect(page.items).toHaveLength(1);
 		expect(store.list(ctx, { kind: "snapshots" }).items).toHaveLength(0);

@@ -71,13 +71,16 @@
 		"notes": "1000-evidence snapshot with F06; five rounds; list50 is raw evidence metadata, not 50 report rows or native render"
 	},
 	"typecheck": {
-		"status": "PASS",
-		"configs": 5,
+		"status": "FAIL",
+		"configs": 2,
 		"raw": {
 			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-list/files/validation/typecheck.log",
 			"bytes": 1182,
 			"sha256": "d4400aed509394df5a9a9b69c11f7146881bd3c086b919ce168b6adfec49c17b"
-		}
+		},
+		"requestedConfigs": 5,
+		"stoppedAt": "tsconfig.tests.json",
+		"correction": "2026-10-25 audit: raw log contains two TS2345 errors in new store projection tests. Previous PASS label was incorrect; raw log/hash unchanged. See EC04-native-source-diagnostics.json for separately executed repair validation."
 	},
 	"unit": {
 		"status": "PASS",
