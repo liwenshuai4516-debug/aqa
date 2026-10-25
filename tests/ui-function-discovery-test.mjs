@@ -19,6 +19,8 @@ import { setupUiFixture } from "./fixtures/data-space/ui-fixture.mjs";
 import { optimizationScope } from "./fixtures/data-space/ui-optimization-page.mjs";
 
 const completeCandidate = process.argv.includes("--complete-candidate");
+const measured = process.argv.includes("--measure");
+assert.ok(!measured || completeCandidate, "--measure requires --complete-candidate");
 const repo = fileURLToPath(new URL("..", import.meta.url));
 const output = join(
 	repo,
@@ -26,6 +28,43 @@ const output = join(
 	String(Date.now()),
 );
 await mkdir(output, { recursive: true });
+let measurement;
+if (measured) {
+	const helper = join(repo, "tests/lib/ui-discovery-measure.mjs");
+	await cp(fileURLToPath(import.meta.url), join(output, "harness.mjs"));
+	await cp(helper, join(output, "observer.mjs"));
+	await writeFile(
+		join(output, "measurement-plan.json"),
+		JSON.stringify(
+			{
+				created_at: new Date().toISOString(),
+				harness_sha256: sha256(await readFile(fileURLToPath(import.meta.url))),
+				observer_sha256: sha256(await readFile(helper)),
+				scope: optimizationScope,
+				start:
+					"Empty owned project; fixture and SDK/MCP setup included in total; catalog-empty milestone separates setup",
+				endpoint:
+					"Native ui_case_design candidate returns zero static issues for six cases/thirteen sourced assertions; unapproved v1 synthesis, not approved v4",
+				acceptance:
+					"Original frozen scope and 60-action budget; real SDK/MCP recording; no model, diagnostic or formal-run calls; review gate stays blocked",
+				metrics:
+					"Sequential host tool invocation elapsed time and async FS API counts; nested hook tool names; direct child starts only. Observer overhead included; setup-warmed dependency/OS caches, not a cold sample.",
+				unmeasured: [
+					"Nested MCP/runner browser launch and internal API counts",
+					"Model generation/review wait",
+					"v4 diagnostic preparation and approved endpoint",
+					"Before/after comparison",
+					"Electron business chain",
+				],
+			},
+			null,
+			2,
+		),
+		{ flag: "wx" },
+	);
+	const { measureDiscovery } = await import("./lib/ui-discovery-measure.mjs");
+	measurement = measureDiscovery();
+}
 const fixture = await setupUiFixture({ optimization: true });
 // macOS /var -> /private/var: MCP workspace root must match the canonical config testDir.
 fixture.project = await realpath(fixture.project);
@@ -127,12 +166,14 @@ try {
 		session.agent.state.messages = [
 			{ role: "assistant", content: [{ type: "toolCall", id, name: tool.name, arguments: args }] },
 		];
-		return JSON.parse(text(await tool.execute(id, args, new AbortController().signal)));
+		const execute = async () => JSON.parse(text(await tool.execute(id, args, new AbortController().signal)));
+		return measurement ? measurement.invoke(name, request.operation, execute) : execute();
 	};
 	const workflow = (request) => invoke(request, "ui_test_workflow");
 	const catalog = await workflow({ operation: "catalog" });
 	assert.ok(Array.isArray(catalog.output.assets));
 	assert.equal(catalog.output.assets.length, 0, "Owned fixture must start without historical assets");
+	measurement?.mark("empty-catalog-sdk-mcp-ready");
 	const call = async (tool, input = {}, allowBlocked = false) => {
 		const response = await invoke({
 			operation: "action",
@@ -644,6 +685,7 @@ test('seed',async({page})=>{
 		const candidate = await invoke({ operation: "candidate", asset }, "ui_case_design");
 		assert.equal(candidate.status, "completed", JSON.stringify(candidate));
 		assert.deepEqual(candidate.output.issues, [], JSON.stringify(candidate.output));
+		measurement?.mark("six-feature-static-candidate-endpoint");
 		const assetRef = candidate.artifact_refs[0];
 		progress = await workflow({
 			operation: "checkpoint",
@@ -664,7 +706,7 @@ test('seed',async({page})=>{
 			operation: "block",
 			task_ref: progress.output.task_ref,
 			reasons: [
-				"Native U05 three-review allowance exhausted; HTTP402 quota failure retained. No approved design, diagnosis or formal execution. New browser evidence does not reset review budget.",
+				"This new synthesis has no independent design approval or diagnostic proof. Controlled discovery ends at candidate; it does not inherit another revision's approval or renew shared paid-review authorization.",
 			],
 		});
 		assert.equal(blocked.status, "blocked", JSON.stringify(blocked));
@@ -839,6 +881,8 @@ test('seed',async({page})=>{
 	}
 	await fixture.close();
 	await rm(dirname(fixture.project), { recursive: true, force: true });
+	if (measurement)
+		await writeFile(join(output, "measurement.json"), JSON.stringify(measurement.stop(), null, 2) + "\n");
 	await writeFile(join(output, "result.json"), JSON.stringify({ ...result, evidence: output }, null, 2) + "\n");
 	console.log(JSON.stringify({ ...result, evidence: output }, null, 2));
 }

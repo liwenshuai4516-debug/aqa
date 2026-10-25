@@ -129,6 +129,8 @@ UI 诊断输入准备：`tests/ui-multifunction-probes-test.mjs` 将 `tests/fixt
 UI 诊断续跑：`tests/fixtures/data-space/ui-probe-replay.mjs` 恢复声明的合成地址；`tests/ui-multifunction-native-review.mjs` 使用共享授权账本调用原生独立评审/获批后诊断，保留错误和未执行边界。
 UI 浏览器候选：`tests/ui-function-discovery-test.mjs --complete-candidate` 复用六功能探索，保存完整录制、参数化草稿及静态候选；默认分支继续检查partial/预算缺口。
 
+UI 首次候选计量：`tests/ui-function-discovery-test.mjs --complete-candidate --measure`：采集首次发现至未批准静态候选的宿主调用、异步读取及阶段耗时；`tests/lib/ui-discovery-measure.mjs`只保存计数，不保存工具参数/正文。
+
 UI 目录读取计量：`tests/ui-catalog-read-benchmark.mjs` 对归档真实run的1/8批样本统计catalog及view/analyze/execute状态查询的逐路径读取和扫描，验证损坏/删除/恢复，不启动浏览器。
 UI 成对查询计量：`tests/ui-catalog-paired-benchmark.mjs` 对固定历史资产交替运行0.1.3/0.1.4各5次，保留全部读取计数、耗时和失败，不执行浏览器/模型。
 UI 评审修订：`tests/ui-browser-review-revision.mjs` 按U05独立评审问题保存新的取消检查及逐测试origin候选，仅静态检查，不批准/执行。

@@ -115,3 +115,5 @@ UI 现行获批资产基准：`tests/ui-approved-baseline-measure.mjs`；测量�
 UI 子进程/API基准观察：`tests/ui-approved-baseline-measure.mjs <获批证据目录> --observe-children`；记录Playwright 1.62.1调用开始/完成/失败，参数不入计数，校准及范围见 [优化执行记录](ui-testing-optimization-execution.md)。
 
 UI 获批产物桌面归档：`tests/ui-approved-archive-desktop-test.mjs`，复用原独立批准的六功能正式批次，验证隔离Electron映射/同步/重启恢复；见 [执行记录](ui-testing-optimization-execution.md)。
+
+UI 首次候选计量：`tests/ui-function-discovery-test.mjs --complete-candidate --measure`；范围和未测项见 [优化执行记录](ui-testing-optimization-execution.md)。

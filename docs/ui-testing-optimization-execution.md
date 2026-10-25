@@ -677,3 +677,19 @@ tests/lib/ui-baseline-child-observer.mjs导出可停用的observePlaywrightApi�
 [桌面获批产物归档索引](ui-testing-evidence/optimization-u09-approved-archive.json)及归档保留失败/成功两轮真实桌面截图、日志、回执、数据快照、结构化交付、源码及检查日志；逐文件与原始5个引用摘要核验，预算账本与U05获批归档一致。typecheck、5文件72项单测、lint、协议结构、size和差异检查通过；初次单测文件通配符无匹配、未启动测试，原日志保留，按真实文件名运行后的结果另记，不将空执行计为通过；协议历史无tag跳过。开始与结束clean仅预览、无删除，关闭自建Electron，不修改个人安装或上游。
 
 本轮补齐U06/U09的六功能真实获批产物→桌面归档/重启恢复子链。原发现、设计、独立评审和正式执行来自此前原生测试入口，不能写成已在Electron完成整条链路。M1/M2、U00完整基线、U02私密映射和OperationContract真实准入、U03/U07等门禁继续保留；此前真实角色/数据/预期依据位置询问尚无答复，整计划不关闭。
+
+### U00 续跑：首次发现至静态候选的机械开销（2026-10-25）
+
+承接395f7b4已推送的桌面归档证据，本轮补首次生成的可独立测量段。原tests/ui-function-discovery-test.mjs增加显式--complete-candidate --measure，运行前保存范围、起止点、成功标准、未测项、实际harness/observer源码及摘要。仍使用冻结u00-1声明、60动作/120秒预算、六功能、tester/viewer独立context和真实SDK/MCP；工程步骤由固定程序驱动，无模型生成决策。新生成v1合成候选不等于既有获批v4，本轮没有重用批准、诊断或正式run，未重置原预算。更新入口中已过时的“3轮/402额度耗尽”阻塞文案，改为此候选没有独立批准与诊断的实际原因；原历史证据不改。
+
+tests/lib/ui-discovery-measure.mjs只保存宿主异步fs/promises四类API计数、工具名/operation/状态/耗时及直接子进程启动类型，不保存参数、路径、工具正文、环境值或异常正文。真实1次文件读取校准计数=1，故意抛错保留threw状态且不包含正文，stop后原函数恢复。观察器不修改工具结果或安装目录。同步/原生FS和嵌套MCP进程内部未计量，不把未测项写成0；注册监听和读取包装本身有成本。
+
+实际样本tests/scratch/ui-browser-candidate/1792924718830通过：58次录制动作，包括setup1、snapshot17、generate_locator13、type6、click17、navigate1、read_log1、write_test1、close1。六功能草稿保留各自来源/状态和历史缺口；参数化脚本、六case/13条来源断言保存；候选静态issues为空。空目录到SDK/MCP就绪467.31ms；至静态候选返回总16035.06ms，其中发现至候选15567.75ms，宿主readFile4786/readdir811/writeFile2/rename309。原子写入会体现为rename，不能只用writeFile解释全部写入量。至候选74次宿主调用；随后checkpoint/门禁/只读catalog共4次，完整入口78次，不把后处理计入候选端点。candidate调用902.99ms，是含原生静态校验与存储的工具总时长，不等于纯静态检查CPU时间。
+
+真实SDK嵌套hook记录58个对应MCP调用。宿主直接观察到1个browser及3个other进程启动，未观察嵌套进程，不据此宣称总浏览器启动=1。17次快照和1次显式导航是MCP动作口径，不覆盖seed内部goto或浏览器内部事件。单样本依赖/操作系统缓存未清空；不是冷启动、优化前后配对或提效结论。
+
+新任务留在blocked/design-review，原生catalog runtime_ready=false；0模型、0诊断、0正式run、0外部业务请求。共享费用账本与已获批U05归档摘要一致。旧批准和剩余授权没有用于新候选；未执行任何新的独立评审。首次归档校验发现lineage引用的是旧归档中源码候选，不能假定新目录含全部历史；改为从原摘要核验的源码归档读取并验证该引用，不复制或伪造历史材料。
+
+[首次候选计量索引](ui-testing-evidence/optimization-u00-discovery-measure.json)保存186个文件、149个本地引用及原归档历史引用核验，归档逐文件回读一致，不含私有authority/认证/依赖。全量typecheck、3文件51单测、lint、协议结构通过；协议历史无tag明确跳过。开始/交付clean只预览、无删除。本轮只改测试计量入口，未重跑Electron或共享应用，前轮桌面结果不计本轮通过。
+
+U00首次发现→静态候选段有了可复用原始样本，但首次至获批v4的完整同端点计量、旧失败分析/重跑、五组成对和真实目标准入仍缺；U03/U07依赖不放行，M1/M2和整计划继续未完成。此前真实角色、测试数据及预期依据位置询问未获答复，继续保留该阻塞，不读取个人凭据或猜测私密映射。plan_update不可用，继续维护第8节和本记录。
