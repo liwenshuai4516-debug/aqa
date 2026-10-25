@@ -7,6 +7,7 @@ afterEach(() => {
 	for (const stop of stops.splice(0)) stop();
 	document.body.replaceChildren();
 	vi.useRealTimers();
+	vi.unstubAllGlobals();
 });
 function harness() {
 	let receive: any;
@@ -136,6 +137,75 @@ async function openReport() {
 	return { root, h, records, contractRef, snapshotRef, reportRef };
 }
 describe("evaluation client lifecycle", () => {
+	it.each(["success", "rejected", "unsupported", "late"])(
+		"source navigation handles %s without changing the sealed evidence",
+		async (mode) => {
+			const { root, h, records } = await openReport();
+			const reference = { kind: "evidence", id: "source-evidence", revision: 1 };
+			records.report.data.findings = [
+				{
+					ruleId: "F08",
+					findingId: "source-finding",
+					verdict: "inconclusive",
+					evidenceState: "partial",
+					reason: "fixture",
+					missingEvidence: [],
+					evidenceRefs: [reference],
+				},
+			];
+			records[reference.id] = {
+				...reference,
+				data: { kind: "message", producer: "pi-evidence-v1", sourceLocator: "pi:session#event" },
+			};
+			const target = { conversationId: "conv", sessionId: "session", messageId: "a-10-1" };
+			const revealMessage = vi.fn(() => ({ ok: mode !== "rejected", error: "Source changed" }));
+			vi.stubGlobal("__piWebUiHost", mode === "unsupported" ? undefined : { sessions: { revealMessage } });
+			let held: any;
+			const original = h.ctx.send;
+			h.ctx.send = (message: any) => {
+				if (!["readEvidence", "locateEvidence"].includes(message.action)) return original(message);
+				h.sent.push(message);
+				if (message.action === "locateEvidence" && mode === "late") {
+					held = message;
+					return;
+				}
+				queueMicrotask(() =>
+					h.reply(message, message.action === "readEvidence" ? { text: "sealed original", nextOffset: null } : target),
+				);
+			};
+			root.querySelector<HTMLButtonElement>("[data-action=back]")!.click();
+			await vi.waitFor(() => expect(root.querySelector<HTMLButtonElement>("[data-action=open]")?.disabled).toBe(false));
+			root.querySelector<HTMLButtonElement>("[data-action=open]")!.click();
+			await vi.waitFor(() =>
+				expect(root.querySelector<HTMLButtonElement>("[data-action=evidence]")?.disabled).toBe(false),
+			);
+			root.querySelector<HTMLButtonElement>("[data-action=evidence]")!.click();
+			await vi.waitFor(() =>
+				expect(root.querySelector<HTMLButtonElement>("[data-action=evidence-source]")?.disabled).toBe(false),
+			);
+			const before = h.sent.length;
+			root.querySelector<HTMLButtonElement>("[data-action=evidence-source]")!.click();
+			if (mode === "late") {
+				await vi.waitFor(() => expect(held).toBeTruthy());
+				stops.pop()!();
+				h.reply(held, target);
+				await Promise.resolve();
+				expect(revealMessage).not.toHaveBeenCalled();
+			} else {
+				await vi.waitFor(() =>
+					expect(root.querySelector<HTMLButtonElement>("[data-action=evidence-source]")?.disabled).toBe(false),
+				);
+				if (mode !== "unsupported") expect(revealMessage).toHaveBeenCalledWith(target);
+				expect(root.querySelector("[data-evidence-panel] pre")?.textContent).toBe("sealed original");
+				if (mode === "rejected") expect(root.querySelector("[role=alert]")?.textContent).toContain("Source changed");
+				if (mode === "unsupported")
+					expect(root.querySelector("[role=alert]")?.textContent).toContain("does not support");
+			}
+			expect(h.sent.slice(before).map((m: any) => m.action)).toEqual(["locateEvidence"]);
+			vi.unstubAllGlobals();
+		},
+	);
+
 	it.each([
 		["artifact-snapshot", "artifact-reader-v1", "evidence-artifact", "artifact-text"],
 		["native-test-run", "native-reader-v1", "evidence-native", "native-run"],

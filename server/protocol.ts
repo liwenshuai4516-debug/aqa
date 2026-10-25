@@ -4043,7 +4043,9 @@ export type ServerMessage =
 /** Authorized, bounded Pi evidence reads. Payloads use the existing plugin channel. */
 export interface AgentEvaluationEvidenceQuery {
 	conversationId: string;
-	mode: "describe" | "collect";
+	mode: "describe" | "collect" | "locate";
+	/** A host-resolved rendered message target; does not return additional evidence bodies. */
+	locateEventId?: string;
 	sessionId?: string;
 	startMessageId?: string;
 	endMessageId?: string;
@@ -4064,6 +4066,8 @@ export interface AgentEvaluationSourceItem {
 	redaction: string[];
 }
 export interface AgentEvaluationEvidencePage {
+	/** Present only for locate queries whose source entry is currently rendered. */
+	messageId?: string;
 	schemaVersion: 1;
 	clientVersion?: string;
 	principalId: string;

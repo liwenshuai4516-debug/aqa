@@ -27,6 +27,7 @@ export interface EvaluationSource {
 	isStreaming: boolean;
 	leafId: string | null;
 	getEntry(id: string): SourceEntry | undefined;
+	locateMessage?(id: string): string | undefined;
 	children: Array<{ sessionId: string; conversationId: string; persisted: boolean }>;
 }
 export class EvidenceReadError extends Error {
@@ -207,7 +208,7 @@ export function readEvaluationEvidence(
 		"Source identity is unavailable",
 	);
 	check(
-		query && ["describe", "collect"].includes(query.mode) && query.conversationId === source.conversationId,
+		query && ["describe", "collect", "locate"].includes(query.mode) && query.conversationId === source.conversationId,
 		"PERMISSION_DENIED",
 		"Conversation is outside the authorized scope",
 	);
@@ -253,6 +254,21 @@ export function readEvaluationEvidence(
 		rangeStart: null,
 		rangeEnd: null,
 	};
+	if (query.mode === "locate") {
+		check(
+			query.sessionId === source.sessionId && identifier(query.locateEventId),
+			"PERMISSION_DENIED",
+			"Exact source session and event are required",
+		);
+		const messageId = source.locateMessage?.(query.locateEventId);
+		check(
+			messageId,
+			"EVIDENCE_GAP",
+			"The source event is not uniquely visible in this conversation; retain the sealed evidence or open the original branch/history",
+		);
+		page.messageId = messageId;
+		return page;
+	}
 	const started = performance.now(),
 		seen = new Set<string>(),
 		chain: SourceEntry[] = [];

@@ -12,7 +12,7 @@
  *     startChat({ prompt, newChat?, cwd?, model? }) → boolean   // 已受理，动作在后台串行完成
  *     models.list() → PluginHostModelInfo[]           // 已配置的模型目录（issue #188）
  *     openSession({ cwd? | folders? | roots?, prompt?, newChat? }) → Promise<{ok, sessionId?, error?}>
- *     sessions: { list(), open(id) }                    // 会话列表 / 打开（宿主 API v2）
+ *     sessions: { list(), open(id), revealMessage(target) }                    // 会话列表 / 打开（宿主 API v2）
  *     compose({ text?, attachments? }) → boolean        // 放进输入框草稿，等用户自己发
  *     reloadCatalog(source, { install?, replace? }) → Promise<{ok, error?, entries?, installed?}>
  *     onUiAction(name, handler) → () => void            // 接管 UI 条目的动作（host.ui 框架）
@@ -76,8 +76,10 @@ const PLUGIN_HOST_GLOBAL = "__piWebUiHost";
  *      `startChat/openSession` 的 `model` 选项（canonical `provider/model`：
  *      newChat 时先建新对话再切到该模型，不动旧对话的模型；非法 id 直接拒绝）。
  *  12 = 新增 `ttsProviders`（通用语音合成提供者注册表：供插件对接系统朗读与播报）。
- *  13 = 新增 `openFileContextMenu`（右键菜单 contextmenu.file 槽位通道：让插件文件树接入宿主统一右键菜单）。 */
-export const PLUGIN_HOST_API_VERSION = 14;
+ *  13 = 新增 `openFileContextMenu`（右键菜单 contextmenu.file 槽位通道：让插件文件树接入宿主统一右键菜单）。
+ *  14 = 新增 pickDirectory / pickModel 选择器通道。
+ *  15 = 新增 sessions.revealMessage：只定位当前会话中已存在的精确消息，不切会话或执行任务。 */
+export const PLUGIN_HOST_API_VERSION = 15;
 
 export interface PluginHostPickDirectoryOptions {
 	initialPath?: string;
@@ -163,12 +165,21 @@ export interface PluginHostSessionInfo {
 	isStreaming?: boolean;
 }
 
+/** An exact target in the active conversation; never creates or switches a session. */
+export interface PluginHostMessageTarget {
+	conversationId: string;
+	sessionId: string;
+	messageId: string;
+}
+
 /** 会话 API（host.sessions，宿主 API v2）：列表 + 打开。 */
 interface PluginHostSessionsApi {
 	/** 可打开的会话列表（本客户端运行中的对话 + 当前项目的历史会话）。 */
 	list(): PluginHostSessionInfo[];
 	/** 打开一个会话（id 来自 list()）；与 openSession 同样带目录授权/切换等前置动作。 */
 	open(id: string): Promise<PluginHostOpenSessionResult>;
+	/** v15: reveal an existing exact message in the active session, or return an error. */
+	revealMessage(target: PluginHostMessageTarget): { ok: boolean; error?: string };
 }
 
 /** `{ok:true, sessionId}` 或 `{ok:false, error}`（错误原文回给插件，可用于提示用户）。 */
@@ -487,6 +498,9 @@ interface PluginHostDeps {
 	listSessions: () => PluginHostSessionInfo[];
 	/** 当前活动对话 id（还没快照时为 null）。 */
 	getConversationId: () => string | null;
+	getSessionId?: () => string | null;
+	getMessageIds?: () => readonly string[];
+	revealMessage?: (target: PluginHostMessageTarget) => void;
 	/** 当前对话是否还是空白（没有消息 = 它就是「新对话」，new_chat 不会换 id）。 */
 	isConversationBlank: () => boolean;
 	/** 轮询间隔 / 单步超时（测试可调小）。 */
@@ -745,6 +759,30 @@ export function createPluginHostApi(deps: PluginHostDeps): PluginHostApi {
 		},
 		sessions: {
 			list: () => deps.listSessions(),
+			revealMessage(target) {
+				if (!deps.isReady()) return { ok: false, error: "尚未连接到服务器 / Not connected" };
+				if (
+					!target ||
+					![target.conversationId, target.sessionId, target.messageId].every(
+						(v) => typeof v === "string" && v.length > 0 && v.length <= 256,
+					)
+				)
+					return { ok: false, error: "无效消息目标 / Invalid message target" };
+				if (
+					!deps.revealMessage ||
+					target.conversationId !== deps.getConversationId() ||
+					target.sessionId !== deps.getSessionId?.()
+				)
+					return { ok: false, error: "来源会话已变化，请重新打开来源 / Source session changed; reopen the source" };
+				if (deps.getMessageIds?.().filter((id) => id === target.messageId).length !== 1)
+					return {
+						ok: false,
+						error:
+							"消息当前不可见，请查看封存证据或原始分支 / Message is not visible; inspect sealed evidence or the original branch",
+					};
+				deps.revealMessage(target);
+				return { ok: true };
+			},
 			async open(id) {
 				// 调用方归因快照（同 openSession）：跨项目的目录授权记到插件名下的键。
 				const caller = pluginApiCaller;

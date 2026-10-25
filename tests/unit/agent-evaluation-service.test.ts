@@ -52,6 +52,7 @@ function fixture() {
 					isStreaming: false,
 					leafId: "a1",
 					getEntry: (id) => entries.find((e) => e.id === id),
+					locateMessage: (id) => (entries.some((e) => e.id === id) ? `rendered-${id}` : undefined),
 				},
 				query,
 			);
@@ -122,6 +123,33 @@ async function diagnose(f: ReturnType<typeof fixture>) {
 	return { contractRef, attemptRef, collected, snapshotRef, reportRef: status.reportRef, report };
 }
 describe("EC04 product service", () => {
+	it("locates an authorized SDK evidence record without recollection or report mutation", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const snapshot = await f.request("get", { ref: scored.snapshotRef });
+		const records = await Promise.all(snapshot.data.evidenceRefs.map((ref: any) => f.request("get", { ref })));
+		const record = records.find((r: any) => r.data.kind === "message");
+		const ref = { kind: record.kind, id: record.id, revision: record.revision };
+		f.host.readEvaluationArtifact.mockClear();
+		expect(await f.request("locateEvidence", { ref })).toEqual({
+			conversationId: "conv1",
+			sessionId: "session1",
+			messageId: `rendered-${record.data.sourceEventId}`,
+		});
+		await expect(f.request("locateEvidence", { ref }, { channel: "ui", clientId: "other" })).rejects.toMatchObject({
+			code: "PERMISSION_DENIED",
+		});
+		const artifact = records.find((r: any) => r.data.kind === "artifact-snapshot");
+		await expect(
+			f.request("locateEvidence", { ref: { kind: artifact.kind, id: artifact.id, revision: artifact.revision } }),
+		).rejects.toMatchObject({ code: "EVIDENCE_GAP" });
+		f.entries.splice(0);
+		await expect(f.request("locateEvidence", { ref })).rejects.toMatchObject({ code: "EVIDENCE_GAP" });
+		expect(f.host.readEvaluationArtifact).not.toHaveBeenCalled();
+		expect(f.host.readEvaluationNative).not.toHaveBeenCalled();
+		expect((await f.request("get", { ref: scored.reportRef })).sourceDigest).toBe(scored.report.sourceDigest);
+	});
+
 	it("pages only sealed redacted file text and never reopens a changed artifact", async () => {
 		const f = fixture(),
 			scored = await diagnose(f);

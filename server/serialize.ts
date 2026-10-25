@@ -308,6 +308,29 @@ export function findEntryByUiId<T extends UiIdEntryLike>(
 	return null;
 }
 
+/** Resolve a persisted source entry to exactly one currently rendered message.
+ * Never guess a sequence number or use timestamp-only navigation for duplicate messages. */
+export function renderedMessageForEntry(
+	entries: UiIdEntryLike[],
+	entryId: string,
+	messages: readonly UiMessage[],
+	seqOf: (m: AgentMessage) => number,
+): string | undefined {
+	if (entries.length > 10000 || messages.length > 10000) return;
+	const entry = entries.find((e) => e.id === entryId);
+	if (entry?.type !== "message" || !entry.message) return;
+	const source = entry.message;
+	const candidates = messages.filter(
+		(m) =>
+			m.role === source.role &&
+			(source.role === "toolResult" ? m.toolCallId === source.toolCallId : m.timestamp === source.timestamp),
+	);
+	// Bound a user-initiated lookup independently of snapshot serialization.
+	if (candidates.length > 100) return;
+	const found = candidates.filter((m) => findEntryByUiId(entries, m.id, seqOf)?.id === entryId);
+	if (found.length === 1 && messages.filter((m) => m.id === found[0].id).length === 1) return found[0].id;
+}
+
 export function serializeMessage(m: AgentMessage, seq: number): UiMessage | null {
 	// SDK 的 system 消息是 prompt sections 的内部差量
 	// (content 空串 + sections 结构化内存)、compaction 的

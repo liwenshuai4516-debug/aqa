@@ -1,0 +1,97 @@
+{
+	"checks": [
+		{
+			"command": ["npm", "run", "typecheck"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 typecheck\n> tsc -p tsconfig.server.json --noEmit && tsc -p web/tsconfig.json --noEmit && tsc -p tsconfig.tests.json --noEmit && tsc -p desktop/tsconfig.json --noEmit && tsc -p plugins/page-picker/extension/tsconfig.json --noEmit\n\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "lint"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 lint\n> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/\n\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "check:protocol"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 check:protocol\n> node scripts/check-protocol-sync.mjs\n\n✓ types.ts 是 protocol.ts 的 type-only re-export shim\n✓ protocol.ts 保持纯类型导出（无运行时代码）\n✓ 双端 PROTOCOL_VERSION 一致 (v33)\n· 跳过协议版本 git 启发式（无可用 tag 或浅检出环境）\n",
+			"stderr": "fatal: No names found, cannot describe anything.\n"
+		},
+		{
+			"command": ["npm", "run", "i18n:check"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 i18n:check\n> node scripts/i18n-diff.mjs --check-packs\n\nOK   de（v0.68.1）：缺 0，多余 0\nOK   es（v0.68.1）：缺 0，多余 0\nOK   fr（v0.68.1）：缺 0，多余 0\nOK   it（v0.68.1）：缺 0，多余 0\nOK   ja（v0.69.0）：缺 0，多余 0\nOK   ko（v0.68.1）：缺 0，多余 0\nOK   pt（v0.105.1）：缺 0，多余 0\nOK   ru（v0.68.1）：缺 0，多余 0\nOK   tr（v0.105.1）：缺 0，多余 0\nOK   zh-HK（v0.107.0）：缺 0，多余 0\nOK   zh-Hant（v0.107.0）：缺 0，多余 0\nOK   zh-TW（v0.107.0）：缺 0，多余 0\n12 个语言包 key 与 zh 一一对应。\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "size:check"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 size:check\n> node scripts/project-budget.mjs --check\n\n{\n  \"tracked\": {\n    \"AGENTS.md\": 8597,\n    \"docs/desktop-delivery/evidence\": 63696818,\n    \"assets/demo-video.mp4\": 20012405,\n    \"plugins/mermaid/client/vendor\": 5346437,\n    \"plugins/run-trace/client/vendor\": 568528\n  },\n  \"local\": {},\n  \"checks\": [\n    {\n      \"name\": \"AGENTS.md\",\n      \"bytes\": 8597,\n      \"limit\": 12000,\n      \"passed\": true\n    },\n    {\n      \"name\": \"docs/desktop-delivery/evidence\",\n      \"bytes\": 63696818,\n      \"limit\": 63696818,\n      \"passed\": true\n    },\n    {\n      \"name\": \"assets/demo-video.mp4\",\n      \"bytes\": 20012405,\n      \"limit\": 20012405,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/mermaid/client/vendor\",\n      \"bytes\": 5346437,\n      \"limit\": 5346437,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/run-trace/client/vendor\",\n      \"bytes\": 568528,\n      \"limit\": 568528,\n      \"passed\": true\n    },\n    {\n      \"name\": \"rootLockedPackages\",\n      \"count\": 612,\n      \"limit\": 650,\n      \"passed\": true\n    }\n  ],\n  \"rootLockedPackages\": 612\n}\n",
+			"stderr": ""
+		},
+		{
+			"command": ["git", "diff", "--check"],
+			"exitCode": 0,
+			"stdout": "",
+			"stderr": ""
+		}
+	],
+	"pluginVersion": "0.4.12",
+	"hostApiVersion": 15,
+	"protocolVersion": 33,
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"units": {
+		"rawPath": "/tmp/EC04-0412-checks.json",
+		"sha256": "9473258fd8797688bf9b90e666d1870d02b2f725905515f9d51a6bc1b7800047"
+	},
+	"targeted": {
+		"rawPath": "/tmp/EC04-0412-targeted.json",
+		"sha256": "e4569f405a88aba933dd5d52f785bb164df83d408dabee8546e3bc3eb0d0713b"
+	},
+	"navigationRegression": {
+		"rawPath": "/tmp/EC04-0412-navigation-regression.json",
+		"sha256": "092a2ce02a0222eaf0935f44598b26b2a91cc89701d253dcc5b968d5deba48bb"
+	},
+	"desktop": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-GS7Mzd/result.json",
+		"sha256": "d807424ee17d54eba2f6864ac048db0a9ba8ed7d381ac42b51260c49056cecbe"
+	},
+	"visual": {
+		"sourceMessage": {
+			"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-GS7Mzd/source-message.png",
+			"sha256": "d2384de092ed5b61677dc0fbd75f289552f83585957c2b3487acb8a7ebea8c70"
+		},
+		"inspected": true,
+		"result": "The exact offline assistant source message is visibly highlighted in Chat after the full app restart."
+	},
+	"priorDesktop": {
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-YiHsyj/result.json",
+		"sha256": "636eb83d2c219370bf403d28259b396904f62ab688cf97848a82eac081386c53"
+	},
+	"firstTargetedAttempt": {
+		"passed": 96,
+		"failed": 1,
+		"reason": "Existing explicit host API version assertion still required v14. Updated the assertion to the v15 interface added in this change; no test removed."
+	},
+	"build": {
+		"method": "tests/lib/ensure-build.mjs via actual native test, then final prebuilt run",
+		"status": "passed"
+	},
+	"clean": {
+		"startItems": 0,
+		"endItems": 0,
+		"deleted": false
+	},
+	"protocolHistoryHeuristic": "skipped: no usable tags; not counted as passed",
+	"remaining": {
+		"collectorPerformance": "FAIL from 0.4.10; collector unchanged, not rerun",
+		"nativeResultPageNavigation": "not implemented",
+		"hiddenCompactedAndOtherBranchNavigation": "not supported by this exact-visible-message path; full product matrix remains pending",
+		"activeJobCancellationAndDisable": "native injection pending",
+		"desktopRollbackRecovery": "pending",
+		"M1": "in progress",
+		"realCli": "user deferred"
+	}
+}

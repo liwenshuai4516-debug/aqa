@@ -72,6 +72,40 @@ export default { activate(host) {
 	return { dir, workspace, manager, mgr, client, service, query, fixture, host: fixture.host as PluginHost };
 }
 describe("EC02 host integration", () => {
+	it("maps an actual SDK entry to the rendered id through the owner-bound host and refuses hidden/foreign sources", async () => {
+		const h = await harness();
+		const conv = h.client.convs.get("conv1");
+		Object.assign(conv, {
+			msgIds: new Map(),
+			nextMsgId: 1,
+			uiMessageCache: new Map(),
+			userSeqByTs: new Map(),
+			lastMessagesSig: "",
+			lastMessagesArray: [],
+		});
+		conv.session.agent = {
+			state: {
+				messages: h.manager
+					.getBranch()
+					.filter((e) => e.type === "message")
+					.map((e: any) => e.message),
+			},
+		};
+		const query: AgentEvaluationEvidenceQuery = {
+			conversationId: "conv1",
+			sessionId: h.query.sessionId,
+			mode: "locate",
+			locateEventId: h.query.endMessageId,
+		};
+		const target = h.host.readEvaluationEvidence("client1", query);
+		expect(target.messageId).toBe(h.client.messagesOf(conv).at(-1).id);
+		expect(target.items).toEqual([]);
+		expect(() => h.host.readEvaluationEvidence("foreign", query)).toThrow();
+		expect(() => h.host.readEvaluationEvidence("client1", { ...query, sessionId: "different" })).toThrow();
+		conv.session.agent.state.messages = [];
+		expect(() => h.host.readEvaluationEvidence("client1", query)).toThrow(/not uniquely visible/);
+	});
+
 	it("emits host monotonic clock values independently of wall-clock rollback", async () => {
 		const h = await harness(),
 			events: any[] = [];

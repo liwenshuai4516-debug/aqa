@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
 	createPluginHostApi,
 	emitPluginHostModel,
@@ -385,8 +385,8 @@ describe("openModal/closeModal（宿主 API v10，modal.dialog 槽位）", () =>
 		expect(throwing.api.openModal("plugin:x")).toBe(false);
 		expect(throwing.api.closeModal()).toBe(true);
 	});
-	it("宿主 API 版本已升到 v14（pickDirectory 与 pickModel 选择器通道）", () => {
-		expect(PLUGIN_HOST_API_VERSION).toBe(14);
+	it("宿主 API 版本已升到 v15（当前会话精确消息定位）", () => {
+		expect(PLUGIN_HOST_API_VERSION).toBe(15);
 	});
 	it("pickDirectory 与 pickModel 转发调用到 deps", async () => {
 		const h = harness({
@@ -503,5 +503,38 @@ describe("createPluginHostApi.ttsProviders（宿主 API v12）", () => {
 		);
 		unreg();
 		expect(api.ttsProviders.list().find((p) => p.id === "mock-engine")).toBeUndefined();
+	});
+});
+
+describe("sessions.revealMessage", () => {
+	it("reveals only a unique visible message in the exact active session without sending any command", () => {
+		const reveal = vi.fn();
+		let ids = ["u-1-1"],
+			sessionId = "session";
+		const h = harness({ getSessionId: () => sessionId, getMessageIds: () => ids, revealMessage: reveal });
+		const target = { conversationId: "conv-1", sessionId, messageId: ids[0] };
+		expect(h.api.sessions.revealMessage(target)).toEqual({ ok: true });
+		expect(reveal).toHaveBeenCalledWith(target);
+		reveal.mockClear();
+		for (const invalid of [
+			null,
+			{},
+			{ ...target, messageId: "" },
+			{ ...target, conversationId: "other" },
+			{ ...target, sessionId: "other" },
+			{ ...target, messageId: "missing" },
+		])
+			expect(h.api.sessions.revealMessage(invalid as any).ok).toBe(false);
+		sessionId = "new-session";
+		expect(h.api.sessions.revealMessage(target).ok).toBe(false);
+		sessionId = target.sessionId;
+		ids = [target.messageId, target.messageId];
+		expect(h.api.sessions.revealMessage(target).ok).toBe(false);
+		ids = [target.messageId];
+		h.setReady(false);
+		expect(h.api.sessions.revealMessage(target).ok).toBe(false);
+		expect(reveal).not.toHaveBeenCalled();
+		expect(h.sent).toEqual([]);
+		expect(h.views).toEqual([]);
 	});
 });

@@ -1,10 +1,19 @@
 const labels = {
+	revealSource: ["定位当前来源消息", "Reveal current source message"],
+	sourceHostUnavailable: [
+		"当前宿主不支持消息定位。请更新应用或查看封存证据。",
+		"This host does not support message navigation. Update the app or inspect sealed evidence.",
+	],
+	sourceUnavailable: [
+		"来源消息当前不可见。请打开对应会话或原始分支，也可继续查看封存证据。",
+		"The source message is not visible. Open its session or original branch, or inspect sealed evidence.",
+	],
 	evidenceRaw: ["原始证据", "Raw evidence"],
 	sealedFile: ["查看封存文件片段", "View sealed file content"],
 	sealedRun: ["查看封存批次结果", "View sealed run result"],
 	sealedEvidenceHint: [
-		"以下内容来自本报告的封存证据，可能已脱敏；不会重新读取当前文件或执行测试。实时来源跳转尚未接入。",
-		"This report’s sealed evidence may be redacted. Viewing it does not reread current files or run tests. Live source navigation is not yet available.",
+		"以下内容来自本报告的封存证据，可能已脱敏；不会重新读取当前文件或执行测试。消息定位只打开当前会话中仍可见的来源；当前内容可能与封存内容不同。",
+		"This report’s sealed evidence may be redacted. Viewing it does not reread current files or run tests. Message navigation opens a visible source in the current session; its current contents may differ from the sealed evidence.",
 	],
 	characterOffset: ["字符起始位置", "Character offset"],
 	"file-missing": [

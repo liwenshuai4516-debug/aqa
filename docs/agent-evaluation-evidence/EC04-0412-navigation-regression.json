@@ -1,0 +1,300 @@
+{
+	"numTotalTestSuites": 12,
+	"numPassedTestSuites": 12,
+	"numFailedTestSuites": 0,
+	"numPendingTestSuites": 0,
+	"numTotalTests": 22,
+	"numPassedTests": 22,
+	"numFailedTests": 0,
+	"numPendingTests": 0,
+	"numTodoTests": 0,
+	"snapshot": {
+		"added": 0,
+		"failure": false,
+		"filesAdded": 0,
+		"filesRemoved": 0,
+		"filesRemovedList": [],
+		"filesUnmatched": 0,
+		"filesUpdated": 0,
+		"matched": 0,
+		"total": 0,
+		"unchecked": 0,
+		"uncheckedKeysByFile": [],
+		"unmatched": 0,
+		"updated": 0,
+		"didUpdate": false
+	},
+	"startTime": 1792915945347,
+	"success": true,
+	"testResults": [
+		{
+			"assertionResults": [
+				{
+					"ancestorTitles": ["compacted-history", "walkAncestors"],
+					"fullName": "compacted-history walkAncestors 顺着 parentId 从 target 准确回溯到根节点并正序返回",
+					"status": "passed",
+					"title": "顺着 parentId 从 target 准确回溯到根节点并正序返回",
+					"duration": 1.3632089999999835,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["compacted-history", "walkAncestors"],
+					"fullName": "compacted-history walkAncestors 遇到循环引用或断链时安全截断，不陷入死循环",
+					"status": "passed",
+					"title": "遇到循环引用或断链时安全截断，不陷入死循环",
+					"duration": 0.1505420000000015,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["compacted-history", "sliceCompactedEntries"],
+					"fullName": "compacted-history sliceCompactedEntries 首次压缩：准确提取从起点到 firstKeptEntryId 之前的折叠条目",
+					"status": "passed",
+					"title": "首次压缩：准确提取从起点到 firstKeptEntryId 之前的折叠条目",
+					"duration": 0.15799999999998704,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["compacted-history", "sliceCompactedEntries"],
+					"fullName": "compacted-history sliceCompactedEntries 连续多次压缩：准确从前序压缩保留点开始切分，两次压缩内容不重叠",
+					"status": "passed",
+					"title": "连续多次压缩：准确从前序压缩保留点开始切分，两次压缩内容不重叠",
+					"duration": 0.2842500000000143,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["compacted-history", "sliceCompactedEntries"],
+					"fullName": "compacted-history sliceCompactedEntries retain-none 模式：firstKeptEntryId 等于自身 id 时折叠到该节点前全部内容",
+					"status": "passed",
+					"title": "retain-none 模式：firstKeptEntryId 等于自身 id 时折叠到该节点前全部内容",
+					"duration": 0.09666700000002493,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["compacted-history", "serializeCompactedEntries"],
+					"fullName": "compacted-history serializeCompactedEntries 过滤内部 system 消息并正确序列化 user / assistant 消息",
+					"status": "passed",
+					"title": "过滤内部 system 消息并正确序列化 user / assistant 消息",
+					"duration": 0.9284590000000037,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["compacted-history", "getCompactedMessages 综合接口"],
+					"fullName": "compacted-history getCompactedMessages 综合接口 根据前端 compactionMessageId 成功定位并返回历史 UiMessage[]",
+					"status": "passed",
+					"title": "根据前端 compactionMessageId 成功定位并返回历史 UiMessage[]",
+					"duration": 1.3707919999999945,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["compacted-history", "getCompactedMessages 综合接口"],
+					"fullName": "compacted-history getCompactedMessages 综合接口 查询不存在的 compaction 时返回错误",
+					"status": "passed",
+					"title": "查询不存在的 compaction 时返回错误",
+					"duration": 0.22112500000000068,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				}
+			],
+			"startTime": 1792915945538,
+			"endTime": 1792915945543.3708,
+			"status": "passed",
+			"message": "",
+			"name": "/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/unit/compacted-history.test.ts"
+		},
+		{
+			"assertionResults": [
+				{
+					"ancestorTitles": ["pageCall（模型 → 浏览器扩展）"],
+					"fullName": "pageCall（模型 → 浏览器扩展） 宿主 API 版本号跟着能力走（插件靠它判断有没有这个能力）",
+					"status": "passed",
+					"title": "宿主 API 版本号跟着能力走（插件靠它判断有没有这个能力）",
+					"duration": 1.4366249999999354,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["pageCall（模型 → 浏览器扩展）"],
+					"fullName": "pageCall（模型 → 浏览器扩展） 没有桥 → 立刻给一句能照做的错（不等到天荒地老）",
+					"status": "passed",
+					"title": "没有桥 → 立刻给一句能照做的错（不等到天荒地老）",
+					"duration": 99.95625000000007,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["pageCall（模型 → 浏览器扩展）"],
+					"fullName": "pageCall（模型 → 浏览器扩展） 桥在 → op / args / 目标 / 超时原样交过去，结果回传",
+					"status": "passed",
+					"title": "桥在 → op / args / 目标 / 超时原样交过去，结果回传",
+					"duration": 1.0650829999999587,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["pageCall（模型 → 浏览器扩展）"],
+					"fullName": "pageCall（模型 → 浏览器扩展） 省略可选参数时不带空字段（桥那边按 undefined 判断「用哪个页面」）",
+					"status": "passed",
+					"title": "省略可选参数时不带空字段（桥那边按 undefined 判断「用哪个页面」）",
+					"duration": 0.23008299999992232,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["pageCall（模型 → 浏览器扩展）"],
+					"fullName": "pageCall（模型 → 浏览器扩展） 动作没返回值 → {ok:true}（不是 {ok:true, result:undefined} 让上层自己想）",
+					"status": "passed",
+					"title": "动作没返回值 → {ok:true}（不是 {ok:true, result:undefined} 让上层自己想）",
+					"duration": 0.33112499999992906,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["pageCall（模型 → 浏览器扩展）"],
+					"fullName": "pageCall（模型 → 浏览器扩展） 桥抛错（页面没授权 / 动作失败）→ 原因原样回传，不抛给调用方",
+					"status": "passed",
+					"title": "桥抛错（页面没授权 / 动作失败）→ 原因原样回传，不抛给调用方",
+					"duration": 0.1777079999999387,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["pageCall（模型 → 浏览器扩展）"],
+					"fullName": "pageCall（模型 → 浏览器扩展） 空 op → 直接拒（连桥都不去找）",
+					"status": "passed",
+					"title": "空 op → 直接拒（连桥都不去找）",
+					"duration": 0.4722500000000309,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				}
+			],
+			"startTime": 1792915946088,
+			"endTime": 1792915946191.4722,
+			"status": "passed",
+			"message": "",
+			"name": "/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/unit/plugin-host-page-call.test.ts"
+		},
+		{
+			"assertionResults": [
+				{
+					"ancestorTitles": ["parseSessionHash & formatSessionHash (issue #587)"],
+					"fullName": "parseSessionHash & formatSessionHash (issue #587) 解析 #s=<sessionId> 与可选的 &m=<messageId>",
+					"status": "passed",
+					"title": "解析 #s=<sessionId> 与可选的 &m=<messageId>",
+					"duration": 1.2861249999999984,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["parseSessionHash & formatSessionHash (issue #587)"],
+					"fullName": "parseSessionHash & formatSessionHash (issue #587) 格式化会话与消息深链 hash",
+					"status": "passed",
+					"title": "格式化会话与消息深链 hash",
+					"duration": 0.2976670000000041,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["parseSessionHash & formatSessionHash (issue #587)"],
+					"fullName": "parseSessionHash & formatSessionHash (issue #587) buildSessionDeepLink 生成完整链接并自动剥离 ?token= 防止凭据外泄",
+					"status": "passed",
+					"title": "buildSessionDeepLink 生成完整链接并自动剥离 ?token= 防止凭据外泄",
+					"duration": 0.132000000000005,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["extractSessionIdFromPath (issue #587)"],
+					"fullName": "extractSessionIdFromPath (issue #587) 从 pi 转录路径（<timestamp>_<sessionId>.jsonl）与 DSH 路径提取 sessionId",
+					"status": "passed",
+					"title": "从 pi 转录路径（<timestamp>_<sessionId>.jsonl）与 DSH 路径提取 sessionId",
+					"duration": 0.16849999999999454,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["resolveMessageIdForJump (issue #587)"],
+					"fullName": "resolveMessageIdForJump (issue #587) 精确命中消息 id",
+					"status": "passed",
+					"title": "精确命中消息 id",
+					"duration": 0.16133399999999654,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["resolveMessageIdForJump (issue #587)"],
+					"fullName": "resolveMessageIdForJump (issue #587) 会话从磁盘重载后 seq 变化时按 <role>-<timestamp>- 前缀回退匹配",
+					"status": "passed",
+					"title": "会话从磁盘重载后 seq 变化时按 <role>-<timestamp>- 前缀回退匹配",
+					"duration": 0.08441700000000196,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["resolveMessageIdForJump (issue #587)"],
+					"fullName": "resolveMessageIdForJump (issue #587) 消息不存在（如分支后已不在当前链上）时返回 null（保持在会话末尾）",
+					"status": "passed",
+					"title": "消息不存在（如分支后已不在当前链上）时返回 null（保持在会话末尾）",
+					"duration": 0.15699999999999648,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				}
+			],
+			"startTime": 1792915945485,
+			"endTime": 1792915945487.1614,
+			"status": "passed",
+			"message": "",
+			"name": "/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/unit/session-url.test.ts"
+		}
+	]
+}

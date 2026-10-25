@@ -39,6 +39,29 @@ await writeFile(
 				timestamp: 1792800001000,
 			},
 		},
+		{
+			type: "message",
+			id: "a1",
+			parentId: "u1",
+			timestamp: "2026-10-24T00:00:02Z",
+			message: {
+				role: "assistant",
+				timestamp: 1792800002000,
+				content: [{ type: "text", text: "Offline source navigation fixture; no model was called." }],
+				stopReason: "stop",
+				model: "offline-fixture",
+				provider: "fixture",
+				api: "offline",
+				usage: {
+					input: 0,
+					output: 0,
+					cacheRead: 0,
+					cacheWrite: 0,
+					totalTokens: 0,
+					cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0 },
+				},
+			},
+		},
 	]
 		.map(JSON.stringify)
 		.join("\n") + "\n",
@@ -134,12 +157,12 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.11" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.12" && p.active),
 			),
 		),
 	);
 	result.checks.push(
-		"Real app loads plugin 0.4.11 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Real app loads plugin 0.4.12 in explicitly registered app directories; seeded SDK history opened without a model prompt",
 	);
 	stage("settings and slash discovery");
 	const settings = async (tab) => {
@@ -214,7 +237,7 @@ try {
 							f.plugins.some(
 								(p) =>
 									p.id === "agent-evaluation" &&
-									p.version === "0.4.11" &&
+									p.version === "0.4.12" &&
 									p.agentTools?.some((tool) => tool.name === "agent_evaluation"),
 							),
 					),
@@ -231,7 +254,7 @@ try {
 	await candidate.waitFor();
 	await input.fill("");
 	result.checks.push(
-		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.11; skill, slash discovery and tool registration remain enabled",
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.12; skill, slash discovery and tool registration remain enabled",
 	);
 	stage("product diagnosis flow");
 	const openView = async () => {
@@ -763,7 +786,7 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.11" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.12" && p.active),
 			),
 		),
 	);
@@ -782,7 +805,7 @@ try {
 	assert.equal(await skill().getByRole("switch").getAttribute("aria-checked"), "true");
 	await closeSettings();
 	result.checks.push(
-		"Graceful real Electron exit and a second native process load plugin 0.4.11 and preserve enabled skill/plugin registration",
+		"Graceful real Electron exit and a second native process load plugin 0.4.12 and preserve enabled skill/plugin registration",
 	);
 	result.checks.push(
 		"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",
@@ -842,6 +865,28 @@ try {
 	);
 
 	await page.screenshot({ path: join(output, "history-reopened.png") });
+	stage("reveal the SDK source message in the actual desktop");
+	const sourceFinding = page.locator(".aev article").filter({ has: page.locator("h3", { hasText: "F08" }) });
+	await sourceFinding.locator('[data-action="evidence"]').first().click();
+	await page.locator('.aev [data-action="evidence-source"]:not([disabled])').waitFor();
+	const rejected = await page.evaluate(() =>
+		window.__piWebUiHost.sessions.revealMessage({
+			conversationId: "foreign",
+			sessionId: "evaluation-desktop",
+			messageId: "missing",
+		}),
+	);
+	assert.equal(rejected.ok, false);
+	await page.locator('.aev [data-action="evidence-source"]').click();
+	await page.locator(".msg-flash").filter({ hasText: "Offline source navigation fixture" }).waitFor();
+	await page.screenshot({ path: join(output, "source-message.png") });
+	assert.equal(await readFile(originalFile, "utf8"), originalBytes);
+	assert.deepEqual(await names("attempts"), historyAttempts);
+	assert.deepEqual(await names("snapshots"), historySnapshots);
+	assert.deepEqual(await names("evaluations"), historyReports);
+	result.checks.push(
+		"Actual desktop resolves a sealed SDK evidence entry to the exact visible source message after restart, highlights it, refuses a foreign target and creates no report/attempt/snapshot",
+	);
 	stage("development URL cannot acquire the native identity");
 	await writeFile(join(output, "app-restarted-process.log"), app.getLogs());
 	await app.close();

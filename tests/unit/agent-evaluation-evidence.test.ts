@@ -592,3 +592,29 @@ await new EvidenceCollector(store,{readEvaluationEvidence:()=>(${JSON.stringify(
 		);
 	});
 });
+
+describe("source message navigation", () => {
+	it("requires exact session and event, returns no evidence bodies and refuses unavailable targets", () => {
+		const f = sourceFixture();
+		f.source.locateMessage = vi.fn((id) => (id === "u1" ? "u-1-1" : undefined));
+		const query: AgentEvaluationEvidenceQuery = {
+			conversationId: "conv1",
+			sessionId: "session1",
+			mode: "locate",
+			locateEventId: "u1",
+		};
+		const result = readEvaluationEvidence(f.source, query);
+		expect(result.messageId).toBe("u-1-1");
+		expect(result.items).toEqual([]);
+		expect(result.choices).toEqual([]);
+		for (const invalid of [
+			{ ...query, sessionId: "other" },
+			{ ...query, locateEventId: "../private" },
+			{ ...query, sessionId: undefined },
+		])
+			expect(() => readEvaluationEvidence(f.source, invalid)).toThrow(/Exact source/);
+		expect(() => readEvaluationEvidence(f.source, { ...query, locateEventId: "hidden" })).toThrow(
+			/not uniquely visible/,
+		);
+	});
+});

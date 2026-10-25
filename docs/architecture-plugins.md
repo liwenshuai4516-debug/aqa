@@ -104,6 +104,8 @@
 
 `readEvaluationEvidence(clientId, query)` / `readEvaluationNative(clientId, query)` 使用 `tools` 权限门控；clientId 必须取自可信 onMessage/from 或已绑定工具上下文，不能采用请求体 owner。Pi 侧只解析该客户端拥有的选中会话，不使用 getActiveConversation 的全局回退；其他引擎明确返回 CAPABILITY_UNAVAILABLE。类型在 server/protocol.ts，SDK 0.1.4 mock 默认拒绝未配置来源。
 
+`mode:"locate"` 必须给出精确 sessionId/locateEventId，仍按可信client和所选conversation授权；使用同一消息序列化映射，将SDK事件解析为唯一的当前可见messageId。已压缩不可见、不同分支、重复或超预算目标返回EVIDENCE_GAP，不猜时间戳/序号、不切会话、不返回新增正文，也不修改报告或启动任务。
+
 消息正文按 SDK entry ID 固定边界与预算投影，原生产物复用 TestAssetReader 并由宿主会话绑定 workspace；均没有 runner 或业务写能力。实际评估插件 UI/工具入口待 EC04，不能将这些工程接口视为已安装产品。覆盖与限制见 [EC02](agent-evaluation-evidence/EC02.md)。
 
 ### 宿主设施（plugin-facilities.ts）
@@ -803,6 +805,15 @@ const res = await host.openSession({ roots: ["/repo/a", "/repo/b"], prompt: "先
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `list()`   | `{ id, title, cwd, kind, isStreaming? }` 数组：**本客户端运行中的对话**（`kind:"running"`，id = conversationId，cwd 各自带）＋ **当前项目的历史会话**（`kind:"history"`，id = session 文件路径，cwd = 当前 cwd —— 服务端的历史会话列表就是按 cwd 扫的）       |
 | `open(id)` | 跨项目先切 cwd（同一套目录授权；不切就找不到目标文件）→ `running` 用 `switch_conversation`、`history` 用 `switch_session` → 等 activeId 变化；返回 `{ ok: true, sessionId }` 或 `{ ok: false, error }`（未连接 / 找不到 id / 切换超时都走这条回执，不抛异常） |
+
+**当前消息定位**（宿主动作桥v15，`host.sessions.revealMessage`）：
+
+```js
+const result = host.sessions.revealMessage({ conversationId, sessionId, messageId });
+// { ok: true } = 接受并切到聊天视图定位；否则 { ok: false, error }
+```
+
+目标必须同时匹配当前连接的conversationId/sessionId，messageId必须在当前快照中恰好出现一次。无连接、旧会话、不可见/重复消息及旧宿主均明确拒绝；不加载或切换会话，不发送prompt，也不读取文件。成功后复用原MessageList的展开/滚动/高亮机制。评估插件先用授权的`locateEvidence`解析封存证据对应的当前来源，再调用此桥；当前来源内容与封存内容可能不同，页面有提示。`ok`表示已受理，不能替代实际滚动与高亮验收；真实Electron已验固定SDK消息，复杂压缩/子任务产品矩阵仍待补。SDK的桥接类型保留精简约定，完整签名以`web/src/plugin-host.ts`为准，旧宿主须检查方法是否存在。
 
 ## 注册面目录（机器可读，P2-7）
 

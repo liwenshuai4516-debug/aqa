@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { UiMessage } from "../../server/protocol.js";
-import { stripTransientRetryErrors, serializeMessage } from "../../server/serialize.js";
+import { stripTransientRetryErrors, serializeMessage, renderedMessageForEntry } from "../../server/serialize.js";
 
 function assistantError(id: string): UiMessage {
 	return { id, role: "assistant", content: [], stopReason: "error", errorMessage: "500 overloaded" };
@@ -256,5 +256,37 @@ describe("assistant model timing", () => {
 		expect(serializeMessage(message, 0)?.durationMs).toBe(
 			typeof durationMs === "number" && Number.isFinite(durationMs) && durationMs >= 0 ? durationMs : undefined,
 		);
+	});
+});
+
+describe("renderedMessageForEntry", () => {
+	it("uses real message ids for same-timestamp messages and tool results without guessing", () => {
+		const a: any = { role: "user", timestamp: 10, content: "first" };
+		const b: any = { role: "user", timestamp: 10, content: "second" };
+		const assistant: any = {
+			role: "assistant",
+			timestamp: 11,
+			content: [{ type: "text", text: "result" }],
+			stopReason: "stop",
+		};
+		const tool: any = { role: "toolResult", timestamp: 12, toolCallId: "call-1", toolName: "read", content: [] };
+		const entries = [a, b, assistant, tool].map((message, index) => ({
+			id: `entry-${index}`,
+			type: "message",
+			message,
+		}));
+		const messages = [
+			serializeMessage(a, 1)!,
+			serializeMessage(b, 2)!,
+			serializeMessage(assistant, 17)!,
+			serializeMessage(tool, 18)!,
+		];
+		const seq = (m: any) => (m === assistant ? 17 : 18);
+		expect(entries.map((e) => renderedMessageForEntry(entries, e.id, messages, seq))).toEqual(
+			messages.map((m) => m.id),
+		);
+		expect(renderedMessageForEntry(entries, "entry-1", [messages[0]], seq)).toBeUndefined();
+		expect(renderedMessageForEntry(entries, "entry-2", [messages[2], messages[2]], seq)).toBeUndefined();
+		expect(renderedMessageForEntry(entries, "missing", messages, seq)).toBeUndefined();
 	});
 });

@@ -333,6 +333,7 @@ import { fetchRemoteMcpMarket, fetchRemoteSkillMarket, fetchRemoteSkillContent }
 import type { McpBridge } from "../mcp/mcp-bridge.js";
 import {
 	serializeMessage,
+	renderedMessageForEntry,
 	serializeStreamingMessage,
 	stripTransientRetryErrors,
 	type AgentMessage,
@@ -4037,6 +4038,13 @@ export class ClientSession {
 				isStreaming: target.session.isStreaming,
 				leafId: manager.getLeafId(),
 				getEntry: (id) => manager.getEntry(id),
+				locateMessage: (id) =>
+					renderedMessageForEntry(
+						manager.buildContextEntries() as never,
+						id,
+						this.messagesOf(target),
+						(m) => this.uiMessageKey(target, m).n,
+					),
 				children: [...this.convs.values()]
 					.filter((c) => descendants.has(c.id))
 					.map((c) => ({

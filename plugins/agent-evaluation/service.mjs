@@ -9,7 +9,7 @@ import { validateConfigSchema } from "./registry.mjs";
 import { Ref, digest, requireValue } from "./schema.mjs";
 const ref = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
 const string = T.String({ minLength: 1, maxLength: 16384 });
-export const queryActions = ["describe", "list", "get", "readEvidence", "export", "status"];
+export const queryActions = ["describe", "list", "get", "readEvidence", "locateEvidence", "export", "status"];
 export const toolActions = [
 	...queryActions,
 	"createContract",
@@ -340,6 +340,31 @@ export class EvaluationService {
 			}
 			case "get":
 				return publicRecord(store.get(context, request.ref), request.offset, request.limit);
+			case "locateEvidence": {
+				const record = store.get(context, request.ref),
+					data = record.data;
+				requireValue(
+					record.kind === "evidence" &&
+						data.kind === "message" &&
+						data.producer === "pi-evidence-v1" &&
+						data.sourceId === `pi:${source.sessionId}` &&
+						typeof data.sourceEventId === "string",
+					"EVIDENCE_GAP",
+					"Open the evidence’s source session or inspect its sealed content; this source cannot be located here",
+				);
+				const target = this.host.readEvaluationEvidence(context.clientId, {
+					mode: "locate",
+					conversationId,
+					sessionId: source.sessionId,
+					locateEventId: data.sourceEventId,
+				});
+				requireValue(
+					target.messageId && target.sessionId === source.sessionId && target.conversationId === conversationId,
+					"EVIDENCE_GAP",
+					"Source message is not available in the selected conversation",
+				);
+				return { conversationId, sessionId: target.sessionId, messageId: target.messageId };
+			}
 			case "readEvidence": {
 				const view = request.evidenceView ?? "raw";
 				if (view === "raw")

@@ -659,6 +659,12 @@ export function App() {
 					];
 				},
 				getConversationId: () => chatRefForPlugins.current.state?.conversationId ?? null,
+				getSessionId: () => chatRefForPlugins.current.state?.sessionId ?? null,
+				getMessageIds: () => chatRefForPlugins.current.state?.messages.map((m) => m.id) ?? [],
+				revealMessage: (target) => {
+					setUrlJump({ sessionId: target.sessionId, messageId: target.messageId });
+					setViewRefForPlugins.current("chat");
+				},
 				isConversationBlank: () => (chatRefForPlugins.current.state?.messages.length ?? 0) === 0,
 				// issue #188：浏览器插件的模型目录 + 当前模型（startChat/openSession 的 model 选项用）。
 				listModels: () =>

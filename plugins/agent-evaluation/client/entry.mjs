@@ -99,7 +99,7 @@ export default {
 				)
 				.join(
 					"",
-				)}<div class="actions">${findingsOffset ? button("findings-first", "first") : ""}${report.pages.findings?.nextOffset != null ? button("findings-next", "next") : ""}</div></section>${evidence ? `<section tabindex="-1" data-evidence-panel><h2>${esc(t("evidence"))}</h2><p>${esc(evidence.record.data.sourceLocator)}</p><p>${esc(evidence.record.id)} · ${esc(evidence.record.data.sourceEventId)} · ${esc(evidence.record.data.origin)} · ${esc(evidence.record.data.availability)}</p><p class="muted">${esc(t("sealedEvidenceHint"))}</p><div class="actions">${button("evidence-raw", "evidenceRaw")}${evidence.record.data.kind === "artifact-snapshot" && evidence.record.data.producer === "artifact-reader-v1" ? button("evidence-artifact", "sealedFile") : ""}${evidence.record.data.kind === "native-test-run" && evidence.record.data.producer === "native-reader-v1" ? button("evidence-native", "sealedRun") : ""}</div><h3>${esc(t(evidence.view === "artifact-text" ? "sealedFile" : evidence.view === "native-run" ? "sealedRun" : "evidenceRaw"))}</h3>${evidence.unavailable ? `<p role="status">${esc(t(evidence.unavailable))}</p>` : `<pre>${esc(evidence.text)}</pre>`}<p>${esc(t("characterOffset"))}: ${evidence.offset}</p><div class="actions">${evidence.offset ? button("evidence-first", "first") : ""}${evidence.nextOffset != null ? button("evidence-next", "next") : ""}</div></section>` : ""}<section><h2>${esc(t("config"))}</h2><p>${esc(t("costHint"))}</p><p>${esc(t("version"))}: ${esc(d.profileVersion)}</p><details><summary>${esc(t("raw"))}</summary><pre>${esc(JSON.stringify({ configuration: d.configuration, job: d.job, evaluatorVersions: d.evaluatorVersions }, null, 2))}</pre></details><h3>${esc(t("gaps"))}</h3><pre>${esc(snapshot.data.gaps.join("\n"))}</pre></section>`;
+				)}<div class="actions">${findingsOffset ? button("findings-first", "first") : ""}${report.pages.findings?.nextOffset != null ? button("findings-next", "next") : ""}</div></section>${evidence ? `<section tabindex="-1" data-evidence-panel><h2>${esc(t("evidence"))}</h2><p>${esc(evidence.record.data.sourceLocator)}</p><p>${esc(evidence.record.id)} · ${esc(evidence.record.data.sourceEventId)} · ${esc(evidence.record.data.origin)} · ${esc(evidence.record.data.availability)}</p><p class="muted">${esc(t("sealedEvidenceHint"))}</p><div class="actions">${button("evidence-raw", "evidenceRaw")}${evidence.record.data.kind === "message" && evidence.record.data.producer === "pi-evidence-v1" ? button("evidence-source", "revealSource") : ""}${evidence.record.data.kind === "artifact-snapshot" && evidence.record.data.producer === "artifact-reader-v1" ? button("evidence-artifact", "sealedFile") : ""}${evidence.record.data.kind === "native-test-run" && evidence.record.data.producer === "native-reader-v1" ? button("evidence-native", "sealedRun") : ""}</div><h3>${esc(t(evidence.view === "artifact-text" ? "sealedFile" : evidence.view === "native-run" ? "sealedRun" : "evidenceRaw"))}</h3>${evidence.unavailable ? `<p role="status">${esc(t(evidence.unavailable))}</p>` : `<pre>${esc(evidence.text)}</pre>`}<p>${esc(t("characterOffset"))}: ${evidence.offset}</p><div class="actions">${evidence.offset ? button("evidence-first", "first") : ""}${evidence.nextOffset != null ? button("evidence-next", "next") : ""}</div></section>` : ""}<section><h2>${esc(t("config"))}</h2><p>${esc(t("costHint"))}</p><p>${esc(t("version"))}: ${esc(d.profileVersion)}</p><details><summary>${esc(t("raw"))}</summary><pre>${esc(JSON.stringify({ configuration: d.configuration, job: d.job, evaluatorVersions: d.evaluatorVersions }, null, 2))}</pre></details><h3>${esc(t("gaps"))}</h3><pre>${esc(snapshot.data.gaps.join("\n"))}</pre></section>`;
 		}
 		function bindingRules() {
 			return (source?.rules ?? []).filter((rule) => conditionRuleIds.includes(rule.id));
@@ -380,6 +380,13 @@ export default {
 					await readEvidence(
 						report.data.findings[Number(target.dataset.finding)].evidenceRefs[Number(target.dataset.evidence)],
 					);
+				if (action === "evidence-source") {
+					const target = await rpc.request("locateEvidence", { ref: ref(evidence.record) });
+					const host = window.__piWebUiHost;
+					if (!host?.sessions?.revealMessage) throw new Error(t("sourceHostUnavailable"));
+					const result = host.sessions.revealMessage(target);
+					if (!result.ok) throw new Error(result.error ?? t("sourceUnavailable"));
+				}
 				if (["evidence-raw", "evidence-artifact", "evidence-native"].includes(action))
 					await readEvidence(
 						ref(evidence.record),
@@ -413,7 +420,8 @@ export default {
 					notice = t("exportDone");
 				}
 			}).then(() => {
-				if (action.startsWith("evidence") && !closed) root.querySelector("[data-evidence-panel]")?.focus();
+				if (action.startsWith("evidence") && action !== "evidence-source" && !closed)
+					root.querySelector("[data-evidence-panel]")?.focus();
 				if (action === "revise" && !closed) root.querySelector("form[data-form=revision] textarea")?.focus();
 			});
 		});
