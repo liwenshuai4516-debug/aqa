@@ -1,0 +1,579 @@
+{
+	"date": "2026-10-25",
+	"status": "EXTERNAL_PLAYWRIGHT_APIS_MEASURED_COMPLETE_BASELINE_PENDING",
+	"plan_complete": false,
+	"model_calls": 0,
+	"fee_ledger_unchanged": true,
+	"plan": {
+		"created_at": "2026-10-25T10:19:50.139Z",
+		"scope": "Original six-case U05 v4 approved asset, scope, roles and exact origins; no scope changes",
+		"asset_ref": {
+			"path": "qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/manifest.json",
+			"sha256": "4035c2e18a883293b9846177cb861583918e180a85f5ad9c495c48747877563a"
+		},
+		"review_ref": {
+			"path": "qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/reviews/design-f3a95499-4812-447b-a329-078b235c1dc4/manifest.json",
+			"sha256": "6ef5ed7aa8a013a291e3661e92a673569b862deb1f7f0d9a0d51e86159f50d16"
+		},
+		"report_ref": {
+			"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/manifest.json",
+			"sha256": "1dc7083769cf19e07a5df07ed586b54667f3ceb2e739783411ee28bd026c4d6b"
+		},
+		"original_run_ref": {
+			"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/manifest.json",
+			"sha256": "1ce89c8b4ddfc293ed4778f4567827e35b8c2d803f6e7227018d62272568eb28"
+		},
+		"native_version": "0.1.7",
+		"harness_sha256": "0860ed0e485954072aaade07ecad9b6040e7cb91d27c654f6cade6f2f0eb1ed4",
+		"child_observer": {
+			"sha256": "fadd46e3df77457ca942481c93ef138125dcdaa2da882856d7d48f28eac5f8f4",
+			"scope": "NODE_OPTIONS preload limited to runner invocation and inherited Node workers; aggregate counters, no private data"
+		},
+		"measurement": "One current-version regression to native run terminal; one first and five repeated view/status and report reconciliation samples. Host FS counts are separate from optional inherited Node preload records; each process observes only its direct children. Setup-warmed, not cold OS/Electron startup. Observer overhead included.",
+		"acceptance": "Trusted approval/current diagnostic gate; formal six cases and thirteen reached assertions unchanged; same request readback causes no child launches; read-only samples do not start children or change original task/run/report; no paid review calls.",
+		"missing": [
+			"Fresh first-generation full baseline",
+			"Old failed-batch complete analysis/rerun baseline",
+			"Browser-internal navigation/trace snapshot and OS-level I/O counters (not observed)",
+			"Before/after paired full-workflow comparison",
+			"Electron business end-to-end"
+		]
+	},
+	"formal_run_ref": {
+		"path": "qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/manifest.json",
+		"sha256": "e51b9c861e2fd8e23272ebee5f6ac4b1aea98acdc8f5ca6597f4664faaa2875d"
+	},
+	"counts": {
+		"passed": 6,
+		"failed": 0,
+		"blocked": 0,
+		"skipped": 0,
+		"cancelled": 0,
+		"not-run": 0,
+		"flaky": 0,
+		"unknown": 0
+	},
+	"assertions_reached": 13,
+	"host_api": {
+		"version": "1.62.1",
+		"calls": {
+			"BrowserType.launch": {
+				"started": 1,
+				"completed": 1,
+				"failed": 0
+			},
+			"Browser.newContext": {
+				"started": 1,
+				"completed": 1,
+				"failed": 0
+			},
+			"BrowserContext.newPage": {
+				"started": 1,
+				"completed": 1,
+				"failed": 0
+			},
+			"Frame.goto": {
+				"started": 1,
+				"completed": 1,
+				"failed": 0
+			},
+			"Frame.expect": {
+				"started": 2,
+				"completed": 2,
+				"failed": 0
+			},
+			"Browser.close": {
+				"started": 1,
+				"completed": 1,
+				"failed": 0
+			}
+		}
+	},
+	"nested_api": {
+		"version": "1.62.1",
+		"calls": {
+			"BrowserType.launch": {
+				"started": 1,
+				"completed": 1,
+				"failed": 0
+			},
+			"Browser.newContext": {
+				"started": 7,
+				"completed": 7,
+				"failed": 0
+			},
+			"BrowserContext.newPage": {
+				"started": 7,
+				"completed": 7,
+				"failed": 0
+			},
+			"Frame.goto": {
+				"started": 7,
+				"completed": 7,
+				"failed": 0
+			},
+			"Frame.expect": {
+				"started": 52,
+				"completed": 52,
+				"failed": 0
+			},
+			"Frame.fill": {
+				"started": 9,
+				"completed": 9,
+				"failed": 0
+			},
+			"Frame.click": {
+				"started": 19,
+				"completed": 19,
+				"failed": 0
+			},
+			"BrowserContext.close": {
+				"started": 7,
+				"completed": 7,
+				"failed": 0
+			},
+			"Page.reload": {
+				"started": 3,
+				"completed": 3,
+				"failed": 0
+			},
+			"Page.addInitScript": {
+				"started": 1,
+				"completed": 1,
+				"failed": 0
+			},
+			"Frame.evaluateExpression": {
+				"started": 1,
+				"completed": 1,
+				"failed": 0
+			},
+			"Browser.close": {
+				"started": 1,
+				"completed": 1,
+				"failed": 0
+			}
+		}
+	},
+	"explicit_snapshot_api_calls": 0,
+	"navigation_api_calls": 11,
+	"browser_starts": {
+		"host_preflight": 1,
+		"nested_worker": 1
+	},
+	"node_processes": [
+		{
+			"pid": 34472,
+			"parent_pid": 34275,
+			"fs_promises": {
+				"readFile": 1,
+				"writeFile": 2
+			},
+			"children": [
+				{
+					"kind": "node",
+					"started": true,
+					"pid": 34473,
+					"exit_code": 0,
+					"signal": null
+				}
+			],
+			"playwright_api": {
+				"version": "1.62.1",
+				"calls": {}
+			},
+			"exit_code": 0,
+			"elapsed_ms": 4777.778708999999,
+			"coverage": "This Node process async fs/promises calls and direct child spawn events only. Playwright 1.62.1 external channel API starts/completions/failures counted without parameters. Not OS I/O, browser-internal navigations, trace-internal snapshots or process-tree CPU time."
+		},
+		{
+			"pid": 34473,
+			"parent_pid": 34472,
+			"fs_promises": {
+				"readFile": 1,
+				"writeFile": 82
+			},
+			"children": [
+				{
+					"kind": "browser",
+					"started": true,
+					"pid": 34474,
+					"exit_code": 0,
+					"signal": null
+				}
+			],
+			"playwright_api": {
+				"version": "1.62.1",
+				"calls": {
+					"BrowserType.launch": {
+						"started": 1,
+						"completed": 1,
+						"failed": 0
+					},
+					"Browser.newContext": {
+						"started": 7,
+						"completed": 7,
+						"failed": 0
+					},
+					"BrowserContext.newPage": {
+						"started": 7,
+						"completed": 7,
+						"failed": 0
+					},
+					"Frame.goto": {
+						"started": 7,
+						"completed": 7,
+						"failed": 0
+					},
+					"Frame.expect": {
+						"started": 52,
+						"completed": 52,
+						"failed": 0
+					},
+					"Frame.fill": {
+						"started": 9,
+						"completed": 9,
+						"failed": 0
+					},
+					"Frame.click": {
+						"started": 19,
+						"completed": 19,
+						"failed": 0
+					},
+					"BrowserContext.close": {
+						"started": 7,
+						"completed": 7,
+						"failed": 0
+					},
+					"Page.reload": {
+						"started": 3,
+						"completed": 3,
+						"failed": 0
+					},
+					"Page.addInitScript": {
+						"started": 1,
+						"completed": 1,
+						"failed": 0
+					},
+					"Frame.evaluateExpression": {
+						"started": 1,
+						"completed": 1,
+						"failed": 0
+					},
+					"Browser.close": {
+						"started": 1,
+						"completed": 1,
+						"failed": 0
+					}
+				}
+			},
+			"exit_code": 0,
+			"elapsed_ms": 4198.119041999999,
+			"coverage": "This Node process async fs/promises calls and direct child spawn events only. Playwright 1.62.1 external channel API starts/completions/failures counted without parameters. Not OS I/O, browser-internal navigations, trace-internal snapshots or process-tree CPU time."
+		}
+	],
+	"calibration": [
+		"Two inherited Node processes emitted separate records",
+		"Nested worker exactly one known readFile counted",
+		"One actual Chromium launch observed; started event and PID recorded",
+		"One goto, reload and ariaSnapshot counted from actual API events; caught click failure remains failed",
+		"Every started external API completed; no call parameters or page content stored"
+	],
+	"prior_archives_verified": {
+		"optimization-u05-approved-run": {
+			"path": "docs/ui-testing-evidence/optimization-u05-approved-run.tar.gz",
+			"sha256": "d37b968889023896b42fffd0c0a939c559af50b0c81d09edf23384f8849e3e9d",
+			"bytes": 1187726,
+			"files": 224,
+			"roundtrip_verified": true
+		},
+		"optimization-u00-approved-baseline": {
+			"path": "docs/ui-testing-evidence/optimization-u00-approved-baseline.tar.gz",
+			"sha256": "252ef782c6cc9189dfd3423b03d6f71e7b5ef77c8f363107df9a811281c3510b",
+			"bytes": 52434,
+			"files": 34,
+			"roundtrip_verified": true
+		},
+		"optimization-u00-child-observer": {
+			"path": "docs/ui-testing-evidence/optimization-u00-child-observer.tar.gz",
+			"sha256": "12fc70de3527b684fab3921608838d051aff7567951baaeb376c733d190bc74d",
+			"bytes": 88366,
+			"files": 75,
+			"roundtrip_verified": true
+		}
+	},
+	"public_refs_verified": {
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/manifest.json": "1ce89c8b4ddfc293ed4778f4567827e35b8c2d803f6e7227018d62272568eb28",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/manifest.json": "1dc7083769cf19e07a5df07ed586b54667f3ceb2e739783411ee28bd026c4d6b",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/reviews/result-3887c58d-2958-41b1-bdff-e533c6bdb095/manifest.json": "8b76c45c06fb8b79a0060e87f181e73687f93f6aada9597ae10136ef101e4571",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/delivery/8b76c45c06fb8b79a0060e87f181e73687f93f6aada9597ae10136ef101e4571.md": "e2f575c267224517753c779b566fecf4c840acaabe9f74c1574a2a3605411aff",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/manifest.json": "e51b9c861e2fd8e23272ebee5f6ac4b1aea98acdc8f5ca6597f4664faaa2875d",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/results/u00-approved-1792923593641/manifest.json": "b3a593ff75819cdb925059c3063d76e91dd6940d4451059f1540308057167586",
+		"qa/ui/tasks/u00-approved-1792923593641/manifest.json": "a80a7e71179ee6736ef2efb48e9ba8b472ffaf21013e461611134a3d8d557a23",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/input.json": "15a31439102258fb3856de84e9e3382de0f9302ee73d8476537c92778c63d5cb",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/playwright.config.mjs": "01aed0a76455ce7439cdaedc92fd2dc1a5d424a257059f5f1b07af463705f303",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/preflight.json": "a237968a8141df1af27d54055be3a9ee49a3f0e1b394b193cd6072e20bccea37",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/launch-intent.json": "092e84f767f9a51220e57ada276771dbf28a64e31cadaeaf151ae68cc031570b",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/process-started.json": "ea204b95e0d732690a07d70298787e0ace3ad414b7cc197ed3d2d5316c629f34",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/process.json": "12e4232de20e1045dd349890b8e7800623c0e3d515e3d3ce0a25b43246479cd6",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/report.json": "4c7de267088df5dfaa93638974fb62c46023ef37fc5b1e4c5f3a875fa5d0fa4c",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/attempts/ac21ad3195123f2a08612e78c2cacce919bec9ffeee66d4a7c98532bca9c9637.json": "d501e69999cc538dd92503d2d597e6f025aeed6576da40c03c83240bc365a50e",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/attempts/c0b386907acd7d17cb3308f5997268310e76a3ca04563c8aa015af7e6c3efcba.json": "d94aa966b7859af49ad607b23735651ea4281265ab5bc2605f3d859f602cdc1e",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/attempts/b4be011a604c2d6bdaf024a133c696c218bed4de6a6d6b67f54ebb69d5e773ec.json": "cce1cdfa857c6a5ca8fdc05a0ca9062ba73036aacba2a13f1224f4a2ec7a5de3",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/attempts/43cd07d75fa16423850403da4e5e14d46a5c9ea3a6df93b94c8a440a7bbb5fb9.json": "ad67a59f902ca9cc9d26fc973ebc8ae1796761cb063a0c98d2481a77650191cf",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/attempts/4e2e2b57a32cecc3b6caf935617e8dda42a2d5d46f0a744889c314f925c8ea29.json": "ca836dcb4c89d9e935f843ad051ff7c3cbab1ce6e24a7f2473c778725775a1af",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/attempts/c9d971a5648e64cff0b16d13b9cd9c9e3e407e9f745b690a62f806ed3bb9715c.json": "32f43760e7207f7154559a99045022f60065907156dd838b9a0216c841503027",
+		"qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/execution-summary.json": "2c95048250ec42014b06706b94493bfee28868c8ed18f0230944969ca476271f"
+	},
+	"limits": [
+		"Version-pinned private Playwright Test listener, not a public supported API",
+		"External channel API calls only; no browser auto-redirect/subframe/internal trace snapshots claim",
+		"No parameters, URLs, titles, errors, stack traces or page contents in API counters",
+		"Preloading observer/Playwright changes startup and I/O overhead; no speed claim",
+		"52 Frame.expect calls are not 52 business assertions; frozen business assertion IDs remain 13",
+		"Fresh first-generation and old-failed-batch full baselines, full paired comparison and real desktop/business acceptance remain pending",
+		"Benchmark task retains analyze blocker; no new independently approved report delivery"
+	],
+	"validation": {
+		"typecheck": "passed",
+		"vitest": "51 passed in 3 files",
+		"lint": "passed",
+		"protocol": "structure passed; no-tag history skip",
+		"desktop": "not rerun; test-observer-only change",
+		"size": "passed",
+		"clean": "preview only; no deletion"
+	},
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-u00-api-observer.tar.gz",
+		"sha256": "a7b5dcceb85c790e3bf8d0c37138e990c2d2fcbbaee93edd3688b651eb1fb702",
+		"bytes": 69897,
+		"files": 45,
+		"roundtrip_verified": true
+	},
+	"files": [
+		{
+			"path": "docs/ui-testing-evidence/optimization-u00-approved-baseline.json",
+			"sha256": "0fa0f50a29c8e6bf6df3502f2d5e50b292d260c3118e52de6750f573c6556e7b",
+			"bytes": 18644
+		},
+		{
+			"path": "docs/ui-testing-evidence/optimization-u00-child-observer.json",
+			"sha256": "a7d415f2e20cd1356e2aec72115f648ca7b2ff16590ed57d638c0b428f7ef86d",
+			"bytes": 33708
+		},
+		{
+			"path": "docs/ui-testing-evidence/optimization-u05-approved-run.json",
+			"sha256": "3de9588aede85ec3047fb9b19a708d6b3d1c85eb6e907d5d8b904fa3b2dfa1cd",
+			"bytes": 108830
+		},
+		{
+			"path": "tests/lib/ui-baseline-child-observer.mjs",
+			"sha256": "fadd46e3df77457ca942481c93ef138125dcdaa2da882856d7d48f28eac5f8f4",
+			"bytes": 3383
+		},
+		{
+			"path": "tests/scratch/ui-api-observer-calibration/1792923551208/34182.json",
+			"sha256": "cf6afb6e319575c1c8d6d86ef569edff6daae83e0b566460683167531bb2b158",
+			"bytes": 978
+		},
+		{
+			"path": "tests/scratch/ui-api-observer-calibration/1792923551208/34183.json",
+			"sha256": "83c7bdce8d2bea3aef868aadef2e4daaafec32a6e15fa894f441a3620ea6da45",
+			"bytes": 441
+		},
+		{
+			"path": "tests/scratch/ui-api-observer-calibration/1792923551208/owned.txt",
+			"sha256": "17106283e8a43fa7ac51f3b049c7c7209eb39c2cab1e2987d83766b0addc8eca",
+			"bytes": 22
+		},
+		{
+			"path": "tests/scratch/ui-api-observer-calibration/1792923551208/result.json",
+			"sha256": "23527e7d3eea50f1d5c32377d2031b92ab3fb5b8d47cb67107ad80ad4dd1992b",
+			"bytes": 2842
+		},
+		{
+			"path": "tests/scratch/ui-approved-baseline/1792923589674/children/34472.json",
+			"sha256": "66b8da84bb5aa23d669fe3db8c46107bf57ee323b4251ca9125c668bde62782c",
+			"bytes": 532
+		},
+		{
+			"path": "tests/scratch/ui-approved-baseline/1792923589674/children/34473.json",
+			"sha256": "63faabd3b2490fce796e4cc415b484118a2ae0300e32e18d646ee88e7ba4be84",
+			"bytes": 1230
+		},
+		{
+			"path": "tests/scratch/ui-approved-baseline/1792923589674/plan.json",
+			"sha256": "51854fc5ac71b16eb947f89fd74d42e31fabdb9e39aedca15273d8dc8b6e7635",
+			"bytes": 2249
+		},
+		{
+			"path": "tests/scratch/ui-approved-baseline/1792923589674/result.json",
+			"sha256": "5dbc2d80824a7be6d40381a3067cb433fa50102e0df1a0c91b6cd9575a922da1",
+			"bytes": 318433
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/.incomplete.json",
+			"sha256": "5425c7897d80964a254e0e27a1a9f35e81c4ab98aa97de148f4e6801c92e8a4d",
+			"bytes": 125
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/attempts/43cd07d75fa16423850403da4e5e14d46a5c9ea3a6df93b94c8a440a7bbb5fb9.json",
+			"sha256": "ad67a59f902ca9cc9d26fc973ebc8ae1796761cb063a0c98d2481a77650191cf",
+			"bytes": 1233
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/attempts/4e2e2b57a32cecc3b6caf935617e8dda42a2d5d46f0a744889c314f925c8ea29.json",
+			"sha256": "ca836dcb4c89d9e935f843ad051ff7c3cbab1ce6e24a7f2473c778725775a1af",
+			"bytes": 1238
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/attempts/ac21ad3195123f2a08612e78c2cacce919bec9ffeee66d4a7c98532bca9c9637.json",
+			"sha256": "d501e69999cc538dd92503d2d597e6f025aeed6576da40c03c83240bc365a50e",
+			"bytes": 1200
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/attempts/b4be011a604c2d6bdaf024a133c696c218bed4de6a6d6b67f54ebb69d5e773ec.json",
+			"sha256": "cce1cdfa857c6a5ca8fdc05a0ca9062ba73036aacba2a13f1224f4a2ec7a5de3",
+			"bytes": 1232
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/attempts/c0b386907acd7d17cb3308f5997268310e76a3ca04563c8aa015af7e6c3efcba.json",
+			"sha256": "d94aa966b7859af49ad607b23735651ea4281265ab5bc2605f3d859f602cdc1e",
+			"bytes": 1246
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/attempts/c9d971a5648e64cff0b16d13b9cd9c9e3e407e9f745b690a62f806ed3bb9715c.json",
+			"sha256": "32f43760e7207f7154559a99045022f60065907156dd838b9a0216c841503027",
+			"bytes": 1463
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/execution-summary.json",
+			"sha256": "2c95048250ec42014b06706b94493bfee28868c8ed18f0230944969ca476271f",
+			"bytes": 3095
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/input.json",
+			"sha256": "15a31439102258fb3856de84e9e3382de0f9302ee73d8476537c92778c63d5cb",
+			"bytes": 962
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/launch-intent.json",
+			"sha256": "092e84f767f9a51220e57ada276771dbf28a64e31cadaeaf151ae68cc031570b",
+			"bytes": 668
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/manifest.json",
+			"sha256": "e51b9c861e2fd8e23272ebee5f6ac4b1aea98acdc8f5ca6597f4664faaa2875d",
+			"bytes": 5512
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/native.json",
+			"sha256": "4c7de267088df5dfaa93638974fb62c46023ef37fc5b1e4c5f3a875fa5d0fa4c",
+			"bytes": 11542
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/output/.last-run.json",
+			"sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+			"bytes": 45
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/playwright.config.mjs",
+			"sha256": "01aed0a76455ce7439cdaedc92fd2dc1a5d424a257059f5f1b07af463705f303",
+			"bytes": 1776
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/preflight.json",
+			"sha256": "a237968a8141df1af27d54055be3a9ee49a3f0e1b394b193cd6072e20bccea37",
+			"bytes": 173
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/process-started.json",
+			"sha256": "ea204b95e0d732690a07d70298787e0ace3ad414b7cc197ed3d2d5316c629f34",
+			"bytes": 337
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/process.json",
+			"sha256": "12e4232de20e1045dd349890b8e7800623c0e3d515e3d3ce0a25b43246479cd6",
+			"bytes": 1957
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/report.json",
+			"sha256": "4c7de267088df5dfaa93638974fb62c46023ef37fc5b1e4c5f3a875fa5d0fa4c",
+			"bytes": 11542
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/results/u00-approved-1792923593641/.incomplete.json",
+			"sha256": "fc9b4dd350bccfe754dfc8ab6571f47c38859f42f7ca017f0ab39161af9789e7",
+			"bytes": 62
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/results/u00-approved-1792923593641/manifest.json",
+			"sha256": "b3a593ff75819cdb925059c3063d76e91dd6940d4451059f1540308057167586",
+			"bytes": 4349
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-506d9529ae0aeaf44283c8844c30f4f7/results/u00-approved-1792923593641/reconciliation.json",
+			"sha256": "7a10aeb5eb5ecea1469ce473dcb53f7d52f61db9798dc135584d1942fbe56b5a",
+			"bytes": 6148
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/tasks/u00-approved-1792923593641/manifest.json",
+			"sha256": "a80a7e71179ee6736ef2efb48e9ba8b472ffaf21013e461611134a3d8d557a23",
+			"bytes": 1048
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/archive-u00-api-observer.py",
+			"sha256": "4c6f3d74d0c98f1249a69db7d145c88430553410665c90c518ea0b750bc2554e",
+			"bytes": 5735
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-api-observer-calibration.log",
+			"sha256": "5bd744b2d8c1346a08f293dafbc44f6ee99b25054c08155296d6f87e542fd8e8",
+			"bytes": 2843
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-api-observer-calibration.mjs",
+			"sha256": "8b97220649a23e54c1f5fda485f1c76bb6a18a9dbae2f5e37651f4fd1f41c5be",
+			"bytes": 3191
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-api-observer-clean.log",
+			"sha256": "11edff7f359e5c0ad036bad6ca5caf7ef19274615efa33463fcabe76958226e5",
+			"bytes": 609
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-api-observer-formal.log",
+			"sha256": "5e7c9e0a362fa3a9631ae390346f9d44092e650d74b26703fcfa7fbe6b7f07fa",
+			"bytes": 3487
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-api-observer-lint.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-api-observer-protocol.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"bytes": 360
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-api-observer-size.log",
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+			"bytes": 1089
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-api-observer-typecheck.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-api-observer-unit.log",
+			"sha256": "5c4bdcbf9b246c6f4efa1361bcd70ea22abc1f25315f298722833fa0762c6331",
+			"bytes": 443
+		},
+		{
+			"path": "tests/ui-approved-baseline-measure.mjs",
+			"sha256": "0860ed0e485954072aaade07ecad9b6040e7cb91d27c654f6cade6f2f0eb1ed4",
+			"bytes": 11722
+		}
+	]
+}

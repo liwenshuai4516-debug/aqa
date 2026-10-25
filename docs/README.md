@@ -112,4 +112,4 @@ UI 获批浏览器候选正式执行入口：`tests/ui-browser-approved-run.mjs`
 
 UI 现行获批资产基准：`tests/ui-approved-baseline-measure.mjs`；测量与未覆盖项见 [优化执行记录](ui-testing-optimization-execution.md)。
 
-UI 子进程基准观察：`tests/ui-approved-baseline-measure.mjs --observe-children`（参数须先给获批证据目录），范围与校准见 [优化执行记录](ui-testing-optimization-execution.md)。
+UI 子进程/API基准观察：`tests/ui-approved-baseline-measure.mjs <获批证据目录> --observe-children`；记录Playwright 1.62.1调用开始/完成/失败，参数不入计数，校准及范围见 [优化执行记录](ui-testing-optimization-execution.md)。

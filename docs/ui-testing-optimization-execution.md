@@ -639,3 +639,19 @@ U00继续进行中：三类完整基线尚未齐备，首次生成/旧失败分�
 [子进程观察索引](ui-testing-evidence/optimization-u00-child-observer.json)关联此前批准及基准归档，保留首轮校准失败/修复后原始进程记录、两次正式run、冻结计划、源码与检查日志，逐文件摘要和归档回读一致；私有authority、认证和依赖不归档。全量typecheck、51项单测、lint、协议结构、size和差异检查通过；协议历史无tag明确跳过。开始与交付clean仅预览、不删除。测试观察器不改桌面/共享应用，本轮未重跑Electron，旧接入结果不计本轮通过。
 
 U00尚缺首次生成、旧失败完整分析/重跑的同范围计量，导航/快照与优化前后完整配对；U02真实认证/初态、OperationContract预期及正常/错误副本仍未确认。此前已发出测试角色/数据依据位置的文本询问，尚无新答复；不重复询问或擅读个人认证。继续保留原目标及依赖门禁，不将合成实测或本轮计数器交付等同于整计划完成。
+
+### U00 续跑：实际导航及显式快照API计数（2026-10-25）
+
+承接已推送且远端一致的b2aef80，补上轮尚未覆盖的API计量。复用Playwright Test自身使用的playwright._instrumentation监听器，只读取channel.type/method及开始/结束/失败事件，不改调用结果、不保存params、apiName、用户标题、URL、定位文本、堆栈或页面内容。依当前工作区的playwright包解析其实际playwright-core并限制1.62.1，避免误观测根目录独立安装的1.63.0。监听接口是版本限定的测试实现细节，不新增对外能力或修改node_modules。
+
+tests/lib/ui-baseline-child-observer.mjs导出可停用的observePlaywrightApi；子进程沿既有显式--observe-children加载，宿主仅在本次原生runner调用期间安装/移除监听。计数键为协议API类型/方法，逐键保存started/completed/failed；WeakMap关联同一事件，不占用Playwright自己的userData，不干扰测试步骤/trace。仅外部API有本口径计数，不覆盖浏览器自动重定向、子frame自动跳转或trace内部快照。
+
+真实校准使用1个Chromium页面：Frame.goto=1、Page.reload=1、Frame.ariaSnapshot=1；故意点击不存在目标并捕获超时，Frame.click completed=1且failed=1。所有开始事件有对应结束；已知嵌套Node仍恰好1次readFile。逐记录检索确认Owned/Missing/data:text未进入输出。这是验证观察器的失败计数，不是合成业务失败。原始校准与源码保留。
+
+不修改冻结六功能候选、scope、origin、配置、角色或诊断；在原可信私有authority上核验批准/当前诊断并执行一次新正式批次。6/6通过、13条断言到达、complete=true。宿主预检：1次BrowserType.launch、1个context/page、1次Frame.goto、2次Frame.expect、1次Browser.close，均完成/0失败。runner CLI记录本身无浏览器API，实际worker记录：1次launch、7个context/page、7次goto、3次reload、9次fill、19次click、52次Frame.expect、7次context.close及1次browser.close，均完成/0失败。7个context包含viewer独立context，不能用六case数推算context数；52次底层expect也不等于52条独立业务断言，冻结业务断言仍为13条。
+
+原生正式回放没有调用Frame.ariaSnapshot/Page.ariaSnapshot，因此本范围“显式可访问性快照API=0”有监听证据；不把trace内部快照或原发现录制阶段算0。宿主和worker的明确导航调用共11次（8goto、3reload），分阶段保存，不与之前MCP发现动作统计混合。实际子进程仍验证预检/worker各1次浏览器启动、2个Node终态完整。正式阶段7913.81ms是单个有观察器且已预热样本，不代表提速；API监听及提前加载核心库会影响启动/FS开销，不能与上一轮作为优化前后配对。
+
+同request查询及旧report/view的零子进程、旧获批四项摘要不变继续通过；新基准任务仍在analyze保留“未分析/评审/交付”，不继承旧报告批准。模型预算账本未变、0付费调用，自建源服务关闭。全量typecheck、51单测、lint、协议结构、size与差异检查通过；协议历史无tag跳过。clean仅预览，无删除；本轮仅测试观测器，未重跑Electron。
+
+[API观测证据](ui-testing-evidence/optimization-u00-api-observer.json)保留本轮校准、实际进程API聚合、冻结计划、完整新run与原生对账、来源摘要和验证日志；与先前原始归档分别校验，不含私有authority/认证或依赖。U00仍缺首次生成及旧失败分析/重跑的完整同范围基线、完整优化前后配对、真实目标/Electron业务准入。尚未收到此前角色/测试数据/预期依据位置的答复，不擅读个人凭据或从HTTP200推断身份。U03/U07和最终验收继续保留原前置门禁，整体目标未完成。

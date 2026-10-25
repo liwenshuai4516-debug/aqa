@@ -72,7 +72,7 @@ const plan = {
 		"Fresh first-generation full baseline",
 		"Old failed-batch complete analysis/rerun baseline",
 		observeChildren
-			? "Navigation/snapshot and OS-level I/O counters (not observed)"
+			? "Browser-internal navigation/trace snapshot and OS-level I/O counters (not observed)"
 			: "Nested runner browser launch/navigation/snapshot/FS counters",
 		"Before/after paired full-workflow comparison",
 		"Electron business end-to-end",
@@ -116,7 +116,7 @@ const spawned = ({ process: child }) => {
 		event.pid = child.pid;
 	});
 };
-let running, task;
+let running, task, hostApi;
 subscribe("child_process", spawned);
 try {
 	await measure("instrumentation-control", 0, () => fs.readFile(join(root, "browser-v4-delivery.json")));
@@ -153,12 +153,16 @@ try {
 	};
 	try {
 		if (observeChildren) {
+			const { observePlaywrightApi } = await import(pathToFileURL(observer).href);
+			hostApi = observePlaywrightApi(root);
 			process.env.NODE_OPTIONS = `--import=${pathToFileURL(observer).href}`;
 			process.env.PI_UI_BASELINE_OBSERVER_DIR = childDirectory;
 		}
 		result.execution = await measure("existing-asset-to-run-terminal", 0, () => runner.start(request));
 	} finally {
 		if (observeChildren) {
+			hostApi?.stop();
+			result.hostPlaywrightApi = { version: hostApi?.version, calls: hostApi?.calls };
 			delete process.env.NODE_OPTIONS;
 			delete process.env.PI_UI_BASELINE_OBSERVER_DIR;
 		}
