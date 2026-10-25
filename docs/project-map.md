@@ -138,3 +138,5 @@ UI 浏览器诊断准备：`tests/ui-browser-diagnostic-prepare.mjs` 基于已�
 UI 获批浏览器执行：`tests/ui-browser-approved-run.mjs` 读取原生设计批准和诊断就绪，完成原录制任务后登记独立执行任务、正式批次与结果对账，不生成批准。
 
 UI 获批基准计量：`tests/ui-approved-baseline-measure.mjs` 固定既有U05六功能资产，核对原生批准/诊断并测量正式run终态、同request状态、旧报告对账和view；不新增模型评审或声称完整基线。
+
+UI 基准子进程观察：`tests/lib/ui-baseline-child-observer.mjs` 由现有基准入口可选预载到runner/worker，仅记录聚合异步FS和确认后的子进程启动，不修改原生runner或授权。

@@ -1,0 +1,693 @@
+{
+	"date": "2026-10-25",
+	"status": "NESTED_NODE_BROWSER_AND_ASYNC_FS_OBSERVED_FULL_BASELINE_INCOMPLETE",
+	"plan_complete": false,
+	"model_calls": 0,
+	"fee_ledger_unchanged": true,
+	"calibration": {
+		"initial": "Failed: Node publishes diagnostic event before spawnargs are populated; raw records retained",
+		"fixed": "Classify after confirmed spawn; nested Node exactly one known readFile and one actual Chromium launch passed",
+		"raw_source_limit": "Initial failed observer source was not frozen separately; raw process records and failure log retained, no source reconstruction claimed"
+	},
+	"samples": [
+		{
+			"run_ref": {
+				"path": "qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/manifest.json",
+				"sha256": "95d5740db049d47ee4e25fd36ecd899ef148be94c95b80c5fe679ac090eb5a47"
+			},
+			"counts": {
+				"passed": 6,
+				"failed": 0,
+				"blocked": 0,
+				"skipped": 0,
+				"cancelled": 0,
+				"not-run": 0,
+				"flaky": 0,
+				"unknown": 0
+			},
+			"assertions_reached": 13,
+			"formal_elapsed_ms": 10120.367583,
+			"host_reads": 2554,
+			"host_scans": 730,
+			"direct_children": [
+				{
+					"kind": "browser",
+					"started": true,
+					"pid": 31045
+				},
+				{
+					"kind": "playwright-cli",
+					"started": true,
+					"pid": 31049
+				}
+			],
+			"nested_browser_starts": 1,
+			"node_records": [
+				{
+					"pid": 31049,
+					"parent_pid": 30803,
+					"fs_promises": {
+						"readFile": 1,
+						"writeFile": 2
+					},
+					"children": [
+						{
+							"kind": "node",
+							"started": true,
+							"pid": 31053,
+							"exit_code": 0,
+							"signal": null
+						}
+					],
+					"exit_code": 0,
+					"elapsed_ms": 5541.51475,
+					"coverage": "This Node process async fs/promises calls and direct child spawn events only. Not OS I/O, native browser internals, navigation, snapshots or process-tree CPU time."
+				},
+				{
+					"pid": 31053,
+					"parent_pid": 31049,
+					"fs_promises": {
+						"readFile": 1,
+						"writeFile": 82
+					},
+					"children": [
+						{
+							"kind": "browser",
+							"started": true,
+							"pid": 31055,
+							"exit_code": 0,
+							"signal": null
+						}
+					],
+					"exit_code": 0,
+					"elapsed_ms": 4884.218208,
+					"coverage": "This Node process async fs/promises calls and direct child spawn events only. Not OS I/O, native browser internals, navigation, snapshots or process-tree CPU time."
+				}
+			],
+			"task_state": "blocked",
+			"plan": {
+				"created_at": "2026-10-25T10:11:07.629Z",
+				"scope": "Original six-case U05 v4 approved asset, scope, roles and exact origins; no scope changes",
+				"asset_ref": {
+					"path": "qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/manifest.json",
+					"sha256": "4035c2e18a883293b9846177cb861583918e180a85f5ad9c495c48747877563a"
+				},
+				"review_ref": {
+					"path": "qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/reviews/design-f3a95499-4812-447b-a329-078b235c1dc4/manifest.json",
+					"sha256": "6ef5ed7aa8a013a291e3661e92a673569b862deb1f7f0d9a0d51e86159f50d16"
+				},
+				"report_ref": {
+					"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/manifest.json",
+					"sha256": "1dc7083769cf19e07a5df07ed586b54667f3ceb2e739783411ee28bd026c4d6b"
+				},
+				"original_run_ref": {
+					"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/manifest.json",
+					"sha256": "1ce89c8b4ddfc293ed4778f4567827e35b8c2d803f6e7227018d62272568eb28"
+				},
+				"native_version": "0.1.7",
+				"harness_sha256": "2e20b9f7f062b5feb036e345051d97f708fb37cd90aad407ebee51958bc090b3",
+				"child_observer": {
+					"sha256": "c12500a42f1bfb5de462e7cbc14f29d4fd4033ec2c19b362f3ba7d00e8d5b8cb",
+					"scope": "NODE_OPTIONS preload limited to runner invocation and inherited Node workers; aggregate counters, no private data"
+				},
+				"measurement": "One current-version regression to native run terminal; one first and five repeated view/status and report reconciliation samples. Host FS counts are separate from optional inherited Node preload records; each process observes only its direct children. Setup-warmed, not cold OS/Electron startup. Observer overhead included.",
+				"acceptance": "Trusted approval/current diagnostic gate; formal six cases and thirteen reached assertions unchanged; same request readback causes no child launches; read-only samples do not start children or change original task/run/report; no paid review calls.",
+				"missing": [
+					"Fresh first-generation full baseline",
+					"Old failed-batch complete analysis/rerun baseline",
+					"Navigation/snapshot and OS-level I/O counters (not observed)",
+					"Before/after paired full-workflow comparison",
+					"Electron business end-to-end"
+				]
+			}
+		},
+		{
+			"run_ref": {
+				"path": "qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/manifest.json",
+				"sha256": "b13ca6ea42f13e7a76f2c843102c565ef95133b68f69897ab2a52c7eeb5affea"
+			},
+			"counts": {
+				"passed": 6,
+				"failed": 0,
+				"blocked": 0,
+				"skipped": 0,
+				"cancelled": 0,
+				"not-run": 0,
+				"flaky": 0,
+				"unknown": 0
+			},
+			"assertions_reached": 13,
+			"formal_elapsed_ms": 8420.142541000001,
+			"host_reads": 2570,
+			"host_scans": 766,
+			"direct_children": [
+				{
+					"kind": "browser",
+					"started": true,
+					"pid": 31365
+				},
+				{
+					"kind": "playwright-cli",
+					"started": true,
+					"pid": 31369
+				}
+			],
+			"nested_browser_starts": 1,
+			"node_records": [
+				{
+					"pid": 31369,
+					"parent_pid": 31313,
+					"fs_promises": {
+						"readFile": 1,
+						"writeFile": 2
+					},
+					"children": [
+						{
+							"kind": "node",
+							"started": true,
+							"pid": 31370,
+							"exit_code": 0,
+							"signal": null
+						}
+					],
+					"exit_code": 0,
+					"elapsed_ms": 4796.607416,
+					"coverage": "This Node process async fs/promises calls and direct child spawn events only. Not OS I/O, native browser internals, navigation, snapshots or process-tree CPU time."
+				},
+				{
+					"pid": 31370,
+					"parent_pid": 31369,
+					"fs_promises": {
+						"readFile": 1,
+						"writeFile": 82
+					},
+					"children": [
+						{
+							"kind": "browser",
+							"started": true,
+							"pid": 31371,
+							"exit_code": 0,
+							"signal": null
+						}
+					],
+					"exit_code": 0,
+					"elapsed_ms": 4278.838709,
+					"coverage": "This Node process async fs/promises calls and direct child spawn events only. Not OS I/O, native browser internals, navigation, snapshots or process-tree CPU time."
+				}
+			],
+			"task_state": "blocked",
+			"plan": {
+				"created_at": "2026-10-25T10:12:29.405Z",
+				"scope": "Original six-case U05 v4 approved asset, scope, roles and exact origins; no scope changes",
+				"asset_ref": {
+					"path": "qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/manifest.json",
+					"sha256": "4035c2e18a883293b9846177cb861583918e180a85f5ad9c495c48747877563a"
+				},
+				"review_ref": {
+					"path": "qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/reviews/design-f3a95499-4812-447b-a329-078b235c1dc4/manifest.json",
+					"sha256": "6ef5ed7aa8a013a291e3661e92a673569b862deb1f7f0d9a0d51e86159f50d16"
+				},
+				"report_ref": {
+					"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/manifest.json",
+					"sha256": "1dc7083769cf19e07a5df07ed586b54667f3ceb2e739783411ee28bd026c4d6b"
+				},
+				"original_run_ref": {
+					"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/manifest.json",
+					"sha256": "1ce89c8b4ddfc293ed4778f4567827e35b8c2d803f6e7227018d62272568eb28"
+				},
+				"native_version": "0.1.7",
+				"harness_sha256": "d1a6db1ff8ac4fb1fc4bae8a29109b56eb8998307733c68bf243db9ec92913ef",
+				"child_observer": {
+					"sha256": "c12500a42f1bfb5de462e7cbc14f29d4fd4033ec2c19b362f3ba7d00e8d5b8cb",
+					"scope": "NODE_OPTIONS preload limited to runner invocation and inherited Node workers; aggregate counters, no private data"
+				},
+				"measurement": "One current-version regression to native run terminal; one first and five repeated view/status and report reconciliation samples. Host FS counts are separate from optional inherited Node preload records; each process observes only its direct children. Setup-warmed, not cold OS/Electron startup. Observer overhead included.",
+				"acceptance": "Trusted approval/current diagnostic gate; formal six cases and thirteen reached assertions unchanged; same request readback causes no child launches; read-only samples do not start children or change original task/run/report; no paid review calls.",
+				"missing": [
+					"Fresh first-generation full baseline",
+					"Old failed-batch complete analysis/rerun baseline",
+					"Navigation/snapshot and OS-level I/O counters (not observed)",
+					"Before/after paired full-workflow comparison",
+					"Electron business end-to-end"
+				]
+			}
+		}
+	],
+	"prior_archives_verified": {
+		"optimization-u05-approved-run": {
+			"path": "docs/ui-testing-evidence/optimization-u05-approved-run.tar.gz",
+			"sha256": "d37b968889023896b42fffd0c0a939c559af50b0c81d09edf23384f8849e3e9d",
+			"bytes": 1187726,
+			"files": 224,
+			"roundtrip_verified": true
+		},
+		"optimization-u00-approved-baseline": {
+			"path": "docs/ui-testing-evidence/optimization-u00-approved-baseline.tar.gz",
+			"sha256": "252ef782c6cc9189dfd3423b03d6f71e7b5ef77c8f363107df9a811281c3510b",
+			"bytes": 52434,
+			"files": 34,
+			"roundtrip_verified": true
+		}
+	},
+	"public_refs_verified": {
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/manifest.json": "1ce89c8b4ddfc293ed4778f4567827e35b8c2d803f6e7227018d62272568eb28",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/manifest.json": "1dc7083769cf19e07a5df07ed586b54667f3ceb2e739783411ee28bd026c4d6b",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/reviews/result-3887c58d-2958-41b1-bdff-e533c6bdb095/manifest.json": "8b76c45c06fb8b79a0060e87f181e73687f93f6aada9597ae10136ef101e4571",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/delivery/8b76c45c06fb8b79a0060e87f181e73687f93f6aada9597ae10136ef101e4571.md": "e2f575c267224517753c779b566fecf4c840acaabe9f74c1574a2a3605411aff",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/manifest.json": "95d5740db049d47ee4e25fd36ecd899ef148be94c95b80c5fe679ac090eb5a47",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/results/u00-approved-1792923070461/manifest.json": "6341981ce1d370e46ec8a5f66fc54c39422b4ce6fc54c4957d2f4d4233dce7af",
+		"qa/ui/tasks/u00-approved-1792923070461/manifest.json": "b81df43d322d2a09b7dded51858d0b25536c5d453f1ee6c56826a2be5b757669",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/input.json": "10fb65369bcb73572a80e6675cf80020a67a1d2a02870ddc69d9df649e7770a2",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/playwright.config.mjs": "e081c44362b4d87478814220e6bfd1da4301a07657da6de1fa7c353e0b157283",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/preflight.json": "a237968a8141df1af27d54055be3a9ee49a3f0e1b394b193cd6072e20bccea37",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/launch-intent.json": "62b8f10bf621212c9881b08560593a12f48422408aba1c792651f84ff5e810f4",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/process-started.json": "69fcd27878f7ad6a74268c126da71a279977bbec27c31ee3402de1d3955fb62e",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/process.json": "6581b88be2bb457fd5baba5891830bc3a91a18a80712f6b4ea5d477647c92a1b",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/report.json": "6ddd503146a46501dad2a4506baa9fb1d6b8a043e3b91e27e7af1a891da19e28",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/attempts/ac21ad3195123f2a08612e78c2cacce919bec9ffeee66d4a7c98532bca9c9637.json": "d42081d98dad071cfeb9b8e137b4ec6b75e3ea637fc5c87c097ac3030762b33c",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/attempts/c0b386907acd7d17cb3308f5997268310e76a3ca04563c8aa015af7e6c3efcba.json": "7dc1b451f75129f2a691157bc9b70f748a478d0166e5fb23a1d26eabfc2c68cb",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/attempts/b4be011a604c2d6bdaf024a133c696c218bed4de6a6d6b67f54ebb69d5e773ec.json": "feee0b22c6e454eb007c2f6e41853b70349103bc4c29a5a357d69671560dd919",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/attempts/43cd07d75fa16423850403da4e5e14d46a5c9ea3a6df93b94c8a440a7bbb5fb9.json": "86c88c7ae98ce45724c8f1da85abb77cd646975e01261393d72307367c21763b",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/attempts/4e2e2b57a32cecc3b6caf935617e8dda42a2d5d46f0a744889c314f925c8ea29.json": "bb85cd6f3ad4ea44556fc44450010eaa90408803078ccc26cdf73db00bfd6686",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/attempts/c9d971a5648e64cff0b16d13b9cd9c9e3e407e9f745b690a62f806ed3bb9715c.json": "411482db8208614229244a915d70287f661e6ef4a41e3cdde54b511a57ae3241",
+		"qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/execution-summary.json": "d84d62b5fcf44733c56130802b800a28842d50b338874239b6eed9ebaeabdc55",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/manifest.json": "b13ca6ea42f13e7a76f2c843102c565ef95133b68f69897ab2a52c7eeb5affea",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/results/u00-approved-1792923151291/manifest.json": "0d013330fcbbceec5b3a07a22e5c2a90a9f57b761f19f44fa38ac569f70743d9",
+		"qa/ui/tasks/u00-approved-1792923151291/manifest.json": "2b07f5ccb1d97318fa11add6b184ccee6baae497068e6c9464642730f02bad8c",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/input.json": "24391238ddfebbaac09ca7b3482acba66f6e3812dff577f64580e630bdb314c8",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/playwright.config.mjs": "7fac86151df2c88e8ff2404feaf6abdc2cd02e630079b80de78920746307efe4",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/preflight.json": "a237968a8141df1af27d54055be3a9ee49a3f0e1b394b193cd6072e20bccea37",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/launch-intent.json": "a33dbb58903119d3259dca37856008ee767ce76be4ff211b2176a905de577424",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/process-started.json": "2e8302bae9c1e67186f68ab9cb32bc4a1d8af69ffa64d40d706e175ec403ac7a",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/process.json": "074ec5d381880ff0896106c55ef99534b6406602d64f41d4e412536b03734629",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/report.json": "f8640659061608ec3cf76acaee4a0773720e7de3ef6eac389debe80a45d86579",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/attempts/ac21ad3195123f2a08612e78c2cacce919bec9ffeee66d4a7c98532bca9c9637.json": "ba16dac09a6c1417b39571712bee36ad1d6ef305d7a9e69bf330cf788861c03f",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/attempts/c0b386907acd7d17cb3308f5997268310e76a3ca04563c8aa015af7e6c3efcba.json": "2881782aac20e25472e7be11aa0f28b2c117ca5e0b319ceb821cf226ef6f504e",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/attempts/b4be011a604c2d6bdaf024a133c696c218bed4de6a6d6b67f54ebb69d5e773ec.json": "1e6eba2bbced4aeff9b29ea61fe51e7edf3c2127ab62d8e90e14ae082a51336c",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/attempts/43cd07d75fa16423850403da4e5e14d46a5c9ea3a6df93b94c8a440a7bbb5fb9.json": "dc5cbee880038df1ce9c791777c46d8edbb0179ffb90465dac8c334a6be009b1",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/attempts/4e2e2b57a32cecc3b6caf935617e8dda42a2d5d46f0a744889c314f925c8ea29.json": "1eabfe593c9ac0c50c52ed8024a78f63adf8e9ec89670bc0c485fd95298b90da",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/attempts/c9d971a5648e64cff0b16d13b9cd9c9e3e407e9f745b690a62f806ed3bb9715c.json": "513fa8968fd91754286b786f8be7321e18c82ea7d84688a6654114df0f397456",
+		"qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/execution-summary.json": "8d9569cb799c5f63a120af508c0e5d41efbb33bd00d79d63129527f37978adf7"
+	},
+	"limits": [
+		"Per-process four async fs/promises APIs only; no OS-wide/synchronous I/O claim",
+		"Observed browser starts across host and inherited Node workers; navigation/snapshot counts still missing",
+		"Two samples with different history/observer checks; not optimization pairs",
+		"Node process intervals overlap; do not sum as end-to-end or CPU time",
+		"Fresh generation, old failure full analysis/recovery, full paired comparison and real Electron business acceptance remain incomplete",
+		"New regression tasks stop at run terminal, retain analyze blockers and do not inherit old report approval"
+	],
+	"validation": {
+		"typecheck": "passed",
+		"vitest": "51 passed in 3 files",
+		"lint": "passed",
+		"protocol": "structure passed; no-tag history skip",
+		"desktop": "not run; observer-only test change",
+		"size": "passed",
+		"clean": "preview only; no deletion"
+	},
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-u00-child-observer.tar.gz",
+		"sha256": "12fc70de3527b684fab3921608838d051aff7567951baaeb376c733d190bc74d",
+		"bytes": 88366,
+		"files": 75,
+		"roundtrip_verified": true
+	},
+	"files": [
+		{
+			"path": "docs/ui-testing-evidence/optimization-u00-approved-baseline.json",
+			"sha256": "0fa0f50a29c8e6bf6df3502f2d5e50b292d260c3118e52de6750f573c6556e7b",
+			"bytes": 18644
+		},
+		{
+			"path": "docs/ui-testing-evidence/optimization-u05-approved-run.json",
+			"sha256": "3de9588aede85ec3047fb9b19a708d6b3d1c85eb6e907d5d8b904fa3b2dfa1cd",
+			"bytes": 108830
+		},
+		{
+			"path": "tests/lib/ui-baseline-child-observer.mjs",
+			"sha256": "c12500a42f1bfb5de462e7cbc14f29d4fd4033ec2c19b362f3ba7d00e8d5b8cb",
+			"bytes": 1893
+		},
+		{
+			"path": "tests/scratch/ui-approved-baseline/1792923067121/children/31049.json",
+			"sha256": "46fab77e3c61946ff52042c3bed8403831f0df4a6b4070ecccf4d9dffc9f951e",
+			"bytes": 374
+		},
+		{
+			"path": "tests/scratch/ui-approved-baseline/1792923067121/children/31053.json",
+			"sha256": "05e1649fbe4be4ff10a22e39062b909d3021d9720e5b765bc7a8ceaa0868b747",
+			"bytes": 379
+		},
+		{
+			"path": "tests/scratch/ui-approved-baseline/1792923067121/plan.json",
+			"sha256": "6e76060dae4b0acda6c126729f5002c99f06a4452ce724acf9c4f598582d0482",
+			"bytes": 2226
+		},
+		{
+			"path": "tests/scratch/ui-approved-baseline/1792923067121/result.json",
+			"sha256": "b4cd9f9b198132119617968afc1460e672a61c3e89acc62ba99dbcbb8d7d8f52",
+			"bytes": 307970
+		},
+		{
+			"path": "tests/scratch/ui-approved-baseline/1792923148938/children/31369.json",
+			"sha256": "a1307bfcf3a190005636a6c4af9c0b00d142184cd4b5ce469028b4e27793af99",
+			"bytes": 375
+		},
+		{
+			"path": "tests/scratch/ui-approved-baseline/1792923148938/children/31370.json",
+			"sha256": "afce08a193c8c6ba607d2683da7a13f4b2bd3c527cc1121b915f553097c8a657",
+			"bytes": 379
+		},
+		{
+			"path": "tests/scratch/ui-approved-baseline/1792923148938/plan.json",
+			"sha256": "ce637f5db47d8ec93f03b5d652037e08c7e02c5bf08756e798c8d2f86835d18b",
+			"bytes": 2226
+		},
+		{
+			"path": "tests/scratch/ui-approved-baseline/1792923148938/result.json",
+			"sha256": "daad026e312008cb12336153181bcea60ef1e07f23163a7914d3aa72f94974df",
+			"bytes": 311929
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/.incomplete.json",
+			"sha256": "116b5be149e1ff5f768a36fb5d3a6e9bfc13efce0b767077c68e5ff97bfc2c60",
+			"bytes": 125
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/attempts/43cd07d75fa16423850403da4e5e14d46a5c9ea3a6df93b94c8a440a7bbb5fb9.json",
+			"sha256": "86c88c7ae98ce45724c8f1da85abb77cd646975e01261393d72307367c21763b",
+			"bytes": 1233
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/attempts/4e2e2b57a32cecc3b6caf935617e8dda42a2d5d46f0a744889c314f925c8ea29.json",
+			"sha256": "bb85cd6f3ad4ea44556fc44450010eaa90408803078ccc26cdf73db00bfd6686",
+			"bytes": 1238
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/attempts/ac21ad3195123f2a08612e78c2cacce919bec9ffeee66d4a7c98532bca9c9637.json",
+			"sha256": "d42081d98dad071cfeb9b8e137b4ec6b75e3ea637fc5c87c097ac3030762b33c",
+			"bytes": 1200
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/attempts/b4be011a604c2d6bdaf024a133c696c218bed4de6a6d6b67f54ebb69d5e773ec.json",
+			"sha256": "feee0b22c6e454eb007c2f6e41853b70349103bc4c29a5a357d69671560dd919",
+			"bytes": 1232
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/attempts/c0b386907acd7d17cb3308f5997268310e76a3ca04563c8aa015af7e6c3efcba.json",
+			"sha256": "7dc1b451f75129f2a691157bc9b70f748a478d0166e5fb23a1d26eabfc2c68cb",
+			"bytes": 1246
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/attempts/c9d971a5648e64cff0b16d13b9cd9c9e3e407e9f745b690a62f806ed3bb9715c.json",
+			"sha256": "411482db8208614229244a915d70287f661e6ef4a41e3cdde54b511a57ae3241",
+			"bytes": 1463
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/execution-summary.json",
+			"sha256": "d84d62b5fcf44733c56130802b800a28842d50b338874239b6eed9ebaeabdc55",
+			"bytes": 3095
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/input.json",
+			"sha256": "10fb65369bcb73572a80e6675cf80020a67a1d2a02870ddc69d9df649e7770a2",
+			"bytes": 962
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/launch-intent.json",
+			"sha256": "62b8f10bf621212c9881b08560593a12f48422408aba1c792651f84ff5e810f4",
+			"bytes": 668
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/manifest.json",
+			"sha256": "95d5740db049d47ee4e25fd36ecd899ef148be94c95b80c5fe679ac090eb5a47",
+			"bytes": 5512
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/native.json",
+			"sha256": "6ddd503146a46501dad2a4506baa9fb1d6b8a043e3b91e27e7af1a891da19e28",
+			"bytes": 11551
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/output/.last-run.json",
+			"sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+			"bytes": 45
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/playwright.config.mjs",
+			"sha256": "e081c44362b4d87478814220e6bfd1da4301a07657da6de1fa7c353e0b157283",
+			"bytes": 1776
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/preflight.json",
+			"sha256": "a237968a8141df1af27d54055be3a9ee49a3f0e1b394b193cd6072e20bccea37",
+			"bytes": 173
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/process-started.json",
+			"sha256": "69fcd27878f7ad6a74268c126da71a279977bbec27c31ee3402de1d3955fb62e",
+			"bytes": 337
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/process.json",
+			"sha256": "6581b88be2bb457fd5baba5891830bc3a91a18a80712f6b4ea5d477647c92a1b",
+			"bytes": 1957
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/report.json",
+			"sha256": "6ddd503146a46501dad2a4506baa9fb1d6b8a043e3b91e27e7af1a891da19e28",
+			"bytes": 11551
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/results/u00-approved-1792923070461/.incomplete.json",
+			"sha256": "7585c9f1ad86fb582eb6b75aeaecb5904332421aca23bee6ab2559ca92d528f8",
+			"bytes": 62
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/results/u00-approved-1792923070461/manifest.json",
+			"sha256": "6341981ce1d370e46ec8a5f66fc54c39422b4ce6fc54c4957d2f4d4233dce7af",
+			"bytes": 4349
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-b51f7447171c12056ba005da92ab997f/results/u00-approved-1792923070461/reconciliation.json",
+			"sha256": "cd6057c4541e815415e9f9ebe7560ef285b110d2630d8ef770f1f9281afdc6f8",
+			"bytes": 6148
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/.incomplete.json",
+			"sha256": "3d2f7de326aad48a7002bc7298a206dde1d1ef0551fde7a922424e57b2ba0852",
+			"bytes": 125
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/attempts/43cd07d75fa16423850403da4e5e14d46a5c9ea3a6df93b94c8a440a7bbb5fb9.json",
+			"sha256": "dc5cbee880038df1ce9c791777c46d8edbb0179ffb90465dac8c334a6be009b1",
+			"bytes": 1233
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/attempts/4e2e2b57a32cecc3b6caf935617e8dda42a2d5d46f0a744889c314f925c8ea29.json",
+			"sha256": "1eabfe593c9ac0c50c52ed8024a78f63adf8e9ec89670bc0c485fd95298b90da",
+			"bytes": 1238
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/attempts/ac21ad3195123f2a08612e78c2cacce919bec9ffeee66d4a7c98532bca9c9637.json",
+			"sha256": "ba16dac09a6c1417b39571712bee36ad1d6ef305d7a9e69bf330cf788861c03f",
+			"bytes": 1198
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/attempts/b4be011a604c2d6bdaf024a133c696c218bed4de6a6d6b67f54ebb69d5e773ec.json",
+			"sha256": "1e6eba2bbced4aeff9b29ea61fe51e7edf3c2127ab62d8e90e14ae082a51336c",
+			"bytes": 1232
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/attempts/c0b386907acd7d17cb3308f5997268310e76a3ca04563c8aa015af7e6c3efcba.json",
+			"sha256": "2881782aac20e25472e7be11aa0f28b2c117ca5e0b319ceb821cf226ef6f504e",
+			"bytes": 1246
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/attempts/c9d971a5648e64cff0b16d13b9cd9c9e3e407e9f745b690a62f806ed3bb9715c.json",
+			"sha256": "513fa8968fd91754286b786f8be7321e18c82ea7d84688a6654114df0f397456",
+			"bytes": 1463
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/execution-summary.json",
+			"sha256": "8d9569cb799c5f63a120af508c0e5d41efbb33bd00d79d63129527f37978adf7",
+			"bytes": 3095
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/input.json",
+			"sha256": "24391238ddfebbaac09ca7b3482acba66f6e3812dff577f64580e630bdb314c8",
+			"bytes": 962
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/launch-intent.json",
+			"sha256": "a33dbb58903119d3259dca37856008ee767ce76be4ff211b2176a905de577424",
+			"bytes": 668
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/manifest.json",
+			"sha256": "b13ca6ea42f13e7a76f2c843102c565ef95133b68f69897ab2a52c7eeb5affea",
+			"bytes": 5512
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/native.json",
+			"sha256": "f8640659061608ec3cf76acaee4a0773720e7de3ef6eac389debe80a45d86579",
+			"bytes": 11541
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/output/.last-run.json",
+			"sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+			"bytes": 45
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/playwright.config.mjs",
+			"sha256": "7fac86151df2c88e8ff2404feaf6abdc2cd02e630079b80de78920746307efe4",
+			"bytes": 1776
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/preflight.json",
+			"sha256": "a237968a8141df1af27d54055be3a9ee49a3f0e1b394b193cd6072e20bccea37",
+			"bytes": 173
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/process-started.json",
+			"sha256": "2e8302bae9c1e67186f68ab9cb32bc4a1d8af69ffa64d40d706e175ec403ac7a",
+			"bytes": 337
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/process.json",
+			"sha256": "074ec5d381880ff0896106c55ef99534b6406602d64f41d4e412536b03734629",
+			"bytes": 1957
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/report.json",
+			"sha256": "f8640659061608ec3cf76acaee4a0773720e7de3ef6eac389debe80a45d86579",
+			"bytes": 11541
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/results/u00-approved-1792923151291/.incomplete.json",
+			"sha256": "8255d7a898830b8580d9f867b2b52e2e202e9c34f8de55fa30ba432194fe26a1",
+			"bytes": 62
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/results/u00-approved-1792923151291/manifest.json",
+			"sha256": "0d013330fcbbceec5b3a07a22e5c2a90a9f57b761f19f44fa38ac569f70743d9",
+			"bytes": 4349
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-d94f8407c9b3d95a262f8f6199d0f861/results/u00-approved-1792923151291/reconciliation.json",
+			"sha256": "49505369726a2fdfb403f5a608cd8a46c0cf67874aadc8ca79502532863ba296",
+			"bytes": 6148
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/tasks/u00-approved-1792923070461/manifest.json",
+			"sha256": "b81df43d322d2a09b7dded51858d0b25536c5d453f1ee6c56826a2be5b757669",
+			"bytes": 1048
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/tasks/u00-approved-1792923151291/manifest.json",
+			"sha256": "2b07f5ccb1d97318fa11add6b184ccee6baae497068e6c9464642730f02bad8c",
+			"bytes": 1048
+		},
+		{
+			"path": "tests/scratch/ui-child-observer-calibration/1792922994434/30156.json",
+			"sha256": "d3ef36cf21c0dd0a2476627699d0bfe3e1c27c04a4b8482a29fe3796de19b157",
+			"bytes": 434
+		},
+		{
+			"path": "tests/scratch/ui-child-observer-calibration/1792922994434/30160.json",
+			"sha256": "3b9cb31a222533d42bd982f46e232e1f32e15fd6bb3b8add330ae8b84d0e8a9b",
+			"bytes": 298
+		},
+		{
+			"path": "tests/scratch/ui-child-observer-calibration/1792922994434/owned.txt",
+			"sha256": "17106283e8a43fa7ac51f3b049c7c7209eb39c2cab1e2987d83766b0addc8eca",
+			"bytes": 22
+		},
+		{
+			"path": "tests/scratch/ui-child-observer-calibration/1792923040645/30350.json",
+			"sha256": "1d94ad26188297dc632b499d7fe41ce9034fd6f32992ea4be7280baeb83803fe",
+			"bytes": 435
+		},
+		{
+			"path": "tests/scratch/ui-child-observer-calibration/1792923040645/30351.json",
+			"sha256": "72f94dd611956b5b58f0708827b85ea2acaa365753f745643278017f3bb07299",
+			"bytes": 298
+		},
+		{
+			"path": "tests/scratch/ui-child-observer-calibration/1792923040645/owned.txt",
+			"sha256": "17106283e8a43fa7ac51f3b049c7c7209eb39c2cab1e2987d83766b0addc8eca",
+			"bytes": 22
+		},
+		{
+			"path": "tests/scratch/ui-child-observer-calibration/1792923040645/result.json",
+			"sha256": "92606a08c9ce008ca4c45f3510bd892451664481a686d3e47b476a649aace9bf",
+			"bytes": 1493
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/archive-u00-child-observer.py",
+			"sha256": "9f4b7475ce333b60f43f9c7ab64a8d96d9fa61c5128c225245b738818d2ce676",
+			"bytes": 5532
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-child-observer-calibration-final.log",
+			"sha256": "a73a7f1ce1391dd2b5a55c352f02736fe43c8ae64083f541f07c8e3a8c69e030",
+			"bytes": 1494
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-child-observer-calibration.log",
+			"sha256": "da400cdacd35d6cd38d47efa0405b64457ac85e81585326396ef024dd03c2a12",
+			"bytes": 424
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-child-observer-calibration.mjs",
+			"sha256": "a13e53d0621d481314faad65bb2232b664e8c1e807077ff70e44fcb41e2f99de",
+			"bytes": 2252
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-child-observer-clean.log",
+			"sha256": "11edff7f359e5c0ad036bad6ca5caf7ef19274615efa33463fcabe76958226e5",
+			"bytes": 609
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-child-observer-formal-final.log",
+			"sha256": "1c61ad26031b9360113bf9a50714cc387e5fb3038cc7818a684812dd1755a3d4",
+			"bytes": 3503
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-child-observer-formal.log",
+			"sha256": "e2f1a918ddb2dd332176456c56703e4c99d022f5421239e1b13b8d209f2154bb",
+			"bytes": 3485
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-child-observer-lint.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-child-observer-protocol.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"bytes": 360
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-child-observer-size.log",
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+			"bytes": 1089
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-child-observer-typecheck.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u00-child-observer-unit.log",
+			"sha256": "d598b2db2af5df9be35922250df10a9ce63e22bc09643f6cefeaba97bedab1d7",
+			"bytes": 443
+		},
+		{
+			"path": "tests/ui-approved-baseline-measure.mjs",
+			"sha256": "d1a6db1ff8ac4fb1fc4bae8a29109b56eb8998307733c68bf243db9ec92913ef",
+			"bytes": 11465
+		}
+	]
+}

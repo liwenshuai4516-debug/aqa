@@ -111,3 +111,5 @@ UI 浏览器候选诊断准备入口：`tests/ui-browser-diagnostic-prepare.mjs`
 UI 获批浏览器候选正式执行入口：`tests/ui-browser-approved-run.mjs`；评审、诊断、正式结果与报告状态见 [UI 优化执行记录](ui-testing-optimization-execution.md)。
 
 UI 现行获批资产基准：`tests/ui-approved-baseline-measure.mjs`；测量与未覆盖项见 [优化执行记录](ui-testing-optimization-execution.md)。
+
+UI 子进程基准观察：`tests/ui-approved-baseline-measure.mjs --observe-children`（参数须先给获批证据目录），范围与校准见 [优化执行记录](ui-testing-optimization-execution.md)。

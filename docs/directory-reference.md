@@ -431,3 +431,5 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 - `tests/ui-browser-approved-run.mjs`：已有浏览器候选的可信设计/诊断门禁、独立正式执行及原生结果对账；合成环境仅恢复声明地址。
 
 - `tests/ui-approved-baseline-measure.mjs`：原获批六功能资产的现行正式回归、宿主读取/目录计数和旧报告/view测量；保留首次生成、失败链与嵌套浏览器未测项。
+
+- `tests/lib/ui-baseline-child-observer.mjs`：U00测试专用Node预载观察器，退出时记录无路径/参数的FS及子进程聚合；只由显式--observe-children启用。
