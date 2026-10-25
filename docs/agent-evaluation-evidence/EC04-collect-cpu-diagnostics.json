@@ -1,0 +1,144 @@
+{
+	"scope": "EC04 collect stack CPU attribution and unverified candidate preservation; production remains 0.4.24",
+	"timestamp": "2026-10-25T21:09:29.566580+00:00",
+	"baseline": "7f75895e942e125f4beeab4b7ad1e661212210f7",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collect-cpu/index.json",
+		"bytes": 12321,
+		"sha256": "8c4ca3fc2c0e70134a679c991b4a735ac02367cbba96c6007ede360a9e30f45c"
+	},
+	"archiveFiles": 66,
+	"sampling": {
+		"rawSummary": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collect-cpu/files/summary-final.json",
+			"bytes": 43429,
+			"sha256": "3a12d036edc9ddd0ddeadd1fcd0c6324a8d656a36caccaefc4798d6bcdb55491"
+		},
+		"worker": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collect-cpu/files/worker.mjs",
+			"bytes": 1136,
+			"sha256": "62d8f4088ab0b7282e88dc7da1e0e36ee540e35bac3e86b46e65bc820d010edd"
+		},
+		"summarizer": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collect-cpu/files/summarize.py",
+			"bytes": 1722,
+			"sha256": "f346e1e16dfeff437ddef0c652c4d7121b98932a45b49ce9c603ca52f590eb4f"
+		},
+		"rounds": 1,
+		"workloads": {
+			"serial": {
+				"collectWallMs": 51.355999999999995,
+				"admittedCollectStackMs": 49.917000000000016,
+				"excludedSelfMs": [
+					["post node:inspector:110", 27.458],
+					["(garbage collector) :0", 0.9580000000000001],
+					[
+						"EvidenceCollector.collect file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/scratch/ec04-collect-cpu/worker.mjs:11",
+						0.5840000000000001
+					]
+				]
+			},
+			"parallel": {
+				"collectWallMs": 150.93991599999998,
+				"admittedCollectStackMs": 145.00000000000006,
+				"excludedSelfMs": [
+					["post node:inspector:110", 26.333],
+					["(garbage collector) :0", 5.457999999999999],
+					[
+						"EvidenceCollector.collect file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/scratch/ec04-collect-cpu/worker.mjs:11",
+						0.584
+					],
+					["dispatch :0", 0.083]
+				]
+			},
+			"long": {
+				"collectWallMs": 547.774542,
+				"admittedCollectStackMs": 537.4600000000005,
+				"excludedSelfMs": [
+					["post node:inspector:110", 28.417],
+					["(garbage collector) :0", 9.831999999999999],
+					[
+						"EvidenceCollector.collect file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/scratch/ec04-collect-cpu/worker.mjs:11",
+						0.666
+					]
+				]
+			}
+		},
+		"limits": "100us requested sampling; observed interval larger; sampling overhead present. Profiler startup post samples excluded from attribution; all GC excluded conservatively because no collect stack, not assumed free. Stack sample milliseconds are not process CPU accounting or a formal comparison."
+	},
+	"formalBaseline": {
+		"status": "FAIL",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collect-cpu/files/baseline-formal-result.json",
+			"bytes": 8619,
+			"sha256": "edbe918234a619245ade638ba0098f840e6d5f4e85c59a4966653e7d252db491"
+		},
+		"comparisons": [
+			{
+				"workload": "serial",
+				"wallDelta": 50.91620800000004,
+				"wallLimit": 50,
+				"cpuDelta": 48.209,
+				"cpuLimit": 50,
+				"rssDeltas": [2637824, 4161536, 4653056, 6750208, 3948544],
+				"pass": false
+			},
+			{
+				"workload": "parallel",
+				"wallDelta": 142.57441800000004,
+				"wallLimit": 50,
+				"cpuDelta": 173.54199999999997,
+				"cpuLimit": 50,
+				"rssDeltas": [26607616, 26624000, 29097984, 26771456, 29753344],
+				"pass": false
+			},
+			{
+				"workload": "long",
+				"wallDelta": 520.135417,
+				"wallLimit": 50,
+				"cpuDelta": 482.351,
+				"cpuLimit": 50,
+				"rssDeltas": [66027520, 60702720, 63881216, 67338240, 62603264],
+				"pass": false
+			}
+		],
+		"note": "30 fresh off/on workers, frozen workloads and thresholds unchanged; FAIL retained"
+	},
+	"candidate": {
+		"change": "Reuse exact UTF-8 size returned by clean evidence validation for contentRef.size, no persistent cache",
+		"patch": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collect-cpu/files/candidate-unverified.patch",
+			"bytes": 13384,
+			"sha256": "16116ce7b54a100b79f2e63236d886f279eb845fcc42821c1095ed1424c623cb"
+		},
+		"status": "NOT DELIVERED; all nine edited production/test/version files restored to HEAD",
+		"focusedTests": "50 PASS, includes empty/Unicode/lone-surrogate/redacted direct and packed bodies",
+		"typecheck": "5 configurations PASS",
+		"formalCandidate": "worker ETIMEDOUT; no complete formal candidate result",
+		"desktop": "FAIL export click timeout; no complete acceptance",
+		"broadTests": ["5 failed / 276 passed", "2 failed / 279 passed", "2 failed / 279 passed"],
+		"diagnosis": "several tests elapsed approximately 900 seconds; sysctl confirms repeated sleep/wake during runs, even with caffeinate -i; some short threshold failures also occurred, so not all failures attributed solely to sleep",
+		"noPassingClaim": true
+	},
+	"observations": {
+		"longByteLengthSamplesMs": 122.37000000000005,
+		"longByteLengthUnderValidateMs": 26.917000000000048,
+		"longByteLengthUnderPrepareMs": 26.038000000000054,
+		"longCanonicalAppendSelfMs": 57.70900000000006,
+		"longFsyncSelfMs": 76.499,
+		"interpretation": "One duplicate clean-body size scan identified; total hashing/serialization, source projection, filesystem and sync costs remain. No claim candidate can meet 50ms gate."
+	},
+	"sleep": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collect-cpu/files/final-sleep-observation.json",
+		"bytes": 498,
+		"sha256": "d559c7d3831f9d4fcbf21863742946f8d0e11f6a585a5d3af866f0dd32a60e48"
+	},
+	"productVersion": "0.4.24 unchanged",
+	"externalCalls": {
+		"realModels": 0,
+		"realCLI": 0,
+		"nativeRunner": 0,
+		"businessExecution": 0
+	},
+	"overall": "EC04/M1 incomplete; performance FAIL; EC06 containment unresolved; EC07/09 held; CLI user-deferred"
+}

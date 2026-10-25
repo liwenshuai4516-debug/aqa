@@ -92,3 +92,7 @@ EC05在已明确JSON profile和macOS arm64范围完成，详见[阶段记录与A
 ## EC04 重启后保留未知评分句柄
 
 [本轮证据](EC04-unknown-job-diagnostics.json)：实际桌面隔离副本注入退出时报告保存IO_ERROR，正常退出释放writer锁后原生重启，旧持久句柄字节一致且状态unknown。取消及旧请求重放均EXECUTION_UNKNOWN；只有显式新请求产生另一完成报告，旧报告/句柄、attempt/snapshot不变。106项单测、五配置typecheck及完整主矩阵通过，365份最终/失败原件归档。首轮新评估与只读检查顺序错误已修正并保留原断言；并非磁盘满、断电、强杀或遗留锁恢复测试，AC19其余组合、AC39/M1与隔离门禁仍未关闭。
+
+## EC04 采集CPU定位与候选保留
+
+[本轮索引](EC04-collect-cpu-diagnostics.json)：新增只归因原collect调用栈的CPU采样，排除Profiler启动与无栈GC；定位到clean正文UTF-8长度重复扫描。0.4.24新正式30轮对照仍FAIL（长输出墙钟520.14ms、CPU482.35ms、一轮RSS超限）。候选定向50项/五配置typecheck通过，但完整回归、桌面及候选性能均未取得有效通过，系统反复睡眠与超时证据保留，未降低标准。候选patch/源码归档后产品恢复HEAD/0.4.24；66份原件校验归档，后续从候选继续，M1与隔离门禁不关闭。
