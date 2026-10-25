@@ -5,7 +5,7 @@
 | 维护内容                                | 唯一位置                                                                         |
 | --------------------------------------- | -------------------------------------------------------------------------------- |
 | 技能名称、描述、调度入口                | `../SKILL.md`                                                                    |
-| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.4.tgz`                                              |
+| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.7.tgz`                                              |
 | 原生测试 MCP 适配                       | `../assets/mcp-extension.mjs`                                                    |
 | Chromium 执行配置                       | `../assets/playwright.config.mjs`                                                |
 | 录制 seed 前置校验                      | `../assets/recording-preflight.mjs`（由 MCP 执行钩子调用，不另建 runner）        |
@@ -15,8 +15,8 @@
 | 管理页与快捷发现的公共逻辑              | `server/skill/`、`server/settings-service.ts`、`server/slash-commands.ts`        |
 | 测试资产与执行证据                      | 被测工作区 `qa/ui/`，不写进技能目录                                              |
 
-原版包来源提交：`b31dd3c5dae980bcffe6708ece1145defedbe855`（上游本地提交）。
-SHA-256：`8fac9e8174e0f54d84ba593400e9b06b0f968fe2aee4988cf50710df6e9cd43e`。0.1.4 仅在一次引用核验内按 path+sha256 复用成功读取；不同摘要、后续调用及并发调用仍独立核验，不增加跨请求缓存，不改变批准或产物协议。
+原版包来源提交：`09216e08ca31825d856c6227d017eab2abb23394`（上游本地提交；未推送上游远端）。
+SHA-256：`559a8bc3459b9736bffe8533e741e85023e64da52a8a5439db9410e7d2d050c8`。0.1.4 仅在一次引用核验内按 path+sha256 复用成功读取；不同摘要、后续调用及并发调用仍独立核验，不增加跨请求缓存，不改变批准或产物协议。
 
 保留 0.1.3：将认证诊断/正式执行的原始捕获保存在工作区外的宿主私有目录，公开副本脱敏已知值并隐藏图片/二进制资源；真实失败保留，缺失原始附件时不声明完整证据。trace 读取绑定实际 Playwright 1.62.1，避免误用独立安装的 core 1.63.0。仍未覆盖录制、运行中新凭据、任意编码和脚本自行写文件；数据空间私密桥接继续 not-ready，不因该版本放行真实环境。
 
@@ -65,3 +65,7 @@ npx vitest run tests/unit/skill-capability-settings.test.ts tests/unit/ui-testin
 MCP 运行时选择由 `assets/playwright-runtime.mjs` 负责：CLI 与配置均基于当前工作区；无配置才用后备配置，缺依赖或多个配置阻塞。`tests/ui-testing-integration-test.mjs` 使用独立复制的 Playwright、`tests/` seed 与相对 baseURL 检查跨工作区启动；不以共享依赖链接替代此项回归。
 
 录制前置校验在现有 `generator_setup_page` 的执行钩子中生效：要求明确 project/seedFile，通过目标 CLI 的 `--list` 校验唯一文件和单个测试；缺失、路径歧义、多测试、错误 project 或收集不兼容时拒绝，不创建默认 seed。只收集，不执行 seed 测试体；每次 setup 重新检查。配置模块与测试模块仍会被 Playwright 收集器加载，必须使用已授权工作区；该检查不证明登录、角色或数据初态就绪。只查看、分析和已有资产正式回归不触发此录制检查。
+
+0.1.7 增加受信任宿主的 DesignReviewService.renewBudget：明确用户续授后一次追加1–3轮，保留原task/scope及全部尝试，授权幂等、pending拒绝；不登记为模型工具，不授予批准。累计评审round允许超过3，实际次数仍由冻结scope加私有续授及宿主总预算限制。0.1.5试装的第四轮响应因旧round上限被拒绝，不能当作批准；已留原始失败并补有效第四轮登记回归。
+
+0.1.7 修复连续错误后改善依据的选择：回溯最近已登记的有效评审，不以紧邻的错误尝试覆盖 revise。已保存的原始响应不能因此追认为批准，须另行取得授权后重新评审。

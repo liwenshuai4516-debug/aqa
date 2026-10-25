@@ -6,17 +6,20 @@ import { dirname, join, resolve } from "node:path";
 import { homedir } from "node:os";
 import { pathToFileURL, fileURLToPath } from "node:url";
 import { ModelRuntime } from "@earendil-works/pi-coding-agent";
-import { ArtifactStore, UiWorkflowService, capabilities } from "pi-ui-testing";
+import { ArtifactStore, DesignReviewService, UiWorkflowService, capabilities } from "pi-ui-testing";
 
-const [directory, operation] = process.argv.slice(2);
+const [directory, operation, revisionFile] = process.argv.slice(2);
 assert.ok(
 	directory && ["review", "diagnose"].includes(operation),
-	"Usage: <prepared evidence directory> review|diagnose",
+	"Usage: <prepared evidence directory> review|diagnose [saved revision JSON]",
 );
 const output = resolve(directory);
 const prepared = JSON.parse(await readFile(join(output, "result.json"), "utf8"));
 const root = prepared.mode === "complete-browser-candidate" ? output : join(output, "project");
 assert.equal(prepared.status, "PASS");
+const revision = revisionFile ? JSON.parse(await readFile(resolve(revisionFile), "utf8")) : prepared;
+assert.equal(revision.status, "PASS");
+const selectedAssetRef = revision.assetRef;
 const installed = dirname(fileURLToPath(import.meta.resolve("pi-ui-testing")));
 const { registerDesignTools } = await import(pathToFileURL(join(installed, "design-extension.js")).href);
 const definitions = new Map();
@@ -125,6 +128,28 @@ try {
 		const current = await nativeWorkflow.find(originalTask.id);
 		const resumed = await nativeWorkflow.resumeTask(current.task_ref);
 		result.taskRef = resumed.task_ref;
+		if (revisionFile) {
+			const extension = ledger.authorization_extensions.at(-1);
+			assert.equal(ledger.authorized_provider, "gpt");
+			assert.equal(ledger.authorized_model, "gpt-6.1-sol");
+			assert.equal(extension.additional_native_limit, 3);
+			assert.equal(extension.additional_cost_usd, 1);
+			const remaining = ledger.max_calls - ledger.native_attempts.length;
+			assert.ok(remaining >= 1 && remaining <= 2, "Use only the already authorized remaining rounds");
+			const service = new DesignReviewService(root, join(output, "ui-review-authority"));
+			result.budgetGrant = await service.renewBudget(
+				resumed.task_ref,
+				selectedAssetRef,
+				{
+					authorization_id: "u05-human-authorization3-remaining-two",
+					additional_rounds: 2,
+					reason:
+						"Human authorized three additional U05 reviews and USD 1; GPT review 7 used one. Preserve original task and all attempts; renew remaining two only.",
+				},
+				async (request) => request.additional_rounds === remaining && request.used_rounds === 3,
+			);
+		}
+
 		const requestId = `u05-native-review-${number}`;
 		ledger.native_attempts.push({ request_id: requestId, status: "started" });
 		saveLedger();
@@ -134,7 +159,7 @@ try {
 			.get("ui_design_review")
 			.execute(
 				requestId,
-				{ task_ref: resumed.task_ref, asset_ref: prepared.assetRef, request_id: requestId },
+				{ task_ref: resumed.task_ref, asset_ref: selectedAssetRef, request_id: requestId },
 				new AbortController().signal,
 				undefined,
 				ctx,
@@ -163,7 +188,7 @@ try {
 			{
 				request: {
 					operation: "diagnose",
-					asset_ref: prepared.assetRef,
+					asset_ref: selectedAssetRef,
 					review_ref: response.output.review_ref,
 					spec_ref: prepared.diagnosticSpecRef,
 					request_id: requestId,

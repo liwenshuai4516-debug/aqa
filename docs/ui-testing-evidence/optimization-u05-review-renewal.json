@@ -1,0 +1,420 @@
+{
+	"date": "2026-10-25",
+	"status": "BLOCKED_NO_TRUSTED_DESIGN_APPROVAL",
+	"native_version": "0.1.7",
+	"upstream_local_only_commit": "09216e08ca31825d856c6227d017eab2abb23394",
+	"upstream_pushed": false,
+	"host_only_renewal": {
+		"scope_round_limit": 3,
+		"additional_authorized_rounds": 2,
+		"total_same_task_limit": 5,
+		"reset_history": false,
+		"agent_tool_exposed": false
+	},
+	"attempts": [
+		{
+			"request": 8,
+			"provider": "gpt/gpt-6.1-sol",
+			"provider_stop": "stop",
+			"raw_decision": "approved",
+			"registered": false,
+			"error": "invalid-input: data/data/round must be <= 3",
+			"installed_version": "0.1.5"
+		},
+		{
+			"request": 9,
+			"provider": "gpt/gpt-6.1-sol",
+			"provider_stop": "stop",
+			"raw_decision": "approved",
+			"registered": false,
+			"error": "review-rejected: 评估改善状态与历史不一致",
+			"installed_version": "0.1.6"
+		}
+	],
+	"raw_approval_warning": "UNREGISTERED raw responses are not trusted design approval; no retroactive registration or replay",
+	"remaining_authorized_calls": 0,
+	"global_native_attempts": 9,
+	"third_batch_reserved_usd": 0.6079693333333333,
+	"third_batch_limit_usd": 1,
+	"billing": "Conservative reservation, not invoice. All categories bounded at CNY2/M and CNY6/USD; registry zero is not free.",
+	"task_state": "blocked",
+	"task_stage": "design-review",
+	"diagnostics": "NOT RUN: no trusted design approval and browser v2 has no registered diagnostic plan",
+	"formal_execution": "NOT RUN",
+	"validation": {
+		"native": "12 passed / 1 live-model check skipped",
+		"host_units": "14 passed, 3 files",
+		"host_typecheck": "passed",
+		"integration_checks": 19,
+		"desktop_current_version": "7 passed, isolated Electron, zero model/business requests",
+		"desktop_prior_version": "0.1.6 historical, not counted as current",
+		"build": "passed",
+		"lint": "passed",
+		"protocol": "structure passed; no historical tag, history skipped",
+		"installed_distribution_files_verified": 95
+	},
+	"plan_complete": false,
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-u05-review-renewal.tar.gz",
+		"sha256": "e9d3c71c45a142365d74d98a3ddd44ac70e22ec8a996b79c383ff7eb21f85800",
+		"bytes": 723360,
+		"roundtrip_verified": true
+	},
+	"files": [
+		{
+			"path": ".pi/skills/ui-testing-workflow/assets/pi-ui-testing-0.1.5.tgz",
+			"sha256": "e57c1f012e46a51f83fa678039ff1df32d38730cb19237c7354e921b4472cc5a",
+			"bytes": 173187
+		},
+		{
+			"path": ".pi/skills/ui-testing-workflow/assets/pi-ui-testing-0.1.6.tgz",
+			"sha256": "e7fd6658b61e2b00679db4a8eacfc60e7e5e02b5eed74e6dca485a8b457b8092",
+			"bytes": 173186
+		},
+		{
+			"path": ".pi/skills/ui-testing-workflow/assets/pi-ui-testing-0.1.7.tgz",
+			"sha256": "559a8bc3459b9736bffe8533e741e85023e64da52a8a5439db9410e7d2d050c8",
+			"bytes": 173208
+		},
+		{
+			"path": ".pi/skills/ui-testing-workflow/references/maintenance.md",
+			"sha256": "f41e5feab4d6e97b8f636ed6a24b8daa95c5a3c88ca9c78a0f24283c87eedea7",
+			"bytes": 6844
+		},
+		{
+			"path": "installed-package-verification.json",
+			"sha256": "c370bb04331681e9cc8d30e1fbc8098d6f477dd2f0bda62c8f83817ba6a61299",
+			"bytes": 12981
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/native-review-8-authorization3.json",
+			"sha256": "198da9d47e308bc95cd96163fa3424ea6cfa029ad3a1d34075b762db383ab78b",
+			"bytes": 10149
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/native-review-9-authorization3.json",
+			"sha256": "d83a10353e7872ff3cf45d4429b76a1d08b42fbf981784aa50b2c529c490ecfd",
+			"bytes": 10980
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v2/reviews/design-663d30d7-79c0-4bac-9c67-24a951e61dec/input.json",
+			"sha256": "fae75d280926fc2582666189be158d66b0ca17b704194b5349bb37b10ef714c0",
+			"bytes": 601474
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v2/reviews/design-663d30d7-79c0-4bac-9c67-24a951e61dec/raw.json",
+			"sha256": "4a9e946693a69bbd75b5b77c16b5876eb78f0828989d63c26598819adc7fb140",
+			"bytes": 6032
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v2/reviews/design-663d30d7-79c0-4bac-9c67-24a951e61dec/static.json",
+			"sha256": "cd58d521a35db67a495d33fdbfd4e453c55f89c729de478ef7672f2594dc5e16",
+			"bytes": 843
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v2/reviews/design-b93f1294-f692-4527-91e4-29211f62cd36/input.json",
+			"sha256": "4432fde740038136c5af1d874c9e8e9f2d51465b7d89c9f90a4a3eff6e5df76a",
+			"bytes": 631898
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v2/reviews/design-b93f1294-f692-4527-91e4-29211f62cd36/raw.json",
+			"sha256": "2ef7dfb6344f6a4f5b8ee55b4ae0103b1c01c9657a26d8accb1725c60a918aef",
+			"bytes": 6655
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v2/reviews/design-b93f1294-f692-4527-91e4-29211f62cd36/static.json",
+			"sha256": "cd58d521a35db67a495d33fdbfd4e453c55f89c729de478ef7672f2594dc5e16",
+			"bytes": 843
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/tasks/u05-tester/manifest.json",
+			"sha256": "62cb70ebc0520f0ad81c397b0d9c6ef8b57227f299d4ddaa3978fd900c717e41",
+			"bytes": 1551
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/review-renewal-task.json",
+			"sha256": "929d0285c504adf2b66aa446a4035f504667162b2d1e2b11c9be03e60ccd17ec",
+			"bytes": 2275
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorized-review-budget.json",
+			"sha256": "8a18be956c8fb6e810da3cf2b568a59ed2902a793bc7e229287946f7120c29eb",
+			"bytes": 7272
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-after.log",
+			"sha256": "9a436b819cef4a2ff0231323ed97fb1c1ad7533ed64dceb74657e5fb9e93cec3",
+			"bytes": 1749
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-before.log",
+			"sha256": "9a2ea87789c1b9b9dd6c152b420d8ef4561e23279f93616ebf910adb46fce5ef",
+			"bytes": 2247
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-build-016.log",
+			"sha256": "df140c0a24600a201cfe450b26bb91ba99a0587cd6aea53dc3faeaea229898e9",
+			"bytes": 58
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-build-017.log",
+			"sha256": "df140c0a24600a201cfe450b26bb91ba99a0587cd6aea53dc3faeaea229898e9",
+			"bytes": 58
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-build-final.log",
+			"sha256": "df140c0a24600a201cfe450b26bb91ba99a0587cd6aea53dc3faeaea229898e9",
+			"bytes": 58
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-build.log",
+			"sha256": "df140c0a24600a201cfe450b26bb91ba99a0587cd6aea53dc3faeaea229898e9",
+			"bytes": 58
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-check-016.log",
+			"sha256": "f108603c5e71023c7c1a8134326b2077220e38ea28459ea222b061bb1425a6f0",
+			"bytes": 101
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-check-017.log",
+			"sha256": "f108603c5e71023c7c1a8134326b2077220e38ea28459ea222b061bb1425a6f0",
+			"bytes": 101
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-check-final.log",
+			"sha256": "f108603c5e71023c7c1a8134326b2077220e38ea28459ea222b061bb1425a6f0",
+			"bytes": 101
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-check.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-corrected.log",
+			"sha256": "2ad4bdb6024993bf5017e718b9dc1ba7f464812bdf7704d8dd684a680280b1f4",
+			"bytes": 325
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-desktop-017.log",
+			"sha256": "b303d70c425797f93ff05229e03e1336f741679f11c3302328e0b699fa4be903",
+			"bytes": 886
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-desktop.log",
+			"sha256": "bf3c7a173d11ef8c5c62c869d2da261b1419170babbdbf9ce2353311fe9374d1",
+			"bytes": 886
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-host-build-017.log",
+			"sha256": "2c4215abbb657278066ac130c7b328ceb72f204fe6c8f0c022dd7db1ca26866f",
+			"bytes": 6101
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-host-build.log",
+			"sha256": "d8e94b24273817fb8e22fe188fa1693d0acf35f890a180bd7e65a83e15cce549",
+			"bytes": 6101
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-host-typecheck-017.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-host-typecheck-final.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-install-016.log",
+			"sha256": "941d65e39e9ba5a9402b76dd83ae2b615a4e77e7f5fb578201d0ccbfe0ba759c",
+			"bytes": 132
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-install-017.log",
+			"sha256": "ed0c9cd331142d3f5f306ccf0d9b8386310e2cc1b235921c4ca8ad0bf303d16b",
+			"bytes": 135
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-install-final.log",
+			"sha256": "140012912386ead6e0bc5ae9ea1ea61de123e724cf554686f686e7378eebb18d",
+			"bytes": 135
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-install.log",
+			"sha256": "2d50000916224ebc80a6cd4c73f56ed02ceab11adb3498b776e03f37e53b003c",
+			"bytes": 1340
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-integration-017.log",
+			"sha256": "2f9b301a371beafbd2a0910a05fbaeecdd1ac5f102799c289c7724912542119d",
+			"bytes": 1651
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-integration.log",
+			"sha256": "2f9b301a371beafbd2a0910a05fbaeecdd1ac5f102799c289c7724912542119d",
+			"bytes": 1651
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-lineage-regression.log",
+			"sha256": "238d9511479a3135d80dd332f625907f676429e0d84dd4727e457775b4953e7b",
+			"bytes": 1146
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-lint-017.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-lock-016.log",
+			"sha256": "c84ab982393c2f4715e19f4154bce9d78582ffcf9edcb4cbae2a404cdf055e72",
+			"bytes": 21
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-pack-016.log",
+			"sha256": "ede294bed48faef346ca983e75e598b8762af05d552717cbe8137c116f0dcb38",
+			"bytes": 4292
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-pack-017.log",
+			"sha256": "6cb3413cffb7e571f5f8ba78412376e6e1fbb83dab81b45b446a8d7a93ae22e6",
+			"bytes": 4292
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-pack.log",
+			"sha256": "f58fd16a3f9647cb61aebc4e62d70a88510b46a5249a6c62811572788f0d7fc3",
+			"bytes": 4292
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-protocol-017.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"bytes": 360
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-regression-017.log",
+			"sha256": "49313d8053cd89596fd015652475c927a58f1d6dccd6ee5d63b23dd0d7731fcb",
+			"bytes": 1492
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-regression.log",
+			"sha256": "43bf04c95a9b2cf6737b7ff2df149e1aefdbdc43f4768982b25a09102dee43dc",
+			"bytes": 2647
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-review8.log",
+			"sha256": "44c3f63d10fbef32c59e421957a5aae1da24794ea8244392d54d70808bdfdf13",
+			"bytes": 10150
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-review9.log",
+			"sha256": "e6fd4a5115de98ce900b5f0c9b4de9c04c37d0996722d73795b50e31a4d7e1d9",
+			"bytes": 10981
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-schema-regression.log",
+			"sha256": "78063b0a365268414d1878b30fb4c7b36691c33e36646736609e49ff4e9b3a19",
+			"bytes": 1037
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-size-017.log",
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+			"bytes": 1089
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-unit-017.log",
+			"sha256": "c82405cd4761ca95e047e4d27ae64a5e92cd03063f0bbf1d2e0db945804190c6",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-unit-final-017.log",
+			"sha256": "53881feebcba84b0211b28918db6a766493b9642657e2340cbc90f34bef2046e",
+			"bytes": 453
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-renew-unit.log",
+			"sha256": "bad2dc73a0ba74ef053d13ff0448a0992e57bca8d4d99a47214f722cc56d92f5",
+			"bytes": 444
+		},
+		{
+			"path": "tests/scratch/ui-workflow-visibility/1792916073217/desktop.log",
+			"sha256": "a894e193d1f745d82e7560a29b32028e6304a64494bbd9e172d0bcfc554e6b75",
+			"bytes": 1828
+		},
+		{
+			"path": "tests/scratch/ui-workflow-visibility/1792916073217/result.json",
+			"sha256": "b0a888650d02faf7f3c2f6a2e12ac74c6f7028e18d11bf68a5ee6c263e96aa7e",
+			"bytes": 780
+		},
+		{
+			"path": "tests/scratch/ui-workflow-visibility/1792916423275/desktop.log",
+			"sha256": "f6f9b6e45bde1fc320c39cecaf70b435162dab4bd28715872c53538937fb2a54",
+			"bytes": 1828
+		},
+		{
+			"path": "tests/scratch/ui-workflow-visibility/1792916423275/result.json",
+			"sha256": "b0a888650d02faf7f3c2f6a2e12ac74c6f7028e18d11bf68a5ee6c263e96aa7e",
+			"bytes": 780
+		},
+		{
+			"path": "tests/ui-multifunction-native-review.mjs",
+			"sha256": "340949b9d889f1edb60a3ce736e401a12edf9614df714a72ea6af0d3269ae88a",
+			"bytes": 9983
+		},
+		{
+			"path": "tools/e2e/package-lock.json",
+			"sha256": "5f8638c488805629251c8d4b282cdbe724e3020bd52fb19941867ce4fc0b0a3b",
+			"bytes": 61461
+		},
+		{
+			"path": "tools/e2e/package.json",
+			"sha256": "320a5b18aa191ff164f0f788af0dffaf17b3f940f3debdc61972f1a307bd22fe",
+			"bytes": 308
+		},
+		{
+			"path": "upstream/commits/09216e0.patch",
+			"sha256": "7bb7adf13a25df4f5d52ca533cb942e134e1622c8e46a0761116a6033822fd04",
+			"bytes": 3840
+		},
+		{
+			"path": "upstream/commits/9ab792b.patch",
+			"sha256": "69b4bfb90309b3a18c28e27c98420be4af6193d758e6712bb7446a19bb330f0d",
+			"bytes": 3284
+		},
+		{
+			"path": "upstream/commits/b3e7ada.patch",
+			"sha256": "e5343a4179dc3ff0d71ba91b75124a5c3da2f42cfb95471ba8c8e8dc3a0c9784",
+			"bytes": 16308
+		},
+		{
+			"path": "upstream/packages/ui-testing/README.md",
+			"sha256": "ac202fb5694a3fdb0229fcdc3e9ed1cdf5e6d137966c35d2b69c876d9101f531",
+			"bytes": 39214
+		},
+		{
+			"path": "upstream/packages/ui-testing/package.json",
+			"sha256": "1dfe8126b61c270b6e4ab0004585ec182f45233feb97ee447f52d8f605952330",
+			"bytes": 664
+		},
+		{
+			"path": "upstream/packages/ui-testing/skills/ui-design-review/SKILL.md",
+			"sha256": "63b0c4dabd565463ccc367d6b85c7e001f611519939a06c143cfd5d4e58ac9ad",
+			"bytes": 3996
+		},
+		{
+			"path": "upstream/packages/ui-testing/src/contracts.ts",
+			"sha256": "75ef5782b5012aff168eaecbcd053b5cc1e8175e98653d52f928358be8ec19e1",
+			"bytes": 13811
+		},
+		{
+			"path": "upstream/packages/ui-testing/src/review.ts",
+			"sha256": "26c6cd6195fc28cbc43ce555a25d77d3a4fba8f44c9094a73967abc70ed52794",
+			"bytes": 20863
+		},
+		{
+			"path": "upstream/tests/ui-testing/review-budget.test.mjs",
+			"sha256": "8116bef1806a39cbd25fc18537b91a766acac3f46b68d323f628b66c109bac52",
+			"bytes": 5130
+		}
+	]
+}
