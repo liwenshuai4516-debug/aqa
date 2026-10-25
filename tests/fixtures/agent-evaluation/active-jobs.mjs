@@ -18,7 +18,8 @@ const probeEvaluate = probeRule.evaluate;
 probeRule.manifest.timeoutMs = 10000;
 probeRule.evaluate = async (...args) => {
  if (!probeExists(probeControl)) return probeEvaluate(...args);
- const {gate} = JSON.parse(probeRead(probeControl, "utf8"));
+ const {gate, mode} = JSON.parse(probeRead(probeControl, "utf8"));
+ if (mode === "timeout" || mode === "exception") return probeEvaluate(...args);
  if (!gate) return probeEvaluate(...args);
  const signal = args[3];
  probeWrite(gate + ".started", JSON.stringify({at:Date.now(),aborted:signal.aborted}));
@@ -30,6 +31,27 @@ probeRule.evaluate = async (...args) => {
  probeWrite(gate + ".late", String(Date.now()));
  return probeEvaluate(...args);
 };
+const faultRule = internalEvaluators.find(r => r.manifest.id === "F02");
+const faultEvaluate = faultRule.evaluate;
+faultRule.manifest.timeoutMs = 500;
+faultRule.evaluate = async (...args) => {
+ if (!probeExists(probeControl)) return faultEvaluate(...args);
+ const {gate, mode} = JSON.parse(probeRead(probeControl, "utf8"));
+ if (!gate || !["timeout", "exception"].includes(mode)) return faultEvaluate(...args);
+ const signal = args[3];
+ probeWrite(gate + ".started", JSON.stringify({at:Date.now(),aborted:signal.aborted}));
+ signal.addEventListener("abort", () => probeWrite(gate + ".aborted", String(Date.now())), {once:true});
+ if (mode === "exception") {
+  probeWrite(gate + ".exception", "synthetic evaluator exception");
+  throw new Error("synthetic evaluator exception");
+ }
+ await new Promise(resolve => {
+  const timer=setInterval(() => {if(probeExists(gate + ".release")){clearInterval(timer);resolve();}},10);
+  timer.unref();
+ });
+ probeWrite(gate + ".late", String(Date.now()));
+ return faultEvaluate(...args);
+};
 `;
 	const needle = "export const internalEvaluators = [...basicEvaluators, F08];";
 	assert.ok(source.includes(needle));
@@ -38,7 +60,7 @@ probeRule.evaluate = async (...args) => {
 		'import {existsSync as probeExists, readFileSync as probeRead, writeFileSync as probeWrite} from "node:fs";\n' +
 			source.replace(needle, needle + injection),
 	);
-	return { control, installed, injectedRule: "F01", injectedTimeoutMs: 10000 };
+	return { control, installed, injectedRule: "F01", injectedTimeoutMs: 10000, faultRule: "F02", faultTimeoutMs: 500 };
 }
 const exists = async (path) =>
 	access(path).then(
@@ -185,5 +207,71 @@ export async function verifyActiveJobs({
 	assert.match(await header.innerText(), /Cancelled/);
 	await page.locator(".aev").evaluate((el) => el.querySelector("main > section").scrollIntoView({ block: "start" }));
 	await page.screenshot({ path: join(output, "active-job-cancelled.png") });
+	for (const mode of ["timeout", "exception"]) {
+		const gate = join(output, `rule-${mode}`);
+		await writeFile(probe.control, JSON.stringify({ gate, mode }));
+		const frameOffset = await page.evaluate(() => window.__evaluationFrames.length);
+		await page.locator('.aev [data-action="reevaluate"]:not([disabled])').click();
+		await until(() => exists(gate + ".started"));
+		const job = await page.evaluate(
+			(offset) =>
+				window.__evaluationFrames
+					.slice(offset)
+					.filter((frame) => frame.type === "plugin_data" && frame.payload?.result?.jobId)
+					.at(-1)?.payload.result,
+			frameOffset,
+		);
+		assert.ok(job?.jobId);
+		let state;
+		await until(async () => {
+			state = await rpc("status", { jobId: job.jobId });
+			return state.state === "completed";
+		});
+		const report = (await reports()).find((record) => record.data.job?.jobId === job.jobId),
+			code = mode === "timeout" ? "RULE_TIMEOUT" : "EVALUATOR_ERROR",
+			finding = report.data.findings.find((row) => row.ruleId === "F02");
+		assert.equal(report.data.state, "completed");
+		assert.equal(report.data.assessmentStage, "provisional");
+		assert.equal(finding.error, code);
+		assert.equal(finding.verdict, "inconclusive");
+		assert.ok(finding.attributions.some((row) => row.category === "evaluator"));
+		assert.ok(report.data.findings.some((row) => row.ruleId === "F06" && !row.error));
+		assert.ok(report.data.summary.counts.errors >= 1);
+		await until(() => exists(gate + ".aborted"));
+		const frozen = await reports(),
+			lock = await readFile(join(dataDir, "agent-evaluation/writer.lock"), "utf8");
+		if (mode === "timeout") {
+			await writeFile(gate + ".release", "release result after timeout report publication");
+			await until(() => exists(gate + ".late"));
+		} else assert.equal(await exists(gate + ".exception"), true);
+		assert.equal((await rpc("status", { jobId: job.jobId })).state, "completed");
+		assert.deepEqual(await reports(), frozen);
+		assert.equal(await readFile(join(dataDir, "agent-evaluation/writer.lock"), "utf8"), lock);
+		assert.equal(await readFile(originalFile, "utf8"), originalBytes);
+		assert.deepEqual(await names("attempts"), attempts);
+		assert.deepEqual(await names("snapshots"), snapshots);
+		await until(async () => {
+			const status = page.locator('.aev [data-action="status"]:not([disabled])');
+			if (await status.isVisible()) await status.click();
+			return page.locator('.aev [data-action="reevaluate"]:not([disabled])').isVisible();
+		});
+		const article = page.locator(".aev article").filter({ has: page.locator("h3", { hasText: "F02" }) });
+		assert.match(await article.innerText(), new RegExp(code));
+		await article.scrollIntoViewIfNeeded();
+		await page.screenshot({ path: join(output, `rule-${mode}.png`) });
+		results.push({
+			action: mode,
+			jobId: job.jobId,
+			reportId: report.id,
+			state: report.data.state,
+			code,
+			verdict: finding.verdict,
+			independentF06Completed: true,
+			lateResultIgnored: mode === "timeout",
+			oldReportUnchanged: true,
+			attemptsAndSnapshotsUnchanged: true,
+		});
+		await writeFile(probe.control, "{}");
+	}
 	return results;
 }

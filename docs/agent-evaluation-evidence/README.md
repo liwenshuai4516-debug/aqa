@@ -84,3 +84,7 @@ EC05在已明确JSON profile和macOS arm64范围完成，详见[阶段记录与A
 ## EC04 实际SDK工具不能提交人审
 
 [本轮证据](EC04-tool-channel-diagnostics.json)：本地确定性SSE共6次响应，驱动实际Electron/原SDK的3次工具尝试；get报告与UI精确相同，普通review及伪造human/channel/principalId的review均在SDK schema拒绝，未误报服务PERMISSION_DENIED。工具调用后整个仓库摘要不变、review为0；同一合法数据经可信UI通道只追加1条review，其余文件与原报告不变。105项相关回归、五配置typecheck和既有81次选区/主体拒绝、原生源故障/分页通过；110份原件归档，无产品变更或外部模型调用。AC18补验不等于所有后续守卫都已执行，AC39/M1及隔离阻塞仍未关闭。
+
+## EC04 桌面规则故障与活动作业收尾
+
+[本轮证据](EC04-rule-fault-diagnostics.json)：实际Electron隔离副本注入F01延迟及F02超时/异常，30份插件文件仅profile不同，原引擎/服务/存储保持。取消、Rescan、禁用三组收尾及迟到结果保护通过；新增RULE_TIMEOUT/EVALUATOR_ERROR均归评估器、inconclusive/阶段报告，独立F06继续，超时迟到不改已存报告。106项单测、五配置typecheck和完整桌面主矩阵通过，174份原件校验归档。未知作业恢复及其余组合仍待补，AC12/19不整项关闭，AC39/M1与隔离门禁仍未解除；真实CLI/模型调用0。

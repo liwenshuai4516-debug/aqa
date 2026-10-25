@@ -722,7 +722,7 @@ try {
 	);
 
 	if (activeJobProbe) {
-		stage("active scoring cancellation and synchronous plugin unload");
+		stage("active scoring cancellation, unload, rule timeout and evaluator exception");
 		result.activeJobProbe = activeJobProbe;
 		result.activeJobChecks = await verifyActiveJobs({
 			page,
@@ -740,7 +740,7 @@ try {
 			openView,
 		});
 		result.checks.push(
-			"Controlled F01 delay in an isolated plugin copy: actual desktop cancel, Rescan and settings disable cancel running scoring; settings disable also stops observation. Late results cannot change reports or writer locks.",
+			"Controlled rules in an isolated plugin copy: desktop cancel, Rescan and settings disable cancel running F01; disable stops observation. F02 timeout/exception stay evaluator errors with later F06 completed. Late results cannot change reports or writer locks.",
 		);
 	}
 

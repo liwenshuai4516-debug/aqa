@@ -1,0 +1,147 @@
+{
+	"scope": "AC12/AC19 actual macOS arm64 Electron controlled rule faults; no product code change",
+	"timestamp": "2026-10-25T14:55:51.099831+00:00",
+	"baseline": "c5ee4896eca7e1ba1656e49650b59a2045683a0b",
+	"pluginVersion": "0.4.24",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-rule-faults/index.json",
+		"bytes": 35985,
+		"sha256": "aff51822fcbba34e93e60ed6d9a48e4acf35c280046338878925e9aef0b4340f"
+	},
+	"archiveFiles": 174,
+	"actualDesktop": {
+		"status": "PASS",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-GDucFH",
+		"result": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-rule-faults/files/desktop/result.json",
+			"bytes": 8918,
+			"sha256": "1f6810a42cb3fae06053c0949d6f6021dfddcb1662e6a3766f527dde15425cab"
+		},
+		"checks": [
+			{
+				"action": "cancel",
+				"jobId": "3dfb136e-8f22-4edf-adc9-068f289699b5",
+				"reportId": "7fd26588-1472-44f7-8ed0-05fccd92b7a9",
+				"state": "cancelled",
+				"lateResultIgnored": true,
+				"oldReportUnchanged": true,
+				"writerReplaced": false,
+				"replacementLockPreserved": true
+			},
+			{
+				"action": "reload",
+				"jobId": "1be6a073-922f-439c-9366-2290b417cc2e",
+				"reportId": "b1e14841-cc52-4bc5-ada8-5a9c0150f1cf",
+				"state": "cancelled",
+				"lateResultIgnored": true,
+				"oldReportUnchanged": true,
+				"writerReplaced": true,
+				"replacementLockPreserved": true
+			},
+			{
+				"action": "disable",
+				"jobId": "6155c2de-ed26-4bb1-8729-ef072029ee78",
+				"reportId": "e53c1801-b16c-443d-b274-6135d307ecd0",
+				"state": "cancelled",
+				"lateResultIgnored": true,
+				"oldReportUnchanged": true,
+				"writerReplaced": false,
+				"observationStopped": true,
+				"replacementLockPreserved": true
+			},
+			{
+				"action": "timeout",
+				"jobId": "6f209bc2-fa4a-4a2f-878e-8c57a3f5f4f5",
+				"reportId": "3115193d-32bb-407d-8719-53aae9a2f0dd",
+				"state": "completed",
+				"code": "RULE_TIMEOUT",
+				"verdict": "inconclusive",
+				"independentF06Completed": true,
+				"lateResultIgnored": true,
+				"oldReportUnchanged": true,
+				"attemptsAndSnapshotsUnchanged": true
+			},
+			{
+				"action": "exception",
+				"jobId": "72c094a9-ec87-429a-89db-f3ac48e8d27d",
+				"reportId": "db8bcc53-d017-4302-973e-be9751556338",
+				"state": "completed",
+				"code": "EVALUATOR_ERROR",
+				"verdict": "inconclusive",
+				"independentF06Completed": true,
+				"lateResultIgnored": false,
+				"oldReportUnchanged": true,
+				"attemptsAndSnapshotsUnchanged": true
+			}
+		]
+	},
+	"sourceIntegrity": {
+		"comparedFiles": 30,
+		"onlyDifference": "profiles/internal.mjs in owned installed plugin copy; F01 delayed and F02 timeoutMs=500ms with controlled timeout/exception",
+		"engineServiceStoreUnchanged": true,
+		"comparison": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-rule-faults/files/plugin-source-comparison.json",
+			"bytes": 7256,
+			"sha256": "395797b6995c8a2f19b462a0ff8f621c50369c5cc32fb3499064d33ab6f45f3e"
+		},
+		"originalProfile": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-rule-faults/files/source/plugins/agent-evaluation/profiles/internal.mjs",
+			"bytes": 1409,
+			"sha256": "8f01fbbb2fac2bb93531f8ea466c5aa08485fee3726f2724bcdf48c697ccad6e"
+		},
+		"injectedProfile": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-rule-faults/files/source/injected-internal.mjs",
+			"bytes": 3678,
+			"sha256": "75b19cb502fb9fdd9643e3f0de467197c55db4a569a65fcd94ef614455d2c554"
+		}
+	},
+	"validation": {
+		"typecheck": {
+			"status": "PASS",
+			"configurations": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-rule-faults/files/typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"unit": {
+			"status": "PASS",
+			"files": 4,
+			"passed": 106,
+			"failed": 0,
+			"skipped": 0,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-rule-faults/files/unit.log",
+				"bytes": 226,
+				"sha256": "b3ea3aa142b0f7f217aefd4723ff3cd539b03925a96f71f1e013b06ae8121113"
+			}
+		},
+		"lint": "PASS",
+		"protocol": "structure/v33 PASS; historical tag heuristic SKIP (no tags)",
+		"i18n": "PASS; 12 language packs",
+		"size": "PASS",
+		"diff": "PASS",
+		"clean": "preview only; no deletion",
+		"screenshots": "timeout and exception manually inspected"
+	},
+	"boundaries": [
+		"Controlled evaluator input in isolated copy, not unmodified-product fault-free acceptance",
+		"F02 errors attributed to evaluator; verdict inconclusive and stage provisional, not Agent failure",
+		"Timeout late result checked; exception has no late return and lateResultIgnored=false is not a failed assertion",
+		"Existing cancel/Rescan/disable all rerun; unknown durable job recovery and remaining combinations unexecuted",
+		"No native mixed executed-result pagination acceptance; no performance rerun; prior formal AC39 failures retained"
+	],
+	"externalCalls": {
+		"realCLI": 0,
+		"realModels": 0,
+		"nativeRunner": 0,
+		"businessExecution": 0
+	},
+	"overall": "EC04/M1 incomplete; AC39 and EC06 containment unresolved; dependent EC07/09 held; real CLI deferred by user"
+}
