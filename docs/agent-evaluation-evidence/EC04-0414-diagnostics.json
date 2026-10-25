@@ -1,0 +1,147 @@
+{
+	"pluginVersion": "0.4.14",
+	"hostApiVersion": 15,
+	"protocolVersion": 33,
+	"typecheck": {
+		"status": "PASS",
+		"configs": 5
+	},
+	"units": {
+		"numTotalTests": 313,
+		"numPassedTests": 313,
+		"numFailedTests": 0,
+		"numPendingTests": 0
+	},
+	"checks": [
+		{
+			"command": ["npm", "run", "lint"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 lint\n> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/\n\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "check:protocol"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 check:protocol\n> node scripts/check-protocol-sync.mjs\n\n✓ types.ts 是 protocol.ts 的 type-only re-export shim\n✓ protocol.ts 保持纯类型导出（无运行时代码）\n✓ 双端 PROTOCOL_VERSION 一致 (v33)\n· 跳过协议版本 git 启发式（无可用 tag 或浅检出环境）\n",
+			"stderr": "fatal: No names found, cannot describe anything.\n"
+		},
+		{
+			"command": ["npm", "run", "i18n:check"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 i18n:check\n> node scripts/i18n-diff.mjs --check-packs\n\nOK   de（v0.68.1）：缺 0，多余 0\nOK   es（v0.68.1）：缺 0，多余 0\nOK   fr（v0.68.1）：缺 0，多余 0\nOK   it（v0.68.1）：缺 0，多余 0\nOK   ja（v0.69.0）：缺 0，多余 0\nOK   ko（v0.68.1）：缺 0，多余 0\nOK   pt（v0.105.1）：缺 0，多余 0\nOK   ru（v0.68.1）：缺 0，多余 0\nOK   tr（v0.105.1）：缺 0，多余 0\nOK   zh-HK（v0.107.0）：缺 0，多余 0\nOK   zh-Hant（v0.107.0）：缺 0，多余 0\nOK   zh-TW（v0.107.0）：缺 0，多余 0\n12 个语言包 key 与 zh 一一对应。\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "size:check"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 size:check\n> node scripts/project-budget.mjs --check\n\n{\n  \"tracked\": {\n    \"AGENTS.md\": 8597,\n    \"docs/desktop-delivery/evidence\": 63696818,\n    \"assets/demo-video.mp4\": 20012405,\n    \"plugins/mermaid/client/vendor\": 5346437,\n    \"plugins/run-trace/client/vendor\": 568528\n  },\n  \"local\": {},\n  \"checks\": [\n    {\n      \"name\": \"AGENTS.md\",\n      \"bytes\": 8597,\n      \"limit\": 12000,\n      \"passed\": true\n    },\n    {\n      \"name\": \"docs/desktop-delivery/evidence\",\n      \"bytes\": 63696818,\n      \"limit\": 63696818,\n      \"passed\": true\n    },\n    {\n      \"name\": \"assets/demo-video.mp4\",\n      \"bytes\": 20012405,\n      \"limit\": 20012405,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/mermaid/client/vendor\",\n      \"bytes\": 5346437,\n      \"limit\": 5346437,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/run-trace/client/vendor\",\n      \"bytes\": 568528,\n      \"limit\": 568528,\n      \"passed\": true\n    },\n    {\n      \"name\": \"rootLockedPackages\",\n      \"count\": 612,\n      \"limit\": 650,\n      \"passed\": true\n    }\n  ],\n  \"rootLockedPackages\": 612\n}\n",
+			"stderr": ""
+		},
+		{
+			"command": ["git", "diff", "--check"],
+			"exitCode": 0,
+			"stdout": "",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "clean"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 clean\n> node scripts/clean-project.mjs\n\n仅预览；未删除文件。执行前先结束相关测试/构建进程。\n可清理 0 项，共 0.0 MiB。\n",
+			"stderr": ""
+		}
+	],
+	"scope": "EC04 AC12/AC19 synchronous plugin unload and UI cancel; settings per-client disable remains unverified/incomplete",
+	"activeProbe": {
+		"result": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-wPBcdC/result.json",
+			"bytes": 7145,
+			"sha256": "936ed905dabb37c59d0373112e34821705b37ee41fc246c7873bf17eb8a9b33c"
+		},
+		"screenshot": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-wPBcdC/active-job-cancelled.png",
+			"bytes": 102366,
+			"sha256": "ce8726db8c067a9feea98727235d22bce502bd0e1609b90965dcd7580bf354de"
+		},
+		"productionBytesMatch": [
+			{
+				"file": "evaluate.mjs",
+				"original": {
+					"path": "/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/evaluate.mjs",
+					"bytes": 19761,
+					"sha256": "799d6d943490f96472ed583959dfc2c1faa6f0a892e2c62a74e7df9c96222f98"
+				},
+				"isolated": {
+					"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-wPBcdC/desktop/data/plugins/agent-evaluation/evaluate.mjs",
+					"bytes": 19761,
+					"sha256": "799d6d943490f96472ed583959dfc2c1faa6f0a892e2c62a74e7df9c96222f98"
+				},
+				"equal": true
+			},
+			{
+				"file": "service.mjs",
+				"original": {
+					"path": "/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/service.mjs",
+					"bytes": 26933,
+					"sha256": "c59a0fdd27c14f9dbc02222b844c2825c64be8062494c9a270daf188dc76ad0b"
+				},
+				"isolated": {
+					"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-wPBcdC/desktop/data/plugins/agent-evaluation/service.mjs",
+					"bytes": 26933,
+					"sha256": "c59a0fdd27c14f9dbc02222b844c2825c64be8062494c9a270daf188dc76ad0b"
+				},
+				"equal": true
+			},
+			{
+				"file": "store.mjs",
+				"original": {
+					"path": "/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs",
+					"bytes": 30327,
+					"sha256": "213a61159b85cff8a4b19444e391db42da353bc785ce1ca7c98f471b87634edc"
+				},
+				"isolated": {
+					"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-wPBcdC/desktop/data/plugins/agent-evaluation/store.mjs",
+					"bytes": 30327,
+					"sha256": "213a61159b85cff8a4b19444e391db42da353bc785ce1ca7c98f471b87634edc"
+				},
+				"equal": true
+			},
+			{
+				"file": "client/entry.mjs",
+				"original": {
+					"path": "/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/client/entry.mjs",
+					"bytes": 33648,
+					"sha256": "b3a0dee194c4a390829cbf3174bfbad8ef97685373744523d93a5491b0cc8eb4"
+				},
+				"isolated": {
+					"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-wPBcdC/desktop/data/plugins/agent-evaluation/client/entry.mjs",
+					"bytes": 33648,
+					"sha256": "b3a0dee194c4a390829cbf3174bfbad8ef97685373744523d93a5491b0cc8eb4"
+				},
+				"equal": true
+			}
+		],
+		"injectedProfile": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-wPBcdC/desktop/data/plugins/agent-evaluation/profiles/internal.mjs",
+			"bytes": 2566,
+			"sha256": "38ee9960fa262ae5eb98ef934fbeb717a2b5e434320a4ed3e10a879f797f4858"
+		},
+		"injection": "F01 async delay and timeout 10000ms in isolated profile only; deliberately late result"
+	},
+	"failuresRetained": [
+		"/tmp/ec04-0414-reproduction.json",
+		"/tmp/ec04-0414-reproduction-final.json",
+		"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-CDMDk9/result.json",
+		"/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-iUZcpt/result.json"
+	],
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"businessExecutions": 0,
+	"performance": "not rerun; prior FAILED gate retained",
+	"remaining": [
+		"settings per-client disable active cleanup",
+		"desktop rollback/recovery",
+		"render latency and full native error/long-text matrix",
+		"collector performance gate"
+	],
+	"baselineDesktop": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-8Rnz9u/result.json"
+}

@@ -1,0 +1,275 @@
+{
+	"numTotalTestSuites": 2,
+	"numPassedTestSuites": 0,
+	"numFailedTestSuites": 2,
+	"numPendingTestSuites": 0,
+	"numTotalTests": 21,
+	"numPassedTests": 19,
+	"numFailedTests": 2,
+	"numPendingTests": 0,
+	"numTodoTests": 0,
+	"snapshot": {
+		"added": 0,
+		"failure": false,
+		"filesAdded": 0,
+		"filesRemoved": 0,
+		"filesRemovedList": [],
+		"filesUnmatched": 0,
+		"filesUpdated": 0,
+		"matched": 0,
+		"total": 0,
+		"unchecked": 0,
+		"uncheckedKeysByFile": [],
+		"unmatched": 0,
+		"updated": 0,
+		"didUpdate": false
+	},
+	"startTime": 1792917453306,
+	"success": false,
+	"testResults": [
+		{
+			"assertionResults": [
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service locates an authorized SDK evidence record without recollection or report mutation",
+					"status": "passed",
+					"title": "locates an authorized SDK evidence record without recollection or report mutation",
+					"duration": 264.5877499999999,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service pages only sealed redacted file text and never reopens a changed artifact",
+					"status": "passed",
+					"title": "pages only sealed redacted file text and never reopens a changed artifact",
+					"duration": 267.1426250000004,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service paginates long sealed text, including empty files, and explains missing, binary and over-budget bodies",
+					"status": "passed",
+					"title": "paginates long sealed text, including empty files, and explains missing, binary and over-budget bodies",
+					"duration": 399.5495000000001,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service opens a sealed native run without fetching live results or changing evidence",
+					"status": "passed",
+					"title": "opens a sealed native run without fetching live results or changing evidence",
+					"duration": 298.23720799999955,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service inspects authorized api native originals with bounded pages and immutable reports",
+					"status": "passed",
+					"title": "inspects authorized api native originals with bounded pages and immutable reports",
+					"duration": 325.95179099999996,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service inspects authorized ui native originals with bounded pages and immutable reports",
+					"status": "passed",
+					"title": "inspects authorized ui native originals with bounded pages and immutable reports",
+					"duration": 320.9462089999997,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service preflights installed configuration and bindings without collection, jobs or record changes",
+					"status": "passed",
+					"title": "preflights installed configuration and bindings without collection, jobs or record changes",
+					"duration": 262.40650000000005,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service requires F05 claim and basis references from the selected sealed snapshot",
+					"status": "passed",
+					"title": "requires F05 claim and basis references from the selected sealed snapshot",
+					"duration": 226.13941599999998,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service observes only the fixed selection, replays starts, stops idempotently and preserves reports",
+					"status": "passed",
+					"title": "observes only the fixed selection, replays starts, stops idempotently and preserves reports",
+					"duration": 400.0096249999997,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service reports collection faults without inventing a checkpoint and can still stop",
+					"status": "passed",
+					"title": "reports collection faults without inventing a checkpoint and can still stop",
+					"duration": 219.83216700000048,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service expires unrenewed listeners, renews status leases and releases all listeners on close",
+					"status": "passed",
+					"title": "expires unrenewed listeners, renews status leases and releases all listeners on close",
+					"duration": 286.14550000000054,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service lazily describes the authorized source, records actual SDK version, and never falls back to another owner",
+					"status": "passed",
+					"title": "lazily describes the authorized source, records actual SDK version, and never falls back to another owner",
+					"duration": 2.8221250000005966,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service runs the product contract/collection/scoring flow, replays durable requests, and appends human reviews",
+					"status": "passed",
+					"title": "runs the product contract/collection/scoring flow, replays durable requests, and appends human reviews",
+					"duration": 296.6339169999992,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service re-scores frozen evidence without collection and diagnoses a separate contract revision",
+					"status": "passed",
+					"title": "re-scores frozen evidence without collection and diagnoses a separate contract revision",
+					"duration": 542.8682910000007,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service keeps newly bound conditions unknown until explicit checks are configured on the revised snapshot",
+					"status": "passed",
+					"title": "keeps newly bound conditions unknown until explicit checks are configured on the revised snapshot",
+					"duration": 545.1386250000005,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service restores the exact saved profile after restart and refuses missing or unavailable versions",
+					"status": "passed",
+					"title": "restores the exact saved profile after restart and refuses missing or unavailable versions",
+					"duration": 379.5369580000006,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service seals queued scoring cancellation before synchronous plugin shutdown releases the store",
+					"status": "failed",
+					"title": "seals queued scoring cancellation before synchronous plugin shutdown releases the store",
+					"duration": 274.7375830000001,
+					"failureMessages": [
+						"EvaluationError: Store is closed\n    at requireValue (/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/schema.mjs:29:17)\n    at EvaluationStore.identity (/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs:270:3)\n    at EvaluationStore.#prepareWrite (/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs:408:25)\n    at EvaluationStore.write (/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs:563:38)\n    at EvaluationEngine.#run (/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/evaluate.mjs:474:30)\n    at /Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/evaluate.mjs:294:18\n    at node:internal/process/task_queues:151:7\n    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)\n    at AsyncResource.runMicrotask (node:internal/process/task_queues:148:8)"
+					],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service seals running scoring cancellation before synchronous plugin shutdown releases the store",
+					"status": "failed",
+					"title": "seals running scoring cancellation before synchronous plugin shutdown releases the store",
+					"duration": 394.6815409999999,
+					"failureMessages": [
+						"EvaluationError: Store is closed\n    at requireValue (/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/schema.mjs:29:17)\n    at EvaluationStore.identity (/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs:270:3)\n    at EvaluationStore.#prepareWrite (/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs:408:25)\n    at EvaluationStore.write (/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs:563:38)\n    at EvaluationEngine.#run (/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/evaluate.mjs:474:30)"
+					],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service keeps Agent conditions proposed and rejects unverified message boundaries",
+					"status": "passed",
+					"title": "keeps Agent conditions proposed and rejects unverified message boundaries",
+					"duration": 21.88641699999971,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service exports bounded redacted chunks, rejects forged source events, and stops after unload",
+					"status": "passed",
+					"title": "exports bounded redacted chunks, rejects forged source events, and stops after unload",
+					"duration": 274.75925000000007,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				},
+				{
+					"ancestorTitles": ["EC04 product service"],
+					"fullName": "EC04 product service registers the real tool and enforces query/write gates on retained host definitions",
+					"status": "passed",
+					"title": "registers the real tool and enforces query/write gates on retained host definitions",
+					"duration": 5.064750000000458,
+					"failureMessages": [],
+					"meta": {},
+					"tags": [],
+					"benchmarks": []
+				}
+			],
+			"startTime": 1792917455319,
+			"endTime": 1792917461328.0647,
+			"status": "failed",
+			"message": "",
+			"name": "/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/unit/agent-evaluation-service.test.ts"
+		}
+	]
+}

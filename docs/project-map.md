@@ -123,6 +123,6 @@ Agent 评估工程基础：`plugins/agent-evaluation/{schema,store,durable,colle
 
 Agent 评估评分基础：`plugins/agent-evaluation/{registry,evaluate,aggregate}.mjs`，处理可信扩展注册、快照评分作业与契约聚合；`evaluators/{basic,metrics,common}.mjs` 与 `profiles/internal.mjs` 提供七条规则和指标；授权文件快照在 `server/agent/evaluation-artifact.ts`，见 [进展](agent-evaluation-evidence/EC03.md)。
 
-Agent 评估 EC04 产品接线：`plugins/agent-evaluation/{index,service}.mjs`、`client/`、唯一 `skills/agent-evaluation/SKILL.md` 与项目发现 shim；`scripts/enable-agent-evaluation.mjs` 显式登记。`client/configuration.mjs`负责已绑定规则的表单呈现与序列化，业务校验仍复用service/registry；配置新报告使用原快照。`tests/agent-evaluation-native-desktop-test.mjs`只读复用已有合成原生结果，验证实际Electron批次详情。两页、可信人审与原工具门禁已有工程实现，实际桌面/性能逐项状态见 [EC04](agent-evaluation-evidence/EC04.md)，M1 未完成。
+Agent 评估 EC04 产品接线：`plugins/agent-evaluation/{index,service}.mjs`、`client/`、唯一 `skills/agent-evaluation/SKILL.md` 与项目发现 shim；`scripts/enable-agent-evaluation.mjs` 显式登记。`client/configuration.mjs`负责已绑定规则的表单呈现与序列化，业务校验仍复用service/registry；配置新报告使用原快照。`tests/agent-evaluation-native-desktop-test.mjs`只读复用已有合成原生结果，验证实际Electron批次详情。`evaluate.mjs`同步封存卸载取消终态，`tests/fixtures/agent-evaluation/active-jobs.mjs`仅用于隔离桌面故障注入。两页、可信人审与原工具门禁已有工程实现，实际桌面/性能逐项状态见 [EC04](agent-evaluation-evidence/EC04.md)，M1 未完成。
 
 EC04 批量证据持久化：`plugins/agent-evaluation/pack.mjs` 编解码有界物理范围索引；`store.mjs` 保留逐条逻辑记录/授权/回执并兼容旧 JSON/blob，`durable.mjs` 在原子发布前依次同步正文和记录清单。恢复与故障回归仍在 store/evidence 单测。

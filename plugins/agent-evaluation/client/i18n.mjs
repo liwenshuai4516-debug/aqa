@@ -1,4 +1,7 @@
 const labels = {
+	scoringState: ["评分状态", "Scoring state"],
+	CANCELLED: ["评分已取消，本项核验未完成。", "Scoring was cancelled before this check completed."],
+	NOT_EXECUTED: ["本项核验未执行。", "This check was not executed."],
 	"execution-evidence-only": ["仅核对执行证据", "Execution evidence only"],
 	"incomplete-native-run; never replay automatically": [
 		"原生批次未完成；未自动重跑",

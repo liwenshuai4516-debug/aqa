@@ -12,6 +12,7 @@ import electron from "electron";
 import { enableAgentEvaluation } from "../scripts/enable-agent-evaluation.mjs";
 import { ensureBuild } from "./lib/ensure-build.mjs";
 import { launchNativeApp } from "./desktop/native-app.mjs";
+import { installActiveJobProbe, verifyActiveJobs } from "./fixtures/agent-evaluation/active-jobs.mjs";
 const repo = fileURLToPath(new URL("..", import.meta.url));
 ensureBuild(repo, "agent-evaluation-desktop");
 const output = await mkdtemp(join(tmpdir(), "agent-evaluation-desktop-"));
@@ -70,6 +71,9 @@ await enableAgentEvaluation(repo, { agentDir, dataDir });
 const settingsBefore = await readFile(join(agentDir, "settings.json"), "utf8");
 await enableAgentEvaluation(repo, { agentDir, dataDir });
 assert.equal(await readFile(join(agentDir, "settings.json"), "utf8"), settingsBefore);
+const activeJobProbe = process.argv.includes("--active-jobs")
+	? await installActiveJobProbe(repo, dataDir, output)
+	: undefined;
 const reservation = createServer().listen(0, "127.0.0.1");
 await once(reservation, "listening");
 const port = reservation.address().port;
@@ -157,12 +161,12 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.13" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.14" && p.active),
 			),
 		),
 	);
 	result.checks.push(
-		"Real app loads plugin 0.4.13 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Real app loads plugin 0.4.14 in explicitly registered app directories; seeded SDK history opened without a model prompt",
 	);
 	stage("settings and slash discovery");
 	const settings = async (tab) => {
@@ -237,7 +241,7 @@ try {
 							f.plugins.some(
 								(p) =>
 									p.id === "agent-evaluation" &&
-									p.version === "0.4.13" &&
+									p.version === "0.4.14" &&
 									p.agentTools?.some((tool) => tool.name === "agent_evaluation"),
 							),
 					),
@@ -254,7 +258,7 @@ try {
 	await candidate.waitFor();
 	await input.fill("");
 	result.checks.push(
-		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.13; skill, slash discovery and tool registration remain enabled",
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.14; skill, slash discovery and tool registration remain enabled",
 	);
 	stage("product diagnosis flow");
 	const openView = async () => {
@@ -683,6 +687,28 @@ try {
 		"Actual light theme stylesheet loads; report remains readable with inherited foreground/background tokens",
 	);
 
+	if (activeJobProbe) {
+		stage("active scoring cancellation and synchronous plugin unload");
+		result.activeJobProbe = activeJobProbe;
+		result.activeJobChecks = await verifyActiveJobs({
+			page,
+			output,
+			dataDir,
+			probe: activeJobProbe,
+			until,
+			settings,
+			closeSettings,
+			reports,
+			names,
+			originalFile,
+			originalBytes,
+			openView,
+		});
+		result.checks.push(
+			"Controlled F01 delay in an isolated plugin copy: actual desktop cancel and Rescan cancel running scoring before store shutdown; late results cannot change reports or replacement writer locks. Settings disable is a distinct client gate and is not covered by this check.",
+		);
+	}
+
 	stage("plugin disable and reload persistence");
 	await settings("plugins");
 	await page.getByRole("tab", { name: /插件列表|Plugin list/ }).click();
@@ -786,7 +812,7 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.13" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.14" && p.active),
 			),
 		),
 	);
@@ -805,7 +831,7 @@ try {
 	assert.equal(await skill().getByRole("switch").getAttribute("aria-checked"), "true");
 	await closeSettings();
 	result.checks.push(
-		"Graceful real Electron exit and a second native process load plugin 0.4.13 and preserve enabled skill/plugin registration",
+		"Graceful real Electron exit and a second native process load plugin 0.4.14 and preserve enabled skill/plugin registration",
 	);
 	result.checks.push(
 		"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",

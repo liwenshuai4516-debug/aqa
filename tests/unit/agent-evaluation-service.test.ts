@@ -740,6 +740,66 @@ describe("EC04 product service", () => {
 		expect(report.data.configDigest).toBe(scored.report.data.configDigest);
 		expect(report.data.snapshotRef).toEqual(scored.snapshotRef);
 	});
+	it.each(["queued", "running"])(
+		"seals %s scoring cancellation before synchronous plugin shutdown releases the store",
+		async (phase) => {
+			const f = fixture(),
+				scored = await diagnose(f);
+			const evaluator = f.service.registry.evaluator.bind(f.service.registry),
+				original = evaluator("F01", "1");
+			let release: any, ruleSignal: AbortSignal | undefined;
+			vi.spyOn(f.service.registry, "evaluator").mockImplementation((id: string, version: string) =>
+				id === "F01"
+					? {
+							...original,
+							evaluate: (_c: any, _v: any, _cfg: any, signal: AbortSignal) => {
+								ruleSignal = signal;
+								return new Promise((r) => {
+									release = r;
+								});
+							},
+						}
+					: evaluator(id, version),
+			);
+			const old = await f.request("get", { ref: scored.reportRef });
+			// Direct start holds queued work in this stack; service dispatch would yield to its microtask.
+			const { context } = f.service.authorize(f.ui, { action: "evaluate" });
+			const job = f.service.engine!.start(context, {
+				snapshotRef: scored.snapshotRef,
+				profileId: "internal",
+				profileVersion: "1",
+				requestId: `shutdown-${phase}`,
+			});
+			if (phase === "running") await vi.waitFor(() => expect(release).toBeTypeOf("function"));
+			f.service.close();
+			expect(f.service.store!.closed).toBe(true);
+			const report = await job.done;
+			expect(report.data).toMatchObject({
+				state: "cancelled",
+				assessmentStage: "provisional",
+				job: { cancellationRequestedAt: expect.any(String), cancellationConfirmedAt: expect.any(String) },
+			});
+			if (phase === "running") expect(ruleSignal?.aborted).toBe(true);
+			else expect(ruleSignal).toBeUndefined();
+			const restarted = new EvaluationService(f.host);
+			cleanup.push(() => restarted.close());
+			const read = (action: string, extra: any) =>
+				restarted.dispatch(f.ui, { action, requestId: `reopen-${action}`, ...extra });
+			expect(await read("status", { jobId: job.jobId })).toMatchObject({
+				state: "cancelled",
+				reportRef: { id: report.id },
+			});
+			expect((await read("get", { ref: scored.reportRef })).sourceDigest).toBe(old.sourceDigest);
+			const before = await read("list", { kind: "evaluations" });
+			release?.([]);
+			await new Promise((r) => setTimeout(r, 10));
+			expect(await read("list", { kind: "evaluations" })).toEqual(before);
+			await expect(f.request("evaluate", { ref: scored.snapshotRef })).rejects.toMatchObject({
+				code: "CAPABILITY_UNAVAILABLE",
+			});
+		},
+	);
+
 	it("keeps Agent conditions proposed and rejects unverified message boundaries", async () => {
 		const f = fixture();
 		await expect(f.request("createContract", { data: f.contract }, f.tool)).rejects.toThrow(/proposals/);

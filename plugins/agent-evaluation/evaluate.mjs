@@ -358,13 +358,15 @@ export class EvaluationEngine {
 		});
 	}
 	async #run(job) {
+		if (job.result) return job.result;
+		if (job.finalizationError) throw job.finalizationError;
 		const { context, contract, snapshot, profile } = job;
 		const findings = [],
-			requiredRuleGaps = [],
 			completed = new Set(),
 			invoked = new Set();
 		const startedAt = new Date().toISOString(),
 			startedMono = performance.now();
+		job.progress = { findings, completed, invoked, startedAt, startedMono };
 		let globalError;
 		job.state = job.controller.signal.aborted ? "cancelling" : "running";
 		try {
@@ -420,6 +422,20 @@ export class EvaluationEngine {
 		} catch (error) {
 			globalError = error.code ?? "EVALUATION_FAILED";
 		}
+		if (job.result) return job.result;
+		if (job.finalizationError) throw job.finalizationError;
+		return this.#finish(job, globalError);
+	}
+	#finish(job, globalError) {
+		const { context, contract, snapshot, profile } = job;
+		const { findings, completed, invoked, startedAt, startedMono } = job.progress ?? {
+			findings: [],
+			completed: new Set(),
+			invoked: new Set(),
+			startedAt: new Date().toISOString(),
+			startedMono: performance.now(),
+		};
+		const requiredRuleGaps = [];
 		for (const rule of profile.rules)
 			if (!completed.has(ruleKey(rule)))
 				findings.push(
@@ -474,8 +490,11 @@ export class EvaluationEngine {
 			const report = this.store.write(context, { kind: "evaluations", requestId: `eval-report-${job.id}`, data });
 			job.state = state;
 			job.reportRef = refOf(report);
+			if (this.#closed) job.result = report;
+			job.progress = undefined;
 			return report;
 		} catch (error) {
+			job.progress = undefined;
 			job.state = "failed";
 			job.error = error.code ?? "REPORT_SAVE_FAILED";
 			throw error;
@@ -487,7 +506,13 @@ export class EvaluationEngine {
 			if (!["completed", "failed", "cancelled"].includes(job.state)) {
 				try {
 					this.cancel(job.context, job.id);
+					// Host deactivation is synchronous. Commit the controlled terminal state before
+					// the service invalidates identities and releases its store/writer lock.
+					this.#finish(job);
 				} catch (error) {
+					job.progress = undefined;
+					job.finalizationError = error;
+					job.state = "failed";
 					job.error = error.code ?? "CANCELLATION_RECORD_FAILED";
 				}
 			}

@@ -102,6 +102,72 @@ describe("EC03 snapshot-only scoring jobs", () => {
 		f.engine.close();
 		expect(() => f.engine.start(f.context, { ...f.args, requestId: "new" })).toThrow(/stopped/);
 	});
+	it("synchronously closes active work with completed findings retained, before store disposal", async () => {
+		let release: any;
+		const f = setup({
+			rules: [
+				evaluator("First", (_c: any, view: any) => [passFinding(view)]),
+				evaluator(
+					"Slow",
+					() =>
+						new Promise((r) => {
+							release = r;
+						}),
+				),
+			],
+		});
+		const job = f.engine.start(f.context, f.args);
+		await vi.waitFor(() => expect(release).toBeTypeOf("function"));
+		f.engine.close();
+		f.engine.close();
+		const reports = recordsOf(f.store, f.context, "evaluations");
+		expect(reports).toHaveLength(1);
+		expect(reports[0].data).toMatchObject({ state: "cancelled", assessmentStage: "provisional" });
+		expect(reports[0].data.findings).toEqual(
+			expect.arrayContaining([
+				expect.objectContaining({ ruleId: "First", verdict: "pass" }),
+				expect.objectContaining({ ruleId: "Slow", verdict: "inconclusive", error: "CANCELLED" }),
+			]),
+		);
+		f.store.close();
+		expect((await job.done).id).toBe(reports[0].id);
+		release([]);
+		await new Promise((r) => setTimeout(r, 10));
+	});
+	it("retains an unknown durable job when shutdown cannot publish its cancellation report", async () => {
+		let release: any;
+		const f = setup({
+			rules: [
+				evaluator(
+					"Slow",
+					() =>
+						new Promise((r) => {
+							release = r;
+						}),
+				),
+			],
+		});
+		const job = f.engine.start(f.context, f.args);
+		await vi.waitFor(() => expect(release).toBeTypeOf("function"));
+		const write = f.store.write.bind(f.store);
+		const failure = Object.assign(new Error("controlled shutdown disk error"), { code: "IO_ERROR" });
+		const spy = vi.spyOn(f.store, "write").mockImplementation((context: any, input: any) => {
+			if (input.kind === "evaluations") throw failure;
+			return write(context, input);
+		});
+		f.engine.close();
+		spy.mockRestore();
+		await expect(job.done).rejects.toBe(failure);
+		expect(recordsOf(f.store, f.context, "evaluations")).toHaveLength(0);
+		const restarted = new EvaluationEngine(f.store, f.registry);
+		expect(restarted.status(f.context, job.jobId)).toMatchObject({ jobId: job.jobId, state: "unknown" });
+		expect(() => restarted.start(f.context, f.args)).toThrow(/interrupted/);
+		release([]);
+		await new Promise((r) => setTimeout(r, 10));
+		expect(recordsOf(f.store, f.context, "evaluations")).toHaveLength(0);
+		restarted.close();
+	});
+
 	it("cancels queued work without calling an evaluator", async () => {
 		const evaluate = vi.fn(() => []),
 			f = setup({ rules: [evaluator("Never", evaluate)] });
