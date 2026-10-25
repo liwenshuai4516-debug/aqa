@@ -32,10 +32,10 @@ export default {
 			name: "agent_evaluation",
 			label: "Agent 评估中心",
 			description:
-				"Diagnose a selected Pi task using frozen contracts and read-only evidence. Collect, seal, score or inspect local reports. Does not execute tests, external clients or models. Human reviews are available only in the UI.",
+				"Diagnose a selected Pi task using frozen contracts and read-only evidence. Collect, seal, score or inspect local Pi and offline ATIF reports. Does not execute tests, external clients or models. Human reviews, offline uploads and original archives are UI-only.",
 			promptSnippet: "Inspect task evidence or prepare an internal task diagnosis.",
 			promptGuidelines: [
-				"Describe and select explicit message boundaries before collection. Keep Agent-proposed conditions optional until confirmed in the evaluation UI. Preserve requestId when retrying the same operation. Missing evidence is unknown, never a pass.",
+				"Select explicit Pi boundaries before collection. Keep proposed conditions optional until human confirmation. Retry unchanged operations with the same requestId. Missing evidence stays unknown.",
 			],
 			parameters: toolSchema,
 			execute: async (_id, request, signal, _update, context) => {

@@ -20,6 +20,7 @@ export const CSS = `
 .aev [data-configuration] input, .aev [data-configuration] select { width: 100%; min-width: 0; }
 .aev fieldset { border: 1px solid var(--border); border-radius: 6px; min-width: 0; margin: 12px 0; }
 .aev .check-label { display: flex; align-items: center; gap: 10px; min-height: 36px; }
+.aev .check-label span { min-width: 0; overflow-wrap: anywhere; }
 .aev input[type=checkbox] { min-height: 20px; width: 20px; flex: none; }
 .aev textarea[readonly] { color: var(--text-dim, var(--text)); }
 .aev textarea { width: 100%; min-height: 88px; resize: vertical; }

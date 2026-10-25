@@ -24,7 +24,7 @@ export default {
 			snapshot,
 			reviews = [],
 			job;
-		let draft, revision, observation, configuration;
+		let draft, revision, observation, configuration, upload;
 		let view = "records",
 			error = "",
 			notice = "",
@@ -41,14 +41,19 @@ export default {
 		const field = (key, content) => `<div><span class="muted">${esc(t(key))}</span><p>${content}</p></div>`;
 		function render() {
 			if (closed) return;
-			root.innerHTML = `<style>${CSS}</style><header><div><h1>${esc(t("title"))}</h1><p class="muted">${esc(t(view === "detail" ? "detail" : "records"))}</p></div><div class="actions">${view !== "records" ? button("back", "back") : button("refresh", "refresh")}${view === "records" ? button("new", "new", `class="primary" ${!source?.choices.length ? "disabled" : ""}`) : ""}</div></header><div role="alert" tabindex="-1">${esc(error)}</div><div class="status" role="status" aria-live="polite">${esc(busy ? t("loading") : notice)}</div>${observation && !configuration ? observationHtml() : ""}<main>${view === "new" ? newHtml() : view === "detail" ? detailHtml() : recordsHtml()}</main>`;
+			const importForm = root.querySelector("form[data-form=import]");
+			if (upload && importForm) {
+				const values = new FormData(importForm);
+				upload.form = { ...Object.fromEntries(values), trajectories: values.getAll("trajectory") };
+			}
+			root.innerHTML = `<style>${CSS}</style><header><div><h1>${esc(t("title"))}</h1><p class="muted">${esc(t(view === "detail" ? "detail" : "records"))}</p></div><div class="actions">${view !== "records" ? button("back", "back") : button("refresh", "refresh")}${view === "records" ? button("import", "import", !source ? "disabled" : "") : ""}${view === "records" ? button("new", "new", `class="primary" ${!source?.choices.length ? "disabled" : ""}`) : ""}</div></header><div role="alert" tabindex="-1">${esc(error)}</div><div class="status" role="status" aria-live="polite">${esc(busy ? t("loading") : notice)}</div>${observation && !configuration ? observationHtml() : ""}<main>${view === "import" ? importHtml() : view === "new" ? newHtml() : view === "detail" ? detailHtml() : recordsHtml()}</main>`;
 			if (busy)
 				root.querySelectorAll("button:not([data-action=back])").forEach((b) => {
 					b.disabled = true;
 				});
 		}
 		function recordsHtml() {
-			return `<p class="muted">${esc(t("hint"))}</p>${source ? `<p>${esc(source.sourceId)} · ${esc(source.clientVersion ?? t("unknown"))}</p>` : `<p>${esc(t("noSource"))}</p>`}${job ? jobHtml() : ""}${!page.items.length ? `<section class="empty">${esc(t("empty"))}</section>` : `<section class="table-wrap"><table><thead><tr>${["range", "source", "execution", "goal", "coverage", "updated"].map((k) => `<th scope="col">${esc(t(k))}</th>`).join("")}</tr></thead><tbody>${page.items.map((r, i) => `<tr><td><p>${esc(r.objectivePreview)}</p><small>${esc(r.taskRange?.startMessageId)} → ${esc(r.taskRange?.endMessageId)}</small><p>${button("open", "open", `data-index="${i}" data-id="${esc(r.id)}"`)}</p></td><td>Pi SDK<br>${esc(r.sourceVersion ?? t("unknown"))}</td><td>${badge(r.executionState)}<br><small>${esc(t("scoringState"))}</small> ${badge(r.state)}<br>${badge(r.assessmentStage)}</td><td>${badge(r.summary?.goal)}<br>${badge(r.summary?.deliveryVerdict)}</td><td>${r.summary?.counts?.coverage == null ? esc(t("unknown")) : `${Math.round(r.summary.counts.coverage * 100)}%`}<br>${esc(t(r.evidenceCoverage ?? "unknown"))}</td><td>${esc(r.createdAt)}</td></tr>`).join("")}</tbody></table></section>`}<div class="actions">${button("first", "first")}${page.nextCursor ? button("next", "next") : ""}</div>`;
+			return `<p class="muted">${esc(t("hint"))}</p>${source ? `<p>${esc(source.sourceId)} · ${esc(source.clientVersion ?? t("unknown"))}</p>` : `<p>${esc(t("noSource"))}</p>`}${job ? jobHtml() : ""}${!page.items.length ? `<section class="empty">${esc(t("empty"))}</section>` : `<section class="table-wrap"><table><thead><tr>${["range", "source", "execution", "goal", "coverage", "updated"].map((k) => `<th scope="col">${esc(t(k))}</th>`).join("")}</tr></thead><tbody>${page.items.map((r, i) => `<tr><td><p>${esc(r.objectivePreview)}</p><small>${r.taskRange?.source === "offline" ? esc(t("offline")) : `${esc(r.taskRange?.startMessageId)} → ${esc(r.taskRange?.endMessageId)}`}</small><p>${button("open", "open", `data-index="${i}" data-id="${esc(r.id)}"`)}</p></td><td>${esc(r.taskRange?.source === "offline" ? t("offline") : "Pi SDK")}<br>${esc(r.sourceVersion ?? t("unknown"))}</td><td>${badge(r.executionState)}<br><small>${esc(t("scoringState"))}</small> ${badge(r.state)}<br>${badge(r.assessmentStage)}</td><td>${badge(r.summary?.goal)}<br>${badge(r.summary?.deliveryVerdict)}</td><td>${r.summary?.counts?.coverage == null ? esc(t("unknown")) : `${Math.round(r.summary.counts.coverage * 100)}%`}<br>${esc(t(r.evidenceCoverage ?? "unknown"))}</td><td>${esc(r.createdAt)}</td></tr>`).join("")}</tbody></table></section>`}<div class="actions">${button("first", "first")}${page.nextCursor ? button("next", "next") : ""}</div>`;
 		}
 		function observationHtml() {
 			return `<section data-observation><h2>${esc(t("observation"))} · ${esc(t(observation.state ?? "observing"))}</h2><p>${esc(t("observationHint"))}</p><p>${esc(observation.range)} · ${esc(t("evidence"))}: ${observation.latest?.evidenceCount ?? 0} · ${esc(t("gaps"))}: ${observation.latest?.gapCount ?? 0}</p><p>${esc(observation.error?.message ?? observation.lastError?.message ?? "")}</p><div class="actions">${button("watch-status", "checkObservation")}${observation.state !== "stopped" ? button("watch-stop", "stopObservation") : button("watch-dismiss", "dismissObservation")}${observation.latest?.checkpointRef ? button("watch-score", "scoreObservation") : ""}</div></section>`;
@@ -75,6 +80,26 @@ export default {
 				.join("");
 			return `<section><h2>${esc(t("new"))}</h2><p>${esc(t("selected"))}</p><p class="muted">${esc(t("window"))}</p><form data-form="diagnose"><div class="grid"><label>${esc(t("start"))}<select name="start">${options}</select></label><label>${esc(t("end"))}<select name="end">${options.replace(`value="${esc(source.choices.at(-1).id)}"`, `value="${esc(source.choices.at(-1).id)}" selected`)}</select></label></div><label>${esc(t("objective"))}<textarea name="objective" required maxlength="16384"></textarea></label><label>${esc(t("condition"))}<textarea name="conditions" maxlength="24000"></textarea></label><p class="muted">${esc(t("conditionHint"))}</p><label>${esc(t("paths"))}<textarea name="paths" maxlength="10000"></textarea></label><label>${esc(t("format"))}<select name="format"><option value="exists">${esc(t("exists"))}</option><option value="json">${esc(t("json"))}</option></select></label><button class="primary" type="submit">${esc(t("create"))}</button></form></section>`;
 		}
+		function discardUpload() {
+			if (!upload) return;
+			try {
+				ctx.send({ action: "uploadDiscard", ...upload.source, requestId: crypto.randomUUID() });
+			} catch {
+				/* The fixed upload expiry still applies. */
+			}
+			upload = undefined;
+		}
+		function importHtml() {
+			const preview = upload?.preview,
+				saved = upload?.form ?? {};
+			if (!preview)
+				return `<section><h2>${esc(t("import"))}</h2><p>${esc(t("importHint"))}</p><form data-form="upload"><label>${esc(t("atifFile"))}<input name="file" type="file" accept=".json,application/json" required aria-describedby="upload-hint"></label><p id="upload-hint" class="muted">${esc(t("uploadHint"))}</p><button type="submit" class="primary">${esc(t("previewImport"))}</button></form></section>`;
+			return `<section data-import-preview><h2>${esc(t("confirmImport"))}</h2><p>${esc(upload.name)} · ${preview.byteLength} bytes · ${preview.format}</p><p>${esc(t("packageDigest"))}: ${esc(preview.sha256)}</p><p class="muted">${esc(t("unverifiedImport"))}</p><p>${esc(t("conversionLosses"))}: ${preview.lossCount} · ${esc(t("evidence"))}: ${preview.eventCount}</p><details><summary>${esc(t("conversionLosses"))}</summary><pre>${esc(JSON.stringify(preview.losses, null, 2))}</pre>${preview.nextOffset != null ? button("import-losses", "next") : ""}</details><form data-form="import"><fieldset><legend>${esc(t("selectDocuments"))}</legend>${preview.trajectories.map((item, i) => `<label class="check-label"><input type="checkbox" name="trajectory" value="${esc(item.pointer)}" ${(saved.trajectories ? saved.trajectories.includes(item.pointer) : i === 0) ? "checked" : ""}><span>${esc(item.pointer)} · ${esc(item.trajectoryId ?? item.sessionId ?? t("unknown"))} · ${esc(item.agentName)}</span></label>`).join("")}</fieldset><p class="muted">${esc(t("documentHint"))}</p><label>${esc(t("sourceDeclaration"))}<textarea name="sourceDeclaration" required maxlength="4096">${esc(saved.sourceDeclaration)}</textarea></label><label>${esc(t("objective"))}<textarea name="objective" required maxlength="16384">${esc(saved.objective)}</textarea></label><label>${esc(t("condition"))}<textarea name="conditions" required maxlength="24000">${esc(saved.conditions)}</textarea></label><p class="muted">${esc(t("conditionHint"))}</p><label class="check-label"><input type="checkbox" name="confirm" required ${saved.confirm === "on" ? "checked" : ""}>${esc(t("confirmOffline"))}</label><div class="actions"><button type="submit" class="primary">${esc(t("importAndScore"))}</button>${button("import-reset", "changeFile")}</div></form></section>`;
+		}
+		function offlineHtml() {
+			const scope = contract.data.scope;
+			return `<section data-offline-source><h2>${esc(t("offline"))}</h2><p>${esc(t("unverifiedImport"))}</p><p>${esc(scope.format)} · ${esc(t("converterVersion"))}: ${esc(scope.converterVersion)}</p><p>${esc(t("packageDigest"))}: ${esc(scope.packageDigest)}</p><p>${esc(t("selectDocuments"))}: ${esc(scope.trajectoryPointers.join(", "))}</p><div class="actions">${button("import-manifest", "importManifest")}${button("import-source", "evidenceRaw")}</div><form data-form="original"><label class="check-label"><input type="checkbox" name="allowOriginal" required>${esc(t("originalWarning"))}</label><button type="submit">${esc(t("readOriginal"))}</button></form></section>`;
+		}
 		function jobHtml() {
 			return `<section><h2>${esc(t(job.state))}</h2><p>${esc(t("jobHint"))}</p><div class="actions">${button("status", "check")}${!["completed", "cancelled", "failed", "unknown"].includes(job.state) ? button("cancel", "cancel") : ""}</div></section>`;
 		}
@@ -84,7 +109,7 @@ export default {
 			if (configuration)
 				return `<form data-form="configuration"><section><h2>${esc(t("configureRules"))}</h2><p>${esc(t("configureSnapshotHint"))}</p><p>${esc(configuration.contract.data.objective)}</p><p>${esc(report.id)} · ${esc(snapshot.id)}</p></section>${configurationHtml(configuration.configs, [...configuration.contract.data.conditions, ...configuration.contract.data.constraints], t, esc)}<div class="actions"><button type="submit" class="primary">${esc(t("saveConfiguration"))}</button>${button("discard-configuration", "discardRevision")}</div></form>`;
 			const d = report.data;
-			return `<section><h2>${esc(contract.data.objective)}</h2><div class="grid">${field("summary", badge(d.summary.deliveryVerdict))}${field("goal", badge(d.summary.goal))}${field("scoringState", badge(d.state))}${field("stage", badge(d.assessmentStage))}${field("coverage", badge(snapshot.data.coverage))}</div><p>${esc(contract.data.scope.startMessageId)} → ${esc(contract.data.scope.endMessageId)}</p><small>${esc(report.id)} · r${report.revision} · ${esc(report.createdAt)}</small><p>${esc(t("contractRevision"))}: ${esc(contract.revision)}</p><div class="actions">${button("export", "export")}${button("reevaluate", "reevaluate")}${button("revise", "revise")}${button("configure", "configureRules", observation && observation.state !== "stopped" ? "disabled" : "")}${!observation && snapshot.data.attemptRefs?.length ? button("watch-start", "startObservation") : ""}</div><p class="muted">${esc(t("reevaluateHint"))}</p></section><section><h2>${esc(t("findings"))}</h2>${d.findings
+			return `<section><h2>${esc(contract.data.objective)}</h2><div class="grid">${field("summary", badge(d.summary.deliveryVerdict))}${field("goal", badge(d.summary.goal))}${field("scoringState", badge(d.state))}${field("stage", badge(d.assessmentStage))}${field("coverage", badge(snapshot.data.coverage))}</div><p>${contract.data.scope.source === "offline" ? esc(t("offline")) : `${esc(contract.data.scope.startMessageId)} → ${esc(contract.data.scope.endMessageId)}`}</p><small>${esc(report.id)} · r${report.revision} · ${esc(report.createdAt)}</small><p>${esc(t("contractRevision"))}: ${esc(contract.revision)}</p><div class="actions">${button("export", "export")}${button("reevaluate", "reevaluate")}${contract.data.scope.source !== "offline" ? button("revise", "revise") : ""}${button("configure", "configureRules", observation && observation.state !== "stopped" ? "disabled" : "")}${contract.data.scope.source !== "offline" && !observation && snapshot.data.attemptRefs?.length ? button("watch-start", "startObservation") : ""}</div><p class="muted">${esc(t("reevaluateHint"))}</p></section>${contract.data.scope.source === "offline" ? offlineHtml() : ""}<section><h2>${esc(t("findings"))}</h2>${d.findings
 				.map(
 					(f, index) =>
 						`<article><h3>${esc(f.ruleId)} · ${esc(f.conditionId ?? f.findingId)}</h3>${badge(f.verdict)}${badge(f.evidenceState)}<p><b>${esc(t("reason"))}</b> · ${esc(t(f.reason))}</p>${f.missingEvidence.length ? `<p><b>${esc(t("missing"))}</b> · ${esc(f.missingEvidence.map((item) => t(item)).join("; "))}</p>` : ""}<div class="actions">${f.evidenceRefs.map((_, j) => button("evidence", "evidence", `data-finding="${index}" data-evidence="${j}"`)).join("") || `<p>${esc(t("noEvidence"))}</p>`}</div><details><summary>${esc(t("reviews"))}</summary><p>${esc(t("reviewHint"))}</p><p>${esc(t("original"))}: ${esc(t(f.verdict))}</p>${
@@ -99,7 +124,7 @@ export default {
 				)
 				.join(
 					"",
-				)}<div class="actions">${findingsOffset ? button("findings-first", "first") : ""}${report.pages.findings?.nextOffset != null ? button("findings-next", "next") : ""}</div></section>${evidence ? `<section tabindex="-1" data-evidence-panel><h2>${esc(t("evidence"))}</h2><p>${esc(evidence.record.data.sourceLocator)}</p><p>${esc(evidence.record.id)} · ${esc(evidence.record.data.sourceEventId)} · ${esc(evidence.record.data.origin)} · ${esc(evidence.record.data.availability)}</p><p class="muted">${esc(t("sealedEvidenceHint"))}</p><div class="actions">${button("evidence-raw", "evidenceRaw")}${evidence.record.data.kind === "message" && evidence.record.data.producer === "pi-evidence-v1" ? button("evidence-source", "revealSource") : ""}${evidence.record.data.kind === "artifact-snapshot" && evidence.record.data.producer === "artifact-reader-v1" ? button("evidence-artifact", "sealedFile") : ""}${evidence.record.data.kind === "native-test-run" && evidence.record.data.producer === "native-reader-v1" ? button("evidence-native", "sealedRun") + button("evidence-run", "openNativeRun") : ""}</div>${evidence.nativeRun ? nativeRunHtml(evidence.nativeRun) : ""}<h3>${esc(t(evidence.view === "artifact-text" ? "sealedFile" : evidence.view === "native-run" ? "sealedRun" : "evidenceRaw"))}</h3>${evidence.unavailable ? `<p role="status">${esc(t(evidence.unavailable))}</p>` : `<pre>${esc(evidence.text)}</pre>`}<p>${esc(t("characterOffset"))}: ${evidence.offset}</p><div class="actions">${evidence.offset ? button("evidence-first", "first") : ""}${evidence.nextOffset != null ? button("evidence-next", "next") : ""}</div></section>` : ""}<section><h2>${esc(t("config"))}</h2><p>${esc(t("costHint"))}</p><p>${esc(t("version"))}: ${esc(d.profileVersion)}</p><details><summary>${esc(t("raw"))}</summary><pre>${esc(JSON.stringify({ configuration: d.configuration, job: d.job, evaluatorVersions: d.evaluatorVersions }, null, 2))}</pre></details><h3>${esc(t("gaps"))}</h3><pre>${esc(snapshot.data.gaps.join("\n"))}</pre></section>`;
+				)}<div class="actions">${findingsOffset ? button("findings-first", "first") : ""}${report.pages.findings?.nextOffset != null ? button("findings-next", "next") : ""}</div></section>${evidence ? `<section tabindex="-1" data-evidence-panel><h2>${esc(t("evidence"))}</h2><p>${esc(evidence.record.data.sourceLocator)}</p><p>${esc(evidence.record.id)} · ${esc(evidence.record.data.sourceEventId)} · ${esc(evidence.record.data.origin)} · ${esc(evidence.record.data.availability)}</p><p class="muted">${esc(t("sealedEvidenceHint"))}</p><div class="actions">${button("evidence-raw", "evidenceRaw")}${evidence.record.data.kind === "message" && evidence.record.data.producer === "pi-evidence-v1" ? button("evidence-source", "revealSource") : ""}${evidence.record.data.kind === "artifact-snapshot" && evidence.record.data.producer === "artifact-reader-v1" ? button("evidence-artifact", "sealedFile") : ""}${evidence.record.data.kind === "native-test-run" && evidence.record.data.producer === "native-reader-v1" ? button("evidence-native", "sealedRun") + button("evidence-run", "openNativeRun") : ""}</div>${evidence.nativeRun ? nativeRunHtml(evidence.nativeRun) : ""}<h3>${esc(t(evidence.view === "original" ? "readOriginal" : evidence.view === "artifact-text" ? "sealedFile" : evidence.view === "native-run" ? "sealedRun" : "evidenceRaw"))}</h3>${evidence.unavailable ? `<p role="status">${esc(t(evidence.unavailable))}</p>` : `<pre>${esc(evidence.text)}</pre>`}<p>${esc(t("characterOffset"))}: ${evidence.offset}</p><div class="actions">${evidence.offset ? button("evidence-first", "first") : ""}${evidence.nextOffset != null ? button("evidence-next", "next") : ""}</div></section>` : ""}<section><h2>${esc(t("config"))}</h2><p>${esc(t("costHint"))}</p><p>${esc(t("version"))}: ${esc(d.profileVersion)}</p><details><summary>${esc(t("raw"))}</summary><pre>${esc(JSON.stringify({ configuration: d.configuration, job: d.job, evaluatorVersions: d.evaluatorVersions }, null, 2))}</pre></details><h3>${esc(t("gaps"))}</h3><pre>${esc(snapshot.data.gaps.join("\n"))}</pre></section>`;
 		}
 		function nativeRunHtml(run) {
 			return `<section data-native-run><h3>${esc(t("openNativeRun"))}</h3><p>${esc(t("nativeVerified"))}</p><p>${esc(run.engine)} · ${esc(run.runId)} · ${esc(run.at)}</p><p>${esc(t("nativeEvidence"))}: ${esc(t(run.complete ? "complete" : "partial"))} · ${esc(t(run.review))}</p><p class="muted">${esc(t("nativeRowsHint"))}</p><div class="table-wrap"><table><thead><tr>${["nativeCase", "nativeInstance", "nativeStatus", "nativeEvidence"].map((key) => `<th scope="col">${esc(t(key))}</th>`).join("")}</tr></thead><tbody>${run.rows.map((row) => `<tr><td>${esc(row.caseId)}</td><td>${esc(row.instanceId)}</td><td>${esc(["passed", "failed", "skipped", "SKIP", "not-run", "blocked", "error", "unknown"].includes(row.status) ? t(`native-status-${row.status}`) : row.status)}</td><td>${esc(t(row.evidenceComplete ? "complete" : "partial"))}</td></tr>`).join("")}</tbody></table></div><p>${run.total ? run.offset + 1 : 0}–${Math.min(run.total, run.offset + run.rows.length)} / ${run.total}</p><div class="actions">${run.offset ? button("evidence-run-first", "first") : ""}${run.nextOffset != null ? button("evidence-run-next", "next") : ""}</div></section>`;
@@ -146,6 +171,10 @@ export default {
 		}
 		async function run(fn, { preserve = false } = {}) {
 			const generation = rpc.generation;
+			const fileInputs = [...root.querySelectorAll("input[type=file]:not(:disabled)")];
+			fileInputs.forEach((input) => {
+				input.disabled = true;
+			});
 			const enabledButtons = preserve ? [...root.querySelectorAll("button:not(:disabled)")] : [];
 			busy = true;
 			error = "";
@@ -176,6 +205,9 @@ export default {
 				}
 			} finally {
 				if (generation === rpc.generation) busy = false;
+				fileInputs.forEach((input) => {
+					if (input.isConnected) input.disabled = false;
+				});
 			}
 			if (generation === rpc.generation && !closed) render();
 		}
@@ -183,6 +215,7 @@ export default {
 			page = await rpc.request("list", { kind: "evaluations", limit: 20, ...(cursor ? { cursor } : {}) });
 		}
 		async function refresh() {
+			discardUpload();
 			detachObservation();
 			rpc.select({});
 			source = undefined;
@@ -231,7 +264,10 @@ export default {
 		}
 		async function readEvidence(reference, offset = 0, evidenceView = "raw") {
 			const record = await rpc.request("get", { ref: reference });
-			const body = await rpc.request("readEvidence", { ref: reference, offset, evidenceView });
+			const body =
+				evidenceView === "original"
+					? await rpc.request("readOriginal", { ref: reference, offset })
+					: await rpc.request("readEvidence", { ref: reference, offset, evidenceView });
 			evidence = { record, ...body, view: evidenceView, offset };
 		}
 		root.addEventListener("click", (event) => {
@@ -243,12 +279,24 @@ export default {
 				return;
 			}
 			if (action === "back") {
+				discardUpload();
 				rpc.select(source ? { conversationId: source.conversationId, sessionId: source.sessionId } : {});
 				view = "records";
 				revision = undefined;
 				configuration = undefined;
 				busy = false;
 				void run(() => list());
+				return;
+			}
+			if (action === "import" || action === "import-reset") {
+				discardUpload();
+				upload = { source: { conversationId: source.conversationId, sessionId: source.sessionId } };
+				draft = undefined;
+				view = "import";
+				error = "";
+				notice = "";
+				render();
+				root.querySelector("input[type=file]")?.focus();
 				return;
 			}
 			if (action === "new") {
@@ -306,6 +354,20 @@ export default {
 				return;
 			}
 			void run(async () => {
+				if (action === "import-losses") {
+					const part = await rpc.request("uploadPreview", {
+						data: { uploadId: upload.preview.uploadId },
+						offset: upload.preview.nextOffset,
+					});
+					upload.preview.losses = part.losses;
+					upload.preview.nextOffset = part.nextOffset;
+				}
+				if (action === "import-source") await readEvidence(snapshot.data.evidenceRefs[0]);
+				if (action === "import-manifest") {
+					const total = snapshot.pages.evidenceRefs.total;
+					const last = await rpc.request("get", { ref: ref(snapshot), offset: total - 1, limit: 1 });
+					await readEvidence(last.data.evidenceRefs[0]);
+				}
 				if (action === "watch-start") {
 					const configs = reportConfigs(),
 						paths = [...new Set((configs.F01?.checks ?? []).map((check) => check.path))];
@@ -428,18 +490,62 @@ export default {
 					notice = t("exportDone");
 				}
 			}).then(() => {
-				if (action.startsWith("evidence") && action !== "evidence-source" && !closed)
+				if (
+					((action.startsWith("evidence") && action !== "evidence-source") ||
+						["import-source", "import-manifest"].includes(action)) &&
+					!closed
+				)
 					root.querySelector("[data-evidence-panel]")?.focus();
 				if (action === "revise" && !closed) root.querySelector("form[data-form=revision] textarea")?.focus();
 			});
+		});
+		root.addEventListener("change", (event) => {
+			if (!event.target.matches?.("input[type=file]")) return;
+			const input = event.target,
+				file = input.files?.[0];
+			if (upload) {
+				try {
+					ctx.send({ action: "uploadDiscard", ...upload.source, requestId: crypto.randomUUID() });
+				} catch {
+					/* The fixed upload expiry still applies. */
+				}
+			}
+			input.setCustomValidity(file && file.size > 0 && file.size <= 512 * 1024 ? "" : t("uploadHint"));
+			if (!input.checkValidity()) input.reportValidity();
 		});
 		root.addEventListener("submit", (event) => {
 			const form = event.target.closest("form");
 			if (!form || busy) return;
 			event.preventDefault();
 			const values = Object.fromEntries(new FormData(form));
+			const selectedPointers = form.dataset.form === "import" ? new FormData(form).getAll("trajectory") : [];
 			void run(
 				async () => {
+					if (form.dataset.form === "upload") {
+						const file = values.file,
+							selected = upload;
+						if (!file?.size || file.size > 512 * 1024) throw new Error(t("uploadHint"));
+						const bytes = new Uint8Array(await file.arrayBuffer());
+						const sha256 = [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))]
+							.map((b) => b.toString(16).padStart(2, "0"))
+							.join("");
+						if (upload !== selected || closed) return;
+						const start = await rpc.request("uploadStart", { data: { byteLength: bytes.length, sha256 } });
+						for (let offset = start.offset; offset < bytes.length; offset += start.chunkBytes) {
+							const base64 = btoa(String.fromCharCode(...bytes.subarray(offset, offset + start.chunkBytes)));
+							await rpc.request("uploadChunk", { data: { uploadId: start.uploadId, offset, base64 } });
+							root.querySelector(".status").textContent =
+								`${t("uploading")}: ${Math.min(offset + start.chunkBytes, bytes.length)} / ${bytes.length}`;
+						}
+						const preview = await rpc.request("uploadPreview", { data: { uploadId: start.uploadId } });
+						if (upload === selected && !closed) Object.assign(selected, { preview, name: file.name });
+						return;
+					}
+					if (form.dataset.form === "original") {
+						if (values.allowOriginal !== "on") throw new Error(t("originalWarning"));
+						await readEvidence(snapshot.data.evidenceRefs[0], 0, "original");
+						return;
+					}
 					if (form.dataset.form === "review") {
 						const finding = report.data.findings[Number(form.dataset.finding)];
 						const previous = reviews.filter((r) => r.review.findingId === finding.findingId).at(-1);
@@ -462,6 +568,8 @@ export default {
 						source.sessionId,
 						revision ? ref(revision.contract) : null,
 						values,
+						selectedPointers,
+						upload?.preview?.sha256,
 					]);
 					if (draft?.fingerprint !== fingerprint) draft = { fingerprint, results: new Map() };
 					const steps = draft.results;
@@ -469,6 +577,43 @@ export default {
 						if (!steps.has(action)) steps.set(action, await rpc.request(action, data));
 						return steps.get(action);
 					};
+					if (form.dataset.form === "import") {
+						if (values.confirm !== "on" || !selectedPointers.length || !lines(values.conditions).length)
+							throw new Error(t("confirmOffline"));
+						const c = await step("createImportContract", {
+							data: {
+								uploadId: upload.preview.uploadId,
+								trajectoryPointers: selectedPointers,
+								confirmed: true,
+								contract: {
+									objective: values.objective,
+									conditions: lines(values.conditions).map((statement, i) => ({
+										id: `condition-${i + 1}`,
+										statement,
+										sourceRef: "human-ui:offline",
+										sourceType: "user",
+										required: true,
+										applicableWhen: "always",
+									})),
+									constraints: [],
+									environmentRefs: [],
+									provenance: "human-confirmed offline import",
+									evaluationSubject: "agent-task",
+								},
+							},
+						});
+						const imported = await step("importAtif", {
+							ref: c,
+							data: { uploadId: upload.preview.uploadId, sourceDeclaration: values.sourceDeclaration, confirmed: true },
+						});
+						job = await step("evaluate", { ref: imported.snapshotRef });
+						discardUpload();
+						view = "records";
+						await list();
+						await status();
+						notice = t("imported");
+						return;
+					}
 					if (form.dataset.form === "configuration") {
 						const configs = readConfiguration(form, t);
 						await step("validateConfiguration", { ref: ref(report), configs });
@@ -600,11 +745,17 @@ export default {
 					await status();
 				},
 				{ preserve: true },
-			);
+			).then(() => {
+				if (closed || error) return;
+				if (form.dataset.form === "upload" && view === "import" && upload?.preview)
+					root.querySelector("[name=sourceDeclaration]")?.focus();
+				if (form.dataset.form === "original") root.querySelector("[data-evidence-panel]")?.focus();
+			});
 		});
 		const languageObserver = new MutationObserver(() => {
 			t = translator(document.documentElement.lang || "zh");
-			if (view !== "new" && !revision && !configuration && !root.querySelector("textarea:focus")) render();
+			if (!["new", "import"].includes(view) && !revision && !configuration && !root.querySelector("textarea:focus"))
+				render();
 		});
 		languageObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 		const heartbeat = setInterval(async () => {
@@ -626,6 +777,7 @@ export default {
 		}, 15000);
 		void refresh();
 		return () => {
+			discardUpload();
 			clearInterval(heartbeat);
 			detachObservation();
 			closed = true;

@@ -1,0 +1,29 @@
+{
+	"status": "PASS",
+	"scope": "Untrusted data conversion only; not persistence, UI or real client acceptance",
+	"rawSha256": "5eb8b24e04d17a86d865b3644e447f11b01ee850844b00c715fc7dbe615451fb",
+	"events": 1,
+	"losses": [
+		{
+			"pointer": "/continued_trajectory_ref",
+			"reason": "external-reference-not-resolved"
+		},
+		{
+			"pointer": "/steps/0/message/0/source/path",
+			"reason": "media-reference-not-resolved"
+		},
+		{
+			"pointer": "/steps/0/observation/results/0/subagent_trajectory_ref/0",
+			"reason": "external-reference-not-resolved"
+		},
+		{
+			"pointer": "/extra",
+			"reason": "retained-in-source-not-independently-verified"
+		}
+	],
+	"forbiddenCalls": [],
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"networkCallsDuringConversion": 0,
+	"sourceFileReadsDuringConversion": 0
+}

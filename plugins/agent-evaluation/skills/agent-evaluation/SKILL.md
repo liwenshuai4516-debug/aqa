@@ -1,6 +1,6 @@
 ---
 name: agent-evaluation
-description: 对明确选区的 Pi 任务做证据诊断、耗时与费用核对，查看或重评封存报告。不会启动外部客户端、模型或原业务测试；人工复核仅在 Agent 评估中心界面完成。
+description: 对明确选区的 Pi 任务做证据诊断、耗时与费用核对，查看或重评封存报告，包括人工导入的离线 ATIF 轨迹。不会启动外部客户端、模型或原业务测试；人工复核仅在 Agent 评估中心界面完成。
 metadata:
   display-name: Agent 评估中心
   description-zh: 对任务选区做只读证据诊断，保留来源、未知项和人工复核。
@@ -13,7 +13,7 @@ metadata:
 使用 `agent_evaluation` 工具；不可用时说明需启用同名插件及其工具、刷新当前会话。不要读取私有 session 文件、直接改仓库记录，或用另一套脚本代替评分规则。
 
 1. `describe` 获取当前宿主授权会话的 sessionId、消息 ID、预览与缺口；明确用户选择的起止消息和子任务范围，不能把整个会话自动当一个任务。后续请求带 sessionId，防止选区切换后误用旧状态。
-2. 通过 `createContract` 保存 objective、scope、conditions、constraints、environmentRefs、provenance 和 evaluationSubject。模型提出的条件必须 `sourceType:"proposed", required:false`，来源说明用 sourceRef 保留；用户在评估中心“修订目标与条件”确认后，通过 `reviseContract` 产生新修订。修订后显式采集原选区并新封存；这与只复用旧快照的重评不同。未知预期不要写成硬性失败标准。当前只支持 Pi 选区；不声称外部客户端已接入。
+2. 通过 `createContract` 保存 objective、scope、conditions、constraints、environmentRefs、provenance 和 evaluationSubject。模型提出的条件必须 `sourceType:"proposed", required:false`，来源说明用 sourceRef 保留；用户在评估中心“修订目标与条件”确认后，通过 `reviseContract` 产生新修订。修订后显式采集原选区并新封存；这与只复用旧快照的重评不同。未知预期不要写成硬性失败标准。createContract/reviseContract仅支持Pi选区。离线ATIF导入须用户在评估中心点击“导入离线轨迹”，选择UTF-8 JSON、预览并确认来源、文档及评估条件；工具不得代传上传、确认或读取未脱敏原包。离线报告可用既有list/get/readEvidence/export/evaluate查看、导出脱敏副本和重评；不得调用Pi采集/修订/观察流程。不声称外部客户端执行已接入。
 3. `createAttempt` 引用冻结契约，只附着现有任务观察，不执行任务。`collect` 可选择明确 artifactPaths 和 nativeRefs，二者最多各 20 项；不要扫描凭据或无关文件。`seal` 引用返回的 checkpointRef，得到不可变 snapshotRef。缺原文、缺工具结束、旧批次、临时会话等缺口须保留。
 4. `evaluate` 引用封存快照，可带明确规则 configs；或引用既有 evaluation，精确复用其原快照、internal profile 和规则版本，此时不传 configs。旧配置缺失或规则版本不可用时停止，不用当前默认值替代。返回 jobId。`status` 查询结果，必要时 `cancel` 只取消评分。成功启动、保存报告和目标通过是不同状态。未完成或重启 unknown 不自动重试原任务。
 5. `inspectNativeRun`只读核对授权原生证据对应原件，必须与封存摘要一致；分页返回执行状态与证据完整性，旧批次不证明本次执行。原件缺失/变化时保留封存证据，勿重跑原任务。`list/get/readEvidence/export` 查看记录和来源；`locateEvidence`只为当前授权会话的SDK消息证据返回精确界面消息目标，不执行界面跳转；用户可在评估界面点击“定位当前来源消息”。不可见、其他分支或会话变化时保留封存证据，不猜消息ID或改授权。大记录缩小 limit，正文和脱敏导出用 offset 分页，直到 nextOffset 为 null。导出保留 manifestDigest，分页时不得混接不同 manifest。原证据不可覆写；新材料要新采集/新封存/新报告。

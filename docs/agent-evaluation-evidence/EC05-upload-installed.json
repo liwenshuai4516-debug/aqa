@@ -1,0 +1,374 @@
+{
+	"regular": {
+		"location": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-4egtj6/desktop/data/plugins/agent-evaluation",
+		"version": "0.4.20",
+		"files": [
+			{
+				"file": ".pi-approved",
+				"status": "exact",
+				"sourceSha256": "b9bb0d77730050ce4d083d79b3b3660e6e8587d902d94cc7fe395d88fd1536b0",
+				"installedSha256": "b9bb0d77730050ce4d083d79b3b3660e6e8587d902d94cc7fe395d88fd1536b0"
+			},
+			{
+				"file": "README.md",
+				"status": "exact",
+				"sourceSha256": "76462767a15a0706fa8520d66e11d29b7774e54df19d610a862e5fdb5b832841",
+				"installedSha256": "76462767a15a0706fa8520d66e11d29b7774e54df19d610a862e5fdb5b832841"
+			},
+			{
+				"file": "adapters/atif/LICENSE.txt",
+				"status": "exact",
+				"sourceSha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+				"installedSha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+			},
+			{
+				"file": "adapters/atif/README.md",
+				"status": "exact",
+				"sourceSha256": "d434b127061153c93b9f1960176aeab95b2f4a776f5c8a935459f75a237ef8d3",
+				"installedSha256": "d434b127061153c93b9f1960176aeab95b2f4a776f5c8a935459f75a237ef8d3"
+			},
+			{
+				"file": "adapters/atif/schema.json",
+				"status": "exact",
+				"sourceSha256": "832e23d8522c152cc25fca6059044a8dc6c0863a955c4878ffc9581c22cf998d",
+				"installedSha256": "832e23d8522c152cc25fca6059044a8dc6c0863a955c4878ffc9581c22cf998d"
+			},
+			{
+				"file": "adapters/atif.mjs",
+				"status": "exact",
+				"sourceSha256": "c1801f02653c8ba5665a608f4f836883d92a183b43a97fb48e435776f166780e",
+				"installedSha256": "c1801f02653c8ba5665a608f4f836883d92a183b43a97fb48e435776f166780e"
+			},
+			{
+				"file": "adapters/pi.mjs",
+				"status": "exact",
+				"sourceSha256": "2967ace9372561ff54a7e5d23cb1fb444f527d4ac85593f0c642b21a06d50cac",
+				"installedSha256": "2967ace9372561ff54a7e5d23cb1fb444f527d4ac85593f0c642b21a06d50cac"
+			},
+			{
+				"file": "aggregate.mjs",
+				"status": "exact",
+				"sourceSha256": "61280824dddda10217a1792043c47cdf22332002b76620537423af3f7297f8f2",
+				"installedSha256": "61280824dddda10217a1792043c47cdf22332002b76620537423af3f7297f8f2"
+			},
+			{
+				"file": "client/configuration.mjs",
+				"status": "exact",
+				"sourceSha256": "0b7f4d8ad09e22adc5279633238f434b176275367c0e292151151034d62796fd",
+				"installedSha256": "0b7f4d8ad09e22adc5279633238f434b176275367c0e292151151034d62796fd"
+			},
+			{
+				"file": "client/entry.mjs",
+				"status": "exact",
+				"sourceSha256": "9d4f6bee611eee510355c181d3dc85efc83ba4a787c9e509b25254dbb10135ac",
+				"installedSha256": "9d4f6bee611eee510355c181d3dc85efc83ba4a787c9e509b25254dbb10135ac"
+			},
+			{
+				"file": "client/i18n.mjs",
+				"status": "exact",
+				"sourceSha256": "1d321cadfaac85c6e3b6ddfaf039f48692dc220af3796471e84ddfc2f24b9d29",
+				"installedSha256": "1d321cadfaac85c6e3b6ddfaf039f48692dc220af3796471e84ddfc2f24b9d29"
+			},
+			{
+				"file": "client/style.mjs",
+				"status": "exact",
+				"sourceSha256": "298a3786588e1f5736d82cc2894586bf7f5ef3dc3237d14f5175f8ad39146fa4",
+				"installedSha256": "298a3786588e1f5736d82cc2894586bf7f5ef3dc3237d14f5175f8ad39146fa4"
+			},
+			{
+				"file": "client/transport.mjs",
+				"status": "exact",
+				"sourceSha256": "77481ebc7d42980cb0be09aa19e98d6d28783a0a028d318bee375e82e373023b",
+				"installedSha256": "77481ebc7d42980cb0be09aa19e98d6d28783a0a028d318bee375e82e373023b"
+			},
+			{
+				"file": "collect.mjs",
+				"status": "exact",
+				"sourceSha256": "48572856542d20917f30235acdc1a878345a15b1562bde8dbcb6f2171258e493",
+				"installedSha256": "48572856542d20917f30235acdc1a878345a15b1562bde8dbcb6f2171258e493"
+			},
+			{
+				"file": "durable.mjs",
+				"status": "exact",
+				"sourceSha256": "4eae3a4896a6412f6b1e21c42d8f92a047bcb3c9046b33537b9becb5ce324a4f",
+				"installedSha256": "4eae3a4896a6412f6b1e21c42d8f92a047bcb3c9046b33537b9becb5ce324a4f"
+			},
+			{
+				"file": "evaluate.mjs",
+				"status": "exact",
+				"sourceSha256": "55b8972a17d8eba1dd04d5056a624ca2b2c372e0cda1be23bd991932c25045b3",
+				"installedSha256": "55b8972a17d8eba1dd04d5056a624ca2b2c372e0cda1be23bd991932c25045b3"
+			},
+			{
+				"file": "evaluators/basic.mjs",
+				"status": "exact",
+				"sourceSha256": "f859c66823dbe512485f846ae5962d13cc228e24b0d3e9fc1538f0b796d1fbce",
+				"installedSha256": "f859c66823dbe512485f846ae5962d13cc228e24b0d3e9fc1538f0b796d1fbce"
+			},
+			{
+				"file": "evaluators/common.mjs",
+				"status": "exact",
+				"sourceSha256": "8a099e357ce7896a1818ac75e56d231d37b40fcc66e0241bb9db21c16472341b",
+				"installedSha256": "8a099e357ce7896a1818ac75e56d231d37b40fcc66e0241bb9db21c16472341b"
+			},
+			{
+				"file": "evaluators/metrics.mjs",
+				"status": "exact",
+				"sourceSha256": "7d771a618bd2ac32c655ac04047df1e03ac2005bf22cd0b37397e88ed923ad68",
+				"installedSha256": "7d771a618bd2ac32c655ac04047df1e03ac2005bf22cd0b37397e88ed923ad68"
+			},
+			{
+				"file": "import.mjs",
+				"status": "exact",
+				"sourceSha256": "f59fb1d0049b5c02c269c1f5d6c21e9d4111dedcde4dd99c0134943e0c8382c6",
+				"installedSha256": "f59fb1d0049b5c02c269c1f5d6c21e9d4111dedcde4dd99c0134943e0c8382c6"
+			},
+			{
+				"file": "index.mjs",
+				"status": "exact",
+				"sourceSha256": "0af3c81a3023477010b80a44cb488b4b798e21720dc0cb297db5509298dc0560",
+				"installedSha256": "0af3c81a3023477010b80a44cb488b4b798e21720dc0cb297db5509298dc0560"
+			},
+			{
+				"file": "manifest.json",
+				"status": "exact",
+				"sourceSha256": "f431c999fd033e5e92ad08d16fcdf1d7bd83778eab119aa1013ab90cd5578305",
+				"installedSha256": "f431c999fd033e5e92ad08d16fcdf1d7bd83778eab119aa1013ab90cd5578305"
+			},
+			{
+				"file": "pack.mjs",
+				"status": "exact",
+				"sourceSha256": "68c7f4655e083a92445e57297975c1b873b9a2eb1c7ad9346151f5b33646ad9c",
+				"installedSha256": "68c7f4655e083a92445e57297975c1b873b9a2eb1c7ad9346151f5b33646ad9c"
+			},
+			{
+				"file": "profiles/internal.mjs",
+				"status": "exact",
+				"sourceSha256": "8f01fbbb2fac2bb93531f8ea466c5aa08485fee3726f2724bcdf48c697ccad6e",
+				"installedSha256": "8f01fbbb2fac2bb93531f8ea466c5aa08485fee3726f2724bcdf48c697ccad6e"
+			},
+			{
+				"file": "registry.mjs",
+				"status": "exact",
+				"sourceSha256": "0e1feb64de9367d34ca2568e65850fa40467edf8d554f3590f93b698b17567e5",
+				"installedSha256": "0e1feb64de9367d34ca2568e65850fa40467edf8d554f3590f93b698b17567e5"
+			},
+			{
+				"file": "schema.mjs",
+				"status": "exact",
+				"sourceSha256": "b9f87eda3d93573fee8cd4919b9317bc462538ea728b2b503ca49d7fc74c1e5b",
+				"installedSha256": "b9f87eda3d93573fee8cd4919b9317bc462538ea728b2b503ca49d7fc74c1e5b"
+			},
+			{
+				"file": "service.mjs",
+				"status": "exact",
+				"sourceSha256": "b5750eb1c28a17732e57200f2fe596fe3a018d5f5663f3f9996ec3fcb706437a",
+				"installedSha256": "b5750eb1c28a17732e57200f2fe596fe3a018d5f5663f3f9996ec3fcb706437a"
+			},
+			{
+				"file": "skills/agent-evaluation/SKILL.md",
+				"status": "exact",
+				"sourceSha256": "71cf19f7085a23cf864e7f77bb0b90a89747334e890dce61996da7d740005daf",
+				"installedSha256": "71cf19f7085a23cf864e7f77bb0b90a89747334e890dce61996da7d740005daf"
+			},
+			{
+				"file": "store.mjs",
+				"status": "exact",
+				"sourceSha256": "99de6363e84c65f451e30cd0b9b65502ed25cd143efb9ac6f39371a40599cdaf",
+				"installedSha256": "99de6363e84c65f451e30cd0b9b65502ed25cd143efb9ac6f39371a40599cdaf"
+			},
+			{
+				"file": "upload.mjs",
+				"status": "exact",
+				"sourceSha256": "14df8cb1aead0c9dc0b0524930bf003789e4de7890374c23f1cb2ead16407e98",
+				"installedSha256": "14df8cb1aead0c9dc0b0524930bf003789e4de7890374c23f1cb2ead16407e98"
+			}
+		]
+	},
+	"active": {
+		"location": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-OjAz9d/desktop/data/plugins/agent-evaluation",
+		"version": "0.4.20",
+		"files": [
+			{
+				"file": ".pi-approved",
+				"status": "exact",
+				"sourceSha256": "b9bb0d77730050ce4d083d79b3b3660e6e8587d902d94cc7fe395d88fd1536b0",
+				"installedSha256": "b9bb0d77730050ce4d083d79b3b3660e6e8587d902d94cc7fe395d88fd1536b0"
+			},
+			{
+				"file": "README.md",
+				"status": "documentation-after-run",
+				"sourceSha256": "76462767a15a0706fa8520d66e11d29b7774e54df19d610a862e5fdb5b832841",
+				"installedSha256": "050b9ff29ab0d4894eb4cc79c7502726e4fc111ae9a8af2320e889ce21d91be3"
+			},
+			{
+				"file": "adapters/atif/LICENSE.txt",
+				"status": "exact",
+				"sourceSha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+				"installedSha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+			},
+			{
+				"file": "adapters/atif/README.md",
+				"status": "exact",
+				"sourceSha256": "d434b127061153c93b9f1960176aeab95b2f4a776f5c8a935459f75a237ef8d3",
+				"installedSha256": "d434b127061153c93b9f1960176aeab95b2f4a776f5c8a935459f75a237ef8d3"
+			},
+			{
+				"file": "adapters/atif/schema.json",
+				"status": "exact",
+				"sourceSha256": "832e23d8522c152cc25fca6059044a8dc6c0863a955c4878ffc9581c22cf998d",
+				"installedSha256": "832e23d8522c152cc25fca6059044a8dc6c0863a955c4878ffc9581c22cf998d"
+			},
+			{
+				"file": "adapters/atif.mjs",
+				"status": "exact",
+				"sourceSha256": "c1801f02653c8ba5665a608f4f836883d92a183b43a97fb48e435776f166780e",
+				"installedSha256": "c1801f02653c8ba5665a608f4f836883d92a183b43a97fb48e435776f166780e"
+			},
+			{
+				"file": "adapters/pi.mjs",
+				"status": "exact",
+				"sourceSha256": "2967ace9372561ff54a7e5d23cb1fb444f527d4ac85593f0c642b21a06d50cac",
+				"installedSha256": "2967ace9372561ff54a7e5d23cb1fb444f527d4ac85593f0c642b21a06d50cac"
+			},
+			{
+				"file": "aggregate.mjs",
+				"status": "exact",
+				"sourceSha256": "61280824dddda10217a1792043c47cdf22332002b76620537423af3f7297f8f2",
+				"installedSha256": "61280824dddda10217a1792043c47cdf22332002b76620537423af3f7297f8f2"
+			},
+			{
+				"file": "client/configuration.mjs",
+				"status": "exact",
+				"sourceSha256": "0b7f4d8ad09e22adc5279633238f434b176275367c0e292151151034d62796fd",
+				"installedSha256": "0b7f4d8ad09e22adc5279633238f434b176275367c0e292151151034d62796fd"
+			},
+			{
+				"file": "client/entry.mjs",
+				"status": "exact",
+				"sourceSha256": "9d4f6bee611eee510355c181d3dc85efc83ba4a787c9e509b25254dbb10135ac",
+				"installedSha256": "9d4f6bee611eee510355c181d3dc85efc83ba4a787c9e509b25254dbb10135ac"
+			},
+			{
+				"file": "client/i18n.mjs",
+				"status": "exact",
+				"sourceSha256": "1d321cadfaac85c6e3b6ddfaf039f48692dc220af3796471e84ddfc2f24b9d29",
+				"installedSha256": "1d321cadfaac85c6e3b6ddfaf039f48692dc220af3796471e84ddfc2f24b9d29"
+			},
+			{
+				"file": "client/style.mjs",
+				"status": "exact",
+				"sourceSha256": "298a3786588e1f5736d82cc2894586bf7f5ef3dc3237d14f5175f8ad39146fa4",
+				"installedSha256": "298a3786588e1f5736d82cc2894586bf7f5ef3dc3237d14f5175f8ad39146fa4"
+			},
+			{
+				"file": "client/transport.mjs",
+				"status": "exact",
+				"sourceSha256": "77481ebc7d42980cb0be09aa19e98d6d28783a0a028d318bee375e82e373023b",
+				"installedSha256": "77481ebc7d42980cb0be09aa19e98d6d28783a0a028d318bee375e82e373023b"
+			},
+			{
+				"file": "collect.mjs",
+				"status": "exact",
+				"sourceSha256": "48572856542d20917f30235acdc1a878345a15b1562bde8dbcb6f2171258e493",
+				"installedSha256": "48572856542d20917f30235acdc1a878345a15b1562bde8dbcb6f2171258e493"
+			},
+			{
+				"file": "durable.mjs",
+				"status": "exact",
+				"sourceSha256": "4eae3a4896a6412f6b1e21c42d8f92a047bcb3c9046b33537b9becb5ce324a4f",
+				"installedSha256": "4eae3a4896a6412f6b1e21c42d8f92a047bcb3c9046b33537b9becb5ce324a4f"
+			},
+			{
+				"file": "evaluate.mjs",
+				"status": "exact",
+				"sourceSha256": "55b8972a17d8eba1dd04d5056a624ca2b2c372e0cda1be23bd991932c25045b3",
+				"installedSha256": "55b8972a17d8eba1dd04d5056a624ca2b2c372e0cda1be23bd991932c25045b3"
+			},
+			{
+				"file": "evaluators/basic.mjs",
+				"status": "exact",
+				"sourceSha256": "f859c66823dbe512485f846ae5962d13cc228e24b0d3e9fc1538f0b796d1fbce",
+				"installedSha256": "f859c66823dbe512485f846ae5962d13cc228e24b0d3e9fc1538f0b796d1fbce"
+			},
+			{
+				"file": "evaluators/common.mjs",
+				"status": "exact",
+				"sourceSha256": "8a099e357ce7896a1818ac75e56d231d37b40fcc66e0241bb9db21c16472341b",
+				"installedSha256": "8a099e357ce7896a1818ac75e56d231d37b40fcc66e0241bb9db21c16472341b"
+			},
+			{
+				"file": "evaluators/metrics.mjs",
+				"status": "exact",
+				"sourceSha256": "7d771a618bd2ac32c655ac04047df1e03ac2005bf22cd0b37397e88ed923ad68",
+				"installedSha256": "7d771a618bd2ac32c655ac04047df1e03ac2005bf22cd0b37397e88ed923ad68"
+			},
+			{
+				"file": "import.mjs",
+				"status": "exact",
+				"sourceSha256": "f59fb1d0049b5c02c269c1f5d6c21e9d4111dedcde4dd99c0134943e0c8382c6",
+				"installedSha256": "f59fb1d0049b5c02c269c1f5d6c21e9d4111dedcde4dd99c0134943e0c8382c6"
+			},
+			{
+				"file": "index.mjs",
+				"status": "exact",
+				"sourceSha256": "0af3c81a3023477010b80a44cb488b4b798e21720dc0cb297db5509298dc0560",
+				"installedSha256": "0af3c81a3023477010b80a44cb488b4b798e21720dc0cb297db5509298dc0560"
+			},
+			{
+				"file": "manifest.json",
+				"status": "exact",
+				"sourceSha256": "f431c999fd033e5e92ad08d16fcdf1d7bd83778eab119aa1013ab90cd5578305",
+				"installedSha256": "f431c999fd033e5e92ad08d16fcdf1d7bd83778eab119aa1013ab90cd5578305"
+			},
+			{
+				"file": "pack.mjs",
+				"status": "exact",
+				"sourceSha256": "68c7f4655e083a92445e57297975c1b873b9a2eb1c7ad9346151f5b33646ad9c",
+				"installedSha256": "68c7f4655e083a92445e57297975c1b873b9a2eb1c7ad9346151f5b33646ad9c"
+			},
+			{
+				"file": "profiles/internal.mjs",
+				"status": "intentional-rule-probe",
+				"sourceSha256": "8f01fbbb2fac2bb93531f8ea466c5aa08485fee3726f2724bcdf48c697ccad6e",
+				"installedSha256": "4a7c3da3a7159056af61c76cf26ba391b9ee44f95c38cd3e6caef52be005bcfa"
+			},
+			{
+				"file": "registry.mjs",
+				"status": "exact",
+				"sourceSha256": "0e1feb64de9367d34ca2568e65850fa40467edf8d554f3590f93b698b17567e5",
+				"installedSha256": "0e1feb64de9367d34ca2568e65850fa40467edf8d554f3590f93b698b17567e5"
+			},
+			{
+				"file": "schema.mjs",
+				"status": "exact",
+				"sourceSha256": "b9f87eda3d93573fee8cd4919b9317bc462538ea728b2b503ca49d7fc74c1e5b",
+				"installedSha256": "b9f87eda3d93573fee8cd4919b9317bc462538ea728b2b503ca49d7fc74c1e5b"
+			},
+			{
+				"file": "service.mjs",
+				"status": "exact",
+				"sourceSha256": "b5750eb1c28a17732e57200f2fe596fe3a018d5f5663f3f9996ec3fcb706437a",
+				"installedSha256": "b5750eb1c28a17732e57200f2fe596fe3a018d5f5663f3f9996ec3fcb706437a"
+			},
+			{
+				"file": "skills/agent-evaluation/SKILL.md",
+				"status": "exact",
+				"sourceSha256": "71cf19f7085a23cf864e7f77bb0b90a89747334e890dce61996da7d740005daf",
+				"installedSha256": "71cf19f7085a23cf864e7f77bb0b90a89747334e890dce61996da7d740005daf"
+			},
+			{
+				"file": "store.mjs",
+				"status": "exact",
+				"sourceSha256": "99de6363e84c65f451e30cd0b9b65502ed25cd143efb9ac6f39371a40599cdaf",
+				"installedSha256": "99de6363e84c65f451e30cd0b9b65502ed25cd143efb9ac6f39371a40599cdaf"
+			},
+			{
+				"file": "upload.mjs",
+				"status": "exact",
+				"sourceSha256": "14df8cb1aead0c9dc0b0524930bf003789e4de7890374c23f1cb2ead16407e98",
+				"installedSha256": "14df8cb1aead0c9dc0b0524930bf003789e4de7890374c23f1cb2ead16407e98"
+			}
+		]
+	}
+}

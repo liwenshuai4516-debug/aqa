@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -933,5 +934,142 @@ describe("EC04 product service", () => {
 		conv.delegateMode = false;
 		owner.settingsSvc.current.disabledPlugins = ["agent-evaluation"];
 		await expect(tool.execute("read", { action: "describe", requestId: "disabled" })).rejects.toThrow(/disabled/);
+	});
+});
+
+async function uploadFixture(f: ReturnType<typeof fixture>, requestId = "upload-fixture") {
+	const raw = JSON.stringify({
+		schema_version: "ATIF-v1.8",
+		session_id: "untrusted-external",
+		agent: { name: "offline-fixture", version: "claimed" },
+		steps: [
+			{ step_id: 1, source: "user", message: "Check fixture" },
+			{
+				step_id: 2,
+				source: "agent",
+				message: "All pass",
+				tool_calls: [
+					{ tool_call_id: "t1", function_name: "never-run", arguments: { password: "unredacted-private-fixture" } },
+				],
+			},
+		],
+	});
+	const upload = await f.request("uploadStart", {
+		requestId,
+		data: { byteLength: Buffer.byteLength(raw), sha256: createHash("sha256").update(raw).digest("hex") },
+	});
+	await f.request("uploadChunk", {
+		data: { uploadId: upload.uploadId, offset: 0, base64: Buffer.from(raw).toString("base64") },
+	});
+	return { raw, uploadId: upload.uploadId };
+}
+describe("EC05 offline service", () => {
+	it("requires human confirmation, freezes the host scope and reuses the existing report engine", async () => {
+		const f = fixture(),
+			uploaded = await uploadFixture(f);
+		const { scope: _scope, ...contract } = f.contract;
+		const data = { uploadId: uploaded.uploadId, contract, trajectoryPointers: ["#"], confirmed: true };
+		await expect(f.request("createImportContract", { data: { ...data, confirmed: false } })).rejects.toMatchObject({
+			code: "INVALID_INPUT",
+		});
+		await expect(f.request("createImportContract", { data: { ...data, contract: f.contract } })).rejects.toMatchObject({
+			code: "INVALID_INPUT",
+		});
+		await expect(
+			f.request("createImportContract", { data: { ...data, trajectoryPointers: ["#/missing"] } }),
+		).rejects.toMatchObject({ code: "INVALID_INPUT" });
+		const contractRef = await f.request("createImportContract", { requestId: "confirmed-contract", data });
+		expect(await f.request("createImportContract", { requestId: "confirmed-contract", data })).toEqual(contractRef);
+		const frozen = await f.request("get", { ref: contractRef });
+		expect(frozen.data.scope).toMatchObject({ source: "offline", sessionId: "session1", trajectoryPointers: ["#"] });
+		await expect(f.request("createContract", { data: frozen.data })).rejects.toMatchObject({
+			code: "PERMISSION_DENIED",
+		});
+		await expect(
+			f.request("importAtif", { ref: contractRef, data: { uploadId: uploaded.uploadId } }),
+		).rejects.toMatchObject({ code: "PERMISSION_DENIED" });
+		const input = {
+			ref: contractRef,
+			data: {
+				uploadId: uploaded.uploadId,
+				confirmed: true,
+				sourceDeclaration: "Human-uploaded synthetic fixture; unverified",
+			},
+		};
+		const imported = await f.request("importAtif", input);
+		expect(await f.request("importAtif", input)).toEqual(imported);
+		expect((await f.request("get", { ref: imported.attemptRef })).data.state).toBe("unknown");
+		const job = await f.request("evaluate", { ref: imported.snapshotRef });
+		let status: any;
+		await vi.waitFor(async () => {
+			status = await f.request("status", { jobId: job.jobId });
+			expect(status.state).toBe("completed");
+		});
+		expect((await f.request("get", { ref: status.reportRef })).data.assessmentStage).toBe("provisional");
+		const reports = await f.request("list");
+		expect(reports.items[0].taskRange.source).toBe("offline");
+		expect(reports.items[0].sourceVersion).toBe("unknown");
+		expect((await f.request("readOriginal", { ref: imported.sourceRef })).text).toBe(uploaded.raw);
+		expect(JSON.stringify(await f.request("export", { ref: status.reportRef }))).not.toContain(
+			"unredacted-private-fixture",
+		);
+		expect(f.host.readEvaluationEvidence.mock.calls.every((call: any[]) => call[1].mode === "describe")).toBe(true);
+		expect(f.host.readEvaluationArtifact).not.toHaveBeenCalled();
+		expect(f.host.readEvaluationNative).not.toHaveBeenCalled();
+		for (const action of [
+			"uploadStart",
+			"uploadChunk",
+			"uploadPreview",
+			"uploadDiscard",
+			"createImportContract",
+			"importAtif",
+			"readOriginal",
+		])
+			await expect(
+				f.request(action, { ref: imported.sourceRef, data: { uploadId: uploaded.uploadId } }, f.tool),
+			).rejects.toMatchObject({ code: "PERMISSION_DENIED" });
+		await expect(
+			f.request("readOriginal", { ref: imported.sourceRef }, { channel: "ui", clientId: "other" }),
+		).rejects.toMatchObject({ code: "PERMISSION_DENIED" });
+		f.service.stopClient("owner");
+		await expect(f.request("uploadPreview", { data: { uploadId: uploaded.uploadId } })).rejects.toMatchObject({
+			code: "PERMISSION_DENIED",
+		});
+		f.service.close();
+		const restarted = new EvaluationService(f.host);
+		cleanup.push(() => restarted.close());
+		const request = (action: string, extra: any = {}) =>
+			restarted.dispatch(f.ui, { action, requestId: "restart", ...extra });
+		expect((await request("readOriginal", { ref: imported.sourceRef })).text).toBe(uploaded.raw);
+		expect((await request("get", { ref: status.reportRef })).data.assessmentStage).toBe("provisional");
+		const reuploaded = await uploadFixture({ ...f, request }, "restart-upload");
+		expect(
+			await request("importAtif", {
+				ref: contractRef,
+				data: {
+					uploadId: reuploaded.uploadId,
+					confirmed: true,
+					sourceDeclaration: "Human-uploaded synthetic fixture; unverified",
+				},
+			}),
+		).toEqual(imported);
+		expect((await request("list")).items).toHaveLength(1);
+		expect(await request("uploadDiscard")).toEqual({ discarded: true });
+		expect(await request("uploadDiscard")).toEqual({ discarded: true });
+	});
+	it("retains the normal request cap and isolates preview from persistent record creation", async () => {
+		const f = fixture(),
+			uploaded = await uploadFixture(f);
+		const preview = await f.request("uploadPreview", { data: { uploadId: uploaded.uploadId } });
+		expect(preview).toMatchObject({ origin: "target-reported", eventCount: 2 });
+		expect((await f.request("list", { kind: "contracts" })).items).toEqual([]);
+		expect(JSON.stringify(preview)).not.toContain("unredacted-private-fixture");
+		await expect(
+			f.request("uploadChunk", { data: { uploadId: uploaded.uploadId, base64: "x".repeat(128 * 1024) } }),
+		).rejects.toMatchObject({ code: "LIMIT_EXCEEDED" });
+		expect(await f.request("uploadDiscard", { data: { uploadId: uploaded.uploadId } })).toEqual({ discarded: true });
+		await expect(f.request("uploadPreview", { data: { uploadId: uploaded.uploadId } })).rejects.toMatchObject({
+			code: "PERMISSION_DENIED",
+		});
 	});
 });

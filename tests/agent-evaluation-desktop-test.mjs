@@ -12,6 +12,7 @@ import electron from "electron";
 import { enableAgentEvaluation } from "../scripts/enable-agent-evaluation.mjs";
 import { ensureBuild } from "./lib/ensure-build.mjs";
 import { launchNativeApp } from "./desktop/native-app.mjs";
+import { verifyOfflineImport, reopenOfflineImport } from "./fixtures/agent-evaluation/offline-import.mjs";
 import { installActiveJobProbe, verifyActiveJobs } from "./fixtures/agent-evaluation/active-jobs.mjs";
 const repo = fileURLToPath(new URL("..", import.meta.url));
 ensureBuild(repo, "agent-evaluation-desktop");
@@ -161,12 +162,12 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.19" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.20" && p.active),
 			),
 		),
 	);
 	result.checks.push(
-		"Real app loads plugin 0.4.19 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Real app loads plugin 0.4.20 in explicitly registered app directories; seeded SDK history opened without a model prompt",
 	);
 	stage("settings and slash discovery");
 	const settings = async (tab) => {
@@ -241,7 +242,7 @@ try {
 							f.plugins.some(
 								(p) =>
 									p.id === "agent-evaluation" &&
-									p.version === "0.4.19" &&
+									p.version === "0.4.20" &&
 									p.agentTools?.some((tool) => tool.name === "agent_evaluation"),
 							),
 					),
@@ -258,7 +259,7 @@ try {
 	await candidate.waitFor();
 	await input.fill("");
 	result.checks.push(
-		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.19; skill, slash discovery and tool registration remain enabled",
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.20; skill, slash discovery and tool registration remain enabled",
 	);
 	stage("product diagnosis flow");
 	const openView = async () => {
@@ -738,6 +739,12 @@ try {
 	result.checks.push(
 		"Plugin disabled state survives page reload and gates the owned skill; re-enable restores the skill",
 	);
+	stage("offline ATIF upload, human confirmation and existing report UI");
+	const offline = await verifyOfflineImport({ page, output, dataDir, until, reports, openView, app });
+	result.offlineImport = { reportId: offline.reportId, sha256: offline.sha256, rawBytes: offline.rawBytes };
+	result.checks.push(
+		"Actual Electron uploads a >128 KiB inert ATIF fixture in bounded chunks, rejects malformed input, separates child selection, requires human source/condition confirmation and uses the existing provisional report with private original paging",
+	);
 	stage("desktop identity is withheld from a secondary renderer");
 	const nativeClientId = await page.evaluate(() => sessionStorage.getItem("pi-web-client-id"));
 	const secondaryClientId = await app.evaluate(
@@ -813,7 +820,7 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.19" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.20" && p.active),
 			),
 		),
 	);
@@ -832,7 +839,7 @@ try {
 	assert.equal(await skill().getByRole("switch").getAttribute("aria-checked"), "true");
 	await closeSettings();
 	result.checks.push(
-		"Graceful real Electron exit and a second native process load plugin 0.4.19 and preserve enabled skill/plugin registration",
+		"Graceful real Electron exit and a second native process load plugin 0.4.20 and preserve enabled skill/plugin registration",
 	);
 	result.checks.push(
 		"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",
@@ -913,6 +920,15 @@ try {
 	assert.deepEqual(await names("evaluations"), historyReports);
 	result.checks.push(
 		"Actual desktop resolves a sealed SDK evidence entry to the exact visible source message after restart, highlights it, refuses a foreign target and creates no report/attempt/snapshot",
+	);
+	stage("offline report and original reopen after a full native restart");
+	await openView();
+	await reopenOfflineImport({ page, until, fixture: offline });
+	assert.deepEqual(await names("attempts"), historyAttempts);
+	assert.deepEqual(await names("snapshots"), historySnapshots);
+	assert.deepEqual(await names("evaluations"), historyReports);
+	result.checks.push(
+		"A second real native process reopens the offline report and pages the exact private original without creating records or executing the trajectory",
 	);
 	stage("development URL cannot acquire the native identity");
 	await writeFile(join(output, "app-restarted-process.log"), app.getLogs());

@@ -684,3 +684,46 @@ describe("evaluation client lifecycle", () => {
 		expect(h.sent.filter((m) => m.action === "createAttempt")).toHaveLength(1);
 	});
 });
+
+it("offline report keeps import provenance and requires explicit original access, with no Pi observation or revision controls", async () => {
+	const { root, h, records } = await openReport();
+	records.contract.data.scope = {
+		source: "offline",
+		sessionId: "session",
+		format: "ATIF-v1.8",
+		converterVersion: "1",
+		packageDigest: "a".repeat(64),
+		trajectoryPointers: ["#"],
+	};
+	records.snapshot.data.evidenceRefs = [{ kind: "evidence", id: "original", revision: 1 }];
+	records.original = {
+		kind: "evidence",
+		id: "original",
+		revision: 1,
+		data: { kind: "atif-source", producer: "atif-import-v1", origin: "target-reported" },
+	};
+	root.querySelector<HTMLButtonElement>("[data-action=back]")!.click();
+	await vi.waitFor(() => expect(root.querySelector<HTMLButtonElement>("[data-action=open]")?.disabled).toBe(false));
+	root.querySelector<HTMLButtonElement>("[data-action=open]")!.click();
+	await vi.waitFor(() => expect(root.querySelector("[data-offline-source]")).not.toBeNull());
+	expect(root.querySelector("[data-action=watch-start]")).toBeNull();
+	expect(root.querySelector("[data-action=revise]")).toBeNull();
+	expect(root.querySelector("[data-action=configure]")).not.toBeNull();
+	expect(root.querySelector("[data-offline-source]")!.textContent).toContain("unverified");
+	const form = root.querySelector<HTMLFormElement>("[data-form=original]")!;
+	form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+	await vi.waitFor(() => expect(root.querySelector("[role=alert]")!.textContent).toContain("unredacted"));
+	expect(h.sent.filter((m) => m.action === "readOriginal")).toHaveLength(0);
+	const originalSend = h.ctx.send;
+	h.ctx.send = (message: any) => {
+		if (message.action !== "readOriginal") return originalSend(message);
+		h.sent.push(message);
+		queueMicrotask(() => h.reply(message, { text: "private original fixture", nextOffset: null, unredacted: true }));
+	};
+	form.querySelector<HTMLInputElement>("[name=allowOriginal]")!.checked = true;
+	form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+	await vi.waitFor(() =>
+		expect(root.querySelector("[data-evidence-panel] pre")!.textContent).toBe("private original fixture"),
+	);
+	expect(h.sent.filter((m) => m.action === "readOriginal")).toHaveLength(1);
+});

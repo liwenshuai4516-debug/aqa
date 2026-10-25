@@ -127,6 +127,8 @@ Agent 评估 EC04 产品接线：`plugins/agent-evaluation/{index,service}.mjs`�
 
 EC04 批量证据持久化：`plugins/agent-evaluation/pack.mjs` 编解码有界物理范围索引；`store.mjs` 保留逐条逻辑记录/授权/回执并兼容旧 JSON/blob，`durable.mjs` 在原子发布前依次同步正文和记录清单。恢复与故障回归仍在 store/evidence 单测。
 
-EC05 离线转换基础：`plugins/agent-evaluation/adapters/atif.mjs`使用`adapters/atif/schema.json`固定官方格式，仅解析/转换数据。当前未接入生产导入/报告，状态与边界见[EC05](agent-evaluation-evidence/EC05.md)。
+EC05 离线转换基础：`plugins/agent-evaluation/adapters/atif.mjs`使用`adapters/atif/schema.json`固定官方格式，仅解析/转换数据。生产导入/报告接线状态与边界见[EC05](agent-evaluation-evidence/EC05.md)。
 
-EC05 持久化：`plugins/agent-evaluation/import.mjs`复用既有记录/快照/评分，实现offline范围的可恢复幂等导入；`store.mjs`保护原包归档，普通证据与导出保持脱敏。`tests/agent-evaluation-import-test.mjs`为原生工程探针，用户service/UI入口仍待接线。
+EC05 持久化：`plugins/agent-evaluation/import.mjs`复用既有记录/快照/评分，实现offline范围的可恢复幂等导入；`store.mjs`保护原包归档，普通证据与导出保持脱敏。`tests/agent-evaluation-import-test.mjs`为原生工程探针，用户service/UI接线及实际验收见下述产品上传模块。
+
+EC05 产品上传：`plugins/agent-evaluation/upload.mjs`维护有界临时原字节、身份绑定、分块重试与过期清除；`service.mjs`的人审专用动作连接原有import/store/engine，`client/`提供上传预览/确认与离线报告来源/损失/原包分页。`tests/unit/agent-evaluation-upload.test.ts`覆盖资源/权限边界；`tests/fixtures/agent-evaluation/offline-import.mjs`在实际Electron主用例中验证文件上传和跨进程回读。

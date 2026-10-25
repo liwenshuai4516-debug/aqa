@@ -1,0 +1,196 @@
+{
+	"counts": {
+		"numTotalTests": 472,
+		"numPassedTests": 472,
+		"numFailedTests": 0,
+		"numPendingTests": 0
+	},
+	"raw": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec05-upload-0420/files/EC05-upload-checks-final.json",
+		"bytes": 174221,
+		"sha256": "6adbc62f422fe4c72af26f3044a0a5fe97367e78f3382e92e355bd4c3b3c3cd9"
+	},
+	"suites": [
+		{
+			"file": "tests/unit/accent-contrast.test.ts",
+			"status": "passed",
+			"tests": 39
+		},
+		{
+			"file": "tests/unit/agent-evaluation-artifact.test.ts",
+			"status": "passed",
+			"tests": 12
+		},
+		{
+			"file": "tests/unit/agent-evaluation-atif.test.ts",
+			"status": "passed",
+			"tests": 34
+		},
+		{
+			"file": "tests/unit/agent-evaluation-canonical.test.ts",
+			"status": "passed",
+			"tests": 3
+		},
+		{
+			"file": "tests/unit/agent-evaluation-client.test.ts",
+			"status": "passed",
+			"tests": 19
+		},
+		{
+			"file": "tests/unit/agent-evaluation-configuration.test.ts",
+			"status": "passed",
+			"tests": 3
+		},
+		{
+			"file": "tests/unit/agent-evaluation-enable.test.ts",
+			"status": "passed",
+			"tests": 1
+		},
+		{
+			"file": "tests/unit/agent-evaluation-engine.test.ts",
+			"status": "passed",
+			"tests": 15
+		},
+		{
+			"file": "tests/unit/agent-evaluation-evidence.test.ts",
+			"status": "passed",
+			"tests": 26
+		},
+		{
+			"file": "tests/unit/agent-evaluation-host.test.ts",
+			"status": "passed",
+			"tests": 8
+		},
+		{
+			"file": "tests/unit/agent-evaluation-import.test.ts",
+			"status": "passed",
+			"tests": 15
+		},
+		{
+			"file": "tests/unit/agent-evaluation-registry.test.ts",
+			"status": "passed",
+			"tests": 19
+		},
+		{
+			"file": "tests/unit/agent-evaluation-rules.test.ts",
+			"status": "passed",
+			"tests": 35
+		},
+		{
+			"file": "tests/unit/agent-evaluation-schema.test.ts",
+			"status": "passed",
+			"tests": 2
+		},
+		{
+			"file": "tests/unit/agent-evaluation-service.test.ts",
+			"status": "passed",
+			"tests": 24
+		},
+		{
+			"file": "tests/unit/agent-evaluation-store.test.ts",
+			"status": "passed",
+			"tests": 44
+		},
+		{
+			"file": "tests/unit/agent-evaluation-upload.test.ts",
+			"status": "passed",
+			"tests": 7
+		},
+		{
+			"file": "tests/unit/desktop-client-identity.test.ts",
+			"status": "passed",
+			"tests": 6
+		},
+		{
+			"file": "tests/unit/desktop-no-replay.test.ts",
+			"status": "passed",
+			"tests": 2
+		},
+		{
+			"file": "tests/unit/desktop-preferences.test.ts",
+			"status": "passed",
+			"tests": 1
+		},
+		{
+			"file": "tests/unit/desktop-startup.test.ts",
+			"status": "passed",
+			"tests": 7
+		},
+		{
+			"file": "tests/unit/plugin-agent-tool-gating.test.ts",
+			"status": "passed",
+			"tests": 7
+		},
+		{
+			"file": "tests/unit/plugin-host.test.ts",
+			"status": "passed",
+			"tests": 37
+		},
+		{
+			"file": "tests/unit/plugin-sdk-mock.test.ts",
+			"status": "passed",
+			"tests": 21
+		},
+		{
+			"file": "tests/unit/plugin-settings.test.ts",
+			"status": "passed",
+			"tests": 12
+		},
+		{
+			"file": "tests/unit/plugin-tool-guard.test.ts",
+			"status": "passed",
+			"tests": 16
+		},
+		{
+			"file": "tests/unit/plugin-tools.test.ts",
+			"status": "passed",
+			"tests": 5
+		},
+		{
+			"file": "tests/unit/plugin-version-bump-guard.test.ts",
+			"status": "passed",
+			"tests": 7
+		},
+		{
+			"file": "tests/unit/serialize.test.ts",
+			"status": "passed",
+			"tests": 28
+		},
+		{
+			"file": "tests/unit/settings-reload.test.ts",
+			"status": "passed",
+			"tests": 5
+		},
+		{
+			"file": "tests/unit/tool-prompt-hygiene.test.ts",
+			"status": "passed",
+			"tests": 8
+		},
+		{
+			"file": "tests/unit/ws-client-id.test.ts",
+			"status": "passed",
+			"tests": 4
+		}
+	],
+	"firstRun": {
+		"counts": {
+			"numTotalTests": 472,
+			"numPassedTests": 471,
+			"numFailedTests": 1,
+			"numPendingTests": 0
+		},
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec05-upload-0420/files/EC05-upload-checks-first.json",
+			"bytes": 175399,
+			"sha256": "fff969b3cc8de1547ae707261afd6f1631279cded82bfa2ac717320b77c035c4"
+		},
+		"failures": [
+			{
+				"name": "tool prompt hygiene（三处职责分离：description / snippet / guidelines） promptGuidelines 单条 ≤ 200c 且不复述 description",
+				"messages": [
+					"AssertionError: guidelines 只写「何时用/顺序/禁止/路由」，不复述 description：\n/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/index.mjs:37 240c > 200c: expected [ Array(1) ] to deeply equal []\n    at /Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/unit/tool-prompt-hygiene.test.ts:433:5\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/vitest/dist/chunks/run.C5UmxDPh.js:1628:35\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/vitest/dist/chunks/run.C5UmxDPh.js:2783:26\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/vitest/dist/chunks/run.C5UmxDPh.js:3319:20\n    at new Promise (<anonymous>)\n    at runWithCancel (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/vitest/dist/chunks/run.C5UmxDPh.js:3314:10)\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/vitest/dist/chunks/run.C5UmxDPh.js:3299:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/vitest/dist/chunks/run.C5UmxDPh.js:3257:10)\n    at file:///Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/vitest/dist/chunks/run.C5UmxDPh.js:3876:64"
+				]
+			}
+		]
+	}
+}

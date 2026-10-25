@@ -4,6 +4,8 @@ import { Check } from "typebox/value";
 import { EvaluationStore } from "./store.mjs";
 import { EvidenceCollector } from "./collect.mjs";
 import { EvaluationEngine } from "./evaluate.mjs";
+import { AtifUploads } from "./upload.mjs";
+import { importAtif } from "./import.mjs";
 import { createInternalRegistry, internalProfile } from "./profiles/internal.mjs";
 import { validateConfigSchema } from "./registry.mjs";
 import { Ref, digest, requireValue } from "./schema.mjs";
@@ -32,9 +34,21 @@ export const toolActions = [
 export const requestSchema = T.Object(
 	{
 		action: T.Union(
-			[...toolActions, "review", "watchStart", "watchStatus", "watchStop", "validateConfiguration"].map((value) =>
-				T.Literal(value),
-			),
+			[
+				...toolActions,
+				"review",
+				"watchStart",
+				"watchStatus",
+				"watchStop",
+				"validateConfiguration",
+				"uploadStart",
+				"uploadChunk",
+				"uploadPreview",
+				"uploadDiscard",
+				"createImportContract",
+				"importAtif",
+				"readOriginal",
+			].map((value) => T.Literal(value)),
 		),
 		requestId: T.String({ pattern: "^[A-Za-z0-9_-]{1,128}$" }),
 		conversationId: T.Optional(string),
@@ -95,6 +109,7 @@ export class EvaluationService {
 		this.pending = new Set();
 		this.controllers = new Map();
 		this.watches = new Map();
+		this.uploads = new AtifUploads();
 	}
 	initialize() {
 		requireValue(!this.closed, "CAPABILITY_UNAVAILABLE", "Evaluation plugin is stopped");
@@ -179,6 +194,72 @@ export class EvaluationService {
 				...(previousRef ? { previousRef } : {}),
 			});
 		switch (request.action) {
+			case "uploadStart":
+				return this.uploads.start(trusted.clientId, source, requestId, request.data);
+			case "uploadChunk":
+				return this.uploads.chunk(trusted.clientId, source, request.data);
+			case "uploadPreview":
+				return this.uploads.preview(trusted.clientId, source, request.data?.uploadId, request.offset);
+			case "uploadDiscard": {
+				this.uploads.discardOwned(trusted.clientId, source, request.data?.uploadId);
+				return { discarded: true };
+			}
+			case "createImportContract": {
+				const { converted } = this.uploads.parse(trusted.clientId, source, request.data?.uploadId);
+				const data = request.data?.contract,
+					pointers = request.data?.trajectoryPointers;
+				requireValue(
+					request.data?.confirmed === true &&
+						data &&
+						!Object.hasOwn(data, "scope") &&
+						Array.isArray(pointers) &&
+						pointers.length > 0 &&
+						new Set(pointers).size === pointers.length &&
+						pointers.every((p) => converted.trajectories.some((t) => `#${t.pointer}` === p)),
+					"INVALID_INPUT",
+					"Confirm a contract and explicit document selection; host scope cannot be supplied",
+				);
+				return ref(
+					write(
+						"contracts",
+						{
+							...data,
+							scope: {
+								source: "offline",
+								sessionId: source.sessionId,
+								packageDigest: converted.rawSha256,
+								format: converted.format,
+								converterVersion: converted.converterVersion,
+								trajectoryPointers: pointers,
+							},
+						},
+						"import-contract",
+					),
+				);
+			}
+			case "importAtif": {
+				requireValue(request.data?.confirmed === true, "PERMISSION_DENIED", "Human source confirmation is required");
+				const { entry } = this.uploads.parse(trusted.clientId, source, request.data?.uploadId);
+				requireValue(
+					store.get(context, request.ref).data.scope?.sessionId === source.sessionId,
+					"PERMISSION_DENIED",
+					"Import contract requires the current host anchor",
+				);
+				return importAtif(store, context, {
+					contractRef: request.ref,
+					input: entry.bytes,
+					sourceDeclaration: request.data?.sourceDeclaration,
+				});
+			}
+			case "readOriginal": {
+				const text = store.readOriginal(context, request.ref);
+				return {
+					...pageText(text, request.offset),
+					originalDigest: store.get(context, request.ref).originalRef.sha256,
+					unredacted: true,
+				};
+			}
+
 			case "validateConfiguration": {
 				const original = store.get(context, request.ref);
 				requireValue(original.kind === "evaluations", "INVALID_INPUT", "A report is required for configuration");
@@ -247,7 +328,8 @@ export class EvaluationService {
 				requireValue(attempt.kind === "attempts", "INVALID_INPUT", "Observation attempt required");
 				const contract = store.get(context, attempt.data.contractRef);
 				requireValue(
-					contract.data.scope.sessionId === source.sessionId &&
+					contract.data.scope.source === "pi" &&
+						contract.data.scope.sessionId === source.sessionId &&
 						(!attempt.data.sourceSessionId || attempt.data.sourceSessionId === source.sessionId),
 					"PERMISSION_DENIED",
 					"Observation selection differs from the open source",
@@ -525,7 +607,7 @@ export class EvaluationService {
 			case "reviseContract": {
 				const data = request.data;
 				requireValue(
-					data && data.scope?.sessionId === source.sessionId,
+					data && data.scope?.source === "pi" && data.scope.sessionId === source.sessionId,
 					"PERMISSION_DENIED",
 					"Contract requires the selected source session",
 				);
@@ -727,10 +809,12 @@ export class EvaluationService {
 		const watch = this.watches.get(clientId);
 		if (watch) this.stopWatch(watch);
 		for (const [controller, owner] of this.controllers) if (owner === clientId) controller.abort();
+		this.uploads.stopClient(clientId);
 		this.engine?.stopClient(clientId);
 	}
 	close() {
 		if (this.closed) return;
+		this.uploads.close();
 		for (const entry of this.watches.values()) this.stopWatch(entry);
 		for (const controller of this.controllers.keys()) controller.abort();
 		this.collector?.close();

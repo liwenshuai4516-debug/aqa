@@ -1,0 +1,96 @@
+{
+	"pluginVersion": "0.4.20",
+	"schemaVersion": 1,
+	"protocolVersion": 33,
+	"scope": "EC05 bounded upload, human confirmation and existing Electron offline report; real CLI deferred by user",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec05-upload-0420/index.json",
+		"bytes": 55736,
+		"sha256": "ff192f17ae838b381bb399ab6d748744b8bbe96780ca20360f99cf225fdd89e8"
+	},
+	"archiveFiles": 260,
+	"archiveScope": "Local-only verified archive, no remote upload; synthetic fixture records, screenshots and raw checks, excluding caches/credentials/dependencies/symlinks",
+	"typecheck": {
+		"status": "PASS",
+		"configs": 5,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec05-upload-0420/files/EC05-upload-final2-typecheck.log",
+			"bytes": 251,
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+		}
+	},
+	"quality": [
+		{
+			"command": ["npm", "run", "lint"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 lint\n> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/\n\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "check:protocol"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 check:protocol\n> node scripts/check-protocol-sync.mjs\n\n✓ types.ts 是 protocol.ts 的 type-only re-export shim\n✓ protocol.ts 保持纯类型导出（无运行时代码）\n✓ 双端 PROTOCOL_VERSION 一致 (v33)\n· 跳过协议版本 git 启发式（无可用 tag 或浅检出环境）\n",
+			"stderr": "fatal: No names found, cannot describe anything.\n"
+		},
+		{
+			"command": ["npm", "run", "i18n:check"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 i18n:check\n> node scripts/i18n-diff.mjs --check-packs\n\nOK   de（v0.68.1）：缺 0，多余 0\nOK   es（v0.68.1）：缺 0，多余 0\nOK   fr（v0.68.1）：缺 0，多余 0\nOK   it（v0.68.1）：缺 0，多余 0\nOK   ja（v0.69.0）：缺 0，多余 0\nOK   ko（v0.68.1）：缺 0，多余 0\nOK   pt（v0.105.1）：缺 0，多余 0\nOK   ru（v0.68.1）：缺 0，多余 0\nOK   tr（v0.105.1）：缺 0，多余 0\nOK   zh-HK（v0.107.0）：缺 0，多余 0\nOK   zh-Hant（v0.107.0）：缺 0，多余 0\nOK   zh-TW（v0.107.0）：缺 0，多余 0\n12 个语言包 key 与 zh 一一对应。\n",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "size:check"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 size:check\n> node scripts/project-budget.mjs --check\n\n{\n  \"tracked\": {\n    \"AGENTS.md\": 8597,\n    \"docs/desktop-delivery/evidence\": 63696818,\n    \"assets/demo-video.mp4\": 20012405,\n    \"plugins/mermaid/client/vendor\": 5346437,\n    \"plugins/run-trace/client/vendor\": 568528\n  },\n  \"local\": {},\n  \"checks\": [\n    {\n      \"name\": \"AGENTS.md\",\n      \"bytes\": 8597,\n      \"limit\": 12000,\n      \"passed\": true\n    },\n    {\n      \"name\": \"docs/desktop-delivery/evidence\",\n      \"bytes\": 63696818,\n      \"limit\": 63696818,\n      \"passed\": true\n    },\n    {\n      \"name\": \"assets/demo-video.mp4\",\n      \"bytes\": 20012405,\n      \"limit\": 20012405,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/mermaid/client/vendor\",\n      \"bytes\": 5346437,\n      \"limit\": 5346437,\n      \"passed\": true\n    },\n    {\n      \"name\": \"plugins/run-trace/client/vendor\",\n      \"bytes\": 568528,\n      \"limit\": 568528,\n      \"passed\": true\n    },\n    {\n      \"name\": \"rootLockedPackages\",\n      \"count\": 612,\n      \"limit\": 650,\n      \"passed\": true\n    }\n  ],\n  \"rootLockedPackages\": 612\n}\n",
+			"stderr": ""
+		},
+		{
+			"command": ["git", "diff", "--check"],
+			"exitCode": 0,
+			"stdout": "",
+			"stderr": ""
+		},
+		{
+			"command": ["npm", "run", "clean"],
+			"exitCode": 0,
+			"stdout": "\n> pi-web-ui@0.109.0 clean\n> node scripts/clean-project.mjs\n\n仅预览；未删除文件。执行前先结束相关测试/构建进程。\n可清理 0 项，共 0.0 MiB。\n",
+			"stderr": ""
+		}
+	],
+	"unitCounts": {
+		"numTotalTests": 472,
+		"numPassedTests": 472,
+		"numFailedTests": 0,
+		"numPendingTests": 0
+	},
+	"unitsFirstFailure": "471 passed / 1 failed: tool prompt guideline had 240 characters >200; shortened to 192, production scoring/assertions unchanged; first raw retained",
+	"desktopRuns": [
+		{
+			"result": "EC05-upload-desktop.json",
+			"status": "PASS"
+		},
+		{
+			"result": "EC05-upload-active-desktop.json",
+			"status": "PASS"
+		}
+	],
+	"visualInspection": [
+		"offline-import-preview.png: visible labels and escaped uploaded markup, narrow form without horizontal overflow",
+		"offline-import-report.png: unknown goal, provisional/inconclusive and source digest visible",
+		"active/offline-import-zh-light-narrow.png: readable Chinese labels/light theme, wrapped source content and explicit original confirmation"
+	],
+	"postRunDocsOnly": [
+		"README.md historical-state clarification after active desktop run; production files exact except intentional profile rule injection in active probe"
+	],
+	"AC21": "PASS within documented ATIF-v1.8 profile: resumable same-contract import, task separation, explicit unknown versions, full raw archive and declared conversion gaps, provenance never promoted",
+	"AC22": "PASS within documented bounded JSON profile: parser/store/upload security tests and zero-IO native probes, real Electron escaped markup and malformed/unsupported input rejection",
+	"notExecuted": [
+		"Real Agent CLI/model calls (user deferred)",
+		"Windows/Linux/macOS x64",
+		"Desktop full downgrade acceptance (EC04 incomplete)",
+		"EC04 collection performance rerun: collector/store/canonical unchanged; previously failed gate remains failed"
+	],
+	"overallGoal": "active; EC04/M1 and subsequent packages incomplete",
+	"actualModelCalls": 0,
+	"actualCliCalls": 0
+}
