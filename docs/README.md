@@ -102,3 +102,5 @@ Agent评估离线导入依据与当前边界见 [EC05记录](agent-evaluation-ev
 [EC06 原生隔离诊断](agent-evaluation-evidence/EC06.md)：零模型合成 CLI 复现逃逸子进程取消缺口；后端门禁阻塞，不代表正式执行能力。
 
 [EC04 长证据桌面补验](agent-evaluation-evidence/EC04-evidence-matrix-diagnostics.json)：40页精确回读、真实读取错误恢复与小样本界面耗时；完整性能/回滚门禁仍未完成。
+
+[EC04 插件回滚与完整数据恢复](agent-evaluation-evidence/EC04-rollback-diagnostics.json)：实际Electron的0.4.20→0.4.19 revert、完整userData恢复和0.4.18未知格式写入拒绝；限相同宿主，不代表全宿主降级保证。

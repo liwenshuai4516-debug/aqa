@@ -141,7 +141,7 @@ watchStart/watchStatus/watchStop 仅可信 UI 通道，模型工具不可控制�
 
 `store.mjs`新增可选evidence envelope `originalRef`与受human/域/宿主会话授权保护的原文读取。原包UTF-8字节存现有私有blob目录、0600权限，发布原证据引用前完成同步；普通content、评分器与导出只含脱敏的所选文档元信息/事件，未选子轨迹正文不进入快照。archive与副本分别记录摘要；导出携带原摘要声明但不携带原字节。原包缺失、篡改或链接替换拒绝，半写保留并阻止依赖写入；不自动抢锁或重启业务。
 
-`schema.mjs`的offline scope用host sessionId作为授权锚点，外部run/document ID只保留来源语义，不伪装Pi范围。旧记录不迁移，旧Pi记录/回执仍兼容；0.4.18不认识新offline契约，保留原件并拒绝，不能宣称插件可无损降级。回滚前保留完整dataDir，完整Electron回滚尚未验收。
+`schema.mjs`的offline scope用host sessionId作为授权锚点，外部run/document ID只保留来源语义，不伪装Pi范围。旧记录不迁移，旧Pi记录/回执仍兼容；0.4.18不认识新offline契约，保留原件并拒绝，不能宣称插件可无损降级。回滚前保留完整userData（含dataDir、agentDir和原生身份）。已在相同宿主/macOS arm64的实际Electron验证0.4.20→0.4.19插件revert、完整userData恢复及0.4.18未知offline记录阻止新写入；旧Pi历史可读，0.4.19不具备新版上传/原包UI。详见[验收记录](../../docs/agent-evaluation-evidence/EC04-rollback-diagnostics.json)，不扩为全宿主/任意版本降级保证。
 
 0.4.19阶段仅内部模块及原生工程入口，当时尚未接用户可调用service动作、上传/人审确认、技能说明/快捷流程或实际桌面离线报告。既有桌面管理/诊断回归不能替代这些待完成项，EC05仍进行中。
 

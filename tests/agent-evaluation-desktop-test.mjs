@@ -15,7 +15,10 @@ import { launchNativeApp } from "./desktop/native-app.mjs";
 import { verifyOfflineImport, reopenOfflineImport } from "./fixtures/agent-evaluation/offline-import.mjs";
 import { installActiveJobProbe, verifyActiveJobs } from "./fixtures/agent-evaluation/active-jobs.mjs";
 import { longEvidenceText, verifyEvidenceMatrix } from "./fixtures/agent-evaluation/evidence-matrix.mjs";
+import { installRollbackFixture, verifyRollback } from "./fixtures/agent-evaluation/rollback.mjs";
 const evidenceMatrix = process.argv.includes("--evidence-matrix");
+const rollback = process.argv.includes("--rollback");
+assert.ok(!(rollback && process.argv.includes("--active-jobs")), "Run rollback separately from injected active jobs");
 const repo = fileURLToPath(new URL("..", import.meta.url));
 ensureBuild(repo, "agent-evaluation-desktop");
 const output = await mkdtemp(join(tmpdir(), "agent-evaluation-desktop-"));
@@ -79,6 +82,7 @@ await enableAgentEvaluation(repo, { agentDir, dataDir });
 const settingsBefore = await readFile(join(agentDir, "settings.json"), "utf8");
 await enableAgentEvaluation(repo, { agentDir, dataDir });
 assert.equal(await readFile(join(agentDir, "settings.json"), "utf8"), settingsBefore);
+if (rollback) await installRollbackFixture(repo, dataDir, agentDir);
 const activeJobProbe = process.argv.includes("--active-jobs")
 	? await installActiveJobProbe(repo, dataDir, output)
 	: undefined;
@@ -953,6 +957,28 @@ try {
 	result.checks.push(
 		"A second real native process reopens the offline report and pages the exact private original without creating records or executing the trajectory",
 	);
+	if (rollback) {
+		stage("plugin revert, full userData backup restore and unsupported older format");
+		const restored = await verifyRollback({
+			app,
+			page,
+			repo,
+			output,
+			userData,
+			dataDir,
+			env,
+			sessionPath,
+			original,
+			offline,
+			until,
+		});
+		app = restored.app;
+		page = restored.page;
+		result.rollback = restored.result;
+		result.checks.push(
+			"Actual native plugin revert to 0.4.19 and complete stopped userData restores retain the original identity/reports/reviews/private original; unsupported 0.4.18 rejects without rewriting evidence or replaying tasks",
+		);
+	}
 	stage("development URL cannot acquire the native identity");
 	await writeFile(join(output, "app-restarted-process.log"), app.getLogs());
 	await app.close();

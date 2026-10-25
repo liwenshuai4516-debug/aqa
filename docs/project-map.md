@@ -136,3 +136,5 @@ EC05 产品上传：`plugins/agent-evaluation/upload.mjs`维护有界临时原�
 EC06 隔离可行性：`tests/agent-evaluation-isolation-test.mjs` 与 `tests/fixtures/agent-evaluation/isolation-probe.mjs` 仅运行原生 macOS 零模型探针，保存文件/网络拒绝及逃逸子进程取消反例；诊断 PASS 不代表执行后端获批，见 [EC06](agent-evaluation-evidence/EC06.md)。
 
 EC04 桌面可选补验：`tests/agent-evaluation-desktop-test.mjs --evidence-matrix`复用`tests/fixtures/agent-evaluation/evidence-matrix.mjs`，验证160K合成证据完整分页、真实缺文件/恢复、窄屏与小样本绘制耗时；不改产品，不替代性能或完整回滚门禁，见[记录](agent-evaluation-evidence/EC04.md)。
+
+EC04 回滚验收：`tests/agent-evaluation-desktop-test.mjs --rollback`通过`tests/fixtures/agent-evaluation/rollback.mjs`在自有数据目录执行实际插件revert、完整停止后userData备份/恢复及旧版未知格式写入拒绝；版本/同宿主边界和原始证据见[记录](agent-evaluation-evidence/EC04-rollback-diagnostics.json)。
