@@ -428,3 +428,5 @@ EC05：`plugins/agent-evaluation/adapters/atif.mjs`（有界解析/转换）、`
 EC05 `plugins/agent-evaluation/import.mjs`负责离线来源校验、确定性阶段回执和封存；store新增受授权原包读写，schema新增offline scope。`tests/unit/agent-evaluation-import.test.ts`覆盖权限/恢复/子进程退出与不提权评分；`tests/agent-evaluation-import-test.mjs`为零业务原生集成，非桌面导入验收。
 
 EC05 产品上传：`plugins/agent-evaluation/upload.mjs`维护有界临时原字节、身份绑定、分块重试与过期清除；`service.mjs`的人审专用动作连接原有import/store/engine，`client/`提供上传预览/确认与离线报告来源/损失/原包分页。`tests/unit/agent-evaluation-upload.test.ts`覆盖资源/权限边界；`tests/fixtures/agent-evaluation/offline-import.mjs`在实际Electron主用例中验证文件上传和跨进程回读。
+
+EC06 隔离可行性：`tests/agent-evaluation-isolation-test.mjs` 与 `tests/fixtures/agent-evaluation/isolation-probe.mjs` 仅运行原生 macOS 零模型探针，保存文件/网络拒绝及逃逸子进程取消反例；诊断 PASS 不代表执行后端获批，见 [EC06](agent-evaluation-evidence/EC06.md)。

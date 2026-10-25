@@ -98,3 +98,5 @@ UI 测试日常修改、安装与升级统一从 [技能维护入口](../.pi/ski
 - [数据空间测试数据规范](../.pi/skills/data-space-testing/SKILL.md)：Agent 查询、结果回写与结构化交付，含离线一致性校验，复用原生证据和既有数据空间工具。
 
 Agent评估离线导入依据与当前边界见 [EC05记录](agent-evaluation-evidence/EC05.md)；官方格式诊断不代表产品导入完成。
+
+[EC06 原生隔离诊断](agent-evaluation-evidence/EC06.md)：零模型合成 CLI 复现逃逸子进程取消缺口；后端门禁阻塞，不代表正式执行能力。
