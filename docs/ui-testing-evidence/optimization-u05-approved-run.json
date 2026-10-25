@@ -1,0 +1,1444 @@
+{
+	"date": "2026-10-25",
+	"status": "SYNTHETIC_FORMAL_PASSED_REPORT_APPROVED_DELIVERED",
+	"native_version": "0.1.7",
+	"asset_ref": {
+		"path": "qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/manifest.json",
+		"sha256": "4035c2e18a883293b9846177cb861583918e180a85f5ad9c495c48747877563a"
+	},
+	"design_review": {
+		"review_ref": {
+			"path": "qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/reviews/design-f3a95499-4812-447b-a329-078b235c1dc4/manifest.json",
+			"sha256": "6ef5ed7aa8a013a291e3661e92a673569b862deb1f7f0d9a0d51e86159f50d16"
+		},
+		"decision": "approved",
+		"round": 6,
+		"runtime_ready": false
+	},
+	"provider": "gpt/gpt-6.1-sol",
+	"model_usage": [
+		{
+			"usage": {
+				"input": 209601,
+				"output": 2273,
+				"cacheRead": 0,
+				"cacheWrite": 0,
+				"reasoning": 70,
+				"totalTokens": 211874,
+				"cost": {
+					"input": 0,
+					"output": 0,
+					"cacheRead": 0,
+					"cacheWrite": 0,
+					"total": 0
+				}
+			},
+			"provider_duration_ms": 50192
+		},
+		{
+			"usage": {
+				"input": 135937,
+				"output": 1834,
+				"cacheRead": 0,
+				"cacheWrite": 0,
+				"reasoning": 124,
+				"totalTokens": 137771,
+				"cost": {
+					"input": 0,
+					"output": 0,
+					"cacheRead": 0,
+					"cacheWrite": 0,
+					"total": 0
+				}
+			},
+			"provider_duration_ms": 52302
+		}
+	],
+	"authorization4": {
+		"authorized_calls": 3,
+		"used_calls": 2,
+		"remaining_call_scope": "One design-review call only; one authorized report reallocation consumed",
+		"remaining_global_native_calls": 1,
+		"reserved_usd": 0.41289866666666664,
+		"additional_limit_usd": 1,
+		"billing": "Conservative reservation, not invoice; registry zero is not free; original history retained",
+		"input_limit_bytes": 1048576
+	},
+	"diagnostics": {
+		"summary_ref": {
+			"path": "qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/summary.json",
+			"sha256": "89871b2bdc19dba66c5f4a2ec602afc9fa38f28766d3798053a64b1718a70588"
+		},
+		"status": "validated",
+		"runtime_ready": true,
+		"rounds": 15,
+		"positive_cases_passed": 6,
+		"fault_probes_detected": 14,
+		"distinct_assertion_ids": 13,
+		"native_case_attempts": 90,
+		"native_passed_attempts": 76,
+		"intentional_fault_failures": 14,
+		"problems": []
+	},
+	"formal_run": {
+		"run_ref": {
+			"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/manifest.json",
+			"sha256": "1ce89c8b4ddfc293ed4778f4567827e35b8c2d803f6e7227018d62272568eb28"
+		},
+		"counts": {
+			"passed": 6,
+			"failed": 0,
+			"blocked": 0,
+			"skipped": 0,
+			"cancelled": 0,
+			"not-run": 0,
+			"flaky": 0,
+			"unknown": 0
+		},
+		"assertion_reached_attempt_count": 13,
+		"complete": true,
+		"issues": []
+	},
+	"report_candidate": {
+		"report_ref": {
+			"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/manifest.json",
+			"sha256": "1dc7083769cf19e07a5df07ed586b54667f3ceb2e739783411ee28bd026c4d6b"
+		},
+		"completeness": "complete",
+		"review_status": "not-reviewed"
+	},
+	"report_review": {
+		"review_ref": {
+			"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/reviews/result-3887c58d-2958-41b1-bdff-e533c6bdb095/manifest.json",
+			"sha256": "8b76c45c06fb8b79a0060e87f181e73687f93f6aada9597ae10136ef101e4571"
+		},
+		"decision": "approved",
+		"round": 1
+	},
+	"delivery_ref": {
+		"path": "qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/delivery/8b76c45c06fb8b79a0060e87f181e73687f93f6aada9597ae10136ef101e4571.md",
+		"sha256": "e2f575c267224517753c779b566fecf4c840acaabe9f74c1574a2a3605411aff"
+	},
+	"original_discovery_task": "completed by native checkpoint after trusted review and diagnostics",
+	"formal_execution_task": "completed; native checkpoint delivered independently approved complete report",
+	"current_private_authority_not_archived": true,
+	"historical_annotation_limit": "Immutable candidate/cases still contain preparation-time unreviewed/no-diagnostic gap text. Current native authority and runtime results prove the later state; original files were not rewritten.",
+	"validation": {
+		"typecheck": "passed",
+		"vitest": "14 earlier checks; final 51 passed in 3 registration/guard/workflow files",
+		"integration": "19 passed",
+		"electron": "7 passed; settings/skills/MCP visibility, not full model/business desktop chain",
+		"lint": "passed",
+		"protocol": "structure passed, history check skipped (no tag)"
+	},
+	"plan_complete": false,
+	"remaining_plan": "Real OperationContract admission/auth mapping; Electron end-to-end and complete U00 baseline/U03/U07/U09 and M1/M2 remain incomplete",
+	"prior_candidate_archive_verified": {
+		"path": "docs/ui-testing-evidence/optimization-u05-browser-diagnostics.tar.gz",
+		"sha256": "d4f474c21b0a173541212d190150ad7435e27d48f6f2e5b6035f6e2a95626087",
+		"bytes": 48469,
+		"files": 105,
+		"roundtrip_verified": true
+	},
+	"public_owned_references_verified": {
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/follow-up.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/content.md": "1bcbf0890de8dfc65f843f6c13e706ea2b7099ab2cf0861a04b96c677aba4126",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/analysis/u05-browser-v4-analysis/manifest.json": "29fcd1d52a5dcba8263b56b3b313f95c576861ba8ff19741ea01d31883a2a00a",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/results/u05-browser-v4-results/manifest.json": "3fc0eb3953e5974281c7f45e6c27cb54f6ac9aa2396744c791a3494e0b6aef9f",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/manifest.json": "1ce89c8b4ddfc293ed4778f4567827e35b8c2d803f6e7227018d62272568eb28",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/execution-summary.json": "87bad24a869c70d905350d6a2d91c8316bf0a1f90ee379cdb7a695b15da39cfb",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/attempts/c9d971a5648e64cff0b16d13b9cd9c9e3e407e9f745b690a62f806ed3bb9715c.json": "94a04207e6f8bd9cc0ab05d413268c0b60d0714cb5eb455783e6daaad0ea07ca",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/attempts/4e2e2b57a32cecc3b6caf935617e8dda42a2d5d46f0a744889c314f925c8ea29.json": "6479cf7c1c8d13f551d274507557b7a8e804eb7efef7d7369986a5691e8a9225",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/attempts/43cd07d75fa16423850403da4e5e14d46a5c9ea3a6df93b94c8a440a7bbb5fb9.json": "165d8d0905a8ee74df1da70f5f46e7f350eda3bb20320cbf729a154cfbb399e9",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/attempts/b4be011a604c2d6bdaf024a133c696c218bed4de6a6d6b67f54ebb69d5e773ec.json": "477623e7f45ebe7392c99a8721a8bef4415a6c6808f160db48e955316d7c8d99",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/attempts/c0b386907acd7d17cb3308f5997268310e76a3ca04563c8aa015af7e6c3efcba.json": "cbd413c34dd554f1fcf50211b0a0f38b55e6bb3df0c499d9ddeddc4f369238e2",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/attempts/ac21ad3195123f2a08612e78c2cacce919bec9ffeee66d4a7c98532bca9c9637.json": "5cc535adbebccccdc67fb0f0c4b830ac66d775a3967833264018369ac8298ac1",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report.json": "4878bcc484fa9fc20c18d14478a4338f749f072d56b721180468a2fb8dca4575",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/process.json": "c6f33fae60e824af072d2ac613b8b848a4fd19b31895b6aa37c1abc67ec74d0c",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/process-started.json": "6155a4c8d52e4ea778a89da8dbf6c6e3dbe98a65c39389b5da608e4c116a846c",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/launch-intent.json": "986a72c6abc496c156f168bf947cb2a29d21c0c319c0ada93192ffb3cc28375a",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/preflight.json": "a237968a8141df1af27d54055be3a9ee49a3f0e1b394b193cd6072e20bccea37",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/playwright.config.mjs": "8527e7fb03219a10bc0086defeb9a4e9a36f15c43759d43eb0834a3a0052f514",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/input.json": "b5f28768206df7f390677e27ccf17d1608f50fdb3322f4e66ee595e4b62e856a",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/manifest.json": "4035c2e18a883293b9846177cb861583918e180a85f5ad9c495c48747877563a",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/output/qa-ui-assets-u05-browser-c-4a496-t-Cancel-and-persisted-save-chromium/trace.zip": "ae2bd21da171caae38191489fde7ff14f916aaf8cf726ee29983867ee9a5c3be",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/output/qa-ui-assets-u05-browser-c-4a496-t-Cancel-and-persisted-save-chromium/error-context.md": "b2c73a061cb25cd780c05fcc7e6ba86c057610792dd8c8ea95903515eb2f0073",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/process-started.json": "5872ad9d8d06ac06a5a4356a1b394d88610cf62688f895f10a1844bdcd3bb9e5",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/launch-intent.json": "caa7c48f6969413513154ec8c880d1aa6725049a5767d58608ebd8a398af87a4",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/playwright.config.mjs": "8c232477327b8b2636eb402c1a71744625e99d1b579fd5ed525a385ae76c6476",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/preflight.json": "a48de1c3dd4eb8a5e9e8f8f4eb56df7c6eb53b51521fc535e794e47e966d6332",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/process.json": "5c0619214bf307c3261c2d628df2a990b7972ad657b0d80223e88bceb145f59c",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/report.json": "5bc8fed554550546cc5396d4314c57fbb2be116bec64a6e6d351df5cd269d10b",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/output/qa-ui-assets-u05-browser-c-ef604-tes-Loading-empty-and-error-chromium/trace.zip": "6821ecb39b38df084a45540a6f465b3a8567cd59e0a18afcc31c820126af29d5",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/output/qa-ui-assets-u05-browser-c-ef604-tes-Loading-empty-and-error-chromium/error-context.md": "529a2d47de9b3833bdb9da8477383739bc0d58cfe4731b903fd41afc1d0ae69a",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/process-started.json": "328b7fc4b4e7c493d1be8f60830bbcec05c2f4757d54e77d4e9a86761143f1b0",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/launch-intent.json": "d7493d3692e3115e00f73f65ac18b80f3ecc772f209f4fbf63e770c407261840",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/playwright.config.mjs": "e339bfd27b6a8f02009d23308d608192638070c38c0deecf62d6fe1a9cebf40a",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/preflight.json": "4b5fd9f706d7ff074b9f748db1714c4435be7aeb1a1b2b2ae47bf41c2ac6db77",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/process.json": "2a3e334a72d29944ff9582d63b0f306484408252527bf947c0f63af70967108e",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/report.json": "113b3f0d3ccead420290048c1177ec8054def5ded67bb6cb3f961ce83256ccf6",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/output/qa-ui-assets-u05-browser-c-ef604-tes-Loading-empty-and-error-chromium/trace.zip": "a1158f8a85ae20599c5c70292508f7893a902ccfc3e6300c65ad8fcf04e1edaf",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/output/qa-ui-assets-u05-browser-c-ef604-tes-Loading-empty-and-error-chromium/error-context.md": "9a755e3a0d4e17f2ec6490224a81c710d9c5fa8874cdcab5419d55a5038e9f10",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/process-started.json": "0922026eeb4dc6c39a4bf99da6c08bfb1476374e4571f10c89802516570559a2",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/launch-intent.json": "63d068c2409d4a85f01f75eb173a10dbf840cbafff414b3700b5c58e23632908",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/playwright.config.mjs": "3f0acabb5d4cbcc70a0944daf92ed253817c145373448f737ed7ff0757426b04",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/preflight.json": "5d8438accff8ea2a0a368241528a4019c967920d587a865df8a13ff5aba02735",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/process.json": "eb5e136fe1aa465872c825a14d8ec60bc60d3146c79b260c5b18a6cb52a5dd7e",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/report.json": "c0cd3b4bfb7abb19dab7babd9c881dd5a751a564f703bed83b1a59fa08f4d017",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/output/qa-ui-assets-u05-browser-c-ef604-tes-Loading-empty-and-error-chromium/trace.zip": "2d0954bda063e46ed2ca20739c3c605d4ffc7bcf9bd7523253e11cf9a91e7f03",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/output/qa-ui-assets-u05-browser-c-ef604-tes-Loading-empty-and-error-chromium/error-context.md": "f4c476ad071d1361b149686e22c047fd894deee9718f981724d198658cd3692c",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/process-started.json": "1ef5710e0761a5a8e3f819c50d14cb4f38bd04e7574c136fefae233121dd5b1c",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/launch-intent.json": "971facc758191a49353083bd89f73f58d74b001a3cc59ad25d58d9cf36bf235f",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/playwright.config.mjs": "101745afa6e19f9ddc39948214dcdc718655b72ee1c655498c30173bd3a419dd",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/preflight.json": "659a6250d9e3c5a1dbe5fd3a7876049c0444977455530ffe3664636bc2f7d3fe",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/process.json": "945da0e384a7cb103ca1eaa8053228f210f191b9f70744c200b28819a02b076a",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/report.json": "dd2551fcc8d81a52e15523d85aa047c2423005af34ef7ab921081365146082ea",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/output/qa-ui-assets-u05-browser-c-b1fee--viewer-and-tester-contexts-chromium/trace.zip": "a4172f7a8082fbd22414601d63930ea6c43275816dc829d12ea427a5042a959d",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/output/qa-ui-assets-u05-browser-c-b1fee--viewer-and-tester-contexts-chromium/error-context.md": "ee98bcf099b59e1236ca95c54f3fac8d4bd7a37756fecb974a3ab3ee79dbf6e5",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/process-started.json": "179b51cc88c3e147591e455d7babfc87c213f5808517d2d25e795ee818863821",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/launch-intent.json": "992a1e5ec109e7b1b313da7d85f6536c4c4d36256cd359abc9faeb1a836cb552",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/playwright.config.mjs": "13092c71cca01815a2995a65b54ca15b2d9ee78d471eb5739c8f1b8648f0964e",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/preflight.json": "dee0b1d46abbd8e30c6c500b5034719f6688961291a3d1f66a55a54f2faaa605",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/process.json": "011432141ded8439b3f901653e55823281fc5219cf297f60a8f1216a7b626e00",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/report.json": "c1bc4791b1d9efdc1e1ee53b95f8fb7504fbca8b22157a90861129e2598fbeaa",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/output/qa-ui-assets-u05-browser-c-b1fee--viewer-and-tester-contexts-chromium/trace.zip": "626975a85aa38875004490ad8ba1878b2eb7a491c3a00df3aafc923be075d552",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/output/qa-ui-assets-u05-browser-c-b1fee--viewer-and-tester-contexts-chromium/error-context.md": "760396db0aa746345078d6c9bb9e8060bdd10d6f8adb6373920f506f859b522a",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/process-started.json": "cdd11d6ab3da6dd706d1c5d1cf27a8845ff90e52e6212aeddc50e5754fefa187",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/launch-intent.json": "31f1ed7242cd25c3415f0aba69e84dc71d3d789db12a1f768da9c3f0adae592d",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/playwright.config.mjs": "8a72bfe3d9dba1766867cb367a659ef0876715a85c870cbebcbfa6601f7f992b",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/preflight.json": "999163451232a8016fce09fc1230e7ebcac5c2dff511ef3ec1a57870631aeaa7",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/process.json": "4f974aeaa8694e44892b74854b63e39c67ee5c7ecd58841f7f8d5f733810460f",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/report.json": "5a1bcb52976b48ccfde3b75f6c3a998de8b9f295a9eacc8090ae9cc2604c3e49",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/output/qa-ui-assets-u05-browser-c-1a4e7-ng-Filtered-page-boundaries-chromium/trace.zip": "0a01fb8ca78e1f5df302eb554875c4c8f7084d4ff3cd1d8736056f3454529407",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/output/qa-ui-assets-u05-browser-c-1a4e7-ng-Filtered-page-boundaries-chromium/error-context.md": "db25fa063091f318a500672c8561c6d0ce9d78ea2f9ab4af503c7057e71a49cf",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/process-started.json": "0d9e290025cb0b63cf11c44feee6b964437d47808838e9953e58d1974aadae2b",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/launch-intent.json": "0b6a09c28172173935a0b98bf22bb810c2f42640033aa3c0ffb8956277f96a21",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/playwright.config.mjs": "fc95f40106dfb1a428914459848ef24c01d0e1bc9fbb7e96083023aff3aa104a",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/preflight.json": "607537a9e4346f7917ac1ac00d6d2b1cc96e4d7cbae6b8f690b7bd93b7d50ebc",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/process.json": "71879bef976471dc058d9b24cfde7f07d68b7b3b8fd45a78f8e1babc74b271a2",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/report.json": "dcc879486e5af7384dbec4197843f4a3e7e4680e18d5af2982c92f1f33147fe7",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/output/qa-ui-assets-u05-browser-c-1a4e7-ng-Filtered-page-boundaries-chromium/trace.zip": "e90fd99c48755a168b4314a0337fa771712e95fb13134b39e7adfba8d764cb1e",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/output/qa-ui-assets-u05-browser-c-1a4e7-ng-Filtered-page-boundaries-chromium/error-context.md": "1b79fc1b999e92d5675aec2bff940cdff8d87e26fc77ea458ad1ebdf46025b88",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/process-started.json": "5442038789d0a9dd9ff9ce1455ee8f5521773c2302a40993f9eedb09853544c4",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/launch-intent.json": "f6f017c91b6477da2f3e51adaed40fd2f6a0655f5bdcc3d469ca30a70babe80b",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/playwright.config.mjs": "9c1602484762c4fff7a254c12cfeb5800ff912ce3134670b65b78524766e0926",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/preflight.json": "d2680bc350ace2ebc6a5d7f29ac5a1ad79e5d48dfe0b7979157e0a73abda8ec8",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/process.json": "831d28334ec56dd8864ee769a56042428e92cd871b8f19b8c8c511ddfc2c4af7",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/report.json": "88456ae5fe3a7211e0b50b6a7a6185d746b0aa70c998642d9053a45064123a76",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/output/qa-ui-assets-u05-browser-c-aa980-details-Tabs-and-disclosure-chromium/trace.zip": "958377a79d1d18110e12c6e70ff6fb01cc339b216b1ab98baa83951735b4b31b",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/output/qa-ui-assets-u05-browser-c-aa980-details-Tabs-and-disclosure-chromium/error-context.md": "15389ed98988a75584d2a1d59cae282b229c80f0c43c912373b7e7339cc27912",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/process-started.json": "48769e4375130a37feed0ed8c2577d44318f8839e45028478a19fa694dc29fb5",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/launch-intent.json": "3d4aeca25f73d9e662bd05be361526c87522e6120e264ac83d2aa085012a315d",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/playwright.config.mjs": "2e2b06d9ed5a79b6cf9e898a5487ce7ae2207bc76162a5667d0c738e25032158",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/preflight.json": "dd57a848526f42233177fedc08612004b78ea654217805444e64387f9d4b0682",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/process.json": "1361b516601ef83cb02e17cf22c3e5f4af27244e69fc18905c00887c66dd8c4e",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/report.json": "c7a785d5ca67100262401bd94d78589073881ddcddbc4e1cadfd7634d2ef7ae7",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/output/qa-ui-assets-u05-browser-c-aa980-details-Tabs-and-disclosure-chromium/trace.zip": "ccba69752232ebafb40a3a769911ac1a9352891f61504d08ae6ab14e33965a39",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/output/qa-ui-assets-u05-browser-c-aa980-details-Tabs-and-disclosure-chromium/error-context.md": "80655cc9830a623726c045425850612376e2b5828cf463acec2be29ef873d80d",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/process-started.json": "4ffbc191f0d987a2987b08440373de3e37ac97641d5f0243f940607b55933550",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/launch-intent.json": "769b91eb7bb6ff40a18d99fd0aacaa90cc1d4951ec073143b9872209e9541d31",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/playwright.config.mjs": "b6352007e37adb650c0578ad71ebe073a605ec9bbd541e42a21fc7e1716a28c2",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/preflight.json": "e3fb28f4957a6f1856993aaf2a2f16b894f6cff093495e28c71b9d7c596fbe2f",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/process.json": "d0c9547c387d6f4c471965286854d6e87812b29f13bebd3c35dad54b28f71175",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/report.json": "be7ec7d6f82b9a7f2bee7607964457dc79740942daf507159d5888aa791e5ae7",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/output/qa-ui-assets-u05-browser-c-4a496-t-Cancel-and-persisted-save-chromium/trace.zip": "1b2ee71aba0df97405ad9522a6fa394dd879f3aedecc6bf4428922d4826fb8be",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/output/qa-ui-assets-u05-browser-c-4a496-t-Cancel-and-persisted-save-chromium/error-context.md": "16300ff3dbf260126086119fd0a621bb6142442dfd62bf7f09f965c1fd0fea14",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/process-started.json": "39b73242cb0b4461d8c9f6577ad71cd13830e4e47740efb12d257a61f18244b1",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/launch-intent.json": "ab9f748708d8a268bbdc6cace669ca0585900e6f8b8e78203907975170017edf",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/playwright.config.mjs": "ba04dda482b7e7d9bc8547846ca1392190b8bb8c5eb6856c73b722cdf9e2889f",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/preflight.json": "154a03d91433125180da5f41d909b8328d5a998234ffa006a3eabce86d577cfb",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/process.json": "faefc7248116b97df0c001bc514fa4be6e3622824f7118f33f862d7853778d11",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/report.json": "4bc6224e4d65b496e990c17075ba55d2ab9de90cf62b73fd914f5eebfdf61912",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/output/qa-ui-assets-u05-browser-c-4a496-t-Cancel-and-persisted-save-chromium/trace.zip": "945ccc5b06fac0bb8d7146fb8ce0145ea795301d6d9be5c2f9501cd66e1cf40a",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/output/qa-ui-assets-u05-browser-c-4a496-t-Cancel-and-persisted-save-chromium/error-context.md": "b2c73a061cb25cd780c05fcc7e6ba86c057610792dd8c8ea95903515eb2f0073",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/process-started.json": "21316d766095d120b2bc307bf611898fef3c12e791c478eb8c52fc939c142957",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/launch-intent.json": "48183a5e8552a8a31d1c5f3cf8d85c683262fb2952bb242be9e3bb03ecca9587",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/playwright.config.mjs": "e29a1711bac9c1b904ac543e51d5a07c455c7e4da2b52ee11fac8adf39576722",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/preflight.json": "c5e801ff71723b6463bcb7d7cd7c1249d54f09d7d814fe02e71e2d5950d35b37",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/process.json": "ab41676a1cee60f82a8bc996bbbfb619fc4678f2ecc455475814eed63d21faa3",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/report.json": "d865775d69730227c12c333385f745d6ae429bc300fe59bb09d9ca4dc079ba16",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/output/qa-ui-assets-u05-browser-c-c2097-te-C-search-Query-and-reset-chromium/trace.zip": "7bf10506c56d3d18850ffa944b3702c28fe1931d81b1c710b1bbd6a93cb94c94",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/output/qa-ui-assets-u05-browser-c-c2097-te-C-search-Query-and-reset-chromium/error-context.md": "20465caa30cc959f5c02589fc5dc8069b2028a9f9701aab481af25439ad991bd",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/process-started.json": "7717915363e1e44feca91a533825c7048cb77ac5361825d9cf2a1b40293ee227",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/launch-intent.json": "e110f1fa78705901502a7f955bab54ccf2c6389eb882507766e1423231443f2a",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/playwright.config.mjs": "f55bc881390c5645c5eae6ecb31257fb0195fdb37d528ba1897129fa50d49ed3",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/preflight.json": "13b96a1399e1a8e5efc0f9dbc2d0d96701d955142de15efa05ffd23fdafc1caa",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/process.json": "aad989d8618d49975f2d53b252dca2a0c544ad94586089ff7984c9ab65a83525",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/report.json": "32d232e98f0db2ef547459d322a8964c523e102d16a515edfb4fe7702da1882c",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/output/qa-ui-assets-u05-browser-c-c2097-te-C-search-Query-and-reset-chromium/trace.zip": "ca7f29f3e3b622c24bd2117c8cf2345e098ad3d529a863cf55654d0e78414ee2",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/output/qa-ui-assets-u05-browser-c-c2097-te-C-search-Query-and-reset-chromium/error-context.md": "adb45281eebd7435965f0bb6f6f483c04a51e9adb290bd83edd45da8678694cd",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/process-started.json": "d64df28c0c8101b12b50789a33ec3b07f4958968a6d9c291aa8e44702e6786cc",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/launch-intent.json": "12932b70ee6fb788a310b4c2041ee28ac20c7892401744161a9f5e83e7f219d1",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/playwright.config.mjs": "388cc7a13831558a834df532a719bff70f136948c64dbe241e805c98129fec16",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/preflight.json": "ddc4a21da975862517b94b13d73dacc0ad013da6027ed9ec657d3f356b9596cc",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/process.json": "44efb5d27d7b2d4adefe08b41930cf58fd87cc93530e0bd6028aee2066aa32b4",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/report.json": "bf75d5c0d1823ac7b5a3d5cf2d7d64a9d8a3eb74b3ac99a2b4f5bc8e4e85f958",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/positive/process-started.json": "0a87ff19ecb30f3d8dd88919311c898d7781215f84bca750943ac85d1c3bfa3b",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/positive/launch-intent.json": "c786cc9448b3060eaed8146c36fb786ad0200edba4ddda2ec55e76406987db2b",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/positive/playwright.config.mjs": "32bafa11ede44ef5d912e4ece1330600201b2246988438f25e542a750059ca53",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/positive/preflight.json": "a237968a8141df1af27d54055be3a9ee49a3f0e1b394b193cd6072e20bccea37",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/positive/process.json": "f6f06aa095d157bafcfb24ad82d7f22839680c9d772a7bfd1c3ce24990d3d297",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/positive/report.json": "53dd0a35235ada091c8cbdd28edbd171d08529a9462ae217676e6a4bf5747f0f",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/input.json": "e4cbfd0564b49e4bc54e27348bf67dcd8b386af85b6eec3daf6a568fa0c78229",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/positive.environment.json": "57f06b638739bd6906a6d5290674a6735c14f3cbaf2c6f95b3bc8929d838d386",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostic-plan.json": "66815275942d3a0640eccbf64d29994d0445bc5ded133767089ad67c234d08a0",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/reviews/design-f3a95499-4812-447b-a329-078b235c1dc4/manifest.json": "6ef5ed7aa8a013a291e3661e92a673569b862deb1f7f0d9a0d51e86159f50d16",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/summary.json": "89871b2bdc19dba66c5f4a2ec602afc9fa38f28766d3798053a64b1718a70588",
+		"qa/ui/assets/u05-browser-candidate/revisions/v1/reviews/design-d37563df-b122-45ff-886a-0571b979d74b/manifest.json": "e276ddfc589a36d09235125dec136f53b3150ec5a4bfec95188fc9706628931d",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/reviews/design-f3a95499-4812-447b-a329-078b235c1dc4/input.json": "5defbf0b5d070b3104f3a2969716570f4f8ed5426f56565e49bf68ecc6962d70",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/reviews/design-f3a95499-4812-447b-a329-078b235c1dc4/static.json": "35d45e4067c06423da7c42a431bfeed5e596a4b9488bd5389428d057891730ee",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/reviews/design-f3a95499-4812-447b-a329-078b235c1dc4/raw.json": "728f66fe528a3c1889cb4b4ed91229e22d38d16eea574cfab2bf66b988bf5ae0",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/ui-probe-replay.mjs": "a1f2a7108363e8fa90cefefed51f597362036f0a4a87768681cfe48e1227fc8d",
+		"qa/ui/recordings/tester/data.json": "e6a2c6182c72ff091ebded6f2844319dde32c8f02e8b51876885272c68e2e5a1",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/data-rules.json": "2eca19dcc2208e46c9622ffe93d4c016f2af845ce910d39b92698fea00541a15",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/deployments.json": "9ed7d9c1a0003b22149214eff05aa171a389b2d0b802eaa67541732a952f669e",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/ui-multifunction-probes.mjs": "df0428e6ff369a672cbf952e533572dee65d0900e635707c5a2c5805adef935c",
+		"qa/ui/scopes/declaration/fixture.mjs": "f07cad393d22c4629c771ef7763de96b47d030b6730fbec222fd110da2b89cc5",
+		"qa/ui/cases/u05-browser-candidate-v4-diagnostics/manifest.json": "2e1253fbe6cf167cea5160bd04599689140fb012a754aa2d4b5b3592814ff88f",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/positive.config.mjs": "3b55987310913482dcec4e0964e264c58b139f4e19df77d57fbb348db38da8e1",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/u05-replay-inputs.ts": "cac435e12b6e56b92b5dba886699cf598582bcf9762616927c4b7b8da863ce99",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/origin.fixture.ts": "b11db2adc20ace1acb9050ec5581601d458e222509ab1f69d067035594e728d8",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/candidate.spec.ts": "d1ab7aa1d3f61cee087a8e03c3b4668c94b8ff4a61adf507f3f7cf2d899f742b",
+		"qa/ui/recordings/tester/events/action-56/response.json": "10f52da8abf0e75beda509a36d320f36c7d9fe6a0b91cbc62c5cf453647dc80d",
+		"qa/ui/recordings/tester/events/action-55/response.json": "d727eaac8c627f5da200ed31c6ffcc6b53727bde2dfcbfac54092a41c5b99574",
+		"qa/ui/recordings/tester/events/action-23/response.json": "3815ed1d27c8b0dd0fc2cf1a0475f321591bcd6b89bb1f5f2e4b01c9d14a4de2",
+		"qa/ui/recordings/tester/events/action-5/response.json": "2414bce790f3aa7fd60fbb965473c4cda3c0c5e9398db7a9802e023b61849a5f",
+		"qa/ui/recordings/tester/events/action-3/response.json": "91da420a62bdf7423e5d5aac57277d304104db8091eb0fba0ef5eb7689b0e233",
+		"qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/ui-browser-probes.mjs": "e21f007a0b6d0d952babdae767b3f7c60a11054b182bdc079fe264bb43efde28",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/reviews/result-3887c58d-2958-41b1-bdff-e533c6bdb095/static.json": "8783ac5790c938aa7ea683df5f7b30e6f1faa364fd145dbe8ab26985d07a6bfc",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/reviews/result-3887c58d-2958-41b1-bdff-e533c6bdb095/input.json": "0bdcacdc44b79da42d83f95a6db3d5638324c42e9bbfa8eaf7be49b442c3267c",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/reviews/result-3887c58d-2958-41b1-bdff-e533c6bdb095/raw.json": "d2291da5e7d0856b0ab87ae54c79db605e30ed9b4b31c04e055a34a9bc14ee74",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/manifest.json": "1dc7083769cf19e07a5df07ed586b54667f3ceb2e739783411ee28bd026c4d6b",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/results/u05-browser-v4-results/reconciliation.json": "3e0163e55616269c8d1ff870b1fd6bac2150ff637b9d567387ea168cfd810f94",
+		"qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/delivery/8b76c45c06fb8b79a0060e87f181e73687f93f6aada9597ae10136ef101e4571.md": "e2f575c267224517753c779b566fecf4c840acaabe9f74c1574a2a3605411aff"
+	},
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-u05-approved-run.tar.gz",
+		"sha256": "d37b968889023896b42fffd0c0a939c559af50b0c81d09edf23384f8849e3e9d",
+		"bytes": 1187726,
+		"files": 224,
+		"roundtrip_verified": true
+	},
+	"files": [
+		{
+			"path": "docs/ui-testing-evidence/optimization-u05-browser-diagnostics.json",
+			"sha256": "3324176ad0ad37b8bc1b6981791be573f3ec2112ff8343fbd4f4b7491213026f",
+			"bytes": 50877
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/authorization4-preflight.json",
+			"sha256": "f38d9e506441b6bf0c17cf01a03b5b546e306d196c559d235bfd33f601baf65d",
+			"bytes": 504
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/authorization4-readback.json",
+			"sha256": "7e416b5d33c6882ff1e391b1920eb59963551a62f619730a4fa5e5a62f8dc5dc",
+			"bytes": 3504
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/browser-v4-delivery.json",
+			"sha256": "04430ccff426be27683fa05a498667470959e2d79b8a8f38e2376aa8d1b9736c",
+			"bytes": 9278
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/browser-v4-formal.json",
+			"sha256": "602413a8d385fc98b41c73d48026e2b0ef852882dfda364892941d231be56501",
+			"bytes": 21999
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/browser-v4-report-draft.json",
+			"sha256": "bd03fc9765d578019c80e519b3cc1bc766615b4e4c84895d376046dd268c5bca",
+			"bytes": 985
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/native-diagnose.json",
+			"sha256": "a29bd4da05923e058388c0d41080fb073f43a61a22ebee1422e744f6ba2badeb",
+			"bytes": 34838
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/native-result-review-11-authorization4.json",
+			"sha256": "49685a2a4f9403aba45ef291fb45ef841a7b53437f6d01bb53b946f67c9cfb02",
+			"bytes": 12799
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/native-review-10-authorization4.json",
+			"sha256": "53737cc1f9daa651d2422b54aa635516824d05a11c2b7465112c0404f5ff2381",
+			"bytes": 12200
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/launch-intent.json",
+			"sha256": "769b91eb7bb6ff40a18d99fd0aacaa90cc1d4951ec073143b9872209e9541d31",
+			"bytes": 808
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/native.json",
+			"sha256": "be7ec7d6f82b9a7f2bee7607964457dc79740942daf507159d5888aa791e5ae7",
+			"bytes": 21107
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/output/.last-run.json",
+			"sha256": "110f76b6a59a5a8650475548aff2ae59c4b7fd32b496c44c0297e28324497d1f",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/output/qa-ui-assets-u05-browser-c-aa980-details-Tabs-and-disclosure-chromium/error-context.md",
+			"sha256": "80655cc9830a623726c045425850612376e2b5828cf463acec2be29ef873d80d",
+			"bytes": 10453
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/output/qa-ui-assets-u05-browser-c-aa980-details-Tabs-and-disclosure-chromium/trace.zip",
+			"sha256": "ccba69752232ebafb40a3a769911ac1a9352891f61504d08ae6ab14e33965a39",
+			"bytes": 33755
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/playwright.config.mjs",
+			"sha256": "b6352007e37adb650c0578ad71ebe073a605ec9bbd541e42a21fc7e1716a28c2",
+			"bytes": 1970
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/preflight.json",
+			"sha256": "e3fb28f4957a6f1856993aaf2a2f16b894f6cff093495e28c71b9d7c596fbe2f",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/process-started.json",
+			"sha256": "4ffbc191f0d987a2987b08440373de3e37ac97641d5f0243f940607b55933550",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/process.json",
+			"sha256": "d0c9547c387d6f4c471965286854d6e87812b29f13bebd3c35dad54b28f71175",
+			"bytes": 5760
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-1/report.json",
+			"sha256": "be7ec7d6f82b9a7f2bee7607964457dc79740942daf507159d5888aa791e5ae7",
+			"bytes": 21107
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/launch-intent.json",
+			"sha256": "3d4aeca25f73d9e662bd05be361526c87522e6120e264ac83d2aa085012a315d",
+			"bytes": 808
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/native.json",
+			"sha256": "c7a785d5ca67100262401bd94d78589073881ddcddbc4e1cadfd7634d2ef7ae7",
+			"bytes": 19860
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/output/.last-run.json",
+			"sha256": "110f76b6a59a5a8650475548aff2ae59c4b7fd32b496c44c0297e28324497d1f",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/output/qa-ui-assets-u05-browser-c-aa980-details-Tabs-and-disclosure-chromium/error-context.md",
+			"sha256": "15389ed98988a75584d2a1d59cae282b229c80f0c43c912373b7e7339cc27912",
+			"bytes": 10363
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/output/qa-ui-assets-u05-browser-c-aa980-details-Tabs-and-disclosure-chromium/trace.zip",
+			"sha256": "958377a79d1d18110e12c6e70ff6fb01cc339b216b1ab98baa83951735b4b31b",
+			"bytes": 36035
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/playwright.config.mjs",
+			"sha256": "2e2b06d9ed5a79b6cf9e898a5487ce7ae2207bc76162a5667d0c738e25032158",
+			"bytes": 1970
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/preflight.json",
+			"sha256": "dd57a848526f42233177fedc08612004b78ea654217805444e64387f9d4b0682",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/process-started.json",
+			"sha256": "48769e4375130a37feed0ed8c2577d44318f8839e45028478a19fa694dc29fb5",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/process.json",
+			"sha256": "1361b516601ef83cb02e17cf22c3e5f4af27244e69fc18905c00887c66dd8c4e",
+			"bytes": 5498
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-details-2/report.json",
+			"sha256": "c7a785d5ca67100262401bd94d78589073881ddcddbc4e1cadfd7634d2ef7ae7",
+			"bytes": 19860
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/launch-intent.json",
+			"sha256": "caa7c48f6969413513154ec8c880d1aa6725049a5767d58608ebd8a398af87a4",
+			"bytes": 816
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/native.json",
+			"sha256": "5bc8fed554550546cc5396d4314c57fbb2be116bec64a6e6d351df5cd269d10b",
+			"bytes": 20718
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/output/.last-run.json",
+			"sha256": "4654c2e139ee3efe04c7556255dbc417de833dc7527be6b143742f9919643d61",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/output/qa-ui-assets-u05-browser-c-4a496-t-Cancel-and-persisted-save-chromium/error-context.md",
+			"sha256": "b2c73a061cb25cd780c05fcc7e6ba86c057610792dd8c8ea95903515eb2f0073",
+			"bytes": 9534
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/output/qa-ui-assets-u05-browser-c-4a496-t-Cancel-and-persisted-save-chromium/trace.zip",
+			"sha256": "ae2bd21da171caae38191489fde7ff14f916aaf8cf726ee29983867ee9a5c3be",
+			"bytes": 70943
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/playwright.config.mjs",
+			"sha256": "8c232477327b8b2636eb402c1a71744625e99d1b579fd5ed525a385ae76c6476",
+			"bytes": 1990
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/preflight.json",
+			"sha256": "a48de1c3dd4eb8a5e9e8f8f4eb56df7c6eb53b51521fc535e794e47e966d6332",
+			"bytes": 196
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/process-started.json",
+			"sha256": "5872ad9d8d06ac06a5a4356a1b394d88610cf62688f895f10a1844bdcd3bb9e5",
+			"bytes": 396
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/process.json",
+			"sha256": "5c0619214bf307c3261c2d628df2a990b7972ad657b0d80223e88bceb145f59c",
+			"bytes": 5621
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1-memory/report.json",
+			"sha256": "5bc8fed554550546cc5396d4314c57fbb2be116bec64a6e6d351df5cd269d10b",
+			"bytes": 20718
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/launch-intent.json",
+			"sha256": "48183a5e8552a8a31d1c5f3cf8d85c683262fb2952bb242be9e3bb03ecca9587",
+			"bytes": 802
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/native.json",
+			"sha256": "d865775d69730227c12c333385f745d6ae429bc300fe59bb09d9ca4dc079ba16",
+			"bytes": 20676
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/output/.last-run.json",
+			"sha256": "4654c2e139ee3efe04c7556255dbc417de833dc7527be6b143742f9919643d61",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/output/qa-ui-assets-u05-browser-c-4a496-t-Cancel-and-persisted-save-chromium/error-context.md",
+			"sha256": "b2c73a061cb25cd780c05fcc7e6ba86c057610792dd8c8ea95903515eb2f0073",
+			"bytes": 9534
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/output/qa-ui-assets-u05-browser-c-4a496-t-Cancel-and-persisted-save-chromium/trace.zip",
+			"sha256": "945ccc5b06fac0bb8d7146fb8ce0145ea795301d6d9be5c2f9501cd66e1cf40a",
+			"bytes": 77672
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/playwright.config.mjs",
+			"sha256": "e29a1711bac9c1b904ac543e51d5a07c455c7e4da2b52ee11fac8adf39576722",
+			"bytes": 1955
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/preflight.json",
+			"sha256": "c5e801ff71723b6463bcb7d7cd7c1249d54f09d7d814fe02e71e2d5950d35b37",
+			"bytes": 182
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/process-started.json",
+			"sha256": "21316d766095d120b2bc307bf611898fef3c12e791c478eb8c52fc939c142957",
+			"bytes": 389
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/process.json",
+			"sha256": "ab41676a1cee60f82a8bc996bbbfb619fc4678f2ecc455475814eed63d21faa3",
+			"bytes": 5572
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-1/report.json",
+			"sha256": "d865775d69730227c12c333385f745d6ae429bc300fe59bb09d9ca4dc079ba16",
+			"bytes": 20676
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/launch-intent.json",
+			"sha256": "ab9f748708d8a268bbdc6cace669ca0585900e6f8b8e78203907975170017edf",
+			"bytes": 802
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/native.json",
+			"sha256": "4bc6224e4d65b496e990c17075ba55d2ab9de90cf62b73fd914f5eebfdf61912",
+			"bytes": 19814
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/output/.last-run.json",
+			"sha256": "4654c2e139ee3efe04c7556255dbc417de833dc7527be6b143742f9919643d61",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/output/qa-ui-assets-u05-browser-c-4a496-t-Cancel-and-persisted-save-chromium/error-context.md",
+			"sha256": "16300ff3dbf260126086119fd0a621bb6142442dfd62bf7f09f965c1fd0fea14",
+			"bytes": 10928
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/output/qa-ui-assets-u05-browser-c-4a496-t-Cancel-and-persisted-save-chromium/trace.zip",
+			"sha256": "1b2ee71aba0df97405ad9522a6fa394dd879f3aedecc6bf4428922d4826fb8be",
+			"bytes": 150547
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/playwright.config.mjs",
+			"sha256": "ba04dda482b7e7d9bc8547846ca1392190b8bb8c5eb6856c73b722cdf9e2889f",
+			"bytes": 1955
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/preflight.json",
+			"sha256": "154a03d91433125180da5f41d909b8328d5a998234ffa006a3eabce86d577cfb",
+			"bytes": 182
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/process-started.json",
+			"sha256": "39b73242cb0b4461d8c9f6577ad71cd13830e4e47740efb12d257a61f18244b1",
+			"bytes": 389
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/process.json",
+			"sha256": "faefc7248116b97df0c001bc514fa4be6e3622824f7118f33f862d7853778d11",
+			"bytes": 5320
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-edit-2/report.json",
+			"sha256": "4bc6224e4d65b496e990c17075ba55d2ab9de90cf62b73fd914f5eebfdf61912",
+			"bytes": 19814
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/launch-intent.json",
+			"sha256": "f6f017c91b6477da2f3e51adaed40fd2f6a0655f5bdcc3d469ca30a70babe80b",
+			"bytes": 806
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/native.json",
+			"sha256": "88456ae5fe3a7211e0b50b6a7a6185d746b0aa70c998642d9053a45064123a76",
+			"bytes": 20685
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/output/.last-run.json",
+			"sha256": "fb22702702ca031d2e2737a4bd1dfd79f9d8a9085e4f935bb5141bf1751e5b58",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/output/qa-ui-assets-u05-browser-c-1a4e7-ng-Filtered-page-boundaries-chromium/error-context.md",
+			"sha256": "1b79fc1b999e92d5675aec2bff940cdff8d87e26fc77ea458ad1ebdf46025b88",
+			"bytes": 11049
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/output/qa-ui-assets-u05-browser-c-1a4e7-ng-Filtered-page-boundaries-chromium/trace.zip",
+			"sha256": "e90fd99c48755a168b4314a0337fa771712e95fb13134b39e7adfba8d764cb1e",
+			"bytes": 68774
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/playwright.config.mjs",
+			"sha256": "9c1602484762c4fff7a254c12cfeb5800ff912ce3134670b65b78524766e0926",
+			"bytes": 1965
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/preflight.json",
+			"sha256": "d2680bc350ace2ebc6a5d7f29ac5a1ad79e5d48dfe0b7979157e0a73abda8ec8",
+			"bytes": 186
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/process-started.json",
+			"sha256": "5442038789d0a9dd9ff9ce1455ee8f5521773c2302a40993f9eedb09853544c4",
+			"bytes": 391
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/process.json",
+			"sha256": "831d28334ec56dd8864ee769a56042428e92cd871b8f19b8c8c511ddfc2c4af7",
+			"bytes": 5591
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-1/report.json",
+			"sha256": "88456ae5fe3a7211e0b50b6a7a6185d746b0aa70c998642d9053a45064123a76",
+			"bytes": 20685
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/launch-intent.json",
+			"sha256": "0b6a09c28172173935a0b98bf22bb810c2f42640033aa3c0ffb8956277f96a21",
+			"bytes": 806
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/native.json",
+			"sha256": "dcc879486e5af7384dbec4197843f4a3e7e4680e18d5af2982c92f1f33147fe7",
+			"bytes": 20953
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/output/.last-run.json",
+			"sha256": "fb22702702ca031d2e2737a4bd1dfd79f9d8a9085e4f935bb5141bf1751e5b58",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/output/qa-ui-assets-u05-browser-c-1a4e7-ng-Filtered-page-boundaries-chromium/error-context.md",
+			"sha256": "db25fa063091f318a500672c8561c6d0ce9d78ea2f9ab4af503c7057e71a49cf",
+			"bytes": 11022
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/output/qa-ui-assets-u05-browser-c-1a4e7-ng-Filtered-page-boundaries-chromium/trace.zip",
+			"sha256": "0a01fb8ca78e1f5df302eb554875c4c8f7084d4ff3cd1d8736056f3454529407",
+			"bytes": 83545
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/playwright.config.mjs",
+			"sha256": "fc95f40106dfb1a428914459848ef24c01d0e1bc9fbb7e96083023aff3aa104a",
+			"bytes": 1965
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/preflight.json",
+			"sha256": "607537a9e4346f7917ac1ac00d6d2b1cc96e4d7cbae6b8f690b7bd93b7d50ebc",
+			"bytes": 186
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/process-started.json",
+			"sha256": "0d9e290025cb0b63cf11c44feee6b964437d47808838e9953e58d1974aadae2b",
+			"bytes": 391
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/process.json",
+			"sha256": "71879bef976471dc058d9b24cfde7f07d68b7b3b8fd45a78f8e1babc74b271a2",
+			"bytes": 5663
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-paging-2/report.json",
+			"sha256": "dcc879486e5af7384dbec4197843f4a3e7e4680e18d5af2982c92f1f33147fe7",
+			"bytes": 20953
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/launch-intent.json",
+			"sha256": "31f1ed7242cd25c3415f0aba69e84dc71d3d789db12a1f768da9c3f0adae592d",
+			"bytes": 814
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/native.json",
+			"sha256": "5a1bcb52976b48ccfde3b75f6c3a998de8b9f295a9eacc8090ae9cc2604c3e49",
+			"bytes": 20193
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/output/.last-run.json",
+			"sha256": "9587d9e99c46ff5fbdcb8601596e8c6f011c743459c1814ad3c53521ca83cbce",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/output/qa-ui-assets-u05-browser-c-b1fee--viewer-and-tester-contexts-chromium/error-context.md",
+			"sha256": "760396db0aa746345078d6c9bb9e8060bdd10d6f8adb6373920f506f859b522a",
+			"bytes": 10695
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/output/qa-ui-assets-u05-browser-c-b1fee--viewer-and-tester-contexts-chromium/trace.zip",
+			"sha256": "626975a85aa38875004490ad8ba1878b2eb7a491c3a00df3aafc923be075d552",
+			"bytes": 44826
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/playwright.config.mjs",
+			"sha256": "8a72bfe3d9dba1766867cb367a659ef0876715a85c870cbebcbfa6601f7f992b",
+			"bytes": 1985
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/preflight.json",
+			"sha256": "999163451232a8016fce09fc1230e7ebcac5c2dff511ef3ec1a57870631aeaa7",
+			"bytes": 194
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/process-started.json",
+			"sha256": "cdd11d6ab3da6dd706d1c5d1cf27a8845ff90e52e6212aeddc50e5754fefa187",
+			"bytes": 395
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/process.json",
+			"sha256": "4f974aeaa8694e44892b74854b63e39c67ee5c7ecd58841f7f8d5f733810460f",
+			"bytes": 5623
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-1/report.json",
+			"sha256": "5a1bcb52976b48ccfde3b75f6c3a998de8b9f295a9eacc8090ae9cc2604c3e49",
+			"bytes": 20193
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/launch-intent.json",
+			"sha256": "992a1e5ec109e7b1b313da7d85f6536c4c4d36256cd359abc9faeb1a836cb552",
+			"bytes": 814
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/native.json",
+			"sha256": "c1bc4791b1d9efdc1e1ee53b95f8fb7504fbca8b22157a90861129e2598fbeaa",
+			"bytes": 19821
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/output/.last-run.json",
+			"sha256": "9587d9e99c46ff5fbdcb8601596e8c6f011c743459c1814ad3c53521ca83cbce",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/output/qa-ui-assets-u05-browser-c-b1fee--viewer-and-tester-contexts-chromium/error-context.md",
+			"sha256": "ee98bcf099b59e1236ca95c54f3fac8d4bd7a37756fecb974a3ab3ee79dbf6e5",
+			"bytes": 9517
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/output/qa-ui-assets-u05-browser-c-b1fee--viewer-and-tester-contexts-chromium/trace.zip",
+			"sha256": "a4172f7a8082fbd22414601d63930ea6c43275816dc829d12ea427a5042a959d",
+			"bytes": 44643
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/playwright.config.mjs",
+			"sha256": "13092c71cca01815a2995a65b54ca15b2d9ee78d471eb5739c8f1b8648f0964e",
+			"bytes": 1985
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/preflight.json",
+			"sha256": "dee0b1d46abbd8e30c6c500b5034719f6688961291a3d1f66a55a54f2faaa605",
+			"bytes": 194
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/process-started.json",
+			"sha256": "179b51cc88c3e147591e455d7babfc87c213f5808517d2d25e795ee818863821",
+			"bytes": 395
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/process.json",
+			"sha256": "011432141ded8439b3f901653e55823281fc5219cf297f60a8f1216a7b626e00",
+			"bytes": 5520
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-permission-2/report.json",
+			"sha256": "c1bc4791b1d9efdc1e1ee53b95f8fb7504fbca8b22157a90861129e2598fbeaa",
+			"bytes": 19821
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/launch-intent.json",
+			"sha256": "12932b70ee6fb788a310b4c2041ee28ac20c7892401744161a9f5e83e7f219d1",
+			"bytes": 806
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/native.json",
+			"sha256": "bf75d5c0d1823ac7b5a3d5cf2d7d64a9d8a3eb74b3ac99a2b4f5bc8e4e85f958",
+			"bytes": 20607
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/output/.last-run.json",
+			"sha256": "d14e3c6238f53fd8f1d68d9c2a8d4c906a918b9cf4d4379b35fdebfd5497e5f4",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/output/qa-ui-assets-u05-browser-c-c2097-te-C-search-Query-and-reset-chromium/error-context.md",
+			"sha256": "adb45281eebd7435965f0bb6f6f483c04a51e9adb290bd83edd45da8678694cd",
+			"bytes": 9023
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/output/qa-ui-assets-u05-browser-c-c2097-te-C-search-Query-and-reset-chromium/trace.zip",
+			"sha256": "ca7f29f3e3b622c24bd2117c8cf2345e098ad3d529a863cf55654d0e78414ee2",
+			"bytes": 56537
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/playwright.config.mjs",
+			"sha256": "388cc7a13831558a834df532a719bff70f136948c64dbe241e805c98129fec16",
+			"bytes": 1965
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/preflight.json",
+			"sha256": "ddc4a21da975862517b94b13d73dacc0ad013da6027ed9ec657d3f356b9596cc",
+			"bytes": 186
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/process-started.json",
+			"sha256": "d64df28c0c8101b12b50789a33ec3b07f4958968a6d9c291aa8e44702e6786cc",
+			"bytes": 391
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/process.json",
+			"sha256": "44efb5d27d7b2d4adefe08b41930cf58fd87cc93530e0bd6028aee2066aa32b4",
+			"bytes": 5535
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-1/report.json",
+			"sha256": "bf75d5c0d1823ac7b5a3d5cf2d7d64a9d8a3eb74b3ac99a2b4f5bc8e4e85f958",
+			"bytes": 20607
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/launch-intent.json",
+			"sha256": "e110f1fa78705901502a7f955bab54ccf2c6389eb882507766e1423231443f2a",
+			"bytes": 806
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/native.json",
+			"sha256": "32d232e98f0db2ef547459d322a8964c523e102d16a515edfb4fe7702da1882c",
+			"bytes": 20491
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/output/.last-run.json",
+			"sha256": "d14e3c6238f53fd8f1d68d9c2a8d4c906a918b9cf4d4379b35fdebfd5497e5f4",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/output/qa-ui-assets-u05-browser-c-c2097-te-C-search-Query-and-reset-chromium/error-context.md",
+			"sha256": "20465caa30cc959f5c02589fc5dc8069b2028a9f9701aab481af25439ad991bd",
+			"bytes": 9173
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/output/qa-ui-assets-u05-browser-c-c2097-te-C-search-Query-and-reset-chromium/trace.zip",
+			"sha256": "7bf10506c56d3d18850ffa944b3702c28fe1931d81b1c710b1bbd6a93cb94c94",
+			"bytes": 69840
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/playwright.config.mjs",
+			"sha256": "f55bc881390c5645c5eae6ecb31257fb0195fdb37d528ba1897129fa50d49ed3",
+			"bytes": 1965
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/preflight.json",
+			"sha256": "13b96a1399e1a8e5efc0f9dbc2d0d96701d955142de15efa05ffd23fdafc1caa",
+			"bytes": 186
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/process-started.json",
+			"sha256": "7717915363e1e44feca91a533825c7048cb77ac5361825d9cf2a1b40293ee227",
+			"bytes": 391
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/process.json",
+			"sha256": "aad989d8618d49975f2d53b252dca2a0c544ad94586089ff7984c9ab65a83525",
+			"bytes": 5452
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-search-2/report.json",
+			"sha256": "32d232e98f0db2ef547459d322a8964c523e102d16a515edfb4fe7702da1882c",
+			"bytes": 20491
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/launch-intent.json",
+			"sha256": "971facc758191a49353083bd89f73f58d74b001a3cc59ad25d58d9cf36bf235f",
+			"bytes": 806
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/native.json",
+			"sha256": "dd2551fcc8d81a52e15523d85aa047c2423005af34ef7ab921081365146082ea",
+			"bytes": 20094
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/output/.last-run.json",
+			"sha256": "85d081421f0c9080a06915307a441a16c488ce916ce30f4a0786b870c66b4a66",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/output/qa-ui-assets-u05-browser-c-ef604-tes-Loading-empty-and-error-chromium/error-context.md",
+			"sha256": "f4c476ad071d1361b149686e22c047fd894deee9718f981724d198658cd3692c",
+			"bytes": 8719
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/output/qa-ui-assets-u05-browser-c-ef604-tes-Loading-empty-and-error-chromium/trace.zip",
+			"sha256": "2d0954bda063e46ed2ca20739c3c605d4ffc7bcf9bd7523253e11cf9a91e7f03",
+			"bytes": 41471
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/playwright.config.mjs",
+			"sha256": "101745afa6e19f9ddc39948214dcdc718655b72ee1c655498c30173bd3a419dd",
+			"bytes": 1965
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/preflight.json",
+			"sha256": "659a6250d9e3c5a1dbe5fd3a7876049c0444977455530ffe3664636bc2f7d3fe",
+			"bytes": 186
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/process-started.json",
+			"sha256": "1ef5710e0761a5a8e3f819c50d14cb4f38bd04e7574c136fefae233121dd5b1c",
+			"bytes": 391
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/process.json",
+			"sha256": "945da0e384a7cb103ca1eaa8053228f210f191b9f70744c200b28819a02b076a",
+			"bytes": 5235
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-1/report.json",
+			"sha256": "dd2551fcc8d81a52e15523d85aa047c2423005af34ef7ab921081365146082ea",
+			"bytes": 20094
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/launch-intent.json",
+			"sha256": "63d068c2409d4a85f01f75eb173a10dbf840cbafff414b3700b5c58e23632908",
+			"bytes": 806
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/native.json",
+			"sha256": "c0cd3b4bfb7abb19dab7babd9c881dd5a751a564f703bed83b1a59fa08f4d017",
+			"bytes": 20582
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/output/.last-run.json",
+			"sha256": "85d081421f0c9080a06915307a441a16c488ce916ce30f4a0786b870c66b4a66",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/output/qa-ui-assets-u05-browser-c-ef604-tes-Loading-empty-and-error-chromium/error-context.md",
+			"sha256": "9a755e3a0d4e17f2ec6490224a81c710d9c5fa8874cdcab5419d55a5038e9f10",
+			"bytes": 7693
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/output/qa-ui-assets-u05-browser-c-ef604-tes-Loading-empty-and-error-chromium/trace.zip",
+			"sha256": "a1158f8a85ae20599c5c70292508f7893a902ccfc3e6300c65ad8fcf04e1edaf",
+			"bytes": 63280
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/playwright.config.mjs",
+			"sha256": "3f0acabb5d4cbcc70a0944daf92ed253817c145373448f737ed7ff0757426b04",
+			"bytes": 1965
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/preflight.json",
+			"sha256": "5d8438accff8ea2a0a368241528a4019c967920d587a865df8a13ff5aba02735",
+			"bytes": 186
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/process-started.json",
+			"sha256": "0922026eeb4dc6c39a4bf99da6c08bfb1476374e4571f10c89802516570559a2",
+			"bytes": 391
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/process.json",
+			"sha256": "eb5e136fe1aa465872c825a14d8ec60bc60d3146c79b260c5b18a6cb52a5dd7e",
+			"bytes": 5417
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-2/report.json",
+			"sha256": "c0cd3b4bfb7abb19dab7babd9c881dd5a751a564f703bed83b1a59fa08f4d017",
+			"bytes": 20582
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/launch-intent.json",
+			"sha256": "d7493d3692e3115e00f73f65ac18b80f3ecc772f209f4fbf63e770c407261840",
+			"bytes": 806
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/native.json",
+			"sha256": "113b3f0d3ccead420290048c1177ec8054def5ded67bb6cb3f961ce83256ccf6",
+			"bytes": 20685
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/output/.last-run.json",
+			"sha256": "85d081421f0c9080a06915307a441a16c488ce916ce30f4a0786b870c66b4a66",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/output/qa-ui-assets-u05-browser-c-ef604-tes-Loading-empty-and-error-chromium/error-context.md",
+			"sha256": "529a2d47de9b3833bdb9da8477383739bc0d58cfe4731b903fd41afc1d0ae69a",
+			"bytes": 7370
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/output/qa-ui-assets-u05-browser-c-ef604-tes-Loading-empty-and-error-chromium/trace.zip",
+			"sha256": "6821ecb39b38df084a45540a6f465b3a8567cd59e0a18afcc31c820126af29d5",
+			"bytes": 84373
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/playwright.config.mjs",
+			"sha256": "e339bfd27b6a8f02009d23308d608192638070c38c0deecf62d6fe1a9cebf40a",
+			"bytes": 1965
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/preflight.json",
+			"sha256": "4b5fd9f706d7ff074b9f748db1714c4435be7aeb1a1b2b2ae47bf41c2ac6db77",
+			"bytes": 186
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/process-started.json",
+			"sha256": "328b7fc4b4e7c493d1be8f60830bbcec05c2f4757d54e77d4e9a86761143f1b0",
+			"bytes": 391
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/process.json",
+			"sha256": "2a3e334a72d29944ff9582d63b0f306484408252527bf947c0f63af70967108e",
+			"bytes": 5381
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/A-states-3/report.json",
+			"sha256": "113b3f0d3ccead420290048c1177ec8054def5ded67bb6cb3f961ce83256ccf6",
+			"bytes": 20685
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/input.json",
+			"sha256": "e4cbfd0564b49e4bc54e27348bf67dcd8b386af85b6eec3daf6a568fa0c78229",
+			"bytes": 9038
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/positive/launch-intent.json",
+			"sha256": "c786cc9448b3060eaed8146c36fb786ad0200edba4ddda2ec55e76406987db2b",
+			"bytes": 802
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/positive/native.json",
+			"sha256": "53dd0a35235ada091c8cbdd28edbd171d08529a9462ae217676e6a4bf5747f0f",
+			"bytes": 11874
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/positive/output/.last-run.json",
+			"sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+			"bytes": 45
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/positive/playwright.config.mjs",
+			"sha256": "32bafa11ede44ef5d912e4ece1330600201b2246988438f25e542a750059ca53",
+			"bytes": 1946
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/positive/preflight.json",
+			"sha256": "a237968a8141df1af27d54055be3a9ee49a3f0e1b394b193cd6072e20bccea37",
+			"bytes": 173
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/positive/process-started.json",
+			"sha256": "0a87ff19ecb30f3d8dd88919311c898d7781215f84bca750943ac85d1c3bfa3b",
+			"bytes": 389
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/positive/process.json",
+			"sha256": "f6f06aa095d157bafcfb24ad82d7f22839680c9d772a7bfd1c3ce24990d3d297",
+			"bytes": 2441
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/positive/report.json",
+			"sha256": "53dd0a35235ada091c8cbdd28edbd171d08529a9462ae217676e6a4bf5747f0f",
+			"bytes": 11874
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/diagnostics/diagnostic-e8e250e7-7039-46d1-9033-582a947b6193/summary.json",
+			"sha256": "89871b2bdc19dba66c5f4a2ec602afc9fa38f28766d3798053a64b1718a70588",
+			"bytes": 37699
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/reviews/design-f3a95499-4812-447b-a329-078b235c1dc4/.incomplete.json",
+			"sha256": "bb21be11a444e7d9f3b723aa4c90d0faf0020d7f68830e4982f361765e804b1c",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/reviews/design-f3a95499-4812-447b-a329-078b235c1dc4/input.json",
+			"sha256": "5defbf0b5d070b3104f3a2969716570f4f8ed5426f56565e49bf68ecc6962d70",
+			"bytes": 753463
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/reviews/design-f3a95499-4812-447b-a329-078b235c1dc4/manifest.json",
+			"sha256": "6ef5ed7aa8a013a291e3661e92a673569b862deb1f7f0d9a0d51e86159f50d16",
+			"bytes": 39462
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/reviews/design-f3a95499-4812-447b-a329-078b235c1dc4/raw.json",
+			"sha256": "728f66fe528a3c1889cb4b4ed91229e22d38d16eea574cfab2bf66b988bf5ae0",
+			"bytes": 8304
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/assets/u05-browser-candidate/revisions/v4-diagnostics/reviews/design-f3a95499-4812-447b-a329-078b235c1dc4/static.json",
+			"sha256": "35d45e4067c06423da7c42a431bfeed5e596a4b9488bd5389428d057891730ee",
+			"bytes": 855
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/.incomplete.json",
+			"sha256": "7963240f66f874f9cece6f3c07ea55f637556d14487b97753162a807223313b3",
+			"bytes": 176
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/analysis/u05-browser-v4-analysis/.incomplete.json",
+			"sha256": "fd8c3348013e6cfef70f1ac3ed5d667b6de869b12521df190b7d6ebca0db4a91",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/analysis/u05-browser-v4-analysis/manifest.json",
+			"sha256": "29fcd1d52a5dcba8263b56b3b313f95c576861ba8ff19741ea01d31883a2a00a",
+			"bytes": 574
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/attempts/43cd07d75fa16423850403da4e5e14d46a5c9ea3a6df93b94c8a440a7bbb5fb9.json",
+			"sha256": "165d8d0905a8ee74df1da70f5f46e7f350eda3bb20320cbf729a154cfbb399e9",
+			"bytes": 1233
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/attempts/4e2e2b57a32cecc3b6caf935617e8dda42a2d5d46f0a744889c314f925c8ea29.json",
+			"sha256": "6479cf7c1c8d13f551d274507557b7a8e804eb7efef7d7369986a5691e8a9225",
+			"bytes": 1238
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/attempts/ac21ad3195123f2a08612e78c2cacce919bec9ffeee66d4a7c98532bca9c9637.json",
+			"sha256": "5cc535adbebccccdc67fb0f0c4b830ac66d775a3967833264018369ac8298ac1",
+			"bytes": 1200
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/attempts/b4be011a604c2d6bdaf024a133c696c218bed4de6a6d6b67f54ebb69d5e773ec.json",
+			"sha256": "477623e7f45ebe7392c99a8721a8bef4415a6c6808f160db48e955316d7c8d99",
+			"bytes": 1232
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/attempts/c0b386907acd7d17cb3308f5997268310e76a3ca04563c8aa015af7e6c3efcba.json",
+			"sha256": "cbd413c34dd554f1fcf50211b0a0f38b55e6bb3df0c499d9ddeddc4f369238e2",
+			"bytes": 1246
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/attempts/c9d971a5648e64cff0b16d13b9cd9c9e3e407e9f745b690a62f806ed3bb9715c.json",
+			"sha256": "94a04207e6f8bd9cc0ab05d413268c0b60d0714cb5eb455783e6daaad0ea07ca",
+			"bytes": 1463
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/execution-summary.json",
+			"sha256": "87bad24a869c70d905350d6a2d91c8316bf0a1f90ee379cdb7a695b15da39cfb",
+			"bytes": 3095
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/input.json",
+			"sha256": "b5f28768206df7f390677e27ccf17d1608f50fdb3322f4e66ee595e4b62e856a",
+			"bytes": 955
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/launch-intent.json",
+			"sha256": "986a72c6abc496c156f168bf947cb2a29d21c0c319c0ada93192ffb3cc28375a",
+			"bytes": 668
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/manifest.json",
+			"sha256": "1ce89c8b4ddfc293ed4778f4567827e35b8c2d803f6e7227018d62272568eb28",
+			"bytes": 5504
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/native.json",
+			"sha256": "4878bcc484fa9fc20c18d14478a4338f749f072d56b721180468a2fb8dca4575",
+			"bytes": 11542
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/output/.last-run.json",
+			"sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+			"bytes": 45
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/playwright.config.mjs",
+			"sha256": "8527e7fb03219a10bc0086defeb9a4e9a36f15c43759d43eb0834a3a0052f514",
+			"bytes": 1772
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/preflight.json",
+			"sha256": "a237968a8141df1af27d54055be3a9ee49a3f0e1b394b193cd6072e20bccea37",
+			"bytes": 173
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/process-started.json",
+			"sha256": "6155a4c8d52e4ea778a89da8dbf6c6e3dbe98a65c39389b5da608e4c116a846c",
+			"bytes": 336
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/process.json",
+			"sha256": "c6f33fae60e824af072d2ac613b8b848a4fd19b31895b6aa37c1abc67ec74d0c",
+			"bytes": 1956
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report.json",
+			"sha256": "4878bcc484fa9fc20c18d14478a4338f749f072d56b721180468a2fb8dca4575",
+			"bytes": 11542
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/.incomplete.json",
+			"sha256": "3da6b05f0d456dc6022b0bc36280f9ff1fc5886ee20bb29beb51769c3c0dd80a",
+			"bytes": 56
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/content.md",
+			"sha256": "1bcbf0890de8dfc65f843f6c13e706ea2b7099ab2cf0861a04b96c677aba4126",
+			"bytes": 4945
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/delivery/8b76c45c06fb8b79a0060e87f181e73687f93f6aada9597ae10136ef101e4571.md",
+			"sha256": "e2f575c267224517753c779b566fecf4c840acaabe9f74c1574a2a3605411aff",
+			"bytes": 5346
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/follow-up.json",
+			"sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+			"bytes": 3
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/manifest.json",
+			"sha256": "1dc7083769cf19e07a5df07ed586b54667f3ceb2e739783411ee28bd026c4d6b",
+			"bytes": 2076
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/reviews/result-3887c58d-2958-41b1-bdff-e533c6bdb095/.incomplete.json",
+			"sha256": "280b3f6cb134740df2847b876fc9d3144f06d2269c58f475eeb0851f4a7ba053",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/reviews/result-3887c58d-2958-41b1-bdff-e533c6bdb095/input.json",
+			"sha256": "0bdcacdc44b79da42d83f95a6db3d5638324c42e9bbfa8eaf7be49b442c3267c",
+			"bytes": 511575
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/reviews/result-3887c58d-2958-41b1-bdff-e533c6bdb095/manifest.json",
+			"sha256": "8b76c45c06fb8b79a0060e87f181e73687f93f6aada9597ae10136ef101e4571",
+			"bytes": 23086
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/reviews/result-3887c58d-2958-41b1-bdff-e533c6bdb095/raw.json",
+			"sha256": "d2291da5e7d0856b0ab87ae54c79db605e30ed9b4b31c04e055a34a9bc14ee74",
+			"bytes": 6290
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/report/u05-browser-v4-report/reviews/result-3887c58d-2958-41b1-bdff-e533c6bdb095/static.json",
+			"sha256": "8783ac5790c938aa7ea683df5f7b30e6f1faa364fd145dbe8ab26985d07a6bfc",
+			"bytes": 19
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/results/u05-browser-v4-results/.incomplete.json",
+			"sha256": "3bca02ec8354a061dd4b03e0a725129b74f6b2d3467a7fc651a1f8f28f4d660d",
+			"bytes": 58
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/results/u05-browser-v4-results/manifest.json",
+			"sha256": "3fc0eb3953e5974281c7f45e6c27cb54f6ac9aa2396744c791a3494e0b6aef9f",
+			"bytes": 4341
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/runs/run-09346f68358a862ad2ccb7533c644ad7/results/u05-browser-v4-results/reconciliation.json",
+			"sha256": "3e0163e55616269c8d1ff870b1fd6bac2150ff637b9d567387ea168cfd810f94",
+			"bytes": 6148
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/tasks/u05-browser-v4-execute/manifest.json",
+			"sha256": "e0ddb92f4ce09be20bcd3ef6656a13ee9bfb89a9a412a7043ce95ef7b73b2f18",
+			"bytes": 1886
+		},
+		{
+			"path": "tests/scratch/ui-browser-candidate/1792809587795/qa/ui/tasks/u05-tester/manifest.json",
+			"sha256": "7fe989f4c7ee2c18a6166d5586dd2dda665aa39282673c2c808f2efd434ea78a",
+			"bytes": 1678
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/archive-u05-authorization4.py",
+			"sha256": "d0e0e4f0b4829e2ec181bfd85d37b3d2ff14e1eb67c80a9b4c70a00708e0066b",
+			"bytes": 7069
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-clean-final.log",
+			"sha256": "11edff7f359e5c0ad036bad6ca5caf7ef19274615efa33463fcabe76958226e5",
+			"bytes": 609
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-desktop.log",
+			"sha256": "bb15d8a08ce9388606bd121074749b1e3f123b5d49d534b1c1b5fdabc6ec6920",
+			"bytes": 886
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-diagnostic.log",
+			"sha256": "7899ac995ba1072732443e06fbab84d144dcb8493622a3d0f81e4c59bf5123e7",
+			"bytes": 34839
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-formal.log",
+			"sha256": "672fbf28373293a69db8ad8094dc32b7419af0d33c00622bf044d7c4cbc599e6",
+			"bytes": 22000
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-integration.log",
+			"sha256": "2f9b301a371beafbd2a0910a05fbaeecdd1ac5f102799c289c7724912542119d",
+			"bytes": 1651
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-lint-final.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-lint.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-protocol-final.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"bytes": 360
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-protocol.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"bytes": 360
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-report.log",
+			"sha256": "9ca3dbbde07780fb550ae05e22c3f935a132872ebc06caaea7be88d1cac86a03",
+			"bytes": 986
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-result-review11.log",
+			"sha256": "37d8a7bd50ba7bac7336f26ee2cba64ee7e02d2a10a910240db3f29854464195",
+			"bytes": 12800
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-review10.log",
+			"sha256": "2ee723aee03e7a3859e374e9be3fd3fe3bcc149a83cfb30a2aab4c62430a586d",
+			"bytes": 12201
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-size.log",
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+			"bytes": 1089
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-typecheck-delivery.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-typecheck-final.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-typecheck.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-unit-final.log",
+			"sha256": "29ac8b392afe436b02d237b645ff8d94d51010c67856dd52481c3ca90e4dddea",
+			"bytes": 198
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorization4-unit.log",
+			"sha256": "e28ed57c05c761b80d3d23bcf8054066a4fcd505de5926adba9a34c18708e22f",
+			"bytes": 453
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-authorized-review-budget.json",
+			"sha256": "bfad79a1b2d4a3291fa3059be2eff0cbc9953f5bedad98846de10af673c0b2a0",
+			"bytes": 10570
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/u05-v4-review-preflight.mjs",
+			"sha256": "96134d9e11a4f1d6068bf39c987502747a829834a16aece8aa0f55b0d0154ef4",
+			"bytes": 2317
+		},
+		{
+			"path": "tests/scratch/ui-workflow-visibility/1792917978956/desktop.log",
+			"sha256": "84f4d423acbd7601794c944bde59b96006e33f4ed83c0f4eb4f31eb8c3ab2338",
+			"bytes": 1828
+		},
+		{
+			"path": "tests/scratch/ui-workflow-visibility/1792917978956/result.json",
+			"sha256": "b0a888650d02faf7f3c2f6a2e12ac74c6f7028e18d11bf68a5ee6c263e96aa7e",
+			"bytes": 780
+		},
+		{
+			"path": "tests/ui-browser-approved-run.mjs",
+			"sha256": "aa19b285e7c435e7c6e5f2e5667deca9f2d2ca66a2b3859044f68c0b42ca8f63",
+			"bytes": 4135
+		},
+		{
+			"path": "tests/ui-multifunction-native-review.mjs",
+			"sha256": "70643e46e310bfa13547be30a6a0ae4e5f4fcd4f66b214c6ea80bb0cb602db05",
+			"bytes": 11450
+		}
+	]
+}

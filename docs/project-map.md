@@ -134,3 +134,5 @@ UI 成对查询计量：`tests/ui-catalog-paired-benchmark.mjs` 对固定历史�
 UI 评审修订：`tests/ui-browser-review-revision.mjs` 按U05独立评审问题保存新的取消检查及逐测试origin候选，仅静态检查，不批准/执行。
 
 UI 浏览器诊断准备：`tests/ui-browser-diagnostic-prepare.mjs` 基于已录制的 v2 保存新修订，保留原任务/范围及断言，加入逐功能错误副本、HTTP 路由与诊断计划；只核对源码/静态契约，不执行浏览器。
+
+UI 获批浏览器执行：`tests/ui-browser-approved-run.mjs` 读取原生设计批准和诊断就绪，完成原录制任务后登记独立执行任务、正式批次与结果对账，不生成批准。

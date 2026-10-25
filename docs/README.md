@@ -107,3 +107,5 @@ UI 测试日常修改、安装与升级统一从 [技能维护入口](../.pi/ski
 - [数据空间测试数据规范](../.pi/skills/data-space-testing/SKILL.md)：Agent 查询、结果回写与结构化交付，含离线一致性校验，复用原生证据和既有数据空间工具。
 
 UI 浏览器候选诊断准备入口：`tests/ui-browser-diagnostic-prepare.mjs`；范围、未执行门禁与恢复点见 [UI 优化执行记录](ui-testing-optimization-execution.md)。
+
+UI 获批浏览器候选正式执行入口：`tests/ui-browser-approved-run.mjs`；评审、诊断、正式结果与报告状态见 [UI 优化执行记录](ui-testing-optimization-execution.md)。
