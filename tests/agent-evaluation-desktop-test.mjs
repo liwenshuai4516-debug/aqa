@@ -13,7 +13,12 @@ import { enableAgentEvaluation } from "../scripts/enable-agent-evaluation.mjs";
 import { ensureBuild } from "./lib/ensure-build.mjs";
 import { launchNativeApp } from "./desktop/native-app.mjs";
 import { verifyOfflineImport, reopenOfflineImport } from "./fixtures/agent-evaluation/offline-import.mjs";
-import { installActiveJobProbe, verifyActiveJobs } from "./fixtures/agent-evaluation/active-jobs.mjs";
+import {
+	installActiveJobProbe,
+	verifyActiveJobs,
+	beginInterruptedJob,
+	verifyInterruptedJob,
+} from "./fixtures/agent-evaluation/active-jobs.mjs";
 import { longEvidenceText, verifyEvidenceMatrix } from "./fixtures/agent-evaluation/evidence-matrix.mjs";
 import { installRollbackFixture, verifyRollback } from "./fixtures/agent-evaluation/rollback.mjs";
 import { verifyScale } from "./fixtures/agent-evaluation/scale.mjs";
@@ -802,9 +807,16 @@ try {
 		"An actual secondary renderer with the same preload and service origin cannot obtain the main window native identity",
 	);
 	stage("full app restart persistence");
+	const interruptedJob = activeJobProbe
+		? await beginInterruptedJob({ page, until, output, probe: activeJobProbe, original, reports, dataDir })
+		: undefined;
 	await writeFile(join(output, "app-first-process.log"), app.getLogs());
 	await app.close();
 	app = undefined;
+	if (interruptedJob) {
+		await assert.rejects(readFile(join(storeRoot, "writer.lock")), { code: "ENOENT" });
+		assert.deepEqual(await reports(), interruptedJob.before);
+	}
 	const restartReservation = createServer().listen(0, "127.0.0.1");
 	await once(restartReservation, "listening");
 	const restartPort = restartReservation.address().port;
@@ -963,6 +975,23 @@ try {
 	result.checks.push(
 		"A second real native process reopens the offline report and pages the exact private original without creating records or executing the trajectory",
 	);
+	if (interruptedJob) {
+		stage("unknown interrupted scoring survives native restart without automatic replay");
+		result.interruptedJobChecks = await verifyInterruptedJob({
+			page,
+			until,
+			output,
+			probe: activeJobProbe,
+			pending: interruptedJob,
+			dataDir,
+			reports,
+			names,
+		});
+		result.checks.push(
+			"Controlled shutdown report save failure retains the durable job as unknown after real native restart; replay/cancel refuse EXECUTION_UNKNOWN, explicit new scoring completes without changing the old receipt/reports/attempts/snapshots",
+		);
+	}
+
 	if (rollback) {
 		stage("plugin revert, full userData backup restore and unsupported older format");
 		const restored = await verifyRollback({

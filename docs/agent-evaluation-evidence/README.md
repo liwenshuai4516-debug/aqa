@@ -88,3 +88,7 @@ EC05在已明确JSON profile和macOS arm64范围完成，详见[阶段记录与A
 ## EC04 桌面规则故障与活动作业收尾
 
 [本轮证据](EC04-rule-fault-diagnostics.json)：实际Electron隔离副本注入F01延迟及F02超时/异常，30份插件文件仅profile不同，原引擎/服务/存储保持。取消、Rescan、禁用三组收尾及迟到结果保护通过；新增RULE_TIMEOUT/EVALUATOR_ERROR均归评估器、inconclusive/阶段报告，独立F06继续，超时迟到不改已存报告。106项单测、五配置typecheck和完整桌面主矩阵通过，174份原件校验归档。未知作业恢复及其余组合仍待补，AC12/19不整项关闭，AC39/M1与隔离门禁仍未解除；真实CLI/模型调用0。
+
+## EC04 重启后保留未知评分句柄
+
+[本轮证据](EC04-unknown-job-diagnostics.json)：实际桌面隔离副本注入退出时报告保存IO_ERROR，正常退出释放writer锁后原生重启，旧持久句柄字节一致且状态unknown。取消及旧请求重放均EXECUTION_UNKNOWN；只有显式新请求产生另一完成报告，旧报告/句柄、attempt/snapshot不变。106项单测、五配置typecheck及完整主矩阵通过，365份最终/失败原件归档。首轮新评估与只读检查顺序错误已修正并保留原断言；并非磁盘满、断电、强杀或遗留锁恢复测试，AC19其余组合、AC39/M1与隔离门禁仍未关闭。

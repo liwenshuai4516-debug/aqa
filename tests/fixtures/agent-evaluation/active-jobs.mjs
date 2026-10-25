@@ -13,6 +13,17 @@ export async function installActiveJobProbe(repo, dataDir, output) {
 	const injection = `
 // TEST ONLY: delay one trusted rule to expose cancellation/reload, including a late result.
 const probeControl = ${JSON.stringify(control)};
+const probeStoreWrite = ProbeEvaluationStore.prototype.write;
+ProbeEvaluationStore.prototype.write = function(context, input) {
+ if (input.kind === "evaluations" && probeExists(probeControl)) {
+  const {gate, mode} = JSON.parse(probeRead(probeControl, "utf8"));
+  if (gate && mode === "shutdown-failure") {
+   probeWrite(gate + ".save-failed", "synthetic cancellation report save failure");
+   throw Object.assign(new Error("synthetic cancellation report save failure"), {code:"IO_ERROR"});
+  }
+ }
+ return probeStoreWrite.call(this, context, input);
+};
 const probeRule = internalEvaluators.find(r => r.manifest.id === "F01");
 const probeEvaluate = probeRule.evaluate;
 probeRule.manifest.timeoutMs = 10000;
@@ -57,7 +68,8 @@ faultRule.evaluate = async (...args) => {
 	assert.ok(source.includes(needle));
 	await writeFile(
 		profile,
-		'import {existsSync as probeExists, readFileSync as probeRead, writeFileSync as probeWrite} from "node:fs";\n' +
+		'import {EvaluationStore as ProbeEvaluationStore} from "../store.mjs";\n' +
+			'import {existsSync as probeExists, readFileSync as probeRead, writeFileSync as probeWrite} from "node:fs";\n' +
 			source.replace(needle, needle + injection),
 	);
 	return { control, installed, injectedRule: "F01", injectedTimeoutMs: 10000, faultRule: "F02", faultTimeoutMs: 500 };
@@ -274,4 +286,119 @@ export async function verifyActiveJobs({
 		await writeFile(probe.control, "{}");
 	}
 	return results;
+}
+
+async function recoveryRPC(page, until, request) {
+	await page.evaluate(
+		(payload) =>
+			window.__evaluationSocket.send(JSON.stringify({ type: "plugin_message", pluginId: "agent-evaluation", payload })),
+		request,
+	);
+	let reply;
+	await until(async () => {
+		reply = await page.evaluate(
+			(id) =>
+				window.__evaluationFrames.filter((f) => f.type === "plugin_data" && f.payload?.requestId === id).at(-1)
+					?.payload,
+			request.requestId,
+		);
+		return !!reply;
+	});
+	return reply;
+}
+
+export async function beginInterruptedJob({ page, until, output, probe, original, reports, dataDir }) {
+	const gate = join(output, "interrupted-job"),
+		request = {
+			action: "evaluate",
+			requestId: crypto.randomUUID(),
+			ref: { kind: "evaluations", id: original.id, revision: original.revision },
+		};
+	await writeFile(probe.control, JSON.stringify({ gate, mode: "shutdown-failure" }));
+	const reply = await recoveryRPC(page, until, request);
+	assert.equal(reply.ok, true, JSON.stringify(reply.error));
+	await until(() => exists(gate + ".started"));
+	const before = await reports();
+	assert.equal(
+		before.some((r) => r.data.job?.jobId === reply.result.jobId),
+		false,
+	);
+	const receiptBytes = await readFile(
+		join(dataDir, "agent-evaluation/evidence", `${reply.result.jobId}.1.json`),
+		"utf8",
+	);
+	await writeFile(join(output, "interrupted-job-receipt-before.json"), receiptBytes);
+	return { gate, request, jobId: reply.result.jobId, before, receiptBytes };
+}
+
+export async function verifyInterruptedJob({ page, until, output, probe, pending, dataDir, reports, names }) {
+	assert.equal(await exists(pending.gate + ".save-failed"), true);
+	assert.equal(await exists(pending.gate + ".aborted"), true);
+	assert.equal(await exists(pending.gate + ".late"), false);
+	const receiptFile = join(dataDir, "agent-evaluation/evidence", `${pending.jobId}.1.json`),
+		receiptBytes = await readFile(receiptFile, "utf8"),
+		attempts = await names("attempts"),
+		snapshots = await names("snapshots");
+	assert.equal(JSON.parse(receiptBytes).data.kind, "evaluation-job");
+	assert.equal(receiptBytes, pending.receiptBytes);
+	await writeFile(probe.control, "{}");
+	const probes = [];
+	for (const action of ["status", "cancel", "evaluate", "status"]) {
+		const request =
+			action === "evaluate" ? pending.request : { action, requestId: crypto.randomUUID(), jobId: pending.jobId };
+		const reply = await recoveryRPC(page, until, request);
+		probes.push({ request, reply });
+		if (action === "status") {
+			assert.equal(reply.ok, true);
+			assert.equal(reply.result.jobId, pending.jobId);
+			assert.equal(reply.result.state, "unknown");
+			assert.equal(reply.result.reportRef, undefined);
+		} else {
+			assert.equal(reply.ok, false);
+			assert.equal(reply.error.code, "EXECUTION_UNKNOWN");
+			assert.equal(reply.result, undefined);
+		}
+		assert.deepEqual(await reports(), pending.before);
+		assert.equal(await readFile(receiptFile, "utf8"), receiptBytes);
+	}
+	// New scoring requires an explicit new request ID; it never resumes the old job.
+	const fresh = await recoveryRPC(page, until, { ...pending.request, requestId: crypto.randomUUID() });
+	assert.equal(fresh.ok, true, JSON.stringify(fresh.error));
+	assert.notEqual(fresh.result.jobId, pending.jobId);
+	let completed;
+	await until(async () => {
+		completed = (await reports()).find((r) => r.data.job?.jobId === fresh.result.jobId);
+		return !!completed;
+	});
+	assert.equal(completed.data.state, "completed");
+	assert.equal((await reports()).length, pending.before.length + 1);
+	for (const old of pending.before)
+		assert.deepEqual(
+			(await reports()).find((r) => r.id === old.id),
+			old,
+		);
+	assert.equal(await readFile(receiptFile, "utf8"), receiptBytes);
+	assert.deepEqual(await names("attempts"), attempts);
+	assert.deepEqual(await names("snapshots"), snapshots);
+	const final = await recoveryRPC(page, until, {
+		action: "status",
+		requestId: crypto.randomUUID(),
+		jobId: pending.jobId,
+	});
+	assert.equal(final.ok, true);
+	assert.equal(final.result.state, "unknown");
+	await writeFile(
+		join(output, "interrupted-job-probes.json"),
+		JSON.stringify({ jobId: pending.jobId, probes, fresh, final }, null, 2),
+	);
+	return {
+		jobId: pending.jobId,
+		state: "unknown",
+		replayAndCancel: "EXECUTION_UNKNOWN",
+		receiptUnchanged: true,
+		originalReportsUnchanged: true,
+		explicitNewJobId: fresh.result.jobId,
+		explicitNewState: completed.data.state,
+		attemptsAndSnapshotsUnchanged: true,
+	};
 }

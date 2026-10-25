@@ -1,0 +1,181 @@
+{
+	"scope": "AC19 unknown durable scoring job after actual graceful native restart with controlled cancellation-report publication failure",
+	"timestamp": "2026-10-25T15:03:37.947736+00:00",
+	"baseline": "19907fd4a3acbdc906f7453d2d05861daf1c6907",
+	"pluginVersion": "0.4.24",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-unknown-job/index.json",
+		"bytes": 78327,
+		"sha256": "0d63f38afc4423b35575755be0a34c63a0d1d45243eb47db8decb9b3c6a178dd"
+	},
+	"archiveFiles": 365,
+	"actualDesktop": {
+		"status": "PASS",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-nGyhD4",
+		"result": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-unknown-job/files/desktop/result.json",
+			"bytes": 9523,
+			"sha256": "85fef3ccdacf2c1b9911774c7d3647dfadd2e8bfc788a2cf91efcbb4a73340af"
+		},
+		"checks": {
+			"jobId": "72d22fd1-00ec-452a-965f-062f94d24b48",
+			"state": "unknown",
+			"replayAndCancel": "EXECUTION_UNKNOWN",
+			"receiptUnchanged": true,
+			"originalReportsUnchanged": true,
+			"explicitNewJobId": "c74d177d-70c2-471a-bb20-90512a451ae7",
+			"explicitNewState": "completed",
+			"attemptsAndSnapshotsUnchanged": true
+		},
+		"retainedActiveJobScenarios": [
+			{
+				"action": "cancel",
+				"jobId": "e0c6dfdb-35ff-46a2-839b-b1547f43db03",
+				"reportId": "ce1d7d7b-c26c-4d63-8a91-98ede7bc1d64",
+				"state": "cancelled",
+				"lateResultIgnored": true,
+				"oldReportUnchanged": true,
+				"writerReplaced": false,
+				"replacementLockPreserved": true
+			},
+			{
+				"action": "reload",
+				"jobId": "8d6e0ee8-723c-4740-97a5-8b8aed8148e8",
+				"reportId": "5492431a-6607-416f-9f6f-baf0dbd6848f",
+				"state": "cancelled",
+				"lateResultIgnored": true,
+				"oldReportUnchanged": true,
+				"writerReplaced": true,
+				"replacementLockPreserved": true
+			},
+			{
+				"action": "disable",
+				"jobId": "a81fc5bc-5aa9-4017-bf7a-60e3d66bf496",
+				"reportId": "7d48db78-41c2-44bc-9b92-f45ab5aaa310",
+				"state": "cancelled",
+				"lateResultIgnored": true,
+				"oldReportUnchanged": true,
+				"writerReplaced": false,
+				"observationStopped": true,
+				"replacementLockPreserved": true
+			},
+			{
+				"action": "timeout",
+				"jobId": "fbb452d4-3ad9-40ec-bd80-9c646ed08cf0",
+				"reportId": "68a8c9d0-4302-47a4-9756-d5ea32e5246f",
+				"state": "completed",
+				"code": "RULE_TIMEOUT",
+				"verdict": "inconclusive",
+				"independentF06Completed": true,
+				"lateResultIgnored": true,
+				"oldReportUnchanged": true,
+				"attemptsAndSnapshotsUnchanged": true
+			},
+			{
+				"action": "exception",
+				"jobId": "2dfe2962-566c-4395-845e-de0106bb3657",
+				"reportId": "aebfef2f-db4a-4f8e-87f2-529a2f332784",
+				"state": "completed",
+				"code": "EVALUATOR_ERROR",
+				"verdict": "inconclusive",
+				"independentF06Completed": true,
+				"lateResultIgnored": false,
+				"oldReportUnchanged": true,
+				"attemptsAndSnapshotsUnchanged": true
+			}
+		]
+	},
+	"raw": {
+		"probes": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-unknown-job/files/desktop/interrupted-job-probes.json",
+			"bytes": 2669,
+			"sha256": "d8ac8af9033694d02c09e9b4ceca1eabaca43e681fa7fee546c0b0af27cf7674"
+		},
+		"receiptBeforeRestart": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-unknown-job/files/desktop/interrupted-job-receipt-before.json",
+			"bytes": 1301,
+			"sha256": "6e30808e5da035fd452ad26bb9a74df3769390d2804a9b51fe67e3741bce3302"
+		},
+		"saveFailureMarker": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-unknown-job/files/desktop/interrupted-job.save-failed",
+			"bytes": 42,
+			"sha256": "7750c668e9beab0da1c91cce664c2038013a9e4096dc3ec0c9f96343e89009d9"
+		},
+		"firstFailedResult": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-unknown-job/files/first-failed/result.json",
+			"bytes": 9562,
+			"sha256": "45e42c28fa57fdd54725e871c5d771c4edcd6077ad40056d01253d65ba7cc772"
+		}
+	},
+	"injection": {
+		"comparedFiles": 30,
+		"onlyDifferentFile": "owned installed profiles/internal.mjs",
+		"runtimeWriteHookInjected": true,
+		"description": "The test profile wraps EvaluationStore.prototype.write at runtime to throw IO_ERROR for evaluations only while shutdown-failure control is active; F01 delays until abort; evidence/event writes and store.close remain original",
+		"comparison": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-unknown-job/files/plugin-source-comparison.json",
+			"bytes": 7256,
+			"sha256": "63b114feec51e98c51c1a72c20ccf0f88846c63ba4adc5041aa158e6195d19f2"
+		},
+		"injectedProfile": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-unknown-job/files/source/injected-internal.mjs",
+			"bytes": 4301,
+			"sha256": "d60ba80bde0d23a53ea4a7247a53dad9bfe2a3e292a2e9581b14506a24a59bde"
+		},
+		"filesMatchingIsNotProofOfUnmodifiedRuntime": true
+	},
+	"validation": {
+		"typecheck": {
+			"status": "PASS",
+			"configurations": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-unknown-job/files/typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"unit": {
+			"status": "PASS",
+			"files": 4,
+			"passed": 106,
+			"failed": 0,
+			"skipped": 0,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-25-ec04-unknown-job/files/unit.log",
+				"bytes": 226,
+				"sha256": "ce4b93b390b2d4816d843c21b63605fb58bf29b882db983610c567b4ee8ae27a"
+			}
+		},
+		"lint": "PASS",
+		"protocol": "structure/v33 PASS; tag-history heuristic SKIP (no tags)",
+		"i18n": "PASS; 12 language packs",
+		"size": "PASS",
+		"diff": "PASS",
+		"clean": "preview only; no deletion"
+	},
+	"firstRun": {
+		"status": "FAIL",
+		"reason": "New explicit scoring succeeded but ran before existing read-only history checks; added report correctly violated unchanged history list assertion. Moved new scoring check after those assertions, retained all original assertions; final complete rerun PASS",
+		"notClaimedAsPass": true
+	},
+	"boundaries": [
+		"Graceful app shutdown with synthetic evaluation report save failure, not physical disk-full, power loss, SIGKILL, or stale writer lock recovery",
+		"Actual UI/WebSocket request/response probes, not a claim of unknown-job card rendering or human interaction with that card",
+		"Old status remained unknown after all probes and new explicit scoring; cancellation and same-request replay both returned EXECUTION_UNKNOWN without result",
+		"The existing report reopened after native restart before new explicit scoring; no attempt/snapshot or business task was generated",
+		"Store source bytes match repository but runtime write wrapper is intentionally injected; no unmodified-runtime fault acceptance claim",
+		"Other AC19 combinations remain unexecuted; no AC39 performance rerun; EC04/M1 not complete"
+	],
+	"externalCalls": {
+		"realCLI": 0,
+		"realModels": 0,
+		"nativeRunner": 0,
+		"businessExecution": 0
+	},
+	"overall": "EC04/M1 incomplete; prior AC39 failure and EC06 containment unresolved; EC07/09 held; real CLI deferred"
+}
