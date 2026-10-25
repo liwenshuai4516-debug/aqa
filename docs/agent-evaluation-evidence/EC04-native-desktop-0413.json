@@ -1,0 +1,28 @@
+{
+	"status": "PASS",
+	"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-native-desktop-F404fg",
+	"fixture": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/data-space-native-g4Hl4G",
+	"checks": [
+		{
+			"engine": "api",
+			"runId": "0d4116d6-3953-4906-8865-f70717fbd8b2",
+			"rows": 1,
+			"status": "unknown",
+			"complete": false,
+			"reportUnchanged": true,
+			"historicalExecutionNotPassed": true
+		},
+		{
+			"engine": "ui",
+			"runId": "run-1249f06947265e47b0d54258ae80b462",
+			"rows": 1,
+			"status": "passed",
+			"complete": true,
+			"reportUnchanged": true,
+			"historicalExecutionNotPassed": true
+		}
+	],
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"nativeRunnerCalls": 0
+}

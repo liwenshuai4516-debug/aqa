@@ -9,7 +9,16 @@ import { validateConfigSchema } from "./registry.mjs";
 import { Ref, digest, requireValue } from "./schema.mjs";
 const ref = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
 const string = T.String({ minLength: 1, maxLength: 16384 });
-export const queryActions = ["describe", "list", "get", "readEvidence", "locateEvidence", "export", "status"];
+export const queryActions = [
+	"describe",
+	"list",
+	"get",
+	"readEvidence",
+	"locateEvidence",
+	"inspectNativeRun",
+	"export",
+	"status",
+];
 export const toolActions = [
 	...queryActions,
 	"createContract",
@@ -364,6 +373,95 @@ export class EvaluationService {
 					"Source message is not available in the selected conversation",
 				);
 				return { conversationId, sessionId: target.sessionId, messageId: target.messageId };
+			}
+			case "inspectNativeRun": {
+				const record = store.get(context, request.ref),
+					data = record.data;
+				requireValue(
+					record.kind === "evidence" &&
+						record.contentRef &&
+						data.kind === "native-test-run" &&
+						data.producer === "native-reader-v1",
+					"INVALID_INPUT",
+					"Select native run evidence",
+				);
+				let body;
+				try {
+					body = JSON.parse(store.readBlob(record));
+				} catch (error) {
+					if (error.code) throw error;
+					requireValue(
+						false,
+						"EVIDENCE_GAP",
+						"Inspect sealed evidence or collect a new observation: native reference is unavailable",
+					);
+				}
+				requireValue(
+					body &&
+						["api", "ui"].includes(body.engine) &&
+						typeof body.runId === "string" &&
+						data.sourceId === `native:${body.engine}` &&
+						data.sourceEventId === body.runId &&
+						data.sourceLocator === `native:${body.engine}:${body.runId}` &&
+						digest(body) === data.sourceRevision,
+					"EVIDENCE_GAP",
+					"Inspect sealed evidence or collect a new observation: native source identity cannot be verified",
+				);
+				const reference =
+					body.engine === "api"
+						? body.runId
+						: body.evidence?.find((item) => item.path === `qa/ui/runs/${body.runId}/manifest.json`);
+				requireValue(reference, "EVIDENCE_GAP", "Inspect sealed evidence: original run reference is missing");
+				let run;
+				try {
+					run = await this.host.readEvaluationNative(context.clientId, {
+						conversationId,
+						sessionId: source.sessionId,
+						engine: body.engine,
+						reference,
+					});
+				} catch {
+					requireValue(
+						false,
+						"EVIDENCE_GAP",
+						"Original run is missing or cannot be verified. Inspect sealed evidence or collect a new observation",
+					);
+				}
+				signal?.throwIfAborted();
+				requireValue(!this.closed, "CAPABILITY_UNAVAILABLE", "Evaluation plugin is stopped");
+				const fresh = this.authorize(trusted, { ...request, sessionId: source.sessionId });
+				store.get(fresh.context, request.ref);
+				requireValue(
+					digest(run) === data.sourceRevision,
+					"VERSION_CONFLICT",
+					"Original run differs from sealed evidence. Inspect sealed evidence or collect a new observation",
+				);
+				const offset = request.offset ?? 0,
+					rows = run.rows;
+				requireValue(
+					Array.isArray(rows) && offset <= rows.length,
+					"INVALID_INPUT",
+					"Run row offset is outside the record",
+				);
+				// Bound text as well as row count; original sealed bytes remain available separately.
+				const text = (value) => String(value ?? "").slice(0, 96);
+				return {
+					engine: run.engine,
+					runId: text(run.runId),
+					at: text(run.at),
+					complete: run.complete === true,
+					review: text(run.review),
+					sourceDigest: data.sourceRevision,
+					rows: rows.slice(offset, offset + 20).map((row) => ({
+						caseId: text(row.caseId),
+						instanceId: text(row.instanceId),
+						status: text(row.status),
+						evidenceComplete: row.evidenceComplete === true,
+					})),
+					total: rows.length,
+					offset,
+					nextOffset: offset + 20 < rows.length ? offset + 20 : null,
+				};
 			}
 			case "readEvidence": {
 				const view = request.evidenceView ?? "raw";

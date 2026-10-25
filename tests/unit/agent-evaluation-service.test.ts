@@ -238,6 +238,85 @@ describe("EC04 product service", () => {
 		expect((await f.request("get", { ref })).sourceDigest).toBe(record.sourceDigest);
 	});
 
+	it.each(["api", "ui"])(
+		"inspects authorized %s native originals with bounded pages and immutable reports",
+		async (engine) => {
+			const f = fixture(),
+				scored = await diagnose(f);
+			const run = {
+				engine,
+				runId: "offline-run",
+				complete: false,
+				review: "execution-evidence-only",
+				at: "2026-10-24T00:00:00Z",
+				evidence: [{ path: "qa/ui/runs/offline-run/manifest.json", sha256: "a".repeat(64) }],
+				rows: Array.from({ length: 21 }, (_, i) => ({
+					caseId: "\u0000".repeat(200),
+					instanceId: `i-${i}`,
+					status: i ? "SKIP" : "failed",
+					evidenceComplete: i !== 0,
+				})),
+			};
+			f.host.readEvaluationNative.mockResolvedValue(run);
+			const collected = await f.request("collect", {
+				ref: scored.attemptRef,
+				nativeRefs: [{ engine, reference: engine === "api" ? run.runId : run.evidence[0] }],
+			});
+			const snap = await f.request("get", { ref: await f.request("seal", { ref: collected.checkpointRef }) });
+			const records = await Promise.all(snap.data.evidenceRefs.map((ref: any) => f.request("get", { ref })));
+			const record = records.find((r: any) => r.data.kind === "native-test-run"),
+				ref = { kind: record.kind, id: record.id, revision: record.revision };
+			const before = await f.request("export", { ref: scored.reportRef });
+			f.host.readEvaluationNative.mockClear();
+			const first = await f.request("inspectNativeRun", { ref });
+			expect(first).toMatchObject({ engine, complete: false, total: 21, offset: 0, nextOffset: 20 });
+			expect(first.rows).toHaveLength(20);
+			expect(first.rows[0]).toMatchObject({ status: "failed", evidenceComplete: false });
+			expect(first.rows[1].status).toBe("SKIP");
+			expect(first.rows[0].caseId).toHaveLength(96);
+			expect(Buffer.byteLength(JSON.stringify(first))).toBeLessThan(48 * 1024);
+			expect(f.host.readEvaluationNative).toHaveBeenLastCalledWith("owner", {
+				conversationId: "conv1",
+				sessionId: "session1",
+				engine,
+				reference: engine === "api" ? run.runId : run.evidence[0],
+			});
+			expect(await f.request("inspectNativeRun", { ref, offset: 20 })).toMatchObject({
+				nextOffset: null,
+				rows: [expect.objectContaining({ instanceId: "i-20" })],
+			});
+			await expect(f.request("inspectNativeRun", { ref, offset: 22 })).rejects.toMatchObject({ code: "INVALID_INPUT" });
+			await expect(f.request("inspectNativeRun", { ref }, { ...f.ui, clientId: "other" })).rejects.toMatchObject({
+				code: "PERMISSION_DENIED",
+			});
+			f.host.readEvaluationNative.mockResolvedValue({ ...run, complete: true });
+			await expect(f.request("inspectNativeRun", { ref })).rejects.toMatchObject({ code: "VERSION_CONFLICT" });
+			f.host.readEvaluationNative.mockRejectedValue(new Error("missing original"));
+			await expect(f.request("inspectNativeRun", { ref })).rejects.toMatchObject({ code: "EVIDENCE_GAP" });
+			expect(await f.request("export", { ref: scored.reportRef })).toEqual(before);
+			let release: any;
+			f.host.readEvaluationNative.mockImplementation(
+				() =>
+					new Promise((r) => {
+						release = r;
+					}),
+			);
+			const stale = f.request("inspectNativeRun", { ref });
+			const originalRead = f.host.readEvaluationEvidence.getMockImplementation();
+			f.host.readEvaluationEvidence.mockImplementation((...args: any[]) => ({
+				...originalRead(...args),
+				sessionId: "changed-session",
+			}));
+			release(run);
+			await expect(stale).rejects.toMatchObject({ code: "VERSION_CONFLICT" });
+			f.host.readEvaluationEvidence.mockImplementation(originalRead);
+			const pending = f.request("inspectNativeRun", { ref });
+			f.service.close();
+			release(run);
+			await expect(pending).rejects.toMatchObject({ code: "CAPABILITY_UNAVAILABLE" });
+		},
+	);
+
 	it("preflights installed configuration and bindings without collection, jobs or record changes", async () => {
 		const f = fixture(),
 			scored = await diagnose(f);

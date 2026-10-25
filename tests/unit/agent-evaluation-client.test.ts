@@ -231,6 +231,30 @@ describe("evaluation client lifecycle", () => {
 			};
 			const original = h.ctx.send;
 			h.ctx.send = (message: any) => {
+				if (message.action === "inspectNativeRun") {
+					h.sent.push(message);
+					queueMicrotask(() =>
+						h.reply(message, {
+							engine: "api",
+							runId: "run",
+							complete: false,
+							at: "fixture",
+							review: "execution-evidence-only",
+							total: 21,
+							offset: message.offset,
+							nextOffset: message.offset ? null : 20,
+							rows: [
+								{
+									caseId: "<img src=x>",
+									instanceId: `row-${message.offset}`,
+									status: "failed",
+									evidenceComplete: false,
+								},
+							],
+						}),
+					);
+					return;
+				}
 				if (message.action !== "readEvidence") return original(message);
 				h.sent.push(message);
 				queueMicrotask(() =>
@@ -264,13 +288,39 @@ describe("evaluation client lifecycle", () => {
 			await vi.waitFor(() =>
 				expect(root.querySelector<HTMLButtonElement>("[data-action=evidence-next]")?.disabled).toBe(false),
 			);
+			if (kind === "native-test-run") {
+				root.querySelector<HTMLButtonElement>("[data-action=evidence-run]")!.click();
+				await vi.waitFor(() => expect(root.querySelector("[data-native-run]")?.textContent).toContain("row-0"));
+				expect(root.querySelector("[data-native-run] img")).toBeNull();
+				expect(root.querySelector("[data-native-run]")?.textContent).toContain("Failed");
+				root.querySelector<HTMLButtonElement>("[data-action=evidence-run-next]")!.click();
+				await vi.waitFor(() => expect(root.querySelector("[data-native-run]")?.textContent).toContain("row-20"));
+				root.querySelector<HTMLButtonElement>("[data-action=evidence-run-first]")!.click();
+				await vi.waitFor(() => expect(root.querySelector("[data-native-run]")?.textContent).toContain("row-0"));
+				expect(h.sent.filter((m: any) => m.action === "inspectNativeRun").map((m: any) => m.offset)).toEqual([
+					0, 20, 0,
+				]);
+				h.ctx.send = (message: any) => {
+					if (message.action !== "inspectNativeRun") return original(message);
+					h.sent.push(message);
+					queueMicrotask(() =>
+						h.reply(message, { code: "VERSION_CONFLICT", message: "Original changed; inspect sealed evidence" }, false),
+					);
+				};
+				root.querySelector<HTMLButtonElement>("[data-action=evidence-run]")!.click();
+				await vi.waitFor(() => expect(root.querySelector("[role=alert]")?.textContent).toContain("Original changed"));
+				expect(root.querySelector("[data-native-run]")).toBeNull();
+				expect(root.querySelector("[data-evidence-panel] pre")?.textContent).toContain("<img");
+			}
 			const requests = h.sent.slice(before).filter((m: any) => m.action === "readEvidence");
 			expect(requests.map((m: any) => [m.ref, m.evidenceView, m.offset])).toEqual([
 				[reference, view, 0],
 				[reference, view, 4096],
 				[reference, view, 0],
 			]);
-			expect(h.sent.slice(before).every((m: any) => ["get", "readEvidence"].includes(m.action))).toBe(true);
+			expect(
+				h.sent.slice(before).every((m: any) => ["get", "readEvidence", "inspectNativeRun"].includes(m.action)),
+			).toBe(true);
 		},
 	);
 

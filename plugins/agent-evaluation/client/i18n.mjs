@@ -1,4 +1,30 @@
 const labels = {
+	"execution-evidence-only": ["仅核对执行证据", "Execution evidence only"],
+	"incomplete-native-run; never replay automatically": [
+		"原生批次未完成；未自动重跑",
+		"Incomplete native run; no automatic replay",
+	],
+	"native-status-passed": ["通过", "Passed"],
+	"native-status-failed": ["失败", "Failed"],
+	"native-status-skipped": ["跳过", "Skipped"],
+	"native-status-SKIP": ["跳过", "Skipped"],
+	"native-status-not-run": ["未执行", "Not run"],
+	"native-status-blocked": ["受阻", "Blocked"],
+	"native-status-error": ["执行错误", "Execution error"],
+	"native-status-unknown": ["未知", "Unknown"],
+	openNativeRun: ["打开原生批次", "Open native run"],
+	nativeVerified: [
+		"已只读核对原生结果，与封存摘要一致。未重新执行测试或改写报告。",
+		"Original results verified against the sealed digest. No tests were rerun or reports changed.",
+	],
+	nativeEvidence: ["执行证据完整性", "Execution evidence completeness"],
+	nativeCase: ["用例", "Case"],
+	nativeInstance: ["实例", "Instance"],
+	nativeStatus: ["原生执行状态", "Native execution status"],
+	nativeRowsHint: [
+		"证据完整不代表测试通过；状态按原生记录显示。每页20项，单个字段最多显示96字符；完整内容可查看封存批次结果。",
+		"Complete evidence does not mean passing tests. Status comes from the native record. Up to 20 rows per page and 96 characters per field; inspect the sealed run for full content.",
+	],
 	revealSource: ["定位当前来源消息", "Reveal current source message"],
 	sourceHostUnavailable: [
 		"当前宿主不支持消息定位。请更新应用或查看封存证据。",
