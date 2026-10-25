@@ -178,9 +178,13 @@ try {
 		);
 		const response = JSON.parse(prior.tool.content.find((c) => c.type === "text").text);
 		assert.equal(response.output?.decision, "approved", "Trusted native design approval required");
-		const base = dirname(join(root, prepared.assetRef.path));
+		const base = dirname(join(root, selectedAssetRef.path));
 		const { startProbeServers } = await import(pathToFileURL(join(base, "ui-probe-replay.mjs")).href);
-		running = await startProbeServers(prepared.deployments);
+		assert.ok(
+			revision.diagnosticSpecRef ?? prepared.diagnosticSpecRef,
+			"Reviewed revision must include a diagnostic plan",
+		);
+		running = await startProbeServers(revision.deployments ?? prepared.deployments);
 		const requestId = "u05-native-diagnostic-1";
 		result.request_id = requestId;
 		result.tool = await definitions.get("ui_design_diagnose").execute(
@@ -190,7 +194,7 @@ try {
 					operation: "diagnose",
 					asset_ref: selectedAssetRef,
 					review_ref: response.output.review_ref,
-					spec_ref: prepared.diagnosticSpecRef,
+					spec_ref: revision.diagnosticSpecRef ?? prepared.diagnosticSpecRef,
 					request_id: requestId,
 				},
 			},

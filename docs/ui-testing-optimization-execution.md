@@ -575,3 +575,17 @@ U04仍实施中，本轮补齐局部查询5组成对证据，未补齐完整U00�
 原u05-tester显式blocked/design-review，discover-record/case-design历史与六case/13断言保留；无可信批准，浏览器v2未登记诊断计划，**13项诊断和正式执行均未执行**。下一次评审需要新调用授权，诊断计划须在候选审查前纳入，不能借源码候选的计划或批准。U00/U02真实环境与其余U03/U07/U09、M1/M2仍未放行，整计划未完成；plan_update工具不可用，继续复用本记录及第8节放行表。
 
 [续授及登记修复索引](ui-testing-evidence/optimization-u05-review-renewal.json)和约706KiB归档保存71个文件：请求8/9真实input/static/raw及摘要核验、公开续授回执、当前任务、共享账本、上游源码/补丁、失败及成功日志、最终安装一致性和桌面结果；归档逐文件回读一致。私有authority、认证、模型cache、个人配置及node_modules不归档。开始与交付clean仅预览、可清理0项，未删除数据。
+
+### U05 浏览器候选诊断输入补齐（2026-10-25）
+
+上一轮完成0.1.7登记修复及桌面接入验证。本轮继续可独立推进的准备工作，未追加模型调用、修改授权或启动浏览器。新增 `tests/ui-browser-diagnostic-prepare.mjs`，复用原u05-tester任务、scope、inventory、完整录制及v2脚本，保存不可变v4-diagnostics候选。六case、13条断言正文及预期与v2逐字节一致，保留逐测试新origin和reload前取消检查。fixture只增加按静态test标题发送x-u05-case的源码请求头，用于隔离错误副本；该请求头不是认证，viewer/tester仍使用各自context。
+
+原13探针复用冻结u00-1变异源码，额外加入“A-edit-1-memory”：取消误写仅当前内存而不持久化，覆盖真实独立评审指出的reload掩盖问题。共14错误探针覆盖13断言，正目标严格保留scope原地址，另14个错误origin互异；环境、原生Playwright配置、冻结源、变异、可恢复launcher及diagnostic-plan均纳入候选files。通过原生ui_design_diagnose的schema操作获取结构，不执行diagnose。
+
+准备检查：15origin×7case路由（含无case的前置请求）共105响应，非目标case及前置收到冻结HTML；错误case收到预期变异且内嵌脚本可解析。关闭后恢复全部确切origin，105响应摘要相同。占用一个声明端口时拒绝恢复、保留冲突监听并关闭本次已启动服务，不改用随机新地址或中断其他进程。所有自建服务最后关闭。HTTP源码核对不是浏览器检错证明，14探针尚无正反对照观察。
+
+首次v3-diagnostics的HTTP检查通过，但静态TypeScript检查失败：原13探针对象未声明id，新内存探针才含id，形成联合类型的TS2339。失败文件及日志完整保留；v4统一设置探针id后，原生schema及两次静态回读通过，不覆盖v3。共享授权账本与上一轮归档摘要一致，原task仍blocked/design-review；原生catalog回读新修订review_refs为空、runtime_ready=false（无可核验设计批准或诊断证明），13项诊断和正式执行均未执行。未来须对包含诊断输入的v4申请新评审授权，不能继承v2未登记的原始approved或另一份源码候选的批准。
+
+同时修正上一轮计划文档将第3节U05原计划行误当状态行的问题：恢复原交付阶段/工作/前置/交付物，第8节才记录当前放行情况。诊断续跑入口按明确选中的修订读取launcher、部署和spec，批准门禁保留；无批准不会启动服务或浏览器。新增入口同步模块地图、目录及文档导航。
+
+本轮全量typecheck、3文件14项Vitest、lint和协议结构通过；无历史tag的协议检查跳过。只改准备入口和文档，未重跑Electron或模型，0.1.7旧桌面结果不计为本轮通过。开始及交付clean仅预览、不删除数据。[诊断输入索引](ui-testing-evidence/optimization-u05-browser-diagnostics.json)和约47KiB归档保存105文件，90个新/历史引用摘要核对、归档逐文件回读一致；包含v3失败、v4候选/计划、当前任务、入口和验证日志，不含私有authority/认证或依赖。U05及整计划仍未完成，下一依赖门禁是新的付费评审授权与有效设计批准。

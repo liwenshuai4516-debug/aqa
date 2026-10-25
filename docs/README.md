@@ -105,3 +105,5 @@ UI 测试日常修改、安装与升级统一从 [技能维护入口](../.pi/ski
 - [UI 测试链路优化实施计划](ui-testing-optimization-plan.md)：U00–U09 顺序、前置门禁、分项验收、性能对照和 Electron 交付标准。
 - [数据空间与 UI/API 自动化接入](data-space-integration.md)：环境初始化、双向归档、启动修复、验收状态与证据。
 - [数据空间测试数据规范](../.pi/skills/data-space-testing/SKILL.md)：Agent 查询、结果回写与结构化交付，含离线一致性校验，复用原生证据和既有数据空间工具。
+
+UI 浏览器候选诊断准备入口：`tests/ui-browser-diagnostic-prepare.mjs`；范围、未执行门禁与恢复点见 [UI 优化执行记录](ui-testing-optimization-execution.md)。
