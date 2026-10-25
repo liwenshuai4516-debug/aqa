@@ -144,3 +144,5 @@ UI 获批基准计量：`tests/ui-approved-baseline-measure.mjs` 固定既有U05
 UI 基准子进程/API观察：`tests/lib/ui-baseline-child-observer.mjs` 可选预载到runner/worker，记录聚合异步FS、确认后的进程启动及Playwright 1.62.1外部API；不保存参数，不修改原生runner或授权，不代表浏览器内部事件或发现计数。
 
 UI 获批结果桌面验证：`tests/ui-approved-archive-desktop-test.mjs` 在原authority验证后，仅投影公开材料与选定run到隔离Electron，覆盖六功能映射、独立绑定、旧结果同步、重启及交付校验；不复制执行授权或新跑业务。
+
+UI 认证轮换回归：`tests/ui-private-evidence-test.mjs --rotated-cookie` 使用运行时新签发的合成Cookie，验证公开日志/trace/附件脱敏，保留真实passed/failed及资源缺口。

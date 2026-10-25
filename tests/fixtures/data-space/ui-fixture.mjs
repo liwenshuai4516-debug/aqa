@@ -14,6 +14,7 @@ export async function setupUiFixture({ discardPersistence = false, optimization 
 	const state = {
 		browserRequests: 0,
 		responseStatus: 200,
+		responseHeaders: {},
 		identityText: "Names",
 		saveLabel: "Save",
 		discardPersistence,
@@ -21,7 +22,7 @@ export async function setupUiFixture({ discardPersistence = false, optimization 
 	const html = (value) => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	const server = createServer((_req, res) => {
 		state.browserRequests++;
-		res.writeHead(state.responseStatus, { "Content-Type": "text/html; charset=utf-8" });
+		res.writeHead(state.responseStatus, { "Content-Type": "text/html; charset=utf-8", ...state.responseHeaders });
 		if (optimization) return res.end(optimizationPage({ discardPersistence: state.discardPersistence }));
 		res.end(`<!doctype html><h1>${html(state.identityText)}</h1><form><label>Name <input required name="name"></label><button>${html(state.saveLabel)}</button></form><ul></ul><script>
  const list=document.querySelector('ul'),names=JSON.parse(localStorage.getItem('names')||'[]');
