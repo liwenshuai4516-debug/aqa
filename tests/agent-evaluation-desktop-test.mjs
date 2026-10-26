@@ -24,6 +24,8 @@ import { installRollbackFixture, verifyRollback } from "./fixtures/agent-evaluat
 import { verifyScale } from "./fixtures/agent-evaluation/scale.mjs";
 import { installRuleUpgradeProbe, verifyRuleUpgrade } from "./fixtures/agent-evaluation/rule-upgrade.mjs";
 import { installTaskScopeFixture, verifyTaskScope } from "./fixtures/agent-evaluation/task-scope.mjs";
+import { installVerdictFixture, verifyVerdictMatrix } from "./fixtures/agent-evaluation/verdict-matrix.mjs";
+const verdictMatrix = process.argv.includes("--verdict-matrix");
 const taskScope = process.argv.includes("--task-scope");
 const ruleUpgrade = process.argv.includes("--rule-upgrade");
 assert.ok(
@@ -109,6 +111,7 @@ const ruleUpgradeProbe = ruleUpgrade
 	? await installRuleUpgradeProbe(repo, dataDir, agentDir, output, workspace)
 	: undefined;
 const taskScopeFixture = taskScope ? await installTaskScopeFixture(agentDir, workspace) : undefined;
+const verdictFixture = verdictMatrix ? await installVerdictFixture(agentDir, workspace) : undefined;
 const reservation = createServer().listen(0, "127.0.0.1");
 await once(reservation, "listening");
 const port = reservation.address().port;
@@ -1053,6 +1056,10 @@ try {
 	if (taskScopeFixture) {
 		stage("same-session task scopes and efficiency-only diagnosis");
 		result.taskScope = await verifyTaskScope({ page, fixture: taskScopeFixture, dataDir, output, until });
+	}
+	if (verdictFixture) {
+		stage("goal, behavior and delivery verdict boundary matrix");
+		result.verdictMatrix = await verifyVerdictMatrix({ page, fixture: verdictFixture, dataDir, output, until });
 	}
 	stage("development URL cannot acquire the native identity");
 	await writeFile(join(output, "app-restarted-process.log"), app.getLogs());

@@ -113,3 +113,5 @@ EC04 规则扩展补验：`tests/agent-evaluation-desktop-test.mjs --rule-upgrad
 EC04 双任务补验：`tests/agent-evaluation-desktop-test.mjs --task-scope`使用`tests/fixtures/agent-evaluation/task-scope.mjs`生成同会话两个合成任务，经实际界面核对选区、空业务条件诊断、原请求回执重放及独立重评；零真实工具/模型调用，见[证据](agent-evaluation-evidence/EC04-task-scope-diagnostics.json)。
 
 Agent评估0.4.28正文原字节回读、303项回归/实际Electron与正式采集性能FAIL对照见[证据](agent-evaluation-evidence/EC04-body-byte-read-diagnostics.json)。
+
+EC04 结论边界补验：`tests/agent-evaluation-desktop-test.mjs --verdict-matrix`使用`tests/fixtures/agent-evaluation/verdict-matrix.mjs`构造10组合成历史，经可信桌面连接创建契约并逐一打开报告，核对目标、依赖约束、交付及缺口；零真实工具/模型调用，见[证据](agent-evaluation-evidence/EC04-verdict-matrix-diagnostics.json)。

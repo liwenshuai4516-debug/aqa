@@ -1,0 +1,299 @@
+{
+	"scope": "EC04/AC11 actual Electron verdict boundary submatrix; original production plugin 0.4.28 unchanged",
+	"timestamp": "2026-10-26T02:45:02.608878+00:00",
+	"baseline": "7cdd12e9b13b280b5c14d9808240739d346fb16a",
+	"pluginVersion": "0.4.28",
+	"productCodeChanged": false,
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-verdict-matrix/index.json",
+		"bytes": 131335,
+		"sha256": "596fc82eab03fbc1c0b0487424d62d995abc38233f5182c6213d494143ccf1c2"
+	},
+	"archiveFiles": 550,
+	"actualDesktop": {
+		"status": "PASS",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-lnLd9K",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-verdict-matrix/files/desktop-final/result.json",
+			"bytes": 29906,
+			"sha256": "1b6b63aba6fb91309b6271ce9cdf8a518f42e9c62e82108148b5cd2252728fe0"
+		},
+		"matrix": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-verdict-matrix/files/desktop-final/verdict-matrix.json",
+			"bytes": 22080,
+			"sha256": "b66dcf71d18e202ba76b9c5846b55096bca29c48d2e7ababa01d326ee20dc77e"
+		},
+		"scenarios": [
+			{
+				"id": "denied-stop-complete",
+				"reportRef": {
+					"kind": "evaluations",
+					"id": "f73e168e-702d-4303-96bd-1cc1d1e5c008",
+					"revision": 1
+				},
+				"goal": "undetermined",
+				"behavior": "pass",
+				"delivery": "inconclusive",
+				"dependency": "pass",
+				"coverage": "complete",
+				"gaps": [],
+				"uiOpened": true,
+				"originalReportUnchanged": true
+			},
+			{
+				"id": "failed-stop-complete",
+				"reportRef": {
+					"kind": "evaluations",
+					"id": "e4d89aa8-4d46-440e-a9d9-70de97135983",
+					"revision": 1
+				},
+				"goal": "undetermined",
+				"behavior": "pass",
+				"delivery": "inconclusive",
+				"dependency": "pass",
+				"coverage": "complete",
+				"gaps": [],
+				"uiOpened": true,
+				"originalReportUnchanged": true
+			},
+			{
+				"id": "failed-stop",
+				"reportRef": {
+					"kind": "evaluations",
+					"id": "60d13517-bed8-48cb-bf48-6c2f92dc751a",
+					"revision": 1
+				},
+				"goal": "not-achieved",
+				"behavior": "inconclusive",
+				"delivery": "fail",
+				"dependency": "inconclusive",
+				"coverage": "partial",
+				"gaps": ["additional-artifact-read-at-observation-time:failed-stop.json"],
+				"uiOpened": true,
+				"originalReportUnchanged": true
+			},
+			{
+				"id": "denied-stop",
+				"reportRef": {
+					"kind": "evaluations",
+					"id": "556b0e4d-d710-41f3-92e9-348bd385a966",
+					"revision": 1
+				},
+				"goal": "not-achieved",
+				"behavior": "inconclusive",
+				"delivery": "fail",
+				"dependency": "inconclusive",
+				"coverage": "partial",
+				"gaps": ["additional-artifact-read-at-observation-time:denied-stop.json"],
+				"uiOpened": true,
+				"originalReportUnchanged": true
+			},
+			{
+				"id": "failed-continue",
+				"reportRef": {
+					"kind": "evaluations",
+					"id": "99112763-cb95-4dd8-b2b9-f1971ca34da3",
+					"revision": 1
+				},
+				"goal": "achieved",
+				"behavior": "fail",
+				"delivery": "fail",
+				"dependency": "fail",
+				"coverage": "partial",
+				"gaps": ["additional-artifact-read-at-observation-time:failed-continue.json"],
+				"uiOpened": true,
+				"originalReportUnchanged": true
+			},
+			{
+				"id": "success-continue",
+				"reportRef": {
+					"kind": "evaluations",
+					"id": "f29258db-baf9-4b04-bf6b-85beacbe2e15",
+					"revision": 1
+				},
+				"goal": "achieved",
+				"behavior": "pass",
+				"delivery": "pass",
+				"dependency": "pass",
+				"coverage": "partial",
+				"gaps": ["additional-artifact-read-at-observation-time:success-continue.json"],
+				"uiOpened": true,
+				"originalReportUnchanged": true
+			},
+			{
+				"id": "unknown-prerequisite",
+				"reportRef": {
+					"kind": "evaluations",
+					"id": "03cd51ac-f6e5-4972-895b-a9a4d44f7dbb",
+					"revision": 1
+				},
+				"goal": "undetermined",
+				"behavior": "inconclusive",
+				"delivery": "inconclusive",
+				"dependency": "inconclusive",
+				"coverage": "partial",
+				"gaps": [
+					"missing-tool-end:0dcf97ed-a6ae-43a6-b0d6-35c1c443361b:pi:evaluation-verdict-matrix:unknown-prerequisite-prerequisite"
+				],
+				"uiOpened": true,
+				"originalReportUnchanged": true
+			},
+			{
+				"id": "partial-stop",
+				"reportRef": {
+					"kind": "evaluations",
+					"id": "19238b0c-7878-4101-9b16-72cccfba9029",
+					"revision": 1
+				},
+				"goal": "undetermined",
+				"behavior": "inconclusive",
+				"delivery": "inconclusive",
+				"dependency": "inconclusive",
+				"coverage": "partial",
+				"gaps": [
+					"missing-tool-end:0c275ee1-53a1-41f0-8578-2b8017ade991:pi:evaluation-verdict-matrix:partial-stop-diagnostic"
+				],
+				"uiOpened": true,
+				"originalReportUnchanged": true
+			},
+			{
+				"id": "cancelled-stop",
+				"reportRef": {
+					"kind": "evaluations",
+					"id": "0b80ce17-2a1f-4018-8b62-b62c8962ab13",
+					"revision": 1
+				},
+				"goal": "undetermined",
+				"behavior": "pass",
+				"delivery": "inconclusive",
+				"dependency": "pass",
+				"coverage": "complete",
+				"gaps": [],
+				"uiOpened": true,
+				"originalReportUnchanged": true
+			},
+			{
+				"id": "advisory-violation",
+				"reportRef": {
+					"kind": "evaluations",
+					"id": "72e48317-afb6-4a3d-b868-90b9b904b8f6",
+					"revision": 1
+				},
+				"goal": "achieved",
+				"behavior": "pass",
+				"delivery": "pass",
+				"dependency": "fail",
+				"coverage": "partial",
+				"gaps": ["additional-artifact-read-at-observation-time:advisory-violation.json"],
+				"uiOpened": true,
+				"originalReportUnchanged": true
+			}
+		],
+		"checks": [
+			"Ten contracts created over trusted desktop socket, scoped to owned seeded SDK history; original collect/seal/evaluate engine and actual UI opening for each report. Arbitrary constraints not entered via creation form.",
+			"Header goal/delivery and F04 finding checked against frozen expected verdicts; raw behavior, exact F06 outcome counts, evidence references, empty fault attribution, coverage gaps and absent monotonic timing also asserted.",
+			"Complete failed/denied/cancelled prerequisites with no dependent: behavior pass, no goal conditions means goal undetermined/delivery inconclusive.",
+			"Artifact absence is known goal failure. Additional artifact observation marks coverage partial; stopped dependency is inconclusive rather than pass. Gap retained, no weakening of production guard.",
+			"Known dependent after failed prerequisite plus fixture artifact: goal achieved, behavior/delivery fail. Successful causal prerequisite yields pass. Advisory constraint failure remains visible but does not become mandatory.",
+			"Unfinished prerequisite/independent diagnostic yields partial coverage and inconclusive dependency. No wall timestamps used as monotonic timing.",
+			"Primary desktop flow, revisions/configuration, observations, settings/slash/reload, theme/language/layout, offline import and full native restart also executed."
+		]
+	},
+	"registeredSource": {
+		"status": "PASS",
+		"trackedFiles": 29,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-verdict-matrix/files/registered-plugin-files.json",
+			"bytes": 6901,
+			"sha256": "9098009fa24de50d1eb0b1834bf5f9813a8dc1db7212177f8974ad6e27fbae0e"
+		}
+	},
+	"verification": {
+		"typecheck": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-verdict-matrix/files/EC04-verdict-typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			},
+			"configurations": 5
+		},
+		"unit": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-verdict-matrix/files/EC04-verdict-unit.log",
+				"bytes": 224,
+				"sha256": "58cec21f45246dee95d8ec9731f067357d2f32960f53fd5cbd7c88b28b6c75a4"
+			},
+			"files": 4,
+			"tests": 97
+		},
+		"lint": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-verdict-matrix/files/EC04-verdict-lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-verdict-matrix/files/EC04-verdict-protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"limitation": "Protocol v33/type-only checks passed; historical git-tag heuristic SKIP because no tag available."
+		},
+		"i18n": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-verdict-matrix/files/EC04-verdict-i18n.log",
+				"bytes": 615,
+				"sha256": "80312d8da86db05c5343b06b015ff85dbb3f374e280ecc1b044c87014878d1cd"
+			}
+		},
+		"size": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-verdict-matrix/files/EC04-verdict-size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			}
+		}
+	},
+	"retainedFailures": [
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-verdict-matrix/files/desktop-initial/result.json",
+				"bytes": 6671,
+				"sha256": "86d4f5d6ee11d5ff54cdaa8077d2c05ca13decc139ec35431e61a27aaddcd0d6"
+			},
+			"cause": "Fixture omitted ruleRef on conditions/constraints, producing INVALID_RULE_OUTPUT; also incorrectly expected complete coverage after an additional observation-time artifact read. Added explicit bindings and retained conservative gap expectation plus no-artifact controls. Product unchanged."
+		},
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-verdict-matrix/files/desktop-count-initial/result.json",
+				"bytes": 6479,
+				"sha256": "4047645a96a7ed2ec76a87b4126101dcfc5e470cdbbeadf153673faabd5431d6"
+			},
+			"cause": "Fixture expected one successful call even when prerequisite and dependent both succeeded. Assert exact full outcome distribution instead; final rerun passes. Product unchanged."
+		}
+	],
+	"provenance": "Seeded SDK call history is synthetic; artifacts are fixture-created and assert existence/JSON only, not semantic correctness or Agent authorship. No actual model, CLI, tool or business execution. Actual Electron desktop/service/store used without production injection.",
+	"notExecuted": [
+		"Trusted time-limit violation actual desktop path and every possible AC11 refusal/attribution combination remain unverified; AC11 not fully complete.",
+		"No new native business run, full role/identity/rollback/scale/long-evidence or rule-upgrade matrix; historical runs retain original scopes.",
+		"Formal collection performance not rerun because production unchanged; previous AC39 FAIL remains."
+	],
+	"remaining": [
+		"EC04/M1 and overall goal incomplete; AC39 collection performance still FAIL.",
+		"EC06 detached child containment unresolved, dependent execution held.",
+		"EC08 real CLI/model tests deferred by user."
+	]
+}
