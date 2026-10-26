@@ -1,11 +1,11 @@
 /** Verify the Data Space skill's desktop discovery and plugin ownership, without model or business calls. */
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, writeFile, readdir, access } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import electron from "electron";
-import { assetDigest } from "pi-ui-testing";
+import { assetDigest, authState } from "pi-ui-testing";
 import { ensureBuild } from "./lib/ensure-build.mjs";
 import { portUp } from "./lib/port-utils.mjs";
 import { launchNativeApp } from "./desktop/native-app.mjs";
@@ -253,6 +253,60 @@ try {
 	assert.equal(native.f.fixture.state.browserRequests, preparationRequests);
 	result.checks.push(
 		"mode-aware preparation skips historical/source-only channels, reuses current public parameters, preserves unknown browser readiness and performs no target requests",
+	);
+	const beforePrivate = await readFile(join(dataDir, "data-space/store.json"), "utf8");
+	const privateInput = {
+		action: "prepare-private",
+		engine: "ui",
+		mode: "execute",
+		systemId: "desktop-project",
+		envId: "desktop-env",
+		workspace,
+		targetUrl: native.f.fixture.url,
+		privateBindings: [{ parameterKey: "token", storageKey: "token" }],
+	};
+	const prepared = await request("/automation", privateInput);
+	assert.equal(prepared.status, "prepared-private-execution");
+	assert.equal(prepared.preparation.authentication, "unknown");
+	assert.equal(prepared.preparation.recording, "unsupported");
+	assert.ok(!JSON.stringify(prepared).includes("synthetic-dynamic-private"));
+	const stateDirectory = join(dataDir, "data-space/private-browser");
+	const owned = await readdir(stateDirectory);
+	assert.equal(owned.length, 1);
+	const privatePath = join(stateDirectory, owned[0], "state.json");
+	const state = JSON.parse(await readFile(privatePath, "utf8"));
+	assert.equal(state.pi_ui_private.reference, prepared.auth.reference);
+	assert.equal(state.origins[0].localStorage[0].value, "synthetic-dynamic-private");
+	assert.equal(await readFile(join(dataDir, "data-space/store.json"), "utf8"), beforePrivate);
+	assert.equal(native.f.fixture.state.browserRequests, preparationRequests);
+	// The desktop backend and this test are separate processes. Only the owned reference path crosses privately here.
+	assert.equal(process.env[prepared.auth.reference], undefined);
+	process.env[prepared.auth.reference] = privatePath;
+	try {
+		assert.equal(await authState({ base_url: native.f.fixture.url, auth: prepared.auth }, workspace), privatePath);
+	} finally {
+		delete process.env[prepared.auth.reference];
+	}
+	assert.ok(!JSON.stringify(prepared).includes(privatePath));
+	await request("/automation", { action: "disconnect", engine: "ui", envId: "desktop-env", workspace });
+	await assert.rejects(access(privatePath), { code: "ENOENT" });
+	await request("/automation", {
+		action: "initialize",
+		engine: "ui",
+		mode: "execute",
+		envId: "desktop-env",
+		workspace,
+	});
+	result.privateExecution = {
+		prepared,
+		selectedDynamicValueConsumed: true,
+		noStoreWrite: true,
+		noTargetRequest: true,
+		disconnectRemovedOwnedState: true,
+		nativeConsumption: "Owned-state authState compatibility check in test process; not a desktop Agent business run",
+	};
+	result.checks.push(
+		"desktop prepare-private reuses a fresh private dynamic value, returns only an expiring reference, preserves store/network state and revokes on disconnect",
 	);
 	// 原生资产已存在但未获用户确认：不得自动入库。
 	const readStore = async () => JSON.parse(await readFile(join(dataDir, "data-space/store.json"), "utf8"));

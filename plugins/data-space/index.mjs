@@ -30,6 +30,7 @@ import { VERDICTS, normalizeRuns } from "./runs.mjs";
 import { seedStore } from "./seed.mjs";
 import { createAutomation } from "./automation.mjs";
 import { createDataSpaceTools } from "./tools.mjs";
+import { createPrivateBrowserStates } from "./private-browser-state.mjs";
 
 /** 默认任务名里的短时间戳（本地时区 MM-DD HH:mm）。 */
 const shortStamp = (iso) => {
@@ -47,6 +48,11 @@ export default {
 		const loaded = load();
 		let store = loaded.store;
 		let runs = loadRuns();
+		const privateStates = createPrivateBrowserStates({
+			dataDir: host.dataDir,
+			store: () => store,
+			log: (...args) => host.log(...args),
+		});
 		// 迁移 / 清理结果立即落盘：下次启动不必重复判断，备份也只留一份。
 		if (loaded.changed) persist();
 
@@ -136,6 +142,7 @@ export default {
 		function commitStore(next) {
 			persist(next);
 			store = next;
+			privateStates.reconcile();
 			host.broadcast({ kind: "store", revision: store.revision });
 		}
 
@@ -261,6 +268,7 @@ export default {
 		function commitEnvRuntime(next) {
 			persist(next);
 			store = next;
+			privateStates.reconcile();
 			try {
 				host.broadcast({ kind: "env-dynamic", revision: store.revision });
 			} catch {
@@ -369,7 +377,14 @@ export default {
 			return { ...result, at, expiresAt, env: store.envs.find((e) => e.id === envId) };
 		}
 
-		const automation = createAutomation({ host, store: () => store, runs: () => runs, commitStore, commitRuns });
+		const automation = createAutomation({
+			host,
+			store: () => store,
+			runs: () => runs,
+			commitStore,
+			commitRuns,
+			privateStates,
+		});
 		/**
 		 * 环境快照：脚本取回的敏感动态值（token / 会话）只留键与时间，明文不出服务端。
 		 * 页面只显示 ●●●● 与过期时间，够用；非敏感值（如租户）照常下发，页面要展示它。
@@ -581,6 +596,7 @@ export default {
 						"Import only after the user agrees to record this batch. Pass the native UI cases ref or API draft ref, and the chosen envId so the project is taken from that environment.",
 						"Import stores draft cases only: no automation binding, execution or result. Native generation and execution events no longer archive assets on their own.",
 						"Use featureMappings for multiple native features. Query archive-status to check intake and classification separately; never relocate historical cases on retry.",
+						"For private execution, prepare-private requires engine ui, mode execute, exact systemId/envId/targetUrl and privateBindings. It reuses fresh values without network; recording is unsupported.",
 						"Use route to obtain the original execution entry. Never replace native approval or preflight.",
 						"Query sync-status by runRef before retrying sync; pending, unmatched and stale items are not complete. Retry synchronization without replaying execution.",
 					],
@@ -591,6 +607,7 @@ export default {
 								type: "string",
 								enum: [
 									"initialize",
+									"prepare-private",
 									"disconnect",
 									"import",
 									"archive-status",
@@ -614,6 +631,22 @@ export default {
 								description: "Discovery input for new or record mode only.",
 							},
 							targetUrl: { type: "string" },
+							privateBindings: {
+								type: "array",
+								minItems: 1,
+								maxItems: 30,
+								description:
+									"Explicit parameterKey to localStorage storageKey mappings for prepare-private; names only, never values.",
+								items: {
+									type: "object",
+									additionalProperties: false,
+									required: ["parameterKey", "storageKey"],
+									properties: {
+										parameterKey: { type: "string", minLength: 1, maxLength: 60 },
+										storageKey: { type: "string", minLength: 1, maxLength: 100 },
+									},
+								},
+							},
 							featureId: {
 								type: "string",
 								description:
@@ -655,7 +688,7 @@ export default {
 					execute: async (_id, input, signal, _update, context) => {
 						if (!context?.cwd) throw new Error("当前引擎缺少绑定会话的工具上下文");
 						signal?.throwIfAborted();
-						return automation.call(context.cwd, input);
+						return automation.call(context.cwd, input, signal);
 					},
 				});
 				for (const tool of tools) toolOffs.push(host.registerAgentTool(tool));
@@ -673,6 +706,7 @@ export default {
 
 		return () => {
 			automation.dispose();
+			privateStates.dispose();
 			for (const off of [...toolOffs, ...offs]) {
 				try {
 					off?.();

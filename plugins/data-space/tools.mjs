@@ -336,11 +336,11 @@ export function createDataSpaceTools(ctx) {
 			name: "data_space_env",
 			label: "查环境参数",
 			description:
-				"Read project environments without side effects. Explicit refresh prepares one environment through its HTTP script, reusing valid values unless forced. Secret values remain server-side; private browser credential consumption is not supported.",
+				"Read project environments without side effects. Explicit refresh prepares one environment through its HTTP script, reusing valid values unless forced. Secret values remain server-side; UI execution uses automation prepare-private. Private recording is unsupported.",
 			promptSnippet: "Look up test environment URLs and parameter readiness.",
 			promptGuidelines: [
 				"Use data_space_env before executing or automating cases that need a base URL, tenant, account, billing period or other environment-specific parameter — do not invent these values.",
-				"Refresh requires one unambiguous environment. Secret-dependent execution remains blocked until a private execution adapter is available; never copy credentials into scripts or artifacts.",
+				"Refresh one unambiguous environment. Use automation prepare-private with names only for private UI execution. Never copy credentials into scripts or artifacts; private recording is unsupported.",
 			],
 			parameters: {
 				type: "object",

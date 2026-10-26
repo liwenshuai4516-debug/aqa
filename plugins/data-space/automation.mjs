@@ -5,7 +5,7 @@ import { caseFingerprint } from "./model.mjs";
 import { createTestChannel, environmentUrl as url } from "./test-channel.mjs";
 import { normalizeVerdict } from "./runs.mjs";
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-export function createAutomation({ host, store, runs, commitStore, commitRuns }) {
+export function createAutomation({ host, store, runs, commitStore, commitRuns, privateStates = undefined }) {
 	const channel = createTestChannel({ host, store, commitStore });
 	let syncError = "",
 		queue = Promise.resolve(),
@@ -204,10 +204,18 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 		};
 	}
 
-	async function call(cwd, input) {
+	async function call(cwd, input, signal) {
 		if (disposed) throw new Error("数据空间已停用");
 		if (input.action === "initialize") return channel.initialize(cwd, input);
-		if (input.action === "disconnect") return channel.disconnect(cwd, input);
+		if (input.action === "prepare-private") {
+			if (!privateStates) throw new Error("当前宿主缺少私密浏览器准备能力");
+			return privateStates.prepare(cwd, input, signal);
+		}
+		if (input.action === "disconnect") {
+			const receipt = channel.disconnect(cwd, input);
+			if (input.engine === "ui") privateStates?.disconnect(cwd, input.envId);
+			return receipt;
+		}
 		if (input.action === "import" || input.action === "archive-status") {
 			const asset = await host.testing.inspect(input.engine, cwd, input.assetRef);
 			if (disposed) throw new Error("数据空间已停用");

@@ -85,7 +85,7 @@ export function environmentPreparation(env, mode, nowMs = Date.now()) {
 		},
 		...unchecked,
 		privateExecution: privateKeys.length
-			? { state: "not-ready", basis: "private-browser-consumption-not-supported" }
+			? { state: "not-ready", basis: "explicit-private-execution-preparation-required" }
 			: unknown("no-private-parameters"),
 		publicParameters: Object.fromEntries(entries),
 		parameterSources: Object.fromEntries(sources),

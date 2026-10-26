@@ -20,8 +20,11 @@ export async function setup(t, options) {
 		store = new ArtifactStore(root),
 		authority = join(fixture.agentDir, "private-reviews");
 	const requirement =
-		"R1: Saved Name persists after reload.\nAcceptance for this controlled fixture: start each case in a fresh non-persistent Playwright browser context with empty localStorage " +
-		(options?.auth ? "and the declared synthetic cookie-only storageState. " : "and no imported storageState. ") +
+		"R1: Saved Name persists after reload.\nAcceptance for this controlled fixture: start each case in a fresh non-persistent Playwright browser context " +
+		(options?.prepareAuth
+			? "with empty Names data and the declared synthetic managed authentication storageState. "
+			: "with empty localStorage " +
+				(options?.auth ? "and the declared synthetic cookie-only storageState. " : "and no imported storageState. ")) +
 		"Enter the generated Name, click Save, then reload. The Saved names list must contain exactly one list item whose text is the original submitted Name, without normalization. Closing that owned context removes its localStorage; no external data is shared.";
 	const ref = { path: "requirements.md", sha256: sha256(requirement) };
 	await writeFile(join(root, ref.path), requirement);
@@ -68,9 +71,11 @@ export async function setup(t, options) {
 		c.data.data_rules_ref = dataRules;
 		c.data.gaps = ["Boundary/invalid-input scenarios are outside the selected persistence scope and remain untested."];
 		c.data.cases[0].preconditions = [
-			options?.auth
-				? "Fresh non-persistent context, empty localStorage, declared synthetic cookie-only storageState; only the owned generated Name is saved."
-				: "Fresh non-persistent context, empty localStorage, no imported storageState; only the owned generated Name is saved.",
+			options?.prepareAuth
+				? "Fresh non-persistent context, empty Names data, declared synthetic managed authentication state; only the owned generated Name is saved."
+				: options?.auth
+					? "Fresh non-persistent context, empty localStorage, declared synthetic cookie-only storageState; only the owned generated Name is saved."
+					: "Fresh non-persistent context, empty localStorage, no imported storageState; only the owned generated Name is saved.",
 		];
 		c.data.cases[0].assertions[0].expected = { from: "generated input key" };
 		if (options?.comparison) c.data.cases[0].assertions[0].comparison = options.comparison;
@@ -157,9 +162,9 @@ export const response = (input) => ({ raw: JSON.stringify(decision(input)), prov
 
 export async function prepareDiagnostic(
 	t,
-	{ targetFault = false, globalSetupSource, testCode, comparison, auth } = {},
+	{ targetFault = false, globalSetupSource, testCode, comparison, auth, prepareAuth } = {},
 ) {
-	const f = await setup(t, { discardPersistence: targetFault, testCode, comparison, auth }),
+	const f = await setup(t, { discardPersistence: targetFault, testCode, comparison, auth, prepareAuth }),
 		broken = await setupUiFixture({ discardPersistence: true });
 	t.after(() => broken.close());
 	const base = "qa/ui/assets/names/revisions/v1/probes";
@@ -174,6 +179,9 @@ export async function prepareDiagnostic(
 		"import {readFileSync} from 'node:fs';const environment=JSON.parse(readFileSync(new URL('./negative.json',import.meta.url),'utf8'));" +
 			"export default {timeout:10000,expect:{timeout:400},use:{baseURL:environment.base_url}};",
 	);
+	const authByUrl = new Map();
+	if (prepareAuth)
+		for (const url of [f.fixture.url, broken.url]) authByUrl.set(url, await prepareAuth({ root: f.root, url }));
 	const environment = (url) => ({
 		schema_version: "1.0",
 		environment_id: "test",
@@ -182,7 +190,7 @@ export async function prepareDiagnostic(
 		role: "tester",
 		identity: { selector: "h1", text: "Names" },
 		initial_state: { selector: "button", text: "Save" },
-		auth: auth ?? { kind: "none" },
+		auth: authByUrl.get(url) ?? auth ?? { kind: "none" },
 		isolation: "context",
 		timeout_ms: 500,
 	});
@@ -243,6 +251,7 @@ export async function prepareDiagnostic(
 	if (targetFault) {
 		const healthy = await setupUiFixture();
 		t.after(() => healthy.close());
+		if (prepareAuth) authByUrl.set(healthy.url, await prepareAuth({ root: f.root, url: healthy.url }));
 		controlRef = await f.store.putFile(`${base}/control.json`, JSON.stringify(environment(healthy.url)));
 		spec.control_environment_ref = controlRef;
 	}

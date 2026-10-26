@@ -141,6 +141,35 @@ try {
 		result.nativeState.selectedEnvironmentMatched
 			? "selected-desktop-native-connection-verified"
 			: "native-connection-blocked";
+	if (
+		process.argv.includes("--probe-private-execution") &&
+		result.status === "selected-desktop-native-connection-verified"
+	) {
+		assert.equal(intake, undefined);
+		result.privateExecutionBoundary = await page.evaluate(async (workspace) => {
+			const response = await fetch("/plugins-api/data-space/automation", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					action: "prepare-private",
+					engine: "ui",
+					mode: "record",
+					workspace,
+					systemId: "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+					envId: "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+					targetUrl: "http://192.168.90.224:8238/pms/OperationContract",
+					privateBindings: [{ parameterKey: "token", storageKey: "token" }],
+				}),
+			});
+			const body = await response.json();
+			return {
+				httpStatus: response.status,
+				installedPrivateRecordingRejected: body.ok === false && String(body.error).includes("私密浏览器准备未就绪"),
+			};
+		}, repo);
+		assert.equal(result.privateExecutionBoundary.httpStatus, 400);
+		assert.equal(result.privateExecutionBoundary.installedPrivateRecordingRejected, true);
+	}
 	if (!intake && result.status === "selected-desktop-native-connection-verified" && result.nativeState.cases === 3) {
 		const close = page.locator(".setup-modal .modal-close");
 		if (await close.isVisible()) await close.click();
