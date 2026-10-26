@@ -156,6 +156,26 @@ describe("EC01 contracts and immutable store", () => {
 		expect(data.redaction).toEqual([]);
 		expect(r.redacted).toBe(false);
 	});
+	it.each([false, true])("validates changed redaction metadata before publication (packed=%s)", (packed) => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const redaction = Array.from({ length: 1000 }, (_, i) => `prior-${i}`);
+		const commit = (content: string, requestId: string) => {
+			const input = { kind: "evidence", requestId, data: { ...f.evidence.data, content, redaction } };
+			return packed ? store.writeEvidenceBatch(ctx, [input])[0] : store.write(ctx, input);
+		};
+		const unchanged = commit("中文😀 ordinary output", "unchanged-valid");
+		expect(unchanged.redacted).toBe(false);
+		expect(unchanged.data.redaction).toEqual(redaction);
+		expect(store.readBlob(unchanged)).toBe("中文😀 ordinary output");
+		const before = store.list(ctx, { kind: "evidence" });
+		// Raw data is valid, but appending credentials-v1 would exceed the schema cap.
+		expect(() => commit("Bearer synthetic-secret", "changed-invalid")).toThrow(/Invalid evidence/);
+		expect(store.lookupRequest(ctx, "changed-invalid")).toBeUndefined();
+		expect(store.list(ctx, { kind: "evidence" })).toEqual(before);
+		expect(redaction).toHaveLength(1000);
+	});
 	it("keeps exact UTF-8 blob sizes after redaction for direct and packed evidence", () => {
 		const store = open(),
 			ctx = context(),

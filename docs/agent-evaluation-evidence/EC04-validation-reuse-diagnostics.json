@@ -1,0 +1,434 @@
+{
+	"scope": "EC04 current collection CPU attribution and rejected unchanged-input validation-reuse trial; production remains0.4.29",
+	"timestamp": "2026-10-26T03:43:39.960599+00:00",
+	"baselineCommit": "1ba31ed49f11e5d141198d01b260bfeb3cd14b97",
+	"pluginVersion": "0.4.29",
+	"productChanges": false,
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/index.json",
+		"bytes": 9291,
+		"sha256": "d0be340bb6286ed1fc9b74e0bbe472a7ea1d6f0c71721bfaf8f511d1c56fc420"
+	},
+	"archiveFiles": 58,
+	"sampling": {
+		"scope": "Single isolated enabled worker each parallel/long; original production and frozen worker. Inspector100us requested interval, actual intervals differ. Only samples containing original collect stack admitted; profiler post startup, stackless GC and wrapper-only samples excluded. Sampling is approximate attribution, not formal CPU time, GC exclusion does not prove GC free. Inclusive timings overlap.",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/summary-final.json",
+			"bytes": 34708,
+			"sha256": "edf1eedc0e9089637412874486b6022838b50959635c5ebb320e9ac419d9dcc9"
+		},
+		"workers": {
+			"parallel": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/parallel.json",
+				"bytes": 105434,
+				"sha256": "141d17f6bf3e9ffd64b1614c659359a3aec58f84ca49fa413bb57aa531f58c42"
+			},
+			"long": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/long.json",
+				"bytes": 127028,
+				"sha256": "6b29471d257765458e5fad1826809bd78c4dcb02a865112f207d8e5ba8ad14c3"
+			}
+		},
+		"summary": {
+			"parallel": {
+				"collectWallMs": 115.52295799999996,
+				"admittedCollectStackMs": 110.957,
+				"excludedSelfMs": [
+					["post node:inspector:110", 25.958],
+					["(garbage collector) :0", 3.9179999999999997],
+					[
+						"EvidenceCollector.collect file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/scratch/ec04-collect-cpu/worker.mjs:11",
+						0.7080000000000001
+					]
+				],
+				"topSelfMs": [
+					["fsync :0", 27.542],
+					[
+						"append file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/schema.mjs:35",
+						12.501
+					],
+					[
+						" file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/schema.mjs:47",
+						4.834
+					],
+					[
+						"#prepareWrite file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs:488",
+						4.168
+					],
+					[
+						"canonical file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/schema.mjs:31",
+						3.541
+					],
+					[
+						"digest file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/schema.mjs:62",
+						3.167
+					],
+					["existsSync :0", 2.9579999999999997],
+					["check_0 :3", 2.916],
+					["writeFileUtf8 :0", 2.75],
+					[
+						"get file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs:288",
+						2.54
+					],
+					["Hash :0", 2.4589999999999996],
+					[
+						"remember file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/collect.mjs:113",
+						1.999
+					],
+					["structuredClone node:internal/worker/js_transferable:112", 1.917],
+					[
+						"boundedCopy file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/dist/server/agent/evaluation-evidence.js:29",
+						1.7089999999999999
+					],
+					["update :0", 1.458]
+				],
+				"topInclusiveMs": [
+					[
+						"EvidenceCollector.collect file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/scratch/ec04-collect-cpu/worker.mjs:11",
+						110.95700000000001
+					],
+					["(root) :0", 110.95700000000001],
+					[
+						"collect file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/collect.mjs:57",
+						110.95700000000001
+					],
+					[
+						"collectScope file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/collect.mjs:185",
+						74.66500000000002
+					],
+					[
+						"writeEvidenceBatch file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs:733",
+						72.33200000000002
+					],
+					[
+						"rememberPage file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/collect.mjs:136",
+						67.24900000000004
+					],
+					[
+						"flush file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/collect.mjs:144",
+						61.41600000000004
+					],
+					[
+						"publishFile file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/durable.mjs:5",
+						32.291000000000004
+					],
+					[
+						"#prepareWrite file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs:488",
+						32.29000000000003
+					],
+					["fsyncSync node:fs:1295", 27.542],
+					["fsync :0", 27.542],
+					[
+						"append file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/schema.mjs:35",
+						17.335
+					],
+					[
+						"get file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs:288",
+						16.791999999999998
+					],
+					[
+						" file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/schema.mjs:47",
+						13.959999999999999
+					],
+					[
+						"getMany file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs:352",
+						13.625
+					]
+				]
+			},
+			"long": {
+				"collectWallMs": 502.906375,
+				"admittedCollectStackMs": 493.7509999999998,
+				"excludedSelfMs": [
+					["post node:inspector:110", 31.417],
+					["(garbage collector) :0", 8.666],
+					[
+						"EvidenceCollector.collect file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/scratch/ec04-collect-cpu/worker.mjs:11",
+						0.625
+					]
+				],
+				"topSelfMs": [
+					[" :0", 100.66400000000002],
+					["fsync :0", 70.417],
+					[
+						"append file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/schema.mjs:35",
+						60.44900000000001
+					],
+					[
+						"sourceItem file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/dist/server/agent/evaluation-evidence.js:129",
+						52.58600000000005
+					],
+					["update node:internal/crypto/hash:107", 43.70400000000003],
+					["update :0", 36.16900000000004],
+					["RegExp: [\"\\\\\\u0000-\\u001f] :0", 21.254000000000012],
+					[
+						"collectScope file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/collect.mjs:185",
+						11.043
+					],
+					[
+						"pairGaps file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/collect.mjs:27",
+						10.874
+					],
+					[
+						"redactText file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/dist/server/agent/evaluation-evidence.js:23",
+						7.709999999999999
+					],
+					["writeFileUtf8 :0", 6.582],
+					[
+						"redact file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/schema.mjs:357",
+						6.501999999999999
+					],
+					[
+						"canonical file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/schema.mjs:31",
+						5.917
+					],
+					["slice node:buffer:636", 4.747999999999999],
+					["read :0", 3.919]
+				],
+				"topInclusiveMs": [
+					[
+						"EvidenceCollector.collect file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/scratch/ec04-collect-cpu/worker.mjs:11",
+						493.7509999999937
+					],
+					["(root) :0", 493.7509999999937],
+					[
+						"collect file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/collect.mjs:57",
+						493.7509999999937
+					],
+					[
+						"collectScope file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/collect.mjs:185",
+						432.24999999999505
+					],
+					[
+						"rememberPage file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/collect.mjs:136",
+						289.6659999999996
+					],
+					[
+						"writeEvidenceBatch file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs:733",
+						264.958
+					],
+					[
+						"flush file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/collect.mjs:144",
+						250.16500000000002
+					],
+					[
+						"#prepareWrite file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/store.mjs:488",
+						178.33200000000002
+					],
+					[
+						"readEvaluationEvidence file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-performance-test.mjs:84",
+						131.54100000000003
+					],
+					[
+						"collect file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/plugins/agent-evaluation/adapters/pi.mjs:12",
+						131.54100000000003
+					],
+					[
+						"readEvaluationEvidence file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/dist/server/agent/evaluation-evidence.js:164",
+						131.25000000000003
+					],
+					[
+						"sourceItem file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/dist/server/agent/evaluation-evidence.js:129",
+						115.62400000000002
+					],
+					["byteLength node:buffer:771", 100.83000000000001],
+					[" :0", 100.66400000000002],
+					["update node:internal/crypto/hash:107", 80.03900000000003]
+				]
+			}
+		}
+	},
+	"formals": {
+		"scope": "Same host baseline then candidate sequentially, each30fresh workers（三负载×五off/on pairs）; frozen inputs/thresholds and fsync/format untouched, no owned desktop/unit jobs run concurrently. Evidence counts40/400/200, empty gaps and per-run disk budgets checked. No repeat to seek pass. Five repeats do not prove statistical significance.",
+		"baseline": {
+			"status": "FAIL",
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 45.81458299999997,
+					"wallLimit": 50,
+					"cpuDelta": 35.042,
+					"cpuLimit": 50,
+					"rssDeltas": [6225920, 491520, 1900544, 4898816, 2211840],
+					"pass": true
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 105.42208400000001,
+					"wallLimit": 50,
+					"cpuDelta": 120.63300000000001,
+					"cpuLimit": 50,
+					"rssDeltas": [25919488, 23101440, 24068096, 25640960, 28147712],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 471.83574999999996,
+					"wallLimit": 50,
+					"cpuDelta": 432.649,
+					"cpuLimit": 50,
+					"rssDeltas": [62881792, 63504384, 62734336, 67354624, 64700416],
+					"pass": false
+				}
+			],
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/baseline-formal-result.json",
+				"bytes": 8636,
+				"sha256": "e63c02e3a64e02b23d60e5b288aa3094babdaea65e1409ad4f300339a31eefdb"
+			}
+		},
+		"candidate": {
+			"status": "FAIL",
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 46.21529199999998,
+					"wallLimit": 50,
+					"cpuDelta": 36.55,
+					"cpuLimit": 50,
+					"rssDeltas": [5570560, 2162688, 1310720, 2883584, 2162688],
+					"pass": true
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 105.82654100000002,
+					"wallLimit": 50,
+					"cpuDelta": 120.375,
+					"cpuLimit": 50,
+					"rssDeltas": [25001984, 27869184, 25608192, 27688960, 25985024],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 498.54374999999993,
+					"wallLimit": 50,
+					"cpuDelta": 431.573,
+					"cpuLimit": 50,
+					"rssDeltas": [64880640, 66289664, 64274432, 62406656, 64651264],
+					"pass": false
+				}
+			],
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/candidate-formal-result.json",
+				"bytes": 8614,
+				"sha256": "5bbc111371ffcc1974d4862392de097cad9fa377ca6fcc75198928d3bdd6a10f"
+			}
+		},
+		"baselineRssLimitExceeded": {
+			"workload": "long",
+			"round": 3,
+			"bytes": 67354624,
+			"limit": 67108864,
+			"mib": 64.234375
+		},
+		"conclusion": "Serial stays below50ms in both; parallel essentially unchanged; long wall worsens, CPU difference small. Overall FAIL; no demonstrated delivery benefit."
+	},
+	"candidate": {
+		"adopted": false,
+		"description": "Reuse initial validate return value if redact preserves object identity; validate changed sanitized data including appended metadata as before. No write/fsync, limit, format or digest alteration. Candidate tested then original store restored byte-exactly. No desktop deployment or plugin version bump.",
+		"patch": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/candidate.patch",
+			"bytes": 1128,
+			"sha256": "3ac3feeb574d7bb3cd5fe95344f216a95a4f9882c0a3930b6d263681adb12db8"
+		},
+		"source": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/candidate-store.mjs",
+			"bytes": 38279,
+			"sha256": "d211a1605a315bdd9e9fc9fc610efabafb9b6ac702392ab85781a1cf1c0c4846"
+		},
+		"baselineSource": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/baseline-store.mjs",
+			"bytes": 38142,
+			"sha256": "8048d0088d517689e1279457d27c540b34e1f25665c0bf3b934a14828c2de505"
+		},
+		"measuredSource": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/measured-source.json",
+			"bytes": 1157,
+			"sha256": "c512caff0198db25f8ebdfecba1e9fc5d304d3a2d5dc521e0459d0a493be63e6"
+		},
+		"finalState": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/final-state.json",
+			"bytes": 519,
+			"sha256": "5238c0285c8b4e0c528f02ef75c87e78fcec79aca35a4910d8d5e43e0aebb705"
+		}
+	},
+	"verification": {
+		"candidateStore": {
+			"status": "PASS",
+			"tests": 55,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/candidate-store-unit.log",
+				"bytes": 207,
+				"sha256": "767216a6e151dc82bfad2c6006622af6ac2ee345b97598f2cd13a602210c20be"
+			}
+		},
+		"finalProductUnit": {
+			"status": "PASS",
+			"files": 18,
+			"tests": 303,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/unit-final.log",
+				"bytes": 229,
+				"sha256": "4c78a74ae9bc69d7b73e57979801136a7ef053f8bd5b7b34a8d66ba7fb9d45e6"
+			}
+		},
+		"typecheck": {
+			"status": "PASS",
+			"configs": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"lint": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS structural/type-only/v33; historical tag heuristic SKIP",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			}
+		},
+		"size": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			}
+		},
+		"clean": {
+			"scope": "Preview only,0deletions",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-validation-reuse/files/clean-delivery.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			}
+		},
+		"newRegression": "Direct/packed unchanged1000-item redaction metadata remains valid with Unicode content; adding credentials-v1 after actual redaction exceeds1000 and is rejected before record/receipt publication, caller array unchanged. Passes both candidate and final original implementation."
+	},
+	"nextAction": "Investigate reducing repeated source projection/canonical serialization/encoding and hashing passes while preserving exact canonical envelopes, input/clean validation, source trust, bounded memory, authorization and durable publication. This evidence does not justify reducing fsync, weakening digests, relaxing thresholds or declaring impossibility. Remaining desktop acceptance work is independent.",
+	"notExecuted": [
+		"Actual Electron, report performance, full identity/rollback/scale/rule-upgrade matrices not rerun because product bytes restored; previous evidence not relabeled as current execution",
+		"Real CLI/model and provider billing deferred by user; no personal credentials/config read"
+	],
+	"calls": {
+		"realModels": 0,
+		"realCli": 0,
+		"business": 0
+	},
+	"remaining": "AC39 FAIL; EC04/M1 incomplete. EC06 containment unresolved, EC07/09 held. Overall goal active."
+}
