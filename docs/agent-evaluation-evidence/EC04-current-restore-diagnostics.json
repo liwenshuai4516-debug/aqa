@@ -1,0 +1,186 @@
+{
+	"scope": "EC04 AC10/AC40 actual0.4.30native Electron plugin-only rollback and complete stopped same-path userData restore; offline validation only",
+	"timestamp": "2026-10-26T04:29:48.882021+00:00",
+	"baselineCommit": "1ffb95e38572ba4976002364169e03b23790ffca",
+	"pluginVersion": "0.4.30",
+	"productChanges": false,
+	"testChanges": false,
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-current-restore/index.json",
+		"bytes": 63998,
+		"sha256": "5c7e1410afd66da2ebb3779e3659b18a9bc8ca6c213e04f2b857bb1e6eb1a462"
+	},
+	"archiveFiles": 289,
+	"desktop": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-current-restore/files/desktop/result.json",
+			"bytes": 30515,
+			"sha256": "126ef6c25de627810873a52db9342ee9096678bfe074dd83aa603d1c3554d2f0"
+		},
+		"rollback": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-current-restore/files/rollback/result.json",
+			"bytes": 22569,
+			"sha256": "b59c962b704ab9dda699aa68946d3e1068d343edc3496e19812a44dfdada7170"
+		},
+		"scope": "macOS arm64 actual Electron, plugin-only 0.4.30 -> 0.4.19 revert; explicit unsupported 0.4.18 and complete same-path userData restore",
+		"actualModelCalls": 0,
+		"actualCliCalls": 0
+	},
+	"backup": {
+		"path": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-R2XHWG/rollback/full-userData-backup",
+		"entries": 338,
+		"manifestSha256": "14e95d6a5ea7ffc012a0d3b096f860f1e91a10f6a86b6014969e311e7109117d",
+		"exactCopy": true,
+		"scope": "Actual entire stopped isolated userData copy verified before restore:338entries,files/modes/symlink targets exact,SDK history/configuration,native identity,plugin and Chromium state. Own dependency symlink preserved without traversal. Original complete backup remains at test output path; external evidence archive intentionally stores manifests/selected source and data,excluding configuration/browser/dependency bodies,so it is not itself a complete userData restore package.",
+		"manifest": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-current-restore/files/rollback/backup-manifest.json",
+			"bytes": 68219,
+			"sha256": "45e0627ad50cf5aa13ee870c98eaa9ce8585f5afb4958aec9ae046884d08d6df"
+		}
+	},
+	"rollback": {
+		"revert": {
+			"command": ["git", "revert", "--no-commit", "3fe28c5fc7268ce6c15bdf1c70dd286f644be5d4"],
+			"isolatedClone": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-R2XHWG/rollback/revert-code",
+			"expectedSource": "e575285",
+			"exactPluginTree": true,
+			"hostSourceUnchanged": true
+		},
+		"phases": [
+			{
+				"version": "0.4.19",
+				"status": "PASS",
+				"scope": "Original Pi report, separate human review and sealed file readable; offline records/private package retained exactly for re-upgrade; old version has no upload/original UI"
+			},
+			{
+				"version": "0.4.30",
+				"status": "PASS",
+				"scope": "Exact complete userData restore before launch; Pi report/review/sealed file and human-confirmed offline original reopen without new evidence/attempt/snapshot/report/review"
+			},
+			{
+				"version": "0.4.18",
+				"status": "EXPECTED_REJECTION",
+				"rejection": "STORE_CORRUPT · Recovery issues require explicit repair; original files preserved",
+				"scope": "Supported Pi history remains readable; unknown offline records block a new diagnosis with STORE_CORRUPT, no rewrite/delete/replay"
+			},
+			{
+				"version": "0.4.30",
+				"status": "PASS",
+				"scope": "Second full restore returns original identity, Pi report/review/sealed file and original offline bytes; all durable evaluation and seeded SDK files unchanged"
+			}
+		],
+		"preserved": {
+			"immutableStoreEntries": 85,
+			"identitySha256": "efa3be46bb991435afa5125ddcdaece991c8e9b119a23ba6fea58f8d2fcb794e",
+			"seededSessionSha256": "7c95d411c21faeff911ece0ad919f21c904fb12498ddded394ee33d49a218ed4"
+		},
+		"method": "Historical3fe28c5reverted without commit in a shared isolated clone; resulting plugin tree exactly equals e575285(0.4.19). Actual host unchanged during plugin replacements. Historic host-boundary diff e575285..3fe28c5 empty,as asserted in fixture.0.4.18sourced from12e0128. No checkout reset or personal installation modification.",
+		"acceptance": [
+			"0.4.19opens current original Pi report,original Pass finding,independent human review and exact sealed artifact;offline package kept unchanged for re-upgrade",
+			"Full stopped userData restore to identical original path equals all338backup entries before launch;0.4.30opens original Pi/review/sealed artifact and exact human-confirmed private ATIF original",
+			"0.4.18can read supported Pi history but rejects new diagnosis STORE_CORRUPT for unsupported offline records;no report falsely produced,no rewrite/delete or replay",
+			"Second entire stopped userData restore and0.4.30native restart recover original identity/Pi report/review/sealed artifact/offline original;all durable evaluation and seeded SDK bytes unchanged",
+			"Final fresh0.4.30native process opens original report again without re-running trajectory"
+		]
+	},
+	"independentVerification": {
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-current-restore/files/checks/independent-verification.json",
+			"bytes": 9553,
+			"sha256": "7f90b4c1e6a35a74a269ed0d8610677d8d333797b3fb06c1a6a63812ea907432"
+		},
+		"method": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-current-restore/files/checks/verify.mjs",
+			"bytes": 2759,
+			"sha256": "b3db32d99bb808abdd1b20e56dd9971263b30e8bf48a002cbf5a509b1c68e910"
+		},
+		"backupEntries": 338,
+		"immutableStoreEntries": 85,
+		"registeredFiles": 29,
+		"scope": "Independent post-run exact backup manifest, final immutable store, native identity and original seeded SDK file checks; current29registered plugin files match repository. No symlink traversal into dependencies.",
+		"visualInspection": "Actual restored-private-original screenshot inspected:plain-text unredacted synthetic fixture,source labeling and paged navigation visible;embedded markup not rendered."
+	},
+	"verification": {
+		"unit": {
+			"status": "PASS",
+			"files": 4,
+			"tests": 122,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-current-restore/files/checks/unit.log",
+				"bytes": 211,
+				"sha256": "34203154318f17bce57a187380e917e30a9f213da8631153d35c39e9645b6232"
+			}
+		},
+		"typecheck": {
+			"status": "PASS",
+			"configs": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-current-restore/files/checks/typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"lint": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-current-restore/files/checks/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS structural/type-only/v33; historical tag heuristic SKIP",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-current-restore/files/checks/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			}
+		},
+		"size": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-current-restore/files/checks/size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			}
+		},
+		"clean-delivery": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-current-restore/files/checks/clean-delivery.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			},
+			"scope": "Preview only,zero deletions."
+		}
+	},
+	"failedAttempts": [
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-current-restore/files/checks/verification-initial-failed.log",
+				"bytes": 882,
+				"sha256": "be148a432c709c31f7f3c14fff59c592ac2b47e335ab582a2ae0c20527470f78"
+			},
+			"scope": "Post-run independent script initially used incomplete seeded SDK filename and failed ENOENT;corrected to actual fixture timestamped filename,then all manifest/source/session checks passed. No desktop/product failure,source or assertion relaxation."
+		}
+	],
+	"notExecuted": [
+		"Full signed host installer rollback,other platforms,arbitrary old/current combinations or restore to a different path",
+		"Physical ENOSPC,disk failure,power loss,forced crash or stale-writer-lock repair",
+		"Full role/tool/rule-upgrade/cost/scale/capacity matrices not rerun this turn;previous evidence retains its original scope",
+		"Formal performance not rerun:latest0.4.30AC39stillFAIL",
+		"EC06verified containment unresolved,downstream execution remains gated;realCLI/models deferred by user"
+	],
+	"actualCalls": {
+		"realModels": 0,
+		"cli": 0,
+		"businessRunner": 0
+	},
+	"remaining": "Current0.4.30whole-userData restore/compatible plugin revert subsets now proved on macOSarm64. AC39 FAIL and other EC04 subsets persist,EC04/M1/overall goal incomplete. EC06 isolation gate and real CLI/model deferral remain."
+}
