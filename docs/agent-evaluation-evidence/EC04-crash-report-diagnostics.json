@@ -1,0 +1,355 @@
+{
+	"scope": "EC04/AC03/AC19 actual native partial-report publication crash and durable unknown job recovery",
+	"timestamp": "2026-10-26T05:32:40.245580+00:00",
+	"baselineCommit": "1bd1c83cf9276e44dac38c22a657801272917e8b",
+	"pluginVersion": "0.4.31",
+	"productChanges": false,
+	"status": "PASS",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-report/index.json",
+		"bytes": 163260,
+		"sha256": "0a9814ae2fef24b238addb6fe2bb05508c81485cddf9de8b9a4bbe0dfab1b7bd"
+	},
+	"archiveFiles": 679,
+	"platform": "macOS arm64 actual Electron with isolated dataDir",
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"actualToolCalls": 0,
+	"cases": {
+		"report": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-report/files/report/result.json",
+				"bytes": 12089,
+				"sha256": "9d3eb2ddc3a22444d99efb7c4d5d333313b28d9314fb358eb551bfcddb8ec085"
+			},
+			"crashRaw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-report/files/report/crash-store/result.json",
+				"bytes": 5120,
+				"sha256": "b57bf5b5956f9bbd253d4e960d904f7892a865f4e03eb3ca24adfeb7f86a075c"
+			},
+			"checks": {
+				"status": "PASS",
+				"nativeStops": [
+					{
+						"name": "baseline",
+						"pid": 52705,
+						"exitCode": 0,
+						"signalCode": null
+					},
+					{
+						"name": "crashed-native-shell",
+						"pid": 52947,
+						"exitCode": null,
+						"signalCode": "SIGKILL"
+					},
+					{
+						"name": "crashed-and-native-restarted",
+						"pid": 53210,
+						"exitCode": 0,
+						"signalCode": null
+					},
+					{
+						"name": "restored-current",
+						"pid": 53454,
+						"exitCode": 0,
+						"signalCode": null
+					}
+				],
+				"mode": "partial-report",
+				"actualModelCalls": 0,
+				"actualCliCalls": 0,
+				"actualToolCalls": 0,
+				"provenance": "Test-only isolated durable.mjs injection syncs23 actual report JSON bytes and exits actual sidecar before publication; not physical power loss/ENOSPC. Original store/service/collector/engine unchanged.",
+				"readOnlyRecovery": {
+					"issues": [
+						{
+							"code": "EVIDENCE_GAP",
+							"file": "2070ff36-cfa1-4c80-bf0b-bad50963ba58.1.json.tmp-9d340185-3fd4-4770-8fe3-22e0344269a0"
+						}
+					],
+					"records": 85,
+					"partialReportPublished": false,
+					"jobReceiptRef": {
+						"kind": "evidence",
+						"id": "6d7981fd-1009-48ad-bcc7-8d2a95ebcc12",
+						"revision": 1
+					},
+					"jobReceiptDigest": "d59eda6f7bc599f87cf2160d46294da49d6f02bd2c614faf3f6646342c36cf4f",
+					"originalReportExact": true
+				},
+				"interruptedJob": {
+					"jobId": "6d7981fd-1009-48ad-bcc7-8d2a95ebcc12",
+					"state": "unknown",
+					"probes": [
+						{
+							"action": "status",
+							"response": {
+								"requestId": "fafe23d2-2a1b-4b71-ac28-9ed80eababed",
+								"ok": true,
+								"result": {
+									"jobId": "6d7981fd-1009-48ad-bcc7-8d2a95ebcc12",
+									"state": "unknown",
+									"error": "Interrupted scoring is not automatically replayed"
+								}
+							}
+						},
+						{
+							"action": "cancel",
+							"response": {
+								"requestId": "7ee6e8b5-fa18-41c7-b3be-2b6db4bb7aeb",
+								"ok": false,
+								"error": {
+									"code": "EXECUTION_UNKNOWN",
+									"stage": "cancel",
+									"retryable": false,
+									"missingConditions": [],
+									"message": "No controllable scoring job in this process"
+								}
+							}
+						},
+						{
+							"action": "evaluate",
+							"response": {
+								"requestId": "13505229-31e3-488d-93b8-a428b6a00b85",
+								"ok": false,
+								"error": {
+									"code": "EXECUTION_UNKNOWN",
+									"stage": "evaluate",
+									"retryable": false,
+									"missingConditions": [],
+									"message": "Previous scoring was interrupted; inspect it or explicitly re-evaluate with a new request ID"
+								}
+							}
+						},
+						{
+							"action": "status",
+							"response": {
+								"requestId": "7f0586ef-5afc-49aa-a39b-652c44c0a06d",
+								"ok": true,
+								"result": {
+									"jobId": "6d7981fd-1009-48ad-bcc7-8d2a95ebcc12",
+									"state": "unknown",
+									"error": "Interrupted scoring is not automatically replayed"
+								}
+							}
+						}
+					],
+					"receiptUnchanged": true,
+					"originalRequestNotRerun": true,
+					"newAttemptOrSnapshot": false
+				},
+				"crash": {
+					"pid": 52951,
+					"file": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-7biwgv/desktop/data/agent-evaluation/evaluations/2070ff36-cfa1-4c80-bf0b-bad50963ba58.1.json",
+					"temp": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-7biwgv/desktop/data/agent-evaluation/evaluations/2070ff36-cfa1-4c80-bf0b-bad50963ba58.1.json.tmp-9d340185-3fd4-4770-8fe3-22e0344269a0",
+					"partialBytes": 23,
+					"code": 83,
+					"stage": "partial-report-json-synced",
+					"tempSha256": "5a074635298e278c84bb92481f65570a27a528717a852e136f3446eb92c4528e",
+					"tempBytes": 23,
+					"sidecarPid": 52951,
+					"originalRequest": {
+						"offset": 53,
+						"requestId": "13505229-31e3-488d-93b8-a428b6a00b85"
+					},
+					"originalRequestReplayed": false,
+					"originalRequestCheckedForReplay": true,
+					"writerLockRetained": true,
+					"writeRejection": {
+						"code": "STORE_LOCKED",
+						"stage": "list",
+						"retryable": false,
+						"missingConditions": [],
+						"message": "Writer lock exists or cannot be created; do not reclaim by PID alone"
+					}
+				},
+				"backup": {
+					"path": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-7biwgv/crash-store/clean-store-backup",
+					"recoverySource": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-7biwgv/crash-store/confirmed-recovery/agent-evaluation",
+					"recoveryMode": "explicit audited copy of confirmed records excluding exact owned dead lock and incomplete report; originals retained",
+					"recordsFiles": 77,
+					"restoredFiles": 81,
+					"exactBeforeLaunch": true,
+					"exactAfterRead": true,
+					"retainedCrashStore": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-7biwgv/crash-store/retained-crashed-store"
+				},
+				"restoredPluginFiles": 29,
+				"sourceBytesUnchanged": true,
+				"sourceOriginalPrefixUnchanged": true,
+				"originalReportBytesUnchanged": true
+			}
+		},
+		"evidence": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-report/files/evidence/result.json",
+				"bytes": 9899,
+				"sha256": "f8db01dc93c26271844a6974fb4819f25a57eba04c3aa5b1b6bb85198fcf3ee1"
+			},
+			"crashRaw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-report/files/evidence/crash-store/result.json",
+				"bytes": 3071,
+				"sha256": "ba0372138b7127547de90f6771f6cf877502a6d7b61fe377e778f3165cbb097b"
+			},
+			"checks": {
+				"status": "PASS",
+				"nativeStops": [
+					{
+						"name": "baseline",
+						"pid": 54641,
+						"exitCode": 0,
+						"signalCode": null
+					},
+					{
+						"name": "crashed-native-shell",
+						"pid": 54880,
+						"exitCode": null,
+						"signalCode": "SIGKILL"
+					},
+					{
+						"name": "crashed-and-native-restarted",
+						"pid": 55119,
+						"exitCode": 0,
+						"signalCode": null
+					},
+					{
+						"name": "restored-current",
+						"pid": 55356,
+						"exitCode": 0,
+						"signalCode": null
+					}
+				],
+				"mode": "partial-evidence-manifest",
+				"actualModelCalls": 0,
+				"actualCliCalls": 0,
+				"actualToolCalls": 0,
+				"provenance": "Test-only injection in isolated durable.mjs exits actual sidecar after real body sync and partial manifest sync; not power-loss or physical ENOSPC simulation. Original store/service/collector/engine unchanged.",
+				"readOnlyRecovery": {
+					"issues": [
+						{
+							"code": "EVIDENCE_GAP",
+							"file": "batch-c8122506-4834-44e7-9904-dca8f19aea06.pack.tmp-bb89dce2-76b2-4a77-aee4-552bfa365083"
+						}
+					],
+					"records": 86,
+					"checkpointPublished": false,
+					"partialEvidencePublished": false,
+					"originalReportExact": true
+				},
+				"crash": {
+					"pid": 54883,
+					"file": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-DpfYaN/desktop/data/agent-evaluation/evidence/batch-c8122506-4834-44e7-9904-dca8f19aea06.pack",
+					"temp": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-DpfYaN/desktop/data/agent-evaluation/evidence/batch-c8122506-4834-44e7-9904-dca8f19aea06.pack.tmp-bb89dce2-76b2-4a77-aee4-552bfa365083",
+					"partialBytes": 23,
+					"code": 83,
+					"stage": "body-and-partial-manifest-synced",
+					"tempSha256": "bca65bb3af642de3e25de7d8417e9a0a0bdac000208ff91eda5c626939fdcfb1",
+					"tempBytes": 683,
+					"bodyLength": 644,
+					"sidecarPid": 54883,
+					"originalRequest": {
+						"offset": 56,
+						"requestId": "5aa4aa8b-21e0-4baa-95b5-95aae6bf9084"
+					},
+					"originalRequestReplayed": false,
+					"originalRequestCheckedForReplay": false,
+					"writerLockRetained": true,
+					"writeRejection": {
+						"code": "STORE_LOCKED",
+						"stage": "list",
+						"retryable": false,
+						"missingConditions": [],
+						"message": "Writer lock exists or cannot be created; do not reclaim by PID alone"
+					}
+				},
+				"backup": {
+					"path": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-DpfYaN/crash-store/clean-store-backup",
+					"recoverySource": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-DpfYaN/crash-store/clean-store-backup",
+					"recoveryMode": "exact clean pre-crash backup",
+					"recordsFiles": 77,
+					"restoredFiles": 77,
+					"exactBeforeLaunch": true,
+					"exactAfterRead": true,
+					"retainedCrashStore": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-DpfYaN/crash-store/retained-crashed-store"
+				},
+				"restoredPluginFiles": 29,
+				"sourceBytesUnchanged": true,
+				"sourceOriginalPrefixUnchanged": true,
+				"originalReportBytesUnchanged": true
+			}
+		}
+	},
+	"independentVerification": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-report/files/checks/independent-verification.json",
+		"bytes": 495,
+		"sha256": "3b2714b6e794e961afc0f00e455d50224f0dcaf396e7b9e6b20515d2ec52f211"
+	},
+	"screenshots": {
+		"writer-lock-retained": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-report/files/report/crash-store/writer-lock-retained.png",
+			"bytes": 147026,
+			"sha256": "87779e33c5761f2707e71761c5823beff90dc9632c8ca3aadaaecf46cccd65de"
+		},
+		"backup-restored-original-report": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-report/files/report/crash-store/backup-restored-original-report.png",
+			"bytes": 206652,
+			"sha256": "9a70ca6dbd54c08db437135593c54fc4944a5158342ce1d7f9ef7986126afa92"
+		}
+	},
+	"screenshotsInspected": true,
+	"recoveryScope": "Report case explicitly copies audited confirmed records excluding only exact owned dead writer.lock and incomplete report temp; complete crash originals retained. This is fixture recovery, not automatic lock reclaim, in-place repair or product recovery UI. Evidence case restores exact clean pre-crash backup. Native recovery dialog buttons not automated: only confirmed owned blocked shell killed after sidecar terminal, then normal native app explicitly relaunched. Unknown status verified via real service RPC; screenshots show lock rejection and original report, not unknown job card.",
+	"validation": {
+		"unit": {
+			"files": 4,
+			"tests": 134,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-report/files/checks/unit.log",
+				"bytes": 210,
+				"sha256": "2210d1638b11271de2ef73b8dfcb3998d4f766593f473d68a689b20bea47b713"
+			}
+		},
+		"typecheck": {
+			"configs": 5,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-report/files/checks/typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"checks": {
+			"lint": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-report/files/checks/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			"protocol": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-report/files/checks/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"size": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-report/files/checks/size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			},
+			"clean-delivery": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-report/files/checks/clean-delivery.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			}
+		},
+		"protocol": "structure/type-only/v33 PASS; historical tag heuristic SKIP",
+		"clean": "Preview only; zero deletions",
+		"desktop": "Both full native main flows, respective crash/recovery matrices and shared dev URL identity rejection PASS"
+	},
+	"notExecuted": [
+		"Physical ENOSPC/power loss",
+		"Unknown job card rendering",
+		"Native recovery dialog button automation",
+		"Other kill points and full acceptance matrices",
+		"Formal performance rerun",
+		"Real CLI/models deferred by user"
+	],
+	"remaining": "AC03 and AC19 subsets supplemented, neither whole item nor EC04/M1 complete. AC39 prior overall FAIL retained; EC06 containment and later gates unresolved."
+}

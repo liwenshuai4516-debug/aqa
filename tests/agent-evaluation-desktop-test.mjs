@@ -31,7 +31,9 @@ import { installCapacityFixture, verifyCapacity } from "./fixtures/agent-evaluat
 import { verifyTimingMatrix } from "./fixtures/agent-evaluation/timing-matrix.mjs";
 import { verifyUsageMatrix } from "./fixtures/agent-evaluation/usage-matrix.mjs";
 import { verifyCrashStore } from "./fixtures/agent-evaluation/crash-store.mjs";
-const crashStore = process.argv.includes("--crash-store");
+const reportCrash = process.argv.includes("--crash-report");
+const crashStore = process.argv.includes("--crash-store") || reportCrash;
+assert.ok(!(reportCrash && process.argv.includes("--crash-store")), "Run evidence and report crashes separately");
 assert.ok(
 	!crashStore ||
 		!process.argv.some((arg) =>
@@ -1185,13 +1187,29 @@ try {
 		);
 	}
 	if (crashStore) {
-		stage("actual sidecar partial-manifest exit and explicit backup recovery");
-		const recovered = await verifyCrashStore({ app, repo, output, dataDir, env, sessionPath, original, until });
+		stage(
+			reportCrash
+				? "actual sidecar partial-report exit and confirmed-record recovery"
+				: "actual sidecar partial-manifest exit and explicit backup recovery",
+		);
+		const recovered = await verifyCrashStore({
+			app,
+			repo,
+			output,
+			dataDir,
+			env,
+			sessionPath,
+			original,
+			until,
+			reportCrash,
+		});
 		app = recovered.app;
 		page = recovered.page;
 		result.crashStore = recovered.result;
 		result.checks.push(
-			"Actual sidecar exits after partial manifest, retains dead writer lock and damaged bytes, publishes no half evidence/checkpoint, and explicitly restores exact backup without task replay",
+			reportCrash
+				? "Actual sidecar exits during report JSON write; half report and lock retained, confirmed records recovered explicitly, interrupted job unknown and replay/cancel rejected, original report unchanged"
+				: "Actual sidecar exits after partial manifest, retains dead writer lock and damaged bytes, publishes no half evidence/checkpoint, and explicitly restores exact backup without task replay",
 		);
 	}
 	stage("development URL cannot acquire the native identity");

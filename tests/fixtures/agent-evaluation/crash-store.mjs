@@ -28,13 +28,23 @@ async function manifest(root) {
 	await scan(root);
 	return rows;
 }
-export async function verifyCrashStore({ app: initialApp, repo, output, dataDir, env, sessionPath, original, until }) {
+export async function verifyCrashStore({
+	app: initialApp,
+	repo,
+	output,
+	dataDir,
+	env,
+	sessionPath,
+	original,
+	until,
+	reportCrash = false,
+}) {
 	const directory = join(output, "crash-store");
 	await mkdir(directory);
 	const root = join(dataDir, "agent-evaluation"),
 		installed = join(dataDir, "plugins/agent-evaluation"),
 		control = join(directory, "armed"),
-		marker = join(directory, "partial-manifest.json");
+		marker = join(directory, reportCrash ? "partial-report.json" : "partial-manifest.json");
 	const originalPath = join(root, "evaluations", `${original.id}.1.json`),
 		originalBytes = await readFile(originalPath),
 		sourceBytes = await readFile(sessionPath);
@@ -142,11 +152,13 @@ export async function verifyCrashStore({ app: initialApp, repo, output, dataDir,
 	const result = {
 		status: "running",
 		nativeStops: [],
+		mode: reportCrash ? "partial-report" : "partial-evidence-manifest",
 		actualModelCalls: 0,
 		actualCliCalls: 0,
 		actualToolCalls: 0,
-		provenance:
-			"Test-only injection in isolated durable.mjs exits actual sidecar after real body sync and partial manifest sync; not power-loss or physical ENOSPC simulation. Original store/service/collector/engine unchanged.",
+		provenance: reportCrash
+			? "Test-only isolated durable.mjs injection syncs23 actual report JSON bytes and exits actual sidecar before publication; not physical power loss/ENOSPC. Original store/service/collector/engine unchanged."
+			: "Test-only injection in isolated durable.mjs exits actual sidecar after real body sync and partial manifest sync; not power-loss or physical ENOSPC simulation. Original store/service/collector/engine unchanged.",
 	};
 	try {
 		await stop("baseline");
@@ -172,7 +184,25 @@ if (existsSync(${JSON.stringify(control)})) {
  writeFileSync(${JSON.stringify(marker)}, JSON.stringify({pid:process.pid,file,temp,partialBytes:Buffer.byteLength(partial),code:83,stage:"body-and-partial-manifest-synced"}));
  process.exit(83);
 }`;
-		await writeFile(durable, originalDurable.replace(needle, injection));
+		let injected = originalDurable.replace(needle, injection);
+		if (reportCrash) {
+			const reportNeedle = "for (const chunk of Array.isArray(bytes) ? bytes : [bytes]) writeFileSync(fd, chunk);";
+			assert.equal(originalDurable.split(reportNeedle).length, 2);
+			injected = originalDurable.replace(
+				reportNeedle,
+				`
+// TEST ONLY: leave an actual synchronized incomplete report, with no final rename.
+if (dirname(file).endsWith("/evaluations") && existsSync(${JSON.stringify(control)})) {
+ const partial = bytes.slice(0,23);
+ writeFileSync(fd,partial); fsyncSync(fd);
+ writeFileSync(${JSON.stringify(marker)},JSON.stringify({pid:process.pid,file,temp,partialBytes:Buffer.byteLength(partial),code:83,stage:"partial-report-json-synced"}));
+ process.exit(83);
+}
+${reportNeedle}`,
+			);
+		}
+		await writeFile(durable, injected);
+
 		const tracked = execFileSync("git", ["-C", repo, "ls-files", "plugins/agent-evaluation"], { encoding: "utf8" })
 				.trim()
 				.split("\n"),
@@ -198,19 +228,25 @@ if (existsSync(${JSON.stringify(control)})) {
 		await launch();
 		const bound = await source();
 		await rpc("get", { ...bound, ref: ref(original) });
-		const contractRef = await rpc("createContract", {
-			...bound,
-			data: {
-				...contract.data,
-				objective: "Synthetic partial-manifest crash; no task execution",
-				provenance: "Owned offline crash fixture",
-			},
-		});
-		const attemptRef = await rpc("createAttempt", { ...bound, ref: contractRef });
-		const requestId = crypto.randomUUID(),
+		const requestId = crypto.randomUUID();
+		let attemptRef, checkpointRequestId, pending;
+		if (reportCrash) {
+			await writeFile(control, "Only report JSON publication is armed\n");
+			pending = await send("evaluate", { ...bound, ref: ref(original) }, requestId);
+		} else {
+			const contractRef = await rpc("createContract", {
+				...bound,
+				data: {
+					...contract.data,
+					objective: "Synthetic partial-manifest crash; no task execution",
+					provenance: "Owned offline crash fixture",
+				},
+			});
+			attemptRef = await rpc("createAttempt", { ...bound, ref: contractRef });
 			checkpointRequestId = `checkpoint-${digest([attemptRef.id, requestId])}`;
-		await writeFile(control, "Only the next actual pack publication is armed\n");
-		const pending = await send("collect", { ...bound, ref: attemptRef }, requestId);
+			await writeFile(control, "Only the next actual pack publication is armed\n");
+			pending = await send("collect", { ...bound, ref: attemptRef }, requestId);
+		}
 		let crashed;
 		await until(async () => {
 			try {
@@ -223,14 +259,19 @@ if (existsSync(${JSON.stringify(control)})) {
 		});
 		await until(() => app.getLogs().includes("server 提前退出（code=83"));
 		assert.throws(() => process.kill(crashed.pid, 0), { code: "ESRCH" });
-		assert.equal(crashed.stage, "body-and-partial-manifest-synced");
+		assert.equal(crashed.stage, reportCrash ? "partial-report-json-synced" : "body-and-partial-manifest-synced");
 		assert.equal(crashed.partialBytes, 23);
 		const crashBytes = await readFile(crashed.temp);
-		assert.ok(crashBytes.length > 23);
 		await assert.rejects(lstat(crashed.file), { code: "ENOENT" });
-		const bodyLength = Number(crashBytes.readBigUInt64LE(8));
-		assert.equal(crashBytes.subarray(0, 8).toString(), "AEVPACK1");
-		assert.equal(crashBytes.length, 16 + bodyLength + 23);
+		let bodyLength;
+		if (reportCrash) {
+			assert.equal(crashBytes.length, 23);
+			assert.throws(() => JSON.parse(crashBytes.toString("utf8")));
+		} else {
+			bodyLength = Number(crashBytes.readBigUInt64LE(8));
+			assert.equal(crashBytes.subarray(0, 8).toString(), "AEVPACK1");
+			assert.equal(crashBytes.length, 16 + bodyLength + 23);
+		}
 		const lockBytes = await readFile(join(root, "writer.lock"));
 		assert.equal(JSON.parse(lockBytes).pid, crashed.pid);
 		// The native recovery dialog requires a choice. End only this owned shell, then explicitly relaunch.
@@ -256,29 +297,69 @@ if (existsSync(${JSON.stringify(control)})) {
 				crashedManifest.find((r) => r.path === item.path),
 				item,
 			);
+		let interruptedJob;
 		const store = new EvaluationStore({ dataDir, readOnly: true, authorize: () => identity });
 		try {
 			assert.deepEqual(store.get({}, ref(original)), original);
-			assert.equal(store.lookupRequest({}, checkpointRequestId), undefined);
 			assert.ok(store.issues.some((i) => i.code === "EVIDENCE_GAP" && i.file === basename(crashed.temp)));
-			const recovered = [];
-			for (const e of store.index.values()) if (e.ref.kind === "evidence") recovered.push(store.get({}, e.ref));
-			assert.equal(recovered.filter((r) => r.data.attemptRef.id === attemptRef.id).length, 0);
-			result.readOnlyRecovery = {
-				issues: store.issues,
-				records: store.index.size,
-				checkpointPublished: false,
-				partialEvidencePublished: false,
-				originalReportExact: true,
-			};
+			if (reportCrash) {
+				interruptedJob = store.lookupRequest({}, `eval-job-${digest(requestId)}`);
+				assert.equal(interruptedJob.data.kind, "evaluation-job");
+				for (const e of store.index.values())
+					if (e.ref.kind === "evaluations") assert.notEqual(store.get({}, e.ref).data.job?.jobId, interruptedJob.id);
+				result.readOnlyRecovery = {
+					issues: store.issues,
+					records: store.index.size,
+					partialReportPublished: false,
+					jobReceiptRef: ref(interruptedJob),
+					jobReceiptDigest: interruptedJob.digest,
+					originalReportExact: true,
+				};
+			} else {
+				assert.equal(store.lookupRequest({}, checkpointRequestId), undefined);
+				const recovered = [];
+				for (const e of store.index.values()) if (e.ref.kind === "evidence") recovered.push(store.get({}, e.ref));
+				assert.equal(recovered.filter((r) => r.data.attemptRef.id === attemptRef.id).length, 0);
+				result.readOnlyRecovery = {
+					issues: store.issues,
+					records: store.index.size,
+					checkpointPublished: false,
+					partialEvidencePublished: false,
+					originalReportExact: true,
+				};
+			}
 		} finally {
 			store.close();
 		}
 		assert.deepEqual(await manifest(root), crashedManifest);
+		let recoverySource = backup,
+			expectedRestored = before;
+		if (reportCrash) {
+			const excluded = new Set(["writer.lock", join("evaluations", basename(crashed.temp))]);
+			const recoveryDirectory = join(directory, "confirmed-recovery");
+			await mkdir(recoveryDirectory);
+			recoverySource = join(recoveryDirectory, "agent-evaluation");
+			await cp(root, recoverySource, {
+				recursive: true,
+				errorOnExist: true,
+				force: false,
+				filter: (src) => !excluded.has(relative(root, src)),
+			});
+			expectedRestored = crashedManifest.filter((r) => !excluded.has(r.path));
+			assert.deepEqual(await manifest(recoverySource), expectedRestored);
+			const audit = new EvaluationStore({ dataDir: recoveryDirectory, readOnly: true, authorize: () => identity });
+			try {
+				assert.deepEqual(audit.issues, []);
+				assert.deepEqual(audit.get({}, ref(interruptedJob)), interruptedJob);
+			} finally {
+				audit.close();
+			}
+			await writeFile(join(directory, "confirmed-recovery-manifest.json"), JSON.stringify(expectedRestored, null, 2));
+		}
 		const retained = join(directory, "retained-crashed-store");
 		await rename(root, retained);
-		await cp(backup, root, { recursive: true, errorOnExist: true, force: false });
-		assert.deepEqual(await manifest(root), before);
+		await cp(recoverySource, root, { recursive: true, errorOnExist: true, force: false });
+		assert.deepEqual(await manifest(root), expectedRestored);
 		await writeFile(durable, originalDurable);
 		const restoredRows = [];
 		for (const name of tracked) {
@@ -293,6 +374,40 @@ if (existsSync(${JSON.stringify(control)})) {
 		const restoredBound = await source();
 		const restored = await rpc("get", { ...restoredBound, ref: ref(original) });
 		assert.deepEqual(restored.data, original.data);
+		if (reportCrash) {
+			const probes = [];
+			for (const action of ["status", "cancel", "evaluate", "status"]) {
+				const response = await reply(
+					await send(
+						action,
+						action === "evaluate"
+							? { ...restoredBound, ref: ref(original) }
+							: { ...restoredBound, jobId: interruptedJob.id },
+						action === "evaluate" ? requestId : crypto.randomUUID(),
+					),
+				);
+				if (action === "status") {
+					assert.equal(response.ok, true);
+					assert.equal(response.result.state, "unknown");
+					assert.equal(response.result.reportRef, undefined);
+				} else {
+					assert.equal(response.ok, false);
+					assert.equal(response.error.code, "EXECUTION_UNKNOWN");
+				}
+				probes.push({ action, response });
+			}
+			const receipt = await rpc("get", { ...restoredBound, ref: ref(interruptedJob) });
+			assert.equal(receipt.sourceDigest, interruptedJob.digest);
+			result.interruptedJob = {
+				jobId: interruptedJob.id,
+				state: "unknown",
+				probes,
+				receiptUnchanged: true,
+				originalRequestNotRerun: true,
+				newAttemptOrSnapshot: false,
+			};
+		}
+
 		await page.getByText("Agent evaluation", { exact: true }).first().click();
 		await page.locator(".aev").waitFor();
 		const back = page.locator('.aev [data-action="back"]');
@@ -304,7 +419,7 @@ if (existsSync(${JSON.stringify(control)})) {
 		);
 		await page.screenshot({ path: join(directory, "backup-restored-original-report.png") });
 		await stop("restored-current");
-		assert.deepEqual(await manifest(root), before);
+		assert.deepEqual(await manifest(root), expectedRestored);
 		assert.deepEqual(await readFile(originalPath), originalBytes);
 		const currentSource = await readFile(sessionPath);
 		assert.deepEqual(currentSource.subarray(0, sourceBytes.length), sourceBytes);
@@ -317,12 +432,18 @@ if (existsSync(${JSON.stringify(control)})) {
 			sidecarPid: crashed.pid,
 			originalRequest: pending,
 			originalRequestReplayed: false,
+			originalRequestCheckedForReplay: reportCrash,
 			writerLockRetained: true,
 			writeRejection: rejected.error,
 		};
 		result.backup = {
 			path: backup,
+			recoverySource,
+			recoveryMode: reportCrash
+				? "explicit audited copy of confirmed records excluding exact owned dead lock and incomplete report; originals retained"
+				: "exact clean pre-crash backup",
 			recordsFiles: before.length,
+			restoredFiles: expectedRestored.length,
 			exactBeforeLaunch: true,
 			exactAfterRead: true,
 			retainedCrashStore: retained,

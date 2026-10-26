@@ -460,3 +460,5 @@ EC04 合成时序补验：`tests/agent-evaluation-desktop-test.mjs --timing-matr
 EC04 合成分账补验：`tests/agent-evaluation-desktop-test.mjs --usage-matrix`使用`tests/fixtures/agent-evaluation/usage-matrix.mjs`，在实际Electron核对同调用跨来源去重、五阶段分账、金额/阶段冲突和旧报告重评；金额与供应商字段全为合成，不代表真实账单，见[证据](agent-evaluation-evidence/EC04-usage-matrix-diagnostics.json)。
 
 EC04 半发布恢复补验：`tests/agent-evaluation-desktop-test.mjs --crash-store`通过`tests/fixtures/agent-evaluation/crash-store.mjs`只在自有隔离插件注入半manifest后sidecar退出，实际桌面验证遗留锁拒写、原件保留及显式评估仓库备份恢复；非断电/自动解锁，见[证据](agent-evaluation-evidence/EC04-crash-store-diagnostics.json)。
+
+EC04 半报告恢复补验：`tests/agent-evaluation-desktop-test.mjs --crash-report`复用`tests/fixtures/agent-evaluation/crash-store.mjs`，实际sidecar同步23字节报告后退出；确认记录显式复制恢复后unknown作业拒绝旧请求重放，原`--crash-store`干净备份恢复已复跑。见[证据](agent-evaluation-evidence/EC04-crash-report-diagnostics.json)。
