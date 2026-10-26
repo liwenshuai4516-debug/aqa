@@ -126,3 +126,5 @@ PMS 真实浏览器准备：`tests/ui-pms-browser-preparation.mjs --refresh`；�
 PMS 原库草稿入库与重开：`tests/ui-pms-source-cases.mjs`、`tests/ui-pms-desktop-connection.mjs`；[原生草稿证据](ui-testing-evidence/optimization-u06-pms-native-drafts.json)记录3条草稿、功能映射、真实原库持久化及未完成项。
 
 UI 受管身份录制副本：[内部模块与真实 SDK/MCP 证据](ui-testing-evidence/optimization-u02-managed-recording.json)，保留原生 complete/partial；产品私密录制仍未开放。
+
+UI 私密录制生命周期：[晚到发布缺陷与三类拒绝对照](ui-testing-evidence/optimization-u02-recording-lifecycle.json)，保留旧原型取消后错误发布证据及正常/partial对照；产品入口仍未开放。

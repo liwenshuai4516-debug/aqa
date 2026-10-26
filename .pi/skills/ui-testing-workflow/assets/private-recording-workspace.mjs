@@ -40,6 +40,7 @@ async function inputFile(root, path) {
  * @param {{workspace: string, authority: string, inputRefs: {path: string, sha256: string}[], environment: import("pi-ui-testing").UiEnvironment}} options
  */
 export async function preparePrivateRecordingWorkspace({ workspace, authority, inputRefs, environment }) {
+	const operations = new Set();
 	let directory,
 		statePath,
 		timer,
@@ -47,6 +48,7 @@ export async function preparePrivateRecordingWorkspace({ workspace, authority, i
 	const revoke = async () => {
 		revoked = true;
 		clearTimeout(timer);
+		for (const finish of operations) finish();
 		if (statePath) {
 			try {
 				await rm(statePath, { force: true });
@@ -140,11 +142,58 @@ export async function preparePrivateRecordingWorkspace({ workspace, authority, i
 		);
 		timer.unref();
 		await assertCurrent();
+		/** Bind one MCP request to this snapshot. Finish before delivering its reply to the SDK,
+		 * whose send signal also aborts when a request completes normally.
+		 * @param {AbortSignal | undefined} signal
+		 */
+		const beginOperation = async (signal) => {
+			let active = true;
+			const finish = () => {
+				active = false;
+				signal?.removeEventListener("abort", onAbort);
+				operations.delete(finish);
+			};
+			const onAbort = () => {
+				void revoke().catch(() => {});
+			};
+			const assertActive = () => {
+				if (!active || revoked || signal?.aborted) throw blocked();
+			};
+			operations.add(finish);
+			signal?.addEventListener("abort", onAbort, { once: true });
+			try {
+				if (signal?.aborted) await revoke();
+				assertActive();
+				await assertCurrent();
+				assertActive();
+				return {
+					assertActive,
+					finish,
+					/** The exclusive filesystem publication must be synchronous after the final check.
+					 * @param {() => void} write
+					 */
+					publish: async (write) => {
+						try {
+							assertActive();
+							await assertCurrent();
+							assertActive();
+							write();
+						} finally {
+							finish();
+						}
+					},
+				};
+			} catch (error) {
+				finish();
+				throw error;
+			}
+		};
 		return {
 			// Internal fields must never be returned as ordinary tool output.
 			workspace: mirror,
 			childEnv: /** @type {Record<string, string>} */ ({ [environment.auth.reference]: statePath }),
 			assertCurrent,
+			beginOperation,
 			revoke,
 			receipt: {
 				status: "private-snapshot-prepared",

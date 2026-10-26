@@ -973,3 +973,19 @@ plan_update仍不可用，以第8节和本记录维护状态。下一步优先�
 [受管身份录制副本证据](ui-testing-evidence/optimization-u02-managed-recording.json)归档180文件、261次FileRef核验、归档逐成员回读一致；Electron权威项目文档保存OperationContract-managed-recording-workspace-2026-10-26.md及最终正反68份快照，0600/0700、回读一致、store字节不变。不表示应用文档列表可见、正式用例/测试结果入库。lint、协议检查、size预算通过；协议tag启发式因无可用tag跳过，非协议类型检查失败。
 
 剩余：模块实际MCP生命周期接入、通用输入闭包、新凭据/嵌套JSON、协议分支、发布竞争、取消晚响应/重连、Electron管理入口；真实PMS角色/租户/隔离数据及独立评审/诊断/正式执行、U00连续基线与配对计量、U03/U07和M1/M2仍未完成。整目标active，不因本轮内部模块验证通过标为产品交付。
+
+### U02 续跑：请求生命周期与取消后晚到发布（2026-10-26）
+
+上一轮0ba3e7c已推送并独立核对远端一致。本轮继续A02-5，开始clean预览无可清理项，保留原.gitignore/db-client锁差异；plan_update仍不可用。内部分发模块的请求状态不涉及新工具/配置或个人安装，产品私密record仍unsupported。
+
+先用真实SDK/MCP复现：原型send没有保留SDK options.signal，writer成功响应之后不再检查身份或取消状态。1792996566630在原生writer响应到达后、公开发布前取消真实ui_discover_record调用，原生finish为partial但公开草稿仍存在，publicDraftExists=true、baselineLatePublicationReproduced=true。基线摘要nativeDraftPublication沿用not-published-failure-preserved模板是错误措辞，以原生partial和实际公开文件观察为准；原历史不倒写。准备轮1792996532482生成扩展对象缺闭括号，未开始录制即失败，保留摘要和源码，修正harness后才取得完整基线。
+
+private-recording-workspace新增beginOperation(signal)：校验过程中即绑定取消，返回assertActive/finish/publish；publish重新检查受管身份、两侧摘要和权限后再同步核对有效状态，接着执行同步独占文件写入。取消或revoke立即使全部待处理操作失效；派生认证删除，私有原始草稿保留。SDK正常交付响应也会abort发送信号，因此必须在返回正常响应之前finish并解绑监听，避免误撤销正常会话。模块不是新的协议或录制runner。
+
+隔离createTransport原型传入真实SDK send options，以beginOperation守卫非close调用，在writer响应到达后故意延迟到生命周期变化再发布。最终正常1792996722651完整5步、原生complete、gaps=[]、1草稿且公开/原生字节相同；宿主引用和父state不变。晚取消1792996655838、父身份变化1792996731271、snapshot逻辑关闭1792996737765全部保留私有原生草稿、公开目标不存在，原生partial、0脚本，gaps保留late-*-publication-blocked/missing-generated-script等。取消步骤的原生状态保留，不改成业务断言失败。关闭对照只调用snapshot.revoke，不是物理MCP断连或重连证明。
+
+四文件27项Vitest通过，其中模块11项覆盖正常SDK完成信号、已取消请求、取消/身份变化/校验中取消的晚到发布及旧/新snapshot隔离；按格式化→完整五配置typecheck→相关测试完成。lint/协议/size及差异检查通过，协议tag启发式仍无可用tag。所有上述合成轮次模型/正式批次/真实业务写入0，公开已知秘密/编码/媒体扫描通过，原始合成协议含原文；结束清理本轮自有进程及原始合成payload，公开raw-log为减少内容后的证据。
+
+[请求生命周期证据](ui-testing-evidence/optimization-u02-recording-lifecycle.json)归档196文件、267次FileRef核验并逐成员回读一致。Electron权威项目新增OperationContract-recording-lifecycle-2026-10-26.md与177份基线/正反公开快照，0600/0700且回读一致，store字节不变，不宣称应用文档列表可见。旧U05评审账本不变；本轮随后收到的PMS匿名候选新授权单独记账，其模型调用不计入本合成实验的0次。
+
+仍未产品接入，未证明任意项目输入闭包、新凭据/嵌套JSON、所有协议分支、实际断连/重连、文件系统并发路径替换、Electron完整链及业务角色/租户/数据。整体计划继续active。

@@ -2,6 +2,7 @@ import { afterEach, expect, it } from "vitest";
 import { createHash, randomUUID } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
+import { writeFileSync } from "node:fs";
 import { access, chmod, lstat, mkdir, mkdtemp, readFile, realpath, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -189,4 +190,60 @@ it("caps a distant parent deadline without extending authentication or overflowi
 	expect(Date.parse(derived.pi_ui_private.expiresAt)).toBeLessThanOrEqual(Date.now() + 5 * 60_000);
 	expect(value.receipt.expiresAt).toBe(derived.pi_ui_private.expiresAt);
 	await value.assertCurrent();
+});
+
+it("finishes a successful request before the SDK aborts its completed send signal", async () => {
+	const f = await fixture(),
+		value = await f.prepare(),
+		controller = new AbortController();
+	const operation = await value.beginOperation(controller.signal),
+		target = join(f.workspace, "draft.ts");
+	await operation.publish(() => writeFileSync(target, "native draft", { flag: "wx" }));
+	controller.abort();
+	expect(await readFile(target, "utf8")).toBe("native draft");
+	await value.assertCurrent();
+	await expect(operation.publish(() => writeFileSync(target, "duplicate"))).rejects.toThrow("阻塞");
+});
+it("rejects an already cancelled request without allowing a dispatch", async () => {
+	const f = await fixture(),
+		value = await f.prepare(),
+		controller = new AbortController();
+	controller.abort();
+	await expect(value.beginOperation(controller.signal)).rejects.toThrow("阻塞");
+	await expect(access(value.childEnv[f.reference])).rejects.toThrow();
+});
+it("keeps a native private draft but refuses public publication after cancellation or parent renewal", async () => {
+	for (const reason of ["cancel", "renew", "cancel-during-check"]) {
+		const f = await fixture(),
+			value = await f.prepare(),
+			controller = new AbortController();
+		const operation = await value.beginOperation(controller.signal),
+			target = join(f.workspace, "draft.ts"),
+			native = join(value.workspace, "draft.ts");
+		await writeFile(native, "native draft", { mode: 0o600 });
+		if (reason === "cancel") controller.abort();
+		if (reason === "renew") await writeFile(f.parentPath, JSON.stringify({ ...f.state, origins: [] }));
+		const publication = operation.publish(() => writeFileSync(target, "native draft", { flag: "wx" }));
+		if (reason === "cancel-during-check") controller.abort();
+		await expect(publication).rejects.toThrow("阻塞");
+		await expect(access(target)).rejects.toThrow();
+		expect(await readFile(native, "utf8")).toBe("native draft");
+		await expect(access(value.childEnv[f.reference])).rejects.toThrow();
+	}
+});
+it("invalidates every pending request on close while a fresh snapshot remains independent", async () => {
+	const f = await fixture(),
+		old = await f.prepare(),
+		next = await f.prepare();
+	const first = await old.beginOperation(undefined),
+		second = await old.beginOperation(undefined),
+		fresh = await next.beginOperation(undefined);
+	await old.revoke();
+	for (const operation of [first, second]) {
+		expect(() => operation.assertActive()).toThrow("阻塞");
+		await expect(operation.publish(() => writeFileSync(join(f.workspace, "stale.ts"), "old"))).rejects.toThrow("阻塞");
+	}
+	await fresh.publish(() => writeFileSync(join(f.workspace, "fresh.ts"), "new", { flag: "wx" }));
+	await expect(access(join(f.workspace, "stale.ts"))).rejects.toThrow();
+	expect(await readFile(join(f.workspace, "fresh.ts"), "utf8")).toBe("new");
 });
