@@ -27,6 +27,15 @@ import { installTaskScopeFixture, verifyTaskScope } from "./fixtures/agent-evalu
 import { installVerdictFixture, verifyVerdictMatrix } from "./fixtures/agent-evaluation/verdict-matrix.mjs";
 import { beginReceiptLoss, verifyReceiptLoss } from "./fixtures/agent-evaluation/receipt-loss.mjs";
 import { installCostFixture, verifyCostMatrix } from "./fixtures/agent-evaluation/cost-matrix.mjs";
+import { installCapacityFixture, verifyCapacity } from "./fixtures/agent-evaluation/capacity.mjs";
+const capacity = process.argv.includes("--capacity");
+assert.ok(
+	!capacity ||
+		!process.argv.some((arg) =>
+			["--scale", "--rollback", "--active-jobs", "--rule-upgrade", "--receipt-loss"].includes(arg),
+		),
+	"Run capacity separately from other process/profile probes",
+);
 const costMatrix = process.argv.includes("--cost-matrix");
 const receiptLoss = process.argv.includes("--receipt-loss");
 assert.ok(
@@ -122,6 +131,7 @@ const ruleUpgradeProbe = ruleUpgrade
 const taskScopeFixture = taskScope ? await installTaskScopeFixture(agentDir, workspace) : undefined;
 const verdictFixture = verdictMatrix ? await installVerdictFixture(agentDir, workspace) : undefined;
 const costFixture = costMatrix ? await installCostFixture(agentDir, workspace) : undefined;
+const capacityFixture = capacity ? await installCapacityFixture(agentDir, workspace) : undefined;
 const reservation = createServer().listen(0, "127.0.0.1");
 await once(reservation, "listening");
 const port = reservation.address().port;
@@ -1089,6 +1099,27 @@ try {
 	if (verdictFixture) {
 		stage("goal, behavior and delivery verdict boundary matrix");
 		result.verdictMatrix = await verifyVerdictMatrix({ page, fixture: verdictFixture, dataDir, output, until });
+	}
+	if (capacityFixture) {
+		stage("default record saturation, oversized source gap and stopped owned-pack recovery");
+		const limited = await verifyCapacity({
+			app,
+			page,
+			fixture: capacityFixture,
+			repo,
+			output,
+			dataDir,
+			env,
+			sessionPath,
+			original,
+			until,
+		});
+		app = limited.app;
+		page = limited.page;
+		result.capacity = limited.result;
+		result.checks.push(
+			"Actual desktop retains oversized-source gaps, rejects writes at original10000record limit without changing records, reads old reports and recovers after stopped removal of owned seed packs",
+		);
 	}
 	stage("development URL cannot acquire the native identity");
 	await writeFile(join(output, "app-restarted-process.log"), app.getLogs());

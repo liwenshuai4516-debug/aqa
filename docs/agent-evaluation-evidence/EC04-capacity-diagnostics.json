@@ -1,0 +1,206 @@
+{
+	"scope": "EC04 AC10 actual Electron default10000record saturation, oversized1MiB source gap and stopped owned-pack recovery",
+	"timestamp": "2026-10-26T03:53:54.451524+00:00",
+	"baselineCommit": "9a0fc7adf900f6928a327a290630b27248dec9af",
+	"pluginVersion": "0.4.29",
+	"productChanges": false,
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/index.json",
+		"bytes": 83808,
+		"sha256": "30b86cc8d4a436a8e0d4684844bb2196abec013935cd78c195907456e36920aa"
+	},
+	"archiveFiles": 366,
+	"desktop": {
+		"status": "PASS",
+		"checks": 23,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/files/final/result.json",
+			"bytes": 8958,
+			"sha256": "2558f1b8b571c0b4b7fe8a6f5769d5f7991ad587b929d583372a0833a10dec1b"
+		},
+		"matrix": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/files/final/capacity.json",
+			"bytes": 2176,
+			"sha256": "affcd09c515a1ae3cd2b390d15d8d16755cd0bad512b5549b0d751930ec3f2d7"
+		},
+		"registeredSource": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/files/checks/registered-plugin-files.json",
+			"bytes": 12614,
+			"sha256": "0ad4c5c196c979d1375b37374db4fb362d8748c75639d3708eebd539e8f67b8a"
+		},
+		"trackedFilesMatched": 29,
+		"scope": "Actual native Electron and original service/store/source reader with default limits, owned isolated dataDir/SDK sessions; no plugin injection or threshold tightening; source paths/realpaths retained. Not personal installation or standalone packaged distribution."
+	},
+	"capacity": {
+		"status": "PASS",
+		"defaultRecordLimit": 10000,
+		"syntheticSeedRecords": 9907,
+		"ownedSeedPacks": [
+			"evidence/batch-0b2df541-3434-487c-8695-f19b22de510f.pack",
+			"evidence/batch-33db7cbb-fde2-4a62-af15-b9723a8ac416.pack",
+			"evidence/batch-65cf1864-41fb-4634-8960-f73158d9d3ae.pack",
+			"evidence/batch-6e929460-3729-4e12-8fa8-14906b31ec74.pack",
+			"evidence/batch-97ee8f25-b924-46de-89c3-493b82247ddb.pack",
+			"evidence/batch-ddd8f43c-53a1-4dc0-9091-03bc57ba8700.pack",
+			"evidence/batch-e7431cd5-b5b1-423f-8118-ca18f781802f.pack",
+			"evidence/batch-ed96b695-57c6-42d6-b8ac-127a86868b1d.pack",
+			"evidence/batch-ef44f02f-2e47-41c4-87da-02a221202787.pack",
+			"evidence/batch-fa8dee7a-88c1-4019-b1cd-033f089c5e90.pack"
+		],
+		"oversized": {
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "a409c658-dce6-4c25-be06-1cf826d7881e",
+				"revision": 1
+			},
+			"snapshotRef": {
+				"id": "554c6b82-1d5b-4c73-9f5b-4357a9ab9158",
+				"kind": "snapshots",
+				"revision": 1
+			},
+			"coverage": "partial",
+			"gaps": ["oversized-source-entry:size-output"],
+			"missingEvidenceRef": {
+				"kind": "evidence",
+				"id": "fe83c5ec-72e0-4565-91a9-a4edeb67092e",
+				"revision": 1
+			},
+			"sourceStringBytes": 1048577,
+			"originalSourcePrefixUnchanged": true,
+			"sdkMetadataAppendTypes": ["thinking_level_change"]
+		},
+		"rejection": {
+			"error": "LIMIT_EXCEEDED · Evaluation store capacity reached",
+			"draftPreserved": true,
+			"storeBytesUnchanged": true,
+			"originalReportReadable": true
+		},
+		"recovery": {
+			"ownPacksRemovedOnlyWhileStopped": true,
+			"originalStoreRestoredExactly": true,
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "7628af93-c9aa-4584-8ddf-9aff00031ab8",
+				"revision": 1
+			},
+			"originalReportBytesUnchanged": true
+		},
+		"actualModelCalls": 0,
+		"actualCliCalls": 0,
+		"scope": "Actual macOS arm64 Electron; original10000record and1MiB source-item defaults, synthetic offline history/packs. Record-count saturation is not physical disk-full or256MiB byte-capacity testing. No retention UI or production cleanup implementation claimed."
+	},
+	"fullStore": {
+		"rawManifests": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/files/final/capacity-file-manifests.json",
+			"bytes": 28954,
+			"sha256": "81a191281f3fa2af37a4f34b8efcec51416519c671224abe2982f7fa633b6096"
+		},
+		"reconstruction": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/files/checks/full-store-reconstruction.json",
+			"bytes": 173,
+			"sha256": "43d3c2b7e8c80999160a9bccebe6ae336ebc5298d7ada25d3c554b2981a775d4"
+		},
+		"description": "App stopped before seed.9907synthetic metadata evidence records in10packs add to93existing records; original records/receipts and formats validated through original store batch API. Full read-only reconstruction from exact SHA256 files recovers10000records and zero issues, original report digest matches. Copy includes no writer lock.",
+		"rawRoot": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/files/full-at-limit/data/agent-evaluation"
+	},
+	"acceptance": {
+		"PASS": [
+			"Source string1048577bytes exceeds original1MiB item limit: unavailable/truncated evidence with no body contentRef, partial snapshot, explicit oversized-source-entry gap and goal undetermined in actual UI",
+			"At10000default records new diagnosis fails with LIMIT_EXCEEDED capacity error; objective draft retained, old report still opens",
+			"All evaluation-store filenames/SHA256 unchanged before/after failed create and subsequent old-report reads; writer.lock separately excluded across native restarts",
+			"Only SHA-verified newly seeded10packs removed while owned native process terminal and writer lock absent; every prior store file restored exactly",
+			"Full native restart after removal creates a fresh completed diagnosis; original report byte-for-byte unchanged",
+			"Original oversized SDK source prefix exact; only observed thinking_level_change append accepted, known model_change metadata allowed by fixture but not observed in final run"
+		],
+		"NOT_EXECUTED": [
+			"256MiB byte-capacity saturation, physical disk-full, ENOSPC and other OS storage failures",
+			"Retention/rotation management UI or production cleanup; deletion here only fixture-owned test packs while app stopped",
+			"Full role/tool/rollback/scale/native pagination/rule-upgrade matrices and formal performance not rerun this turn"
+		],
+		"AC10": "Default record-count and oversized-source subsets pass; byte-capacity/physical disk-full remain unverified, whole AC10 not complete",
+		"AC39": "Latest formal baseline remains FAIL; no new performance result"
+	},
+	"verification": {
+		"unit": {
+			"status": "PASS",
+			"files": 4,
+			"tests": 129,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/files/checks/unit.log",
+				"bytes": 226,
+				"sha256": "8a69aa47e138d38a69b0730366ce03f38346ae16e127d19ac34872296bcb5145"
+			}
+		},
+		"typecheck": {
+			"status": "PASS",
+			"configs": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/files/checks/typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"lint": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/files/checks/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS structural/type-only/v33; historical tag heuristic SKIP",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/files/checks/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			}
+		},
+		"size": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/files/checks/size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			}
+		},
+		"clean": {
+			"scope": "Preview only,0deletions",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/files/checks/clean-delivery.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			}
+		},
+		"visualInspection": "Actual rejected-draft screenshot inspected: LIMIT_EXCEEDED error and retained objective/source bounds visible."
+	},
+	"failedAttempts": [
+		{
+			"scope": "First desktop oversized-source check expected entire SDK file unchanged. SDK appends thinking_level_change metadata on selection; fixture now proves original byte prefix unchanged and allows only known metadata append types, then full desktop rerun passes. No threshold/assertion weakening of selected evidence. InitialFAIL retained.",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/files/failed/result.json",
+				"bytes": 7967,
+				"sha256": "279ad87ca6731d7c4ac5a0894e20afbece6335809069493c28fb91007788d0a4"
+			}
+		},
+		{
+			"scope": "Initial typecheck redirection failed before command launch: scratch mkdir was in another parallel call. Not a typecheck pass or code failure; directory then prepared and full five checks run successfully, repeated after final fixture edit.",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-capacity/files/checks/typecheck-launch-note.txt",
+				"bytes": 229,
+				"sha256": "ee052b9dc380cdff54397cea333c5e88ccb4985a49887082bba2d5fa25e69c58"
+			}
+		}
+	],
+	"actualCalls": {
+		"models": 0,
+		"cli": 0,
+		"business": 0
+	},
+	"remaining": "EC04/M1 and overall goal incomplete. Remaining acceptance subsets and AC39 failure persist. EC06 containment unresolved, EC07/09 held; real CLI/model deferred by user."
+}
