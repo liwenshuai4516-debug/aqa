@@ -1,0 +1,948 @@
+{
+	"scope": "EC04/AC17 actual native Electron synthetic cross-source usage deduplication and phase accounting; not real provider billing validation",
+	"timestamp": "2026-10-26T05:00:26.456521+00:00",
+	"baselineCommit": "2cd7548f87cdbe9da483d8ca1616f853cff88d5c",
+	"pluginVersion": "0.4.31",
+	"productChanges": false,
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64"
+	},
+	"status": "PASS",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-usage-matrix/index.json",
+		"bytes": 49782,
+		"sha256": "35166485d9e4231a6236bcc35fe4d030b6753e8edcb5538e46e585c0f80b2dda"
+	},
+	"archiveFiles": 223,
+	"provenance": "Fixture-authored usage-record and SDK bodies seeded through original store while app stopped. Actual native Electron/service/evaluator/UI, no plugin injection; provider-measured labels are synthetic fixture fields, not verified provider bills or real model calls.",
+	"cases": [
+		{
+			"scenario": "sdk-provider-dedup",
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "cdf00c19-5dfa-454c-ba6d-0c5a38b9e21e",
+				"revision": 1
+			},
+			"snapshotRef": {
+				"kind": "snapshots",
+				"id": "56275585-1871-4892-88f9-a0f9767e7c4b",
+				"revision": 1
+			},
+			"expected": {
+				"phases": {
+					"setup": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"agent": {
+						"knownActualByCurrency": {
+							"USD": 0.25
+						},
+						"knownEstimatedByCurrency": {},
+						"calls": 1,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": true
+					},
+					"verification": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"evaluation": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"cleanup": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					}
+				},
+				"unassigned": []
+			},
+			"actual": {
+				"gaps": [
+					"usage-not-observed:setup",
+					"usage-not-observed:verification",
+					"usage-not-observed:evaluation",
+					"usage-not-observed:cleanup"
+				],
+				"note": "Known amounts are subtotals, not a complete bill; currencies and actual/estimated accounts remain separate",
+				"phases": {
+					"agent": {
+						"calls": 1,
+						"knownActualByCurrency": {
+							"USD": 0.25
+						},
+						"knownEstimatedByCurrency": {},
+						"observed": true,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"cleanup": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"evaluation": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"setup": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"verification": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					}
+				},
+				"unassigned": []
+			},
+			"uiMetricsMatch": true,
+			"findingVerdict": "inconclusive"
+		},
+		{
+			"scenario": "five-phases",
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "8d4feebd-5c38-48b2-8567-54a91d6eb091",
+				"revision": 1
+			},
+			"snapshotRef": {
+				"kind": "snapshots",
+				"id": "5455e563-bcaf-4d07-8e66-9811525d87ac",
+				"revision": 1
+			},
+			"expected": {
+				"phases": {
+					"setup": {
+						"knownActualByCurrency": {
+							"USD": 1
+						},
+						"knownEstimatedByCurrency": {},
+						"calls": 1,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": true
+					},
+					"agent": {
+						"knownActualByCurrency": {
+							"USD": 2
+						},
+						"knownEstimatedByCurrency": {},
+						"calls": 1,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": true
+					},
+					"verification": {
+						"knownActualByCurrency": {
+							"USD": 3
+						},
+						"knownEstimatedByCurrency": {},
+						"calls": 1,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": true
+					},
+					"evaluation": {
+						"knownActualByCurrency": {
+							"USD": 4
+						},
+						"knownEstimatedByCurrency": {},
+						"calls": 1,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": true
+					},
+					"cleanup": {
+						"knownActualByCurrency": {
+							"USD": 5
+						},
+						"knownEstimatedByCurrency": {},
+						"calls": 1,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": true
+					}
+				},
+				"unassigned": []
+			},
+			"actual": {
+				"gaps": [],
+				"note": "Known amounts are subtotals, not a complete bill; currencies and actual/estimated accounts remain separate",
+				"phases": {
+					"agent": {
+						"calls": 1,
+						"knownActualByCurrency": {
+							"USD": 2
+						},
+						"knownEstimatedByCurrency": {},
+						"observed": true,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"cleanup": {
+						"calls": 1,
+						"knownActualByCurrency": {
+							"USD": 5
+						},
+						"knownEstimatedByCurrency": {},
+						"observed": true,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"evaluation": {
+						"calls": 1,
+						"knownActualByCurrency": {
+							"USD": 4
+						},
+						"knownEstimatedByCurrency": {},
+						"observed": true,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"setup": {
+						"calls": 1,
+						"knownActualByCurrency": {
+							"USD": 1
+						},
+						"knownEstimatedByCurrency": {},
+						"observed": true,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"verification": {
+						"calls": 1,
+						"knownActualByCurrency": {
+							"USD": 3
+						},
+						"knownEstimatedByCurrency": {},
+						"observed": true,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					}
+				},
+				"unassigned": []
+			},
+			"uiMetricsMatch": true,
+			"findingVerdict": "inconclusive"
+		},
+		{
+			"scenario": "conflicting-amount",
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "022ad803-9e7c-433e-aa0d-58f35804dcdd",
+				"revision": 1
+			},
+			"snapshotRef": {
+				"kind": "snapshots",
+				"id": "ad801c9a-0fca-4d4d-b44b-383518f18c69",
+				"revision": 1
+			},
+			"expected": {
+				"phases": {
+					"setup": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"agent": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 1,
+						"unknownCalls": 1,
+						"unversionedEstimates": [],
+						"observed": true
+					},
+					"verification": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"evaluation": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"cleanup": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					}
+				},
+				"unassigned": []
+			},
+			"actual": {
+				"gaps": [
+					"conflicting-cost:conflict",
+					"usage-not-observed:setup",
+					"usage-not-observed:verification",
+					"usage-not-observed:evaluation",
+					"usage-not-observed:cleanup"
+				],
+				"note": "Known amounts are subtotals, not a complete bill; currencies and actual/estimated accounts remain separate",
+				"phases": {
+					"agent": {
+						"calls": 1,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": true,
+						"unknownCalls": 1,
+						"unversionedEstimates": []
+					},
+					"cleanup": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"evaluation": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"setup": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"verification": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					}
+				},
+				"unassigned": []
+			},
+			"uiMetricsMatch": true,
+			"findingVerdict": "inconclusive"
+		},
+		{
+			"scenario": "conflicting-phase",
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "a55e88cf-05c2-4790-ba32-71c7c3caa3e1",
+				"revision": 1
+			},
+			"snapshotRef": {
+				"kind": "snapshots",
+				"id": "d45a9d3c-ef6e-4b99-945d-4b228d7468c5",
+				"revision": 1
+			},
+			"expected": {
+				"phases": {
+					"setup": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"agent": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"verification": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"evaluation": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"cleanup": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					}
+				},
+				"unassigned": [
+					{
+						"callId": "phase",
+						"phases": ["agent", "setup"]
+					}
+				]
+			},
+			"actual": {
+				"gaps": [
+					"conflicting-cost-phase:phase",
+					"usage-not-observed:setup",
+					"usage-not-observed:agent",
+					"usage-not-observed:verification",
+					"usage-not-observed:evaluation",
+					"usage-not-observed:cleanup"
+				],
+				"note": "Known amounts are subtotals, not a complete bill; currencies and actual/estimated accounts remain separate",
+				"phases": {
+					"agent": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"cleanup": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"evaluation": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"setup": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"verification": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					}
+				},
+				"unassigned": [
+					{
+						"callId": "phase",
+						"phases": ["agent", "setup"]
+					}
+				]
+			},
+			"uiMetricsMatch": true,
+			"findingVerdict": "inconclusive"
+		},
+		{
+			"scenario": "currencies-and-unknown",
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "74cc6fe9-4765-423f-832f-684815a73666",
+				"revision": 1
+			},
+			"snapshotRef": {
+				"kind": "snapshots",
+				"id": "1690373d-cc96-4127-960c-388986d71599",
+				"revision": 1
+			},
+			"expected": {
+				"phases": {
+					"setup": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"agent": {
+						"knownActualByCurrency": {
+							"USD": 1,
+							"CNY": 2
+						},
+						"knownEstimatedByCurrency": {
+							"EUR": 3
+						},
+						"calls": 4,
+						"unknownCalls": 1,
+						"unversionedEstimates": [],
+						"observed": true
+					},
+					"verification": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"evaluation": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"cleanup": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					}
+				},
+				"unassigned": []
+			},
+			"actual": {
+				"gaps": [
+					"usage-or-price-unavailable:missing",
+					"usage-not-observed:setup",
+					"usage-not-observed:verification",
+					"usage-not-observed:evaluation",
+					"usage-not-observed:cleanup"
+				],
+				"note": "Known amounts are subtotals, not a complete bill; currencies and actual/estimated accounts remain separate",
+				"phases": {
+					"agent": {
+						"calls": 4,
+						"knownActualByCurrency": {
+							"CNY": 2,
+							"USD": 1
+						},
+						"knownEstimatedByCurrency": {
+							"EUR": 3
+						},
+						"observed": true,
+						"unknownCalls": 1,
+						"unversionedEstimates": []
+					},
+					"cleanup": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"evaluation": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"setup": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"verification": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					}
+				},
+				"unassigned": []
+			},
+			"uiMetricsMatch": true,
+			"findingVerdict": "inconclusive"
+		},
+		{
+			"scenario": "sdk-duplicate",
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "b45c158d-9adc-45a1-bd4e-9bd571bfb35f",
+				"revision": 1
+			},
+			"snapshotRef": {
+				"kind": "snapshots",
+				"id": "25afe126-c34a-4a0e-84bd-b7cb75305911",
+				"revision": 1
+			},
+			"expected": {
+				"phases": {
+					"setup": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"agent": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {
+							"USD": 0.00045
+						},
+						"calls": 1,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": true
+					},
+					"verification": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"evaluation": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"cleanup": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					}
+				},
+				"unassigned": []
+			},
+			"actual": {
+				"gaps": [
+					"usage-not-observed:setup",
+					"usage-not-observed:verification",
+					"usage-not-observed:evaluation",
+					"usage-not-observed:cleanup"
+				],
+				"note": "Known amounts are subtotals, not a complete bill; currencies and actual/estimated accounts remain separate",
+				"phases": {
+					"agent": {
+						"calls": 1,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {
+							"USD": 0.00045
+						},
+						"observed": true,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"cleanup": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"evaluation": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"setup": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"verification": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					}
+				},
+				"unassigned": []
+			},
+			"uiMetricsMatch": true,
+			"findingVerdict": "inconclusive"
+		},
+		{
+			"scenario": "unversioned-and-aggregate",
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "324f1f1e-cf3f-4b4a-99fd-0da9d36b28d5",
+				"revision": 1
+			},
+			"snapshotRef": {
+				"kind": "snapshots",
+				"id": "0945a732-bf78-4995-800c-f579b90e4c15",
+				"revision": 1
+			},
+			"expected": {
+				"phases": {
+					"setup": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"agent": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"verification": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 1,
+						"unknownCalls": 1,
+						"unversionedEstimates": [
+							{
+								"callId": "unversioned",
+								"reportedAmount": 7,
+								"currency": "USD",
+								"counted": false
+							}
+						],
+						"observed": true
+					},
+					"evaluation": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					},
+					"cleanup": {
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"calls": 0,
+						"unknownCalls": 0,
+						"unversionedEstimates": [],
+						"observed": false
+					}
+				},
+				"unassigned": []
+			},
+			"actual": {
+				"gaps": [
+					"usage-or-price-unavailable:unversioned",
+					"usage-not-observed:setup",
+					"usage-not-observed:agent",
+					"usage-not-observed:evaluation",
+					"usage-not-observed:cleanup"
+				],
+				"note": "Known amounts are subtotals, not a complete bill; currencies and actual/estimated accounts remain separate",
+				"phases": {
+					"agent": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"cleanup": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"evaluation": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"setup": {
+						"calls": 0,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": false,
+						"unknownCalls": 0,
+						"unversionedEstimates": []
+					},
+					"verification": {
+						"calls": 1,
+						"knownActualByCurrency": {},
+						"knownEstimatedByCurrency": {},
+						"observed": true,
+						"unknownCalls": 1,
+						"unversionedEstimates": [
+							{
+								"callId": "unversioned",
+								"counted": false,
+								"currency": "USD",
+								"reportedAmount": 7
+							}
+						]
+					}
+				},
+				"unassigned": []
+			},
+			"uiMetricsMatch": true,
+			"findingVerdict": "inconclusive"
+		}
+	],
+	"replay": {
+		"originalReportId": "cdf00c19-5dfa-454c-ba6d-0c5a38b9e21e",
+		"replayReportId": "a33bb462-9b4a-454e-828a-853da82eeb14",
+		"originalBytesUnchanged": true,
+		"createdAttempts": 0,
+		"createdSnapshots": 0
+	},
+	"sourceBytesUnchanged": true,
+	"originalReportBytesUnchanged": true,
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"actualToolCalls": 0,
+	"validation": {
+		"desktop": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-usage-matrix/files/desktop/result.json",
+			"bytes": 54661,
+			"sha256": "a0dccb6f9273abcc1859c62485345483a95c8da51006adb8719a349c467a9c93"
+		},
+		"usage": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-usage-matrix/files/desktop/usage-matrix.json",
+			"bytes": 45151,
+			"sha256": "d933362ff3485d41fc5cf9ce46bd9204bd397174a3439b4f665ba09e4e741f7c"
+		},
+		"sourceRegistration": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-usage-matrix/files/checks/registered-source-verification.json",
+			"bytes": 12817,
+			"sha256": "d8f383a3df1e9a0ce6d8cd6314169f52fe0f978f5855fa52c8c38a1d79fa248c"
+		},
+		"unit": {
+			"files": 4,
+			"tests": 141,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-usage-matrix/files/checks/unit.log",
+				"bytes": 210,
+				"sha256": "b265dafb742b01c6897864c58f33417a4b7b5bc219b11d3566c4bbef7ab23f3a"
+			}
+		},
+		"typecheck": {
+			"configs": 5,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-usage-matrix/files/checks/typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"other": {
+			"lint": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-usage-matrix/files/checks/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			"protocol": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-usage-matrix/files/checks/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"size": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-usage-matrix/files/checks/size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			},
+			"clean-delivery": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-usage-matrix/files/checks/clean-delivery.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			}
+		},
+		"protocolNote": "Structure/type-only/v33 PASS; historical tag heuristic SKIP",
+		"visualInspection": "Five-phase actual desktop screenshot inspected; partial/inconclusive and subtotal/actual/estimated distinction visible; full metrics asserted equal through actual UI",
+		"registeredPluginFiles": 29,
+		"clean": "Preview only; zero deletions"
+	},
+	"notExecuted": [
+		"Real provider receipts or bills",
+		"Real SDK model calls and their provider matching",
+		"Formal performance rerun",
+		"Other complete acceptance matrices"
+	],
+	"remaining": "AC17 real billing remains unverified and deferred by user. AC39 retains prior overall FAIL. EC04/M1 and overall goal incomplete; EC06 isolation and later gates remain."
+}

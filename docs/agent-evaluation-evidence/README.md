@@ -259,3 +259,13 @@ AC01双任务/空条件/回执子项已补；模糊历史选区与实际重新�
 4文件141项相关回归、五配置typecheck、实际Electron主流程/时序矩阵/开发URL身份拒绝通过；29份实际登记插件文件逐份匹配，代表截图已检查。lint、协议结构/v33、size通过，历史tag启发式SKIP；clean仅预览、零删除。229份选定原件逐文件hash外置归档，含截图/结果、评估仓库、自有SDK来源和实测源码，排除配置/凭据/浏览器缓存/依赖。仅测试/文档更新，产品仍0.4.31。
 
 AC16补合成边界子项，真实SDK并行/父子等待及真实时钟故障仍未执行，不标整项完成；未重跑正式性能及其他完整验收矩阵，AC39沿用整体FAIL。EC04/M1及整体未完成，EC06隔离与后续门禁保持；真实CLI/模型按用户暂缓，实际CLI/模型/工具调用0。运行入口：`tests/agent-evaluation-desktop-test.mjs --timing-matrix`。
+
+## EC04 合成跨来源费用与阶段分账补验
+
+[本轮证据](EC04-usage-matrix-diagnostics.json)：当前0.4.31实际Electron通过七组费用矩阵。完整停止自有桌面、确认进程终态与writer锁消失后，经原store写入自编usage-record及SDK正文，再由原服务/评分器生成报告和实际界面打开；无插件注入。provider-measured只是明确标注的合成字段，非真实供应商回执/账单；快照partial及synthetic缺口保持，不以金额字段提升事实真实性。
+
+同callId的SDK估算USD0.00045、两条相同合成供应商USD0.25及另一估算USD9只计一次USD0.25，父汇总999不重复计入；重复SDK观测只计一次估算。setup/agent/verification/evaluation/cleanup五阶段分别1/2/3/4/5美元，无全局合计冒充完整账单。相同调用金额1/2冲突则unknownCalls=1且不入金额；阶段agent/setup冲突进入unassigned、不强行分账。另组USD1/CNY2实际字段与EUR3版本估算分别保留，缺usage未知；无版本估算7仅列reportedAmount/counted:false，汇总和非法阶段排除。
+
+七组服务端完整分账结构与独立预期、实际UI指标JSON均精确相同；目标undetermined，缺计时/模型思考/未观测时间为null。原报告重评冻结配置和F08结果，不新增attempt/snapshot，原报告与SDK来源字节不变。4文件141项相关回归、五配置typecheck及实际Electron主流程/费用矩阵/开发URL身份拒绝通过；29份登记插件文件逐份匹配，五阶段代表截图已检查。lint、协议结构/v33、size通过，历史tag启发式SKIP；clean仅预览、零删除。
+
+223份选定原件逐文件hash外置归档，含截图/结果、评估仓库、自有SDK来源和实测源码；排除配置/凭据/浏览器缓存/依赖。仅测试/文档更新，产品仍0.4.31。AC17新增合成跨来源去重/阶段分账桌面证据；真实模型调用与供应商匹配/账单按用户暂缓，未执行，不标整项完成。未重跑正式性能或其他完整验收矩阵，AC39沿用整体FAIL；EC04/M1及整体未完成，EC06隔离与后续门禁保持。实际CLI/模型/工具调用0。运行入口：`tests/agent-evaluation-desktop-test.mjs --usage-matrix`。

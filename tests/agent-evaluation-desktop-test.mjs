@@ -29,9 +29,11 @@ import { beginReceiptLoss, verifyReceiptLoss } from "./fixtures/agent-evaluation
 import { installCostFixture, verifyCostMatrix } from "./fixtures/agent-evaluation/cost-matrix.mjs";
 import { installCapacityFixture, verifyCapacity } from "./fixtures/agent-evaluation/capacity.mjs";
 import { verifyTimingMatrix } from "./fixtures/agent-evaluation/timing-matrix.mjs";
+import { verifyUsageMatrix } from "./fixtures/agent-evaluation/usage-matrix.mjs";
+const usageMatrix = process.argv.includes("--usage-matrix");
 const timingMatrix = process.argv.includes("--timing-matrix");
 assert.ok(
-	!timingMatrix ||
+	!(timingMatrix || usageMatrix) ||
 		!process.argv.some((arg) =>
 			[
 				"--capacity",
@@ -43,8 +45,9 @@ assert.ok(
 				"--receipt-loss",
 			].includes(arg),
 		),
-	"Run timing separately from other process/profile probes",
+	"Run timing/usage separately from other process/profile probes",
 );
+assert.ok(!(timingMatrix && usageMatrix), "Run timing and usage matrices separately");
 const byteCapacity = process.argv.includes("--byte-capacity");
 const capacity = process.argv.includes("--capacity") || byteCapacity;
 assert.ok(
@@ -1150,6 +1153,16 @@ try {
 		result.timingMatrix = timed.result;
 		result.checks.push(
 			"Actual Electron renders synthetic parallel/wait/clock-gap metrics and frozen upper-bound checks; no SDK/tool execution or real clock fault",
+		);
+	}
+	if (usageMatrix) {
+		stage("synthetic cross-source cost deduplication and phase accounting");
+		const used = await verifyUsageMatrix({ app, repo, output, dataDir, env, sessionPath, original, until });
+		app = used.app;
+		page = used.page;
+		result.usageMatrix = used.result;
+		result.checks.push(
+			"Actual Electron renders synthetic SDK/provider cost deduplication, phase accounting and conflicts; no real bills or model execution",
 		);
 	}
 	stage("development URL cannot acquire the native identity");

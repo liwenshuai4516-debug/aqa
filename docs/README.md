@@ -125,3 +125,5 @@ EC04 默认容量补验：`tests/agent-evaluation-desktop-test.mjs --capacity`�
 EC04 字节容量补验：`tests/agent-evaluation-desktop-test.mjs --byte-capacity`复用`tests/fixtures/agent-evaluation/capacity.mjs`，在实际Electron验证原256MiB字节上限下的拒绝/草稿与旧报告保留/停机自有包恢复，满仓逐正文回读；非真实ENOSPC或生产清理，见[证据](agent-evaluation-evidence/EC04-byte-capacity-diagnostics.json)。记录模式仍用`--capacity`分别执行。
 
 EC04 合成时序补验：`tests/agent-evaluation-desktop-test.mjs --timing-matrix`使用`tests/fixtures/agent-evaluation/timing-matrix.mjs`，在实际Electron核对并行/等待、时钟缺口及冻结上限重评；夹具自编正文，非真实SDK执行/时钟故障，见[证据](agent-evaluation-evidence/EC04-timing-matrix-diagnostics.json)。
+
+EC04 合成分账补验：`tests/agent-evaluation-desktop-test.mjs --usage-matrix`使用`tests/fixtures/agent-evaluation/usage-matrix.mjs`，在实际Electron核对同调用跨来源去重、五阶段分账、金额/阶段冲突和旧报告重评；金额与供应商字段全为合成，不代表真实账单，见[证据](agent-evaluation-evidence/EC04-usage-matrix-diagnostics.json)。
