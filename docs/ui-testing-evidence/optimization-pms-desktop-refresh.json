@@ -1,0 +1,192 @@
+{
+	"date": "2026-10-26",
+	"status": "ELECTRON_REFRESH_MANAGED_TOKEN_NATIVE_CONSUMPTION_OBSERVED",
+	"plan_complete": false,
+	"modelCalls": 0,
+	"formalRuns": 0,
+	"modelReviewLedgerSha256": "34aaec3d27776ad96474be83f0be5a4eebe001fb41467afc69a4372c2b7e31ec",
+	"ledger_unchanged": true,
+	"result": {
+		"status": "ELECTRON_REFRESH_MANAGED_TOKEN_NATIVE_CONSUMPTION_OBSERVED",
+		"systemId": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+		"envId": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+		"target": "http://192.168.90.224:8238/pms/OperationContract",
+		"modelCalls": 0,
+		"formalRuns": 0,
+		"businessWrites": 0,
+		"selectedStoreWrites": 0,
+		"privateSelectedProjectCopy": true,
+		"prebuiltServerSha256": "d4b557fa2c80fdf7c3fa31bb6b10e05906a48fb17048c657c6df091208074559",
+		"prebuiltDesktopSha256": "b386e560347412e007dd58e636cbc38f3149db56ae4a2502e5112a8693c14fde",
+		"limitations": [
+			"Actual Electron plugin HTTP path with native authState consumed in the test process, not an Agent business run",
+			"Private copy only; authoritative dynamic cache remains untouched",
+			"Account/route observations do not establish role, tenant or data readiness",
+			"No private recording, approved diagnostic or formal run"
+		],
+		"refresh": {
+			"ok": true,
+			"cached": false,
+			"scriptRunOk": true,
+			"dynamicTokenPersisted": true,
+			"parametersUnchanged": true,
+			"scriptUnchanged": true,
+			"contentRevisionPreserved": true,
+			"publicResponseContainsToken": false
+		},
+		"preparation": {
+			"status": "prepared-private-execution",
+			"authentication": "unknown",
+			"role": "unknown",
+			"data": "unknown",
+			"recording": "unsupported",
+			"currentDynamicTokenConsumed": true,
+			"nativeAuthStateScopeExpiryVerified": true,
+			"publicResponseContainsToken": false
+		},
+		"contexts": [
+			{
+				"kind": "anonymous",
+				"readRequests": 41,
+				"blockedWriteRequests": 0,
+				"blockedForeignRequests": 0,
+				"pageErrors": 0,
+				"httpErrors": 0,
+				"atTarget": false,
+				"atLogin": true,
+				"queryControlCount": 0,
+				"contextClosed": true
+			},
+			{
+				"kind": "desktop-refreshed-managed-token",
+				"readRequests": 30,
+				"blockedWriteRequests": 0,
+				"blockedForeignRequests": 0,
+				"pageErrors": 0,
+				"httpErrors": 0,
+				"atTarget": true,
+				"atLogin": false,
+				"queryControlCount": 1,
+				"accountMatched": true,
+				"contextClosed": true
+			}
+		],
+		"disconnectRemovedManagedState": true,
+		"privateRootRemoved": true,
+		"storeUnchanged": true,
+		"knownValuesAbsentFromPublicResult": true
+	},
+	"durable_project_documents": {
+		"document": {
+			"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-desktop-private-refresh-2026-10-26.md",
+			"sha256": "c1dd8d8002a634769750d23884f5c0f5d70dcecf4e90dcd08e31548e4608c91a",
+			"bytes": 2538
+		},
+		"snapshot": {
+			"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/desktop-refresh-1792992083192",
+			"files": [
+				{
+					"path": "plan.json",
+					"sha256": "982d90371c1f765eef0b063c3d0848ab2ea3a3f4480ff8c998ecbb20ec37e670",
+					"bytes": 869
+				},
+				{
+					"path": "result.json",
+					"sha256": "dc47b19e6457d73f45fe5cf3dc999bff40926c9cb85302c6db38c8eeb4afea63",
+					"bytes": 2273
+				},
+				{
+					"path": "harness.mjs",
+					"sha256": "8d91eb8de41940f8de8ba13b048cb60d5509601b665c1fb9c2fe6a72fa5184fd",
+					"bytes": 10439
+				},
+				{
+					"path": "source-index.json",
+					"sha256": "d904217060269fe886be6a7d301afbd6c730dab941cc49498e0a06b12324d3fe",
+					"bytes": 815
+				}
+			]
+		},
+		"storeUnchanged": true,
+		"application_document_index": "unsupported"
+	},
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-pms-desktop-refresh.tar.gz",
+		"sha256": "1e6fd39a446f0fcd5dfc3c66f548a43f8460a4bca6cc3768b18e086b92e9062d",
+		"bytes": 29965,
+		"files": 14,
+		"roundtrip_verified": true
+	},
+	"files": [
+		{
+			"path": "tests/scratch/ui-optimization-u00/archive-pms-desktop-refresh.py",
+			"sha256": "8c0b1263c85d148a8f02d5795c8c3d8c38120e689ce884796fac6a6cc36a0a56",
+			"bytes": 6707
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/pms-desktop-refresh.log",
+			"sha256": "00601b2b7cb9b8171c9569ca2e54577944cac8f6774231cd38675494aa22260f",
+			"bytes": 2377
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/verify-pms-desktop-refresh.mjs",
+			"sha256": "8d91eb8de41940f8de8ba13b048cb60d5509601b665c1fb9c2fe6a72fa5184fd",
+			"bytes": 10439
+		},
+		{
+			"path": "tests/scratch/ui-pms-desktop-refresh/1792992083192/.cleanup-keep",
+			"sha256": "4d1ed35f801de0e1ceef3b81ee733991fee413ce7c1ca8f64599c282e423caef",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-pms-desktop-refresh/1792992083192/data-space-documents.json",
+			"sha256": "495ed1a25c269905c47a30d2ddd5c52817e658127bd88192422af2f1f621a577",
+			"bytes": 1247
+		},
+		{
+			"path": "tests/scratch/ui-pms-desktop-refresh/1792992083192/harness.mjs",
+			"sha256": "8d91eb8de41940f8de8ba13b048cb60d5509601b665c1fb9c2fe6a72fa5184fd",
+			"bytes": 10439
+		},
+		{
+			"path": "tests/scratch/ui-pms-desktop-refresh/1792992083192/plan.json",
+			"sha256": "982d90371c1f765eef0b063c3d0848ab2ea3a3f4480ff8c998ecbb20ec37e670",
+			"bytes": 869
+		},
+		{
+			"path": "tests/scratch/ui-pms-desktop-refresh/1792992083192/result.json",
+			"sha256": "dc47b19e6457d73f45fe5cf3dc999bff40926c9cb85302c6db38c8eeb4afea63",
+			"bytes": 2273
+		},
+		{
+			"path": "tests/scratch/ui-pms-desktop-refresh/1792992083192/source-index.json",
+			"sha256": "d904217060269fe886be6a7d301afbd6c730dab941cc49498e0a06b12324d3fe",
+			"bytes": 815
+		},
+		{
+			"path": "tests/scratch/ui-pms-desktop-refresh/1792992083192/source/enable-data-space.mjs",
+			"sha256": "ba65d2cabff64a9a02d4258ea2458da8e19d8ecf55b01d1d3b856cc4b7f52cfc",
+			"bytes": 3145
+		},
+		{
+			"path": "tests/scratch/ui-pms-desktop-refresh/1792992083192/source/env-script.mjs",
+			"sha256": "fdac1fed80595def74638468fa17772579566f164bbf0d27624918e9e0bb4ba8",
+			"bytes": 16456
+		},
+		{
+			"path": "tests/scratch/ui-pms-desktop-refresh/1792992083192/source/native-app.mjs",
+			"sha256": "f5ce62b119a839d43d5ff5eb1984a03a548a4a3bde36de5875e1aaab3bcffeae",
+			"bytes": 3948
+		},
+		{
+			"path": "tests/scratch/ui-pms-desktop-refresh/1792992083192/source/plugin-index.mjs",
+			"sha256": "87dcb8bc9aa49bc1973c6ed10188a76e408d5cb74d3fdfec7ba6580dc86e7302",
+			"bytes": 28582
+		},
+		{
+			"path": "tests/scratch/ui-pms-desktop-refresh/1792992083192/source/private-browser-state.mjs",
+			"sha256": "d724170c23405074547e593dccf59a5ed3495251b5bb7496fe483317c096b997",
+			"bytes": 6884
+		}
+	]
+}

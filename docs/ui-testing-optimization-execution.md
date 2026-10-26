@@ -893,3 +893,19 @@ v2资产36386b98…及诊断计划d8d021b1…已冻结。新增模型调用0、�
 [真实私密状态对照证据](ui-testing-evidence/optimization-pms-private-comparison.json)归档10份公开文件及当时辅助/生产源码快照，逐成员回读一致。共享评审账本SHA与匿名诊断索引一致。本轮授权回复指向U00两份结果报告，不扩展为PMS匿名候选设计评审授权，也没有新增模型调用。预期及限制文档已保存实际Electron项目project-documents/OperationContract-private-state-comparison-2026-10-26.md，附5份公开快照，0600文件/0700目录并回读摘要；应用无文档索引，未宣称列表显示或新增正式用例。
 
 plan_update仍不可用，以第8节和本记录维护状态。下一步优先验证隔离私有副本中实际Electron环境刷新→受管准备→原生消费，再补角色/租户/隔离数据与录制隐私。匿名v2未获独立设计批准，正反诊断及正式运行继续待执行；U00连续基线/完整配对、U03/U07、M1/M2及整计划保持未完成。
+
+### U02 续跑：实际 Electron 刷新与受管引用消费（2026-10-26）
+
+前一对照证据提交e1b5175已成功推送origin/master；独立ls-remote查询超时，未把本地远端跟踪引用冒充独立核对。继续执行不依赖付费评审的实际插件环境准备；plan_update仍不可用。所选Electron项目/环境复制到工作区外0700私有根，仅保留该项目与环境，原参数/脚本/旧动态缓存不改；未复制个人模型配置或凭据，agent的auth/models为空。仅为该隔离profile写入已授权目标主机的网络许可，未覆盖个人授权配置。使用现有prebuilt真实Electron主进程/后端及原data-space0.17.0登记入口，不构建、不替换应用，不启动其他插件/调度任务。
+
+1792992083192通过正常鉴权renderer请求实际/plugins-api/data-space/env/refresh，force=true，ok=true/cached=false/scriptRun.ok=true。读取自有私有副本核验新token已持久化且有效、静态params/script不变、内容revision保持。再调用实际/automation prepare-private，只映射token→token，受管文件值与刷新缓存相同且仅有一个localStorage项；公开刷新及准备回执均不含token。
+
+按既有桌面回归做法，测试进程临时设置自己受管引用对应的私有路径，原生authState消费并校验工作区及origin/base URL/有效期，随后立即删除该环境变量。这个跨进程桥接属于验证辅助，未让公开接口返回私有路径，也不宣称Agent业务链已经运行。准备回执authentication/role/data仍unknown、recording仍unsupported，不拿后续账号观察改写该回执。
+
+真实浏览器两组新context仅允许同源GET/HEAD，不输入或提交表单，不保存DOM/截图/trace/响应正文。匿名41次读取，跳转/login、查询标记0；桌面刷新token组30次读取（含profile），停留经营合同目标、查询标记1、同浏览器账号比对matched。两组页面错误/HTTP错误/被阻止写入/外域均0；没有触发拒绝，不算守卫反例验证。后端刷新请求次数未单独计量，不据浏览器计数声称登录请求为零。模型调用0、正式批次0、业务写入0。
+
+实际插件disconnect后受管文件不存在；所有context、浏览器、自有Electron及整个私有根已结束/删除，验证进程code0，无残留自有监听进程。原store逐字节不变，原3条草稿和原动态缓存未改。结果文本对已知配置值、本轮token及URL编码/Base64检查未发现；不是通用录制隐私修复证明。
+
+[实际桌面刷新证据](ui-testing-evidence/optimization-pms-desktop-refresh.json)保存14份公开文件及相关生产源码快照，归档逐成员回读一致；评审账本摘要保持不变。实际项目project-documents新增OperationContract-desktop-private-refresh-2026-10-26.md及4份公开快照，0600/0700并回读校验；不宣称应用文档列表已显示或正式结果入库。
+
+本轮闭合“所选环境隔离副本的实际Electron插件刷新→缓存→准备→测试进程原生消费→路由/账号观察”子链，不替代原库动态刷新、个人Agent会话或完整发现到交付验收。业务角色/租户/隔离测试数据和私密录制仍未核验，匿名独立设计评审授权仍待答复，依赖它的正反诊断/正式执行保持待执行；U00连续基线/完整配对、U03/U07、M1/M2及整计划继续active。
