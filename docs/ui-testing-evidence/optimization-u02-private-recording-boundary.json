@@ -1,0 +1,328 @@
+{
+	"date": "2026-10-26",
+	"status": "REAL_SDK_MCP_LEAK_REPRODUCED_EARLY_FILTER_PROTOTYPE_DRAFT_PUBLICATION_BLOCKED",
+	"plan_complete": false,
+	"product_private_recording": "unsupported",
+	"modelCalls": 0,
+	"formalRuns": 0,
+	"modelReviewLedgerSha256": "34aaec3d27776ad96474be83f0be5a4eebe001fb41467afc69a4372c2b7e31ec",
+	"ledger_unchanged": true,
+	"baseline": {
+		"status": "SYNTHETIC_PRIVATE_RECORDING_LEAK_REPRODUCED",
+		"modelCalls": 0,
+		"formalRuns": 0,
+		"businessWrites": 0,
+		"fixtureRequests": 2,
+		"tools": [
+			{
+				"name": "generator_setup_page",
+				"available": true,
+				"containsSyntheticSecret": true,
+				"error": false,
+				"bytes": 188930
+			},
+			{
+				"name": "browser_snapshot",
+				"available": true,
+				"containsSyntheticSecret": false,
+				"error": false,
+				"bytes": 550
+			},
+			{
+				"name": "browser_take_screenshot",
+				"available": true,
+				"containsSyntheticSecret": false,
+				"error": false,
+				"bytes": 346082
+			},
+			{
+				"name": "generator_read_log",
+				"available": true,
+				"containsSyntheticSecret": false,
+				"error": false,
+				"bytes": 1911
+			},
+			{
+				"name": "browser_close",
+				"available": true,
+				"containsSyntheticSecret": false,
+				"error": false,
+				"bytes": 600
+			}
+		],
+		"findings": [
+			{
+				"surface": "sdk-full-output-file",
+				"containsSyntheticSecret": true,
+				"bytes": 165612
+			},
+			{
+				"surface": "workspace-media",
+				"path": "work/.playwright-mcp/page-2026-10-26T05-30-59-988Z.png",
+				"bytes": 129329
+			},
+			{
+				"surface": "workspace-file",
+				"path": "work/private-snapshot.md",
+				"containsSyntheticSecret": true,
+				"bytes": 165266
+			}
+		],
+		"limits": [
+			"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+			"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+		],
+		"ownedRawOutputsRemoved": true
+	},
+	"prototype": {
+		"protectedPrototype": true,
+		"status": "EARLY_TRANSPORT_AND_RAW_ROOT_ISOLATION_OBSERVED_DRAFT_PUBLICATION_BLOCKED",
+		"modelCalls": 0,
+		"formalRuns": 0,
+		"businessWrites": 0,
+		"fixtureRequests": 2,
+		"tools": [
+			{
+				"name": "generator_setup_page",
+				"available": true,
+				"containsSyntheticSecret": false,
+				"error": false,
+				"mediaBlocks": 0,
+				"bytes": 109930
+			},
+			{
+				"name": "browser_snapshot",
+				"available": true,
+				"containsSyntheticSecret": false,
+				"error": false,
+				"mediaBlocks": 0,
+				"bytes": 550
+			},
+			{
+				"name": "browser_take_screenshot",
+				"available": true,
+				"containsSyntheticSecret": false,
+				"error": false,
+				"mediaBlocks": 0,
+				"bytes": 1266
+			},
+			{
+				"name": "generator_read_log",
+				"available": true,
+				"containsSyntheticSecret": false,
+				"error": false,
+				"mediaBlocks": 0,
+				"bytes": 1927
+			},
+			{
+				"name": "generator_write_test",
+				"available": true,
+				"containsSyntheticSecret": false,
+				"error": true,
+				"mediaBlocks": 0,
+				"bytes": 608,
+				"errorSummary": "{\"toolCall\":{\"type\":\"toolCall\",\"id\":\"privacy-4/1\",\"name\":\"mcp__ui_playwright_test__generator_write_test\",\"arguments\":{\"fileName\":\"tests/generated.spec.ts\",\"code\":\"import {test} from '@playwright/test';test('generated',async()=>{});\"}},\"result\":{\"content\":[{\"type\":\"text\",\"text\":\"Error: Test file did not match any of the test dirs: ../work/tests\"}],\"details\":{\"server\":\"ui-playwright-test\",\"tool\":\"generator_write_test\"},\"structuredContent\":{\"content\":[{\"type\":\"text\",\"text\":\"Error: Test file did not match any of the test dirs: ../work/tests\"}],\"isError\":true},\"isError\":true},\"isError\":true,\"durationMs\":2}"
+			},
+			{
+				"name": "browser_close",
+				"available": true,
+				"containsSyntheticSecret": false,
+				"error": false,
+				"mediaBlocks": 0,
+				"bytes": 600
+			}
+		],
+		"findings": [
+			{
+				"surface": "sdk-full-output-file",
+				"containsSyntheticSecret": false,
+				"bytes": 86412
+			}
+		],
+		"limits": [
+			"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+			"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+		],
+		"rawProtocolRetainedPrivately": true,
+		"rawSnapshotRetainedPrivately": true,
+		"nativeDraftPublication": "blocked-by-private-root-versus-original-testDir",
+		"ownedRawOutputsRemoved": true
+	},
+	"historical_failures": ["1792992497662", "1792992549189"],
+	"prototype_v1_source_limitation": "Helper module was not snapshotted in 1792992936244; use fully snapshotted 1792993037758 for current conclusion",
+	"durable_project_documents": {
+		"document": {
+			"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-private-recording-boundary-2026-10-26.md",
+			"sha256": "ddfcc94231adce5bb387bd96ae21e75a6f14f800643c2fc06bf3ba493df89021",
+			"bytes": 3134
+		},
+		"snapshot": {
+			"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/private-recording-boundary-1792993037758",
+			"files": [
+				{
+					"path": "baseline-result.json",
+					"sha256": "6a3de87cdbb43b64deb91e38cde479b2cbea2ddb141c3a71d00826da50e75fe8",
+					"bytes": 1605
+				},
+				{
+					"path": "prototype-result.json",
+					"sha256": "360a931c512d084896d37655b63e0c2e0cde91794dc5705e793576040accd040",
+					"bytes": 2529
+				},
+				{
+					"path": "prototype-harness.mjs",
+					"sha256": "db020dd416c3ed29a7f5609216cd044185b0c6473cad0fbe048f20c1557dbd31",
+					"bytes": 10002
+				},
+				{
+					"path": "transport-prototype.mjs",
+					"sha256": "9b36c3d02a1df7f829a3dc5b1c3e56afe0d7e8b5bd2fd2fdb185b77394e43cb0",
+					"bytes": 2899
+				}
+			]
+		},
+		"storeUnchangedDuringDocumentSave": true,
+		"application_document_index": "unsupported"
+	},
+	"limits": [
+		"No product implementation or configuration changed",
+		"No real PMS recording or Electron privacy acceptance",
+		"Only known synthetic cookie variants; no arbitrary-encoding or rotating-credential proof",
+		"No protocol progress/error/cancellation/reconnect coverage",
+		"Only public summaries/source archived; owned raw synthetic payloads removed after observation"
+	],
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-u02-private-recording-boundary.tar.gz",
+		"sha256": "23c5677ffccf3a5a4c008a7bc02d6dc6e4ee9c71ddc2925f5a7d0c086a1f0efb",
+		"bytes": 13723,
+		"files": 25,
+		"roundtrip_verified": true
+	},
+	"files": [
+		{
+			"path": "tests/scratch/ui-optimization-u00/archive-private-recording-boundary.py",
+			"sha256": "b2407918819a380f291e401f0796cf239784d0c7c835d16cb54c0abe5ad62537",
+			"bytes": 8249
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-boundary-prototype-v2.log",
+			"sha256": "c8e1678d4aaad9ca1f84b0f4ae4c43a8d011c0aebcc745f0be0c66f66c789c4a",
+			"bytes": 2640
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-boundary-prototype.log",
+			"sha256": "e692e478a71af863088aa526decfa2662ce87e0f89bffb5aa67fe73e8c645f92",
+			"bytes": 2496
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-boundary-v2.log",
+			"sha256": "bd62b9ed395de60b27bacd3e99ee637d7afb2f1ca451aa9351f94347bb53111f",
+			"bytes": 1478
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-boundary-v3.log",
+			"sha256": "ccaf0bae03a6524a87c67d749a6afc574046ac81f0f4c1a78c5e5382af3cca0d",
+			"bytes": 1716
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-boundary.log",
+			"sha256": "502e5117b7bb13341510d11e26528038dd730027d116a3d70526d8b5e022dcd9",
+			"bytes": 1595
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-transport-prototype.mjs",
+			"sha256": "9b36c3d02a1df7f829a3dc5b1c3e56afe0d7e8b5bd2fd2fdb185b77394e43cb0",
+			"bytes": 2899
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/probe-private-recording-boundary.mjs",
+			"sha256": "db020dd416c3ed29a7f5609216cd044185b0c6473cad0fbe048f20c1557dbd31",
+			"bytes": 10002
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792992497662/.cleanup-keep",
+			"sha256": "ab880b18369654837c5402d5fe538cdb0fe3eb7c334f6b81fdadb72f1522c44e",
+			"bytes": 108
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792992497662/harness.mjs",
+			"sha256": "c11bfc5ad982971eb52cb523adce30faca915da04f29f4d4d5c49dc5aaec88cc",
+			"bytes": 7682
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792992497662/result.json",
+			"sha256": "2c5676cfed523af7a7a3ccbfcc2efc72a48d2476d1d3452fecccab7720384d74",
+			"bytes": 1484
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792992549189/.cleanup-keep",
+			"sha256": "ab880b18369654837c5402d5fe538cdb0fe3eb7c334f6b81fdadb72f1522c44e",
+			"bytes": 108
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792992549189/harness.mjs",
+			"sha256": "87019dc1754e4ac124f6166cd7ade5eb43811bbb1bfe223f155fa272835ae21a",
+			"bytes": 7897
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792992549189/result.json",
+			"sha256": "7d21472e82ff6e6da27683ff7da65f39c2a5ef6341e8f7ea789e7465d3078d08",
+			"bytes": 1367
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792992656512/.cleanup-keep",
+			"sha256": "ab880b18369654837c5402d5fe538cdb0fe3eb7c334f6b81fdadb72f1522c44e",
+			"bytes": 108
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792992656512/harness.mjs",
+			"sha256": "7b8e632ac07ade3e1dae2cb996fcaf256a1fffdc064635bbb750c33df4edc31f",
+			"bytes": 7922
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792992656512/result.json",
+			"sha256": "6a3de87cdbb43b64deb91e38cde479b2cbea2ddb141c3a71d00826da50e75fe8",
+			"bytes": 1605
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792992936244/.cleanup-keep",
+			"sha256": "ab880b18369654837c5402d5fe538cdb0fe3eb7c334f6b81fdadb72f1522c44e",
+			"bytes": 108
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792992936244/harness.mjs",
+			"sha256": "d5a73f712f839791d85ca85571e60e66a219923cae6778836a8379c37fac20d1",
+			"bytes": 9637
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792992936244/result.json",
+			"sha256": "0caf8ee7e9fe96b5180e196836307b0772f5c51ce7a57559d2df8f9c6997dd14",
+			"bytes": 2385
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792993037758/.cleanup-keep",
+			"sha256": "ab880b18369654837c5402d5fe538cdb0fe3eb7c334f6b81fdadb72f1522c44e",
+			"bytes": 108
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792993037758/data-space-documents.json",
+			"sha256": "cb7cba19d2247f8b1ccbecfb32951ed6acd3afaf0fb72780f61789db5e323765",
+			"bytes": 1318
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792993037758/harness.mjs",
+			"sha256": "db020dd416c3ed29a7f5609216cd044185b0c6473cad0fbe048f20c1557dbd31",
+			"bytes": 10002
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792993037758/result.json",
+			"sha256": "360a931c512d084896d37655b63e0c2e0cde91794dc5705e793576040accd040",
+			"bytes": 2529
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-boundary/1792993037758/transport-prototype.mjs",
+			"sha256": "9b36c3d02a1df7f829a3dc5b1c3e56afe0d7e8b5bd2fd2fdb185b77394e43cb0",
+			"bytes": 2899
+		}
+	]
+}

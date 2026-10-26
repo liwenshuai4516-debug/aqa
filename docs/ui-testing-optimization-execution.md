@@ -909,3 +909,25 @@ plan_update仍不可用，以第8节和本记录维护状态。下一步优先�
 [实际桌面刷新证据](ui-testing-evidence/optimization-pms-desktop-refresh.json)保存14份公开文件及相关生产源码快照，归档逐成员回读一致；评审账本摘要保持不变。实际项目project-documents新增OperationContract-desktop-private-refresh-2026-10-26.md及4份公开快照，0600/0700并回读校验；不宣称应用文档列表已显示或正式结果入库。
 
 本轮闭合“所选环境隔离副本的实际Electron插件刷新→缓存→准备→测试进程原生消费→路由/账号观察”子链，不替代原库动态刷新、个人Agent会话或完整发现到交付验收。业务角色/租户/隔离测试数据和私密录制仍未核验，匿名独立设计评审授权仍待答复，依赖它的正反诊断/正式执行保持待执行；U00连续基线/完整配对、U03/U07、M1/M2及整计划继续active。
+
+### U02 续跑：真实 SDK/MCP 私密录制泄露复现与隔离原型（2026-10-26）
+
+上一轮3e75844已推送并独立核对远端完整SHA一致，本轮开始仅有原.gitignore/db-client锁差异，clean预览无可清理项。读取ui-discover-record及SDK/Playwright实际入口，继续A02-5；plan_update不可用，阶段记录延续第8节。没有产品源码修改、个人安装变更或付费调用。
+
+先以真实SDK嵌套工具管线ctx.executeTool调用Playwright1.62.1测试MCP，不使用直接浏览器脚本替代MCP行为。隔离agent配置为空认证、ModelRuntime调用方法显式拒绝；本机18983合成页面反射本轮随机cookie值，seed加载工作区外0600 storageState并检查cookie存在。本轮没有读取真实PMS账号或调用目标服务，没有启动正式runner。匿名候选评审继续等待其范围授权，不挪用旧U05额度。
+
+准备历史完整保留：1792992497662未指定snapshot.filename，虽然setup及SDK临时输出已含合成值，但没有形成所断言的工作区文本文件；截图因缺显式scale、close缺intent被SDK参数校验拒绝，原脚本以失败结束。1792992549189对只读snapshot/screenshot误加intent，再次被参数校验拒绝，仍不能算完整复现。根据实际工具schema修正：snapshot显式filename、screenshot显式scale=css，只对close加intent；没有改被测SDK/MCP实现或降低私密断言。
+
+1792992656512完整复现：setup公开outcome含合成秘密，SDK在结果钩子之前保存165612字节原文临时文件；snapshot成功写165266字节private-snapshot.md，文件含合成值；默认截图成功写工作区.playwright-mcp，媒体大小129329字节。setup/snapshot/screenshot/read_log/close均正常返回，fixture收到2次请求。截图没有OCR，文本字节扫描未命中不代表图像安全。该实验把上一轮静态源码风险升级为真实SDK/MCP复现，不据此宣称已完成修复。
+
+随后验证公开createMcpExtension.createTransport扩展点。临时原型使用原StdioTransport和目标工作区CLI/config，SDK收到消息之前递归脱敏已知cookie、私有state路径及捕获根的原文/JSON/URL/Base64形式，拦截媒体/资源，错误/stderr也经过同一已知值过滤；原始协议另外写私有目录。仅在隔离会话将roots回复改为私有捕获根，未修改node_modules、SDK或Playwright源码，不注册到产品或用户配置。原型并未证明所有协议分支安全。
+
+1792992936244初步观察早期过滤和输出迁移成立，但当时未保存辅助模块快照，因此只保留当时harness/result，不能将后续辅助源码当作当时精确版本。1792993037758补回现有seed静态收集钩子并保存完整原型源码，作为当前结论：setup/snapshot/screenshot/read_log/close正常，公开outcome没有已知合成秘密或媒体块；SDK仍产生86412字节长输出，但回读不含已知秘密；公开工作区没有相同秘密或图片。私有原始协议和snapshot检查仍包含原文，证明不是删除浏览器内容或掩盖初始输入来获得通过。
+
+同轮实际调用generator_write_test失败，错误为“Test file did not match any of the test dirs: ../work/tests”。Playwright的clientInfo.cwd同时影响原始输出根和原生草稿写入边界；直接迁移roots无法满足完整录制。保留该失败，不放宽writer守卫、不改写成功状态、不用手工草稿替代原生生成。原型状态明确为EARLY_TRANSPORT_AND_RAW_ROOT_ISOLATION_OBSERVED_DRAFT_PUBLICATION_BLOCKED，而非产品私密录制已可用。
+
+全部五轮模型调用0、正式批次0、真实业务写入0；每轮自有SDK会话、浏览器/MCP子进程、合成HTTP服务、SDK输出临时文件和私有临时根已清理，仅移除本轮合成payload，保留公开摘要/源码/失败日志。未保留可直接回读的原始合成payload，不将摘要当完整原始捕获；没有接触真实目标原库或真实私密录制。
+
+[私密录制边界证据](ui-testing-evidence/optimization-u02-private-recording-boundary.json)归档25份公开文件，逐成员回读一致；共享评审账本摘要与桌面刷新索引一致。实际Electron所选项目project-documents保存OperationContract-private-recording-boundary-2026-10-26.md及4份公开快照，0600/0700、回读摘要一致，文档保存前后store字节不变；不声明应用文档索引显示或测试结果入库。
+
+下一步需分离原始捕获根与原生草稿发布，继续保留配置/seed来源和作用域；再验证嵌套JSON存储、运行中新凭据、进度/错误/媒体/文件链接、取消/重连及Electron接入。只过滤已知cookie、迁移root仍不足以开放通用私密录制。真实业务角色/租户/数据、匿名独立设计评审/正反诊断/正式运行、U00连续基线/成对计量、U03/U07及M1/M2仍未完成，整目标保持active。
