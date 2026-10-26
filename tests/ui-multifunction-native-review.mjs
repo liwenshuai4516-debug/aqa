@@ -84,7 +84,17 @@ try {
 					ledger.attempts.reduce((n, a) => n + a.reserved_usd, 0) + reserved <= ledger.max_cost_usd,
 					"Review cost ceiling reached",
 				);
+				const grant = operation === "result-review" ? ledger.result_review_authorization : undefined;
+				if (grant?.max_cost_usd !== undefined) {
+					const used = ledger.attempts.filter((a) => a.authorization_id === grant.authorization_id);
+					assert.ok(used.length < grant.max_calls, "Report grant call ceiling reached");
+					assert.ok(
+						used.reduce((n, a) => n + a.reserved_usd, 0) + reserved <= grant.max_cost_usd,
+						"Report grant cost ceiling reached",
+					);
+				}
 				const attempt = {
+					...(grant ? { authorization_id: grant.authorization_id, purpose: operation } : {}),
 					number: ledger.attempts.length + 1,
 					provider: model.provider,
 					model: model.id,
@@ -156,7 +166,12 @@ try {
 		} else {
 			const authorization = ledger.result_review_authorization;
 			assert.ok(authorization, "Explicit report review reallocation required");
-			assert.deepEqual(revision.report.report_ref, authorization.report_ref);
+			assert.ok(
+				(authorization.report_refs ?? [authorization.report_ref]).some(
+					(ref) => ref.path === revision.report.report_ref.path && ref.sha256 === revision.report.report_ref.sha256,
+				),
+				"Report must match the explicitly authorized subject",
+			);
 			assert.ok(
 				ledger.native_attempts.filter(
 					(a) => a.purpose === "result-review" && a.authorization_id === authorization.authorization_id,

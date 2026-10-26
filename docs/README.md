@@ -118,3 +118,5 @@ UI 子进程/API基准观察：`tests/ui-approved-baseline-measure.mjs <获批�
 UI 获批产物桌面归档：`tests/ui-approved-archive-desktop-test.mjs`，复用原独立批准的六功能正式批次，验证隔离Electron映射/同步/重启恢复；见 [执行记录](ui-testing-optimization-execution.md)。
 
 UI 首次候选计量：`tests/ui-function-discovery-test.mjs --complete-candidate --measure`；范围和未测项见 [优化执行记录](ui-testing-optimization-execution.md)。
+
+UI 失败分析与子集重跑：`tests/ui-failed-batch-baseline.mjs`；[获批报告证据](ui-testing-evidence/optimization-u00-failed-rerun.json)保留原失败、报告修订及独立评审。

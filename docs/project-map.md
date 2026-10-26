@@ -148,3 +148,5 @@ UI 获批结果桌面验证：`tests/ui-approved-archive-desktop-test.mjs` 在�
 UI 认证轮换回归：`tests/ui-private-evidence-test.mjs --rotated-cookie` 使用运行时新签发的合成Cookie，验证公开日志/trace/附件脱敏，保留真实passed/failed及资源缺口。
 
 PMS 私有环境准备：`tests/ui-pms-private-preparation.mjs --refresh` 对用户选定的 Electron 项目复用声明式登录脚本；`tests/lib/pms-private-session.mjs` 生成临时原生认证引用并清理。仅测试入口，不是已安装的 Agent 能力，不执行浏览器或改写数据空间原库。
+
+UI 失败链基准：`tests/ui-failed-batch-baseline.mjs` 复用获批六功能资产，验证原生失败分析和仅失败项重跑；`--continue-from` 复用已保存父批次，结果评审另用显式授权，不将子集通过替代原失败。

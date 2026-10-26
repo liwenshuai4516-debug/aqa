@@ -440,3 +440,5 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 - `tests/ui-approved-archive-desktop-test.mjs`：已获独立批准的六功能证据在真实Electron中的归档/绑定/同步/重启检查；需要预建应用，不执行目标或新增评审。
 
 UI 认证轮换回归：`tests/ui-private-evidence-test.mjs --rotated-cookie` 使用运行时新签发的合成Cookie，验证公开日志/trace/附件脱敏，保留真实passed/failed及资源缺口。
+
+- `tests/ui-failed-batch-baseline.mjs`：既有六功能资产的失败批次、原生 trace 分析和仅失败项重跑；支持从已保存失败回执续跑，付费独立结果评审及交付另行登记。
