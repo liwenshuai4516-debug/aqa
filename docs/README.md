@@ -109,3 +109,5 @@ Agent评估离线导入依据与当前边界见 [EC05记录](agent-evaluation-ev
 [EC04 实际SDK工具人审边界](agent-evaluation-evidence/EC04-tool-channel-diagnostics.json)：本地确定性SSE驱动实际Electron/SDK，get正对照、两种review输入schema拒绝及可信UI只追加一条review；无真实模型调用，不替代性能或完整M1验收。
 
 EC04 规则扩展补验：`tests/agent-evaluation-desktop-test.mjs --rule-upgrade`使用`tests/fixtures/agent-evaluation/rule-upgrade.mjs`，在自有profile追加纯规则、V1/V2并存、精确重评和无数据空间F07；原执行器/注册表/引擎/存储不替换，合成调用历史不冒充真实执行，见[证据](agent-evaluation-evidence/EC04-rule-upgrade-diagnostics.json)。
+
+EC04 双任务补验：`tests/agent-evaluation-desktop-test.mjs --task-scope`使用`tests/fixtures/agent-evaluation/task-scope.mjs`生成同会话两个合成任务，经实际界面核对选区、空业务条件诊断、原请求回执重放及独立重评；零真实工具/模型调用，见[证据](agent-evaluation-evidence/EC04-task-scope-diagnostics.json)。

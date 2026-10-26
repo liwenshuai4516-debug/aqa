@@ -146,3 +146,5 @@ EC04工具通道补验：`tests/agent-evaluation-native-desktop-test.mjs --tool-
 EC04实际执行多页：`tests/agent-evaluation-ui-matrix-test.mjs`复用原UI诊断/正式runner和data-space夹具，产生41条真实本地混合结果；原生桌面跑器逐行核对分页与历史读取边界，见[证据](agent-evaluation-evidence/EC04-executed-matrix-diagnostics.json)。
 
 EC04 规则扩展补验：`tests/agent-evaluation-desktop-test.mjs --rule-upgrade`使用`tests/fixtures/agent-evaluation/rule-upgrade.mjs`，在自有profile追加纯规则、V1/V2并存、精确重评和无数据空间F07；原执行器/注册表/引擎/存储不替换，合成调用历史不冒充真实执行，见[证据](agent-evaluation-evidence/EC04-rule-upgrade-diagnostics.json)。
+
+EC04 双任务补验：`tests/agent-evaluation-desktop-test.mjs --task-scope`使用`tests/fixtures/agent-evaluation/task-scope.mjs`生成同会话两个合成任务，经实际界面核对选区、空业务条件诊断、原请求回执重放及独立重评；零真实工具/模型调用，见[证据](agent-evaluation-evidence/EC04-task-scope-diagnostics.json)。

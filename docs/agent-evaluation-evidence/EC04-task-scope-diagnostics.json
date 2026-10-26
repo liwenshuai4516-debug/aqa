@@ -1,0 +1,216 @@
+{
+	"scope": "EC04 AC01 actual Electron same-session task selection, no-business-conditions diagnostics, exact request replay and independent re-scoring",
+	"timestamp": "2026-10-26T02:13:43.430185+00:00",
+	"baseline": "92cae7d8eedf74e323b556a4ff18c24096b4e8bd",
+	"pluginVersion": "0.4.27",
+	"productCodeChanged": false,
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-task-scopes/index.json",
+		"bytes": 160061,
+		"sha256": "d9b7ca0a4cf3c6bd7dcfe66709452d69953b90639776459d3fbb1415ec02ea9b"
+	},
+	"archiveFiles": 678,
+	"actualDesktop": {
+		"status": "PASS",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-iV2aSW",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-task-scopes/files/desktop-final/result.json",
+			"bytes": 8821,
+			"sha256": "77216a82799a597ef38ef0a4e33150d0e65187793df35b9763aee7450300bd96"
+		},
+		"taskScope": {
+			"sourceChecks": [
+				{
+					"task": "A",
+					"report": {
+						"kind": "evaluations",
+						"id": "d9e0ef5e-cfed-44a1-893f-6e5e2b2ea371",
+						"revision": 1
+					},
+					"sourceLocators": [
+						"pi:evaluation-two-tasks#A-user",
+						"pi:evaluation-two-tasks#A-call",
+						"pi:evaluation-two-tasks#A-result"
+					]
+				},
+				{
+					"task": "B",
+					"report": {
+						"kind": "evaluations",
+						"id": "9ca92308-ac22-4611-b6b2-aa1e0ee10521",
+						"revision": 1
+					},
+					"sourceLocators": [
+						"pi:evaluation-two-tasks#B-user",
+						"pi:evaluation-two-tasks#B-call",
+						"pi:evaluation-two-tasks#B-result"
+					]
+				}
+			],
+			"replayChecks": [
+				{
+					"action": "createContract",
+					"requestId": "40d9c51e-e6af-412d-a21b-563838e368a2",
+					"sameReceipt": true
+				},
+				{
+					"action": "createAttempt",
+					"requestId": "47f774a9-0171-4205-ab70-92a672c69a7f",
+					"sameReceipt": true
+				},
+				{
+					"action": "collect",
+					"requestId": "7046e29d-b9b3-4d80-951b-7e21b37f8bcf",
+					"sameReceipt": true
+				},
+				{
+					"action": "seal",
+					"requestId": "b003aa42-27dc-4299-b793-804c2cc4c7a3",
+					"sameReceipt": true
+				},
+				{
+					"action": "evaluate",
+					"requestId": "31021415-f553-4ec0-84df-5c16a4991e38",
+					"sameReceipt": true
+				}
+			],
+			"rescored": [
+				{
+					"kind": "evaluations",
+					"id": "7b2915d3-0606-4c6f-a080-eb0a35965e9a",
+					"revision": 1
+				},
+				{
+					"kind": "evaluations",
+					"id": "0ad8ba76-df3d-4386-98e5-ced17b3eea0f",
+					"revision": 1
+				}
+			],
+			"concurrentRequests": 2,
+			"goalWithoutConditions": "undetermined",
+			"timingWithoutMonotonicEvidence": null,
+			"repeatedAttemptReceipt": {
+				"kind": "attempts",
+				"id": "25d08d89-3083-4ce1-9897-4e32b609f686",
+				"revision": 1
+			},
+			"originalReportsUnchanged": true,
+			"reScoringCreatedAttempts": 0,
+			"reScoringCreatedSnapshots": 0,
+			"replayCreatedAttempts": 0,
+			"actualModelCalls": 0,
+			"actualToolExecutions": 0,
+			"provenance": "Actual desktop UI selects two tasks in one seeded SDK session; original service/engine/store unchanged. Synthetic tool history, no business/model execution."
+		},
+		"checks": [
+			"One seeded SDK session, two tasks selected through actual UI A-user→A-result and B-user→B-result. Each snapshot contains exactly its own three source locators and one observed successful synthetic tool lifecycle.",
+			"No business conditions/artifact paths required. Goal undetermined and F08 inconclusive; missing monotonic timing/model thinking remain null. Independently read sealed F08 agent unknownCalls=1 and actual currency subtotals empty; missing usage is not zero cost.",
+			"Replayed original createContract/createAttempt/collect/seal/evaluate exact keys through trusted desktop socket: same refs/job and full evaluation store names+SHA256 map unchanged.",
+			"Two evaluate requests submitted together, each returns a distinct report for its own unchanged contract/config/snapshot; actual UI reopens both. No claim of simultaneous active engine execution.",
+			"Original report bytes unchanged, same-key attachment receipt replay creates no attempt/snapshot. No actual reexecution tested.",
+			"Primary desktop diagnosis, human review/export, revision/configuration, settings/slash/reload, language/theme/narrow layout, offline import and full native restart also executed."
+		],
+		"sealedEfficiencyReadback": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-task-scopes/files/sealed-efficiency-readback.json",
+			"bytes": 6579,
+			"sha256": "d625554d359944a21eef5b70accd336f058640c3617dcf4d590fb1abf88046bb"
+		}
+	},
+	"registeredSource": {
+		"status": "PASS",
+		"trackedFiles": 29,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-task-scopes/files/registered-plugin-files.json",
+			"bytes": 4146,
+			"sha256": "82d708727a1dee3f14ae2dbc76bb05790793ca7994a88a82fbf53cacac31e662"
+		},
+		"scope": "All tracked installed plugin ESM/resource bytes match repository; no production injection or separate tracked bundle."
+	},
+	"verification": {
+		"units": {
+			"status": "PASS",
+			"files": 4,
+			"tests": 82,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-task-scopes/files/unit.log",
+				"bytes": 226,
+				"sha256": "48e029b7b19e61fa16dc49f4a3217f27861e3be3119204aabafbda1e23334296"
+			}
+		},
+		"typecheck": {
+			"status": "PASS",
+			"configurations": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-task-scopes/files/typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"lint": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-task-scopes/files/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-task-scopes/files/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"limitation": "Protocol33/type-only checks passed; historical git-tag heuristic SKIP because no tag available."
+		},
+		"i18n": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-task-scopes/files/i18n.log",
+				"bytes": 615,
+				"sha256": "80312d8da86db05c5343b06b015ff85dbb3f374e280ecc1b044c87014878d1cd"
+			}
+		}
+	},
+	"retainedFailures": [
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-task-scopes/files/desktop-initial/result.json",
+				"bytes": 6512,
+				"sha256": "c0b6d1d0ce5f0bd51aa54d11ebb8d0e314f457e2bccaa664cb7abd1419960096"
+			},
+			"cause": "Fixture incorrectly filtered nonexistent domain.sessionId. Fixed using actual contract scope and contractRef identities; product unchanged."
+		},
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-task-scopes/files/desktop-replay-initial/result.json",
+				"bytes": 6964,
+				"sha256": "7af14744f3dcb9204f928b939395c67509914215562a70f01062cdd629decb7e"
+			},
+			"cause": "Fixture assumed checkpoints/packs directories. Replaced with traversal and SHA256 of every actual store file; product unchanged."
+		},
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-task-scopes/files/desktop-source-wait-initial/result.json",
+				"bytes": 7355,
+				"sha256": "bb70962fbe5068d95da00712c6e535cec6dae1b49d5c7f451720853fe7852913"
+			},
+			"cause": "Fixture skipped refresh while back/list operation busy, leaving stale source choices. Wait for enabled refresh and confirmed current source before creation; product unchanged."
+		}
+	],
+	"notExecuted": [
+		"Ambiguous historical selection-snapshot precision UI path and actual reexecution/previousAttempt relation remain unverified.",
+		"No full role/identity/rollback/scale/long-evidence matrix re-run; no formal performance rerun.",
+		"No real model/CLI/tool/business execution. Seeded call history does not establish actual tools, timing or supplier billing."
+	],
+	"remaining": [
+		"EC04/M1 and overall goal incomplete; AC39 collection performance still FAIL.",
+		"EC06 detached child containment remains unresolved; dependent execution held.",
+		"EC08 real CLI/model tests deferred by user."
+	]
+}

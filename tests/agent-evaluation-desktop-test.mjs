@@ -23,6 +23,8 @@ import { longEvidenceText, verifyEvidenceMatrix } from "./fixtures/agent-evaluat
 import { installRollbackFixture, verifyRollback } from "./fixtures/agent-evaluation/rollback.mjs";
 import { verifyScale } from "./fixtures/agent-evaluation/scale.mjs";
 import { installRuleUpgradeProbe, verifyRuleUpgrade } from "./fixtures/agent-evaluation/rule-upgrade.mjs";
+import { installTaskScopeFixture, verifyTaskScope } from "./fixtures/agent-evaluation/task-scope.mjs";
+const taskScope = process.argv.includes("--task-scope");
 const ruleUpgrade = process.argv.includes("--rule-upgrade");
 assert.ok(
 	!ruleUpgrade || !process.argv.some((arg) => ["--scale", "--rollback", "--active-jobs"].includes(arg)),
@@ -106,6 +108,7 @@ const activeJobProbe = process.argv.includes("--active-jobs")
 const ruleUpgradeProbe = ruleUpgrade
 	? await installRuleUpgradeProbe(repo, dataDir, agentDir, output, workspace)
 	: undefined;
+const taskScopeFixture = taskScope ? await installTaskScopeFixture(agentDir, workspace) : undefined;
 const reservation = createServer().listen(0, "127.0.0.1");
 await once(reservation, "listening");
 const port = reservation.address().port;
@@ -1046,6 +1049,10 @@ try {
 			settings,
 			closeSettings,
 		});
+	}
+	if (taskScopeFixture) {
+		stage("same-session task scopes and efficiency-only diagnosis");
+		result.taskScope = await verifyTaskScope({ page, fixture: taskScopeFixture, dataDir, output, until });
 	}
 	stage("development URL cannot acquire the native identity");
 	await writeFile(join(output, "app-restarted-process.log"), app.getLogs());
