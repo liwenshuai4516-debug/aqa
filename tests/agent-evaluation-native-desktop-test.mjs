@@ -170,8 +170,8 @@ try {
 	await until(() => page.evaluate(() => window.__nativeFrames.some((f) => f.type === "ready")));
 	const setup = page.locator(".setup-modal .modal-close");
 	if (await setup.isVisible()) await setup.click();
-	assert.match(app.getLogs(), /\[plugin:agent-evaluation\] activated \(v0\.4\.31\)/);
-	result.pluginVersion = "0.4.31";
+	assert.match(app.getLogs(), /\[plugin:agent-evaluation\] activated \(v0\.4\.32\)/);
+	result.pluginVersion = "0.4.32";
 	async function rpc(action, data = {}, expectedError = undefined, targetPage = page) {
 		const requestId = crypto.randomUUID();
 		await targetPage.evaluate((m) => window.__nativeSocket.send(JSON.stringify(m)), {
@@ -247,7 +247,7 @@ try {
 		await peer.waitForSelector(".app");
 		await peer.addInitScript(captureFrames);
 		await peer.reload();
-		await until(() => peer.evaluate(() => window.__nativeFrames.some((frame) => frame.type === "ready")));
+		await peer.waitForFunction(() => window.__nativeFrames?.some((frame) => frame.type === "ready"));
 		assert.notEqual(
 			await peer.evaluate(() => sessionStorage.getItem("pi-web-client-id")),
 			await page.evaluate(() => sessionStorage.getItem("pi-web-client-id")),
@@ -532,6 +532,7 @@ try {
 					["inspectNativeRun", { ref: nativeRef }],
 					["export", { ref: status.reportRef }],
 					["collect", { ref: attempt }],
+					["status", { jobId: originalReport.data.job.jobId }],
 					[
 						"get",
 						{
@@ -562,6 +563,7 @@ try {
 					visible.items.some((row) => row.id === status.reportRef.id),
 					false,
 				);
+				assert.deepEqual((await rpc("list", { ...selected, kind: "jobs" })).items, []);
 				assert.deepEqual(await nativeMatrixFiles(join(dataDir, "agent-evaluation")), storeBefore);
 				assert.equal(await readFile(reportFile, "utf8"), before);
 				probes.push({
@@ -600,7 +602,7 @@ try {
 				engine,
 				synthetic: source.synthetic,
 				accessProbes: probes.length,
-				rejectedPerProbe: 9,
+				rejectedPerProbe: 10,
 				oldReportAbsentFromList: true,
 				entireStoreUnchanged: true,
 				originalSourceReopened: true,
@@ -632,6 +634,7 @@ try {
 				["inspectNativeRun", { ref: nativeRef }],
 				["export", { ref: status.reportRef }],
 				["collect", { ref: attempt }],
+				["status", { jobId: originalReport.data.job.jobId }],
 				[
 					"get",
 					{
@@ -647,6 +650,7 @@ try {
 			])
 				rejected.push({ action, reply: await peerRpc(action, { ...selectedBound, ...data }, "PERMISSION_DENIED") });
 			const visible = await peerRpc("list", { ...selectedBound, kind: "evaluations" });
+			assert.deepEqual((await peerRpc("list", { ...selectedBound, kind: "jobs" })).items, []);
 			assert.equal(
 				visible.items.some((row) => row.id === status.reportRef.id),
 				false,
@@ -698,7 +702,7 @@ try {
 				synthetic: source.synthetic,
 				secondWindowDifferentPrincipal: true,
 				sameWorkspaceAndSDKSession: true,
-				rejected: 9,
+				rejected: 10,
 				entireStoreUnchanged: true,
 				originalOwnerRecovered: true,
 			});

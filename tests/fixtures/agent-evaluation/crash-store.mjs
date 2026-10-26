@@ -98,7 +98,7 @@ export async function verifyCrashStore({
 				window.__crashFrames.some(
 					(f) =>
 						f.type === "plugins" &&
-						f.plugins.some((p) => p.id === "agent-evaluation" && p.active && p.version === "0.4.31"),
+						f.plugins.some((p) => p.id === "agent-evaluation" && p.active && p.version === "0.4.32"),
 				),
 			),
 		);
@@ -413,7 +413,78 @@ ${reportNeedle}`,
 		const back = page.locator('.aev [data-action="back"]');
 		if (await back.isVisible()) await back.click();
 		await page.locator('.aev [data-action="refresh"]:not([disabled])').click();
-		await page.locator(`.aev [data-action="open"][data-id="${original.id}"]:not([disabled])`).click();
+		if (reportCrash) {
+			for (let refresh = 0; refresh < 2; refresh++) {
+				await page.locator('.aev [data-action="jobs"]:not([disabled])').click();
+				await page.locator(".aev [data-jobs]").waitFor();
+				let pages = 0;
+				const openJob = page.locator(`.aev [data-action="job-open"][data-id="${interruptedJob.id}"]:not([disabled])`);
+				while (!(await openJob.isVisible())) {
+					assert.ok(++pages < 100, "Interrupted job must be discoverable in bounded pages");
+					await page.locator('.aev [data-action="jobs-next"]:not([disabled])').click();
+				}
+				await openJob.click();
+				const card = page.locator(`.aev [data-job="${interruptedJob.id}"]`);
+				await until(async () => (await card.innerText()).includes("Unknown"));
+				assert.ok((await card.innerText()).includes("not automatically replayed"));
+				assert.equal(await card.locator('[data-action="cancel"]').count(), 0);
+				await card.locator('[data-action="status"]:not([disabled])').click();
+				await page.locator(`.aev [data-job="${interruptedJob.id}"] [data-action="status"]:not([disabled])`).waitFor();
+				await page.screenshot({ path: join(directory, `unknown-job-discovered-${refresh}.png`) });
+				if (!refresh) await page.locator('.aev [data-action="refresh"]:not([disabled])').click();
+			}
+			await page.evaluate(() => {
+				document.documentElement.lang = "zh-CN";
+			});
+			const card = page.locator(`.aev [data-job="${interruptedJob.id}"]`);
+			await until(async () => (await card.innerText()).includes("不会自动重放"));
+			await page.emulateMedia({ reducedMotion: "reduce" });
+			await page.setViewportSize({ width: 375, height: 812 });
+			await page.locator(".aev").evaluate((el) => {
+				el.style.fontSize = "24px";
+			});
+			assert.equal(await page.locator(".aev").evaluate((el) => el.scrollWidth <= el.clientWidth), true);
+			await page.screenshot({ path: join(directory, "unknown-job-zh-narrow.png") });
+			await page.evaluate(
+				() =>
+					new Promise((resolve, reject) => {
+						const link = document.createElement("link");
+						link.rel = "stylesheet";
+						link.href = "/themes/white.css";
+						link.id = "job-light-test";
+						link.onload = resolve;
+						link.onerror = reject;
+						document.head.append(link);
+					}),
+			);
+			await page.screenshot({ path: join(directory, "unknown-job-zh-light.png") });
+			await page.evaluate(() => {
+				document.getElementById("job-light-test").remove();
+				document.documentElement.lang = "en";
+			});
+			await page.locator(".aev").evaluate((el) => {
+				el.style.fontSize = "";
+			});
+			await page.setViewportSize({ width: 1280, height: 850 });
+			await page.emulateMedia({ reducedMotion: "no-preference" });
+			await until(async () => (await card.innerText()).includes("not automatically replayed"));
+			result.interruptedJob.desktopDiscovery = {
+				afterNativeRestart: true,
+				afterRefresh: true,
+				languages: ["en", "zh-CN"],
+				themes: ["dark", "white stylesheet"],
+				narrowWidth: 375,
+				simulatedTextSizePx: 24,
+				reducedMotion: true,
+				queriedState: "unknown",
+				cancellationOffered: false,
+				scoringReplayed: false,
+			};
+		}
+		if (reportCrash) {
+			await page.locator(`.aev [data-action="job-open"][data-id="${original.data.job.jobId}"]:not([disabled])`).click();
+			result.interruptedJob.desktopDiscovery.completedJobOpensOriginalReport = true;
+		} else await page.locator(`.aev [data-action="open"][data-id="${original.id}"]:not([disabled])`).click();
 		await until(async () =>
 			(await page.locator(".aev section h2").first().innerText()).includes(contract.data.objective),
 		);

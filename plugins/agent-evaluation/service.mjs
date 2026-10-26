@@ -389,6 +389,23 @@ export class EvaluationService {
 				return this.watchStatus(entry);
 			}
 			case "list": {
+				if (request.kind === "jobs") {
+					requireValue(!request.ref, "INVALID_INPUT", "Job listing does not accept a report filter");
+					return store.list(
+						context,
+						{ kind: "evidence", cursor: request.cursor ?? "", limit: request.limit ?? 50 },
+						(record, read) => {
+							const attempt = read(record.data.attemptRef),
+								contract = read(attempt.data.contractRef);
+							return {
+								jobId: record.id,
+								createdAt: record.createdAt,
+								objectivePreview: contract.data.objective.slice(0, 160),
+							};
+						},
+						(record) => record.data.kind === "evaluation-job" && record.data.producer === "evaluation-engine-v1",
+					);
+				}
 				if (request.ref) store.get(context, request.ref);
 				const page = store.list(
 					context,

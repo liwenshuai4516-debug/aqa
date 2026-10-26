@@ -418,6 +418,7 @@ export class EvaluationStore {
 		context,
 		{ kind = "contracts", cursor = "", limit = 50 } = {},
 		project = (record, _read) => ({ ...recordRef(record), createdAt: record.createdAt, digest: record.digest }),
+		accept = undefined,
 	) {
 		const identity = this.identity(context);
 		const freshBudget = () => ({
@@ -442,7 +443,14 @@ export class EvaluationStore {
 		const items = [],
 			keys = [...this.index.keys()].filter((k) => k.startsWith(`${kind}/`) && k > cursor).sort();
 		let last = cursor;
+		const started = performance.now();
 		for (const k of keys) {
+			if (accept)
+				requireValue(
+					performance.now() - started <= this.limits.readMs,
+					"LIMIT_EXCEEDED",
+					"Filtered list deadline exceeded",
+				);
 			last = k;
 			let record;
 			try {
@@ -460,9 +468,16 @@ export class EvaluationStore {
 				if (error.code !== "PERMISSION_DENIED") throw error;
 				continue;
 			}
+			if (accept && !accept(record)) continue;
 			items.push(project(record, read));
 			if (items.length === limit) break;
 		}
+		if (accept)
+			requireValue(
+				performance.now() - started <= this.limits.readMs,
+				"LIMIT_EXCEEDED",
+				"Filtered list deadline exceeded",
+			);
 		return { items, nextCursor: keys.some((k) => k > last) ? last : null };
 	}
 	lookupRequest(context, requestId) {

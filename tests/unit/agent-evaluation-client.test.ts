@@ -137,6 +137,81 @@ async function openReport() {
 	return { root, h, records, contractRef, snapshotRef, reportRef };
 }
 describe("evaluation client lifecycle", () => {
+	it("finds interrupted jobs after refresh and queries unknown state without replay or cancellation", async () => {
+		const { root, h, reportRef } = await openReport();
+		const original = h.ctx.send;
+		h.ctx.send = (message: any) => {
+			if (message.action === "list" && message.kind === "jobs") {
+				h.sent.push(message);
+				queueMicrotask(() =>
+					h.reply(message, {
+						items: [
+							{
+								jobId: message.cursor ? "completed" : "interrupted",
+								createdAt: "2026-10-26",
+								objectivePreview: "<img> Interrupted objective",
+							},
+						],
+						nextCursor: message.cursor ? null : "evidence/next",
+					}),
+				);
+			} else if (message.action === "status") {
+				h.sent.push(message);
+				queueMicrotask(() =>
+					h.reply(message, {
+						jobId: message.jobId,
+						state: message.jobId === "completed" ? "completed" : "unknown",
+						...(message.jobId === "completed" ? { reportRef } : {}),
+						error: "Interrupted scoring is not automatically replayed",
+					}),
+				);
+			} else original(message);
+		};
+		root.querySelector<HTMLButtonElement>("[data-action=back]")!.click();
+		await vi.waitFor(() =>
+			expect(root.querySelector<HTMLButtonElement>("[data-action=refresh]")?.disabled).toBe(false),
+		);
+		root.querySelector<HTMLButtonElement>("[data-action=refresh]")!.click();
+		await vi.waitFor(() => expect(root.querySelector<HTMLButtonElement>("[data-action=jobs]")?.disabled).toBe(false));
+		const before = h.sent.length;
+		root.querySelector<HTMLButtonElement>("[data-action=jobs]")!.click();
+		await vi.waitFor(() =>
+			expect(root.querySelector<HTMLButtonElement>("[data-action=job-open]")?.disabled).toBe(false),
+		);
+		expect(root.querySelector("[data-jobs] img")).toBeNull();
+		root.querySelector<HTMLButtonElement>("[data-action=job-open]")!.click();
+		await vi.waitFor(() => expect(root.querySelector("[data-job]")?.textContent).toContain("Unknown"));
+		expect(root.querySelector("[data-job]")?.textContent).toContain("not automatically replayed");
+		expect(root.querySelector("[data-action=cancel]")).toBeNull();
+		expect(h.sent.slice(before).map((m: any) => m.action)).toEqual(["list", "status"]);
+		root.querySelector<HTMLButtonElement>("[data-action=jobs-next]")!.click();
+		await vi.waitFor(() =>
+			expect(root.querySelector<HTMLButtonElement>('[data-action=job-open][data-id="completed"]')?.disabled).toBe(
+				false,
+			),
+		);
+		expect(h.sent.at(-1)).toMatchObject({ action: "list", kind: "jobs", cursor: "evidence/next" });
+		root.querySelector<HTMLButtonElement>("[data-action=jobs-first]")!.click();
+		await vi.waitFor(() =>
+			expect(root.querySelector<HTMLButtonElement>('[data-action=job-open][data-id="interrupted"]')?.disabled).toBe(
+				false,
+			),
+		);
+		expect(h.sent.at(-1).cursor).toBeUndefined();
+		root.querySelector<HTMLButtonElement>("[data-action=jobs-next]")!.click();
+		await vi.waitFor(() =>
+			expect(root.querySelector<HTMLButtonElement>('[data-action=job-open][data-id="completed"]')?.disabled).toBe(
+				false,
+			),
+		);
+		root.querySelector<HTMLButtonElement>("[data-action=job-open]")!.click();
+		await vi.waitFor(() =>
+			expect(root.querySelector<HTMLButtonElement>("[data-action=reevaluate]")?.disabled).toBe(false),
+		);
+		expect(h.sent.slice(before).some((m: any) => ["evaluate", "cancel", "collect", "seal"].includes(m.action))).toBe(
+			false,
+		);
+	});
 	it.each(["success", "rejected", "unsupported", "late"])(
 		"source navigation handles %s without changing the sealed evidence",
 		async (mode) => {

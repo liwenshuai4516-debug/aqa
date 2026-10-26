@@ -1,0 +1,178 @@
+{
+	"scope": "EC04/AC19/AC20 authorized scoring-job discovery and interrupted-job UI recovery",
+	"timestamp": "2026-10-26T06:06:34.622855+00:00",
+	"baselineCommit": "c7ca26ebb722d3da23ab1867bcfc6f9db37c001e",
+	"pluginVersion": "0.4.32",
+	"productChanges": true,
+	"status": "PASS within stated subset; EC04/M1 incomplete",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/index.json",
+		"bytes": 111696,
+		"sha256": "5b48b0d28e03947f7e322f1b4220681a961bf40eedfc26c0808e56c1d8170f8b"
+	},
+	"archiveFiles": 484,
+	"platform": "macOS arm64 actual development Electron; isolated dataDir; no personal installation modified",
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"actualToolCalls": 0,
+	"implementation": [
+		"Existing readonly list(kind:jobs) filters authorized evaluation-job receipts from evaluation-engine-v1 before metadata projection and pagination; returns jobId/createdAt/objectivePreview only. Original record/graph authorization and read budget remain; filtered scan uses original two-second deadline.",
+		"UI discovers twenty jobs per page, explicitly queries original status, opens completed original report, and explains unknown without cancel/replay. Refresh/restart can rediscover durable receipt. Receipt does not imply current queued state.",
+		"No new action, privilege, index or durable format; settings/skill/slash registrations retained."
+	],
+	"reproduction": {
+		"log": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/checks/reproduction.log",
+			"bytes": 2523,
+			"sha256": "6a39a2def6d2db8866631d04856131324fdd29a2f46e256a520ef78096d7be85"
+		},
+		"result": "Original implementation: two focused regression failures, 47 skipped; not a full-suite run."
+	},
+	"desktop": {
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/desktop/result.json",
+			"bytes": 12587,
+			"sha256": "74d80a336e000821f066a0695923bb552e1761805bba383936206b2d256e2d8f"
+		},
+		"crash": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/desktop/crash-store/result.json",
+			"bytes": 5580,
+			"sha256": "776d54ba5ab279d66c970162f0f514735769ee3b5c3b474fc029d179ce80e74b"
+		},
+		"checks": [
+			"Actual sidecar exits83 after syncing23 report JSON bytes before publication; retained lock rejects normal restart with STORE_LOCKED.",
+			"77 clean backup files, 83 retained crashed files, 81 confirmed recovery files; exact manifests independently verified. Recovery fixture copies audited confirmed records excluding only exact owned dead lock and exact incomplete report temp.",
+			"Actual restarted UI discovers unknown job, explicitly queries status, refreshes and discovers again; completed job opens original report. Cancel and original-request replay reject EXECUTION_UNKNOWN; no new attempt/snapshot/report.",
+			"zh/en, dark/light styles, 375px viewport and simulated24px text/reduced motion checked without root horizontal overflow; representative screenshots visually inspected.",
+			"Main settings/skill/slash/tools, disable/reload persistence, import/export/re-score and development URL identity rejection passed."
+		]
+	},
+	"native": {
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/native/result.json",
+			"bytes": 2298,
+			"sha256": "d9d5385ab718886b5fdea39bf4432839c3e1e5bfe2282f1f08e0cb1ba7335276"
+		},
+		"access": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/native/ui-access-probes.json",
+			"bytes": 8838,
+			"sha256": "9b3f5d0cfbd553189d667c0d94c528c1a6bc9ce40be8607d512a1b2077d624f8"
+		},
+		"principal": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/native/ui-principal-probes.json",
+			"bytes": 9903,
+			"sha256": "8990ec3e988bbf377820aea4cfb0410a71e2fbd8052cba029ff3a158d0cf13a3"
+		},
+		"checks": [
+			"One UI source:41 historical executed rows,27 pass/14 fail;20/20/1 pagination and sealed source checks. No runner restarted.",
+			"Same workspace other session, other workspace and second window different principal each reject unauthorized job status; each jobs discovery succeeds with an empty authorized list.",
+			"30 expected error replies total: two access probes each have8 PERMISSION_DENIED plus VERSION_CONFLICT/INVALID_INPUT; principal probe has8 PERMISSION_DENIED plus oldOwner/peerLostSource errors. Three successful empty job lists are separate.",
+			"Whole evaluation store unchanged; original owner/source restored."
+		]
+	},
+	"independentVerification": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/checks/independent-verification.json",
+		"bytes": 4847,
+		"sha256": "3744180fba049ec1d343253091ad21ffb85661e92d820af36cf3dc9b395f4972"
+	},
+	"registeredPluginFiles": {
+		"count": 29,
+		"bothActualRegistrationsMatchSource": true
+	},
+	"screenshots": [
+		{
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/desktop/crash-store/backup-restored-original-report.png",
+			"bytes": 92801,
+			"sha256": "6b3dea23b20200d553923e6c7219b192e239c7304089d12f152c00b0298412fd"
+		},
+		{
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/desktop/crash-store/unknown-job-discovered-0.png",
+			"bytes": 249274,
+			"sha256": "b35c7eda92d18aa2cb9ddfaf5ae5f241f24bb2c365e31dbefa1a4f8a45ac4fe6"
+		},
+		{
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/desktop/crash-store/unknown-job-discovered-1.png",
+			"bytes": 252604,
+			"sha256": "4deddec80a717100992618de9713adba0a3292c58c2b660a90b33907aaa7f5a4"
+		},
+		{
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/desktop/crash-store/unknown-job-zh-light.png",
+			"bytes": 78102,
+			"sha256": "462de515267072bee52c616d026706a62139c7e8c8464ff0cf0f476d531a83d8"
+		},
+		{
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/desktop/crash-store/unknown-job-zh-narrow.png",
+			"bytes": 78514,
+			"sha256": "96ef5f61ca6999618bac0dfb5475a81030afc15d23f4ba69363cfee5a7696b3f"
+		},
+		{
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/desktop/crash-store/writer-lock-retained.png",
+			"bytes": 154249,
+			"sha256": "87559b2efed39a4be7ffa73325c0c6d9c19da3d1ff1b8845a4989251567d7a30"
+		}
+	],
+	"screenshotsInspected": true,
+	"validation": {
+		"unit": {
+			"files": 16,
+			"tests": 295,
+			"skipped": 0,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/checks/unit-submission.log",
+				"bytes": 229,
+				"sha256": "50c2e62fe27dceddb881a64813d981cbd7bed2d9e5ef7b92d83c43bd0f65091b"
+			}
+		},
+		"typecheck": {
+			"configs": 5,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/checks/typecheck-submission.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"logs": {
+			"lint": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/checks/lint-submission.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			"check-protocol": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/checks/check-protocol-submission.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"size-check": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/checks/size-check-submission.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			},
+			"clean": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-job-discovery/files/checks/clean-submission.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			}
+		},
+		"protocol": "structure/type-only/v33 PASS; historical tag heuristic SKIP",
+		"clean": "Preview only; zero deletions"
+	},
+	"retainedFailures": [
+		"Initial plain-node native launch failed on TypeScript parameter property; rerun with experimental-transform-types passed.",
+		"Native second-window readiness race destroyed evaluate context; replaced polling evaluate with waitForFunction for actual ready frame and reran full selected matrix successfully.",
+		"Redundant English status notice after language switch removed before final successful desktop runs. Earlier artifacts retained."
+	],
+	"scopeLimits": [
+		"Controlled test fault and explicit audited fixture recovery; not automatic unlock, in-place repair, product recovery UI or native dialog-button automation. Only owned blocked shell killed after confirmed sidecar exit, then explicit native relaunch.",
+		"CSS viewport/text checks do not establish physical mobile, OS Dynamic Type or VoiceOver support."
+	],
+	"notExecuted": [
+		"Formal performance on0.4.32; AC39 historical overall FAIL retained.",
+		"Full scale/rollback/capacity/timing/usage matrices on new version; version assertion updates do not claim execution.",
+		"Native API/tool-channel matrices this turn.",
+		"Physical ENOSPC/power loss and other kill points.",
+		"Real CLI/models deferred by user."
+	],
+	"remaining": "AC19/AC20 subsets supplemented; EC04/M1 and whole plan incomplete. AC39 FAIL and EC06 detached-descendant containment gap remain; downstream gates preserved."
+}

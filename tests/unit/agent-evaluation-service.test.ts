@@ -1064,6 +1064,36 @@ describe("EC04 product service", () => {
 		},
 	);
 
+	it("pages authorized scoring receipts independently of evidence and recovers unknown status read-only", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const { context } = f.service.authorize(f.ui, { action: "get" });
+		const store = f.service.store!;
+		const original = store.get(context, { kind: "evidence", id: scored.report.data.job.jobId, revision: 1 });
+		const interrupted = store.write(context, {
+			kind: "evidence",
+			requestId: "synthetic-interrupted",
+			data: { ...original.data, sourceEventId: "interrupted-fixture" },
+		});
+		const before = await f.request("list", { kind: "evidence" });
+		const first = await f.request("list", { kind: "jobs", limit: 1 });
+		const second = await f.request("list", { kind: "jobs", limit: 1, cursor: first.nextCursor });
+		expect([...first.items, ...second.items].map((r: any) => r.jobId).sort()).toEqual(
+			[original.id, interrupted.id].sort(),
+		);
+		for (const item of [...first.items, ...second.items]) {
+			expect(item.objectivePreview).toBe(f.contract.objective);
+			expect(item).not.toHaveProperty("domain");
+			expect(item).not.toHaveProperty("content");
+		}
+		expect(await f.request("status", { jobId: interrupted.id })).toMatchObject({ state: "unknown" });
+		await expect(f.request("list", { kind: "jobs", sessionId: "other-session" })).rejects.toMatchObject({
+			code: "VERSION_CONFLICT",
+		});
+		await expect(f.request("list", { kind: "jobs" }, { channel: "ui", clientId: "other" })).rejects.toThrow();
+		expect(await f.request("list", { kind: "evidence" })).toEqual(before);
+	});
+
 	it("keeps Agent conditions proposed and rejects unverified message boundaries", async () => {
 		const f = fixture();
 		await expect(f.request("createContract", { data: f.contract }, f.tool)).rejects.toThrow(/proposals/);

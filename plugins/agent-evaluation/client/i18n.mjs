@@ -1,4 +1,14 @@
 const labels = {
+	scoringJobs: ["查找评分作业", "Find scoring jobs"],
+	jobsHint: [
+		"查询已保存作业的当前状态；不会重新评分或执行原任务。",
+		"Check the current status of saved jobs without scoring again or running the original task.",
+	],
+	noJobs: ["本页没有可见的评分作业。", "No scoring jobs are visible on this page."],
+	unknownJobHint: [
+		"评分已中断，完成情况未知；不会自动重放，也不能确认取消。可查看原报告或显式发起一次新评估。",
+		"Scoring was interrupted; completion is unknown. It is not automatically replayed and cancellation cannot be confirmed. Inspect the original report or explicitly start a new evaluation.",
+	],
 	import: ["导入离线轨迹", "Import offline trajectory"],
 	importHint: [
 		"选择已有 ATIF-v1.8 JSON 文件。预览后确认评估目标和条件，不运行其中的命令。",

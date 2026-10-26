@@ -247,6 +247,8 @@ EC00 在现有插件 API 上冻结操作名和 schema，不另造 RPC 框架。�
 
 EC04 重评入口明确区分：`evaluate(ref=snapshot, configs=...)` 用显式配置生成新报告；`evaluate(ref=evaluation)` 只用于本中心 internal profile 报告，复用原 snapshot、profile 标识、规则精确版本与配置，不能同时覆盖 configs。原配置缺失、profile 无法无损恢复或旧规则版本未安装时拒绝，不静默换用当前规则；旧请求/快照写法保持兼容。修订目标或条件则先追加 contract revision，再显式采集原选区并生成新 snapshot/evaluation，不把修订伪装成原快照重评。
 
+EC04评分作业回查：`list(kind:"jobs", limit, cursor)`只读分页当前授权来源的持久评分回执，返回jobId、保存时间及目标预览，不据queued回执推断当前状态。界面“查找评分作业”后逐项调用原status；有报告则打开，unknown明确不自动重放且不提供无法确认的取消操作。过滤在原记录/传递引用授权之后，匹配回执计入分页上限，过滤扫描沿用原2秒读取截止；来源切换后旧列表失效，不改变持久记录/评分或模型执行权限。
+
 请求带 `requestId` 和配置版本；冲突返回 `VERSION_CONFLICT`。同一写请求重复提交返回原结果；副作用是否发生未知时返回 `EXECUTION_UNKNOWN`，查询或人工处理，不自动补发。其他错误至少区分 `PERMISSION_DENIED/CAPABILITY_UNAVAILABLE/EVIDENCE_GAP/SCHEMA_UNSUPPORTED/LIMIT_EXCEEDED/VERIFIER_ERROR`，并含阶段、可否重试和缺失条件；retryable 不表示获准自动重执行。
 
 插件停用后停止新作业、注销监听、取消可控运行、保留未确认句柄及证据。作业使用代次令牌隔离迟到回调。安全收尾不能因 UI 或插件卸载而失去进程所有权，必要状态由宿主持久持有。

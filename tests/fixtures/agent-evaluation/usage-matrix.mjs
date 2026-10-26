@@ -252,7 +252,7 @@ export async function verifyUsageMatrix({ app: oldApp, repo, output, dataDir, en
 				window.__evaluationFrames.some(
 					(f) =>
 						f.type === "plugins" &&
-						f.plugins.some((p) => p.id === "agent-evaluation" && p.active && p.version === "0.4.31"),
+						f.plugins.some((p) => p.id === "agent-evaluation" && p.active && p.version === "0.4.32"),
 				),
 			),
 		);

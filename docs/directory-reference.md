@@ -462,3 +462,5 @@ EC04 合成分账补验：`tests/agent-evaluation-desktop-test.mjs --usage-matri
 EC04 半发布恢复补验：`tests/agent-evaluation-desktop-test.mjs --crash-store`通过`tests/fixtures/agent-evaluation/crash-store.mjs`只在自有隔离插件注入半manifest后sidecar退出，实际桌面验证遗留锁拒写、原件保留及显式评估仓库备份恢复；非断电/自动解锁，见[证据](agent-evaluation-evidence/EC04-crash-store-diagnostics.json)。
 
 EC04 半报告恢复补验：`tests/agent-evaluation-desktop-test.mjs --crash-report`复用`tests/fixtures/agent-evaluation/crash-store.mjs`，实际sidecar同步23字节报告后退出；确认记录显式复制恢复后unknown作业拒绝旧请求重放，原`--crash-store`干净备份恢复已复跑。见[证据](agent-evaluation-evidence/EC04-crash-report-diagnostics.json)。
+
+EC04 评分作业回查：现有`service.mjs`的`list(kind:"jobs")`与`client/entry.mjs`记录页补齐重启后的作业发现，复用原status及授权；`--crash-report`覆盖实际未知状态卡片，见[证据](agent-evaluation-evidence/EC04-job-discovery-diagnostics.json)。

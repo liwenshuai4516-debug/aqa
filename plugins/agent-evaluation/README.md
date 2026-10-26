@@ -200,3 +200,9 @@ UI-only动作：uploadStart（byteLength/sha256）、uploadChunk（uploadId/offs
 ## 0.4.31：固定结构的读取身份比较
 
 存储读取对已通过固定schema的授权域逐字段比较principalId/workspaceId，对已校验引用比较kind/id/revision，减少通用规范序列化与临时对象。其他结构比较维持原canonical字节语义。每次读取仍校验请求和当前授权、原文件schema/摘要/引用、正文SHA256；无缓存、格式、阈值、写入或同步顺序变化。冻结对照有局部改善，AC39整体仍FAIL；见[本轮证据](../../docs/agent-evaluation-evidence/EC04-field-equality-diagnostics.json)，不宣称M1完成。
+
+## 0.4.32：重启后查找评分作业
+
+记录页新增“查找评分作业”，通过只读 `list(kind:"jobs", limit, cursor)` 分页读取当前授权来源的持久评分回执，逐行显示目标预览和保存时间。点击“查询评分状态”才调用原 `status(jobId)`：已有报告直接打开；中断作业显示 unknown 和不自动重放/不能确认取消的说明，不提供取消按钮。列表不把 queued 回执当作当前状态，也不重新采集或评分。
+
+来源切换/刷新清空旧列表和当前作业；查询仍逐记录核验主体、工作区、会话及传递引用。过滤只在原 store 完整授权读取后执行，分页按匹配回执计数；新增过滤查询受原2秒读取截止约束，失败不交付部分列表，不改变普通列表行为或持久格式。仅扩展现有只读 list 的 kind，原工具、设置、技能与快捷发现入口沿用；技能已补找回作业说明。

@@ -23,6 +23,7 @@ export default {
 			contract,
 			snapshot,
 			reviews = [],
+			jobs,
 			job;
 		let draft, revision, observation, configuration, upload;
 		let view = "records",
@@ -53,7 +54,7 @@ export default {
 				});
 		}
 		function recordsHtml() {
-			return `<p class="muted">${esc(t("hint"))}</p>${source ? `<p>${esc(source.sourceId)} · ${esc(source.clientVersion ?? t("unknown"))}</p>` : `<p>${esc(t("noSource"))}</p>`}${job ? jobHtml() : ""}${!page.items.length ? `<section class="empty">${esc(t("empty"))}</section>` : `<section class="table-wrap"><table><thead><tr>${["range", "source", "execution", "goal", "coverage", "updated"].map((k) => `<th scope="col">${esc(t(k))}</th>`).join("")}</tr></thead><tbody>${page.items.map((r, i) => `<tr><td><p>${esc(r.objectivePreview)}</p><small>${r.taskRange?.source === "offline" ? esc(t("offline")) : `${esc(r.taskRange?.startMessageId)} → ${esc(r.taskRange?.endMessageId)}`}</small><p>${button("open", "open", `data-index="${i}" data-id="${esc(r.id)}"`)}</p></td><td>${esc(r.taskRange?.source === "offline" ? t("offline") : "Pi SDK")}<br>${esc(r.sourceVersion ?? t("unknown"))}</td><td>${badge(r.executionState)}<br><small>${esc(t("scoringState"))}</small> ${badge(r.state)}<br>${badge(r.assessmentStage)}</td><td>${badge(r.summary?.goal)}<br>${badge(r.summary?.deliveryVerdict)}</td><td>${r.summary?.counts?.coverage == null ? esc(t("unknown")) : `${Math.round(r.summary.counts.coverage * 100)}%`}<br>${esc(t(r.evidenceCoverage ?? "unknown"))}</td><td>${esc(r.createdAt)}</td></tr>`).join("")}</tbody></table></section>`}<div class="actions">${button("first", "first")}${page.nextCursor ? button("next", "next") : ""}</div>`;
+			return `<p class="muted">${esc(t("hint"))}</p>${source ? `<p>${esc(source.sourceId)} · ${esc(source.clientVersion ?? t("unknown"))}</p>` : `<p>${esc(t("noSource"))}</p>`}${job ? jobHtml() : ""}<div class="actions">${button("jobs", "scoringJobs", !source ? "disabled" : "")}</div>${jobs ? jobsHtml() : ""}${!page.items.length ? `<section class="empty">${esc(t("empty"))}</section>` : `<section class="table-wrap"><table><thead><tr>${["range", "source", "execution", "goal", "coverage", "updated"].map((k) => `<th scope="col">${esc(t(k))}</th>`).join("")}</tr></thead><tbody>${page.items.map((r, i) => `<tr><td><p>${esc(r.objectivePreview)}</p><small>${r.taskRange?.source === "offline" ? esc(t("offline")) : `${esc(r.taskRange?.startMessageId)} → ${esc(r.taskRange?.endMessageId)}`}</small><p>${button("open", "open", `data-index="${i}" data-id="${esc(r.id)}"`)}</p></td><td>${esc(r.taskRange?.source === "offline" ? t("offline") : "Pi SDK")}<br>${esc(r.sourceVersion ?? t("unknown"))}</td><td>${badge(r.executionState)}<br><small>${esc(t("scoringState"))}</small> ${badge(r.state)}<br>${badge(r.assessmentStage)}</td><td>${badge(r.summary?.goal)}<br>${badge(r.summary?.deliveryVerdict)}</td><td>${r.summary?.counts?.coverage == null ? esc(t("unknown")) : `${Math.round(r.summary.counts.coverage * 100)}%`}<br>${esc(t(r.evidenceCoverage ?? "unknown"))}</td><td>${esc(r.createdAt)}</td></tr>`).join("")}</tbody></table></section>`}<div class="actions">${button("first", "first")}${page.nextCursor ? button("next", "next") : ""}</div>`;
 		}
 		function observationHtml() {
 			return `<section data-observation><h2>${esc(t("observation"))} · ${esc(t(observation.state ?? "observing"))}</h2><p>${esc(t("observationHint"))}</p><p>${esc(observation.range)} · ${esc(t("evidence"))}: ${observation.latest?.evidenceCount ?? 0} · ${esc(t("gaps"))}: ${observation.latest?.gapCount ?? 0}</p><p>${esc(observation.error?.message ?? observation.lastError?.message ?? "")}</p><div class="actions">${button("watch-status", "checkObservation")}${observation.state !== "stopped" ? button("watch-stop", "stopObservation") : button("watch-dismiss", "dismissObservation")}${observation.latest?.checkpointRef ? button("watch-score", "scoreObservation") : ""}</div></section>`;
@@ -100,8 +101,11 @@ export default {
 			const scope = contract.data.scope;
 			return `<section data-offline-source><h2>${esc(t("offline"))}</h2><p>${esc(t("unverifiedImport"))}</p><p>${esc(scope.format)} · ${esc(t("converterVersion"))}: ${esc(scope.converterVersion)}</p><p>${esc(t("packageDigest"))}: ${esc(scope.packageDigest)}</p><p>${esc(t("selectDocuments"))}: ${esc(scope.trajectoryPointers.join(", "))}</p><div class="actions">${button("import-manifest", "importManifest")}${button("import-source", "evidenceRaw")}</div><form data-form="original"><label class="check-label"><input type="checkbox" name="allowOriginal" required>${esc(t("originalWarning"))}</label><button type="submit">${esc(t("readOriginal"))}</button></form></section>`;
 		}
+		function jobsHtml() {
+			return `<section data-jobs><h2>${esc(t("scoringJobs"))}</h2><p class="muted">${esc(t("jobsHint"))}</p>${jobs.items.length ? jobs.items.map((item, i) => `<div><p>${esc(item.objectivePreview)} · ${esc(item.createdAt)}</p>${button("job-open", "check", `data-index="${i}" data-id="${esc(item.jobId)}"`)}</div>`).join("") : `<p>${esc(t("noJobs"))}</p>`}<div class="actions">${button("jobs-first", "first")}${jobs.nextCursor ? button("jobs-next", "next") : ""}</div></section>`;
+		}
 		function jobHtml() {
-			return `<section><h2>${esc(t(job.state))}</h2><p>${esc(t("jobHint"))}</p><div class="actions">${button("status", "check")}${!["completed", "cancelled", "failed", "unknown"].includes(job.state) ? button("cancel", "cancel") : ""}</div></section>`;
+			return `<section data-job="${esc(job.jobId)}"><h2>${esc(t(job.state))}</h2><p>${esc(t(job.state === "unknown" ? "unknownJobHint" : "jobHint"))}</p><div class="actions">${button("status", "check")}${!["completed", "cancelled", "failed", "unknown"].includes(job.state) ? button("cancel", "cancel") : ""}</div></section>`;
 		}
 		function detailHtml() {
 			if (!report) return "";
@@ -223,6 +227,7 @@ export default {
 			configuration = undefined;
 			draft = undefined;
 			job = undefined;
+			jobs = undefined;
 			report = undefined;
 			view = "records";
 			page = { items: [] };
@@ -258,8 +263,8 @@ export default {
 			evidence = undefined;
 			view = "detail";
 		}
-		async function status() {
-			job = await rpc.request("status", { jobId: job.jobId });
+		async function status(jobId = job.jobId) {
+			job = await rpc.request("status", { jobId });
 			if (job.reportRef) await open(job.reportRef);
 		}
 		async function readEvidence(reference, offset = 0, evidenceView = "raw") {
@@ -436,6 +441,13 @@ export default {
 				if (action === "open") await open(ref(page.items[Number(target.dataset.index)]));
 				if (action === "findings-first" || action === "findings-next")
 					await open(ref(report), action === "findings-next" ? report.pages.findings.nextOffset : 0);
+				if (["jobs", "jobs-first", "jobs-next"].includes(action))
+					jobs = await rpc.request("list", {
+						kind: "jobs",
+						limit: 20,
+						...(action === "jobs-next" ? { cursor: jobs.nextCursor } : {}),
+					});
+				if (action === "job-open") await status(jobs.items[Number(target.dataset.index)].jobId);
 				if (action === "status") await status();
 				if (action === "cancel") {
 					job = await rpc.request("cancel", { jobId: job.jobId });
