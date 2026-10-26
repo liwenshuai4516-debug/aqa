@@ -1,0 +1,365 @@
+{
+	"schema_version": "1.0",
+	"stage": "U02 fixed capture contract and helper budget",
+	"status": "engineering-subchain-passed; U02/M1/M2 incomplete",
+	"hostBaseCommit": "e4926839fda4f0171c04c8c9fe87bc6e4219a5a8",
+	"native": {
+		"version": "0.1.18",
+		"source": "5c71405d839cdb7c6d130e24691b2c8bcaa492c2",
+		"sha256": "e2273382a238d165cfe031491004304a31da8e36dba5848bf1d17001692e9c49",
+		"bytes": 203347,
+		"installedFilesVerified": 104,
+		"lockIntegrityMatches": true,
+		"rootPackageLink": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tools/e2e/node_modules/pi-ui-testing"
+	},
+	"verification": {
+		"native": {
+			"files": 4,
+			"passed": 33
+		},
+		"hostVitest": {
+			"files": 8,
+			"passed": 51
+		},
+		"sdk": {
+			"passed": 22,
+			"actualModelCalls": 0,
+			"businessRequests": 0
+		},
+		"electron": {
+			"passed": 7,
+			"mcpTools": 87
+		},
+		"typecheck": "PASS: all five configurations",
+		"build": "PASS",
+		"lint": "PASS",
+		"protocol": "PASS: structure; no-tag history heuristic SKIP",
+		"layout": "PASS",
+		"size": "PASS",
+		"diff": "PASS: task files",
+		"clean": "preview only, no deletion"
+	},
+	"behavior": {
+		"protocol": "chromium-single-page-v1",
+		"optionalAndLegacyCompatible": true,
+		"maxCaptureActions": 8,
+		"requiredScopeToolCalls": "2 * max_steps + 1",
+		"insufficientBudgetBeforeSession": true,
+		"oneOwnedCleanupAfterSetupError": true,
+		"cachedOperationDoesNotReplay": true,
+		"partialGapsPreserved": true,
+		"privateOutputDirectoryMode": "0700",
+		"publicReceiptContainsPrivatePath": false,
+		"productBrowserActions": "blocked-capture-not-connected"
+	},
+	"ledgerSha256": {
+		"u05-authorized-review-budget.json": "34aaec3d27776ad96474be83f0be5a4eebe001fb41467afc69a4372c2b7e31ec",
+		"pms-anonymous-authorized-review-budget.json": "854cec9cb4cb8574adcdec3163d7fd2953ab1016be4c9799f48a2cfa7bba87c3"
+	},
+	"limits": [
+		"Capture declaration and reserved budget do not prove the seed uses the managed fixture or that helpers were invoked",
+		"Product automatic capture/filter/native writer publication remains unconnected; browser actions stay blocked",
+		"Full reconnect continuation, multiple frames/targets, arbitrary dependency closure and real PMS role/tenant/data remain incomplete",
+		"Initial nine-test revision and later ten-test revision are iterations; final test source and original native source preserved, exact early nine-test source not separately frozen",
+		"Original synthetic private state and SDK temporary directories are owner-cleaned by runners; no public summary is an archived original FileRef",
+		"Application project-document files do not create an application document index or import formal results"
+	],
+	"members": [
+		{
+			"path": "build.log",
+			"sha256": "9a8adc0dda1992d3b094eabb1a380f2939a376c32448d2d86199e019514a5d90",
+			"bytes": 6101
+		},
+		{
+			"path": "bundle-manifest.json",
+			"sha256": "15944b6318b57f55dc75e2fb9dd1a96927ac1e3d8ba3663ad8e69f719c822548",
+			"bytes": 13071
+		},
+		{
+			"path": "clean-final.log",
+			"sha256": "11edff7f359e5c0ad036bad6ca5caf7ef19274615efa33463fcabe76958226e5",
+			"bytes": 609
+		},
+		{
+			"path": "diff-all.log",
+			"sha256": "f0306ef389b79dcafa88a3e6b269e72dd09c967683e80181d7125479eb7a995e",
+			"bytes": 128
+		},
+		{
+			"path": "diff.log",
+			"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+			"bytes": 0
+		},
+		{
+			"path": "docs-format.log",
+			"sha256": "784cae3bb251914833c846e7638eb75a36b9fd0e831f7c31795223a36394f88d",
+			"bytes": 198
+		},
+		{
+			"path": "electron/after-skills.png",
+			"sha256": "f288057001c0c102e5bdc9a82faea88f40cc359ffe1a6ec5f4b8e54d14845123",
+			"bytes": 388444
+		},
+		{
+			"path": "electron/before-skills.png",
+			"sha256": "7d7bc49200e606c3bb8cf6997c15a32b401cf82405cd2e5f7210b82afdb6824f",
+			"bytes": 385483
+		},
+		{
+			"path": "electron/desktop.log",
+			"sha256": "823d059bd8ba6525eba603ea4d4f89f273d8b9ae3d5b8d9254a9f6ee728148a1",
+			"bytes": 1828
+		},
+		{
+			"path": "electron/discovery-restored.png",
+			"sha256": "8d4b0115190a425a04740f2c52cff367e4184a14cf23262aeebbe425ceb56aeb",
+			"bytes": 473106
+		},
+		{
+			"path": "electron/mcp-status.png",
+			"sha256": "5076b37fb308608e301ce58ff233e9990928b5a8465c790788ab2c8d7250a151",
+			"bytes": 469923
+		},
+		{
+			"path": "electron/result.json",
+			"sha256": "b0a888650d02faf7f3c2f6a2e12ac74c6f7028e18d11bf68a5ee6c263e96aa7e",
+			"bytes": 780
+		},
+		{
+			"path": "electron/slash-ui.png",
+			"sha256": "381d26e549debccb201fcc587ac039985c34082c5a840d0a205f09fb2130827f",
+			"bytes": 506085
+		},
+		{
+			"path": "electron.log",
+			"sha256": "ca67ad421ae65f4fa59d8e429c2313fb2afad4432e71fdc0519671d0f5671721",
+			"bytes": 886
+		},
+		{
+			"path": "execution-format.log",
+			"sha256": "7373777e2e1cf5dabfedd7904ed2caf5c404dbfad2caf7f564d892f42705c60c",
+			"bytes": 48
+		},
+		{
+			"path": "export.log",
+			"sha256": "6fa18e0ec75f7b0539c2877d7e3880db416a58120da101c4d5e69ba5639effe6",
+			"bytes": 295
+		},
+		{
+			"path": "format-final.log",
+			"sha256": "8cccf9ff31ac29a6323686abdc0d6aa02f791090f3f85e6e9531b98ee1813c54",
+			"bytes": 85
+		},
+		{
+			"path": "format.log",
+			"sha256": "4fbb28c611a8a813893079f648f57eb981f3d42b9d5b2f66325ca2c249f5a396",
+			"bytes": 279
+		},
+		{
+			"path": "host/.pi/skills/ui-testing-workflow/assets/private-recording-session.mjs",
+			"sha256": "2ae750239e49bc59336a63dab9f6f70ec096d9369158f9150cbc90db407b4fe1",
+			"bytes": 2014
+		},
+		{
+			"path": "host/tests/ui-testing-integration-test.mjs",
+			"sha256": "91e08de0afec906c6ec3c6fd419e665249def6e0e712c9d5dff373981073dcaf",
+			"bytes": 25436
+		},
+		{
+			"path": "host/tests/unit/ui-private-recording-workspace.test.ts",
+			"sha256": "34f64e99724600b8bdfb17ce851443859a70dae18e203b6ba7ec788bbba79cd0",
+			"bytes": 15739
+		},
+		{
+			"path": "host/tools/e2e/package-lock.json",
+			"sha256": "753857851a80a95aea0cc13a1516bbba68344bbd12ccaf34094dc2ee13d30794",
+			"bytes": 61464
+		},
+		{
+			"path": "host/tools/e2e/package.json",
+			"sha256": "26e19c5c9cdd46d38d848e32b8d04cfa594c7e1d7cc1d2bacd9d353458d11cf6",
+			"bytes": 309
+		},
+		{
+			"path": "host-before.log",
+			"sha256": "bd54f47d186cd5449d9060a1d6a72166e6a05e3f7f2afb86a1aa569040f67a61",
+			"bytes": 1299
+		},
+		{
+			"path": "install-final.log",
+			"sha256": "e71a452269d77e29db3fa8c7ec9ced6f6df82dd8a1179b3219564c6dc804abb4",
+			"bytes": 135
+		},
+		{
+			"path": "install-verification.json",
+			"sha256": "ff27b1d908972de95937308aff2e1755e1f50783c1c0a6219df76c540408801e",
+			"bytes": 345
+		},
+		{
+			"path": "install.log",
+			"sha256": "6d5c32d1ff12dffe6f9894f651b953cd283cc76de8126b428d045ebc5f910c22",
+			"bytes": 696
+		},
+		{
+			"path": "integration.log",
+			"sha256": "a4e54ef9b7d069ad88bde2538636c128f8c5eafa88e9d54da2f13a72554101af",
+			"bytes": 2004
+		},
+		{
+			"path": "layout.log",
+			"sha256": "8f70855c5601a1f7cf3958ec8d96079305df0ead1492fb7f3d2be8c8a8d0058f",
+			"bytes": 803
+		},
+		{
+			"path": "lint.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+			"bytes": 88
+		},
+		{
+			"path": "lock-update-final.log",
+			"sha256": "302084b16140cb7f716c7dca1a517721d2c5ff8cac45f26377f5129ba9661226",
+			"bytes": 21
+		},
+		{
+			"path": "lock-update.log",
+			"sha256": "032cd5fbaaab6cd62dab9cd22f4ec975b5880a64aa8eb732081af7270b9cfe5c",
+			"bytes": 595
+		},
+		{
+			"path": "native-after.log",
+			"sha256": "b7d1fac96c0f45de5284d3091257a6108fbb2a37cd8b0742755fbaf40d0e0e58",
+			"bytes": 2122
+		},
+		{
+			"path": "native-before.log",
+			"sha256": "92eeca48d642b27d2039c8c45692a6e03eb9c6333179a514d6d118b198ac9be3",
+			"bytes": 3978
+		},
+		{
+			"path": "native-check-final.log",
+			"sha256": "f108603c5e71023c7c1a8134326b2077220e38ea28459ea222b061bb1425a6f0",
+			"bytes": 101
+		},
+		{
+			"path": "native-check.log",
+			"sha256": "f108603c5e71023c7c1a8134326b2077220e38ea28459ea222b061bb1425a6f0",
+			"bytes": 101
+		},
+		{
+			"path": "native-cleanup-before.log",
+			"sha256": "67a16378531e4966c3c7a07d8ceb9ced4c4c7f845e52fd0eac9f33f2f2d6f73e",
+			"bytes": 975
+		},
+		{
+			"path": "native-final.log",
+			"sha256": "77b59da9e35c579448b95d5c058287bfbe0e5adf6160cf66f3f035279bffdaf7",
+			"bytes": 2221
+		},
+		{
+			"path": "native-privacy.log",
+			"sha256": "5ffa3e888b03c3d79d08d089ce426304f3beae167e8437f5f69157efc0b75327",
+			"bytes": 1653
+		},
+		{
+			"path": "project-stage.md",
+			"sha256": "23ecb67d14610436e102f3b94684b5e39551889a02b8387403f578c54dbfa81f",
+			"bytes": 2535
+		},
+		{
+			"path": "protocol.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"bytes": 360
+		},
+		{
+			"path": "size-before.log",
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+			"bytes": 1089
+		},
+		{
+			"path": "size-final.log",
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+			"bytes": 1089
+		},
+		{
+			"path": "source/after/packages/ui-testing/README.md",
+			"sha256": "baca5859e09f8633c6d8cbc46ddd28b25b42f37600379e0a69014822aa3b2ca4",
+			"bytes": 42985
+		},
+		{
+			"path": "source/after/packages/ui-testing/package.json",
+			"sha256": "17916824c671629f95d60ed65f6455948e15e50b8bda41949eb611ae3dfdbae1",
+			"bytes": 721
+		},
+		{
+			"path": "source/after/packages/ui-testing/skills/ui-discover-record/references/start.md",
+			"sha256": "fde9d86889b87765de5c115187a26cdca1aef08910ca1908fd5375964663cda9",
+			"bytes": 2951
+		},
+		{
+			"path": "source/after/packages/ui-testing/src/recording.ts",
+			"sha256": "07088efa8b68f1a79aa33e4468d019f79a7130d28fc876557afd826c16534240",
+			"bytes": 19883
+		},
+		{
+			"path": "source/after/tests/ui-testing/recording-private-binding.test.mjs",
+			"sha256": "e499680f7c2535515d47d8fa7da7794d05008a38da2cd0e4c6caf15bde364b93",
+			"bytes": 11447
+		},
+		{
+			"path": "source/before/packages/ui-testing/package.json",
+			"sha256": "b884ac17d3bc00f659cadc284aa52c561c6ac731b7ab9c583bcd6f3e8e384b33",
+			"bytes": 721
+		},
+		{
+			"path": "source/before/packages/ui-testing/skills/ui-discover-record/references/start.md",
+			"sha256": "ad459f392ff99fa57a8b585d74ded2c2cd900919c20eadf81a17327908869578",
+			"bytes": 2434
+		},
+		{
+			"path": "source/before/packages/ui-testing/src/recording.ts",
+			"sha256": "d4eaa215c0e5d0dba0ebc0a7de2472db9ccd387e712911a7f309d7bef435c160",
+			"bytes": 18731
+		},
+		{
+			"path": "source/before/tests/ui-testing/recording-private-binding.test.mjs",
+			"sha256": "d9c268c00559013e9c659d794390a1461955c603a14b1d838604524400c6c3ab",
+			"bytes": 6474
+		},
+		{
+			"path": "typecheck-initial.log",
+			"sha256": "319cf742e2931cc1658bfbc2c386c6765a1100709e79cd0ba727aa01b6650cca",
+			"bytes": 1030
+		},
+		{
+			"path": "typecheck.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "vitest.log",
+			"sha256": "73d5180cfb5893f2255568f443acf246c1d82e71d79a6a2c87f8fe365e44c545",
+			"bytes": 198
+		}
+	],
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-u02-recording-capture-contract.tar.gz",
+		"sha256": "717ad395f8a64750af8440195ddde5d5ed9c8e9a2af4422de964f3d8fdbe9b7e",
+		"bytes": 2237838,
+		"files": 55,
+		"allMembersReadbackVerified": true
+	},
+	"projectStorage": {
+		"status": "PASS",
+		"systemId": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+		"directory": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/recording-capture-contract-1793013870585",
+		"document": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-recording-capture-contract-2026-10-26.md",
+		"documentSha256": "23ecb67d14610436e102f3b94684b5e39551889a02b8387403f578c54dbfa81f",
+		"archiveSha256": "717ad395f8a64750af8440195ddde5d5ed9c8e9a2af4422de964f3d8fdbe9b7e",
+		"storeSha256Before": "9e4177c773b961573907f305535cb93a4c2480a2216a4a5327661aae0aca6d2d",
+		"storeSha256After": "9e4177c773b961573907f305535cb93a4c2480a2216a4a5327661aae0aca6d2d",
+		"storeModified": false,
+		"applicationDocumentIndexCreated": false,
+		"directoryMode": "0700",
+		"fileMode": "0600"
+	}
+}

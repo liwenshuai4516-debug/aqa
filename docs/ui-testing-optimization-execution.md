@@ -1201,3 +1201,19 @@ scope明确8次helper/30工具/128事件/2MiB及受控负向frame附加移除/�
 [本轮证据](ui-testing-evidence/optimization-u02-recording-native-capture.json)包含源码、构建/安装、原生前后对照、所有早期失败与最终SDK/Electron公开证据。原始合成认证、事件/state/trace及SDK临时原文按归属清理，减少内容/摘要不冒充可回读原始FileRef。权威Electron项目保存阶段文档与公开归档/索引；仅文件落盘，不创建应用文档索引或正式结果入库，store字节保持不变。
 
 剩余：将固定采集、过滤及原生writer安全发布接入产品连接并验证取消/断连/重连与额外工具预算；真实角色/租户/测试数据、通用依赖闭包、多frame/其他target、完整重连续录、U00完整计量、U03/U07和M1/M2仍未完成。未将本轮原生采集子链通过视为优化计划完成，整体goal active。
+
+### U02 续跑：固定采集声明及额外调用预算（2026-10-26）
+
+从e492683继续。上一回合按用户要求盘点状态，没有实施进展；本轮恢复工程。plan_update不可用，继续阶段表及本文。开始clean仅预览，无可清理项；模型调用、正式批次、真实PMS业务写入均0，U05及PMS账本摘要不变，剩余2次仅设计额度保留。其他协作差异不纳入本次提交。
+
+原生0.1.18新增可选private_recording.capture固定值chromium-single-page-v1，省略保持原准备行为。声明时要求受管后端、max_steps<=8，冻结scope预算至少2*max_steps+1（每个非清理动作的原生调用及固定helper各一次，另留一次关闭），预算不足在创建session前拒绝。privateContext额外返回经会话核验的seedRef/project/outputFile及数量事实；宿主不从聊天或MCP参数猜路径。初始化失败后清理误拒有前后对照，修正为允许一次自有context关闭；close已请求后不追加动作或重复派发，原operation_id仍返回缓存，保留partial及原失败/预算缺口。
+
+宿主prepare仅对显式capture预建0700私有output，向子进程交原生私有证据环境引用，公开回执只含协议/数量。没有新增模型工具、没有复制runner/过滤规则，未修改个人配置或已安装依赖源码。声明不证明受管fixture已就绪；产品仍仅握手，浏览器动作保持阻塞，helper/过滤/writer发布尚未接通。
+
+旧版新增协议测试6通过3失败，原生修正后9项通过；另加初始化失败清理回归先1失败后通过，最终binding10项+旧录制9项及采集/私密证据14项，共4文件33项通过。宿主新声明测试在旧包为12通过1失败，安装新版后相关8文件51项通过。初次宿主类型检查因capture被推断为必填导致旧连接夹具不兼容，改为条件可选返回后完整5配置通过。首次受限环境写npm缓存失败，获准安装路径通过，未修改缓存权限；最终104个安装文件与export manifest逐一摘要核对，lock完整性匹配。上游本地提交5c71405，未推上游；正式分发0.1.18，旧0.1.17保留。
+
+真实SDK/MCP22项检查通过：不足预算不创建session/不执行seed，同ID有效声明随后可准备；回执预算、0700 output、握手不启动采集、私密动作仍阻塞、partial/撤销及匿名恢复留证。匿名独立Playwright/自定义目录/真实Chromium与现有计划/权限/禁用门禁回归通过。隔离Electron7项技能/快捷入口、启停/重载持久、87工具及重连通过。构建、lint、协议结构、layout、size及diff通过；无tag的协议历史启发式SKIP。当前个人应用未热更新，旧会话需/reload。
+
+[阶段证据](ui-testing-evidence/optimization-u02-recording-capture-contract.json)保存旧/新源码、最终测试、早期失败、安装核对、SDK与Electron证据；早期9项和后续10项是迭代版本，最终10项测试源保存，未把不同测试修订相加为独立总数。合成私有身份及SDK临时目录由原跑器清理；未归档私有原文，不用公开摘要冒充原始FileRef。Electron权威项目另存阶段文档和公开证据，store不变，仅落盘不创建应用文档索引。
+
+下一步仍为产品可信同会话动作绑定、固定helper采集、SDK转换前过滤及原生writer安全发布；取消/断连/预算/坏证据都须留partial并保留自有清理。完整重连续录、多frame/其他target、通用依赖闭包、真实PMS角色/租户/数据、U00完整计量、U03/U07及M1/M2未完成。整体goal active。

@@ -1,7 +1,7 @@
 /** Exercise package discovery and the real SDK/MCP binding without model or business requests. */
 import assert from "node:assert/strict";
 import { existsSync, realpathSync } from "node:fs";
-import { cp, copyFile, mkdtemp, mkdir, readFile, readdir, rm, symlink, writeFile } from "node:fs/promises";
+import { cp, copyFile, lstat, mkdtemp, mkdir, readFile, readdir, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, sep } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -361,35 +361,51 @@ try {
 	const configRef = { path: "playwright.config.mjs", sha256: sha256(await readFile(configPath)) };
 	// SDK result hooks run through executeTool; directly invoking a definition skips that part of the pipeline.
 	const invokeRecording = (input) => invoke("integration_native_call", { tool: "ui_discover_record", input });
-	const privateStart = JSON.parse(
+	const privateConfiguration = {
+		id: "private-binding",
+		scope_ref: privateScope,
+		inventory_ref: privateInventory,
+		initial_state_ref: source,
+		data_rules_ref: source,
+		seed_ref: seedRef,
+		output_file: "tests/private-binding.spec.ts",
+		backend,
+		project: "chromium",
+		max_steps: 4,
+		max_duration_ms: 60000,
+		max_no_progress: 3,
+		test_data: [],
+		private_recording: {
+			environment_ref: environmentRef,
+			input_refs: [configRef, seedRef],
+			capture: "chromium-single-page-v1",
+		},
+	};
+	const insufficientBudget = JSON.parse(
 		(
 			await invokeRecording({
-				request: {
-					operation: "start",
-					configuration: {
-						id: "private-binding",
-						scope_ref: privateScope,
-						inventory_ref: privateInventory,
-						initial_state_ref: source,
-						data_rules_ref: source,
-						seed_ref: seedRef,
-						output_file: "tests/private-binding.spec.ts",
-						backend,
-						project: "chromium",
-						max_steps: 10,
-						max_duration_ms: 60000,
-						max_no_progress: 3,
-						test_data: [],
-						private_recording: { environment_ref: environmentRef, input_refs: [configRef, seedRef] },
-					},
-				},
+				request: { operation: "start", configuration: { ...privateConfiguration, max_steps: 5 } },
 			})
 		).content[0].text,
+	);
+	assert.equal(insufficientBudget.status, "blocked", JSON.stringify(insufficientBudget));
+	assert.match(JSON.stringify(insufficientBudget), /采集协议/);
+	assert.equal(existsSync(join(target, "qa/ui/recordings/private-binding/session.json")), false);
+	assert.equal(existsSync(join(target, "seed-executed")), false);
+	checks.push("capture helpers and cleanup must fit the frozen scope budget before session creation");
+	const privateStart = JSON.parse(
+		(await invokeRecording({ request: { operation: "start", configuration: privateConfiguration } })).content[0].text,
 	);
 	assert.equal(privateStart.status, "completed", JSON.stringify(privateStart));
 	const receipt = privateStart.output.private_preparation;
 	assert.equal(privateStart.output.recording, "blocked-capture-not-connected");
 	assert.deepEqual(receipt.inputs, [configRef, seedRef, environmentRef, privateStart.artifact_refs[0]]);
+	assert.deepEqual(receipt.capture, {
+		protocol: "chromium-single-page-v1",
+		maxSteps: 4,
+		maxToolCalls: 10,
+		reservedToolCalls: 9,
+	});
 	assert.equal(JSON.stringify(receipt).includes("synthetic-only"), false);
 	const sessionDirectory = join(agentDir, "sessions");
 	const privateDeadline = Date.now() + 30000;
@@ -410,6 +426,9 @@ try {
 		/recording-[^/]+\/state\.json$/.test(path),
 	);
 	assert.equal(derivedStates.length, 1);
+	const privateOutput = join(sessionDirectory, derivedStates[0], "../../output");
+	assert.equal((await lstat(privateOutput)).mode & 0o777, 0o700);
+	assert.equal(existsSync(join(privateOutput, "recording")), false, "Handshake must not start private capture");
 	const privateAction = JSON.parse(
 		(
 			await invokeRecording({
