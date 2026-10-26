@@ -931,3 +931,27 @@ plan_update仍不可用，以第8节和本记录维护状态。下一步优先�
 [私密录制边界证据](ui-testing-evidence/optimization-u02-private-recording-boundary.json)归档25份公开文件，逐成员回读一致；共享评审账本摘要与桌面刷新索引一致。实际Electron所选项目project-documents保存OperationContract-private-recording-boundary-2026-10-26.md及4份公开快照，0600/0700、回读摘要一致，文档保存前后store字节不变；不声明应用文档索引显示或测试结果入库。
 
 下一步需分离原始捕获根与原生草稿发布，继续保留配置/seed来源和作用域；再验证嵌套JSON存储、运行中新凭据、进度/错误/媒体/文件链接、取消/重连及Electron接入。只过滤已知cookie、迁移root仍不足以开放通用私密录制。真实业务角色/租户/数据、匿名独立设计评审/正反诊断/正式运行、U00连续基线/成对计量、U03/U07及M1/M2仍未完成，整目标保持active。
+
+### U02 续跑：私有副本原生录制交接及三类拒绝反例（2026-10-26）
+
+上一轮d7687bd已推送并独立核对远端完整SHA一致，本轮开始保留原.gitignore/db-client锁差异，clean仅预览。继续上一轮已定位的clientInfo.cwd/root/testDir耦合，不重做真实PMS登录或挪用评审授权。plan_update仍不可用，以本记录与第8节维护进度。本轮没有修改产品代码、SDK/Playwright安装或个人配置。
+
+原型改为私有录制副本：只复制已知合成fixture的package.json、playwright.config.mjs和tests/seed.spec.ts，逐字节相同，node_modules共享原安装链接；MCP使用同一1.62.1 CLI及副本配置，roots与testDir一致。保留原始工作区seed静态收集钩子，后续版本分别将两侧输入与创建时SHA-256比对，避免仅比较两份当前内容。这个已知3文件副本不是通用任意项目依赖闭包方案。
+
+发布仍先通过原生generator_write_test：仅接受本次声明的相对目标，调用前检查已有文件/符号链接/已知秘密，成功响应后读取真实原生文件，核对普通文件、字节与请求code相同且不含已知秘密/私有路径，再以wx独占写入公开工作区。没有修改草稿文本掩盖秘密，也没有放宽原生writer边界。1792993460323直接SDK嵌套MCP路径首次成功发布；1792993620633继而走原ui_discover_record全链；1792993757464补充冻结摘要后复验，历史均保留。
+
+最终正常轮1792994031404调用现有ui_discover_record inventory/start/action/finish，MCP初始化、snapshot、read_log、write_test、close共5步正常；scope/source/inventory/seed摘要/初态/数据规则均登记。fixture声明只有Privacy fixture标题，不把合成观察提升为真实PMS需求。finish原生manifest为complete、gaps=[]、1份script_ref；公开草稿与私有原生writer输出逐字节一致。长输出的SDK临时文件仍存在但检查不含已知合成值；公开响应媒体块0，工作区扫描未检出本轮合成cookie原文/URL/Base64变体；私有协议仍含原文，证明没有删除浏览器内容来伪造通过。
+
+三个最终反例全部沿用原生门禁和finish：
+
+- 1792994035932修改私有副本seed，冻结摘要不符；writer未执行，公开及私有草稿均不存在。仍正常close并finish，原生partial、0脚本，gaps含private-mirror-snapshot-changed、missing-generated-script、goal-not-reached、tool-error-or-cancelled。
+- 1792993937332在录制后预放公开草稿，原RecordingService在调用MCP之前阻断；旧字节保留、私有writer未执行。close后原生partial、0脚本，保留existing-output-preserved等缺口，步骤4条，不伪造writer事件。
+- 1792993982916将目标父目录设为指向自有区外目录的符号链接，适配层拒绝；区外及私有目标均未写入。close后原生partial、0脚本，保留symlink-output-rejected及原错误。
+
+准备失败1792993794230来自验证脚本把预期blocked误要求为completed，不是守卫失效；保存当时摘要与源码，但该轮没有保存完整公开QA闭包，不能作为当前反例主证据。修正验证期望后1792993847702已保存真实partial；该轮摘要nativeDraftPublication字段仍错误沿用complete措辞，原生manifest实际一直partial、0脚本。保留历史不倒写，最终1792994035932字段已更正为not-published-failure-preserved。当前结论以各自原生manifest和最终验证轮为准。
+
+所有轮次仅访问本机合成服务，模型调用/正式批次/真实业务写入均0；自有SDK会话、MCP/浏览器、本机服务及本轮原始合成payload清理，公开摘要/原生complete和partial/精确源码保留。原生raw-log.json已是早期过滤后的公开记录，不是完整原始私密捕获；原始合成payload不在归档中。未改原库用例、动态缓存或真实数据。
+
+[私有副本录制证据](ui-testing-evidence/optimization-u02-private-recording-mirror.json)归档248份公开文件，341次FileRef摘要核验、归档逐成员回读一致；直接保存的seed副本额外恢复到tests/seed.spec.ts相对布局，字节/登记摘要相同，便于核验原生引用，不改旧manifest。评审账本与上一轮索引摘要一致。实际Electron项目project-documents新增OperationContract-private-recording-mirror-2026-10-26.md及正常/3反例共128份公开快照，0600/0700、回读校验且文档保存前后store字节一致；文件保存不表示应用文档索引显示、正式用例或结果入库。
+
+本轮证明已知合成项目可以在私有副本中完成原生录制及安全草稿交接，未登记到产品，data-space prepare-private mode=record仍unsupported。下一步需要把输入闭包、私有副本与受管auth workspace作用域、原生发布及生命周期做成可验证的薄适配，再验JSON存储/新增凭据/协议分支、发布竞态/取消晚响应/重连和Electron管理入口。不把隔离complete当真实私密录制已接入。匿名评审授权、真实角色/租户/数据、U00连续基线/配对计量、U03/U07、M1/M2及整计划仍未完成。

@@ -1,0 +1,2287 @@
+{
+	"date": "2026-10-26",
+	"status": "PRIVATE_MIRROR_NATIVE_RECORDING_COMPLETE_THREE_CONTROLS_PARTIAL_PRODUCT_UNCHANGED",
+	"plan_complete": false,
+	"product_private_recording": "unsupported",
+	"modelCalls": 0,
+	"formalRuns": 0,
+	"modelReviewLedgerSha256": "34aaec3d27776ad96474be83f0be5a4eebe001fb41467afc69a4372c2b7e31ec",
+	"ledger_unchanged": true,
+	"current_runs": {
+		"complete": {
+			"directory": "tests/scratch/ui-private-recording-handoff/1792994031404",
+			"result": {
+				"protectedPrototype": true,
+				"status": "PRIVATE_MIRROR_NATIVE_RECORDING_HANDOFF_COMPLETE_NOT_PRODUCT_DELIVERY",
+				"modelCalls": 0,
+				"formalRuns": 0,
+				"businessWrites": 0,
+				"fixtureRequests": 2,
+				"tools": [
+					{
+						"name": "generator_setup_page",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 110162
+					},
+					{
+						"name": "browser_snapshot",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 109854
+					},
+					{
+						"name": "generator_read_log",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 2344
+					},
+					{
+						"name": "generator_write_test",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 1070
+					},
+					{
+						"name": "browser_close",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 893
+					}
+				],
+				"findings": [
+					{
+						"surface": "sdk-full-output-file",
+						"containsSyntheticSecret": false,
+						"bytes": 86412
+					},
+					{
+						"surface": "sdk-full-output-file",
+						"containsSyntheticSecret": false,
+						"bytes": 86136
+					}
+				],
+				"limits": [
+					"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+					"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+				],
+				"snapshot": {
+					"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+					"inputHashes": {
+						"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+						"playwright.config.mjs": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+						"tests/seed.spec.ts": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b"
+					},
+					"byteIdentical": true,
+					"sharedDependencyLink": true
+				},
+				"recordingStatus": "complete",
+				"recordingRef": {
+					"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+					"sha256": "3fbef2ad24688f602df6119fba3fbba8af0003e6a272d45203aba013e649e083"
+				},
+				"nativeRecordingSteps": 5,
+				"generatedScriptRef": {
+					"path": "qa/ui/recordings/privacy-mirror/draft.spec.ts",
+					"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc"
+				},
+				"finishGaps": [],
+				"publicScriptEqualsNative": true,
+				"rawProtocolRetainedPrivately": true,
+				"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+				"nativeDraftPublication": "native-recording-finish-complete-byte-identical-exclusive-publication",
+				"ownedRawOutputsRemoved": true
+			}
+		},
+		"stale": {
+			"directory": "tests/scratch/ui-private-recording-handoff/1792994035932",
+			"result": {
+				"protectedPrototype": true,
+				"status": "STALE_MIRROR_BLOCKED_NATIVE_PARTIAL_RETAINED",
+				"modelCalls": 0,
+				"formalRuns": 0,
+				"businessWrites": 0,
+				"fixtureRequests": 2,
+				"tools": [
+					{
+						"name": "generator_setup_page",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 110162
+					},
+					{
+						"name": "browser_snapshot",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 109854
+					},
+					{
+						"name": "generator_read_log",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 2344
+					},
+					{
+						"name": "generator_write_test",
+						"error": true,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 733
+					},
+					{
+						"name": "browser_close",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 894
+					}
+				],
+				"findings": [
+					{
+						"surface": "sdk-full-output-file",
+						"containsSyntheticSecret": false,
+						"bytes": 86412
+					},
+					{
+						"surface": "sdk-full-output-file",
+						"containsSyntheticSecret": false,
+						"bytes": 86136
+					}
+				],
+				"limits": [
+					"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+					"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+				],
+				"snapshot": {
+					"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+					"inputHashes": {
+						"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+						"playwright.config.mjs": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+						"tests/seed.spec.ts": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b"
+					},
+					"byteIdentical": true,
+					"sharedDependencyLink": true
+				},
+				"staleSnapshotBlockedBeforeNativeWrite": true,
+				"recordingStatus": "partial",
+				"recordingRef": {
+					"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+					"sha256": "aa0086475bca6025c78e1d9744b7db5876fc379bec38eb407fda156bb37123af"
+				},
+				"nativeRecordingSteps": 5,
+				"finishGaps": [
+					"private-mirror-snapshot-changed",
+					"missing-generated-script",
+					"goal-not-reached",
+					"tool-error-or-cancelled"
+				],
+				"publicScriptEqualsNative": null,
+				"rawProtocolRetainedPrivately": true,
+				"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+				"nativeDraftPublication": "not-published-failure-preserved",
+				"ownedRawOutputsRemoved": true
+			}
+		},
+		"existing": {
+			"directory": "tests/scratch/ui-private-recording-handoff/1792993937332",
+			"result": {
+				"protectedPrototype": true,
+				"status": "EXISTING_OUTPUT_BLOCKED_NATIVE_PARTIAL_RETAINED",
+				"modelCalls": 0,
+				"formalRuns": 0,
+				"businessWrites": 0,
+				"fixtureRequests": 2,
+				"tools": [
+					{
+						"name": "generator_setup_page",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 110162
+					},
+					{
+						"name": "browser_snapshot",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 109854
+					},
+					{
+						"name": "generator_read_log",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 2344
+					},
+					{
+						"name": "generator_write_test",
+						"error": true,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 239
+					},
+					{
+						"name": "browser_close",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 893
+					}
+				],
+				"findings": [
+					{
+						"surface": "sdk-full-output-file",
+						"containsSyntheticSecret": false,
+						"bytes": 86412
+					},
+					{
+						"surface": "sdk-full-output-file",
+						"containsSyntheticSecret": false,
+						"bytes": 86136
+					}
+				],
+				"limits": [
+					"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+					"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+				],
+				"snapshot": {
+					"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+					"inputHashes": {
+						"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+						"playwright.config.mjs": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+						"tests/seed.spec.ts": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b"
+					},
+					"byteIdentical": true,
+					"sharedDependencyLink": true
+				},
+				"existingOutputPreserved": true,
+				"recordingStatus": "partial",
+				"recordingRef": {
+					"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+					"sha256": "fe6205507202a500888234329148ee053b3ef6441cf846e880815ce68ba98c25"
+				},
+				"nativeRecordingSteps": 4,
+				"finishGaps": ["existing-output-preserved", "missing-generated-script", "goal-not-reached"],
+				"publicScriptEqualsNative": null,
+				"rawProtocolRetainedPrivately": true,
+				"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+				"nativeDraftPublication": "not-published-failure-preserved",
+				"ownedRawOutputsRemoved": true
+			}
+		},
+		"symlink": {
+			"directory": "tests/scratch/ui-private-recording-handoff/1792993982916",
+			"result": {
+				"protectedPrototype": true,
+				"status": "SYMLINK_OUTPUT_BLOCKED_NATIVE_PARTIAL_RETAINED",
+				"modelCalls": 0,
+				"formalRuns": 0,
+				"businessWrites": 0,
+				"fixtureRequests": 2,
+				"tools": [
+					{
+						"name": "generator_setup_page",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 110162
+					},
+					{
+						"name": "browser_snapshot",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 109854
+					},
+					{
+						"name": "generator_read_log",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 2344
+					},
+					{
+						"name": "generator_write_test",
+						"error": true,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 721
+					},
+					{
+						"name": "browser_close",
+						"error": false,
+						"containsSyntheticSecret": false,
+						"mediaBlocks": 0,
+						"bytes": 893
+					}
+				],
+				"findings": [
+					{
+						"surface": "sdk-full-output-file",
+						"containsSyntheticSecret": false,
+						"bytes": 86412
+					},
+					{
+						"surface": "sdk-full-output-file",
+						"containsSyntheticSecret": false,
+						"bytes": 86136
+					}
+				],
+				"limits": [
+					"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+					"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+				],
+				"snapshot": {
+					"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+					"inputHashes": {
+						"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+						"playwright.config.mjs": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+						"tests/seed.spec.ts": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b"
+					},
+					"byteIdentical": true,
+					"sharedDependencyLink": true
+				},
+				"symlinkOutsideWritePrevented": true,
+				"recordingStatus": "partial",
+				"recordingRef": {
+					"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+					"sha256": "e4af20fea359423cc0d04cc59f578b883cb79efc0af284edad49f26079cc489b"
+				},
+				"nativeRecordingSteps": 5,
+				"finishGaps": [
+					"symlink-output-rejected",
+					"missing-generated-script",
+					"goal-not-reached",
+					"tool-error-or-cancelled"
+				],
+				"publicScriptEqualsNative": null,
+				"rawProtocolRetainedPrivately": true,
+				"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+				"nativeDraftPublication": "not-published-failure-preserved",
+				"ownedRawOutputsRemoved": true
+			}
+		}
+	},
+	"public_refs_verified": 341,
+	"historical_harness_failure": "1792993794230 expected completed for native blocked response; only summary/source retained there, no full public QA closure; final stale run preserves native partial closure",
+	"historical_summary_correction": "1792993847702 nativeDraftPublication summary wrongly said complete; manifest partial with zero scripts preserved; final stale run has correct summary",
+	"durable_project_documents": {
+		"document": {
+			"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-private-recording-mirror-2026-10-26.md",
+			"sha256": "6bed3389086315115eef7e044f2439ce735f2b05b02ad76b74437255b55f95de",
+			"bytes": 3294
+		},
+		"snapshot": {
+			"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/private-recording-mirror-1792994031404",
+			"files": [
+				{
+					"path": "symlink/result.json",
+					"sha256": "9999ed3daadbf2f5dfd2f7911e7cf357db66a13e0ac9d34ade19e4c241338304",
+					"bytes": 2608
+				},
+				{
+					"path": "symlink/seed.spec.ts",
+					"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+					"bytes": 193
+				},
+				{
+					"path": "symlink/harness.mjs",
+					"sha256": "061660ee63c9a9cc29787df5a5fdd0ee5d3e00f03e60f5ba21ebdbf359923f30",
+					"bytes": 16796
+				},
+				{
+					"path": "symlink/mirror-prototype.mjs",
+					"sha256": "5a5f0e8807d1b92d6b14fbcb3a81c42f67e268b57c3c6e5f147cfa4bd7143834",
+					"bytes": 5172
+				},
+				{
+					"path": "symlink/playwright.config.mjs",
+					"sha256": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+					"bytes": 292
+				},
+				{
+					"path": "symlink/.cleanup-keep",
+					"sha256": "9e95e58312b2477594116615122122cae28fba239c54167972e1b62d5831750e",
+					"bytes": 88
+				},
+				{
+					"path": "symlink/tests/seed.spec.ts",
+					"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+					"bytes": 193
+				},
+				{
+					"path": "symlink/qa/ui/catalog.json",
+					"sha256": "06bd80d77d85a6c04a9a7ec9817d8ee7e415b6eb7bbc8628676c7d8afe2b6feb",
+					"bytes": 1116
+				},
+				{
+					"path": "symlink/qa/ui/recordings/privacy-mirror/session.json",
+					"sha256": "c0edadef6977e2bdf2397419655028272829411e9a994aed925b83eaa5349f0c",
+					"bytes": 1121
+				},
+				{
+					"path": "symlink/qa/ui/recordings/privacy-mirror/raw-log.json",
+					"sha256": "4345c578ca1a16861cfdb213cd5356307062bbfaed6877cc7923eb6ea6c784ac",
+					"bytes": 227844
+				},
+				{
+					"path": "symlink/qa/ui/recordings/privacy-mirror/.incomplete.json",
+					"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+					"bytes": 52
+				},
+				{
+					"path": "symlink/qa/ui/recordings/privacy-mirror/manifest.json",
+					"sha256": "e4af20fea359423cc0d04cc59f578b883cb79efc0af284edad49f26079cc489b",
+					"bytes": 3717
+				},
+				{
+					"path": "symlink/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+					"sha256": "7fbc977c3bca2e300c5a588e1c0a7595e3a49e7905921bdc5cd1451ed222e55e",
+					"bytes": 654
+				},
+				{
+					"path": "symlink/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+					"sha256": "8b8d78e5e044783d652b0c22bdf20243f8656f760cc87ccbcad3588edaf94e60",
+					"bytes": 166
+				},
+				{
+					"path": "symlink/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+					"sha256": "f14b71608dfacdbcc1c439e9323a582557594882fbe7c15b1abeaca06412af41",
+					"bytes": 394
+				},
+				{
+					"path": "symlink/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+					"sha256": "3395a810453cfb7f97babdca00d19a270d1a2c0e0f54d4d4fbe54bf60ec70efb",
+					"bytes": 1995
+				},
+				{
+					"path": "symlink/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+					"sha256": "a68d578986306f6d42e774aa7b1a8a62cd37bea7c0b8c969b46657558fb15179",
+					"bytes": 439
+				},
+				{
+					"path": "symlink/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+					"sha256": "60d1aee431d589f0ca546494729a9f0f9f4071ed91b0a60671c01867da355343",
+					"bytes": 542
+				},
+				{
+					"path": "symlink/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+					"sha256": "ef95a54d05f0239fa1971e1fe8bdfa29d823dd5edcac21634d71d1a34d30b5ef",
+					"bytes": 567
+				},
+				{
+					"path": "symlink/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+					"sha256": "341c97bd8c84382e2fd62aed178209a50a9d62b406a01840f10f8ffb0a8e0942",
+					"bytes": 109825
+				},
+				{
+					"path": "symlink/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+					"sha256": "d7066512107c4e729cce779f86562b96ab9729ba3901adf7fd5f80b1ca5f8ce0",
+					"bytes": 392
+				},
+				{
+					"path": "symlink/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+					"sha256": "138342f744e9a0476739fdefdde298f402c08a535d1a65a8e00eb373f00d5654",
+					"bytes": 109511
+				},
+				{
+					"path": "symlink/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+					"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+					"bytes": 60
+				},
+				{
+					"path": "symlink/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+					"sha256": "48938f25cf3702d02b6e8959bfa5f6330dd7c5f8a8bc35a737cf48eff071f64e",
+					"bytes": 1581
+				},
+				{
+					"path": "symlink/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+					"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+					"bytes": 61
+				},
+				{
+					"path": "symlink/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+					"sha256": "a80eeda8130d5ed443b2c8f34e0508ea12502ff08c3d2f154a007c72f6ba663e",
+					"bytes": 1836
+				},
+				{
+					"path": "symlink/qa/ui/scopes/privacy/fixture.json",
+					"sha256": "50af5a036e45b5d200b6c2da069c952507630cdb9233714f5d2548d673036d97",
+					"bytes": 270
+				},
+				{
+					"path": "symlink/qa/ui/scopes/privacy/.incomplete.json",
+					"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+					"bytes": 53
+				},
+				{
+					"path": "symlink/qa/ui/scopes/privacy/data.json",
+					"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+					"bytes": 74
+				},
+				{
+					"path": "symlink/qa/ui/scopes/privacy/initial.json",
+					"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+					"bytes": 128
+				},
+				{
+					"path": "symlink/qa/ui/scopes/privacy-mirror/.incomplete.json",
+					"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+					"bytes": 48
+				},
+				{
+					"path": "symlink/qa/ui/scopes/privacy-mirror/manifest.json",
+					"sha256": "372ac151f02b57860ae20d353664fd9a8a2c6cb133fb54addddd179fb1582d4c",
+					"bytes": 995
+				},
+				{
+					"path": "complete/result.json",
+					"sha256": "d39a1517ed9dde370bc96121a9697b935f5da3e27fd9fa83cebc4134796ca5d8",
+					"bytes": 2685
+				},
+				{
+					"path": "complete/seed.spec.ts",
+					"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+					"bytes": 193
+				},
+				{
+					"path": "complete/harness.mjs",
+					"sha256": "061660ee63c9a9cc29787df5a5fdd0ee5d3e00f03e60f5ba21ebdbf359923f30",
+					"bytes": 16796
+				},
+				{
+					"path": "complete/mirror-prototype.mjs",
+					"sha256": "5a5f0e8807d1b92d6b14fbcb3a81c42f67e268b57c3c6e5f147cfa4bd7143834",
+					"bytes": 5172
+				},
+				{
+					"path": "complete/generated.spec.ts",
+					"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+					"bytes": 188
+				},
+				{
+					"path": "complete/playwright.config.mjs",
+					"sha256": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+					"bytes": 292
+				},
+				{
+					"path": "complete/.cleanup-keep",
+					"sha256": "9e95e58312b2477594116615122122cae28fba239c54167972e1b62d5831750e",
+					"bytes": 88
+				},
+				{
+					"path": "complete/tests/seed.spec.ts",
+					"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+					"bytes": 193
+				},
+				{
+					"path": "complete/qa/ui/catalog.json",
+					"sha256": "86fc6ba9be3c8de61142463c6c4912c2260bec93912c78da72c2abd6946bbd69",
+					"bytes": 1116
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/session.json",
+					"sha256": "7a4ec1f9bd4dc79ca0853d36ab1ba24963f41120d27379569433e43748697f1e",
+					"bytes": 1113
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/raw-log.json",
+					"sha256": "a59e65d08f52bd38029a97a3de23f6970044e6c822ab3424fba786be183d723d",
+					"bytes": 228565
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/.incomplete.json",
+					"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+					"bytes": 52
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+					"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+					"bytes": 188
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/manifest.json",
+					"sha256": "3fbef2ad24688f602df6119fba3fbba8af0003e6a272d45203aba013e649e083",
+					"bytes": 3759
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+					"sha256": "c9c4a6237bf0a00d915162b268e1970ff600f8c23f192925e4bebc58cd7cd07c",
+					"bytes": 646
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+					"sha256": "94131c5a4bff2c672e66bdb0ed3a8dd4ef163e0c54c1f8a92969bbd87bbe63a1",
+					"bytes": 781
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+					"sha256": "d1c6bd16467329a2e0401886122e27725dacbc3f0d6da2956b6c138081022484",
+					"bytes": 394
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+					"sha256": "3395a810453cfb7f97babdca00d19a270d1a2c0e0f54d4d4fbe54bf60ec70efb",
+					"bytes": 1995
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+					"sha256": "2f5937dada26cc991b951059b2e572762c4450ace8943dfcb36ff019f514bded",
+					"bytes": 439
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+					"sha256": "56df77550884b505eb2cd6832ebf474e0cddb089d6330708a86331a654b51a26",
+					"bytes": 542
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+					"sha256": "d6d84d51fd67e911e24ceb50abf60f29510b7e1fe5b98b5a5c6454b949530ca9",
+					"bytes": 567
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+					"sha256": "cb801ffabb3008afef5fa50ebb340f55cda6faed85835513d2793a21321ec655",
+					"bytes": 109825
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+					"sha256": "5ef5216b30ee80ca0023e23c592e627f5edb709f84dcc6685a4f0c5c3d76924c",
+					"bytes": 392
+				},
+				{
+					"path": "complete/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+					"sha256": "057ebf53fedc8e0e8c496f1dad008a20e68aaf5f273afa79b7bed8a539a430ab",
+					"bytes": 109511
+				},
+				{
+					"path": "complete/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+					"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+					"bytes": 60
+				},
+				{
+					"path": "complete/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+					"sha256": "767bbb1933159dedeefea6ac749ed91bbf7478833a0f1bfc614c3b79934e3a2e",
+					"bytes": 1581
+				},
+				{
+					"path": "complete/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+					"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+					"bytes": 61
+				},
+				{
+					"path": "complete/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+					"sha256": "c380963235ed6041fc086a3aa6141197cf94ee0faa2e542e62cc2d7f1cdb3a74",
+					"bytes": 1836
+				},
+				{
+					"path": "complete/qa/ui/scopes/privacy/fixture.json",
+					"sha256": "50af5a036e45b5d200b6c2da069c952507630cdb9233714f5d2548d673036d97",
+					"bytes": 270
+				},
+				{
+					"path": "complete/qa/ui/scopes/privacy/.incomplete.json",
+					"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+					"bytes": 53
+				},
+				{
+					"path": "complete/qa/ui/scopes/privacy/data.json",
+					"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+					"bytes": 74
+				},
+				{
+					"path": "complete/qa/ui/scopes/privacy/initial.json",
+					"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+					"bytes": 128
+				},
+				{
+					"path": "complete/qa/ui/scopes/privacy-mirror/.incomplete.json",
+					"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+					"bytes": 48
+				},
+				{
+					"path": "complete/qa/ui/scopes/privacy-mirror/manifest.json",
+					"sha256": "e41355e9577cae209394fd975c715dfdb7f47894d413fa6533da4472622475bb",
+					"bytes": 995
+				},
+				{
+					"path": "stale/result.json",
+					"sha256": "b46abffdf4a251d696e559bf98b4402bcb23d647e6fa7ead7a7455e1e98f5cce",
+					"bytes": 2623
+				},
+				{
+					"path": "stale/seed.spec.ts",
+					"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+					"bytes": 193
+				},
+				{
+					"path": "stale/harness.mjs",
+					"sha256": "061660ee63c9a9cc29787df5a5fdd0ee5d3e00f03e60f5ba21ebdbf359923f30",
+					"bytes": 16796
+				},
+				{
+					"path": "stale/mirror-prototype.mjs",
+					"sha256": "5a5f0e8807d1b92d6b14fbcb3a81c42f67e268b57c3c6e5f147cfa4bd7143834",
+					"bytes": 5172
+				},
+				{
+					"path": "stale/playwright.config.mjs",
+					"sha256": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+					"bytes": 292
+				},
+				{
+					"path": "stale/.cleanup-keep",
+					"sha256": "9e95e58312b2477594116615122122cae28fba239c54167972e1b62d5831750e",
+					"bytes": 88
+				},
+				{
+					"path": "stale/tests/seed.spec.ts",
+					"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+					"bytes": 193
+				},
+				{
+					"path": "stale/qa/ui/catalog.json",
+					"sha256": "768b6617a2b2110336e33835bba82cd2f7e43ebd8d0a6a3065e877eb56d958b9",
+					"bytes": 1116
+				},
+				{
+					"path": "stale/qa/ui/recordings/privacy-mirror/session.json",
+					"sha256": "fe31295438589a315f73d5d829fcb53731ab4a26fb5e7c843122938ed503b5b6",
+					"bytes": 1113
+				},
+				{
+					"path": "stale/qa/ui/recordings/privacy-mirror/raw-log.json",
+					"sha256": "63f1b00670d167e37dacbfd1017a76d904c2e0d5de03516004e83760979c4cdc",
+					"bytes": 227849
+				},
+				{
+					"path": "stale/qa/ui/recordings/privacy-mirror/.incomplete.json",
+					"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+					"bytes": 52
+				},
+				{
+					"path": "stale/qa/ui/recordings/privacy-mirror/manifest.json",
+					"sha256": "aa0086475bca6025c78e1d9744b7db5876fc379bec38eb407fda156bb37123af",
+					"bytes": 3725
+				},
+				{
+					"path": "stale/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+					"sha256": "35a15c1348604a9fd7c8a6fdad01ac35c4ec780d06603e0e1183a7594dab15b4",
+					"bytes": 646
+				},
+				{
+					"path": "stale/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+					"sha256": "68d052ce9a257fc5a51b1e05e7a84e449892d065c8bfc940be581fb84c363b6a",
+					"bytes": 178
+				},
+				{
+					"path": "stale/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+					"sha256": "f558e4dafefdb003247f479e5412f57ee2b90f763a70aba68861e7a0ad6eb050",
+					"bytes": 394
+				},
+				{
+					"path": "stale/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+					"sha256": "3395a810453cfb7f97babdca00d19a270d1a2c0e0f54d4d4fbe54bf60ec70efb",
+					"bytes": 1995
+				},
+				{
+					"path": "stale/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+					"sha256": "e58b413051d953d0e27b7e77cb6a6e5367e6dedb7a5027142a094927a30910fe",
+					"bytes": 439
+				},
+				{
+					"path": "stale/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+					"sha256": "d6b58e29da5680d56cf682e3c6d7cc80a058d15a39d14b834c0c792db2c80730",
+					"bytes": 543
+				},
+				{
+					"path": "stale/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+					"sha256": "9c198c94928a81869e5914afef33f5c400f724619a42b4474a45f54707a25deb",
+					"bytes": 567
+				},
+				{
+					"path": "stale/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+					"sha256": "332150df8ecbdd02b90853b27784c9ba01d3f3e5f03cc88fc4083588da58da40",
+					"bytes": 109825
+				},
+				{
+					"path": "stale/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+					"sha256": "294a70df047ebb89a63676278546fe81ec955c3ffa4cb02acd0afe1d6b1ff5f3",
+					"bytes": 392
+				},
+				{
+					"path": "stale/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+					"sha256": "569f98cd04384e86619b28719804851c93fa857b6e0e004a48bcbb7620caa2b2",
+					"bytes": 109511
+				},
+				{
+					"path": "stale/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+					"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+					"bytes": 60
+				},
+				{
+					"path": "stale/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+					"sha256": "af348db70f10cbfc23cc5bbabc421b2772d2b94f03189c67b68d488ceb201eae",
+					"bytes": 1581
+				},
+				{
+					"path": "stale/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+					"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+					"bytes": 61
+				},
+				{
+					"path": "stale/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+					"sha256": "9e5e4cde5ba5b05510500d55caf115e7e49d18331a49c08b345602df3f4fc483",
+					"bytes": 1836
+				},
+				{
+					"path": "stale/qa/ui/scopes/privacy/fixture.json",
+					"sha256": "50af5a036e45b5d200b6c2da069c952507630cdb9233714f5d2548d673036d97",
+					"bytes": 270
+				},
+				{
+					"path": "stale/qa/ui/scopes/privacy/.incomplete.json",
+					"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+					"bytes": 53
+				},
+				{
+					"path": "stale/qa/ui/scopes/privacy/data.json",
+					"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+					"bytes": 74
+				},
+				{
+					"path": "stale/qa/ui/scopes/privacy/initial.json",
+					"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+					"bytes": 128
+				},
+				{
+					"path": "stale/qa/ui/scopes/privacy-mirror/.incomplete.json",
+					"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+					"bytes": 48
+				},
+				{
+					"path": "stale/qa/ui/scopes/privacy-mirror/manifest.json",
+					"sha256": "9d8d3f15b0b2e89ffd0429207b68638f8d1f56026e6d53a47279caf4342311b5",
+					"bytes": 995
+				},
+				{
+					"path": "existing/result.json",
+					"sha256": "f90011f145e3470d62aa66216ee6dfd7b79e3f277c4f01a9afea68ce63088df3",
+					"bytes": 2575
+				},
+				{
+					"path": "existing/seed.spec.ts",
+					"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+					"bytes": 193
+				},
+				{
+					"path": "existing/harness.mjs",
+					"sha256": "061660ee63c9a9cc29787df5a5fdd0ee5d3e00f03e60f5ba21ebdbf359923f30",
+					"bytes": 16796
+				},
+				{
+					"path": "existing/mirror-prototype.mjs",
+					"sha256": "5a5f0e8807d1b92d6b14fbcb3a81c42f67e268b57c3c6e5f147cfa4bd7143834",
+					"bytes": 5172
+				},
+				{
+					"path": "existing/playwright.config.mjs",
+					"sha256": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+					"bytes": 292
+				},
+				{
+					"path": "existing/.cleanup-keep",
+					"sha256": "9e95e58312b2477594116615122122cae28fba239c54167972e1b62d5831750e",
+					"bytes": 88
+				},
+				{
+					"path": "existing/tests/seed.spec.ts",
+					"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+					"bytes": 193
+				},
+				{
+					"path": "existing/qa/ui/catalog.json",
+					"sha256": "f2a39ed4122f18f41938df32fc165a4b4515faa4ee4ff795787600019d6207d2",
+					"bytes": 1116
+				},
+				{
+					"path": "existing/qa/ui/recordings/privacy-mirror/session.json",
+					"sha256": "4648198cd4e5446cd7e01646b914d88841524c4cf9a6c29aeae3bfa17577dd74",
+					"bytes": 1113
+				},
+				{
+					"path": "existing/qa/ui/recordings/privacy-mirror/raw-log.json",
+					"sha256": "145f8df778d2f9fbcd50891dd28ea3375d14df65902a2487c2e6b1ca9452251f",
+					"bytes": 226439
+				},
+				{
+					"path": "existing/qa/ui/recordings/privacy-mirror/.incomplete.json",
+					"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+					"bytes": 52
+				},
+				{
+					"path": "existing/qa/ui/recordings/privacy-mirror/manifest.json",
+					"sha256": "fe6205507202a500888234329148ee053b3ef6441cf846e880815ce68ba98c25",
+					"bytes": 3280
+				},
+				{
+					"path": "existing/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+					"sha256": "fb61d02b2da1908ec4880cb54951f5fa0d561ccfb721bf985d34afd7b2418c0c",
+					"bytes": 394
+				},
+				{
+					"path": "existing/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+					"sha256": "3395a810453cfb7f97babdca00d19a270d1a2c0e0f54d4d4fbe54bf60ec70efb",
+					"bytes": 1995
+				},
+				{
+					"path": "existing/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+					"sha256": "66044a01b4fe0e3ecc52dd42c40c14883137b8d9a459ffa2b2ab56fcf5071a32",
+					"bytes": 439
+				},
+				{
+					"path": "existing/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+					"sha256": "6704efb171d5aebb4233d36700e11904c197845badb8ecc95d7e9b398767e903",
+					"bytes": 542
+				},
+				{
+					"path": "existing/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+					"sha256": "013a6aff84ae22e1964919d2c6b3ab62c5b967e7e6a90b29a6bfeb968cfb6956",
+					"bytes": 567
+				},
+				{
+					"path": "existing/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+					"sha256": "e52544da84688d36c657a98df1f0da84a8ed2d6dd66d91594f297c6dfff19642",
+					"bytes": 109825
+				},
+				{
+					"path": "existing/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+					"sha256": "6349ec136ae7d450cfd088c8a628194a6a9c027489685a27e1fc2b9f56f3cdf5",
+					"bytes": 392
+				},
+				{
+					"path": "existing/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+					"sha256": "15e024a5944f0c42b35f88069967dcb77181571421b4e10bea80697476433b17",
+					"bytes": 109511
+				},
+				{
+					"path": "existing/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+					"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+					"bytes": 60
+				},
+				{
+					"path": "existing/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+					"sha256": "f8427bdf4a3e7d9c5e0739ea996bba4daca7fcb4ba353b6a4757c701a1c55789",
+					"bytes": 1581
+				},
+				{
+					"path": "existing/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+					"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+					"bytes": 61
+				},
+				{
+					"path": "existing/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+					"sha256": "07a441aedb032c3d6ca77d3ce1ded4152bc61590a179695ba2a554d6168f08e2",
+					"bytes": 1836
+				},
+				{
+					"path": "existing/qa/ui/scopes/privacy/fixture.json",
+					"sha256": "50af5a036e45b5d200b6c2da069c952507630cdb9233714f5d2548d673036d97",
+					"bytes": 270
+				},
+				{
+					"path": "existing/qa/ui/scopes/privacy/.incomplete.json",
+					"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+					"bytes": 53
+				},
+				{
+					"path": "existing/qa/ui/scopes/privacy/data.json",
+					"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+					"bytes": 74
+				},
+				{
+					"path": "existing/qa/ui/scopes/privacy/initial.json",
+					"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+					"bytes": 128
+				},
+				{
+					"path": "existing/qa/ui/scopes/privacy-mirror/.incomplete.json",
+					"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+					"bytes": 48
+				},
+				{
+					"path": "existing/qa/ui/scopes/privacy-mirror/manifest.json",
+					"sha256": "68e849ea8951ebd5a2e5356ec290b0920a1d408451504d25e1eb6c66f27d4f7d",
+					"bytes": 995
+				}
+			]
+		},
+		"storeUnchangedDuringDocumentSave": true,
+		"application_document_index": "unsupported"
+	},
+	"limits": [
+		"Prototype only; no product/installed SDK/Playwright/personal configuration changes",
+		"Three known fixture source files only; no generic import/fixture closure",
+		"No managed-auth mirror workspace binding or real PMS/Electron privacy acceptance",
+		"No publication-race/cancellation-late-response/reconnect proof",
+		"No generic secrets/rotating credentials/JSON storage/protocol coverage",
+		"Raw synthetic payloads removed; public native raw-log.json is already reduced evidence"
+	],
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-u02-private-recording-mirror.tar.gz",
+		"sha256": "9ac50ef1ca0eaa6119b7dc65d9d88796ee111574ca6b4218ffbc43b2967b4584",
+		"bytes": 451896,
+		"files": 248,
+		"roundtrip_verified": true
+	},
+	"files": [
+		{
+			"path": "tests/scratch/ui-optimization-u00/archive-private-recording-mirror.py",
+			"sha256": "e802ddbf833c617552b5bc24eb1a67014e7cf525f80c5504b6b21e1da12bde2e",
+			"bytes": 10037
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-handoff-existing.log",
+			"sha256": "563c81c3c95e55d00d63285047e406804baba5a667496c8f024af652b0f5420c",
+			"bytes": 2685
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-handoff-final.log",
+			"sha256": "d7015f67dc8d565fe6cdddef7346cc522a9e7326db20c345c414b706ba79a131",
+			"bytes": 2795
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-handoff-frozen.log",
+			"sha256": "1b4d292ea06d5ffd0c43d6151357bd9bb7b37c0d8fe97282f7c265a9162a4b55",
+			"bytes": 2795
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-handoff-stale-final.log",
+			"sha256": "a5ad7b2ad7a6d8144c491d67aa4d2a0cebaf6cac300f8a978aa52992aaf06dec",
+			"bytes": 2733
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-handoff-stale-v2.log",
+			"sha256": "e737a88fee02a875f13a0711c3658451ad3519bc01517ecd05af2f67a4656b90",
+			"bytes": 2771
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-handoff-stale.log",
+			"sha256": "e14a466365f13a93b9796f20de33b1dcee0f3e7bbc16cc7bfe2ecdf99ed76631",
+			"bytes": 2626
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-handoff-symlink.log",
+			"sha256": "d0aaa019005549f7ff792acd5f32f28677cbbc1cb3a31eea5c037e6da15f37fb",
+			"bytes": 2718
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-handoff.log",
+			"sha256": "15935d112e94344c309b3f4dbbe6636dfd3d329b3d982460d7697a326bbd36c9",
+			"bytes": 2483
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-mirror-prototype.mjs",
+			"sha256": "5a5f0e8807d1b92d6b14fbcb3a81c42f67e268b57c3c6e5f147cfa4bd7143834",
+			"bytes": 5172
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/private-recording-mirror.log",
+			"sha256": "0a317047fe525e6b7c68153068ea23487bb46729edc1d07bd25fd8e881cf1d55",
+			"bytes": 2100
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/probe-private-recording-handoff.mjs",
+			"sha256": "061660ee63c9a9cc29787df5a5fdd0ee5d3e00f03e60f5ba21ebdbf359923f30",
+			"bytes": 16796
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/.cleanup-keep",
+			"sha256": "9e95e58312b2477594116615122122cae28fba239c54167972e1b62d5831750e",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/generated.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/harness.mjs",
+			"sha256": "14ec8fa3ad9d96c764088cdbd910b44835c6709f73b6eff89da2cd352353fadd",
+			"bytes": 14576
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/mirror-prototype.mjs",
+			"sha256": "f73ecf255e92ceb09c5b3e1ed1b4ad5e387202ffa3c1794316fea76fd4b65225",
+			"bytes": 5038
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/playwright.config.mjs",
+			"sha256": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+			"bytes": 292
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/catalog.json",
+			"sha256": "afb947e5d7d83b577404f735a7e40190ee9acf3fd8edf428d2dbca88d81d0fb9",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "f8db5711e7bffc8b56cff9625942dacdbcae0f0c65d2c662dd99cd171d78632b",
+			"bytes": 1581
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "75a188d1f4fabf26a3d686c41d11e8a31bfcd0b4fd3fd32c5cfb0088de7fba52",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "3316864a46e464f191cecce04fb7c78ec0fbeb6bcefdd4150cef35a2c33a1894",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "b889f6a3405e851f9f70b97f7195cee97c81797aadd54f1379024360fa681456",
+			"bytes": 542
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "9a1176c866eed610937784ee75d5bc5d081d414ace21c07913608a52bc1282f9",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "8d67a8e3d2197945b1fe75e507ba7e944bf3b721a4f90836226c7b5c2d929631",
+			"bytes": 109825
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "2f32526568a875ab0087d6a21bf36fb045b493abf8cc6eb1e41e6a38236bac86",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "59a7f292e99babbf53c8e45bca142f63e96f8a4a650d43d3cac85d91a99ec00c",
+			"bytes": 109511
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "0fdc724a2a367a4dfe975c2eef7289f50f64f054f4f99e2c6753a076ad3fbfe1",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "3395a810453cfb7f97babdca00d19a270d1a2c0e0f54d4d4fbe54bf60ec70efb",
+			"bytes": 1995
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "61119b1e490615166adbd368581db6d28d8fce52f614cdcb4d76daadeed0e8ad",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "f7eae887f3467264a88d0a2b574a28421dbed1773b4ae553fb9ccbb8cc76c69c",
+			"bytes": 781
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "33d19079ff96ed1bea77ec6af358138dadd3facafbd00efc6037b5a504093db2",
+			"bytes": 3759
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "9125bc8b9627e6ef7f8b262ec3a985fc3e316a4d7bec68abe08d20d15a927c24",
+			"bytes": 228565
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "f205e9285b02352b4c46bfd321ea10c2485346662dc77bb9a619ca7b6ed28803",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "cda4ca8a222ec41290eac0f88ef5e30454e45f93adebdd8da4a576320945bb32",
+			"bytes": 995
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "50af5a036e45b5d200b6c2da069c952507630cdb9233714f5d2548d673036d97",
+			"bytes": 270
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/result.json",
+			"sha256": "631c5e9dde2d89ab884ecc9e15318b1ad53c26314f670703a237275059e3cd9e",
+			"bytes": 2373
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/seed.spec.ts",
+			"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+			"bytes": 193
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993620633/tests/seed.spec.ts",
+			"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+			"bytes": 193
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/.cleanup-keep",
+			"sha256": "9e95e58312b2477594116615122122cae28fba239c54167972e1b62d5831750e",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/generated.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/harness.mjs",
+			"sha256": "6de63afb207714d466bf41d35c1b027c67456a0d1f3c63787235a031e2e64fbc",
+			"bytes": 15538
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/mirror-prototype.mjs",
+			"sha256": "5a5f0e8807d1b92d6b14fbcb3a81c42f67e268b57c3c6e5f147cfa4bd7143834",
+			"bytes": 5172
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/playwright.config.mjs",
+			"sha256": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+			"bytes": 292
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/catalog.json",
+			"sha256": "687ee9874c3c53b1fb0c46e4ba73104456335abcfb45e0b0274dff8cb796fb5a",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "931cdaac3f042cec457c2b5a0ba676dbebc966160974171eb78f7992a1d29524",
+			"bytes": 1581
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "1252ee3475cdc9dd0899504db6cf98f15f0e8a03d472fc570e342c2dafab755d",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "3005f2441e84e5107ac890eb0704abd83f4b475e9a70becb508b33a068f3a250",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "24d09916a7771684927df1613c1475af35e6dc28c9d87eb03877fc84b74b288b",
+			"bytes": 543
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "cedafce80f9e491ca20dff691645e3491b10339d8f5004013d09f09ee19a0df6",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "4bd00401448dca007a04a47dddfdbfa3d1f4336a9ae2ad8002b5277bab236f20",
+			"bytes": 109825
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "98ad0101ac8bb3a8f33bd1ee6facb0a7d38eb4b9681dc3508e4bc5474325e7a9",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "09c1ed27acb7c8688e4c33c3f185ce1ecc3821da94769975e1d2bf7d0387a051",
+			"bytes": 109511
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "bf0fea115b82ceb8ffd3276efe2cd27af3de2081c67862fa448ca3ad656e4378",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "3395a810453cfb7f97babdca00d19a270d1a2c0e0f54d4d4fbe54bf60ec70efb",
+			"bytes": 1995
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "a745187ea8061fa7ec59c718a7807346becf3f98242fe58f67b9108822bcc3ff",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "94131c5a4bff2c672e66bdb0ed3a8dd4ef163e0c54c1f8a92969bbd87bbe63a1",
+			"bytes": 781
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "56fb6e434d15e7907d44951c934bdc5c73ae657cba740fc3852032e5e5c1494b",
+			"bytes": 3759
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "17c124578f2a6745986080b757994649625af0bb699fc3854b394aa56ceb98b9",
+			"bytes": 228566
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "641ad34b082100a266626f0c6c9eb8565cc1dfa941f92476f9cb5385c9d307f6",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "1fc68229628b25c8f2ea53c64d53fd7a44724d9b8cf0515546b65d95c8a8d4c8",
+			"bytes": 995
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "50af5a036e45b5d200b6c2da069c952507630cdb9233714f5d2548d673036d97",
+			"bytes": 270
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/result.json",
+			"sha256": "2c0c6bd59a0ba4716a3899e6b3b58ac937584b5b6ebc18333b8dc26a3450a678",
+			"bytes": 2685
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/seed.spec.ts",
+			"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+			"bytes": 193
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993757464/tests/seed.spec.ts",
+			"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+			"bytes": 193
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993794230/.cleanup-keep",
+			"sha256": "9e95e58312b2477594116615122122cae28fba239c54167972e1b62d5831750e",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993794230/harness.mjs",
+			"sha256": "6de63afb207714d466bf41d35c1b027c67456a0d1f3c63787235a031e2e64fbc",
+			"bytes": 15538
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993794230/mirror-prototype.mjs",
+			"sha256": "5a5f0e8807d1b92d6b14fbcb3a81c42f67e268b57c3c6e5f147cfa4bd7143834",
+			"bytes": 5172
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993794230/result.json",
+			"sha256": "ab5b359912532a7bd38a1f8073c83647ae94fa933b92af44b6a63f4d6bc33b46",
+			"bytes": 2516
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/.cleanup-keep",
+			"sha256": "9e95e58312b2477594116615122122cae28fba239c54167972e1b62d5831750e",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/harness.mjs",
+			"sha256": "c9bd01875c7460b2d0446ca2fc64358184dbf45f47006324fae701810ab313b6",
+			"bytes": 15607
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/mirror-prototype.mjs",
+			"sha256": "5a5f0e8807d1b92d6b14fbcb3a81c42f67e268b57c3c6e5f147cfa4bd7143834",
+			"bytes": 5172
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/playwright.config.mjs",
+			"sha256": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+			"bytes": 292
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/catalog.json",
+			"sha256": "900f970ecaf3aeda2826fe7d65694f05f749598a77e7157aface8957150eee4d",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "d3dcf018027fab4feeaef932c4b0e5448f980b96de91d0cdffa0b23c9852c5ec",
+			"bytes": 1581
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "626f364e2db6a9b14ae7b73240093f2904b889ab3d329c144acb45ffdf6a58f0",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "aa7f8732367dadd9de3057c21d4e679403bed0772bb1811da4caf213f8ea69b8",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "e4a450a6bf0c25d582652f63ca914a6566f7d698beb6e1d9326afc215f41b8a6",
+			"bytes": 542
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "708e55708e7c97a96b42810bf37c80ccd892a588a7f550676b13920023e59225",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "190037ebba79d337edf14a2b0b6dc18524a0d551910af615c76c7bac6af11bc6",
+			"bytes": 109825
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "3f8c07860caaf0796dab7f85404e10db2e49d8d4859e17c335b7eef9aec4fa35",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "033ba338a14695c5ef0ac8e9817f394964e508506647125d0c33755306d1383c",
+			"bytes": 109511
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "f6204e48e72bd181de3559916bc5b03e1e43946f7fbe5af9a9b0a3d0d1ad8c23",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "3395a810453cfb7f97babdca00d19a270d1a2c0e0f54d4d4fbe54bf60ec70efb",
+			"bytes": 1995
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "e3685e0eda2440e239fbdb49c341f388fb2cf00a5dc575a9d4ed1cb880a2a756",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "68d052ce9a257fc5a51b1e05e7a84e449892d065c8bfc940be581fb84c363b6a",
+			"bytes": 178
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "7004d1b23e7125e620b73634a2e75d0e066010a5103fd53aaa04f7152c52ebf3",
+			"bytes": 3725
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "610a7905d805c21f8680a5534f756957372fcdb83b01b0a76d3d4401ab3d4e69",
+			"bytes": 227848
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "1534dcea56adbcc529da35b492667ee0b2b52a9d08a9cb0e60861fbc221f1182",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "f83d4d57ab98c55a56956b15f522b948a770eac05d1be8c3ec65ea92b8c6a918",
+			"bytes": 995
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "50af5a036e45b5d200b6c2da069c952507630cdb9233714f5d2548d673036d97",
+			"bytes": 270
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/result.json",
+			"sha256": "375e3b460040f3642f77f8d322a70f7996ddece44c80cfc9f6402965bc166acc",
+			"bytes": 2661
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/seed.spec.ts",
+			"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+			"bytes": 193
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993847702/tests/seed.spec.ts",
+			"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+			"bytes": 193
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/.cleanup-keep",
+			"sha256": "9e95e58312b2477594116615122122cae28fba239c54167972e1b62d5831750e",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/harness.mjs",
+			"sha256": "061660ee63c9a9cc29787df5a5fdd0ee5d3e00f03e60f5ba21ebdbf359923f30",
+			"bytes": 16796
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/mirror-prototype.mjs",
+			"sha256": "5a5f0e8807d1b92d6b14fbcb3a81c42f67e268b57c3c6e5f147cfa4bd7143834",
+			"bytes": 5172
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/playwright.config.mjs",
+			"sha256": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+			"bytes": 292
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/catalog.json",
+			"sha256": "f2a39ed4122f18f41938df32fc165a4b4515faa4ee4ff795787600019d6207d2",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "f8427bdf4a3e7d9c5e0739ea996bba4daca7fcb4ba353b6a4757c701a1c55789",
+			"bytes": 1581
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "07a441aedb032c3d6ca77d3ce1ded4152bc61590a179695ba2a554d6168f08e2",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "66044a01b4fe0e3ecc52dd42c40c14883137b8d9a459ffa2b2ab56fcf5071a32",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "6704efb171d5aebb4233d36700e11904c197845badb8ecc95d7e9b398767e903",
+			"bytes": 542
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "013a6aff84ae22e1964919d2c6b3ab62c5b967e7e6a90b29a6bfeb968cfb6956",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "e52544da84688d36c657a98df1f0da84a8ed2d6dd66d91594f297c6dfff19642",
+			"bytes": 109825
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "6349ec136ae7d450cfd088c8a628194a6a9c027489685a27e1fc2b9f56f3cdf5",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "15e024a5944f0c42b35f88069967dcb77181571421b4e10bea80697476433b17",
+			"bytes": 109511
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "fb61d02b2da1908ec4880cb54951f5fa0d561ccfb721bf985d34afd7b2418c0c",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "3395a810453cfb7f97babdca00d19a270d1a2c0e0f54d4d4fbe54bf60ec70efb",
+			"bytes": 1995
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "fe6205507202a500888234329148ee053b3ef6441cf846e880815ce68ba98c25",
+			"bytes": 3280
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "145f8df778d2f9fbcd50891dd28ea3375d14df65902a2487c2e6b1ca9452251f",
+			"bytes": 226439
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "4648198cd4e5446cd7e01646b914d88841524c4cf9a6c29aeae3bfa17577dd74",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "68e849ea8951ebd5a2e5356ec290b0920a1d408451504d25e1eb6c66f27d4f7d",
+			"bytes": 995
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "50af5a036e45b5d200b6c2da069c952507630cdb9233714f5d2548d673036d97",
+			"bytes": 270
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/result.json",
+			"sha256": "f90011f145e3470d62aa66216ee6dfd7b79e3f277c4f01a9afea68ce63088df3",
+			"bytes": 2575
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/seed.spec.ts",
+			"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+			"bytes": 193
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993937332/tests/seed.spec.ts",
+			"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+			"bytes": 193
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/.cleanup-keep",
+			"sha256": "9e95e58312b2477594116615122122cae28fba239c54167972e1b62d5831750e",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/harness.mjs",
+			"sha256": "061660ee63c9a9cc29787df5a5fdd0ee5d3e00f03e60f5ba21ebdbf359923f30",
+			"bytes": 16796
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/mirror-prototype.mjs",
+			"sha256": "5a5f0e8807d1b92d6b14fbcb3a81c42f67e268b57c3c6e5f147cfa4bd7143834",
+			"bytes": 5172
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/playwright.config.mjs",
+			"sha256": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+			"bytes": 292
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/catalog.json",
+			"sha256": "06bd80d77d85a6c04a9a7ec9817d8ee7e415b6eb7bbc8628676c7d8afe2b6feb",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "48938f25cf3702d02b6e8959bfa5f6330dd7c5f8a8bc35a737cf48eff071f64e",
+			"bytes": 1581
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "a80eeda8130d5ed443b2c8f34e0508ea12502ff08c3d2f154a007c72f6ba663e",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "a68d578986306f6d42e774aa7b1a8a62cd37bea7c0b8c969b46657558fb15179",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "60d1aee431d589f0ca546494729a9f0f9f4071ed91b0a60671c01867da355343",
+			"bytes": 542
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "ef95a54d05f0239fa1971e1fe8bdfa29d823dd5edcac21634d71d1a34d30b5ef",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "341c97bd8c84382e2fd62aed178209a50a9d62b406a01840f10f8ffb0a8e0942",
+			"bytes": 109825
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "d7066512107c4e729cce779f86562b96ab9729ba3901adf7fd5f80b1ca5f8ce0",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "138342f744e9a0476739fdefdde298f402c08a535d1a65a8e00eb373f00d5654",
+			"bytes": 109511
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "f14b71608dfacdbcc1c439e9323a582557594882fbe7c15b1abeaca06412af41",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "3395a810453cfb7f97babdca00d19a270d1a2c0e0f54d4d4fbe54bf60ec70efb",
+			"bytes": 1995
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "7fbc977c3bca2e300c5a588e1c0a7595e3a49e7905921bdc5cd1451ed222e55e",
+			"bytes": 654
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "8b8d78e5e044783d652b0c22bdf20243f8656f760cc87ccbcad3588edaf94e60",
+			"bytes": 166
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "e4af20fea359423cc0d04cc59f578b883cb79efc0af284edad49f26079cc489b",
+			"bytes": 3717
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "4345c578ca1a16861cfdb213cd5356307062bbfaed6877cc7923eb6ea6c784ac",
+			"bytes": 227844
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "c0edadef6977e2bdf2397419655028272829411e9a994aed925b83eaa5349f0c",
+			"bytes": 1121
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "372ac151f02b57860ae20d353664fd9a8a2c6cb133fb54addddd179fb1582d4c",
+			"bytes": 995
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "50af5a036e45b5d200b6c2da069c952507630cdb9233714f5d2548d673036d97",
+			"bytes": 270
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/result.json",
+			"sha256": "9999ed3daadbf2f5dfd2f7911e7cf357db66a13e0ac9d34ade19e4c241338304",
+			"bytes": 2608
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/seed.spec.ts",
+			"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+			"bytes": 193
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792993982916/tests/seed.spec.ts",
+			"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+			"bytes": 193
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/.cleanup-keep",
+			"sha256": "9e95e58312b2477594116615122122cae28fba239c54167972e1b62d5831750e",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/data-space-documents.json",
+			"sha256": "de3f429e35e7be481f32b35127733230e42730f756b574d3d1bf5bfd142354c2",
+			"bytes": 25433
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/generated.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/harness.mjs",
+			"sha256": "061660ee63c9a9cc29787df5a5fdd0ee5d3e00f03e60f5ba21ebdbf359923f30",
+			"bytes": 16796
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/mirror-prototype.mjs",
+			"sha256": "5a5f0e8807d1b92d6b14fbcb3a81c42f67e268b57c3c6e5f147cfa4bd7143834",
+			"bytes": 5172
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/playwright.config.mjs",
+			"sha256": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+			"bytes": 292
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/catalog.json",
+			"sha256": "86fc6ba9be3c8de61142463c6c4912c2260bec93912c78da72c2abd6946bbd69",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "767bbb1933159dedeefea6ac749ed91bbf7478833a0f1bfc614c3b79934e3a2e",
+			"bytes": 1581
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "c380963235ed6041fc086a3aa6141197cf94ee0faa2e542e62cc2d7f1cdb3a74",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "2f5937dada26cc991b951059b2e572762c4450ace8943dfcb36ff019f514bded",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "56df77550884b505eb2cd6832ebf474e0cddb089d6330708a86331a654b51a26",
+			"bytes": 542
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "d6d84d51fd67e911e24ceb50abf60f29510b7e1fe5b98b5a5c6454b949530ca9",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "cb801ffabb3008afef5fa50ebb340f55cda6faed85835513d2793a21321ec655",
+			"bytes": 109825
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "5ef5216b30ee80ca0023e23c592e627f5edb709f84dcc6685a4f0c5c3d76924c",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "057ebf53fedc8e0e8c496f1dad008a20e68aaf5f273afa79b7bed8a539a430ab",
+			"bytes": 109511
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "d1c6bd16467329a2e0401886122e27725dacbc3f0d6da2956b6c138081022484",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "3395a810453cfb7f97babdca00d19a270d1a2c0e0f54d4d4fbe54bf60ec70efb",
+			"bytes": 1995
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "c9c4a6237bf0a00d915162b268e1970ff600f8c23f192925e4bebc58cd7cd07c",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "94131c5a4bff2c672e66bdb0ed3a8dd4ef163e0c54c1f8a92969bbd87bbe63a1",
+			"bytes": 781
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "3fbef2ad24688f602df6119fba3fbba8af0003e6a272d45203aba013e649e083",
+			"bytes": 3759
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "a59e65d08f52bd38029a97a3de23f6970044e6c822ab3424fba786be183d723d",
+			"bytes": 228565
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "7a4ec1f9bd4dc79ca0853d36ab1ba24963f41120d27379569433e43748697f1e",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "e41355e9577cae209394fd975c715dfdb7f47894d413fa6533da4472622475bb",
+			"bytes": 995
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "50af5a036e45b5d200b6c2da069c952507630cdb9233714f5d2548d673036d97",
+			"bytes": 270
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/result.json",
+			"sha256": "d39a1517ed9dde370bc96121a9697b935f5da3e27fd9fa83cebc4134796ca5d8",
+			"bytes": 2685
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/seed.spec.ts",
+			"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+			"bytes": 193
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994031404/tests/seed.spec.ts",
+			"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+			"bytes": 193
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/.cleanup-keep",
+			"sha256": "9e95e58312b2477594116615122122cae28fba239c54167972e1b62d5831750e",
+			"bytes": 88
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/harness.mjs",
+			"sha256": "061660ee63c9a9cc29787df5a5fdd0ee5d3e00f03e60f5ba21ebdbf359923f30",
+			"bytes": 16796
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/mirror-prototype.mjs",
+			"sha256": "5a5f0e8807d1b92d6b14fbcb3a81c42f67e268b57c3c6e5f147cfa4bd7143834",
+			"bytes": 5172
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/playwright.config.mjs",
+			"sha256": "99b57511c62cd5e9c4fd1832eb101a271db05083612cedae92d272cd577053fd",
+			"bytes": 292
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/catalog.json",
+			"sha256": "768b6617a2b2110336e33835bba82cd2f7e43ebd8d0a6a3065e877eb56d958b9",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "af348db70f10cbfc23cc5bbabc421b2772d2b94f03189c67b68d488ceb201eae",
+			"bytes": 1581
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "9e5e4cde5ba5b05510500d55caf115e7e49d18331a49c08b345602df3f4fc483",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "e58b413051d953d0e27b7e77cb6a6e5367e6dedb7a5027142a094927a30910fe",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "d6b58e29da5680d56cf682e3c6d7cc80a058d15a39d14b834c0c792db2c80730",
+			"bytes": 543
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "9c198c94928a81869e5914afef33f5c400f724619a42b4474a45f54707a25deb",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "332150df8ecbdd02b90853b27784c9ba01d3f3e5f03cc88fc4083588da58da40",
+			"bytes": 109825
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "294a70df047ebb89a63676278546fe81ec955c3ffa4cb02acd0afe1d6b1ff5f3",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "569f98cd04384e86619b28719804851c93fa857b6e0e004a48bcbb7620caa2b2",
+			"bytes": 109511
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "f558e4dafefdb003247f479e5412f57ee2b90f763a70aba68861e7a0ad6eb050",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "3395a810453cfb7f97babdca00d19a270d1a2c0e0f54d4d4fbe54bf60ec70efb",
+			"bytes": 1995
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "35a15c1348604a9fd7c8a6fdad01ac35c4ec780d06603e0e1183a7594dab15b4",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "68d052ce9a257fc5a51b1e05e7a84e449892d065c8bfc940be581fb84c363b6a",
+			"bytes": 178
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "aa0086475bca6025c78e1d9744b7db5876fc379bec38eb407fda156bb37123af",
+			"bytes": 3725
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "63f1b00670d167e37dacbfd1017a76d904c2e0d5de03516004e83760979c4cdc",
+			"bytes": 227849
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "fe31295438589a315f73d5d829fcb53731ab4a26fb5e7c843122938ed503b5b6",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "9d8d3f15b0b2e89ffd0429207b68638f8d1f56026e6d53a47279caf4342311b5",
+			"bytes": 995
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "50af5a036e45b5d200b6c2da069c952507630cdb9233714f5d2548d673036d97",
+			"bytes": 270
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/result.json",
+			"sha256": "b46abffdf4a251d696e559bf98b4402bcb23d647e6fa7ead7a7455e1e98f5cce",
+			"bytes": 2623
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/seed.spec.ts",
+			"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+			"bytes": 193
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-handoff/1792994035932/tests/seed.spec.ts",
+			"sha256": "435c32a6ccfa3b144a9f8278b3491853af343217091c1b1dfec39d8e241e768b",
+			"bytes": 193
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-mirror/1792993460323/harness.mjs",
+			"sha256": "f82a6ab8905889b33fc33a020ded47366114cf5820596971b2468c9b78ee95eb",
+			"bytes": 10661
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-mirror/1792993460323/mirror-prototype.mjs",
+			"sha256": "f73ecf255e92ceb09c5b3e1ed1b4ad5e387202ffa3c1794316fea76fd4b65225",
+			"bytes": 5038
+		},
+		{
+			"path": "tests/scratch/ui-private-recording-mirror/1792993460323/result.json",
+			"sha256": "85b3360289f19a6a2968387fd9d1f60df7544d8809e82d20d919871a2fe7ec71",
+			"bytes": 1991
+		}
+	]
+}
