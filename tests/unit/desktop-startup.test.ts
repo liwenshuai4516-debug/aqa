@@ -29,6 +29,8 @@ describe("desktop/electron-builder.yml 打包清单守卫 (issue #583)", () => {
 			"web/dist",
 			"themes",
 			"package.json",
+			"scripts/enable-agent-evaluation.mjs",
+			"scripts/enroll-agent-evaluation-runtime.mjs",
 		]) {
 			expect(yml).toMatch(new RegExp(`^\\s*-\\s+${requiredEntry.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*$`, "m"));
 		}

@@ -1,0 +1,83 @@
+{
+	"scope": "Explicit administrator enrollment of fixed trusted offline backend; actual internal macOS arm64 package; no product execution API/UI/skill",
+	"status": "ENGINEERING_SUBSET_PASS; EC06_INCOMPLETE; M1_INCOMPLETE",
+	"baselineCommit": "8eef6d4199b87d1d85fb17f22dfe7cce0793f462",
+	"pluginVersion": "0.4.34",
+	"actualAgentCliCalls": 0,
+	"actualModelCalls": 0,
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-enrollment/index.json",
+		"sha256": "79e896dc36bf224050f9886c15a575d289435bbda0c0921d4a2041fb57498b82",
+		"bytes": 206580
+	},
+	"archiveFiles": 529,
+	"runs": {
+		"node-enrolled": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-zdZPoB/result.json",
+			"status": "PASS"
+		},
+		"electron-node-enrolled": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-dh4MKe/result.json",
+			"status": "PASS"
+		},
+		"packaged-initial": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-enrollment-package-Sadp26/result.json",
+			"status": "FAIL",
+			"reason": "Native sidecar could not import omitted dependency; pre-launch enrollment and guest checks passed only"
+		},
+		"packaged-diagnosis": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-enrollment-package-wu20Sj/result.json",
+			"status": "FAIL",
+			"reason": "Captured cross-spawn ERR_MODULE_NOT_FOUND from actual package; shared node_modules symlink misreported indirect dependencies"
+		},
+		"packaged-intermediate": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-enrollment-package-1JQCMl/result.json",
+			"status": "SCOPED_PASS_WITH_CONTROL_SOCKET_ERROR",
+			"reason": "Original harness PASS covers shell/enrollment/guest only; EINVAL from overlong synthetic socket path retained, not accepted as final desktop validation"
+		},
+		"packaged-short-path": {
+			"path": "/private/tmp/ae-enroll-package-HlMlMy/result.json",
+			"status": "PASS"
+		},
+		"packaged-final": {
+			"path": "/private/tmp/ae-enroll-package-7Hg1OT/result.json",
+			"status": "PASS",
+			"scope": "Actual shipped scripts twice, exact pinned guest output/native stop/cleanup, packaged original diagnosis page, native restart and unchanged enrollment; control socket no startup error"
+		}
+	},
+	"package": {
+		"path": "/private/tmp/ec06-enroll-package-final-8eef6d4/mac-arm64/Pi Agent Desktop.app",
+		"isPackaged": true,
+		"electronVersion": "44.4.2",
+		"signed": false,
+		"published": false,
+		"trackedPluginFilesMatched": 33,
+		"sourceCheck": "/tmp/ec06-enroll-package-source-check.json",
+		"staging": "/private/tmp/ec06-enroll-package-stage-wyrqorwp",
+		"stagingPurpose": "APFS clone of source/resources and actual dependency directory, not evidence archive; shared dependencies unchanged"
+	},
+	"validation": {
+		"typecheck": "PASS all five configs",
+		"unitTests": "PASS 23 files / 369 tests, includes 11 enrollment tests and 7 desktop startup guards",
+		"initialUnitTests": "362 evaluation tests plus separate 7 desktop guards; not added again",
+		"nodeAndElectronMatrix": "PASS installed copies used after source helper path disappeared; original unified store/scorer and timeout/cancel/tamper gates",
+		"package": "PASS final native launch, diagnosis UI and restart; two screenshots visually reviewed",
+		"lint": "PASS",
+		"protocol": "PASS type-only/structure/v33; historical-tag heuristic SKIP",
+		"size": "PASS",
+		"diff": "PASS",
+		"build": "ensureBuild completed before final formatting; executable source unchanged afterward",
+		"clean": "preview only; zero deletion"
+	},
+	"limits": [
+		"Trusted fixed fake CLI only; macOS arm64 no-network VZ with frozen resource policy",
+		"Administrator chooses trusted signed helper/pinned boot inputs; no automatic compile/download or precompiled backend distribution",
+		"Enrollment never grants allowExecution, starts VM, changes disabled choices or creates attempts",
+		"No full target-profile/product execution API/UI/tool/skill, artifact collection or EC07 verifier",
+		"No unified-store process-kill/stale-writer recovery or complete resource fault matrix in this bridge",
+		"No upgrade/uninstall UI, automatic conflict overwrite or abandoned lock recovery",
+		"Only internal unsigned package, no personal installation or release identity changes",
+		"EC04/M1 incomplete; AC39 last formal result 0.4.32 FAIL, no performance rerun",
+		"Real Agent CLI/paid model tests remain postponed by user"
+	]
+}

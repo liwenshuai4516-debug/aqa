@@ -8,6 +8,7 @@ import { once } from "node:events";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { ensureBuild } from "./lib/ensure-build.mjs";
+import { enableAgentEvaluation } from "../scripts/enable-agent-evaluation.mjs";
 import { EvaluationStore } from "../plugins/agent-evaluation/store.mjs";
 import { EvaluationEngine } from "../plugins/agent-evaluation/evaluate.mjs";
 import { createInternalRegistry } from "../plugins/agent-evaluation/profiles/internal.mjs";
@@ -29,8 +30,9 @@ const result = {
 	checks: [],
 	attempts: [],
 };
-const root = path.join(output, "runtime");
-fs.mkdirSync(root, { mode: 0o700 });
+const enrolledMode = process.argv.includes("--enrolled"),
+	root = enrolledMode ? path.join(output, "data/agent-evaluation-runtime/attempts") : path.join(output, "runtime");
+fs.mkdirSync(root, { mode: 0o700, recursive: true });
 const identity = {
 	domain: { principalId: "fixture-user", workspaceId: "fixture-project" },
 	sessionIds: ["anchor-session"],
@@ -53,7 +55,11 @@ const command = (exe, args, name) => {
 	assert.equal(run.status, 0, run.error?.message || run.stderr);
 };
 const asset = (name) => ({ path: fs.realpathSync(name), sha256: sha(fs.readFileSync(name)) });
-const fixture = (name) => asset(path.join(repo, "plugins/agent-evaluation/runtime", name));
+let enrollment;
+const fixture = (name) =>
+	enrollment
+		? enrollment.guest[name === "guest-cli.sh" ? "target" : "runner"]
+		: asset(path.join(repo, "plugins/agent-evaluation/runtime", name));
 async function until(fn, label, timeout = 20000) {
 	const deadline = performance.now() + timeout;
 	while (performance.now() < deadline) {
@@ -93,12 +99,76 @@ try {
 		'<?xml version="1.0"?><plist version="1.0"><dict><key>com.apple.security.virtualization</key><true/></dict></plist>',
 	);
 	command("/usr/bin/codesign", ["--force", "--sign", "-", "--entitlements", entitlements, binary], "codesign.log");
-	const backend = {
+	let backend = {
 		version: "vz-offline-1",
 		binary: asset(binary),
 		kernel: asset(path.join(process.argv[2], "boot/Image")),
 		initrd: asset(path.join(process.argv[2], "boot/initramfs-virt")),
 	};
+	if (enrolledMode) {
+		const dataDir = path.join(output, "data"),
+			agentDir = path.join(output, "agent");
+		fs.mkdirSync(agentDir, { mode: 0o700 });
+		fs.writeFileSync(
+			path.join(agentDir, "settings.json"),
+			JSON.stringify({ disabledPlugins: ["agent-evaluation"], custom: "retain" }),
+		);
+		await enableAgentEvaluation(repo, { agentDir, dataDir });
+		const settings = fs.readFileSync(path.join(agentDir, "settings.json"));
+		const { readOfflineEnrollment } = await import("../dist/server/external-evaluation-enrollment.js");
+		assert.throws(() => readOfflineEnrollment(dataDir), { code: "ENOENT" });
+		const args = [
+			path.join(repo, "scripts/enroll-agent-evaluation-runtime.mjs"),
+			"--data-dir",
+			dataDir,
+			"--helper",
+			binary,
+			"--kernel",
+			backend.kernel.path,
+			"--initrd",
+			backend.initrd.path,
+		];
+		command(process.execPath, args, "enroll-first.log");
+		enrollment = readOfflineEnrollment(dataDir);
+		const manifestPath = path.join(dataDir, "agent-evaluation-runtime/installation/enrollment.json");
+		const manifest = fs.readFileSync(manifestPath),
+			inode = fs.statSync(manifestPath).ino;
+		command(process.execPath, args, "enroll-second.log");
+		assert.equal(fs.statSync(manifestPath).ino, inode);
+		assert.deepEqual(fs.readFileSync(manifestPath), manifest);
+		assert.deepEqual(fs.readFileSync(path.join(agentDir, "settings.json")), settings);
+		assert.equal(enrollment.runtimeRoot, root);
+		assert.deepEqual(fs.readdirSync(root), []);
+		const badKernel = path.join(output, "bad-kernel");
+		fs.writeFileSync(badKernel, "changed boot input");
+		const rejectedArgs = args.map((arg, n) => (n === args.indexOf("--kernel") + 1 ? badKernel : arg));
+		const rejected = spawnSync(process.execPath, rejectedArgs, { encoding: "utf8", timeout: 30000 });
+		fs.writeFileSync(path.join(output, "enroll-conflict.log"), (rejected.stdout ?? "") + (rejected.stderr ?? ""));
+		assert.notEqual(rejected.status, 0);
+		assert.match(rejected.stderr, /different offline installation/);
+		assert.deepEqual(fs.readFileSync(manifestPath), manifest);
+		const helperLink = path.join(output, "helper-link");
+		fs.symlinkSync(binary, helperLink);
+		const linked = spawnSync(
+			process.execPath,
+			args.map((arg, n) => (n === args.indexOf("--helper") + 1 ? helperLink : arg)),
+			{ encoding: "utf8", timeout: 30000 },
+		);
+		fs.writeFileSync(path.join(output, "enroll-link.log"), (linked.stdout ?? "") + (linked.stderr ?? ""));
+		assert.notEqual(linked.status, 0);
+		assert.match(linked.stderr, /regular file/);
+		fs.renameSync(binary, binary + ".source-retained");
+		backend = readOfflineEnrollment(dataDir).backend;
+		result.enrollment = {
+			fingerprint: enrollment.fingerprint,
+			manifestPath,
+			sourceHelperUnavailable: !fs.existsSync(binary),
+			attemptsBeforeExecution: 0,
+		};
+		result.checks.push(
+			"Actual administrator CLI copied/pinned resources into application data, preserves disabled choices, repeats without rewriting, rejects conflicts/links, and remains readable after the original helper path disappears; no VM at enrollment",
+		);
+	}
 	result.backend = backend;
 	open();
 	const contract = store.write(context, {
@@ -262,6 +332,8 @@ try {
 	result.sourceHashes = Object.fromEntries(
 		[
 			"server/external-evaluation-execution.ts",
+			"server/external-evaluation-enrollment.ts",
+			"scripts/enroll-agent-evaluation-runtime.mjs",
 			"server/external-evaluation-runtime.ts",
 			"dist/server/external-evaluation-execution.js",
 			"dist/server/external-evaluation-runtime.js",

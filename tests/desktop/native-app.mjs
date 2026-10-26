@@ -38,7 +38,7 @@ export async function launchNativeApp({
 	let browser, inspector;
 	try {
 		while (!logs.includes(readyMarker)) {
-			if (child.exitCode !== null || Date.now() > deadline)
+			if (child.exitCode !== null || child.signalCode !== null || Date.now() > deadline)
 				throw new Error("Native app failed to load before automation attached");
 			await new Promise((r) => setTimeout(r, 100));
 		}
@@ -112,7 +112,9 @@ export async function launchNativeApp({
 	} catch (error) {
 		inspector?.close();
 		await browser?.close().catch(() => {});
-		if (child.exitCode === null) child.kill("SIGTERM");
+		if (child.exitCode === null && child.signalCode === null) child.kill("SIGTERM");
+		error.nativeLogs = logs;
+		error.nativeExit = { code: child.exitCode, signal: child.signalCode };
 		throw error;
 	}
 }

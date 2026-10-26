@@ -215,4 +215,14 @@ UI-only动作：uploadStart（byteLength/sha256）、uploadChunk（uploadId/offs
 
 `runtime/` 保存固定可信假 CLI、guest runner 与 Swift supervisor 的唯一源码，测试从插件资源取用。宿主核对已登记 helper 的实际资源配置；等待输入仅按固定假 CLI 的 target-reported stderr 信号投影到原 attempt，不补输入、不延长原超时，取消仍须原生停止确认。两份 shell 固定摘要未变；旧 helper 无配置探测入口时拒绝新启动，旧记录不自动迁移/重放。
 
-这是宿主私有工程路径，产品执行入口及编译后端安装登记尚未完成。真实客户端/付费模型仍暂缓；EC06与M1未整体验收，见[本轮证据](../../docs/agent-evaluation-evidence/EC06-offline-policy-diagnostics.json)。
+这是宿主私有工程路径；0.4.34初始交付时产品执行入口及编译后端安装登记尚未完成，后续显式管理员登记见下一节。真实客户端/付费模型仍暂缓；EC06与M1未整体验收，见[本轮证据](../../docs/agent-evaluation-evidence/EC06-offline-policy-diagnostics.json)。
+
+## 显式登记固定离线后端
+
+宿主提供 `npm run agent-evaluation:enroll-runtime -- --data-dir <明确应用dataDir> --helper <可信已签名helper> --kernel <固定Image> --initrd <固定initramfs>`。先运行原插件/技能登记脚本；后端脚本从指定应用的已登记插件取唯一假CLI资源。桌面内部分发目录包含这两个脚本，可用随包Electron的 `ELECTRON_RUN_AS_NODE=1` 模式执行。源码运行前须已有有效构建。
+
+仅支持固定可信假CLI/macOS arm64的离线工程后端。管理员须提供与本插件Swift源码对应的受信构建及固定Alpine启动文件；脚本不编译、不下载、不签名、不读取模型凭据。安装复制到应用私有 `agent-evaluation-runtime/installation/`，宿主每次读取重新核验摘要、签名与配置；原构建路径消失后安装副本仍可使用。登记不启动VM、不创建attempt、不授予执行权限或改变插件/技能禁用选择。
+
+相同输入重复登记只读返回，不改清单；不同版本、篡改、宽松权限、符号链接或遗留登记锁明确拒绝，保留旧安装及失败暂存，不自动覆盖或解锁。当前没有升级/卸载UI；更换后端前先停止并核对所有尝试、保留完整dataDir与原安装，再使用另一个明确隔离dataDir登记。摘要/签名不证明任意第三方helper自述真实。
+
+[本轮EC06证据](../../docs/agent-evaluation-evidence/EC06-enrollment-diagnostics.json)分别记录单测、Node/Electron运行模式、真实内部分发包与原生重启；不代表外部执行页面/工具/技能已接通。EC06仍缺完整目标档案、产品执行入口、产物及故障验收，EC07等待前置；AC39/M1失败未关闭，真实CLI/模型继续暂缓。

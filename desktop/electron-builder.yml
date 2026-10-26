@@ -20,6 +20,8 @@ files:
   - LICENSE
   - desktop-update.json
   - package.json
+  - scripts/enable-agent-evaluation.mjs
+  - scripts/enroll-agent-evaluation-runtime.mjs
   - "!desktop/node_modules/**/*"
   - "!tools/**/*"
 # 仓库 package.json 的 main 是 CLI（bin/pi-web-ui.mjs，供插件安装器等子进程调用）：

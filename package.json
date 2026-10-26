@@ -101,6 +101,7 @@
 		"api-testing:enable": "node scripts/enable-api-testing.mjs",
 		"data-space:enable": "node scripts/enable-data-space.mjs",
 		"agent-evaluation:enable": "node scripts/enable-agent-evaluation.mjs",
+		"agent-evaluation:enroll-runtime": "node scripts/enroll-agent-evaluation-runtime.mjs",
 		"test:data-space:native": "node --import tsx tests/data-space-native-test.mjs",
 		"test:data-space:browser": "node --import tsx tests/data-space-browser-test.mjs",
 		"test:api:visibility": "node --import tsx tests/api-testing-visibility-test.mjs",
