@@ -989,3 +989,27 @@ private-recording-workspace新增beginOperation(signal)：校验过程中即绑�
 [请求生命周期证据](ui-testing-evidence/optimization-u02-recording-lifecycle.json)归档196文件、267次FileRef核验并逐成员回读一致。Electron权威项目新增OperationContract-recording-lifecycle-2026-10-26.md与177份基线/正反公开快照，0600/0700且回读一致，store字节不变，不宣称应用文档列表可见。旧U05评审账本不变；本轮随后收到的PMS匿名候选新授权单独记账，其模型调用不计入本合成实验的0次。
 
 仍未产品接入，未证明任意项目输入闭包、新凭据/嵌套JSON、所有协议分支、实际断连/重连、文件系统并发路径替换、Electron完整链及业务角色/租户/数据。整体计划继续active。
+
+### U00/U02 续跑：PMS 匿名v2设计批准、诊断及正式失败（2026-10-26）
+
+本轮收到call_8df361bb31aa411b9d78ac7b8a4483c0的人类范围授权：gpt/gpt-6.1-sol对真实PMS匿名跳转候选最多3次独立设计评审（失败也计数）、每次8192输出tokens、合计1美元，沿用保守价格上界。新pms-anonymous-authorized-review-budget.json单独记账，不挪用或修改旧U05账本。冻结候选仍是1792990404494/v2，SHA 36386b98265b385cdbd6d7ca8706fb0cdad8a27be2794de8ec721dd7f1dbea19，1场景/1条匿名URL行为基线，不扩充经营合同业务权限验收。
+
+首次准备时workflow只登记阶段工具，没有实际MCP目录，原生checkpoint保留missing-capability阻塞，下一阶段调用因此拒绝；模型调用0。保存原错误。随后使用实际Playwright1.62.1 CLI建立McpClient连接，listTools核验实际工具目录（未启动浏览器动作），原任务resume/checkpoint后推进design-review，不伪造工具可用或更换任务清零。评审结束关闭自有MCP连接。
+
+ui_design_review使用原生ModelRuntime选定gpt/gpt-6.1-sol及已配置认证，未直接读取/输出凭据；原生工具建立全新无工具Agent，读取冻结来源/脚本/配置/诊断计划，校验D1–D10原文引文并登记可信批准。request=pms-anonymous-design-1，round1 approved、D1–D10全pass，runtime_ready仍为false，未自报批准。共1次模型调用，输入35616/输出2114（其中reasoning299），保守费用预留0.044977333美元；usage cost为0来自配置价格0，不能报告实际免费或已核对账单。授权总额/预留独立守卫，剩余2次设计调用。
+
+原生ui_design_diagnose以该批准执行冻结计划：实际PMS匿名正向断言通过，冻结本机18982省略重定向副本被同一不变断言检出。错误副本来源SHA核验、HTTP200及登录控件初态正常，非启动失败代替检错；只停止本轮自有服务。request=pms-anonymous-diagnostic-1，summary validated、integrity_problems=[]、runtime_ready=true。真实服务/配置/业务数据未修改；诊断不是正式结果。
+
+随后原生UiRunService以独立execute任务、新request=pms-anonymous-formal-1重新预检并从空context执行，只允许同源GET/HEAD、空storageState，无账号密码或私有state、无业务写入。run-46c4dbe44703b9e4abb97a2735a39608执行completed，冻结1/启动1/0通过1失败，其余终态0、零重试、1关键断言到达、确定性对账complete。失败消息记录URL仍为/pms/OperationContract，不满足同源/login基线；先前诊断通过没有覆盖正式失败，没有自动重跑/改脚本/弱化断言/延长超时。
+
+ui_result_analysis read-trace读取本实例原始ZIP事件。test.trace expect@63始2173.834/止2231.783，约57.949ms；导航等待pw:api@64出现frame.waitForURL: net::ERR_ABORTED; maybe frame was detached?，错误文字Timeout:3000ms是配置上限。失败快照显示登录控件，但与URL错误消息并不一定同时，不能据此用内容替代URL基线或认定服务端根因。第一版analysis-1/report-1及进度说明误把3000ms当实际耗时，已明确纠正；历史候选/日志保留，当前analysis-2/report-2使用中断及真实trace时间，原生run/统计未改。分类insufficient-evidence、certainty unknown。
+
+原生report-2静态检查issues=[]，证据completeness=complete，但尚未R1–R6独立批准。源码资产/cases里继承的pre-review gaps为冻结时历史文字，当前批准/诊断状态以原生可信回执为准，不倒写旧候选。工作流已真实checkpoint execute/analyze，当前result-review/running；最终交付保持未完成。
+
+候选先保存Electron项目文档及可核验快照后，通过call_9af16976e6114935b436f69966803310请求在原3次/1美元内改用1次结果评审；用户明确答复“暂不改用，保留设计额度”。已登记拒绝重分配，剩余2次仅设计用途，结果评审调用0。ui-result-review门禁要求completeness=complete报告必须有独立批准，不能把完整证据人为改partial绕过；因此只保存标明未评审的阶段说明/候选，没有调用原生deliver或把最终节点完成，不重复索取该授权。
+
+可独立完成的只读对比已保存：正向诊断/正式批次资产、评审、环境引用一致，使用同一冻结base config及相同脚本选择/单worker/零重试；globalTimeout60000/120000、输出路径/reporter/归属元数据不同，记录差异而不当根因。正向诊断trace=retain-on-failure且无成功trace附件，不能逐路由事件比较；声明的部署标识相同不证明运行时响应相同。没有新增浏览器/目标请求、模型调用或重播。
+
+[匿名基线评审及正式失败证据](ui-testing-evidence/optimization-u00-pms-anonymous-reviewed.json)归档148公开文件、398次非可变FileRef核验并逐成员回读一致；5个历史task_ref单列（task manifest按原生checkpoint更新，历史摘要不伪称当前可解析）。私有批准目录、模型缓存、依赖及凭据未复制。Electron权威项目保存OperationContract-anonymous-failed-report-candidate-2026-10-26.md、带有效快照链接的report-2阶段副本、评审范围决定及公开qa快照，0600/0700、回读一致，6个文档链接存在、store未写；文件保存不表示应用文档列表显示或正式结果入库。原库3条源码草稿状态未改。
+
+本轮工程提交4d51cf1已推送且独立核对远端一致。整计划仍active：匿名正式失败触发条件未明/报告结果评审未执行；真实业务角色/租户/数据、产品私密record生命周期接入、Electron全链、U00连续计量、U03/U07及M1/M2仍未完成。结果评审授权被拒不是停止其他工程工作的理由。

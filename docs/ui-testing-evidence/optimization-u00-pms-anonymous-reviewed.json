@@ -1,0 +1,1584 @@
+{
+	"date": "2026-10-26",
+	"status": "DESIGN_APPROVED_DIAGNOSTIC_VALIDATED_FORMAL_ONE_FAILED_REPORT2_PENDING_INDEPENDENT_REVIEW",
+	"plan_complete": false,
+	"candidate": {
+		"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/manifest.json",
+		"sha256": "36386b98265b385cdbd6d7ca8706fb0cdad8a27be2794de8ec721dd7f1dbea19"
+	},
+	"review": {
+		"request_id": "pms-anonymous-design-1",
+		"asset_ref": {
+			"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/manifest.json",
+			"sha256": "36386b98265b385cdbd6d7ca8706fb0cdad8a27be2794de8ec721dd7f1dbea19"
+		},
+		"task_ref": {
+			"path": "qa/ui/tasks/pms-anonymous-redirect-review/manifest.json",
+			"sha256": "bd42d75c3e6b5918ef3e37ffc72a7208214ea1cbd6758e3bbe1e676196022918"
+		},
+		"response": {
+			"schema_version": "1.0",
+			"capability_id": "ui-design-review",
+			"capability_version": "0.1.0",
+			"status": "completed",
+			"artifact_refs": [
+				{
+					"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/reviews/design-83b16d49-f7cf-496f-adc7-ceace77d020f/manifest.json",
+					"sha256": "95877c01ed2129f1ce6b0f1435a4c0216ee5af25446fdcd2e5605603124b9893"
+				}
+			],
+			"errors": [],
+			"output": {
+				"review_ref": {
+					"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/reviews/design-83b16d49-f7cf-496f-adc7-ceace77d020f/manifest.json",
+					"sha256": "95877c01ed2129f1ce6b0f1435a4c0216ee5af25446fdcd2e5605603124b9893"
+				},
+				"decision": "approved",
+				"round": 1,
+				"runtime_ready": false
+			}
+		},
+		"formalRuns": 0,
+		"browserCalls": 0,
+		"authorized_model": "gpt/gpt-6.1-sol",
+		"callsUsed": 1,
+		"reservedUsd": 0.04497733333333333
+	},
+	"diagnostic": {
+		"request_id": "pms-anonymous-diagnostic-1",
+		"status": "completed",
+		"assetRef": {
+			"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/manifest.json",
+			"sha256": "36386b98265b385cdbd6d7ca8706fb0cdad8a27be2794de8ec721dd7f1dbea19"
+		},
+		"reviewRef": {
+			"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/reviews/design-83b16d49-f7cf-496f-adc7-ceace77d020f/manifest.json",
+			"sha256": "95877c01ed2129f1ce6b0f1435a4c0216ee5af25446fdcd2e5605603124b9893"
+		},
+		"specRef": {
+			"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostic-plan.json",
+			"sha256": "d8d021b11accd6ac30c980d748b9559c06dd653bd416a2055e63f0de71e4bc9d"
+		},
+		"response": {
+			"schema_version": "1.0",
+			"capability_id": "ui-design-diagnose",
+			"capability_version": "0.1.0",
+			"status": "completed",
+			"artifact_refs": [
+				{
+					"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/summary.json",
+					"sha256": "bc6b96f389d8414f70440815f410b2191687ff23a6f16bae7766f8d358caf160"
+				}
+			],
+			"errors": [],
+			"output": {
+				"summary_ref": {
+					"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/summary.json",
+					"sha256": "bc6b96f389d8414f70440815f410b2191687ff23a6f16bae7766f8d358caf160"
+				},
+				"schema_version": "1.0",
+				"purpose": "design-validation",
+				"formal_run": false,
+				"asset_ref": {
+					"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/manifest.json",
+					"sha256": "36386b98265b385cdbd6d7ca8706fb0cdad8a27be2794de8ec721dd7f1dbea19"
+				},
+				"review_ref": {
+					"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/reviews/design-83b16d49-f7cf-496f-adc7-ceace77d020f/manifest.json",
+					"sha256": "95877c01ed2129f1ce6b0f1435a4c0216ee5af25446fdcd2e5605603124b9893"
+				},
+				"spec_ref": {
+					"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostic-plan.json",
+					"sha256": "d8d021b11accd6ac30c980d748b9559c06dd653bd416a2055e63f0de71e4bc9d"
+				},
+				"environment_ref": {
+					"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/positive-environment.json",
+					"sha256": "446995fe524a0697b86be45dc58adb02c0c50e03fab29cd137047f52d4824556"
+				},
+				"input_ref": {
+					"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/input.json",
+					"sha256": "271667822b6e8eeefbe533fafa54e4f039c79802091bde7b741b79a505f68e23"
+				},
+				"unknown_effects": false,
+				"status": "validated",
+				"integrity_problems": [],
+				"rounds": [
+					{
+						"id": "positive",
+						"report_ref": {
+							"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/report.json",
+							"sha256": "8ecd9c9150b085a8e626da47df48e4d10c352085d74ee252f0476f875b38603e"
+						},
+						"process_ref": {
+							"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/process.json",
+							"sha256": "e45f4c2a51c7323179f645a54671645a3ea65c25cf662149fe375c1e969c3182"
+						},
+						"evidence_refs": [
+							{
+								"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/preflight.json",
+								"sha256": "6c02f0230484007d92b26172304527782fbfa432adaeb6ae6282e125e2862054"
+							},
+							{
+								"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/playwright.config.mjs",
+								"sha256": "28fd6ecf73d4618607acb3572940932e389f1501e293a03850f7b4c42081d6ce"
+							},
+							{
+								"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/launch-intent.json",
+								"sha256": "1ced4c7571068b9ee6bad0ab04b85d967e640344c421e37e7365d22ff2e36e51"
+							},
+							{
+								"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/process-started.json",
+								"sha256": "24d37762af3243606b77ebe8cd03091128416f1cc8907b39ac00b2eabe957a11"
+							}
+						],
+						"problems": []
+					},
+					{
+						"id": "omitted-redirect",
+						"report_ref": {
+							"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/report.json",
+							"sha256": "30d5fc4174e28b8c3cfa01e54e459ec63714d20da7bf60cffe9ce30990178cb7"
+						},
+						"process_ref": {
+							"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/process.json",
+							"sha256": "6150c3676e371a1728c04ce5a7473d0604d7fc5e444e3913f1538c87ccb2886c"
+						},
+						"evidence_refs": [
+							{
+								"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/preflight.json",
+								"sha256": "51c98951b20c4a13e81fd4e98cf72cae2678d4b505d229985e52230cc8e07b12"
+							},
+							{
+								"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/playwright.config.mjs",
+								"sha256": "b479c42185687099fe89d57b9e76c9b076ed370462116e8d5b764d26e3e5414e"
+							},
+							{
+								"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/launch-intent.json",
+								"sha256": "0044c6b8ca7f44dc9c3381b1626ac0c50c372a6600d14abaedc0cc0cad89dc6c"
+							},
+							{
+								"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/process-started.json",
+								"sha256": "0990d3e53a4eddeaf25584b3aab2fce143b2585001a332c7454b34b2aa931d6f"
+							},
+							{
+								"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/error-context.md",
+								"sha256": "ce8412a157e11c79ed1dcac2d7540d2e326206a1efeb02ce55ef1a3f65ee4737"
+							},
+							{
+								"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/trace.zip",
+								"sha256": "0c2da0561d072ff660fca19e2888b662ec31f6fe68c59ec5cc70c7dd3d2b316d"
+							}
+						],
+						"problems": []
+					}
+				],
+				"runtime_ready": true
+			}
+		},
+		"mutationRef": {
+			"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/negative-server.mjs",
+			"sha256": "7bf989e01a76dc7567641f686ab2407aa934f148b2013976768244a0a06f3d70"
+		},
+		"wrongResultServiceProbe": {
+			"status": 200,
+			"location": null,
+			"bodySha256": "f57853e4883fbe698e68ede1e9f8d04956def7a03790e9286620bdb082006e30",
+			"pathname": "/pms/OperationContract",
+			"baselineFaultObserved": "protected path returns 200 without redirect; candidate not executed"
+		},
+		"ownedServiceReady": true,
+		"ownedServiceClosed": true,
+		"modelCalls": 0,
+		"formalRuns": 0,
+		"realTargetModified": false
+	},
+	"formal": {
+		"status": "completed",
+		"request_id": "pms-anonymous-formal-1",
+		"assetRef": {
+			"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/manifest.json",
+			"sha256": "36386b98265b385cdbd6d7ca8706fb0cdad8a27be2794de8ec721dd7f1dbea19"
+		},
+		"reviewRef": {
+			"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/reviews/design-83b16d49-f7cf-496f-adc7-ceace77d020f/manifest.json",
+			"sha256": "95877c01ed2129f1ce6b0f1435a4c0216ee5af25446fdcd2e5605603124b9893"
+		},
+		"diagnosticSummaryRef": {
+			"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/summary.json",
+			"sha256": "bc6b96f389d8414f70440815f410b2191687ff23a6f16bae7766f8d358caf160"
+		},
+		"discoveryTaskRef": {
+			"path": "qa/ui/tasks/pms-anonymous-redirect-review/manifest.json",
+			"sha256": "24681826bd0d7ac5902e736c7a39f4ce9c91d753a22a1a4508c91ebf6f0258c0"
+		},
+		"executionTaskRef": {
+			"path": "qa/ui/tasks/pms-anonymous-execute/manifest.json",
+			"sha256": "b161feea822c5ca383f6c56ed0ecc9e56d54a8efaad931cc731938bad3d59727"
+		},
+		"modelCalls": 0,
+		"businessWrites": 0,
+		"scope": "Anonymous OperationContract to scoped /login URL baseline only; no protected business role/data acceptance",
+		"execution": {
+			"run_ref": {
+				"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/manifest.json",
+				"sha256": "64eb0abae25e499769cf9143bf6e65799f29908b234aeae685cb224159e8bf87"
+			},
+			"run": {
+				"schema_version": "1.0",
+				"kind": "run",
+				"id": "run-46c4dbe44703b9e4abb97a2735a39608",
+				"created_at": "2026-10-26T06:48:12.411Z",
+				"data": {
+					"task_id": "pms-anonymous-execute",
+					"request_id": "pms-anonymous-formal-1",
+					"asset_ref": {
+						"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/manifest.json",
+						"sha256": "36386b98265b385cdbd6d7ca8706fb0cdad8a27be2794de8ec721dd7f1dbea19"
+					},
+					"environment_id": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+					"deployment_version": "app-sha256-2888c0b0da892a1802d954396c626c063a413416cd63407f9a9072adac222d37",
+					"role": "anonymous",
+					"plan": [
+						{
+							"instance_id": "instance-1450fdaa985d888f2bb4cb71a42b71ef",
+							"case_id": "PMS-anonymous-redirect",
+							"revision": "v2",
+							"data_row_id": "anonymous-no-business-data",
+							"browser_project": "chromium"
+						}
+					],
+					"state": "finished",
+					"command": [
+						"/opt/homebrew/Cellar/node/23.10.0_1/bin/node",
+						"/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/playwright/cli.js",
+						"test",
+						"--config",
+						"/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/playwright.config.mjs"
+					],
+					"process_token": "33c0d5bba1a638f46ce40da83b3a15167c9ff4b52d4f82967e6095af958f1cbe",
+					"output_refs": [
+						{
+							"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/input.json",
+							"sha256": "8a62055d541399eb8dacbc7367ca34e5acc22e06a061633b9f1481b13d731786"
+						},
+						{
+							"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/playwright.config.mjs",
+							"sha256": "3cf9594c2c3f9f8dad308c880b4382527bdf1fa46308bb3d413e0b1653688ace"
+						},
+						{
+							"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/preflight.json",
+							"sha256": "6c02f0230484007d92b26172304527782fbfa432adaeb6ae6282e125e2862054"
+						},
+						{
+							"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/launch-intent.json",
+							"sha256": "d258918b371c0b5a6374226a6c39a78596b084aba9f79361ea01abf01a5ef744"
+						},
+						{
+							"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/process-started.json",
+							"sha256": "834759c2dccaf04aba7fedf9b6bd7892a5c92c52b2b2f1dce88d949f09aae679"
+						},
+						{
+							"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/process.json",
+							"sha256": "d688cd5c59f7b8cc281872bdef808a8050574afb60cc99f49a94893964271e30"
+						},
+						{
+							"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/report.json",
+							"sha256": "669ee7ce34404f90a5aa1e7e6a6f9973a880f57f55e595b49af5cf27d4d46b2f"
+						},
+						{
+							"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/test-failed-1.png",
+							"sha256": "7baee92863a7212bf282eb6c53f1328b825d46d71394b5f8ae3454e0fe683259"
+						},
+						{
+							"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/error-context.md",
+							"sha256": "1c610d13d2ba545d70f707f9f496698510e15fb5108663088262463b69571da4"
+						},
+						{
+							"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/trace.zip",
+							"sha256": "98b624e94c234e4be63094695f4057a6761565efb638e78eddf598825ec74dcd"
+						},
+						{
+							"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/attempts/24c51af23bae3240edacf4219fb229982638c65341bd0808b9b338429dfa63b7.json",
+							"sha256": "13f7f9eb9538800c40041322647899784b7d1ae87ca5f173c268022398a24bca"
+						},
+						{
+							"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/execution-summary.json",
+							"sha256": "601c5d99a621362ad8a3a8a405432b663b188d74dfe6d68a2ce25291176c9062"
+						}
+					],
+					"pid": 7349,
+					"exit_code": 1
+				}
+			},
+			"replayed": false
+		},
+		"executionSummary": {
+			"status": "completed",
+			"formal_run": true,
+			"input_ref": {
+				"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/input.json",
+				"sha256": "8a62055d541399eb8dacbc7367ca34e5acc22e06a061633b9f1481b13d731786"
+			},
+			"evidence_refs": [
+				{
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/input.json",
+					"sha256": "8a62055d541399eb8dacbc7367ca34e5acc22e06a061633b9f1481b13d731786"
+				},
+				{
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/playwright.config.mjs",
+					"sha256": "3cf9594c2c3f9f8dad308c880b4382527bdf1fa46308bb3d413e0b1653688ace"
+				},
+				{
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/preflight.json",
+					"sha256": "6c02f0230484007d92b26172304527782fbfa432adaeb6ae6282e125e2862054"
+				},
+				{
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/launch-intent.json",
+					"sha256": "d258918b371c0b5a6374226a6c39a78596b084aba9f79361ea01abf01a5ef744"
+				},
+				{
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/process-started.json",
+					"sha256": "834759c2dccaf04aba7fedf9b6bd7892a5c92c52b2b2f1dce88d949f09aae679"
+				},
+				{
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/process.json",
+					"sha256": "d688cd5c59f7b8cc281872bdef808a8050574afb60cc99f49a94893964271e30"
+				},
+				{
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/report.json",
+					"sha256": "669ee7ce34404f90a5aa1e7e6a6f9973a880f57f55e595b49af5cf27d4d46b2f"
+				},
+				{
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/test-failed-1.png",
+					"sha256": "7baee92863a7212bf282eb6c53f1328b825d46d71394b5f8ae3454e0fe683259"
+				},
+				{
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/error-context.md",
+					"sha256": "1c610d13d2ba545d70f707f9f496698510e15fb5108663088262463b69571da4"
+				},
+				{
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/trace.zip",
+					"sha256": "98b624e94c234e4be63094695f4057a6761565efb638e78eddf598825ec74dcd"
+				},
+				{
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/attempts/24c51af23bae3240edacf4219fb229982638c65341bd0808b9b338429dfa63b7.json",
+					"sha256": "13f7f9eb9538800c40041322647899784b7d1ae87ca5f173c268022398a24bca"
+				}
+			],
+			"collection_problems": [],
+			"test_outcome": "see-native-report",
+			"note": "进程完成不等于用例通过；统计与完整性由结果对账阶段判定"
+		},
+		"results": {
+			"data": {
+				"run_ref": {
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/manifest.json",
+					"sha256": "64eb0abae25e499769cf9143bf6e65799f29908b234aeae685cb224159e8bf87"
+				},
+				"raw_ref": {
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/report.json",
+					"sha256": "669ee7ce34404f90a5aa1e7e6a6f9973a880f57f55e595b49af5cf27d4d46b2f"
+				},
+				"raw_kind": "native-report",
+				"planned_count": 1,
+				"instances": [
+					{
+						"instance_id": "instance-1450fdaa985d888f2bb4cb71a42b71ef",
+						"status": "failed",
+						"evidence_state": "complete",
+						"attempts": [
+							{
+								"attempt": 0,
+								"native_status": "failed",
+								"evidence_refs": [
+									{
+										"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/report.json",
+										"sha256": "669ee7ce34404f90a5aa1e7e6a6f9973a880f57f55e595b49af5cf27d4d46b2f"
+									},
+									{
+										"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/test-failed-1.png",
+										"sha256": "7baee92863a7212bf282eb6c53f1328b825d46d71394b5f8ae3454e0fe683259"
+									},
+									{
+										"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/error-context.md",
+										"sha256": "1c610d13d2ba545d70f707f9f496698510e15fb5108663088262463b69571da4"
+									},
+									{
+										"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/trace.zip",
+										"sha256": "98b624e94c234e4be63094695f4057a6761565efb638e78eddf598825ec74dcd"
+									}
+								],
+								"errors": [
+									"Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected: predicate to succeed\nReceived: \u001b[31m\"http://192.168.90.224:8238/pms/OperationContract\"\u001b[39m\nTimeout:  3000ms\n\n\n   7 |  await page.goto('/pms/OperationContract');\n   8 |  await test.step('A-anonymous-redirect protected route resolves to scoped login baseline',async()=>{\n>  9 |   await expect(page).toHaveURL(url=>url.origin===origin&&url.pathname==='/login');\n     |                      ^\n  10 |  });\n  11 | });\n  12 |\n    at /Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/candidate.spec.ts:9:22\n    at /Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/candidate.spec.ts:8:2"
+								]
+							}
+						]
+					}
+				],
+				"counts": {
+					"passed": 0,
+					"failed": 1,
+					"blocked": 0,
+					"skipped": 0,
+					"cancelled": 0,
+					"not-run": 0,
+					"flaky": 0,
+					"unknown": 0
+				},
+				"reconciliation_ref": {
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/results/pms-anonymous-results-1/reconciliation.json",
+					"sha256": "323d318da4212c95fe09ce563708dcff123d6019af542ac1c7e1b35fa029e4ef"
+				}
+			},
+			"details": {
+				"schema_version": "1.0",
+				"run_ref": {
+					"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/manifest.json",
+					"sha256": "64eb0abae25e499769cf9143bf6e65799f29908b234aeae685cb224159e8bf87"
+				},
+				"complete": true,
+				"issues": [],
+				"missing": [],
+				"unplanned": [],
+				"instances": [
+					{
+						"instance_id": "instance-1450fdaa985d888f2bb4cb71a42b71ef",
+						"expected_status": ["passed"],
+						"assertion_ids": ["A-anonymous-redirect"],
+						"missing_assertions": [],
+						"cleanup": [],
+						"evidence_gaps": []
+					}
+				],
+				"started_count": 1,
+				"assertion_reached_attempt_count": 1,
+				"stable_pass_rate": 0,
+				"by_module": {
+					"pms-access": {
+						"passed": 0,
+						"failed": 1,
+						"blocked": 0,
+						"skipped": 0,
+						"cancelled": 0,
+						"not-run": 0,
+						"flaky": 0,
+						"unknown": 0
+					}
+				},
+				"by_feature": {
+					"pms-access/anonymous-redirect": {
+						"passed": 0,
+						"failed": 1,
+						"blocked": 0,
+						"skipped": 0,
+						"cancelled": 0,
+						"not-run": 0,
+						"flaky": 0,
+						"unknown": 0
+					}
+				},
+				"by_priority": {
+					"P0": {
+						"passed": 0,
+						"failed": 1,
+						"blocked": 0,
+						"skipped": 0,
+						"cancelled": 0,
+						"not-run": 0,
+						"flaky": 0,
+						"unknown": 0
+					}
+				},
+				"by_oracle": {
+					"requirement": [],
+					"declaration": [],
+					"baseline": ["instance-1450fdaa985d888f2bb4cb71a42b71ef"]
+				},
+				"coverage": {
+					"basis": "frozen-case-features",
+					"features_with_cases": 1,
+					"features_with_execution_conclusion": 1,
+					"selected_features": 1,
+					"features_without_cases": [],
+					"unexplored": ["Authenticated contract features, login submission, permissions and test data"],
+					"case_gaps": [
+						"Unreviewed v2; frozen diagnostic inputs prepared; candidate replay and diagnostic not performed"
+					],
+					"asset_gaps": ["Independent design review pending; environment preflight is not a diagnostic or formal run"]
+				},
+				"design": {
+					"basis": "executed-asset-revision-only",
+					"candidate_count": 1,
+					"approved_count": 1,
+					"revise_count": 0,
+					"blocked_count": 0,
+					"review_ref": {
+						"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/reviews/design-83b16d49-f7cf-496f-adc7-ceace77d020f/manifest.json",
+						"sha256": "95877c01ed2129f1ce6b0f1435a4c0216ee5af25446fdcd2e5605603124b9893"
+					},
+					"decision": "approved"
+				},
+				"limitations": [
+					"范围仅限冻结计划，不代表全产品或代码覆盖率；attempt 与 case 分开统计",
+					"候选与设计评估数量仅统计本批次资产修订；不推断其他候选或历史轮次。未登记的信息为不可用，不填零",
+					"未探索：Authenticated contract features, login submission, permissions and test data",
+					"Unreviewed v2; frozen diagnostic inputs prepared; candidate replay and diagnostic not performed",
+					"Independent design review pending; environment preflight is not a diagnostic or formal run"
+				]
+			},
+			"results_ref": {
+				"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/results/pms-anonymous-results-1/manifest.json",
+				"sha256": "8089c37e829be5506f91339be55c9ed191c3cb61fc633b714b1c1055dba5d4c8"
+			}
+		}
+	},
+	"reportCandidate": {
+		"status": "DRAFT_NOT_RESULT_REVIEWED",
+		"runRef": {
+			"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/manifest.json",
+			"sha256": "64eb0abae25e499769cf9143bf6e65799f29908b234aeae685cb224159e8bf87"
+		},
+		"resultsRef": {
+			"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/results/pms-anonymous-results-1/manifest.json",
+			"sha256": "8089c37e829be5506f91339be55c9ed191c3cb61fc633b714b1c1055dba5d4c8"
+		},
+		"analysisRef": {
+			"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/analysis/pms-anonymous-analysis-2/manifest.json",
+			"sha256": "9c89312156bac4520ce3ccbfeb204f26f247fa68070bf7f1a89a2b49d8bc6f3a"
+		},
+		"report": {
+			"report_ref": {
+				"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/report/pms-anonymous-report-2/manifest.json",
+				"sha256": "4d2afe71a39f6ba162fb5a1eb06c1fe92d431c04cc89c8e9e4cb362ce9d688a0"
+			},
+			"completeness": "complete",
+			"review_status": "not-reviewed"
+		},
+		"traceReadThroughNativeTool": true,
+		"counts": {
+			"passed": 0,
+			"failed": 1,
+			"blocked": 0,
+			"skipped": 0,
+			"cancelled": 0,
+			"not-run": 0,
+			"flaky": 0,
+			"unknown": 0
+		},
+		"modelCalls": 0,
+		"browserCalls": 0,
+		"formalRuns": 1,
+		"limitations": [
+			"One anonymous URL behavior baseline only; no authenticated contract/role/tenant/test-data validation",
+			"Formal failure retained; diagnostic pass is not a formal pass",
+			"Earlier report-1 and analysis-1 incorrectly said the assertion failed after 3000ms; retained as superseded drafts, not current conclusions. Independent R1-R6 result review requires separate purpose authorization; no remaining design calls reallocated"
+		]
+	},
+	"workflow": {
+		"stage": "result-review",
+		"state": "running",
+		"task_ref": {
+			"path": "qa/ui/tasks/pms-anonymous-execute/manifest.json",
+			"sha256": "290aed39ba135b4e25345cd153ba6bb5f1887261f4e0b50942040ec092c6167f"
+		}
+	},
+	"authorization": {
+		"authorization_id": "pms-anonymous-design-2026-10-26",
+		"human_reply": "授权最多 3 次，总费用不超过 1 美元",
+		"question_call_id": "call_8df361bb31aa411b9d78ac7b8a4483c0",
+		"purpose": "Independent native D1-D10 design review of frozen PMS anonymous redirect v2 candidate and necessary revisions in the same review loop; not result review",
+		"authorized_provider": "gpt",
+		"authorized_model": "gpt-6.1-sol",
+		"max_calls": 3,
+		"max_output_tokens": 8192,
+		"max_input_bytes": 1048576,
+		"max_cost_usd": 1,
+		"price_upper_bound_usd_per_million": 0.3333333333333333,
+		"price_basis": "Previously authorized conservative upper bound, applied to all input/output/cache tokens; one input token reserved per UTF-8 byte",
+		"candidate_directory": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494",
+		"asset_ref": {
+			"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/manifest.json",
+			"sha256": "36386b98265b385cdbd6d7ca8706fb0cdad8a27be2794de8ec721dd7f1dbea19"
+		},
+		"diagnostic_spec_ref": {
+			"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostic-plan.json",
+			"sha256": "d8d021b11accd6ac30c980d748b9559c06dd653bd416a2055e63f0de71e4bc9d"
+		},
+		"attempts": [
+			{
+				"number": 1,
+				"request_id": "pms-anonymous-design-1",
+				"status": "stop",
+				"input_bytes": 126740,
+				"reserved_usd": 0.04497733333333333,
+				"max_output_tokens": 8192,
+				"provider": "gpt",
+				"model": "gpt-6.1-sol",
+				"started_at": "2026-10-26T06:43:36.672Z",
+				"usage": {
+					"input": 35616,
+					"output": 2114,
+					"cacheRead": 0,
+					"cacheWrite": 0,
+					"reasoning": 299,
+					"totalTokens": 37730,
+					"cost": {
+						"input": 0,
+						"output": 0,
+						"cacheRead": 0,
+						"cacheWrite": 0,
+						"total": 0
+					}
+				},
+				"duration_ms": 50693,
+				"finished_at": "2026-10-26T06:44:27.413Z"
+			}
+		],
+		"native_attempts": [
+			{
+				"request_id": "pms-anonymous-design-1",
+				"status": "completed",
+				"asset_ref": {
+					"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/manifest.json",
+					"sha256": "36386b98265b385cdbd6d7ca8706fb0cdad8a27be2794de8ec721dd7f1dbea19"
+				},
+				"started_at": "2026-10-26T06:43:35.554Z",
+				"finished_at": "2026-10-26T06:44:27.486Z"
+			}
+		],
+		"recorded_at": "2026-10-26T06:39:39.812826+00:00",
+		"task_ref": {
+			"path": "qa/ui/tasks/pms-anonymous-redirect-review/manifest.json",
+			"sha256": "bd42d75c3e6b5918ef3e37ffc72a7208214ea1cbd6758e3bbe1e676196022918"
+		},
+		"report_review_reallocation": {
+			"question_call_id": "call_9af16976e6114935b436f69966803310",
+			"human_reply": "暂不改用，保留设计额度",
+			"decision": "declined",
+			"scope": "No design calls reallocated to report review",
+			"design_calls_remaining": 2,
+			"result_review_calls_authorized": 0,
+			"recorded_at": "2026-10-26T06:58:36.458873+00:00"
+		}
+	},
+	"oldU05LedgerSha256": "34aaec3d27776ad96474be83f0be5a4eebe001fb41467afc69a4372c2b7e31ec",
+	"oldU05LedgerUnchanged": true,
+	"fileRefsVerified": 398,
+	"historicalMutableTaskRefs": [
+		{
+			"source": "qa/ui/catalog.json",
+			"ref": {
+				"path": "qa/ui/tasks/pms-anonymous-execute/manifest.json",
+				"sha256": "290aed39ba135b4e25345cd153ba6bb5f1887261f4e0b50942040ec092c6167f"
+			},
+			"currentMatches": true
+		},
+		{
+			"source": "qa/ui/catalog.json",
+			"ref": {
+				"path": "qa/ui/tasks/pms-anonymous-redirect-review/manifest.json",
+				"sha256": "24681826bd0d7ac5902e736c7a39f4ce9c91d753a22a1a4508c91ebf6f0258c0"
+			},
+			"currentMatches": true
+		},
+		{
+			"source": "pms-anonymous-design-1.json",
+			"ref": {
+				"path": "qa/ui/tasks/pms-anonymous-redirect-review/manifest.json",
+				"sha256": "bd42d75c3e6b5918ef3e37ffc72a7208214ea1cbd6758e3bbe1e676196022918"
+			},
+			"currentMatches": false
+		},
+		{
+			"source": "pms-anonymous-formal-1.json",
+			"ref": {
+				"path": "qa/ui/tasks/pms-anonymous-redirect-review/manifest.json",
+				"sha256": "24681826bd0d7ac5902e736c7a39f4ce9c91d753a22a1a4508c91ebf6f0258c0"
+			},
+			"currentMatches": true
+		},
+		{
+			"source": "pms-anonymous-formal-1.json",
+			"ref": {
+				"path": "qa/ui/tasks/pms-anonymous-execute/manifest.json",
+				"sha256": "b161feea822c5ca383f6c56ed0ecc9e56d54a8efaad931cc731938bad3d59727"
+			},
+			"currentMatches": false
+		}
+	],
+	"reportStaticIssues": [],
+	"timingCorrection": "Report1 incorrectly described 3000ms elapsed; retained. Report2 uses native trace 57.949ms and ERR_ABORTED, not a confirmed root cause.",
+	"documents": [
+		{
+			"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-anonymous-failed-report-candidate-2026-10-26.md",
+			"sha256": "34d746963a9acaef7dad1f97e3c3d2a371b5f9ba6a6b38c795898605c859739a",
+			"bytes": 4149
+		},
+		{
+			"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-anonymous-native-report-2-2026-10-26.md",
+			"sha256": "5cd46db82794cc228498d7fcfff349ec25149a9df1c4574e0548822bad078d58",
+			"bytes": 7365
+		},
+		{
+			"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-anonymous-review-scope-2026-10-26.md",
+			"sha256": "d5b50204a6cdc8f4ed70f201f46c35b594575e47dd1cc01912fc2f969ca77f6c",
+			"bytes": 736
+		}
+	],
+	"snapshot": {
+		"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/anonymous-native-2026-10-26",
+		"files": 148,
+		"storeUnchanged": true
+	},
+	"limits": [
+		"Anonymous URL baseline only; not authenticated contract roles/tenant/data",
+		"Review/diagnostic/formal were separate from Electron Agent UI end-to-end",
+		"Formal failure retained; no automatic replay or script weakening",
+		"Report2 complete evidence but no R1-R6 independent approval; no final delivery",
+		"Frozen pre-review gaps are historical text; current state comes from native receipts",
+		"Private authority and model caches are not archived"
+	],
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-u00-pms-anonymous-reviewed.tar.gz",
+		"sha256": "a061622d107928021fbac6b71ce5ccf7a005dacb9272e39f4c071c7250b4b01e",
+		"bytes": 688516,
+		"files": 148,
+		"roundtrip_verified": true
+	},
+	"files": [
+		{
+			"path": "tests/scratch/ui-optimization-u00/analyze-pms-anonymous-v2.mjs",
+			"sha256": "1719d4d7eaa7a430fad3f1ab391879eb95aed100d7f131bdd9e4a5808a3be389",
+			"bytes": 5242
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/analyze-pms-anonymous.mjs",
+			"sha256": "eba19c99f7a2b17b5ed7fb13252535b5a17f5c7a52daacbeaa51c8a615199f38",
+			"bytes": 4701
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/archive-pms-reviewed.py",
+			"sha256": "57de3353e21c81a5948dbe55f568e5cba77441857689c22acf9dbeb5df70ef3f",
+			"bytes": 10997
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/check-pms-report.mjs",
+			"sha256": "36384be7c0caec87ce5f12e7c44163229ec508ff9348f28189acd9ec22edaf13",
+			"bytes": 1537
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/compare-pms-diagnostic-formal.py",
+			"sha256": "3871ddd0f65de33f22d8948bddb525c37b9af3c3c1e3bccc7d20e043e05833e8",
+			"bytes": 2976
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/diagnose-pms-anonymous.mjs",
+			"sha256": "6093de8c607b4c7dfa00efd055b685d8ca7e82d5128164678f7f0dc2c9f246e8",
+			"bytes": 4353
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/pms-anonymous-analysis-1.log",
+			"sha256": "de939ef278d4f8d2776af8899db789134b9e73d6ba702e9be10078b865846700",
+			"bytes": 1531
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/pms-anonymous-analysis-2.log",
+			"sha256": "ac9dda763c3e3789350f511bb8ac2d5d5688736f00777fc1aceb4725496e7a62",
+			"bytes": 1671
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/pms-anonymous-authorized-review-budget.json",
+			"sha256": "305bc9215328b24cd995a750a0b4ba14790c2e2883fa4fcdcea8b79e6fa47931",
+			"bytes": 2567
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/pms-anonymous-diagnostic-1.log",
+			"sha256": "5d5bcb725d1b2225d1ab59cc1072698bfd92a39357fd6a7d7dfb795bec86e2c3",
+			"bytes": 7776
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/pms-anonymous-formal-1.log",
+			"sha256": "46f3c5409d36c9ee7fbce13fbcace93df137c0fe1c6c60b6515dcaf08676c300",
+			"bytes": 15682
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/pms-anonymous-result-review-decision.json",
+			"sha256": "800176a1148bbe7eb12509551a41f9a094d261accf0b912288cebef88c20268f",
+			"bytes": 328
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/pms-anonymous-review1-v2.log",
+			"sha256": "606bddcabb4f7466ae5498ee81a3b85eb9c848cda1ac15f39d21aebbd8d94d57",
+			"bytes": 1321
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/pms-anonymous-review1.log",
+			"sha256": "e348e6e6c7cf50af86cbe798f0532313dd691d478217195b8a77c767eb922a5e",
+			"bytes": 651
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/pms-report-2-check.log",
+			"sha256": "bc1063b4824e6b21cf04f9ca0ebb4ff82ab43e70639a53011f895a99197ce2ff",
+			"bytes": 46572
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/review-pms-anonymous.mjs",
+			"sha256": "6dcdcb5c17ea7b47c323e0bd40b57edd663afee29c4cdb871fd1bdca0b565dd1",
+			"bytes": 6555
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/run-pms-anonymous.mjs",
+			"sha256": "f35a7858f8181eebddd51ae1f47260e2b2b8527b960f981554e8f8fc442da774",
+			"bytes": 3515
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/analysis-harness-v2.mjs",
+			"sha256": "1719d4d7eaa7a430fad3f1ab391879eb95aed100d7f131bdd9e4a5808a3be389",
+			"bytes": 5242
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/analysis-harness.mjs",
+			"sha256": "eba19c99f7a2b17b5ed7fb13252535b5a17f5c7a52daacbeaa51c8a615199f38",
+			"bytes": 4701
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/diagnostic-harness.mjs",
+			"sha256": "6093de8c607b4c7dfa00efd055b685d8ca7e82d5128164678f7f0dc2c9f246e8",
+			"bytes": 4353
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/formal-failure-trace-v2.json",
+			"sha256": "ce6bb559113a9ad8be59b8fd4361cc70693288bb13670a8cd5ebf0e110b9c370",
+			"bytes": 85668
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/formal-failure-trace.json",
+			"sha256": "ce6bb559113a9ad8be59b8fd4361cc70693288bb13670a8cd5ebf0e110b9c370",
+			"bytes": 85668
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/formal-harness.mjs",
+			"sha256": "f35a7858f8181eebddd51ae1f47260e2b2b8527b960f981554e8f8fc442da774",
+			"bytes": 3515
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/native-diagnostic-1.json",
+			"sha256": "5d5bcb725d1b2225d1ab59cc1072698bfd92a39357fd6a7d7dfb795bec86e2c3",
+			"bytes": 7776
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/package.json",
+			"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+			"bytes": 17
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/playwright.config.mjs",
+			"sha256": "3d9b0aff902aa10395a61032b06f07fadfce3d0a5a295cfebea8f2232f7d3966",
+			"bytes": 315
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/pms-anonymous-design-1.json",
+			"sha256": "606bddcabb4f7466ae5498ee81a3b85eb9c848cda1ac15f39d21aebbd8d94d57",
+			"bytes": 1321
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/pms-anonymous-formal-1.json",
+			"sha256": "46f3c5409d36c9ee7fbce13fbcace93df137c0fe1c6c60b6515dcaf08676c300",
+			"bytes": 15682
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/pms-anonymous-report-candidate-v2.json",
+			"sha256": "ac9dda763c3e3789350f511bb8ac2d5d5688736f00777fc1aceb4725496e7a62",
+			"bytes": 1671
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/pms-anonymous-report-candidate.json",
+			"sha256": "de939ef278d4f8d2776af8899db789134b9e73d6ba702e9be10078b865846700",
+			"bytes": 1531
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/pms-report-2-static-check.json",
+			"sha256": "eb2857e14171cbdca97296e61d6bb787e7b629c24b2c4ad178d088a87536f55a",
+			"bytes": 44903
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/pms-report-2-workflow.json",
+			"sha256": "efd253f7e713c80eab02af92e9f1a54844154498da474641c6c116c2ff8532df",
+			"bytes": 2032
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/positive-formal-comparison.json",
+			"sha256": "c8b3c42352dd3d509d523a5b6a1485074e6ef9e40c0dce38d9be8e5350ac69cb",
+			"bytes": 3117
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v1/.incomplete.json",
+			"sha256": "c10e16668c865802a19db1e278d95340fb1fca066c771ce9de22a1ec8a971574",
+			"bytes": 56
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v1/candidate.spec.ts",
+			"sha256": "53a09d31880890b389c5ba6848a721b9bc87fdbd19ee8fd26aa028c01687c0f2",
+			"bytes": 742
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v1/data-rules.json",
+			"sha256": "cc3c40b8e53148322f302b7926557a3a1759472b30eb0d8b593f79a970ee49f9",
+			"bytes": 393
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v1/lineage.json",
+			"sha256": "8887f580fb2d12694ecf07ed11c844981a9e863c9395811b1d80fe50bb9a3932",
+			"bytes": 541
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v1/manifest.json",
+			"sha256": "e51599c8d3249cd4084f3229649fe3e799ca101bb999d387e5516452b28eb48d",
+			"bytes": 2465
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v1/playwright.config.mjs",
+			"sha256": "3d9b0aff902aa10395a61032b06f07fadfce3d0a5a295cfebea8f2232f7d3966",
+			"bytes": 315
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/.incomplete.json",
+			"sha256": "f45e8c99f652be9c41a54d6aacd617bc4c62897360adccb7b1ef31e526bf8c74",
+			"bytes": 144
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/candidate.spec.ts",
+			"sha256": "53a09d31880890b389c5ba6848a721b9bc87fdbd19ee8fd26aa028c01687c0f2",
+			"bytes": 742
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/deployment.json",
+			"sha256": "04a548610816fbf35ab63b9cc280afc2ca49fba4bbb7285faedbaf3634b918c4",
+			"bytes": 419
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostic-plan.json",
+			"sha256": "d8d021b11accd6ac30c980d748b9559c06dd653bd416a2055e63f0de71e4bc9d",
+			"bytes": 1267
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/input.json",
+			"sha256": "271667822b6e8eeefbe533fafa54e4f039c79802091bde7b741b79a505f68e23",
+			"bytes": 2421
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/launch-intent.json",
+			"sha256": "0044c6b8ca7f44dc9c3381b1626ac0c50c372a6600d14abaedc0cc0cad89dc6c",
+			"bytes": 804
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/native.json",
+			"sha256": "30d5fc4174e28b8c3cfa01e54e459ec63714d20da7bf60cffe9ce30990178cb7",
+			"bytes": 10549
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/output/.last-run.json",
+			"sha256": "8e03d0ba39cc0b84d807e142cf356feb0dd19da6a6c06789be5abf36a3af0961",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/error-context.md",
+			"sha256": "ce8412a157e11c79ed1dcac2d7540d2e326206a1efeb02ce55ef1a3f65ee4737",
+			"bytes": 1674
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/trace.zip",
+			"sha256": "0c2da0561d072ff660fca19e2888b662ec31f6fe68c59ec5cc70c7dd3d2b316d",
+			"bytes": 10809
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/playwright.config.mjs",
+			"sha256": "b479c42185687099fe89d57b9e76c9b076ed370462116e8d5b764d26e3e5414e",
+			"bytes": 2043
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/preflight.json",
+			"sha256": "51c98951b20c4a13e81fd4e98cf72cae2678d4b505d229985e52230cc8e07b12",
+			"bytes": 243
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/process-started.json",
+			"sha256": "0990d3e53a4eddeaf25584b3aab2fce143b2585001a332c7454b34b2aa931d6f",
+			"bytes": 386
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/process.json",
+			"sha256": "6150c3676e371a1728c04ce5a7473d0604d7fc5e444e3913f1538c87ccb2886c",
+			"bytes": 4196
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/omitted-redirect/report.json",
+			"sha256": "30d5fc4174e28b8c3cfa01e54e459ec63714d20da7bf60cffe9ce30990178cb7",
+			"bytes": 10549
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/launch-intent.json",
+			"sha256": "1ced4c7571068b9ee6bad0ab04b85d967e640344c421e37e7365d22ff2e36e51",
+			"bytes": 788
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/native.json",
+			"sha256": "8ecd9c9150b085a8e626da47df48e4d10c352085d74ee252f0476f875b38603e",
+			"bytes": 4320
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/output/.last-run.json",
+			"sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+			"bytes": 45
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/playwright.config.mjs",
+			"sha256": "28fd6ecf73d4618607acb3572940932e389f1501e293a03850f7b4c42081d6ce",
+			"bytes": 2034
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/preflight.json",
+			"sha256": "6c02f0230484007d92b26172304527782fbfa432adaeb6ae6282e125e2862054",
+			"bytes": 242
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/process-started.json",
+			"sha256": "24d37762af3243606b77ebe8cd03091128416f1cc8907b39ac00b2eabe957a11",
+			"bytes": 378
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/process.json",
+			"sha256": "e45f4c2a51c7323179f645a54671645a3ea65c25cf662149fe375c1e969c3182",
+			"bytes": 1688
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/report.json",
+			"sha256": "8ecd9c9150b085a8e626da47df48e4d10c352085d74ee252f0476f875b38603e",
+			"bytes": 4320
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/summary.json",
+			"sha256": "bc6b96f389d8414f70440815f410b2191687ff23a6f16bae7766f8d358caf160",
+			"bytes": 5348
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/environment-preflight.json",
+			"sha256": "8ef335d1ee938384dd591dd0e8b26390276e06c48f02f2f45a0a9409f918c35c",
+			"bytes": 768
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/manifest.json",
+			"sha256": "36386b98265b385cdbd6d7ca8706fb0cdad8a27be2794de8ec721dd7f1dbea19",
+			"bytes": 4226
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/mutation-provenance.json",
+			"sha256": "6445bc70035d58268de908144db6db0e177154dd68809f6a280a0473b02f14c7",
+			"bytes": 913
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/negative-environment.json",
+			"sha256": "82148c17d917453e19066b4a53c1aead74abcd8c476fd9aedca11a799a4648cd",
+			"bytes": 424
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/negative-server.mjs",
+			"sha256": "7bf989e01a76dc7567641f686ab2407aa934f148b2013976768244a0a06f3d70",
+			"bytes": 715
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/negative.config.mjs",
+			"sha256": "9e76fba3a2bbd8269ab2d511abc18f24a173ebcfa991cf48b959a362658c910a",
+			"bytes": 297
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/positive-environment.json",
+			"sha256": "446995fe524a0697b86be45dc58adb02c0c50e03fab29cd137047f52d4824556",
+			"bytes": 427
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/positive.config.mjs",
+			"sha256": "7ece88218be621a950f1ba18f47ed720f6bd9047e9525bf1dfc4d31199fa2c49",
+			"bytes": 297
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/reviews/design-83b16d49-f7cf-496f-adc7-ceace77d020f/.incomplete.json",
+			"sha256": "67d289677e8d862d8e033cbb129fa8611a95f04a2650191839b577e85e91c9f9",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/reviews/design-83b16d49-f7cf-496f-adc7-ceace77d020f/input.json",
+			"sha256": "b22f59bc4a9dcc73fc21d7277d13e710ccacc95dbf00e0cda16bced67542823e",
+			"bytes": 137082
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/reviews/design-83b16d49-f7cf-496f-adc7-ceace77d020f/manifest.json",
+			"sha256": "95877c01ed2129f1ce6b0f1435a4c0216ee5af25446fdcd2e5605603124b9893",
+			"bytes": 32746
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/reviews/design-83b16d49-f7cf-496f-adc7-ceace77d020f/raw.json",
+			"sha256": "00f29b33c81943f96655cfaa7cd13d31aaf1429ad2e9669ea3674b50f74d0eb0",
+			"bytes": 6851
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/reviews/design-83b16d49-f7cf-496f-adc7-ceace77d020f/static.json",
+			"sha256": "a3a14edd3fffd8add46deff9309d39532e24454a87150a308c60c064c768f769",
+			"bytes": 516
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/cases/pms-anonymous-redirect-v1/.incomplete.json",
+			"sha256": "4245803857a297ab134084014f7fa681d51f6f0f10deb6a457a3da41e8aa0649",
+			"bytes": 59
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/cases/pms-anonymous-redirect-v1/manifest.json",
+			"sha256": "4cf3116fbaf0044113552cf80e615cec8af8f759fa4a484326ca075555fc26cb",
+			"bytes": 2754
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/cases/pms-anonymous-redirect-v2/.incomplete.json",
+			"sha256": "adb8fc5d5ef831c51ce1deef5407d6f21d89c91d4096b3d5b308f7c17ff6a65d",
+			"bytes": 59
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/cases/pms-anonymous-redirect-v2/manifest.json",
+			"sha256": "1ac2284a00585ca2af40179585183605d54e8de164970cf80aaba0257a045fde",
+			"bytes": 2778
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/catalog.json",
+			"sha256": "0a7db38db3ceb03b16a3565bdb69c209114e9839ad7d32e19764829c53de36e8",
+			"bytes": 4738
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/inventories/pms-anonymous-initial/.incomplete.json",
+			"sha256": "3080e9bb7ffb5a4ea713d9632748d70e3af3c536528500811c4b57fc5ebd9657",
+			"bytes": 59
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/inventories/pms-anonymous-initial/manifest.json",
+			"sha256": "2e056d953878d13ef3ea405a58bf993802e3e635e0cd5052593d51342097734c",
+			"bytes": 1705
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/inventories/pms-anonymous-observed/.incomplete.json",
+			"sha256": "0cac1112ec327a0ed165435fa30bb89f5aee928d15c83df29f95dd9aaedd53ad",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/inventories/pms-anonymous-observed/drafts/anonymous-redirect.md",
+			"sha256": "7a1e53ad475a19b63bc88916e677a4d48172acb7f1c56230ccb8c08c248ca2a5",
+			"bytes": 207
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/inventories/pms-anonymous-observed/manifest.json",
+			"sha256": "7a25c13494b83e3901959e73951c8bd7d3f196be5f652e5db30aa51422188121",
+			"bytes": 2379
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/.incomplete.json",
+			"sha256": "d9f5b6847dede837c3e15b819f637db6829b8c8a2c0e1286c330cda3ce1f35f0",
+			"bytes": 51
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/data.json",
+			"sha256": "a9dfdc3b4ff3287f9c529c87d2e04a4cb96a7f9efc035e22d66e2a0fe5b45fe1",
+			"bytes": 154
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/draft.spec.ts",
+			"sha256": "926ba24cad1c95ddcdc01e28a42eca3eebdb15261698d06fdf8cda2935d7f93a",
+			"bytes": 551
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/events/anonymous-action-11/request.json",
+			"sha256": "9f8f148b57ac3f3d7aea856ac009b533fbf86466a66d067752f3291a9e38cd91",
+			"bytes": 1044
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/events/anonymous-action-11/response.json",
+			"sha256": "1ac2c94b2e3c838e2157ef337fa7a36fdc223f7cad9a2db20073952c20c2e91f",
+			"bytes": 437
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/events/anonymous-action-13/request.json",
+			"sha256": "3c4497656a608643ed815d001bd0e82ab4442acf90287421f227df77ca3a3986",
+			"bytes": 472
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/events/anonymous-action-13/response.json",
+			"sha256": "ab9ab3e892e222a1b1a5b8f920d7f3d2ec0f630bbc0ea1b4486e06e613db4fc5",
+			"bytes": 542
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/events/anonymous-action-2/request.json",
+			"sha256": "d832b772c8d439414add5e505e2a23bf3c042929b78ba7f392020c79f29e9036",
+			"bytes": 566
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/events/anonymous-action-2/response.json",
+			"sha256": "18581230f9ac4f71309677ac74524139a6d909ee2d2705efcfd4e3169b4a04e5",
+			"bytes": 1104
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/events/anonymous-action-4/request.json",
+			"sha256": "a9b5201384c11771ff240ffca310fbafc5e747a2e09ffa8879b5d55bd0cee333",
+			"bytes": 537
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/events/anonymous-action-4/response.json",
+			"sha256": "2c7e7ce927f1d58d7a76799d313dcb28dc57ba3c703b2adec59129ac287f64f6",
+			"bytes": 1042
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/events/anonymous-action-6/request.json",
+			"sha256": "b87f4cfeecfe8e890488263439edf1ef757f872e318cd4cf1592dbc4b3efcce6",
+			"bytes": 409
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/events/anonymous-action-6/response.json",
+			"sha256": "499e6761608322096ca0537411bbe32236a465a1d289137e8e6c9cb35b3e0969",
+			"bytes": 1320
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/events/anonymous-action-9/request.json",
+			"sha256": "921f1f99f6c8eaedb6f8f0eb47a56896e35e179f0c746ab6b30d0c99d625e483",
+			"bytes": 411
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/events/anonymous-action-9/response.json",
+			"sha256": "2a977c3b7d7a295721714007a03a509b563bdd4f66c76ce712323543c57e63b8",
+			"bytes": 3729
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/initial.json",
+			"sha256": "3801967a9edcae12b084503035b1a11e12d89003d1fd1e65ad91fda4fdcc8897",
+			"bytes": 184
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/manifest.json",
+			"sha256": "ee376f4e75cc0fa9bbc6ffd09fcc39ec0136aa04dba81ab3ab993ce4cc8008d2",
+			"bytes": 4351
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/raw-log.json",
+			"sha256": "b1db92a3d3a9b2c9853509b4b1bb559e8324afe51339da4301af9b3270e8c014",
+			"bytes": 15810
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/requests.json",
+			"sha256": "1bbef13ea9520151d0ffbc48533dea841436a1b44ee0054180e037445ec3e63f",
+			"bytes": 101
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/recordings/pms-anonymous/session.json",
+			"sha256": "365b5b32e2e1800b6e57292e82c71670b407a6b08034398a32590cdcf8caef4c",
+			"bytes": 1149
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/.incomplete.json",
+			"sha256": "79d6b517a5e5900dd548b312a302cea2f87350023ba8404524a8b4862415cd20",
+			"bytes": 115
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/analysis/pms-anonymous-analysis-1/.incomplete.json",
+			"sha256": "18469cf1708b85d2a2c9bad18737b6d2011a032598231693aec39837feb4efeb",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/analysis/pms-anonymous-analysis-1/manifest.json",
+			"sha256": "c0d7a6bc3ba68d9e4b9022c9d4efab1b60be7ddaf5355ff83cff8e22055b8451",
+			"bytes": 3157
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/analysis/pms-anonymous-analysis-2/.incomplete.json",
+			"sha256": "2d1bb3c516f687deb571179f08c87b607efe92fb84c135ce4d1bb0e7fbd67428",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/analysis/pms-anonymous-analysis-2/manifest.json",
+			"sha256": "9c89312156bac4520ce3ccbfeb204f26f247fa68070bf7f1a89a2b49d8bc6f3a",
+			"bytes": 3549
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/attempts/24c51af23bae3240edacf4219fb229982638c65341bd0808b9b338429dfa63b7.json",
+			"sha256": "13f7f9eb9538800c40041322647899784b7d1ae87ca5f173c268022398a24bca",
+			"bytes": 7314
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/execution-summary.json",
+			"sha256": "601c5d99a621362ad8a3a8a405432b663b188d74dfe6d68a2ce25291176c9062",
+			"bytes": 2654
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/input.json",
+			"sha256": "8a62055d541399eb8dacbc7367ca34e5acc22e06a061633b9f1481b13d731786",
+			"bytes": 909
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/launch-intent.json",
+			"sha256": "d258918b371c0b5a6374226a6c39a78596b084aba9f79361ea01abf01a5ef744",
+			"bytes": 676
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/manifest.json",
+			"sha256": "64eb0abae25e499769cf9143bf6e65799f29908b234aeae685cb224159e8bf87",
+			"bytes": 3945
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/native.json",
+			"sha256": "669ee7ce34404f90a5aa1e7e6a6f9973a880f57f55e595b49af5cf27d4d46b2f",
+			"bytes": 10499
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output/.last-run.json",
+			"sha256": "8e03d0ba39cc0b84d807e142cf356feb0dd19da6a6c06789be5abf36a3af0961",
+			"bytes": 96
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/error-context.md",
+			"sha256": "1c610d13d2ba545d70f707f9f496698510e15fb5108663088262463b69571da4",
+			"bytes": 1910
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/test-failed-1.png",
+			"sha256": "7baee92863a7212bf282eb6c53f1328b825d46d71394b5f8ae3454e0fe683259",
+			"bytes": 7314
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/trace.zip",
+			"sha256": "98b624e94c234e4be63094695f4057a6761565efb638e78eddf598825ec74dcd",
+			"bytes": 565319
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/playwright.config.mjs",
+			"sha256": "3cf9594c2c3f9f8dad308c880b4382527bdf1fa46308bb3d413e0b1653688ace",
+			"bytes": 1881
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/preflight.json",
+			"sha256": "6c02f0230484007d92b26172304527782fbfa432adaeb6ae6282e125e2862054",
+			"bytes": 242
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/process-started.json",
+			"sha256": "834759c2dccaf04aba7fedf9b6bd7892a5c92c52b2b2f1dce88d949f09aae679",
+			"bytes": 336
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/process.json",
+			"sha256": "d688cd5c59f7b8cc281872bdef808a8050574afb60cc99f49a94893964271e30",
+			"bytes": 4155
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/report.json",
+			"sha256": "669ee7ce34404f90a5aa1e7e6a6f9973a880f57f55e595b49af5cf27d4d46b2f",
+			"bytes": 10499
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/report/pms-anonymous-report-1/.incomplete.json",
+			"sha256": "b60d52f17edcdac90ab1aa9038f78e4ff9165a9e3f9eedfbbbeb5f9caaf233e1",
+			"bytes": 57
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/report/pms-anonymous-report-1/content.md",
+			"sha256": "4a6af86b68a82415120b74c4b9ed9a3afe33835e29f4a97c2603b5f5380746c5",
+			"bytes": 5417
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/report/pms-anonymous-report-1/follow-up.json",
+			"sha256": "a9bb399b06938438e488d2cda4b3eb1a452f1f17172469a9fe401d961746281d",
+			"bytes": 1883
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/report/pms-anonymous-report-1/manifest.json",
+			"sha256": "09b511fd8c6b26fdf8764c5d50231c647a81f4408e3bf4f94e1eb85aee2d034f",
+			"bytes": 1943
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/report/pms-anonymous-report-2/.incomplete.json",
+			"sha256": "924d455e2d7904bb66952bea4d6ff9c51617c5ddc6e5ff2fe74773885723aa56",
+			"bytes": 57
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/report/pms-anonymous-report-2/content.md",
+			"sha256": "6ccbdea135e57954152c4132d723c1e9a8a224f1e9acb69c2e14994b4fc0df3b",
+			"bytes": 5809
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/report/pms-anonymous-report-2/follow-up.json",
+			"sha256": "a9bb399b06938438e488d2cda4b3eb1a452f1f17172469a9fe401d961746281d",
+			"bytes": 1883
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/report/pms-anonymous-report-2/manifest.json",
+			"sha256": "4d2afe71a39f6ba162fb5a1eb06c1fe92d431c04cc89c8e9e4cb362ce9d688a0",
+			"bytes": 1943
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/results/pms-anonymous-results-1/.incomplete.json",
+			"sha256": "a115ee47aa47583240d8d82871cf63e68022761d1d8120a9630381dbc93f707e",
+			"bytes": 59
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/results/pms-anonymous-results-1/manifest.json",
+			"sha256": "8089c37e829be5506f91339be55c9ed191c3cb61fc633b714b1c1055dba5d4c8",
+			"bytes": 3444
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/results/pms-anonymous-results-1/reconciliation.json",
+			"sha256": "323d318da4212c95fe09ce563708dcff123d6019af542ac1c7e1b35fa029e4ef",
+			"bytes": 3000
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/scopes/pms-anonymous/.incomplete.json",
+			"sha256": "6ea480f2486e18ac589dcb01aef68f012060444a50e767c42a3480dbb3ed99fa",
+			"bytes": 47
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/scopes/pms-anonymous/baseline.json",
+			"sha256": "47a5f598215e2f08d28a5bf15b43430f1cb589f884053133634aaaee53309e2e",
+			"bytes": 2244
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/scopes/pms-anonymous/manifest.json",
+			"sha256": "cd0ef3366fd0c647d1471b61063e2db625f6d72f1893bdeedd439abedb8db59a",
+			"bytes": 1069
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/scopes/pms-anonymous/prior-browser-result.json",
+			"sha256": "7039d1431c588aef63ad94fb9bbecf3afd921eb6e9996d98ed2b244d272af3fd",
+			"bytes": 6886
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/tasks/pms-anonymous-execute/.incomplete.json",
+			"sha256": "30193a0b6abe0cac9ee6675152df3af50ddf9afbb6682aa4300edc96b4d74e77",
+			"bytes": 54
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/tasks/pms-anonymous-execute/manifest.json",
+			"sha256": "290aed39ba135b4e25345cd153ba6bb5f1887261f4e0b50942040ec092c6167f",
+			"bytes": 1312
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/tasks/pms-anonymous-execute/requests/pms-anonymous-formal-1.json",
+			"sha256": "088a022848708b802c6bc79a0810140af3ef780a428787dd63701b77af821f1a",
+			"bytes": 78
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/tasks/pms-anonymous-redirect-review/.incomplete.json",
+			"sha256": "aca5caaccd4ca9391ea1eef8b4e0677442a1353df10ccb218afa42543ea9c397",
+			"bytes": 62
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/tasks/pms-anonymous-redirect-review/manifest.json",
+			"sha256": "24681826bd0d7ac5902e736c7a39f4ce9c91d753a22a1a4508c91ebf6f0258c0",
+			"bytes": 1510
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/result.json",
+			"sha256": "01aaff3de934ff7ad15783e4d3d163ad3ab2ec207aead18fd9a8c9d2a367863d",
+			"bytes": 2965
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/review-mcp-tools.json",
+			"sha256": "a2610fbdb9bee34f2083124ae68f85580f668e4df0159c2f35018815c3068366",
+			"bytes": 2450
+		}
+	],
+	"resultReviewDecision": {
+		"question_call_id": "call_9af16976e6114935b436f69966803310",
+		"human_reply": "暂不改用，保留设计额度",
+		"decision": "declined",
+		"scope": "No design calls reallocated to report review",
+		"design_calls_remaining": 2,
+		"result_review_calls_authorized": 0,
+		"recorded_at": "2026-10-26T06:58:36.458873+00:00"
+	},
+	"nativeDelivery": "not-called: complete report requires independent review; no falsified partial",
+	"readOnlyComparison": {
+		"status": "READ_ONLY_INPUT_COMPARISON_COMPLETE_ROOT_CAUSE_UNKNOWN",
+		"asset_ref_same": true,
+		"review_ref_same": true,
+		"environment_ref_same": true,
+		"config_ref_same": "same frozen base import observed in both generated configs",
+		"same_generated_fields": [
+			"testDir",
+			"testMatch",
+			"retries",
+			"repeatEach",
+			"workers",
+			"fullyParallel",
+			"forbidOnly",
+			"projects"
+		],
+		"different_generated_fields": {
+			"globalTimeout": [60000, 120000],
+			"outputDir": [
+				"/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/output",
+				"/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output"
+			],
+			"reporter": [
+				[
+					[
+						"json",
+						{
+							"outputFile": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/native.json"
+						}
+					]
+				],
+				[
+					[
+						"json",
+						{
+							"outputFile": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-pms-anonymous-diagnostics/1792990404494/qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/native.json"
+						}
+					]
+				]
+			]
+		},
+		"positive": {
+			"report_ref": {
+				"path": "qa/ui/assets/pms-anonymous-redirect/revisions/v2/diagnostics/diagnostic-4720242c-bf7a-472a-bb50-a348eb46d17e/positive/report.json",
+				"sha256": "8ecd9c9150b085a8e626da47df48e4d10c352085d74ee252f0476f875b38603e"
+			},
+			"stats": {
+				"startTime": "2026-10-26T06:46:27.552Z",
+				"duration": 1679.1109999999999,
+				"expected": 1,
+				"skipped": 0,
+				"unexpected": 0,
+				"flaky": 0
+			},
+			"trace_attachments": []
+		},
+		"formal": {
+			"input_ref": {
+				"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/input.json",
+				"sha256": "8a62055d541399eb8dacbc7367ca34e5acc22e06a061633b9f1481b13d731786"
+			},
+			"counts": {
+				"passed": 0,
+				"failed": 1,
+				"blocked": 0,
+				"skipped": 0,
+				"cancelled": 0,
+				"not-run": 0,
+				"flaky": 0,
+				"unknown": 0
+			},
+			"failedTraceRef": {
+				"path": "qa/ui/runs/run-46c4dbe44703b9e4abb97a2735a39608/output/qa-ui-assets-pms-anonymous-823dc-nContract-redirect-baseline-chromium/trace.zip",
+				"sha256": "98b624e94c234e4be63094695f4057a6761565efb638e78eddf598825ec74dcd"
+			}
+		},
+		"limitations": [
+			"Same declared deployment/environment/config does not prove identical runtime responses",
+			"Positive config retains traces only on failure; no positive trace is available for route-event comparison",
+			"Global timeout 60000 vs 120000 is recorded, not established as cause; observed formal assertion/navigation interruption was about 58ms",
+			"No extra target request, browser/model call or formal replay"
+		]
+	},
+	"documentLinksVerified": 6
+}

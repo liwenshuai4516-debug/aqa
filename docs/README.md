@@ -128,3 +128,5 @@ PMS 原库草稿入库与重开：`tests/ui-pms-source-cases.mjs`、`tests/ui-pm
 UI 受管身份录制副本：[内部模块与真实 SDK/MCP 证据](ui-testing-evidence/optimization-u02-managed-recording.json)，保留原生 complete/partial；产品私密录制仍未开放。
 
 UI 私密录制生命周期：[晚到发布缺陷与三类拒绝对照](ui-testing-evidence/optimization-u02-recording-lifecycle.json)，保留旧原型取消后错误发布证据及正常/partial对照；产品入口仍未开放。
+
+PMS 匿名基线：[独立设计批准、正反诊断与正式失败证据](ui-testing-evidence/optimization-u00-pms-anonymous-reviewed.json)。本批0通过/1失败，report-2保留原生导航中断事实、待独立结果评审；剩余设计额度按用户决定不改用于结果评审。
