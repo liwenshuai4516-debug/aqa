@@ -1,0 +1,203 @@
+{
+	"scope": "EC04/AC39 vector-write candidate evaluated then rejected; production durability implementation restored byte-exact",
+	"timestamp": "2026-10-26T05:08:13.427057+00:00",
+	"baselineCommit": "da430b4b47f3f89ca4bded342984fbbb27934a19",
+	"pluginVersion": "0.4.31",
+	"productChanges": false,
+	"status": "CANDIDATE_REJECTED",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/index.json",
+		"bytes": 9900,
+		"sha256": "2dbcbce2eea35a6104cb4787ffbc3066536facdcadf063accfb52ab8d0289b72"
+	},
+	"archiveFiles": 57,
+	"candidate": {
+		"change": "Write bounded body chunks via writevSync, then original body fsync; vector manifest writes, original second fsync/rename/directory fsync; finish short writes across buffers, reject zero progress. Single chunk still writeFileSync. No format/record/hash/budget/authorization change.",
+		"source": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/checks/candidate-durable.mjs",
+			"bytes": 1837,
+			"sha256": "ef72fc30e5db50561855d9cbdc36ec27ee868f98b75cdda1d926425e52c98145"
+		},
+		"patch": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/checks/candidate.patch",
+			"bytes": 1955,
+			"sha256": "724e4f9459fecef7f15139f6d806e67ff5b93d8837816e71c6ff5fd7ac1d9cdd"
+		},
+		"tests": {
+			"files": 3,
+			"tests": 94,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/checks/unit-boundary.log",
+				"bytes": 207,
+				"sha256": "0b15c75b33130eb87e1914525b5bdad758b2d2d4ee31cefb9fe4ea2df2f11856"
+			},
+			"newTestSource": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/checks/candidate-durable.test.ts",
+				"bytes": 3819,
+				"sha256": "359321b242a5f14cccbcffc53d7d124f61cf9db57221fee6cc61e4e0010885fe"
+			},
+			"boundaries": "Real partial vector writes capped at7 bytes per call across Unicode/binary/empty chunks; inspect body after first sync, exact final bytes, three fsync boundaries including directory; zero progress preserves temporary bytes/no publication; single/empty paths. Original store/evidence fault suites included."
+		},
+		"decision": "No meaningful parallel improvement, long wall/CPU worse and two candidate long RSS deltas exceed frozen64MiB limit; retain raw evidence and restore baseline, remove candidate-only tests. No performance success claim."
+	},
+	"performance": {
+		"baseline": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/performance/baseline.json",
+				"bytes": 8568,
+				"sha256": "e5c2499556cb0863e330529d526e0962799e92c8b480349a947cef6a662a0914"
+			},
+			"status": "FAIL",
+			"workers": 30,
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 49.10216700000004,
+					"wallLimit": 50,
+					"cpuDelta": 38.795,
+					"cpuLimit": 50,
+					"rssDeltas": [5013504, 2457600, 4669440, 2473984, 4390912],
+					"pass": true
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 98.542125,
+					"wallLimit": 50,
+					"cpuDelta": 106.851,
+					"cpuLimit": 50,
+					"rssDeltas": [23101440, 23281664, 23035904, 25280512, 23019520],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 434.344417,
+					"wallLimit": 50,
+					"cpuDelta": 386.975,
+					"cpuLimit": 50,
+					"rssDeltas": [61276160, 58966016, 55623680, 58212352, 56475648],
+					"pass": false
+				}
+			]
+		},
+		"candidate": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/performance/candidate.json",
+				"bytes": 8617,
+				"sha256": "6a63732c12960a04680fb7dd680fdd32298bcdcb84ca308790d624fa259347e7"
+			},
+			"status": "FAIL",
+			"workers": 30,
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 45.45199999999997,
+					"wallLimit": 50,
+					"cpuDelta": 41.42700000000001,
+					"cpuLimit": 50,
+					"rssDeltas": [3342336, 3784704, 4259840, 4243456, 3129344],
+					"pass": true
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 97.33033400000002,
+					"wallLimit": 50,
+					"cpuDelta": 106.513,
+					"cpuLimit": 50,
+					"rssDeltas": [27262976, 23789568, 23904256, 24444928, 24805376],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 457.28216699999996,
+					"wallLimit": 50,
+					"cpuDelta": 409.469,
+					"cpuLimit": 50,
+					"rssDeltas": [63078400, 62423040, 67436544, 58146816, 67567616],
+					"pass": false
+				}
+			]
+		}
+	},
+	"workloadIntegrity": "Both30-worker frozen runs verified:40/400/200 evidence,empty gaps,no collector failures,all disk budgets satisfied;harness unchanged;each on/off workload5 repetitions;no profiler in formal runs.",
+	"profile": {
+		"scope": "Two current baseline collect-only CPU samples after candidate restored; not formal off/on or reliable sums of overlapping inclusive frames",
+		"raw": {
+			"parallel": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/checks/parallel-cpu.json",
+				"bytes": 91062,
+				"sha256": "efb104c2a9702d3f3330e1e3a2005d4ae320ab7397b8d6cde0d7b525a176dd69"
+			},
+			"long": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/checks/long-cpu.json",
+				"bytes": 101641,
+				"sha256": "79ebf683d171479cc6eafe151e86a4c134a57689d41c6176b4141fcb812a3437"
+			}
+		},
+		"summary": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/checks/summary-final.json",
+			"bytes": 33425,
+			"sha256": "28d1e8574d60e8386e295964b423af4728465d0b75518a60db063239ccfa2d16"
+		},
+		"collectWallMs": {
+			"parallel": 103.81633300000004,
+			"long": 451.36850000000004
+		},
+		"interpretation": "Parallel collect103.82ms/admitted98.46ms, long451.37/admitted436.71ms. Exclude profiler post23.29/34.04ms and GC without collect stack4.83/14.21ms;excludedGC not zero cost. Parallel writeFileUtf8 self3.17ms versus fsync26.04ms and canonical append9.29ms. Long fsync65.83ms,append55.50ms,sourceItem51.59ms,hash update43.34/35.50ms. Anonymous frames remain unattributed;inclusive frames overlap;sample attribution not exact timing or significance proof."
+	},
+	"restoration": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/checks/final-state.json",
+		"bytes": 7116,
+		"sha256": "f8d7c6b01c71c4a40179d92b4cae51ef13abdc707bfbe1026f0209fa885437e3"
+	},
+	"validation": {
+		"unit": {
+			"files": 16,
+			"tests": 293,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/checks/unit-final.log",
+				"bytes": 229,
+				"sha256": "30c8e8645485c507ae7a002072fd20215a04d5e8cb22f1161b7218f65db0e927"
+			}
+		},
+		"typecheck": {
+			"configs": 5,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/checks/typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"checks": {
+			"lint": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/checks/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			"protocol": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/checks/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"size": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/checks/size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			},
+			"clean-delivery": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-vector-write/files/checks/clean-delivery.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			}
+		},
+		"protocol": "Structure/type-only/v33 PASS;historical tag heuristic SKIP",
+		"clean": "Preview only,zero deletions",
+		"desktop": "Not run this turn;product29files restored exact, no candidate installed into personal or desktop directories. Prior actual desktop results retain original scope only."
+	},
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"actualToolCalls": 0,
+	"remaining": "AC39 overall FAIL. EC04/M1 and overall goal incomplete;EC06 isolation and later gates remain;realCLI/models deferred. Further work must address end-to-end transformations and bounded durable bytes;do not delete evidence,drop SHA checks,reduce fsync or change thresholds."
+}
