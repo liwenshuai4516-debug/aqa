@@ -30,6 +30,25 @@ import { installCostFixture, verifyCostMatrix } from "./fixtures/agent-evaluatio
 import { installCapacityFixture, verifyCapacity } from "./fixtures/agent-evaluation/capacity.mjs";
 import { verifyTimingMatrix } from "./fixtures/agent-evaluation/timing-matrix.mjs";
 import { verifyUsageMatrix } from "./fixtures/agent-evaluation/usage-matrix.mjs";
+import { verifyCrashStore } from "./fixtures/agent-evaluation/crash-store.mjs";
+const crashStore = process.argv.includes("--crash-store");
+assert.ok(
+	!crashStore ||
+		!process.argv.some((arg) =>
+			[
+				"--active-jobs",
+				"--rollback",
+				"--scale",
+				"--rule-upgrade",
+				"--receipt-loss",
+				"--capacity",
+				"--byte-capacity",
+				"--timing-matrix",
+				"--usage-matrix",
+			].includes(arg),
+		),
+	"Run crash recovery separately from process/profile probes",
+);
 const usageMatrix = process.argv.includes("--usage-matrix");
 const timingMatrix = process.argv.includes("--timing-matrix");
 assert.ok(
@@ -1163,6 +1182,16 @@ try {
 		result.usageMatrix = used.result;
 		result.checks.push(
 			"Actual Electron renders synthetic SDK/provider cost deduplication, phase accounting and conflicts; no real bills or model execution",
+		);
+	}
+	if (crashStore) {
+		stage("actual sidecar partial-manifest exit and explicit backup recovery");
+		const recovered = await verifyCrashStore({ app, repo, output, dataDir, env, sessionPath, original, until });
+		app = recovered.app;
+		page = recovered.page;
+		result.crashStore = recovered.result;
+		result.checks.push(
+			"Actual sidecar exits after partial manifest, retains dead writer lock and damaged bytes, publishes no half evidence/checkpoint, and explicitly restores exact backup without task replay",
 		);
 	}
 	stage("development URL cannot acquire the native identity");

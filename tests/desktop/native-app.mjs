@@ -88,7 +88,7 @@ export async function launchNativeApp({
 				return context.waitForEvent("page", { timeout: 30000 });
 			},
 			close: async () => {
-				if (child.exitCode === null) {
+				if (child.exitCode === null && child.signalCode === null) {
 					const exited = once(child, "exit");
 					void evaluate(({ app }) => app.quit()).catch(() => {});
 					// Node inspector otherwise waits for the debugger to detach on exit.
@@ -105,6 +105,7 @@ export async function launchNativeApp({
 						clearTimeout(timer);
 					}
 				}
+				inspector.close();
 				await browser.close().catch(() => {});
 			},
 		};

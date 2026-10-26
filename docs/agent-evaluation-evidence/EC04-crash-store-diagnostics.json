@@ -1,0 +1,228 @@
+{
+	"scope": "EC04/AC03 and AC19 actual native sidecar exit with partial evidence-pack manifest, retained stale writer lock and explicit evaluation-store backup restore",
+	"timestamp": "2026-10-26T05:22:02.562152+00:00",
+	"baselineCommit": "6d7051a1915b17c1d3f60c671a184a9517c82343",
+	"pluginVersion": "0.4.31",
+	"productChanges": false,
+	"testHarnessChanges": [
+		"New --crash-store probe, mutually exclusive with other process/profile probes",
+		"Native app close recognizes signalCode as terminal and closes inspector after externally terminated owned shell; avoids waiting for a second exit event"
+	],
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64"
+	},
+	"status": "PASS_FINAL_AFTER_REPAIR",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/index.json",
+		"bytes": 147528,
+		"sha256": "8eba8bff7f967bb63d51243742d180891f574de5f5b6687c06babeeabbe65b46"
+	},
+	"archiveFiles": 633,
+	"provenance": "Test-only injection in isolated durable.mjs exits actual sidecar after real body sync and partial manifest sync; not power-loss or physical ENOSPC simulation. Original store/service/collector/engine unchanged.",
+	"actualDesktop": {
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/final/result.json",
+			"bytes": 9590,
+			"sha256": "d5461064ece5b2c11874d917bce08b317056e09693ae7281191f51fb6ab7ee7c"
+		},
+		"crashRaw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/final/crash-store/result.json",
+			"bytes": 2772,
+			"sha256": "36bc98731fe4388772ba64e47e999166bae051f8f93b46890913f2eb686febd5"
+		},
+		"checks": {
+			"status": "PASS",
+			"nativeStops": [
+				{
+					"name": "baseline",
+					"pid": 47237,
+					"exitCode": 0,
+					"signalCode": null
+				},
+				{
+					"name": "crashed-native-shell",
+					"pid": 47535,
+					"exitCode": null,
+					"signalCode": "SIGKILL"
+				},
+				{
+					"name": "crashed-and-native-restarted",
+					"pid": 47785,
+					"exitCode": 0,
+					"signalCode": null
+				},
+				{
+					"name": "restored-current",
+					"pid": 48043,
+					"exitCode": 0,
+					"signalCode": null
+				}
+			],
+			"actualModelCalls": 0,
+			"actualCliCalls": 0,
+			"actualToolCalls": 0,
+			"provenance": "Test-only injection in isolated durable.mjs exits actual sidecar after real body sync and partial manifest sync; not power-loss or physical ENOSPC simulation. Original store/service/collector/engine unchanged.",
+			"readOnlyRecovery": {
+				"issues": [
+					{
+						"code": "EVIDENCE_GAP",
+						"file": "batch-6d2e00e6-cbcb-4183-9525-874c105ea3a5.pack.tmp-cceb756c-5fde-4db6-8835-da00a76e4f35"
+					}
+				],
+				"records": 86,
+				"checkpointPublished": false,
+				"partialEvidencePublished": false,
+				"originalReportExact": true
+			},
+			"crash": {
+				"pid": 47539,
+				"file": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-35S7Se/desktop/data/agent-evaluation/evidence/batch-6d2e00e6-cbcb-4183-9525-874c105ea3a5.pack",
+				"temp": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-35S7Se/desktop/data/agent-evaluation/evidence/batch-6d2e00e6-cbcb-4183-9525-874c105ea3a5.pack.tmp-cceb756c-5fde-4db6-8835-da00a76e4f35",
+				"partialBytes": 23,
+				"code": 83,
+				"stage": "body-and-partial-manifest-synced",
+				"tempSha256": "bca65bb3af642de3e25de7d8417e9a0a0bdac000208ff91eda5c626939fdcfb1",
+				"tempBytes": 683,
+				"bodyLength": 644,
+				"sidecarPid": 47539,
+				"originalRequest": {
+					"offset": 56,
+					"requestId": "7d25ab19-2fc4-45dc-aa70-2aa2a2f89cb9"
+				},
+				"originalRequestReplayed": false,
+				"writerLockRetained": true,
+				"writeRejection": {
+					"code": "STORE_LOCKED",
+					"stage": "list",
+					"retryable": false,
+					"missingConditions": [],
+					"message": "Writer lock exists or cannot be created; do not reclaim by PID alone"
+				}
+			},
+			"backup": {
+				"path": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-35S7Se/crash-store/clean-store-backup",
+				"recordsFiles": 77,
+				"exactBeforeLaunch": true,
+				"exactAfterRead": true,
+				"retainedCrashStore": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-35S7Se/crash-store/retained-crashed-store"
+			},
+			"restoredPluginFiles": 29,
+			"sourceBytesUnchanged": true,
+			"sourceOriginalPrefixUnchanged": true,
+			"originalReportBytesUnchanged": true
+		},
+		"injectedPluginManifest": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/final/crash-store/injected-plugin-manifest.json",
+			"bytes": 12030,
+			"sha256": "9ebab0b4437cb9281e45816e71e83c73c2eb75a35646055d898fb5ba62d89f0c"
+		},
+		"restoredPluginManifest": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/final/crash-store/restored-plugin-manifest.json",
+			"bytes": 8694,
+			"sha256": "d28a1af8ee4c5ff092806137db1bf86972acb170e087f0b5ec8113c7ec657039"
+		},
+		"injectedSource": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/final/crash-store/injected-durable.mjs",
+			"bytes": 1895,
+			"sha256": "1d4f565801419d8d75a0c70f182635f4a6f6dc4eec212a8874e6fc1de6f590e8"
+		},
+		"injectionScope": "29 tracked files checked, only isolated durable.mjs differs during fault. Original service/store/collector/engine unchanged; original product durable restored before backup reopening. Native shell SIGKILL is only for owned test shell after confirmed sidecar exit; no personal process or lock reclaimed.",
+		"recoveryScope": "Native recovery dialog requires a choice. Probe terminates its owned blocked shell then explicitly relaunches normal app to observe STORE_LOCKED. It does not claim selection of native dialog restart button or automatic recovery. Preserve complete crashed evaluation-store tree; restore previously verified evaluation-store backup at same path. This is not complete userData or arbitrary platform backup recovery."
+	},
+	"independentVerification": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/checks/independent-verification.json",
+		"bytes": 14196,
+		"sha256": "1628f1ee921369711cf5a91cf9dd79a0827e6c3343335e0d61452eaf9011282d"
+	},
+	"screenshots": {
+		"writerLock": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/final/crash-store/writer-lock-retained.png",
+			"bytes": 147689,
+			"sha256": "593cbb53ef638380032c6781f541f3a79e1f104475ef3105e093d60f48585f4a"
+		},
+		"restoredOriginal": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/final/crash-store/backup-restored-original-report.png",
+			"bytes": 206325,
+			"sha256": "71df9f1090b8093716be7d3f7847279f7d5eda80828fad5a1236d9dc1f6d1983"
+		},
+		"inspected": true
+	},
+	"initialFailures": {
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-vGF94t",
+		"log": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/checks/desktop-initial-final.log",
+			"bytes": 7242,
+			"sha256": "9eaf829f3d0c16ca08df811ef55404437bdb8eae166e2d9b6df8fff5a57b7a91"
+		},
+		"result": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/initial-failure/result.json",
+			"bytes": 6424,
+			"sha256": "1c6bb54972c2b1960e29c6b4eb718fc82ed6175751117000c0f4fb63fef15252"
+		},
+		"cause": "Fixture incorrectly awaited automatic native restart, but real shell shows restart/exit confirmation. Renderer waits blocked; exact owned shell was terminated. Previous native-app.close only checked exitCode and waited for another exit after SIGKILL; Native app quit timeout retained. Fixture now explicitly relaunches; helper also checks signalCode and closes inspector. Lexical /var versus /private/var temp name comparison normalized by basename. Not attributed to product store failure.",
+		"firstCorrectedPass": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/checks/desktop-first-pass.log",
+			"bytes": 9913,
+			"sha256": "6c741fc5e11f4f66b172d23bb88848e35e626830ad046685ed425a39a54f1af6"
+		},
+		"firstCorrectedPassLimitation": "Legacy rootPid diagnostic label actually held sidecar PID; final fixture renames sidecarPid and records actual native shell termination codes, then reruns complete matrix. Original raw result unchanged."
+	},
+	"validation": {
+		"unit": {
+			"files": 4,
+			"tests": 134,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/checks/unit.log",
+				"bytes": 210,
+				"sha256": "81dc509ee219534d27547cbc370104229d8b21eab2f4c003fb6094984fcc0757"
+			}
+		},
+		"typecheck": {
+			"configs": 5,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/checks/typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"checks": {
+			"lint": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/checks/lint-final.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			"protocol": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/checks/protocol-final.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"size": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/checks/size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			},
+			"clean": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-crash-store/files/checks/clean-delivery.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			}
+		},
+		"protocol": "Structure/type-only/v33 PASS;historical tag heuristic SKIP",
+		"clean": "Preview only;zero deletions",
+		"desktop": "Final full main desktop flow, crash/lock/backup matrix and development URL identity rejection PASS; earlier failure retained. Final metadata-only change rerun complete actual desktop matrix, no product change."
+	},
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"actualToolCalls": 0,
+	"notExecuted": [
+		"Physical power loss or ENOSPC",
+		"Crash while publishing evaluation report JSON",
+		"In-place stale-lock reclamation or damaged-tail repair product UI",
+		"Native recovery dialog button automation",
+		"Full other acceptance matrices and formal performance rerun"
+	],
+	"remaining": "AC03 partial evidence manifest subset supplemented;do not mark wholeAC03/AC19 or M1 complete. AC39 prior overall FAIL retained,EC06 isolation/later gates remain,realCLI/models deferred."
+}
