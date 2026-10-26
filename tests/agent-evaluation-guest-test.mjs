@@ -16,12 +16,12 @@ assert.equal(process.arch, "arm64");
 assert.ok(process.argv[2], "Explicit verified offline Alpine runtime required");
 const output = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "evaluation-guest-")));
 console.log(output);
-const source = fileURLToPath(new URL("./fixtures/agent-evaluation/vm-supervisor.swift", import.meta.url));
+const source = fileURLToPath(new URL("../plugins/agent-evaluation/runtime/vm-supervisor.swift", import.meta.url));
 const binary = path.join(output, "vm-supervisor"),
 	kernel = path.join(process.argv[2], "boot/Image"),
 	initrd = path.join(process.argv[2], "boot/initramfs-virt");
-const target = fs.readFileSync(new URL("./fixtures/agent-evaluation/guest-cli.sh", import.meta.url));
-const runner = fs.readFileSync(new URL("./fixtures/agent-evaluation/guest-cli-runner.sh", import.meta.url));
+const target = fs.readFileSync(new URL("../plugins/agent-evaluation/runtime/guest-cli.sh", import.meta.url));
+const runner = fs.readFileSync(new URL("../plugins/agent-evaluation/runtime/guest-cli-runner.sh", import.meta.url));
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const result = {
 	status: "running",
@@ -232,8 +232,8 @@ try {
 			source,
 			binary,
 			fileURLToPath(new URL("../dist/server/external-evaluation-guest.js", import.meta.url)),
-			fileURLToPath(new URL("./fixtures/agent-evaluation/guest-cli.sh", import.meta.url)),
-			fileURLToPath(new URL("./fixtures/agent-evaluation/guest-cli-runner.sh", import.meta.url)),
+			fileURLToPath(new URL("../plugins/agent-evaluation/runtime/guest-cli.sh", import.meta.url)),
+			fileURLToPath(new URL("../plugins/agent-evaluation/runtime/guest-cli-runner.sh", import.meta.url)),
 		].map((file) => [file, { sha256: hash(fs.readFileSync(file)), bytes: fs.statSync(file).size }]),
 	);
 	bystander = spawn(process.execPath, ["-e", "setInterval(()=>{},1000)"], {

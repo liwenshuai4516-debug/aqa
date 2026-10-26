@@ -205,6 +205,45 @@ describe("offline execution unified-store bridge", () => {
 		expect(f.identity.reconciled).toBeUndefined();
 	});
 
+	it.each(["ended", "cancelled", "timed-out"])(
+		"persists waiting-input idempotently and allows confirmed %s",
+		async (state) => {
+			const f = fixture(),
+				a = f.bridge.prepare(f.ctx, f.input);
+			await f.bridge.start(f.ctx, a);
+			Object.assign(fake.records.get(a.id), { state: "waiting-input", stopConfirmed: false });
+			const wait = await f.bridge.status(f.ctx, a);
+			expect(wait.state).toBe("waiting-input");
+			expect((await f.bridge.status(f.ctx, a)).attemptRef).toEqual(wait.attemptRef);
+			await expect(f.bridge.cleanup(f.ctx, a)).rejects.toMatchObject({ code: "EXECUTION_UNKNOWN" });
+			Object.assign(fake.records.get(a.id), { state, stopConfirmed: true });
+			expect((await f.bridge.status(f.ctx, a)).state).toBe(state);
+			expect(fake.starts).toBe(1);
+		},
+	);
+	it("allows explicit cancellation of a waiting attempt without reconciliation or resubmitting input", async () => {
+		const f = fixture(),
+			a = f.bridge.prepare(f.ctx, f.input);
+		await f.bridge.start(f.ctx, a);
+		Object.assign(fake.records.get(a.id), { state: "waiting-input", stopConfirmed: false });
+		await f.bridge.status(f.ctx, a);
+		expect((await f.bridge.cancel(f.ctx, a)).state).toBe("cancelled");
+		expect(fake.starts).toBe(1);
+		expect(f.identity.reconciled).toBeUndefined();
+	});
+	it("requires trusted reconciliation when a recovered unknown environment reports waiting-input", async () => {
+		const f = fixture(),
+			a = f.bridge.prepare(f.ctx, f.input);
+		await f.bridge.start(f.ctx, a);
+		Object.assign(fake.records.get(a.id), { state: "unknown" });
+		await f.bridge.status(f.ctx, a);
+		Object.assign(fake.records.get(a.id), { state: "waiting-input", stopConfirmed: false });
+		f.ctx.reconciled = true;
+		await expect(f.bridge.status(f.ctx, a)).rejects.toMatchObject({ code: "PERMISSION_DENIED" });
+		f.identity.reconciled = true;
+		expect((await f.bridge.status(f.ctx, a)).state).toBe("waiting-input");
+		expect(fake.starts).toBe(1);
+	});
 	it("persists unknown, denies replay and requires trusted reconciliation rather than a context flag", async () => {
 		const f = fixture(),
 			a = f.bridge.prepare(f.ctx, f.input);

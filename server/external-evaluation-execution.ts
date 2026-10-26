@@ -135,7 +135,7 @@ export class ExternalEvaluationExecution {
 					permissions: "unsupported",
 					artifacts: "unsupported",
 					usage: "unsupported",
-					waitingInput: "unsupported",
+					waitingInput: "partial",
 					localCancel: "supported",
 					remoteCancel: "unsupported",
 					networkRestriction: "supported",
@@ -190,9 +190,16 @@ export class ExternalEvaluationExecution {
 		if (!terminal.has(attempt.data.state)) {
 			if (raw.state === "unknown" || (terminal.has(raw.state) && !raw.stopConfirmed)) move("unknown");
 			else if (raw.state === "running" && attempt.data.state !== "running") move("running");
-			else if (raw.state === "cancelling") {
+			else if (raw.state === "waiting-input") {
+				if (["preparing", "unknown", "interrupted"].includes(attempt.data.state))
+					move("running", "environment-activity-observed");
+				if (attempt.data.state === "running") move("waiting-input", "target-reported-input-wait; no-response-channel");
+			} else if (raw.state === "cancelling") {
 				if (attempt.data.state === "preparing") move("running", "environment-activity-observed");
-				if (attempt.data.state === "running" && !["ended", "start-failed"].includes(String(raw.stopReason)))
+				if (
+					["running", "waiting-input"].includes(attempt.data.state) &&
+					!["ended", "start-failed"].includes(String(raw.stopReason))
+				)
 					move("cancelling");
 			} else if (terminal.has(raw.state) && raw.stopConfirmed) {
 				if (raw.noEnvironmentStarted) move(raw.state);
@@ -200,7 +207,8 @@ export class ExternalEvaluationExecution {
 					// Native lifecycle, not guest exit text, proves that an environment ran and stopped.
 					if (attempt.data.state === "preparing") move("running", "native-start-and-stop-confirmed");
 					const state = raw.state === "start-failed" ? "ended" : raw.state;
-					if (["cancelled", "timed-out"].includes(state) && attempt.data.state === "running") move("cancelling");
+					if (["cancelled", "timed-out"].includes(state) && ["running", "waiting-input"].includes(attempt.data.state))
+						move("cancelling");
 					// A user cancellation may race with a native natural stop. Keep the race explicit.
 					if (state === "ended" && attempt.data.state === "cancelling")
 						move("unknown", "cancel-and-end-race-needs-reconciliation");
@@ -218,7 +226,8 @@ export class ExternalEvaluationExecution {
 	}
 	async cancel(context: object, ref: Ref) {
 		const { attempt, runtime } = this.bound(context, ref);
-		if (attempt.data.state === "running") this.move(context, attempt, "cancelling", "user-cancel-requested");
+		if (["running", "waiting-input"].includes(attempt.data.state))
+			this.move(context, attempt, "cancelling", "user-cancel-requested");
 		await runtime.cancel(attempt.id);
 		return this.status(context, ref);
 	}

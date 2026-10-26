@@ -17,7 +17,7 @@ afterEach(() => {
 });
 function spec(): OfflineGuestSpec {
 	const asset = (name: string) => {
-		const path = fileURLToPath(new URL(`../fixtures/agent-evaluation/${name}`, import.meta.url));
+		const path = fileURLToPath(new URL(`../../plugins/agent-evaluation/runtime/${name}`, import.meta.url));
 		return { path, sha256: createHash("sha256").update(fs.readFileSync(path)).digest("hex") };
 	};
 	return {
@@ -92,6 +92,32 @@ describe("worker-owned trusted guest session", () => {
 		expect(final.logs.stdout.durable).toBe(true);
 		expect(fs.readFileSync(join(f.root, "guest-stdout.raw"))).toEqual(Buffer.from("中文🙂\0"));
 		expect(await f.session.finish()).toEqual(final);
+	});
+	it("uses only the exact stderr wait marker during an active pinned target and clears it on exit", async () => {
+		const f = await fixture();
+		await f.send("version", Buffer.from("ae-offline-fake-cli 1").toString("base64"));
+		await f.send("ready");
+		const records = guestInput(spec()).toString().trimEnd().split("\n").length;
+		for (let n = 1; n <= records; n++) {
+			f.session.poll();
+			await f.send("ack", String(n));
+		}
+		await f.send("started", "22");
+		await f.send("stdout", Buffer.from("waiting-input\n").toString("base64"));
+		await f.send("stderr", Buffer.from("still waiting-input\n").toString("base64"));
+		expect(f.session.snapshot().waitingInput).toBe(false);
+		await f.send("stderr", Buffer.from("waiting-").toString("base64"));
+		expect(f.session.snapshot().waitingInput).toBe(false);
+		await f.send("stderr", Buffer.from("input\n").toString("base64"));
+		expect(f.session.snapshot()).toMatchObject({
+			waitingInput: true,
+			waitingInputSource: "fixed-fixture stderr; target-reported",
+		});
+		await f.send("stdout-eof");
+		await f.send("stderr-eof");
+		await f.send("exit", "0");
+		expect(f.session.snapshot().waitingInput).toBe(false);
+		await f.session.finish();
 	});
 	it("refuses target start before frozen version/input completion", async () => {
 		const f = await fixture();

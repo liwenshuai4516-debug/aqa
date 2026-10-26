@@ -210,3 +210,9 @@ UI-only动作：uploadStart（byteLength/sha256）、uploadChunk（uploadId/offs
 ## 0.4.33：外部尝试与内部采集边界
 
 内部Pi collector拒绝CLI target，避免把授权任务锚点误当SDK执行来源。unknown/interrupted经原可信reconciled门禁后允许确认blocked/start-failed。宿主私有`server/external-evaluation-execution.ts`复用本插件原store/评分器保存固定离线假CLI记录；没有给普通UI/工具登记外部执行权限，也没有改变现有技能的只读诊断边界。工程与桌面验证、未执行项见[EC06记录](../../docs/agent-evaluation-evidence/EC06.md)。
+
+## 0.4.34：固定离线资源与等待输入
+
+`runtime/` 保存固定可信假 CLI、guest runner 与 Swift supervisor 的唯一源码，测试从插件资源取用。宿主核对已登记 helper 的实际资源配置；等待输入仅按固定假 CLI 的 target-reported stderr 信号投影到原 attempt，不补输入、不延长原超时，取消仍须原生停止确认。两份 shell 固定摘要未变；旧 helper 无配置探测入口时拒绝新启动，旧记录不自动迁移/重放。
+
+这是宿主私有工程路径，产品执行入口及编译后端安装登记尚未完成。真实客户端/付费模型仍暂缓；EC06与M1未整体验收，见[本轮证据](../../docs/agent-evaluation-evidence/EC06-offline-policy-diagnostics.json)。

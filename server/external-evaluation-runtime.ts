@@ -21,6 +21,27 @@ import {
 
 type Identity = { path: string; sha256: string };
 export type VZEnrollment = { version: "vz-offline-1"; binary: Identity; kernel: Identity; initrd: Identity };
+/** Frozen offline policy; backend --describe must report the actual VZ configuration below. */
+export const OFFLINE_EXECUTION_POLICY = Object.freeze({
+	cpuCount: 2,
+	memoryBytes: 512 * 1024 * 1024,
+	networkDevices: 0,
+	shares: 0,
+	disks: 0,
+	sockets: 0,
+	watchdogSeconds: 45,
+	timeoutMsMax: 30000,
+	graceMsMax: 2000,
+	guestStreamBytes: 65536,
+	stdinBytes: 65536,
+	argvItems: 16,
+	argvBytes: 8192,
+	concurrentEnvironments: 1,
+	waitingInput: "cancel-or-original-timeout",
+	interactiveResponse: false,
+	modelAccess: false,
+});
+
 type Intent = {
 	version: 1;
 	attemptId: string;
@@ -37,6 +58,7 @@ type EnvironmentState =
 	| "blocked"
 	| "starting"
 	| "running"
+	| "waiting-input"
 	| "cancelling"
 	| "ended"
 	| "cancelled"
@@ -162,7 +184,7 @@ function publish(directory: string, name: string, value: unknown, replace = fals
 function nativeStart(pid: number) {
 	return execFileSync("/bin/ps", ["-p", String(pid), "-o", "lstart="], { encoding: "utf8", timeout: 5000 }).trim();
 }
-function checkBackend(backend: VZEnrollment) {
+export function probeOfflineBackend(backend: VZEnrollment) {
 	if (process.platform !== "darwin" || process.arch !== "arm64")
 		fail("CAPABILITY_UNAVAILABLE", "Offline VZ requires macOS arm64");
 	if (backend?.version !== "vz-offline-1") fail("SCHEMA_UNSUPPORTED", "Unknown VZ enrollment version");
@@ -196,6 +218,23 @@ function checkBackend(backend: VZEnrollment) {
 	});
 	if (!/<key>com\.apple\.security\.virtualization<\/key>\s*<true\s*\/>/.test(entitlement))
 		fail("CAPABILITY_UNAVAILABLE", "Enrolled helper lacks virtualization entitlement");
+	const profile = JSON.parse(
+		execFileSync(backend.binary.path, ["--describe"], {
+			encoding: "utf8",
+			timeout: 5000,
+			maxBuffer: 4096,
+			env: { PATH: "/usr/bin:/bin:/usr/sbin:/sbin" },
+		}),
+	);
+	if (
+		profile.event !== "profile" ||
+		profile.helperVersion !== "ae-vz-offline-1" ||
+		["cpuCount", "memoryBytes", "networkDevices", "shares", "disks", "sockets", "watchdogSeconds"].some(
+			(key) => profile[key] !== OFFLINE_EXECUTION_POLICY[key as keyof typeof OFFLINE_EXECUTION_POLICY],
+		)
+	)
+		fail("CAPABILITY_UNAVAILABLE", "Enrolled helper resource policy differs");
+	return { helperVersion: "ae-vz-offline-1", policy: OFFLINE_EXECUTION_POLICY };
 }
 
 /** Exact persisted configuration bytes; validation still occurs at prepare/start. */
@@ -260,7 +299,7 @@ export class ExternalEvaluationRuntime {
 			graceMs > 2000
 		)
 			fail("INVALID_INPUT", "Invalid offline environment limits");
-		checkBackend(backend);
+		probeOfflineBackend(backend);
 		const capacity = fs.statfsSync(this.root);
 		if (capacity.bavail * capacity.bsize < 32 * 1024 ** 2)
 			fail("LIMIT_EXCEEDED", "Insufficient environment evidence capacity");
@@ -293,7 +332,7 @@ export class ExternalEvaluationRuntime {
 		if (fs.existsSync(join(directory, "launch.json"))) return this.status(attemptId);
 		if (!fileURLToPath(import.meta.url).endsWith(".js"))
 			fail("CAPABILITY_UNAVAILABLE", "Build the host runtime before launching an offline environment");
-		checkBackend(intent.backend);
+		probeOfflineBackend(intent.backend);
 		if (intent.guest) guestAssets(intent.guest);
 		try {
 			publish(directory, "launch.json", {
@@ -582,7 +621,7 @@ async function supervise(directory: string) {
 	let runtimeFailure: string | undefined;
 	let childExit: Promise<[number | null, NodeJS.Signals | null]> | undefined;
 	try {
-		checkBackend(intent.backend);
+		probeOfflineBackend(intent.backend);
 		stdout = await ExternalEvaluationLog.create(join(directory, "console.raw"), "stdout", LOG_LIMITS);
 		stderr = await ExternalEvaluationLog.create(join(directory, "native.raw"), "stderr", LOG_LIMITS);
 		child = spawn(intent.backend.binary.path, [intent.backend.kernel.path, intent.backend.initrd.path], {
@@ -664,7 +703,13 @@ async function supervise(directory: string) {
 								nonce: intent.nonce,
 								attemptId: intent.attemptId,
 								instance,
-								state: cancellation ? "cancelling" : running ? "running" : "starting",
+								state: cancellation
+									? "cancelling"
+									: guest?.snapshot().waitingInput
+										? "waiting-input"
+										: running
+											? "running"
+											: "starting",
 								stopReason: cancellation?.reason,
 								stopConfirmed: false,
 								...(guest ? { guest: guest.snapshot() } : {}),

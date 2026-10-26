@@ -1,0 +1,86 @@
+{
+	"scope": "Fixed trusted fake CLI resource migration and waiting-input; no product execution entry; no real Agent/model",
+	"status": "ENGINEERING_SUBSET_PASS; EC06_INCOMPLETE; M1_INCOMPLETE",
+	"pluginVersion": "0.4.34",
+	"actualModelCalls": 0,
+	"actualAgentCliCalls": 0,
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-offline-policy/final-index.json",
+		"sha256": "7a6780061474b9ce72069858977136d4c05a986b4287619698ef300423e8c954",
+		"bytes": 180159
+	},
+	"archiveFiles": 1404,
+	"runs": {
+		"runtime": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-runtime-yXaH4S/result.json",
+			"status": "PASS"
+		},
+		"store-node": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-QWW3no/result.json",
+			"status": "PASS"
+		},
+		"store-electron": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-c3IgtO/result.json",
+			"status": "PASS"
+		},
+		"runtime-final": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-runtime-05RvaV/result.json",
+			"status": "PASS"
+		},
+		"store-node-final": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-HljIcv/result.json",
+			"status": "PASS"
+		},
+		"store-electron-final": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-L919x6/result.json",
+			"status": "PASS"
+		},
+		"desktop": {
+			"path": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-jwt3Nw/result.json",
+			"status": "PASS"
+		},
+		"desktop-final": {
+			"path": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-EQXc9z/result.json",
+			"status": "PASS"
+		},
+		"store-node-reconciled": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-gY6Rsa/result.json",
+			"status": "PASS"
+		},
+		"store-electron-reconciled": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-TblKUP/result.json",
+			"status": "PASS"
+		},
+		"desktop-reconciled": {
+			"path": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-hFOQLM/result.json",
+			"status": "PASS"
+		}
+	},
+	"installedFiles": 34,
+	"validation": {
+		"typecheck": "PASS, all five configs",
+		"unitTests": "PASS, 21 files / 351 tests",
+		"targetedUnitTests": "Early candidate PASS, 8 files / 149 tests; not added to final 351",
+		"lint": "PASS",
+		"protocol": "PASS type-only/structure/v33; historical-tag heuristic SKIP",
+		"size": "PASS",
+		"swiftFormat": "PASS after formatting correction",
+		"desktop": "PASS main flow/ATIF/restart/160545 characters, 40 pages; light/narrow screenshots reviewed",
+		"clean": "preview only; zero deletion"
+	},
+	"intermediate": {
+		"testSelection": "Initial quoted Vitest filters selected no files, exit1; corrected explicit shell expansion ran 350 tests",
+		"swiftFormat": "Initial lint rejected indentation; formatted source, recompiled/re-ran final runtime/store Node/Electron and desktop",
+		"recoveredWait": "New reproduction failed; trusted reconciliation guard fixed; final 351 tests and rebuilt Node/Electron/store/desktop passed. No full-store SIGKILL recovery claim."
+	},
+	"limits": [
+		"macOS arm64 only; trusted fixed fake CLI only",
+		"Waiting is target-reported, no interactive response, original timeout retained",
+		"No product execution UI/tool/skill enrollment, no compiled backend installation registration",
+		"No artifact snapshot or verifier, EC07 waits for full EC06",
+		"No store-process kill/writer-lock recovery acceptance in this bridge",
+		"No full packaged-app verification or personal installation changes",
+		"AC39 last formal result remains 0.4.32 FAIL; no performance rerun"
+	],
+	"postRunDocumentation": "Plugin README clarified after runtime verification; only documentation changed, final linked files rechecked."
+}

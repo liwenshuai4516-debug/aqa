@@ -53,7 +53,7 @@ const command = (exe, args, name) => {
 	assert.equal(run.status, 0, run.error?.message || run.stderr);
 };
 const asset = (name) => ({ path: fs.realpathSync(name), sha256: sha(fs.readFileSync(name)) });
-const fixture = (name) => asset(path.join(repo, "tests/fixtures/agent-evaluation", name));
+const fixture = (name) => asset(path.join(repo, "plugins/agent-evaluation/runtime", name));
 async function until(fn, label, timeout = 20000) {
 	const deadline = performance.now() + timeout;
 	while (performance.now() < deadline) {
@@ -66,7 +66,9 @@ async function until(fn, label, timeout = 20000) {
 const completed = (ref) =>
 	until(async () => {
 		const value = await bridge.status(context, ref);
-		return value.stopConfirmed && !["preparing", "running", "cancelling"].includes(value.state) ? value : false;
+		return value.stopConfirmed && !["preparing", "running", "waiting-input", "cancelling"].includes(value.state)
+			? value
+			: false;
 	}, "confirmed terminal attempt");
 try {
 	assert.equal(process.platform, "darwin");
@@ -77,7 +79,7 @@ try {
 		"/usr/bin/xcrun",
 		[
 			"swiftc",
-			path.join(repo, "tests/fixtures/agent-evaluation/vm-supervisor.swift"),
+			path.join(repo, "plugins/agent-evaluation/runtime/vm-supervisor.swift"),
 			"-o",
 			binary,
 			"-framework",
@@ -219,8 +221,8 @@ try {
 	const b = prepare(input("cancel-wait", "waiting"));
 	await bridge.start(context, b);
 	await until(async () => {
-		const s = await runtime.status(b.id);
-		return s.guest?.started && s.guest.logCursors.stderr > 0;
+		const s = await bridge.status(context, b);
+		return s.state === "waiting-input" && (await runtime.status(b.id)).guest?.waitingInput && s;
 	}, "real guest FIFO wait");
 	await bridge.cancel(context, b);
 	assert.equal((await completed(b)).state, "cancelled");
@@ -232,6 +234,10 @@ try {
 	);
 	const c = prepare(input("timeout-wait", "waiting", Buffer.alloc(0), 5000));
 	await bridge.start(context, c);
+	await until(
+		async () => (await bridge.status(context, c)).state === "waiting-input",
+		"persisted wait before original timeout",
+	);
 	assert.equal((await completed(c)).state, "timed-out");
 	await bridge.cleanup(context, c);
 	active.splice(active.indexOf(c), 1);

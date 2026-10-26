@@ -13,7 +13,7 @@ assert.equal(process.platform, "darwin");
 assert.equal(process.arch, "arm64");
 assert.ok(runtime, "Explicit verified Alpine3.22.7 runtime directory required");
 const output = fs.mkdtempSync(path.join(os.tmpdir(), "agent-evaluation-vm-")),
-	source = fileURLToPath(new URL("./fixtures/agent-evaluation/vm-supervisor.swift", import.meta.url)),
+	source = fileURLToPath(new URL("../plugins/agent-evaluation/runtime/vm-supervisor.swift", import.meta.url)),
 	binary = path.join(output, "vm-supervisor"),
 	kernel = path.join(runtime, "boot/Image"),
 	initrd = path.join(runtime, "boot/initramfs-virt"),

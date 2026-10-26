@@ -46,13 +46,14 @@ async function diagnose() {
 	fs.mkdirSync(root, { mode: 0o700 });
 	const runtime = new ExternalEvaluationRuntime(root, owner),
 		active = [];
-	const source = fileURLToPath(new URL("./fixtures/agent-evaluation/vm-supervisor.swift", import.meta.url)),
+	const source = fileURLToPath(new URL("../plugins/agent-evaluation/runtime/vm-supervisor.swift", import.meta.url)),
 		binary = path.join(output, "vm-supervisor");
 	const asset = (filename) => {
 		const p = fs.realpathSync(filename);
 		return { path: p, sha256: sha(fs.readFileSync(p)) };
 	};
-	const fixture = (name) => asset(fileURLToPath(new URL("./fixtures/agent-evaluation/" + name, import.meta.url)));
+	const fixture = (name) =>
+		asset(fileURLToPath(new URL("../plugins/agent-evaluation/runtime/" + name, import.meta.url)));
 	const guest = (argv, stdin = Buffer.alloc(0)) => ({
 		version: "ae-offline-fake-cli-1",
 		target: fixture("guest-cli.sh"),
@@ -102,8 +103,8 @@ async function diagnose() {
 				"dist/server/external-evaluation-runtime.js",
 				"dist/server/external-evaluation-guest-session.js",
 				"dist/server/external-evaluation-guest.js",
-				"tests/fixtures/agent-evaluation/guest-cli.sh",
-				"tests/fixtures/agent-evaluation/guest-cli-runner.sh",
+				"plugins/agent-evaluation/runtime/guest-cli.sh",
+				"plugins/agent-evaluation/runtime/guest-cli-runner.sh",
 				"tests/agent-evaluation-guest-worker-test.mjs",
 			].map((name) => {
 				const p = fileURLToPath(new URL("../" + name, import.meta.url));

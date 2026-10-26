@@ -10,7 +10,8 @@ import { createHash, randomUUID } from "node:crypto";
 import { ensureBuild } from "./lib/ensure-build.mjs";
 if (process.argv[2] !== "--controller")
 	ensureBuild(fileURLToPath(new URL("..", import.meta.url)), "evaluation-runtime");
-const { ExternalEvaluationRuntime } = await import("../dist/server/external-evaluation-runtime.js");
+const { ExternalEvaluationRuntime, probeOfflineBackend, OFFLINE_EXECUTION_POLICY } =
+	await import("../dist/server/external-evaluation-runtime.js");
 const emittedRuntime = fileURLToPath(new URL("../dist/server/external-evaluation-runtime.js", import.meta.url));
 if (process.argv[2] === "--controller") {
 	const spec = JSON.parse(fs.readFileSync(process.argv[3], "utf8"));
@@ -26,7 +27,7 @@ async function diagnose() {
 	assert.ok(runtimeInputs, "Explicit verified Alpine3.22.7 runtime required");
 	const output = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "evaluation-runtime-")));
 	console.log(output);
-	const source = fileURLToPath(new URL("./fixtures/agent-evaluation/vm-supervisor.swift", import.meta.url));
+	const source = fileURLToPath(new URL("../plugins/agent-evaluation/runtime/vm-supervisor.swift", import.meta.url));
 	const binary = path.join(output, "vm-supervisor"),
 		root = path.join(output, "environments"),
 		owner = "a".repeat(64);
@@ -83,6 +84,41 @@ async function diagnose() {
 		command("/usr/bin/codesign", ["--sign", "-", "--entitlements", entitlement, "--force", binary], "codesign.log");
 		for (const identity of Object.values(enrolled).filter((v) => typeof v === "object"))
 			identity.sha256 = sha(fs.readFileSync(identity.path));
+		assert.deepEqual(probeOfflineBackend(enrolled), {
+			helperVersion: "ae-vz-offline-1",
+			policy: OFFLINE_EXECUTION_POLICY,
+		});
+		const changedSource = path.join(output, "changed-policy.swift"),
+			changedBinary = path.join(output, "changed-policy");
+		const sourceText = fs.readFileSync(source, "utf8");
+		assert.ok(sourceText.includes('"watchdogSeconds": 45'));
+		fs.writeFileSync(changedSource, sourceText.replace('"watchdogSeconds": 45', '"watchdogSeconds": 44'));
+		command(
+			"/usr/bin/xcrun",
+			["swiftc", changedSource, "-o", changedBinary, "-framework", "Virtualization"],
+			"changed-compile.log",
+		);
+		command(
+			"/usr/bin/codesign",
+			["--sign", "-", "--entitlements", entitlement, "--force", changedBinary],
+			"changed-codesign.log",
+		);
+		const policyRejected = randomUUID();
+		assert.throws(
+			() =>
+				host.prepare(
+					policyRejected,
+					{ ...enrolled, binary: { path: changedBinary, sha256: sha(fs.readFileSync(changedBinary)) } },
+					5000,
+					100,
+				),
+			{ code: "CAPABILITY_UNAVAILABLE" },
+		);
+		assert.equal(fs.existsSync(path.join(root, policyRejected)), false);
+		assert.equal(fs.existsSync(path.join(root, "admission.json")), false);
+		result.checks.push(
+			"Exact resource profile accepted; correctly signed, enrolled helper with differing watchdog policy rejected before intent/admission/VM",
+		);
 		result.enrollment = enrolled;
 		result.nativeSourceSha256 = sha(fs.readFileSync(source));
 		const rejected = randomUUID();

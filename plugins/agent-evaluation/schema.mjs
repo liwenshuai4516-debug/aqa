@@ -376,7 +376,7 @@ export const transitions = {
 	queued: ["preparing", "blocked", "cancelled", "start-failed"],
 	preparing: ["running", "blocked", "start-failed", "cancelled", "interrupted", "unknown"],
 	running: ["waiting-input", "ended", "cancelling", "interrupted", "unknown"],
-	"waiting-input": ["running", "cancelling", "interrupted", "unknown"],
+	"waiting-input": ["running", "ended", "cancelling", "interrupted", "unknown"],
 	cancelling: ["cancelled", "timed-out", "unknown", "interrupted"],
 	interrupted: ["unknown", "running", "ended", "blocked", "start-failed", "cancelled", "timed-out"],
 	unknown: ["running", "waiting-input", "ended", "blocked", "start-failed", "cancelled", "timed-out"],

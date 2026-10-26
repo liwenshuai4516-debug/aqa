@@ -180,7 +180,15 @@ export class ExternalEvaluationGuestSession {
 		}
 	}
 	snapshot() {
+		const stderr = this.logs.stderr.snapshot();
+		const waitingInput =
+			!this.finished &&
+			this.started &&
+			this.reportedExit === null &&
+			stderr.entries.some((entry) => entry.kind === "text" && entry.value === "waiting-input");
 		return {
+			waitingInput,
+			waitingInputSource: "fixed-fixture stderr; target-reported",
 			source: "guest-reported; trusted fixture only",
 			inputRecordsSent: this.sent,
 			inputRecordsAcknowledged: this.acked,
@@ -189,7 +197,7 @@ export class ExternalEvaluationGuestSession {
 			reportedError: this.reportedError,
 			logCursors: {
 				stdout: this.logs.stdout.snapshot().storedBytes,
-				stderr: this.logs.stderr.snapshot().storedBytes,
+				stderr: stderr.storedBytes,
 				durable: this.finished,
 			},
 		};

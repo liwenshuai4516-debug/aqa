@@ -1,27 +1,19 @@
 import Darwin
 import Dispatch
-// Test-only diskless Linux VM. No network/share/disk/vsock devices; serial is the sole guest channel.
+// Pinned offline diagnostic VM. No network/share/disk/vsock devices; serial is the sole guest channel.
 import Foundation
 import Virtualization
 
-func event(_ values: [String: Any]) {
+func event(_ values: [String: Any], to output: FileHandle = .standardError) {
   let data = try! JSONSerialization.data(withJSONObject: values, options: [.sortedKeys])
-  FileHandle.standardError.write(data + Data([10]))
+  output.write(data + Data([10]))
 }
 let args = CommandLine.arguments
-guard args.count == 3 else {
-  event(["event": "invalid-arguments"])
-  exit(2)
-}
-let boot = VZLinuxBootLoader(kernelURL: URL(fileURLWithPath: args[1]))
-boot.initialRamdiskURL = URL(fileURLWithPath: args[2])
-boot.commandLine = "console=hvc0 rdinit=/bin/sh panic=-1 loglevel=4"
 let serial = VZVirtioConsoleDeviceSerialPortConfiguration()
 serial.attachment = VZFileHandleSerialPortAttachment(
   fileHandleForReading: .standardInput, fileHandleForWriting: .standardOutput)
 let config = VZVirtualMachineConfiguration()
 config.platform = VZGenericPlatformConfiguration()
-config.bootLoader = boot
 config.cpuCount = 2
 config.memorySize = 512 * 1024 * 1024
 config.serialPorts = [serial]
@@ -30,6 +22,24 @@ config.networkDevices = []
 config.directorySharingDevices = []
 config.storageDevices = []
 config.socketDevices = []
+if args.count == 2 && args[1] == "--describe" {
+  event(
+    [
+      "event": "profile", "helperVersion": "ae-vz-offline-1", "cpuCount": config.cpuCount,
+      "memoryBytes": config.memorySize, "networkDevices": config.networkDevices.count,
+      "shares": config.directorySharingDevices.count, "disks": config.storageDevices.count,
+      "sockets": config.socketDevices.count, "watchdogSeconds": 45,
+    ], to: .standardOutput)
+  exit(0)
+}
+guard args.count == 3 else {
+  event(["event": "invalid-arguments"])
+  exit(2)
+}
+let boot = VZLinuxBootLoader(kernelURL: URL(fileURLWithPath: args[1]))
+boot.initialRamdiskURL = URL(fileURLWithPath: args[2])
+boot.commandLine = "console=hvc0 rdinit=/bin/sh panic=-1 loglevel=4"
+config.bootLoader = boot
 do { try config.validate() } catch {
   event(["event": "validation-error", "error": String(describing: error)])
   exit(2)

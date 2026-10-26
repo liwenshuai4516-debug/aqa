@@ -437,6 +437,12 @@ Electron macOS arm64 是主要交付对象；共享 UI 使用主题令牌、zh/e
 2. 测试半行日志、等待输入、退出 0 无产物、输出结束但进程未退、超时、子进程及启动登记窗口崩溃。
 3. 验证重启不重发、PID 复用不误杀、旁路进程不受影响；隔离不可用则启动前拒绝。交付状态转换和残留进程账本；本包通过不等于真实 CLI 已兼容。
 
+#### EC06 离线工程政策补充（2026-10-26）
+
+固定可信假 CLI 与 Swift supervisor 的唯一源码移入 `plugins/agent-evaluation/runtime/`，测试及后续安装均引用该资源，不依赖 `tests/fixtures/`。本阶段仅 macOS arm64 / Virtualization.framework：2 vCPU、512MiB RAM、无网卡/磁盘/共享目录/vsock、一个活跃环境，原 45 秒 watchdog 保留；任务超时最多 30 秒、取消宽限最多 2 秒，两路 guest 日志各 64KiB，stdin 64KiB、argv 最多 16 项/合计 8192 字节。启动前按已登记摘要、签名/权限及 helper `--describe` 的实际配置核对，不匹配即拒绝；不由此宣称支持任意不可信程序。
+
+固定假 CLI 的精确 stderr 行 `waiting-input` 只作为 target-reported 等待信号，必须已经 started 且尚未退出/收尾；普通 stdout 不触发状态。等待状态进入原 attempt revision，不建立交互回复通道、不自动补输入、不重新启动或延长原超时；只能按原截止时间超时或显式取消。等待后正常结束须有原生停止确认方可转 ended；等待声明不等于业务成功。此补充不改变 EC08 真实客户端/模型暂缓，也不免除 EC06 产品安装登记、完整执行器和故障验收。
+
 ### EC07：核验闭环
 
 1. 采集完整约定产物清单，在独立验证环境装载可信 fixture；只允许注册验证器。
