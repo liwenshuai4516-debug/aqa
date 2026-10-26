@@ -10,6 +10,7 @@
 | Chromium 执行配置                            | `../assets/playwright.config.mjs`                                                                               |
 | 录制 seed 前置校验                           | `../assets/recording-preflight.mjs`（由 MCP 执行钩子调用，不另建 runner）                                       |
 | 私有录制输入副本及受管身份派生（内部未接入） | `../assets/private-recording-workspace.mjs`（仅明确摘要输入、子进程引用、请求取消及发布前复验；不开放录制入口） |
+| 私密录制连接/请求守卫（内部未接入）          | `../assets/private-recording-transport.mjs`（真实SDK/MCP使用的生命周期薄适配；过滤与原生writer由调用方负责）    |
 | 八个阶段技能、schema、runner 与评估规则      | 安装后的 `node_modules/pi-ui-testing/`，修改上游源码后重新分发，不直接改安装目录                                |
 | E2E 依赖与版本锁                             | 仓库 `tools/e2e/package.json`、`package-lock.json`                                                              |
 | 项目/应用登记                                | 仓库 `scripts/enable-ui-testing.mjs`                                                                            |

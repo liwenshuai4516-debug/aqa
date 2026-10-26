@@ -156,3 +156,5 @@ PMS 浏览器准备：`tests/ui-pms-browser-preparation.mjs --refresh` 用所选
 PMS 原库接入与草稿：`tests/ui-pms-desktop-connection.mjs --connect-selected-data` 以临时UI/agent配置启动现有Electron构建，读取真实所选数据目录；可用显式`--intake-source-cases <回执>`经原生接口导入草稿并核对映射/去重。`tests/ui-pms-source-cases.mjs`只保存三项源码声明的原生cases，不生成脚本或批准。
 
 UI 私有录制准备内部模块：`.pi/skills/ui-testing-workflow/assets/private-recording-workspace.mjs` 负责明确输入摘要副本、受管身份的子进程派生与失效撤销；未接入产品录制入口，边界见 [执行记录](ui-testing-optimization-execution.md)。
+
+UI 私密录制连接守卫：`.pi/skills/ui-testing-workflow/assets/private-recording-transport.mjs` 将受管快照绑定到实际 MCP 连接/请求生命周期，失效阻断公开发布、失败发送撤销身份、正常响应交付前解绑取消；私有捕获/过滤及原生writer校验仍由调用方负责，尚未开放产品入口。

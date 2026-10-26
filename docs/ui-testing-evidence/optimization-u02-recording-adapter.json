@@ -1,0 +1,2022 @@
+{
+	"date": "2026-10-26",
+	"status": "INTERNAL_TRANSPORT_LIFECYCLE_ADAPTER_FOUR_REAL_SDK_MCP_CONTROLS_VERIFIED",
+	"plan_complete": false,
+	"product_private_recording": "unsupported",
+	"modelCalls": 0,
+	"formalRuns": 0,
+	"businessWrites": 0,
+	"ledgerSha256": {
+		"u05-authorized-review-budget.json": "34aaec3d27776ad96474be83f0be5a4eebe001fb41467afc69a4372c2b7e31ec",
+		"pms-anonymous-authorized-review-budget.json": "854cec9cb4cb8574adcdec3163d7fd2953ab1016be4c9799f48a2cfa7bba87c3"
+	},
+	"current_runs": {
+		"adapter-normal.log": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-adapter/1792998847566",
+			"protectedPrototype": true,
+			"status": "PRIVATE_MIRROR_NATIVE_RECORDING_HANDOFF_COMPLETE_NOT_PRODUCT_DELIVERY",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 2,
+			"tools": [
+				{
+					"name": "generator_setup_page",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 110162
+				},
+				{
+					"name": "browser_snapshot",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 109854
+				},
+				{
+					"name": "generator_read_log",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 2878
+				},
+				{
+					"name": "generator_write_test",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 1070
+				},
+				{
+					"name": "browser_close",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 893
+				}
+			],
+			"findings": [
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 86412
+				},
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 86136
+				}
+			],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "c565d404157892a3a1647967c3fb4fa6c64478e2cccaab70a1780203d1ac4518",
+					"tests/seed.spec.ts": "22ebd6762fe883c1fefca8f5773be8052368107b812c8997e9d14ac852185960"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "c565d404157892a3a1647967c3fb4fa6c64478e2cccaab70a1780203d1ac4518"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "22ebd6762fe883c1fefca8f5773be8052368107b812c8997e9d14ac852185960"
+						}
+					],
+					"expiresAt": "2026-10-26T07:19:07.576Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"hostParentReferenceUnchanged": true,
+			"recordingStatus": "complete",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "0abc949307e61d23ad21e7a2b310e86fba5979de337ffa0c19bc3012338bb46c"
+			},
+			"nativeRecordingSteps": 5,
+			"generatedScriptRef": {
+				"path": "qa/ui/recordings/privacy-mirror/draft.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc"
+			},
+			"finishGaps": [],
+			"publicScriptEqualsNative": true,
+			"rawProtocolRetainedPrivately": true,
+			"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+			"nativeDraftPublication": "native-recording-finish-complete-byte-identical-exclusive-publication",
+			"ownedRawOutputsRemoved": true
+		},
+		"adapter-cancel.log": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-adapter/1792998977236",
+			"protectedPrototype": true,
+			"status": "LATE_CANCEL_PUBLICATION_BLOCKED_PRIVATE_NATIVE_DRAFT_RETAINED",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 2,
+			"tools": [
+				{
+					"name": "generator_setup_page",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 110162
+				},
+				{
+					"name": "browser_snapshot",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 109854
+				},
+				{
+					"name": "generator_read_log",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 2878
+				},
+				{
+					"name": "generator_write_test",
+					"error": true,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 719
+				},
+				{
+					"name": "browser_close",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 893
+				}
+			],
+			"findings": [
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 86412
+				},
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 86136
+				}
+			],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "e461f2c0c95fa58cfd94109c6c1d666d61b1b6aa39963bbd62c36a5921b99811",
+					"tests/seed.spec.ts": "ce39426e91fad485feebfa8bb6e636242e3700c0143ec0bb136648970e88adc3"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "e461f2c0c95fa58cfd94109c6c1d666d61b1b6aa39963bbd62c36a5921b99811"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "ce39426e91fad485feebfa8bb6e636242e3700c0143ec0bb136648970e88adc3"
+						}
+					],
+					"expiresAt": "2026-10-26T07:21:17.244Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"nativeWriterReplyObservedBeforeInterruption": true,
+			"publicDraftExists": false,
+			"privateNativeDraftExists": true,
+			"hostParentReferenceUnchanged": true,
+			"recordingStatus": "partial",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "1118c87aeb986a9069bf5c8bfcfe0622332304129390b78f00c56d82504cf390"
+			},
+			"nativeRecordingSteps": 5,
+			"finishGaps": [
+				"late-cancel-publication-blocked",
+				"missing-generated-script",
+				"goal-not-reached",
+				"tool-error-or-cancelled"
+			],
+			"publicScriptEqualsNative": null,
+			"rawProtocolRetainedPrivately": true,
+			"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+			"nativeDraftPublication": "not-published-failure-preserved",
+			"ownedRawOutputsRemoved": true
+		},
+		"adapter-renew.log": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-adapter/1792999020047",
+			"protectedPrototype": true,
+			"status": "LATE_RENEW_PUBLICATION_BLOCKED_PRIVATE_NATIVE_DRAFT_RETAINED",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 2,
+			"tools": [
+				{
+					"name": "generator_setup_page",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 110162
+				},
+				{
+					"name": "browser_snapshot",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 109854
+				},
+				{
+					"name": "generator_read_log",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 2878
+				},
+				{
+					"name": "generator_write_test",
+					"error": true,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 754
+				},
+				{
+					"name": "browser_close",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 894
+				}
+			],
+			"findings": [
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 86412
+				},
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 86136
+				}
+			],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "b40842e26a25b11b8ace1105a88da1dd82aafd90e7fb9efd2fd4bb4f9452ea34",
+					"tests/seed.spec.ts": "b090d8ecbd90e05e9853434f38a986c7e281d033755eb81dfde47ca625ac87a0"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "b40842e26a25b11b8ace1105a88da1dd82aafd90e7fb9efd2fd4bb4f9452ea34"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "b090d8ecbd90e05e9853434f38a986c7e281d033755eb81dfde47ca625ac87a0"
+						}
+					],
+					"expiresAt": "2026-10-26T07:22:00.058Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"nativeWriterReplyObservedBeforeInterruption": true,
+			"publicDraftExists": false,
+			"privateNativeDraftExists": true,
+			"hostParentReferenceUnchanged": true,
+			"recordingStatus": "partial",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "f58def383158af44c458c60797327967ede6c121c499904587a5c2c5baf89e0d"
+			},
+			"nativeRecordingSteps": 5,
+			"finishGaps": [
+				"late-renew-publication-blocked",
+				"missing-generated-script",
+				"goal-not-reached",
+				"tool-error-or-cancelled"
+			],
+			"publicScriptEqualsNative": null,
+			"rawProtocolRetainedPrivately": true,
+			"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+			"nativeDraftPublication": "not-published-failure-preserved",
+			"ownedRawOutputsRemoved": true
+		},
+		"adapter-disconnect.log": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-adapter/1792998928801",
+			"protectedPrototype": true,
+			"status": "LATE_DISCONNECT_PUBLICATION_BLOCKED_PRIVATE_NATIVE_DRAFT_RETAINED",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 2,
+			"tools": [
+				{
+					"name": "generator_setup_page",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 110162
+				},
+				{
+					"name": "browser_snapshot",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 109854
+				},
+				{
+					"name": "generator_read_log",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 2878
+				},
+				{
+					"name": "generator_write_test",
+					"error": true,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 707
+				}
+			],
+			"findings": [
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 86412
+				},
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 86136
+				}
+			],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "76c04d1fb84721436012dfa747ab51cfd044a39bf364c969997661c745ec1a8f",
+					"tests/seed.spec.ts": "17952def746379aede992ff5584388577b1ca76aa88537392cef14f65723158b"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "76c04d1fb84721436012dfa747ab51cfd044a39bf364c969997661c745ec1a8f"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "17952def746379aede992ff5584388577b1ca76aa88537392cef14f65723158b"
+						}
+					],
+					"expiresAt": "2026-10-26T07:20:28.809Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"nativeWriterReplyObservedBeforeInterruption": true,
+			"physicalCloseObserved": true,
+			"disconnectedSnapshotRejected": true,
+			"publicDraftExists": false,
+			"privateNativeDraftExists": true,
+			"newConnectionInitialized": true,
+			"newConnectionToolCount": 87,
+			"oldSnapshotRejectedBeforeNewConnectionBrowserDispatch": true,
+			"closeActionNotReplayedAfterDisconnect": true,
+			"hostParentReferenceUnchanged": true,
+			"recordingStatus": "partial",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "9ff1dc962e85412f9db5c1a8394a33c81783da839a86d8790eeb9e0994f725ac"
+			},
+			"nativeRecordingSteps": 4,
+			"finishGaps": [
+				"late-disconnect-publication-blocked",
+				"missing-generated-script",
+				"browser-cleanup-not-confirmed",
+				"goal-not-reached",
+				"tool-error-or-cancelled"
+			],
+			"publicScriptEqualsNative": null,
+			"rawProtocolRetainedPrivately": true,
+			"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+			"nativeDraftPublication": "not-published-failure-preserved",
+			"ownedRawOutputsRemoved": true
+		}
+	},
+	"verification": {
+		"vitest": "4 files 24 tests passed; new transport 8 tests",
+		"typecheck": "all five configs passed"
+	},
+	"historical_unit_failure": "Initial 6 tests blocked by invalid synthetic empty origins fixture; initial log retained, exact initial test source not saved",
+	"refsVerified": 209,
+	"document": {
+		"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-recording-adapter-2026-10-26.md",
+		"sha256": "a6bb46b785985b4161d6a477bae5ccaecfbde0a83510de631abd31593edcd628",
+		"storeUnchanged": true
+	},
+	"snapshot": {
+		"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/recording-adapter-1792998928801",
+		"files": [
+			{
+				"path": "adapter-normal.log/result.json",
+				"sha256": "da6ae9989f0ae72008e7afa9e91b48073204d06088d136f977ccb31707af643f",
+				"bytes": 3476
+			},
+			{
+				"path": "adapter-normal.log/lifecycle-control.mjs",
+				"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+				"bytes": 85
+			},
+			{
+				"path": "adapter-normal.log/seed.spec.ts",
+				"sha256": "22ebd6762fe883c1fefca8f5773be8052368107b812c8997e9d14ac852185960",
+				"bytes": 446
+			},
+			{
+				"path": "adapter-normal.log/harness.mjs",
+				"sha256": "5ff4e694174f1ec5f870e5784c1e32f3906dc2a86f5f1f2ae875d5e999b581e0",
+				"bytes": 22423
+			},
+			{
+				"path": "adapter-normal.log/mirror-prototype.mjs",
+				"sha256": "53bc7757c02b54f754e8177749665e8b1fc15b3f9cb3f6fe7860b489f5a4a4c4",
+				"bytes": 5779
+			},
+			{
+				"path": "adapter-normal.log/package.json",
+				"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+				"bytes": 17
+			},
+			{
+				"path": "adapter-normal.log/generated.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+				"bytes": 188
+			},
+			{
+				"path": "adapter-normal.log/transport-adapter.mjs",
+				"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+				"bytes": 4568
+			},
+			{
+				"path": "adapter-normal.log/workspace-adapter.mjs",
+				"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+				"bytes": 7584
+			},
+			{
+				"path": "adapter-normal.log/playwright.config.mjs",
+				"sha256": "c565d404157892a3a1647967c3fb4fa6c64478e2cccaab70a1780203d1ac4518",
+				"bytes": 347
+			},
+			{
+				"path": "adapter-normal.log/.cleanup-keep",
+				"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+				"bytes": 70
+			},
+			{
+				"path": "adapter-normal.log/tests/seed.spec.ts",
+				"sha256": "22ebd6762fe883c1fefca8f5773be8052368107b812c8997e9d14ac852185960",
+				"bytes": 446
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/catalog.json",
+				"sha256": "0d061261bb4f869b06ccd49f9593e4158709fc733f0d7f049ea7ca401e5867dc",
+				"bytes": 1116
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/session.json",
+				"sha256": "f051878969e03d291227064aaa7f79ef7b9c15901cf19b63517c36590664b06b",
+				"bytes": 1113
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/raw-log.json",
+				"sha256": "5da62adfb14f238e1e134fe62cc2fc84e1906ba8167ffc0f10b3e2ffb6f1d480",
+				"bytes": 229099
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/.incomplete.json",
+				"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+				"bytes": 52
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+				"bytes": 188
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "0abc949307e61d23ad21e7a2b310e86fba5979de337ffa0c19bc3012338bb46c",
+				"bytes": 3793
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+				"sha256": "972bdebd7fd84729e4e903d5edc57a7a2d30e36e9f6c21de0aac25456433bbef",
+				"bytes": 646
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+				"sha256": "b972d2167c66494985d9f39723daec7015306b9406eee6bbf30f73ea1acb27fc",
+				"bytes": 781
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+				"sha256": "3f4caaae75e2a4fe6a2fd467cc04b4b7147f8efda8476d356e7c3b2786f0a2ba",
+				"bytes": 394
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+				"sha256": "874b3b2abda07691ec273b939ee65ca6cf8dbf0f4c9e79e23f1b89f306b30c24",
+				"bytes": 2529
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+				"sha256": "41a4cc42eeffe475a04a2ba4b88857bf25d28e89f3d4cb9e7b6c3c2d2f71419c",
+				"bytes": 439
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+				"sha256": "ee39c10b6307ebfe9b1da1f9d4c8d4f38bd67bd386a52a0f7aa36e7c31bb5ca8",
+				"bytes": 542
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+				"sha256": "cbf5526e100f126e3072edd65e8cbc88813da227522108409b49f1561ae10706",
+				"bytes": 567
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+				"sha256": "97f8404744e7d7e5ee4c84c5bd77fd51679af3cf96bd6af9a1ec1e2cf963d48e",
+				"bytes": 109825
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+				"sha256": "939e70c6434565bbfe2bad0f9669fff82fbe249d06d2b3341cd4a7e50aaf1189",
+				"bytes": 392
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+				"sha256": "4089df8409c28a9d1fd952320d0d055f6bf5179fd5058f18af33b7aac3ddd3c6",
+				"bytes": 109511
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+				"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+				"bytes": 60
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+				"sha256": "a2374d446a0cfae82e3435fcfb4340752cd2f15206af0c48c96a51a2b959abe6",
+				"bytes": 1582
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+				"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+				"bytes": 61
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+				"sha256": "17bc015eb13b2350a932226d0bba9d5125c01cf60ac845f4dbbeed42087bc5ee",
+				"bytes": 1836
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/scopes/privacy/fixture.json",
+				"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+				"bytes": 284
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/scopes/privacy/.incomplete.json",
+				"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+				"bytes": 53
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/scopes/privacy/data.json",
+				"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+				"bytes": 74
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/scopes/privacy/initial.json",
+				"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+				"bytes": 128
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/scopes/privacy-mirror/.incomplete.json",
+				"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+				"bytes": 48
+			},
+			{
+				"path": "adapter-normal.log/qa/ui/scopes/privacy-mirror/manifest.json",
+				"sha256": "3de36fe1714c9bad9109ce687bfc02fa757e4defab3b44fdd7c61f29a75c1e37",
+				"bytes": 996
+			},
+			{
+				"path": "adapter-disconnect.log/result.json",
+				"sha256": "727f32bc3d22ed7ca603a37f67b2546f0ff93bbd666b27434a488e9cafaffb10",
+				"bytes": 3654
+			},
+			{
+				"path": "adapter-disconnect.log/lifecycle-control.mjs",
+				"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+				"bytes": 85
+			},
+			{
+				"path": "adapter-disconnect.log/seed.spec.ts",
+				"sha256": "17952def746379aede992ff5584388577b1ca76aa88537392cef14f65723158b",
+				"bytes": 446
+			},
+			{
+				"path": "adapter-disconnect.log/harness.mjs",
+				"sha256": "5ff4e694174f1ec5f870e5784c1e32f3906dc2a86f5f1f2ae875d5e999b581e0",
+				"bytes": 22423
+			},
+			{
+				"path": "adapter-disconnect.log/mirror-prototype.mjs",
+				"sha256": "53bc7757c02b54f754e8177749665e8b1fc15b3f9cb3f6fe7860b489f5a4a4c4",
+				"bytes": 5779
+			},
+			{
+				"path": "adapter-disconnect.log/package.json",
+				"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+				"bytes": 17
+			},
+			{
+				"path": "adapter-disconnect.log/transport-adapter.mjs",
+				"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+				"bytes": 4568
+			},
+			{
+				"path": "adapter-disconnect.log/workspace-adapter.mjs",
+				"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+				"bytes": 7584
+			},
+			{
+				"path": "adapter-disconnect.log/playwright.config.mjs",
+				"sha256": "76c04d1fb84721436012dfa747ab51cfd044a39bf364c969997661c745ec1a8f",
+				"bytes": 347
+			},
+			{
+				"path": "adapter-disconnect.log/.cleanup-keep",
+				"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+				"bytes": 70
+			},
+			{
+				"path": "adapter-disconnect.log/tests/seed.spec.ts",
+				"sha256": "17952def746379aede992ff5584388577b1ca76aa88537392cef14f65723158b",
+				"bytes": 446
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/catalog.json",
+				"sha256": "c5636df2d4599abaf6401ae7f0fb3ecb12cf39436f1fc013ac18e2b1447da6cd",
+				"bytes": 1116
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/recordings/privacy-mirror/session.json",
+				"sha256": "77dd66a7dce7a267b3859956e321796deba241bd32edc5ed77bed231158a115a",
+				"bytes": 1113
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/recordings/privacy-mirror/raw-log.json",
+				"sha256": "d6cc17c6a2ee4bf0df3423341a13208a200ec421a8ee1cbc6d6427d82c10e837",
+				"bytes": 226728
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/recordings/privacy-mirror/.incomplete.json",
+				"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+				"bytes": 52
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "9ff1dc962e85412f9db5c1a8394a33c81783da839a86d8790eeb9e0994f725ac",
+				"bytes": 3401
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+				"sha256": "6a5a55bc45d398a95d7060723a3891448a177325f55d275f26884458b42b11ad",
+				"bytes": 646
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+				"sha256": "a46518127838e4938a9bef18d7761252d017e22d0e7e2c466e23dea8fc396023",
+				"bytes": 152
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+				"sha256": "fc9cb7ba4468eb5bcae9969485b76c6edc4ba2964ef1bd04db36864d76d2c193",
+				"bytes": 394
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+				"sha256": "9ddc27aeda79606539fda6dc0b748e203491705ed8003c8e78a46387c2cb1b2a",
+				"bytes": 2529
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+				"sha256": "2148f99def0c47f95b2e1f0cf63ed4fd4b1f767dd64fbdbbbeec99c317b59281",
+				"bytes": 567
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+				"sha256": "3db6999eeef2a268b80357a78a155a3cc7f9bc41102db7ad95ac6bcd6fcda661",
+				"bytes": 109825
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+				"sha256": "557ce817fa8671ed73db7e074d0a8c99ffb36d21c31ecce4ba0ab53a2a36945d",
+				"bytes": 392
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+				"sha256": "1a325d5cd2b32952d962e3792177eb90d4a51d6a038e3a2eb798bbfe86c801eb",
+				"bytes": 109511
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+				"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+				"bytes": 60
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+				"sha256": "44d653d43512ff1110485929a93f9c9dec4b4dadfb297a32de2a0beb83a41e80",
+				"bytes": 1582
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+				"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+				"bytes": 61
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+				"sha256": "dc4df313a6c75af9a79aa0a684a08b3f87d2a3239233a44ca6a7fd00a9862abe",
+				"bytes": 1836
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/scopes/privacy/fixture.json",
+				"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+				"bytes": 284
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/scopes/privacy/.incomplete.json",
+				"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+				"bytes": 53
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/scopes/privacy/data.json",
+				"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+				"bytes": 74
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/scopes/privacy/initial.json",
+				"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+				"bytes": 128
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/scopes/privacy-mirror/.incomplete.json",
+				"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+				"bytes": 48
+			},
+			{
+				"path": "adapter-disconnect.log/qa/ui/scopes/privacy-mirror/manifest.json",
+				"sha256": "fcc9de79a1434aa79f4c234397949bd0130fee6186c4e196e2a803f7efc96498",
+				"bytes": 996
+			},
+			{
+				"path": "adapter-renew.log/result.json",
+				"sha256": "68b933fede10a11cc19402b58d7fabcd67990b10ab7aa0c1c55fd90bb2ab61dc",
+				"bytes": 3501
+			},
+			{
+				"path": "adapter-renew.log/lifecycle-control.mjs",
+				"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+				"bytes": 85
+			},
+			{
+				"path": "adapter-renew.log/seed.spec.ts",
+				"sha256": "b090d8ecbd90e05e9853434f38a986c7e281d033755eb81dfde47ca625ac87a0",
+				"bytes": 446
+			},
+			{
+				"path": "adapter-renew.log/harness.mjs",
+				"sha256": "5ff4e694174f1ec5f870e5784c1e32f3906dc2a86f5f1f2ae875d5e999b581e0",
+				"bytes": 22423
+			},
+			{
+				"path": "adapter-renew.log/mirror-prototype.mjs",
+				"sha256": "53bc7757c02b54f754e8177749665e8b1fc15b3f9cb3f6fe7860b489f5a4a4c4",
+				"bytes": 5779
+			},
+			{
+				"path": "adapter-renew.log/package.json",
+				"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+				"bytes": 17
+			},
+			{
+				"path": "adapter-renew.log/transport-adapter.mjs",
+				"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+				"bytes": 4568
+			},
+			{
+				"path": "adapter-renew.log/workspace-adapter.mjs",
+				"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+				"bytes": 7584
+			},
+			{
+				"path": "adapter-renew.log/playwright.config.mjs",
+				"sha256": "b40842e26a25b11b8ace1105a88da1dd82aafd90e7fb9efd2fd4bb4f9452ea34",
+				"bytes": 347
+			},
+			{
+				"path": "adapter-renew.log/.cleanup-keep",
+				"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+				"bytes": 70
+			},
+			{
+				"path": "adapter-renew.log/tests/seed.spec.ts",
+				"sha256": "b090d8ecbd90e05e9853434f38a986c7e281d033755eb81dfde47ca625ac87a0",
+				"bytes": 446
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/catalog.json",
+				"sha256": "e54835fc45fca1141570c605f125286f4a760c86ab01de93b1fa2203851d27fd",
+				"bytes": 1116
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/recordings/privacy-mirror/session.json",
+				"sha256": "0bf42fbe6c6e1155ebbf8d606f0841374a315edc76a44fd0b33fc125a80b4b88",
+				"bytes": 1113
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/recordings/privacy-mirror/raw-log.json",
+				"sha256": "61ecdb0205176b2509df8a22d8b5bbbee5fd262cbf09be2cb153b75f75d83e91",
+				"bytes": 228404
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/recordings/privacy-mirror/.incomplete.json",
+				"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+				"bytes": 52
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "f58def383158af44c458c60797327967ede6c121c499904587a5c2c5baf89e0d",
+				"bytes": 3758
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+				"sha256": "449aeb6ee48ab18705a2dc9bc8104bac5f0a87797f743edcf7862f7e72b1ba9d",
+				"bytes": 646
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+				"sha256": "53b6780c32431bbf90901257b3ee770c0c33a8aec9b73ef0747de8bda1877c9c",
+				"bytes": 199
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+				"sha256": "d2196d2298900f76b7afd4ede05a85126213a18e1e056b8ba0c31196bc4985c1",
+				"bytes": 394
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+				"sha256": "667bc246adbdb5bd7ccb3219b397637fc12bb19aaf70408a93f73a038b2305c9",
+				"bytes": 2529
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+				"sha256": "113547e76a8912382f2679b7f9e3a41d97d000eb015ea68b15055d06c8e598f5",
+				"bytes": 439
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+				"sha256": "cf0f512d725e437887eadd231d72832696492046ea86dc099257393eeebf3d74",
+				"bytes": 543
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+				"sha256": "9ca0016980611c95a5b54336fa71954eec46efb27c875ddef7a68a09e07cd296",
+				"bytes": 567
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+				"sha256": "1b4fca8eda4787fa9e5cb83d17ca860e66fbc6988ed1e9cd3fdbc10f3f5e0ae3",
+				"bytes": 109825
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+				"sha256": "c5d6dbfada296a695aee56cebae73d0d638cf15d68a6bc655c5d8a74cf2fa578",
+				"bytes": 392
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+				"sha256": "4aba3952fc5595093b80d7979baaf83e7cf7a1486e0c0142395f59e17ac16c67",
+				"bytes": 109511
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+				"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+				"bytes": 60
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+				"sha256": "5df9acc38cc0f2624c2ee278244ed06281bbaaf030cf98f94446cb8a8794282b",
+				"bytes": 1582
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+				"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+				"bytes": 61
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+				"sha256": "f6e085e4d8a0ea3fbb9c07f12d0ef05a2478fd7955e08e120cd9d1de78811201",
+				"bytes": 1836
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/scopes/privacy/fixture.json",
+				"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+				"bytes": 284
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/scopes/privacy/.incomplete.json",
+				"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+				"bytes": 53
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/scopes/privacy/data.json",
+				"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+				"bytes": 74
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/scopes/privacy/initial.json",
+				"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+				"bytes": 128
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/scopes/privacy-mirror/.incomplete.json",
+				"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+				"bytes": 48
+			},
+			{
+				"path": "adapter-renew.log/qa/ui/scopes/privacy-mirror/manifest.json",
+				"sha256": "5706ef0db8c9c2f953d3faadc6945003b8c6c180b85edce605eba95d50791f69",
+				"bytes": 996
+			},
+			{
+				"path": "adapter-cancel.log/result.json",
+				"sha256": "a35c37f70a3b0299edc74e9635eeb5af2c4462a76e4c6792cfaeb7c03099d08b",
+				"bytes": 3503
+			},
+			{
+				"path": "adapter-cancel.log/lifecycle-control.mjs",
+				"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+				"bytes": 85
+			},
+			{
+				"path": "adapter-cancel.log/seed.spec.ts",
+				"sha256": "ce39426e91fad485feebfa8bb6e636242e3700c0143ec0bb136648970e88adc3",
+				"bytes": 446
+			},
+			{
+				"path": "adapter-cancel.log/harness.mjs",
+				"sha256": "5ff4e694174f1ec5f870e5784c1e32f3906dc2a86f5f1f2ae875d5e999b581e0",
+				"bytes": 22423
+			},
+			{
+				"path": "adapter-cancel.log/mirror-prototype.mjs",
+				"sha256": "53bc7757c02b54f754e8177749665e8b1fc15b3f9cb3f6fe7860b489f5a4a4c4",
+				"bytes": 5779
+			},
+			{
+				"path": "adapter-cancel.log/package.json",
+				"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+				"bytes": 17
+			},
+			{
+				"path": "adapter-cancel.log/transport-adapter.mjs",
+				"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+				"bytes": 4568
+			},
+			{
+				"path": "adapter-cancel.log/workspace-adapter.mjs",
+				"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+				"bytes": 7584
+			},
+			{
+				"path": "adapter-cancel.log/playwright.config.mjs",
+				"sha256": "e461f2c0c95fa58cfd94109c6c1d666d61b1b6aa39963bbd62c36a5921b99811",
+				"bytes": 347
+			},
+			{
+				"path": "adapter-cancel.log/.cleanup-keep",
+				"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+				"bytes": 70
+			},
+			{
+				"path": "adapter-cancel.log/tests/seed.spec.ts",
+				"sha256": "ce39426e91fad485feebfa8bb6e636242e3700c0143ec0bb136648970e88adc3",
+				"bytes": 446
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/catalog.json",
+				"sha256": "6dadff2118e82ecd5b6fffddafe540b2228a7bd795f97f05c3ec8a64d520f48e",
+				"bytes": 1116
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/recordings/privacy-mirror/session.json",
+				"sha256": "df4d90f3a5ec5ddc8b332dbc4d7c21be27c5eff890bbdc71d0ab8e0cc89ea256",
+				"bytes": 1113
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/recordings/privacy-mirror/raw-log.json",
+				"sha256": "893a41e6c516d90ff5fba750c9a6d1388254cbfe7b57d623a2f64a9ac523a83e",
+				"bytes": 228378
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/recordings/privacy-mirror/.incomplete.json",
+				"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+				"bytes": 52
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "1118c87aeb986a9069bf5c8bfcfe0622332304129390b78f00c56d82504cf390",
+				"bytes": 3759
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+				"sha256": "13f5099dc7824969766b43f8379ce9162813ca2bf8ef664a7c867b64df7771d6",
+				"bytes": 646
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+				"sha256": "8c49f3061450ef2b03ef1a5490bd8e33f800d04f60a30aef2ed858b7caaaf4c9",
+				"bytes": 168
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+				"sha256": "f786b47f8f54e76e7021176974e72788c993587ceadbe492becdbc9b74efa52d",
+				"bytes": 394
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+				"sha256": "610284f1816392f6d42a9b18b6683def6b75c4e7e36564845c0b220f2faf6631",
+				"bytes": 2529
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+				"sha256": "64623e58900b4850dc10c6ad8a929587ce549ce020f6899376632e74690665b0",
+				"bytes": 439
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+				"sha256": "e3efffb7bba1b0e3b2cdb22afbee44036b74546d77345d1b51b08fd9b23f5e77",
+				"bytes": 542
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+				"sha256": "312c192f23ffcbb848c225a9706b101ce351fd26ade88f1827768b3d9661f057",
+				"bytes": 567
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+				"sha256": "1483894197830081400c341984b689fd29bb49d0e903667ccaafb874abf58b99",
+				"bytes": 109825
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+				"sha256": "574c0db319674c5939aed9c5e437f50c86cf4832e211270fc8fef786479697d0",
+				"bytes": 392
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+				"sha256": "1fca4de6b7e85edbd30abf016f68cf4e41f0cf75e495e2cd163981f51bca59c4",
+				"bytes": 109511
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+				"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+				"bytes": 60
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+				"sha256": "574a42b3b9d3177de4be6cc71e5f8dea0cc4c75941714c6da3cd9d6b1a7cc8aa",
+				"bytes": 1582
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+				"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+				"bytes": 61
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+				"sha256": "8e02f60c81e3c3328a3fa2838d06a7c4702e5d57bf185c201a73ce8a4399e06f",
+				"bytes": 1836
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/scopes/privacy/fixture.json",
+				"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+				"bytes": 284
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/scopes/privacy/.incomplete.json",
+				"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+				"bytes": 53
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/scopes/privacy/data.json",
+				"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+				"bytes": 74
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/scopes/privacy/initial.json",
+				"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+				"bytes": 128
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/scopes/privacy-mirror/.incomplete.json",
+				"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+				"bytes": 48
+			},
+			{
+				"path": "adapter-cancel.log/qa/ui/scopes/privacy-mirror/manifest.json",
+				"sha256": "2ba3d063fd3566f3e44088495301f15652753cc0ed877fd02884150122bbde20",
+				"bytes": 996
+			}
+		]
+	},
+	"limits": [
+		"New connection only initialized/listed tools; no original-session recording recovery",
+		"Normal control is an independent new workspace/identity/session",
+		"Native browser-cleanup-not-confirmed gap retained",
+		"No product/Electron/private record enablement; generic privacy and filesystem races unproven",
+		"Raw synthetic payloads removed; public logs reduced"
+	],
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-u02-recording-adapter.tar.gz",
+		"sha256": "b26d223b8c4301124146e87acfbbb46e3cf559847690ec3015e20614bb423f95",
+		"bytes": 288519,
+		"files": 159,
+		"roundtrip_verified": true
+	},
+	"files": [
+		{
+			"path": ".pi/skills/ui-testing-workflow/assets/private-recording-transport.mjs",
+			"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+			"bytes": 4568
+		},
+		{
+			"path": ".pi/skills/ui-testing-workflow/assets/private-recording-workspace.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/adapter-cancel.log",
+			"sha256": "b7ec6f4628e23ef914f9baefa988605e9376b35d7ecb65f971fcc76f1ba6c960",
+			"bytes": 3605
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/adapter-disconnect.log",
+			"sha256": "8459b6773764d45e52632743625c54acd724f962a858bcb05d5629b0b88b26c2",
+			"bytes": 3756
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/adapter-normal.log",
+			"sha256": "0e75e021ff2c317630dd097ce4af7a4c2f3c71b74c2942066bbf4e9525c32050",
+			"bytes": 3578
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/adapter-recording-prototype.mjs",
+			"sha256": "53bc7757c02b54f754e8177749665e8b1fc15b3f9cb3f6fe7860b489f5a4a4c4",
+			"bytes": 5779
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/adapter-renew.log",
+			"sha256": "96ba7fa493deb6988077f0955ea7c3116ac1dfeca4541e3d9c72e17bd6381b7b",
+			"bytes": 3603
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/adapter-unit-v2.log",
+			"sha256": "e75adc4b12ab4dcb36c33f623793c15da2f3dc0e36ce911f1495daea4e160de0",
+			"bytes": 198
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/adapter-unit-v3.log",
+			"sha256": "b5e7a7a5cea94b18720fe88000bfd0d8053d12d75ae2dad2f526d58ce04daa23",
+			"bytes": 199
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/adapter-unit.log",
+			"sha256": "95a6d69f963f0127c1d3ee51c5d628f324fe029385d8f14b77d76ff2a7070931",
+			"bytes": 7065
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/archive-recording-adapter.py",
+			"sha256": "95893a95846ab769859ef88aca71601b51b20f61957554cce6fca3e9b280547b",
+			"bytes": 5873
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/probe-recording-adapter.mjs",
+			"sha256": "5ff4e694174f1ec5f870e5784c1e32f3906dc2a86f5f1f2ae875d5e999b581e0",
+			"bytes": 22423
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/recording-adapter-document.md",
+			"sha256": "a6bb46b785985b4161d6a477bae5ccaecfbde0a83510de631abd31593edcd628",
+			"bytes": 2950
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/recording-disconnect-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/.cleanup-keep",
+			"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+			"bytes": 70
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/generated.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/harness.mjs",
+			"sha256": "5ff4e694174f1ec5f870e5784c1e32f3906dc2a86f5f1f2ae875d5e999b581e0",
+			"bytes": 22423
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/mirror-prototype.mjs",
+			"sha256": "53bc7757c02b54f754e8177749665e8b1fc15b3f9cb3f6fe7860b489f5a4a4c4",
+			"bytes": 5779
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/package.json",
+			"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+			"bytes": 17
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/playwright.config.mjs",
+			"sha256": "c565d404157892a3a1647967c3fb4fa6c64478e2cccaab70a1780203d1ac4518",
+			"bytes": 347
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/catalog.json",
+			"sha256": "0d061261bb4f869b06ccd49f9593e4158709fc733f0d7f049ea7ca401e5867dc",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "a2374d446a0cfae82e3435fcfb4340752cd2f15206af0c48c96a51a2b959abe6",
+			"bytes": 1582
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "17bc015eb13b2350a932226d0bba9d5125c01cf60ac845f4dbbeed42087bc5ee",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "41a4cc42eeffe475a04a2ba4b88857bf25d28e89f3d4cb9e7b6c3c2d2f71419c",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "ee39c10b6307ebfe9b1da1f9d4c8d4f38bd67bd386a52a0f7aa36e7c31bb5ca8",
+			"bytes": 542
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "cbf5526e100f126e3072edd65e8cbc88813da227522108409b49f1561ae10706",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "97f8404744e7d7e5ee4c84c5bd77fd51679af3cf96bd6af9a1ec1e2cf963d48e",
+			"bytes": 109825
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "939e70c6434565bbfe2bad0f9669fff82fbe249d06d2b3341cd4a7e50aaf1189",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "4089df8409c28a9d1fd952320d0d055f6bf5179fd5058f18af33b7aac3ddd3c6",
+			"bytes": 109511
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "3f4caaae75e2a4fe6a2fd467cc04b4b7147f8efda8476d356e7c3b2786f0a2ba",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "874b3b2abda07691ec273b939ee65ca6cf8dbf0f4c9e79e23f1b89f306b30c24",
+			"bytes": 2529
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "972bdebd7fd84729e4e903d5edc57a7a2d30e36e9f6c21de0aac25456433bbef",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "b972d2167c66494985d9f39723daec7015306b9406eee6bbf30f73ea1acb27fc",
+			"bytes": 781
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "0abc949307e61d23ad21e7a2b310e86fba5979de337ffa0c19bc3012338bb46c",
+			"bytes": 3793
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "5da62adfb14f238e1e134fe62cc2fc84e1906ba8167ffc0f10b3e2ffb6f1d480",
+			"bytes": 229099
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "f051878969e03d291227064aaa7f79ef7b9c15901cf19b63517c36590664b06b",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "3de36fe1714c9bad9109ce687bfc02fa757e4defab3b44fdd7c61f29a75c1e37",
+			"bytes": 996
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/result.json",
+			"sha256": "da6ae9989f0ae72008e7afa9e91b48073204d06088d136f977ccb31707af643f",
+			"bytes": 3476
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/seed.spec.ts",
+			"sha256": "22ebd6762fe883c1fefca8f5773be8052368107b812c8997e9d14ac852185960",
+			"bytes": 446
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/tests/seed.spec.ts",
+			"sha256": "22ebd6762fe883c1fefca8f5773be8052368107b812c8997e9d14ac852185960",
+			"bytes": 446
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/transport-adapter.mjs",
+			"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+			"bytes": 4568
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998847566/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/.cleanup-keep",
+			"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+			"bytes": 70
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/harness.mjs",
+			"sha256": "5ff4e694174f1ec5f870e5784c1e32f3906dc2a86f5f1f2ae875d5e999b581e0",
+			"bytes": 22423
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/mirror-prototype.mjs",
+			"sha256": "53bc7757c02b54f754e8177749665e8b1fc15b3f9cb3f6fe7860b489f5a4a4c4",
+			"bytes": 5779
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/package.json",
+			"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+			"bytes": 17
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/playwright.config.mjs",
+			"sha256": "76c04d1fb84721436012dfa747ab51cfd044a39bf364c969997661c745ec1a8f",
+			"bytes": 347
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/catalog.json",
+			"sha256": "c5636df2d4599abaf6401ae7f0fb3ecb12cf39436f1fc013ac18e2b1447da6cd",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "44d653d43512ff1110485929a93f9c9dec4b4dadfb297a32de2a0beb83a41e80",
+			"bytes": 1582
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "dc4df313a6c75af9a79aa0a684a08b3f87d2a3239233a44ca6a7fd00a9862abe",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "2148f99def0c47f95b2e1f0cf63ed4fd4b1f767dd64fbdbbbeec99c317b59281",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "3db6999eeef2a268b80357a78a155a3cc7f9bc41102db7ad95ac6bcd6fcda661",
+			"bytes": 109825
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "557ce817fa8671ed73db7e074d0a8c99ffb36d21c31ecce4ba0ab53a2a36945d",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "1a325d5cd2b32952d962e3792177eb90d4a51d6a038e3a2eb798bbfe86c801eb",
+			"bytes": 109511
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "fc9cb7ba4468eb5bcae9969485b76c6edc4ba2964ef1bd04db36864d76d2c193",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "9ddc27aeda79606539fda6dc0b748e203491705ed8003c8e78a46387c2cb1b2a",
+			"bytes": 2529
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "6a5a55bc45d398a95d7060723a3891448a177325f55d275f26884458b42b11ad",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "a46518127838e4938a9bef18d7761252d017e22d0e7e2c466e23dea8fc396023",
+			"bytes": 152
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "9ff1dc962e85412f9db5c1a8394a33c81783da839a86d8790eeb9e0994f725ac",
+			"bytes": 3401
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "d6cc17c6a2ee4bf0df3423341a13208a200ec421a8ee1cbc6d6427d82c10e837",
+			"bytes": 226728
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "77dd66a7dce7a267b3859956e321796deba241bd32edc5ed77bed231158a115a",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "fcc9de79a1434aa79f4c234397949bd0130fee6186c4e196e2a803f7efc96498",
+			"bytes": 996
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/result.json",
+			"sha256": "727f32bc3d22ed7ca603a37f67b2546f0ff93bbd666b27434a488e9cafaffb10",
+			"bytes": 3654
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/seed.spec.ts",
+			"sha256": "17952def746379aede992ff5584388577b1ca76aa88537392cef14f65723158b",
+			"bytes": 446
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/tests/seed.spec.ts",
+			"sha256": "17952def746379aede992ff5584388577b1ca76aa88537392cef14f65723158b",
+			"bytes": 446
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/transport-adapter.mjs",
+			"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+			"bytes": 4568
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998928801/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/.cleanup-keep",
+			"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+			"bytes": 70
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/harness.mjs",
+			"sha256": "5ff4e694174f1ec5f870e5784c1e32f3906dc2a86f5f1f2ae875d5e999b581e0",
+			"bytes": 22423
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/mirror-prototype.mjs",
+			"sha256": "53bc7757c02b54f754e8177749665e8b1fc15b3f9cb3f6fe7860b489f5a4a4c4",
+			"bytes": 5779
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/package.json",
+			"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+			"bytes": 17
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/playwright.config.mjs",
+			"sha256": "e461f2c0c95fa58cfd94109c6c1d666d61b1b6aa39963bbd62c36a5921b99811",
+			"bytes": 347
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/catalog.json",
+			"sha256": "6dadff2118e82ecd5b6fffddafe540b2228a7bd795f97f05c3ec8a64d520f48e",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "574a42b3b9d3177de4be6cc71e5f8dea0cc4c75941714c6da3cd9d6b1a7cc8aa",
+			"bytes": 1582
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "8e02f60c81e3c3328a3fa2838d06a7c4702e5d57bf185c201a73ce8a4399e06f",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "64623e58900b4850dc10c6ad8a929587ce549ce020f6899376632e74690665b0",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "e3efffb7bba1b0e3b2cdb22afbee44036b74546d77345d1b51b08fd9b23f5e77",
+			"bytes": 542
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "312c192f23ffcbb848c225a9706b101ce351fd26ade88f1827768b3d9661f057",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "1483894197830081400c341984b689fd29bb49d0e903667ccaafb874abf58b99",
+			"bytes": 109825
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "574c0db319674c5939aed9c5e437f50c86cf4832e211270fc8fef786479697d0",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "1fca4de6b7e85edbd30abf016f68cf4e41f0cf75e495e2cd163981f51bca59c4",
+			"bytes": 109511
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "f786b47f8f54e76e7021176974e72788c993587ceadbe492becdbc9b74efa52d",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "610284f1816392f6d42a9b18b6683def6b75c4e7e36564845c0b220f2faf6631",
+			"bytes": 2529
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "13f5099dc7824969766b43f8379ce9162813ca2bf8ef664a7c867b64df7771d6",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "8c49f3061450ef2b03ef1a5490bd8e33f800d04f60a30aef2ed858b7caaaf4c9",
+			"bytes": 168
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "1118c87aeb986a9069bf5c8bfcfe0622332304129390b78f00c56d82504cf390",
+			"bytes": 3759
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "893a41e6c516d90ff5fba750c9a6d1388254cbfe7b57d623a2f64a9ac523a83e",
+			"bytes": 228378
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "df4d90f3a5ec5ddc8b332dbc4d7c21be27c5eff890bbdc71d0ab8e0cc89ea256",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "2ba3d063fd3566f3e44088495301f15652753cc0ed877fd02884150122bbde20",
+			"bytes": 996
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/result.json",
+			"sha256": "a35c37f70a3b0299edc74e9635eeb5af2c4462a76e4c6792cfaeb7c03099d08b",
+			"bytes": 3503
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/seed.spec.ts",
+			"sha256": "ce39426e91fad485feebfa8bb6e636242e3700c0143ec0bb136648970e88adc3",
+			"bytes": 446
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/tests/seed.spec.ts",
+			"sha256": "ce39426e91fad485feebfa8bb6e636242e3700c0143ec0bb136648970e88adc3",
+			"bytes": 446
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/transport-adapter.mjs",
+			"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+			"bytes": 4568
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792998977236/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/.cleanup-keep",
+			"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+			"bytes": 70
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/harness.mjs",
+			"sha256": "5ff4e694174f1ec5f870e5784c1e32f3906dc2a86f5f1f2ae875d5e999b581e0",
+			"bytes": 22423
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/mirror-prototype.mjs",
+			"sha256": "53bc7757c02b54f754e8177749665e8b1fc15b3f9cb3f6fe7860b489f5a4a4c4",
+			"bytes": 5779
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/package.json",
+			"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+			"bytes": 17
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/playwright.config.mjs",
+			"sha256": "b40842e26a25b11b8ace1105a88da1dd82aafd90e7fb9efd2fd4bb4f9452ea34",
+			"bytes": 347
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/catalog.json",
+			"sha256": "e54835fc45fca1141570c605f125286f4a760c86ab01de93b1fa2203851d27fd",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "5df9acc38cc0f2624c2ee278244ed06281bbaaf030cf98f94446cb8a8794282b",
+			"bytes": 1582
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "f6e085e4d8a0ea3fbb9c07f12d0ef05a2478fd7955e08e120cd9d1de78811201",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "113547e76a8912382f2679b7f9e3a41d97d000eb015ea68b15055d06c8e598f5",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "cf0f512d725e437887eadd231d72832696492046ea86dc099257393eeebf3d74",
+			"bytes": 543
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "9ca0016980611c95a5b54336fa71954eec46efb27c875ddef7a68a09e07cd296",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "1b4fca8eda4787fa9e5cb83d17ca860e66fbc6988ed1e9cd3fdbc10f3f5e0ae3",
+			"bytes": 109825
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "c5d6dbfada296a695aee56cebae73d0d638cf15d68a6bc655c5d8a74cf2fa578",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "4aba3952fc5595093b80d7979baaf83e7cf7a1486e0c0142395f59e17ac16c67",
+			"bytes": 109511
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "d2196d2298900f76b7afd4ede05a85126213a18e1e056b8ba0c31196bc4985c1",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "667bc246adbdb5bd7ccb3219b397637fc12bb19aaf70408a93f73a038b2305c9",
+			"bytes": 2529
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "449aeb6ee48ab18705a2dc9bc8104bac5f0a87797f743edcf7862f7e72b1ba9d",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "53b6780c32431bbf90901257b3ee770c0c33a8aec9b73ef0747de8bda1877c9c",
+			"bytes": 199
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "f58def383158af44c458c60797327967ede6c121c499904587a5c2c5baf89e0d",
+			"bytes": 3758
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "61ecdb0205176b2509df8a22d8b5bbbee5fd262cbf09be2cb153b75f75d83e91",
+			"bytes": 228404
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "0bf42fbe6c6e1155ebbf8d606f0841374a315edc76a44fd0b33fc125a80b4b88",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "5706ef0db8c9c2f953d3faadc6945003b8c6c180b85edce605eba95d50791f69",
+			"bytes": 996
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/result.json",
+			"sha256": "68b933fede10a11cc19402b58d7fabcd67990b10ab7aa0c1c55fd90bb2ab61dc",
+			"bytes": 3501
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/seed.spec.ts",
+			"sha256": "b090d8ecbd90e05e9853434f38a986c7e281d033755eb81dfde47ca625ac87a0",
+			"bytes": 446
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/tests/seed.spec.ts",
+			"sha256": "b090d8ecbd90e05e9853434f38a986c7e281d033755eb81dfde47ca625ac87a0",
+			"bytes": 446
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/transport-adapter.mjs",
+			"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+			"bytes": 4568
+		},
+		{
+			"path": "tests/scratch/ui-recording-adapter/1792999020047/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/unit/ui-private-recording-transport.test.ts",
+			"sha256": "fe3e31813346d7bb4876039c551f31cbe3cc11af8544272293f0fe8316854785",
+			"bytes": 10678
+		}
+	]
+}

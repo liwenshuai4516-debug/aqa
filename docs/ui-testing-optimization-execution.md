@@ -1031,3 +1031,17 @@ ui_result_analysis read-trace读取本实例原始ZIP事件。test.trace expect@
 本轮没有改产品代码、依赖、个人配置或安装；产品私密record仍unsupported。仍需通用输入闭包、新凭据/嵌套JSON、协议分支、异常进程崩溃、完整重连续录、文件系统并发路径替换及Electron执行侧接入；真实业务角色/租户/数据、U00计量、U03/U07、M1/M2仍待完成。整体goal保持active。
 
 本轮验证：完整五配置typecheck、3文件16项相关Vitest、lint、协议同步、size预算及git差异检查通过；协议tag启发式因无可用tag跳过，未计作完成。开始/交付clean均仅预览，无可清理项。
+
+### U02 续跑：内部 MCP 连接与请求生命周期适配（2026-10-26）
+
+上一轮54ce518已推送且独立核对远端一致，本轮继续A02-5。开始clean仅预览无可清理项，保留原.gitignore和db-client锁差异；plan_update不可用，继续现有计划与执行记录。PMS剩余2次仅设计评审，未挪用或调用模型，report-2未独立结果批准。
+
+新增内部assets/private-recording-transport.mjs：绑定已有受管snapshot与实际MCP transport；tools/call派发前beginOperation并原样传SDK send options，接收回调负责私有捕获/过滤和原生writer校验后通过publish同步写入，普通响应也重验当前性，交付SDK之前finish。关闭/传输错误立即撤销；发送失败可能已派发，撤销状态而不继续复用；仍连接时保留browser_close清理路径。接收/发布错误转换为固定协议错误，撤销认证失败也尝试关闭底层连接，异常原文不进入公开输出。模块不另写runner、脱敏或原生writer，receive由调用方提供；产品mcp-extension尚未导入，私密record仍unsupported。
+
+实际隔离MCP原型已替换为导入此长期模块，不再自行维护operation映射。真实SDK嵌套ui_discover_record与Playwright1.62.1 MCP四轮：正常5步骤complete、gaps=[]、1脚本且公开/原生字节一致；取消、父受管身份变化、物理关闭均私有原生草稿存在/字节一致、公开草稿不存在，原生partial、0脚本并保留late-*-publication-blocked等缺口。断连另建真实MCP连接，初始化及87工具可用，旧快照在浏览器派发前拒绝；原生browser-cleanup-not-confirmed保留，没有伪造close成功或声称原会话恢复。
+
+新模块8项单测覆盖SDK正常完成signal、连接关闭后延迟发布、未知发送失败、取消后自有清理、撤销失败仍关闭、接收错误、乱序响应与传输原始错误。初轮6项在fixture准备阶段被原生authState拒绝（错误使用空origins），修正为原契约单origin/token后通过；首次typecheck也因新fixture缺完整环境字段失败，已补齐，不削弱校验。初轮日志保留，但没有保存当时精确单测源码，归档当前版本不冒充旧版本。最终4文件24项Vitest与完整5配置typecheck通过；lint、协议同步、size及差异检查通过，协议tag启发式无可用tag而跳过。
+
+[内部连接适配证据](ui-testing-evidence/optimization-u02-recording-adapter.json)归档159文件、209次FileRef核验，逐成员回读一致；实际Electron权威项目新增OperationContract-recording-adapter-2026-10-26.md与四轮144份快照，0700/0600、回读一致，store字节未写。没有建立应用文档索引、正式用例或执行结果入库；两份模型授权账本与上轮摘要相同。四轮模型调用、正式批次、真实业务写入均0，已知合成秘密/编码/媒体扫描通过，私有协议含原文；只清理本轮原始合成payload及自有进程，公开raw-log不是完整私密原文。
+
+本轮实现的是实际SDK/MCP已使用的内部生命周期薄适配，尚未开放产品入口；维护索引/地图/目录已同步，不宣称Electron安装发现、管理禁用/重载或完整业务录制已完成。下一步继续输入闭包、新凭据/嵌套JSON和协议分支，再接产品私有准备/管理入口并做实际桌面全链；文件系统竞态、异常崩溃与完整重连续录、真实角色/租户/数据、U00计量、U03/U07和M1/M2仍待验，整体goal active。

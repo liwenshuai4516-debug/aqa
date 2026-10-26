@@ -54,6 +54,7 @@
 
 - [Agent 评估中心统一技术方案与分期实施规范](agent-evaluation-design-plan.md)：内部任务与外部 Agent 合并为一个中心；统一证据、状态、独立核验及扩展契约；EC00–EC14 实施步骤、AC01–AC40 验收与分批执行约束；设计 2.1，功能待实施。
 - [Agent 评估 EC00 基线](agent-evaluation-evidence/EC00.md)：当前代码复用审计、M1 契约/权限/资源门槛、合成基线与外部实测前置条件；实施与验收按工作包记录，不以基线冻结代替功能通过。
+- [Agent 评估中心扩展计划](agent-evaluation-extension-plan.md)：外部执行五通道与 ImportBundle 回传契约、外部评估噪声控制、轨迹审计（主体/授权链/判定点/控制项/出证包）、ATIF 双向交换；EC15–EC20 与 AC41–AC62；设计与工作包待执行。
 - [外部 Agent 评估旧入口](external-agent-evaluation-design.md)：转向统一规范，保留旧 EX/T 编号迁移说明，不再维护独立实施方案。
 - [接口测试本机 OS/MCP 隔离补验](api-testing-evidence/isolation-local-mcp.md)：合成文件、进程继承与端口边界；真实目标仍未开放。
 - [接口测试当前完成审计](api-testing-evidence/completion-audit.md)：工程/实际模型证据、真实业务缺口和按需延后项。
@@ -130,3 +131,5 @@ UI 受管身份录制副本：[内部模块与真实 SDK/MCP 证据](ui-testing-
 UI 私密录制生命周期：[晚到发布缺陷与三类拒绝对照](ui-testing-evidence/optimization-u02-recording-lifecycle.json)，保留旧原型取消后错误发布证据及正常/partial对照；产品入口仍未开放。
 
 PMS 匿名基线：[独立设计批准、正反诊断与正式失败证据](ui-testing-evidence/optimization-u00-pms-anonymous-reviewed.json)。本批0通过/1失败，report-2保留原生导航中断事实、待独立结果评审；剩余设计额度按用户决定不改用于结果评审。
+
+UI 私密录制连接守卫：[内部适配与真实SDK/MCP验证](ui-testing-evidence/optimization-u02-recording-adapter.json)，保留正常complete、取消/父身份变化/断连partial；产品私密录制仍未开放。
