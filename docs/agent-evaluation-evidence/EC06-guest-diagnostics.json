@@ -1,0 +1,104 @@
+{
+	"scope": "EC06 bounded guest input/output protocol and trusted fake CLI diagnostics; not a product ExecutionAdapter",
+	"baselineCommit": "17ecf19aabcc6e32d0b86a8f3eee72bbae381427",
+	"status": "PROTOCOL_COMPONENT_AND_TRUSTED_FIXTURE_PASS; FULL_EXECUTION_ADAPTER_PENDING",
+	"pluginVersion": "0.4.32",
+	"actualModelCalls": 0,
+	"actualAgentCliCalls": 0,
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-guest/index.json",
+		"bytes": 98913,
+		"sha256": "e1b912a1370f9235772ca8b42dd474086e22ff8b272609849d3df3ab57d25f91"
+	},
+	"archiveFiles": 260,
+	"verification": {
+		"time": "2026-10-26T08:33:32.004911+00:00",
+		"rawLogsVerified": 28,
+		"sourceAndEmittedHashesMatchBothFinalRuns": true,
+		"pluginFilesUnchanged": 29,
+		"processReadOnlyObservations": {
+			"72988": "",
+			"72990": "",
+			"73008": "",
+			"73028": "",
+			"73042": "",
+			"73044": "",
+			"73046": "",
+			"73337": "",
+			"73349": "",
+			"73355": "",
+			"73379": "",
+			"73402": "",
+			"73404": "",
+			"73410": ""
+		},
+		"allObservedNativePidsAbsent": true,
+		"nativeStopProof": "Every actual VM has enrolled helper force-stopped state0 and actual ChildProcess exit0; read-only PID observations are supplementary only."
+	},
+	"raw": {
+		"node-validated": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-guest/files/node-validated/result.json",
+			"bytes": 53858,
+			"sha256": "892eed5702c7d2ddfb0d9eb31169ee24d82894b89e15f1b424d39a73e71f1dd3"
+		},
+		"electron-validated": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-guest/files/electron-validated/result.json",
+			"bytes": 53862,
+			"sha256": "26d6fdff083d628907ddb01a2ed4ce945d8704fda1c9e6957450bd1e09ac81eb"
+		},
+		"first-failure": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-guest/files/first-failure/result.json",
+			"bytes": 2410,
+			"sha256": "3a883b9487cfa9103a1eb0b0e7cef066e9c2981fa17e3d2cb7973de0507f9e8d"
+		}
+	},
+	"platform": {
+		"system": "macOS 26.6.2 arm64",
+		"node": "23.10.0",
+		"electronNode": "44.4.2",
+		"actualDesktopEntry": "NOT_IMPLEMENTED"
+	},
+	"limits": {
+		"argvCount": 16,
+		"argvBytesEach": 1024,
+		"argvBytesTotal": 8192,
+		"stdinBytes": 65536,
+		"inputChunkBytes": 1024,
+		"outputBytesEach": 65536,
+		"frameLineBytes": 2048,
+		"frameCount": 1024,
+		"consoleBytes": 1048576
+	},
+	"scenarios": [
+		"Empty/Chinese/newline/metacharacter argv roundtrip; no command substitution execution; frozen HOME/XDG/PATH and fresh work directory.",
+		"Separate maximum 64KiB stdin including NUL/nonUTF8 bytes roundtrips exactly.",
+		"Half-line JSON/Chinese/emoji, independent stderr; final text precedes actual target exit.",
+		"Target exit0 with empty output/no produced artifact never infers task success or VM stop.",
+		"Target exit7 retained.",
+		"Target actually blocks opening an input FIFO; host whole-VM cancel retains interrupted stdout/stderr and missing-exit gap.",
+		"Fake target version2 when version1 expected is refused before task started."
+	],
+	"validation": {
+		"typecheck": "All 5 configs PASS",
+		"unit": "3 files /25 tests PASS (5 guest,11 log,9 runtime)",
+		"node": "7 scenarios PASS; final source/module/fixture hashes verified",
+		"electronNode": "7 scenarios PASS; Node mode only, no desktop UI claim",
+		"lint": "PASS",
+		"protocol": "structure/type-only/v33 PASS; historical tag heuristic SKIP",
+		"shellSyntax": "Both trusted scripts /bin/sh -n PASS",
+		"size": "PASS",
+		"clean": "Preview only, no deletions",
+		"diff": "PASS"
+	},
+	"retainedFailures": [
+		"First actual run FAIL: 64KiB echo plus argv header exceeds unchanged64KiB stream budget. Split argv and maximum binary roundtrips; no limit increase.",
+		"Intermediate pass before interruption fix is not final authority: physical VM pipe closure was initially treated as guest EOF; final cancel path uses interrupted log semantics and reran."
+	],
+	"remaining": [
+		"Nonce separates attempts/boot noise but does not authenticate guest; malicious root can forge frames. No security proof for arbitrary clients.",
+		"No enrolled product TargetProfile/installer, guest privilege boundary or arbitrary executable support.",
+		"Protocol is driven by standalone owned VZ ChildProcess, not yet wired into existing persistent environment worker/attempt/store.",
+		"No persistent live guest cursors/recovery, complete waiting policy, artifact capture/verifier, product management/skill/tool/UI entry.",
+		"AC23–AC27/EC06 not fully accepted, EC07 waits. AC39 FAIL/M1 incomplete. Real CLI/models remain user-deferred."
+	]
+}

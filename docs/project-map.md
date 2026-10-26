@@ -178,3 +178,5 @@ EC06 VM恢复前置：`tests/agent-evaluation-vm-recovery-test.mjs`与测试夹�
 EC06执行日志组件：`server/external-evaluation-log.ts`提供有界原始字节、UTF-8/JSONL解析与背压/缺口记录，`tests/agent-evaluation-execution-log-test.mjs`以可信合成进程验证；尚未接入产品执行器，见[证据](agent-evaluation-evidence/EC06-execution-log-diagnostics.json)。
 
 EC06宿主环境生命周期：`server/external-evaluation-runtime.ts`为固定无网VZ环境提供持久启动/新鲜查询/取消超时/日志校验与cleanup；`tests/agent-evaluation-runtime-test.mjs`验证Node和Electron Node模式。guest CLI和产品执行入口未接通，见[证据](agent-evaluation-evidence/EC06-runtime-diagnostics.json)。
+
+EC06 guest协议：`server/external-evaluation-guest.ts`提供有界argv/stdin编码及原字节分帧解析；`tests/agent-evaluation-guest-test.mjs`配合`guest-cli{,-runner}.sh`验证固定无网VZ假CLI。nonce不认证guest，尚未接通产品执行器，见[证据](agent-evaluation-evidence/EC06-guest-diagnostics.json)。
