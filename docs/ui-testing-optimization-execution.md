@@ -839,3 +839,21 @@ Electron隔离数据空间1792988098121完成10项检查，新增私密动态值
 最终全量typecheck、宿主6文件90项Vitest、原生2文件14项测试、上游类型检查、SDK/MCP19项、lint、协议结构及size通过；协议历史无tag跳过，clean仅预览、可清理0项。相关脚本实际运行通过，不构建/发布新桌面包。证据见[执行私密引用索引](ui-testing-evidence/optimization-u02-private-execution.json)：163文件、218次公开引用摘要核验、归档逐文件回读一致；包含源码/补丁、失败摘要、最终公开产物、桌面及原库只读回执和验证日志，排除私有状态/捕获、原库、认证/模型缓存、依赖及泄露工作区。
 
 U02剩余为录制MCP隐私、真实PMS身份结构转换和角色/测试数据/诊断；简单参数映射不能证明真实身份。U00连续首次发现到获批完整基线及配对、U03/U07、M1/M2与桌面发现到交付仍未放行，3条源码草稿仍未录制/评审/执行。下一步可先补匿名PMS录制证据，登录私密录制待隐私边界修复，不复用仅限U05的剩余付费授权。
+
+### U00/U02 续跑：真实 PMS 匿名跳转录制与静态候选（2026-10-26）
+
+私密执行桥接提交f1d2f88已推送origin/master，并核对远端完整摘要一致。继续不依赖登录私密录制的匿名子链：明确所选Electron项目/环境，使用全新空上下文，禁止输入、登录、业务写入及外域请求，只允许同源GET/HEAD。原有三条源码草稿保持不变；本轮未入库新用例、未绑定、未正式执行。plan_update仍不可用，按本记录与第8节续跑。
+
+使用实际已安装pi-ui-testing0.1.12、Pi SDK和Playwright1.62.1 MCP的ui_discover_record；scope、历史baseline、初态、数据规则及seed摘要在浏览器前冻结。历史观察明确标baseline，不冒充需求；当前原生导航、快照及日志独立保留。录制以匿名访问/pms/OperationContract后URL同origin且pathname=/login为唯一主目标，登录表单内容只记观察，不新增候选预期。未使用私人认证、个人模型配置或PMS登录请求。
+
+四次失败均保留：1792989256617的seed辅助将afterAll放在test函数内；1792989301610缺少原生navigate/close输入intent；1792989342123误给禁止额外属性的snapshot传intent；1792989399713辅助URL正则作用于整个多行快照，真实/login被错误拒绝。前三类按原生契约修正，第四类改为提取Page URL并分别核对origin/pathname，不削弱真实页面预期。失败不记为通过；第二至第四轮保留partial交接，首轮setup未就绪，清理拒绝如实保留，宿主shutdown关闭自有会话。
+
+最终1792989450785原生录制完成，包含setup、真实导航、snapshot、read_log、write_test和close。seed确认空Cookie及无token，关闭后请求回执为同源只读79、写请求0、外域0，原库逐字节未变；录制后复制原生.playwright-mcp快照/日志，核验公开响应中的文件链接存在。用户名/密码/“登 录”按钮在匿名快照可见，未输入或点击。录制complete只指该匿名范围，未给登录后业务放行。
+
+按ui-case-design生成独立v1候选，显式空storageState及同源GET/HEAD网络约束，1用例/1条test.step断言，URL预期来自历史baseline。候选并非原生动作日志逐字节导出，lineage说明其综合和新增保护。初次静态辅助读取details.output失败，改为读取原生content中的完整输出后，candidate返回issues=[]、planned/covered各1、missing=[]、@playwright/test锁定1.62.1、ready_for_review=true、design_approved=false。未运行候选脚本，未做正反诊断或正式runner。设计门禁继续保留。
+
+用户要求的预期文档已写入实际Electron所选项目project-documents，OperationContract-anonymous-redirect-baseline-2026-10-26.md（0600），同时保存anonymous-redirect-e51599c8d324下46份公开产物，逐文件回读与摘要一致。应用仍无文档索引实体，因此不称已在文档列表显示；台账原有3条草稿没有增加。文档明确baseline/未评审/未诊断/未执行，包含范围、角色、初态、步骤、预期、清理及资产引用。
+
+[匿名录制与候选证据](ui-testing-evidence/optimization-pms-anonymous-recording.json)归档153文件、74次公开引用摘要核验、原生快照链接和归档逐文件回读一致，保留失败历史及辅助脚本，不含agent配置/认证、依赖或个人模型缓存。新增付费调用0，账本摘要与原库草稿索引一致。独立设计评审待新范围授权：旧U00额度3/3用完，剩余旧调用仅限U05 v4，不能挪用。已就本匿名候选提出最多3次/每次8192输出tokens/总1美元的新授权问题，未以等待代替批准。
+
+该证据只补真实匿名发现/录制与静态设计，不算U00连续首次获批基线、真实PMS角色/数据或Electron Agent端到端。U02录制隐私、登录身份转换，U03/U07及M1/M2仍待推进，整计划保持active。
