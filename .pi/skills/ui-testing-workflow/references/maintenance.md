@@ -83,3 +83,5 @@ MCP 运行时选择由 `assets/playwright-runtime.mjs` 负责：CLI 与配置均
 后续内部合成原型通过原生SDK固定嵌套trace采集，在公开父响应前复用PrivateEvidence.process，拦截运行中新cookie及立即清除的历史cookie；损坏trace/采集中取消保持partial且阻止公开草稿。真实SDK事件记录额外4次helper归属，不能与5个原生steps混计。一次writer超时未finish保留，新localStorage反例仍泄露；该路径仅串行已知mirror布局、使用固定unsafe工具，不开放产品record。详见[本轮证据](../../../../docs/ui-testing-evidence/optimization-u02-recording-runtime-headers.json)。
 
 0.1.14在原生PrivateEvidence新增宿主observeStorageState(state)：完整核验cookie/localStorage结构后累积现有JSON字符串叶值和编码，删除/轮换不遗忘已观察值，create复用此路径。内部固定SDK采集增加Playwright原生context.storageState私有文件，原始内容不进入SDK结果；新localStorage与嵌套JSON对照已拦截，坏结构和采集中取消阻止公开草稿。方法不启动采集、不开放模型工具；采集前已删除的未知存储值仍是缺口，产品record继续unsupported。
+
+内部`assets/private-recording-storage-events.mjs`由受控seed在导航前安装Chromium CDP DOMStorage监听，使用工作区外0700/0600文件保存实际历史事件；固定page私有flush函数提供屏障，宿主验证事件后仅为原生过滤归一化oldValue/newValue，不伪称浏览器storageState。单page/origin，128事件/2MiB、断连/关闭/坏证据/第二页面拒绝；不改页面Storage方法、不复制过滤器，产品mcp-extension尚未导入。真实SDK瞬态JSON正向及坏日志/取消/第二页面partial留证，跨frame/其他target与完整重连续录未证明。见[存储事件证据](../../../../docs/ui-testing-evidence/optimization-u02-recording-storage-events.json)。

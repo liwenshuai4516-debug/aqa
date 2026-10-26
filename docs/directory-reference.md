@@ -27,7 +27,8 @@ pi-web-ui/
 ├── deploy/                     # 部署示例：launchd plist / systemd unit / Windows 任务 XML
 ├── .pi/skills/ui-testing-workflow/ # UI 技能统一维护入口，assets/ 资源、references/ 维护说明
 │   ├── assets/private-recording-workspace.mjs # 内部私有输入副本及受管身份派生，未开放产品录制
-│   └── assets/private-recording-transport.mjs # 内部MCP连接/请求失效守卫；不负责过滤或开放入口
+│   ├── assets/private-recording-transport.mjs # 内部MCP连接/请求失效守卫；不负责过滤或开放入口
+│   └── assets/private-recording-storage-events.mjs # 内部Chromium单page私有CDP存储事件观察/读取，未接产品入口
 ├── capabilities/ui-testing/    # 旧应用路径兼容转接，无独立实现
 ├── scripts/enable-ui-testing.mjs # 默认项目级登记；显式 --agent-dir 可登记到应用专用 Pi 配置
 ├── scripts/clean-project.mjs    # 预览/回收白名单缓存及测试依赖，保留证据、跟踪文件和保留标记

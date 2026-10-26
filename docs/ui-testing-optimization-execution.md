@@ -1097,3 +1097,19 @@ ui_result_analysis read-trace读取本实例原始ZIP事件。test.trace expect@
 [运行时存储证据](ui-testing-evidence/optimization-u02-recording-runtime-storage.json)归档191文件、219次FileRef核验、逐成员回读一致（约2.4MiB含Electron截图/日志、原生精确源码及包manifest）；实际权威Electron项目新增OperationContract-recording-runtime-storage-2026-10-26.md与五轮160份公开/减少内容快照，0700/0600逐文件回读，store字节不变。文件保存不代表应用文档列表显示或正式结果入库。每轮模型调用、正式批次、真实业务写入0，自有服务/原始合成payload按归属清理。
 
 继续首次采集前删除值的受控采集时机、跨frame/存储生命周期与协议结构，再收敛内部适配并接Electron产品全链；通用输入闭包、并发路径替换、完整重连续录、真实角色/租户/数据、U00计量、U03/U07及M1/M2未完成，整体goal active。
+
+### U02 续跑：Chromium 私密存储事件内部适配（2026-10-26）
+
+从7f0b1c3继续。上轮有原生实现/安装及正反证据进展，本轮处理其首次采集前删除样本。开始clean仅预览，无可清理项；plan_update不可用，继续本文及阶段表。PMS剩余2次仅设计额度与U05账本不变，未调用模型。保留其他协作未提交文件，不覆盖个人配置。
+
+先用真实Chromium探针验证Playwright原生CDPSession/DOMStorage.enable：added/updated/removed/cleared可记录setItem、属性赋值、删除和sessionStorage值。初版MCP helper误用process.cwd动态导入，实际unsafe工具VM只提供page/结束句柄，连续两轮首次helper被阻断/未finish，状态unknown/未完成而非partial或通过。源码核对后改为受控seed给实际page对象绑定固定私有flush函数；VM无需process/import或绝对私有路径。两轮精确harness/transport原型、公开错误保留；当时已清理输入部分不可回读，未重新伪造。独立探针helper原始中间版本未另存，归档最新helper明确不冒称原版。
+
+原型瞬态字符串成功后收敛内部assets/private-recording-storage-events.mjs：受控seed在page.goto前监听实际Chromium存储事件，原始文件仅工作区外0700父目录/0600文件、wx新建。事件数128/2MiB上限，flush经CDP Runtime.evaluate屏障并校验连接/关闭，关闭解除监听并detach；第二页面写unsupported标记、宿主拒绝读取。读入核验普通文件/权限/非symlink、完整JSON行/版本/屏障及指定origin，再将真实oldValue/newValue仅为原生过滤归一化，复用0.1.14 observeStorageState，不伪称真实storageState、不复制过滤器。原生当前state/认证头、writer/生命周期守卫继续使用；固定helper8次、总工具30，正向实际5业务+4helper=9 MCP，原生steps5，SDK真实hook归属已核对。
+
+长期模块瞬态嵌套JSON正向：seed确认新值存在，删除并确认null，DOM仍反射旧值，私有历史事件4次采集均有删除前JSON值；原生complete/1脚本/gaps=[]，公开/原生草稿字节一致，公开响应/SDK长输出/工作区未检出已知初始/新增秘密或受支持编码，媒体块0。writer坏事件日志、采集响应到达时取消、受控新增第二页面分别partial/0脚本，私有草稿保留/公开不存在，保留private-authentication-storage-events-invalid、private-authentication-capture-cancelled或private-storage-unsupported-new-page及missing-generated-script/goal-not-reached/tool-error-or-cancelled；browser_close实际成功。新增页面是负向越界夹具，不声称一般页面导航已授权/被覆盖。原型正向及两轮早期失败均独立保留，不由最终成功覆盖。
+
+新增7项单测覆盖事件历史/屏障、坏证据/跨origin/权限/symlink、第二页面、事件/字节预算、关闭/断连与公开工作区拒绝；初轮6项因macOS /var别名未realpath全部在准备阶段被原路径守卫拒绝，修正夹具而未放松守卫，初轮精确测试源码/日志留证。最终3文件26项Vitest、完整5配置typecheck、lint、协议同步、size及diff通过；协议tag启发式无可用tag跳过。最终模块另加版本条件，真实MCP输入快照仍保留各轮精确旧版本，不冒充后续源码。未重跑Electron界面，本轮仅内部模块且产品mcp-extension未导入，既有record继续unsupported；前轮桌面通过不计本轮通过。运行包0.1.14及安装不变，无模型/新入口/插件变更。
+
+[存储事件证据](ui-testing-evidence/optimization-u02-recording-storage-events.json)归档257文件、296次可用FileRef核验、逐成员回读一致；实际Electron项目新增OperationContract-recording-storage-events-2026-10-26.md及七轮234份公开/减少内容快照，0700/0600逐文件核验，store字节不变。早期两失败轮10次缺失输入引用列明，不算可回读通过；原始私有事件/trace/state及SDK临时输出按归属清理，摘要不冒充原始FileRef。文件保存不表示应用文档列表显示或正式结果入库。所有轮模型调用、正式批次、真实业务写入0，自有服务/进程收尾。
+
+本轮解决受控单page/origin的瞬态样本，不证明跨frame/其他target/IndexedDB、既有页面、监听失效、完整重连续录或文件系统竞态。继续补这些执行侧拒绝/生命周期边界后再接产品私密准备；通用输入闭包、实际Electron业务全链、真实角色/租户/数据、U00计量、U03/U07及M1/M2未完成，整体goal active。
