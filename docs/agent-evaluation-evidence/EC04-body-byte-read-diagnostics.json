@@ -1,0 +1,239 @@
+{
+	"scope": "EC04 v0.4.28 body raw-byte validation before UTF-8 decoding; formal collection performance still FAIL",
+	"timestamp": "2026-10-26T02:31:56.329788+00:00",
+	"baseline": "abcdbfa2bf090d5f3b40a7090042efde63e44340",
+	"pluginVersion": "0.4.28",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/index.json",
+		"bytes": 60223,
+		"sha256": "6a8b4a1283115a08a2b8c1cef0c16edb25dd9a0728553154d4e9f3fd887f5649"
+	},
+	"archiveFiles": 289,
+	"change": {
+		"description": "readBlob hashes and measures the exact disk Buffer, checks UTF-8 validity, then decodes once. Direct and packed bodies use existing bounded no-follow/link/range checks; readFile text API retains behavior via readFileBytes. No source fields trusted as digest substitutes, cross-request cache, authorization, record/pack format, write, fsync or threshold changes.",
+		"tests": "Direct/packed same-length body corruption detected on later read, restoration visible; malformed UTF-8 rejected even when raw hash/length match supplied body reference. Existing empty/Unicode/emoji/lone-surrogate replacement/redaction tests pass.",
+		"registeredSource": {
+			"status": "PASS",
+			"trackedFilesMatchedPerRun": 29,
+			"actualDesktopRuns": 2,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/registered-plugin-files.json",
+				"bytes": 9558,
+				"sha256": "d7653190c9d0e8911243069b842d9557c72b7ed898ccd722da5e4ad5117acc62"
+			}
+		},
+		"bundle": "Tracked ESM sources; no separate tracked bundle"
+	},
+	"formalComparison": {
+		"status": "FAIL",
+		"roundsPerVersion": 30,
+		"scope": "Same host, sequential baseline then candidate; each three workloads × five off/on rounds, frozen worker and thresholds unchanged. Formal runs have no concurrent owned app/unit tests. Candidate preliminary run retained separately, not used for conclusion. Candidate formal measured while manifest still 0.4.27; subsequent metadata-only bump to 0.4.28, exact measured store bytes unchanged and verified in both desktop runs.",
+		"baseline": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/baseline-formal-result.json",
+				"bytes": 8540,
+				"sha256": "c366c527a63504966672b8e9895afc698cf9cf953d09f307062b03581290bc51"
+			},
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 52.983250999999996,
+					"wallLimit": 50,
+					"cpuDelta": 41.62,
+					"cpuLimit": 50,
+					"rssDeltas": [3850240, 3457024, 3801088, 4505600, 3702784],
+					"pass": false
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 125.96612499999995,
+					"wallLimit": 50,
+					"cpuDelta": 149.231,
+					"cpuLimit": 50,
+					"rssDeltas": [27148288, 27312128, 26034176, 28852224, 27230208],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 523.806374,
+					"wallLimit": 50,
+					"cpuDelta": 471.655,
+					"cpuLimit": 50,
+					"rssDeltas": [64094208, 63062016, 59424768, 63406080, 64585728],
+					"pass": false
+				}
+			]
+		},
+		"candidate": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/candidate-formal-result.json",
+				"bytes": 8594,
+				"sha256": "1ce4ff7d63cd5aa00614f266ae71f84488da898d90a8de322bc0b3e6ad8663d7"
+			},
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 56.073833000000036,
+					"wallLimit": 50,
+					"cpuDelta": 42.7,
+					"cpuLimit": 50,
+					"rssDeltas": [5144576, 1835008, 2785280, 4407296, 2260992],
+					"pass": false
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 136.660624,
+					"wallLimit": 50,
+					"cpuDelta": 158.575,
+					"cpuLimit": 50,
+					"rssDeltas": [27983872, 25985024, 26771456, 26279936, 25968640],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 504.657291,
+					"wallLimit": 50,
+					"cpuDelta": 450.95,
+					"cpuLimit": 50,
+					"rssDeltas": [62259200, 61915136, 61620224, 59621376, 64241664],
+					"pass": false
+				}
+			]
+		},
+		"validation": "Each on-worker completed full expected 40/400/200 evidence, zero gaps/failures and disk within original bound. RSS deltas each <=64MiB for these two runs; does not erase historic RSS failures. Serial/parallel did not improve in this formal comparison; no general speedup or statistical significance claim."
+	},
+	"cpuSampling": {
+		"baseline": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/summary-final.json",
+			"bytes": 47095,
+			"sha256": "073d95b5e243dd90ccc91d3f376c8e2ba5d85e3f6cd0f5c11a8dbbd333ff3278"
+		},
+		"longComparison": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/long-profile-comparison.json",
+			"bytes": 13776,
+			"sha256": "c62f565388e9cbbc34db150c73b66fe8148d010479508a793d7237fefa46bf17"
+		},
+		"scope": "Single 100us-requested collect-stack samples; excludes profiler startup and GC without collect stack. Native byte length, hashing, serialization and fsync remain material. Candidate sampled collect was slower (~967ms vs baseline~592ms), retained without correction; sampling overhead/scheduling make these single samples unsuitable for baseline/candidate speed claims. Formal unprofiled runs above determine gate status."
+	},
+	"reportPerformance": {
+		"status": "PASS",
+		"checks": {
+			"reportsCompleted": true,
+			"reportMedianMs": 561.8205420000004,
+			"listMedianMs": 4.49816600000031,
+			"evidenceMedianMs": 0.3745840000001408
+		},
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/report-performance-result.json",
+			"bytes": 1726,
+			"sha256": "8b9f3f2255bb8cbbbb229e124892bbe5b28139338908124579b503cbb9191f70"
+		},
+		"scope": "1000 evidence items, five completed report/list/evidence reads; no fixture setup included. Gate 2000/200/200ms. Does not compensate for collection failure."
+	},
+	"actualDesktop": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/desktop/result.json",
+			"bytes": 17946,
+			"sha256": "7b20b0df3f3abd16d0d9d5a1300626ceb34c1a8a9fb8835e027b7311e12937f0"
+		},
+		"scope": "Real macOS arm64 Electron 0.4.28 main UI/lifecycle, offline import/restart, 160545-character/40-page sealed evidence, missing pack restoration/retry, and two same-session task scopes/request replay.",
+		"evidenceMatrix": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/desktop/evidence-matrix.json",
+			"bytes": 8266,
+			"sha256": "8852dd09e8289da717d4087d7a1056f67a0c0911986e0e8acb3ff64fd3256f1d"
+		},
+		"taskScope": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/desktop/task-scope.json",
+			"bytes": 2190,
+			"sha256": "d44591d4c7f3bdc04af92fc7425281252fc3a152113cd81a981e6e91a7c6c52d"
+		}
+	},
+	"nativeDesktop": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/native-desktop/result.json",
+			"bytes": 4313,
+			"sha256": "5ede4a847c88aae1f19306f359fa36612de2d44a52b4034b25f993f6b8cf151d"
+		},
+		"scope": "Real Electron 0.4.28 historical 41 executed UI results (27pass/14controlled target defects), 41 synthetic pending rows, 20/20/1 pagination, missing/changed manifest refusal and exact restored sealed full readback. No new native runner execution."
+	},
+	"verification": {
+		"units": {
+			"status": "PASS",
+			"files": 18,
+			"tests": 303,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/unit-final.log",
+				"bytes": 230,
+				"sha256": "f24ab0a83070eddc147ae77e4f2a57c3a895ce79b56492309395a78a5c800597"
+			}
+		},
+		"typecheck": {
+			"status": "PASS",
+			"configurations": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"lint": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"limitation": "Protocol33/type-only checks passed; historical git-tag heuristic SKIP because no tag available."
+		},
+		"i18n": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/i18n.log",
+				"bytes": 615,
+				"sha256": "80312d8da86db05c5343b06b015ff85dbb3f374e280ecc1b044c87014878d1cd"
+			}
+		}
+	},
+	"retainedNonPass": {
+		"typecheck": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/typecheck.log",
+				"bytes": 362,
+				"sha256": "ede4c37b8601aeb2730d1e5ae1c7f89f72eda3a44f4292117c946b73564ca345"
+			},
+			"scope": "Initial TS18048 for optional packedBlobs in new test. Fixed test narrowing plus explicit packed branch assertion; independently reran full types and final 303 units."
+		},
+		"candidatePreliminary": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-byte-reads/files/candidate-preliminary-result.json",
+				"bytes": 8603,
+				"sha256": "08bad615008f747f0ea384feaf0fb389c5a5f172db7adf451f014de141d1045f"
+			},
+			"scope": "Separate first candidate run retained, not used as formal comparison."
+		}
+	},
+	"notExecuted": [
+		"Full rollback/scale/identity/tool-channel/rule-upgrade matrices not all rerun in 0.4.28; updated version assertions do not mean execution.",
+		"Real CLI/model and business executions remain zero; synthetic history and old native result fixtures do not prove current task execution."
+	],
+	"remaining": [
+		"AC39 collection performance FAIL; EC04/M1 and overall goal incomplete.",
+		"EC06 detached child containment unresolved; dependent execution stages held.",
+		"Real CLI/model testing deferred by user."
+	]
+}

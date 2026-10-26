@@ -160,7 +160,7 @@ export async function verifyScale({
 				window.__evaluationFrames.some(
 					(f) =>
 						f.type === "plugins" &&
-						f.plugins.some((p) => p.id === "agent-evaluation" && p.active && p.version === "0.4.27"),
+						f.plugins.some((p) => p.id === "agent-evaluation" && p.active && p.version === "0.4.28"),
 				),
 			),
 		);

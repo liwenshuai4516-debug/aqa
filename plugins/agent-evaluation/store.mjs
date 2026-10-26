@@ -3,6 +3,7 @@
  * The receipt and record share one atomic file; the in-memory index is fully rebuildable.
  */
 import * as fs from "node:fs";
+import { isUtf8 } from "node:buffer";
 import { join, resolve, dirname } from "node:path";
 import { randomUUID, createHash } from "node:crypto";
 import { publishFile } from "./durable.mjs";
@@ -95,6 +96,9 @@ export class EvaluationStore {
 		);
 	}
 	readFile(file, limit = this.limits.recordBytes) {
+		return this.readFileBytes(file, limit).toString("utf8");
+	}
+	readFileBytes(file, limit = this.limits.recordBytes) {
 		this.checkDirectory(this.root);
 		this.checkDirectory(dirname(file));
 		const fd = fs.openSync(file, fs.constants.O_RDONLY | NOFOLLOW);
@@ -105,7 +109,7 @@ export class EvaluationStore {
 			const bytes = Buffer.alloc(stat.size + 1);
 			const size = fs.readSync(fd, bytes, 0, bytes.length, 0);
 			requireValue(size === stat.size, "STORE_CORRUPT", "Record changed during read");
-			return bytes.subarray(0, size).toString("utf8");
+			return bytes.subarray(0, size);
 		} finally {
 			fs.closeSync(fd);
 		}
@@ -892,17 +896,21 @@ export class EvaluationStore {
 		return join(this.root, "blobs", `${digest(record.domain)}-${record.contentRef.sha256}.blob`);
 	}
 	readBlob(record) {
-		const packed = this.packedBlobs.get(this.blobPath(record));
-		const content = packed
-			? this.readRange(packed.file, packed.offset, packed.length).toString("utf8")
-			: this.readFile(this.blobPath(record), this.limits.evidenceBytes);
+		const file = this.blobPath(record),
+			packed = this.packedBlobs.get(file);
+		const bytes = packed
+			? this.readRange(packed.file, packed.offset, packed.length)
+			: this.readFileBytes(file, this.limits.evidenceBytes);
+		// Validate the persisted bytes before decoding. Invalid UTF-8 must not become
+		// replacement characters with a different digest after the conversion.
 		requireValue(
-			contentHash(content) === record.contentRef.sha256 && Buffer.byteLength(content) === record.contentRef.size,
+			bytes.length === record.contentRef.size && isUtf8(bytes) && contentHash(bytes) === record.contentRef.sha256,
 			"STORE_CORRUPT",
 			"Evidence content digest mismatch",
 		);
-		return content;
+		return bytes.toString("utf8");
 	}
+
 	originalPath(record) {
 		requireValue(
 			record.kind === "evidence" &&

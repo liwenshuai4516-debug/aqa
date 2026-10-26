@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { EvaluationStore } from "../../plugins/agent-evaluation/store.mjs";
 import { canonical, digest, validate, redact } from "../../plugins/agent-evaluation/schema.mjs";
 
@@ -175,6 +176,44 @@ describe("EC01 contracts and immutable store", () => {
 				expect(store.readBlob(record)).toBe(decoded);
 			}
 		}
+	});
+	it.each([false, true])("rechecks direct/packed body bytes on every read (packed=%s)", (packed) => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const content = "abc中文😀\n\u0000",
+			input = {
+				kind: "evidence",
+				requestId: "fresh-body",
+				data: { ...f.evidence.data, content },
+			};
+		const record = packed ? store.writeEvidenceBatch(ctx, [input])[0] : store.write(ctx, input);
+		const segment = store.packedBlobs?.get(store.blobPath(record));
+		if (packed) expect(segment).toBeDefined();
+		const file = segment?.file ?? store.blobPath(record),
+			before = readFileSync(file);
+		expect(store.readBlob(record)).toBe(content);
+		const changed = Buffer.from(before);
+		changed[segment?.offset ?? 0] = "z".charCodeAt(0);
+		writeFileSync(file, changed);
+		expect(() => store.readBlob(record)).toThrow(/content digest mismatch/);
+		writeFileSync(file, before);
+		expect(store.readBlob(record)).toBe(content);
+	});
+	it("rejects malformed UTF-8 even when its raw length and raw hash match the body reference", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const bytes = Buffer.from([0xff, 0x62, 0x63]);
+		const record = {
+			...f.evidence,
+			contentRef: {
+				size: bytes.length,
+				sha256: createHash("sha256").update(bytes).digest("hex"),
+			},
+		};
+		writeFileSync(store.blobPath(record), bytes);
+		expect(() => store.readBlob(record)).toThrow(/content digest mismatch/);
 	});
 	it("separates two task selections and preserves immutable revisions", () => {
 		const store = open(),
