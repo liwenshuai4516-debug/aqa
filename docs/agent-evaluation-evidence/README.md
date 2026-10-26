@@ -12,7 +12,7 @@
 | EC03      | 工程范围完成               | [进展](EC03.md)：七条规则/指标、默认 profile、179 项单测、原生评分与重评零执行对照                                         |
 | EC04 | 进行中 | [实施与验收](EC04.md)：0.4.32评分作业发现/重启unknown卡片及权限子项通过，295项回归；AC39仍FAIL，M1未完成 |
 | EC05      | 适用范围完成               | [记录](EC05.md)：0.4.20分段上传/人工确认/统一离线报告，472项回归及两组实际Electron通过；限ATIF-v1.8严格profile/macOS arm64 |
-| EC06      | 离线VM隔离候选通过；产品未实现 | [新VM证据](EC06-vm-diagnostics.json)：无网络/挂载/磁盘，逃逸子进程随整机停止；原生反例保留，持久生命周期待实现             |
+| EC06      | 离线VM隔离候选通过；产品未实现 | [隔离](EC06-vm-diagnostics.json)与[恢复探针](EC06-vm-recovery-diagnostics.json)通过：控制端崩溃可找回/停止原VM，未知不重发；产品生命周期待实现             |
 | EC07      | 待执行，依赖 EC06              | VM候选已有整机收尾证据，EC06产品生命周期尚未实现，不提前进入可信核验闭环                                                   |
 | EC08      | 用户暂缓真实实测           | 不沿用旧费用额度，当前不启动                                                                                               |
 | EC09      | 待执行，依赖 EC02–EC04     | 隔离数据空间专项与索引一致性                                                                                               |
@@ -335,3 +335,7 @@ AC14仅补普通任务采集写锁失败、可见错误与显式恢复，不代�
 ## EC06 无网 VM 隔离候选
 
 [本轮证据](EC06-vm-diagnostics.json)：系统Virtualization.framework的独立Linux RAM虚拟机已验证无共享/磁盘/网络/vsock；detached子进程在根取消后存活，整机停止后消失，peer/宿主旁路不受影响，新VM不继承前次文件。准备脚本与完整探针可复现，99项回归及五配置类型检查通过，104份原件校验归档；旧原生反例仍成立。仅补隔离前置，不是产品执行后端：持久intent/handle、对账、输入日志和取消账本待实现，EC07继续等待；M1性能失败与真实CLI/模型暂缓保持。
+
+## EC06 启动窗口崩溃恢复探针
+
+[本轮证据](EC06-vm-recovery-diagnostics.json)：独立测试supervisor在VM启动前持久记录专属claim/身份；原控制端SIGKILL、登记前失联后，通过新鲜查询恢复原VM并确认state0停止。错误nonce/实例身份拒绝，PID替换为旁路进程无控制效果；claim落盘而身份尚未落盘时崩溃及supervisor运行后被SIGKILL均保留unknown，拒绝重复启动。仅离线诊断，不是产品ExecutionAdapter、实际PID复用、断电恢复或Electron执行入口通过；AC23–AC27、AC39/M1及整体目标仍未完成，真实CLI/模型继续暂缓。

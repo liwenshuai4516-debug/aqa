@@ -1,0 +1,121 @@
+{
+	"scope": "EC06/AC27 launch-registration crash-recovery prerequisite; single offline VZ candidate, not product ExecutionAdapter",
+	"timestamp": "2026-10-26T06:59:05.303991+00:00",
+	"baselineCommit": "4f547cf492b6fdec263b11f6e20da3c07966ab1e",
+	"pluginVersion": "0.4.32",
+	"productChanges": false,
+	"status": "DIAGNOSTIC_PASS; PRODUCT_NOT_IMPLEMENTED",
+	"platform": "macOS26.6.2 arm64 / Darwin25.6.0; Swift6.3.3; pinned Alpine3.22.7 Linux guest; zero network/share/disk/vsock",
+	"actualAgentCliCalls": 0,
+	"actualModelCalls": 0,
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-recovery/index.json",
+		"bytes": 24887,
+		"sha256": "105c3ca7930bc19e359d911aa603d754f017e77181e06920268fef4d1cd1917a"
+	},
+	"archiveFiles": 153,
+	"raw": {
+		"final": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-recovery/files/final-claim-window/result.json",
+			"bytes": 7511,
+			"sha256": "bf720f87c44b9bc9da16c634154310fc570e411b5b978826d01d578597b2e337"
+		},
+		"orphanObservation": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-recovery/files/final-claim-window/after-spawn/orphan-process.txt",
+			"bytes": 423,
+			"sha256": "f0181eeadcf431569e9f187f7caff45cb94fc23880d729253b197a348076acff"
+		},
+		"independentVerification": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-recovery/files/checks/independent-verification.json",
+			"bytes": 525,
+			"sha256": "b25f0fb813be9d1f8fdac66343cde8a685f51bfc40b7b9370ec6f07a8254a288"
+		},
+		"firstCompileFailure": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-recovery/files/first-compile-failed/compile.log",
+			"bytes": 4337,
+			"sha256": "ba3b35328b1ef72c4e9cbc0c4ccfa3ecb175e80ae92e8cdcb8da99054a88eff1"
+		}
+	},
+	"checks": [
+		"Controller SIGKILL after durable intent but before spawn: unknown; no recovery spawn or replay.",
+		"Supervisor SIGKILL after fsynced exclusive launch claim but before first handle: unknown; durable marker prevents duplicate launch. VM start was never reached.",
+		"Original controller SIGKILL after spawn/before handle: recovered same supervisor via sealed records and fresh challenge; duplicate launch rejected; mismatched nonce/identity cannot stop; diagnostic PID changed to live bystander has no control effect.",
+		"Recovered controller receives durable VZ state0 stop confirmation; no console output after stop; completed claim still rejects replay.",
+		"Owned supervisor SIGKILL leaves running journal but no fresh challenge/stop confirmation: unknown; retained claim rejects retry; no signal sent to stored or replaced PID. No claim of confirmed guest stop."
+	],
+	"trustedBoundary": "Host-only private attempt directory; exclusive fsynced claim and sealed event records; controller never signals a stored PID. Fresh instance/nonce/requestId challenge required to interpret running. Guest output cannot write trusted lifecycle state. Trusted synthetic input only.",
+	"unknownLedger": {
+		"claimBeforeHandle": "SIGKILL after durable claim but before first sealed event: unknown; marker rejects duplicate launch. Fault fixture never reached VM.start.",
+		"supervisorCrash": "Supervisor SIGKILL observed through owned ChildProcess; no framework stop confirmation, no PID-based cleanup or automatic restart."
+	},
+	"retainedFailures": [
+		"First Swift compile failed due to global guard-bound variable capture; moved intent decoding into a named function and re-ran fully. Compiler errors preserved.",
+		"Archive finalization initially failed because Python Path objects were used as JSON keys. No index was published; reconstructed string-key index from already-copied raw files and verified every hash before final publication."
+	],
+	"validation": {
+		"typecheck": {
+			"status": "PASS",
+			"configs": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-recovery/files/checks/typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"unit": {
+			"status": "PASS",
+			"files": 3,
+			"tests": 99,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-recovery/files/checks/unit-final.log",
+				"bytes": 209,
+				"sha256": "f8432800e6eda3b6884a781f5cf624af720d77d0dd90285814fd3f2b875ca691"
+			}
+		},
+		"lint": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-recovery/files/checks/lint-final.log",
+			"bytes": 88,
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+		},
+		"swift-format": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-recovery/files/checks/swift-format-final.log",
+			"bytes": 0,
+			"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+		},
+		"size": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-recovery/files/checks/size-final.log",
+			"bytes": 1089,
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+		},
+		"protocol": {
+			"status": "structure/type-only/v33 PASS; historical tag heuristic SKIP",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-recovery/files/checks/protocol-final.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			}
+		},
+		"clean": {
+			"status": "Preview only; zero deletions",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-recovery/files/checks/clean-delivery.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			}
+		},
+		"diff": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-recovery/files/checks/diff-check.log",
+			"bytes": 0,
+			"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+		},
+		"desktop": "NOT_RUN: no product changes or execution integration; no reused desktop acceptance."
+	},
+	"remaining": [
+		"Product TargetProfile/probe/prepare/start/status/cancel/cleanup, persistent admission and conflict gates remain unimplemented.",
+		"No general executable argv/stdin, bounded UTF-8/JSONL stdout/stderr/backpressure, waiting/timeout policy, graceful cancellation/grace period, artifact export/verifier or product cleanup ledger.",
+		"PID replacement injected into diagnostic handle; no actual kernel PID-reuse claim or full host process-start identity validation.",
+		"No sudden-power-loss, journal corruption/truncation, host reboot, supervisor-start denial/resource admission or cross-user authentication validation.",
+		"No Electron execution integration/skill discovery or real CLI/model; EC07 still awaits completed EC06 product lifecycle.",
+		"AC39 historical FAIL retained; EC04/M1 and full goal incomplete."
+	]
+}

@@ -468,3 +468,5 @@ EC04 评分作业回查：现有`service.mjs`的`list(kind:"jobs")`与`client/en
 EC04 普通任务采集故障：`tests/agent-evaluation-native-desktop-test.mjs --collection-fault`复用`tests/fixtures/agent-evaluation/collection-fault.mjs`及原本地SSE，验证真实写锁拒绝时SDK继续、检查点保持和显式恢复；见[证据](agent-evaluation-evidence/EC04-collection-fault-diagnostics.json)。
 
 EC06 VM隔离候选：`tests/agent-evaluation-vm-isolation-test.mjs`与测试夹具`vm-supervisor.swift`、`prepare-vm-runtime.mjs`验证系统VZ的无网Linux guest和整机收尾；不暴露产品执行后端，见[证据](agent-evaluation-evidence/EC06-vm-diagnostics.json)。
+
+EC06 VM恢复前置：`tests/agent-evaluation-vm-recovery-test.mjs`与测试夹具`vm-recovery-supervisor.swift`验证同一VZ候选的持久claim、控制端崩溃后新鲜查询及原VM停止、未知不重发；仅诊断，不是产品执行器，见[证据](agent-evaluation-evidence/EC06-vm-recovery-diagnostics.json)。
