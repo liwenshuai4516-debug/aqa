@@ -1,0 +1,247 @@
+{
+	"scope": "EC06 bounded Apple Virtualization.framework diskless Linux isolation feasibility; not a product execution backend",
+	"timestamp": "2026-10-26T06:46:02.698739+00:00",
+	"baselineCommit": "bd932ed8a5b61b8efaf3a0464164fb5111a7f675",
+	"pluginVersion": "0.4.32",
+	"productChanges": false,
+	"status": "DIAGNOSTIC_PASS; PRODUCT_NOT_IMPLEMENTED",
+	"platform": {
+		"system": "darwin",
+		"arch": "arm64",
+		"kernel": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/index.json",
+		"bytes": 16580,
+		"sha256": "6f37786fc6a8c1cabc6610b3a8643d4ccbf93e1d06675ef2f7aa0933ed3d7a92"
+	},
+	"archiveFiles": 104,
+	"actualModelCalls": 0,
+	"actualAgentCliCalls": 0,
+	"environment": {
+		"host": "macOS26.6.2 arm64; kern.hv_support=1; Swift6.3.3; no sudo, daemon registration, global package install or personal app modification",
+		"guest": "Alpine3.22.7 aarch64 / Linux6.12.114-0-virt; immutable boot image and initramfs; fresh RAM root for each VM",
+		"devices": "2 CPUs/512MiB per diagnostic VM; serial only; zero network/share/disk/vsock devices; entropy device; trusted supervisor45-second watchdog",
+		"distinction": "Linux guest is a different environment from native macOS. This bootstrap is not a general CLI runtime or security proof for arbitrary clients."
+	},
+	"runtimeInputs": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/runtime/external-inputs.json",
+		"bytes": 892,
+		"sha256": "ee8681e9677110be1b4d498c1e9e06128ca73f129658c6ab4ee9eb14e063359f"
+	},
+	"runtimeProvenance": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/runtime/provenance.json",
+		"bytes": 513,
+		"sha256": "b33d0ecdd44a9ed4b55488000b3d504a7076b57b33ff09b9c6ee11ca96d2a7f9"
+	},
+	"supplyChain": "Public Alpine ISO SHA256 matched official HTTPS latest-releases.yaml saved here; pinned exact ISO, EFI zboot payload, raw ARM64 Image and initramfs hashes rechecked. No detached-signature validation claim. Large public runtime bytes kept at explicit external paths and indexed; not duplicated into repository/archive.",
+	"raw": {
+		"prepared/result.json": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/prepared/result.json",
+			"bytes": 3530,
+			"sha256": "89ce7c9b29ed649ec91519b49ae6766af5a8c11f5f6674c5b95f1421a045d805"
+		},
+		"prepared/first.stdout.log": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/prepared/first.stdout.log",
+			"bytes": 2095,
+			"sha256": "5340b0bc731cad53b72dd16131c7b3e1fad593b360f8689ac28fa746050f4f2b"
+		},
+		"prepared/first.stderr.log": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/prepared/first.stderr.log",
+			"bytes": 149,
+			"sha256": "ed705a0e1099222821012c97fe5a57c93564ea648b5562f59efa2c01308308c1"
+		},
+		"prepared/peer.stdout.log": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/prepared/peer.stdout.log",
+			"bytes": 732,
+			"sha256": "f17b0325bd76741f025633673aa2d80f2b89d51e430f93c7371ef44266ceeb3c"
+		},
+		"prepared/fresh.stdout.log": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/prepared/fresh.stdout.log",
+			"bytes": 358,
+			"sha256": "399b4c9fbd7cad4009bc1f8e8fdacedc19af7896b28801da5b999dfb7de8d4f3"
+		},
+		"checks/independent-verification.json": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/checks/independent-verification.json",
+			"bytes": 1504,
+			"sha256": "d2e6a4e0797237d1962ff47fc289236b5ffab9c32c99123aabb17ec0578db90e"
+		},
+		"checks/alpine-releases.yaml": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/checks/alpine-releases.yaml",
+			"bytes": 4171,
+			"sha256": "c90defd366a464a9ee385593a410040c6135364eb682347f35f52575510767a2"
+		}
+	},
+	"checks": [
+		{
+			"noNetworkShareDiskOrVsock": true,
+			"guestOnlyLoopback": true,
+			"hostCanaryInvisibleUnchanged": true,
+			"hostListenerConnections": 0,
+			"separateRAMRoots": true,
+			"rootPid": "371",
+			"childPid": "372",
+			"rootStat": "AE_ROOT_STAT:371 (sh) S 1 0 0 0 -1 4194304 75 0 0 0 0 0 0 0 20 0 1 0 41 1740800 242 18446744073709551615 187650796748800 187650797607372 281474875839088 0 0 0 0 6 65536 1 0 0 17 1 0 0 0 0 0 187650797717288 187650797731897 187651330105344 281474875842482 281474875842502 281474875842502 281474875842544 0",
+			"childStat": "AE_CHILD_STAT:372 (sh) S 371 372 372 0 -1 4194304 117 114 0 0 0 0 0 0 20 0 1 0 41 1740800 242 18446744073709551615 187650548498432 187650549357004 281474503477104 0 0 0 0 16390 65536 1 0 0 17 0 0 0 0 0 0 187650549466920 187650549481529 187650849296384 281474503479154 281474503479238 281474503479238 281474503479280 0",
+			"detachedChildSurvivedRootCancel": true,
+			"wholeVMForceStopConfirmed": true,
+			"noOutputAfterStop": true,
+			"peerAndHostBystanderUnaffected": true,
+			"freshVMHasNoPriorFiles": true
+		}
+	],
+	"machines": [
+		{
+			"label": "first",
+			"supervisorPid": 3466,
+			"exitCode": 0,
+			"signalCode": null,
+			"events": [
+				{
+					"disks": 0,
+					"event": "running",
+					"networkDevices": 0,
+					"shares": 0,
+					"sockets": 0
+				},
+				{
+					"event": "force-stop-request",
+					"state": 1
+				},
+				{
+					"event": "force-stopped",
+					"state": 0
+				}
+			]
+		},
+		{
+			"label": "peer",
+			"supervisorPid": 3467,
+			"exitCode": 0,
+			"signalCode": null,
+			"events": [
+				{
+					"disks": 0,
+					"event": "running",
+					"networkDevices": 0,
+					"shares": 0,
+					"sockets": 0
+				},
+				{
+					"event": "force-stop-request",
+					"state": 1
+				},
+				{
+					"event": "force-stopped",
+					"state": 0
+				}
+			]
+		},
+		{
+			"label": "fresh",
+			"supervisorPid": 3492,
+			"exitCode": 0,
+			"signalCode": null,
+			"events": [
+				{
+					"disks": 0,
+					"event": "running",
+					"networkDevices": 0,
+					"shares": 0,
+					"sockets": 0
+				},
+				{
+					"event": "force-stop-request",
+					"state": 1
+				},
+				{
+					"event": "force-stopped",
+					"state": 0
+				}
+			]
+		}
+	],
+	"invariants": [
+		"Two VMs initialized with no mapped host file path; synthetic host canary invisible and unchanged. Guest sysfs lists loopback only; guest TCP to host loopback-listener port fails and host receives0 connections. No external guest network was attempted.",
+		"First VM RAM file not visible in peer. Trusted shell fixture launches a child with setsid and TERM ignored; guest/proc PID/PPID/PGID identity recorded; distinct process groups verified. Guest IDs are never used as host PIDs.",
+		"After guest root PID receives TERM, detached child remains and emits at least three more heartbeats. Original host supervisor receives its owned SIGUSR1 handle; VZ stop callback succeeds with state0 and supervisor exits0. No console output follows stop.",
+		"Peer VM remains responsive and host bystander remains alive; each later stopped through its own handle. Fresh third VM has no prior attempt file/script; all three final supervisors end exit0, no SIGKILL fallback/watchdog.",
+		"Boot input hashes match before and after all guest activity. 29 plugin files remain byte-exact HEAD. No product code or personal installation change."
+	],
+	"retainedFailures": [
+		"Python urllib lacked a trusted local CA bundle; switched to native curl with TLS verification intact. No certificate verification disabled.",
+		"Lima2.2.1 release metadata retrieved, binary download timed out and raw template fetch reset. No Lima distribution extracted or runtime installed. Lima is not a second product backend.",
+		"First direct VZ boot of EFI zboot envelope returned VZErrorDomain1. Decompressed verified gzip payload to raw ARM64 Image; direct boot succeeded.",
+		"First full diagnostic expected uncolored ls output but BusyBox colored loopback; switched to printf of exact sysfs names, preserving zero-network assertion.",
+		"Second full diagnostic lacked /dev/null because initramfs init was bypassed; mount guest devtmpfs before launching background fixture. Corrected run passed; formatted/current-hash and prepared-runtime final runs also passed.",
+		"First archive staging rejected intentional symlinks in native counterexample fixtures; partial59-file archive retained separately and not used as final evidence. Complete104-file archive records synthetic link targets as metadata, does not follow/copy links."
+	],
+	"nativeRegression": {
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/native-regression/result.json",
+			"bytes": 8032,
+			"sha256": "bd818f4c227883849177d595e87ecd2cd0c2c71543cdad67df64e0e24f95f13d"
+		},
+		"scope": "Original sandbox-exec probes and detached-root-group escape counterexample reproduced. Native candidate remains BLOCKED; new VM diagnosis does not change that original result."
+	},
+	"validation": {
+		"unit": {
+			"files": 3,
+			"tests": 99,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/checks/unit-final.log",
+				"bytes": 209,
+				"sha256": "1eb668e39e12637e41b1973ba24600c46013e905cdcd4ff1491e81f1283d7402"
+			}
+		},
+		"typecheck": {
+			"configs": 5,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/checks/typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"logs": {
+			"lint-final": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/checks/lint-final.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			"protocol-final": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/checks/protocol-final.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"size-final": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/checks/size-final.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			},
+			"clean-delivery": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/checks/clean-delivery.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			},
+			"swift-format": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-vm-probe-verified/files/checks/swift-format.log",
+				"bytes": 0,
+				"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+			}
+		},
+		"protocol": "Structure/type-only/v33 PASS; historical tag heuristic SKIP",
+		"clean": "Preview only; zero deletions",
+		"desktop": "Not run this turn. This diagnostic is a host virtualization feasibility probe, not Electron product integration."
+	},
+	"notImplementedOrExecuted": [
+		"TargetProfile/version probe and argv/stdin transport for a real/fake executable through product ExecutionAdapter.",
+		"Persistent intent/handle, supervisor reconciliation and launch-registration crash window; PID reuse defense and safe unknown-state recovery.",
+		"Graceful cancellation with configured grace before force-stop, artifact export, complete bounded UTF-8/JSONL/log-backpressure protocol, waiting-input state, cleanup ledger and resource/permission admission.",
+		"Trusted verifier/hidden-answer isolation and EC07; actual Electron execution capability/management/skill/slash integration.",
+		"Network-enabled profiles/allowlist, full Linux userland/Node agent CLI images, native macOS or other-platform execution, real CLI/models.",
+		"Formal AC39 performance rerun; historical FAIL retained."
+	],
+	"remaining": "Whole-attempt stop is now demonstrated for this single bounded offline VZ candidate. It removes the prior lack of any proven containment option for the offline engineering route, but does not complete EC06/AC23–AC27. EC07 stays dependent on unimplemented EC06 product lifecycle; EC04/M1 and full goal remain incomplete. Real client/model authorization remains deferred."
+}

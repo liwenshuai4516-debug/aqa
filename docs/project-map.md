@@ -170,3 +170,5 @@ EC04 半报告恢复补验：`tests/agent-evaluation-desktop-test.mjs --crash-re
 EC04 评分作业回查：现有`service.mjs`的`list(kind:"jobs")`与`client/entry.mjs`记录页补齐重启后的作业发现，复用原status及授权；`--crash-report`覆盖实际未知状态卡片，见[证据](agent-evaluation-evidence/EC04-job-discovery-diagnostics.json)。
 
 EC04 普通任务采集故障：`tests/agent-evaluation-native-desktop-test.mjs --collection-fault`复用`tests/fixtures/agent-evaluation/collection-fault.mjs`及原本地SSE，验证真实写锁拒绝时SDK继续、检查点保持和显式恢复；见[证据](agent-evaluation-evidence/EC04-collection-fault-diagnostics.json)。
+
+EC06 VM隔离候选：`tests/agent-evaluation-vm-isolation-test.mjs`与测试夹具`vm-supervisor.swift`、`prepare-vm-runtime.mjs`验证系统VZ的无网Linux guest和整机收尾；不暴露产品执行后端，见[证据](agent-evaluation-evidence/EC06-vm-diagnostics.json)。

@@ -303,6 +303,8 @@ TargetProfile 记录二进制真实路径、版本/摘要、参数模板、提�
 
 **工作目录不是安全沙箱。** 文件/网络/进程限制必须由可验证的容器、VM 或系统权限实施。原生 macOS 与 Linux 容器属于不同环境，不能宣称等价。无法提供所需隔离时拒绝相应执行配置，可继续离线导入；不偷偷退回宿主宽权限运行。
 
+EC06离线工程候选补充（2026-10-26）：[无网络VZ Linux VM](agent-evaluation-evidence/EC06-vm-diagnostics.json)已在macOS arm64证明无共享目录/磁盘/网络/vsock、独立RAM初态及整机停止包含detached子进程。仅以此作为唯一离线工程候选，固定Alpine3.22.7启动输入及摘要；不把Linux guest说成原生macOS，不开放联网/任意挂载或真实CLI。当前仍无产品ExecutionAdapter；后续须满足下面持久启动/对账/日志/温和取消再强停/清理账本，不能凭诊断通过跳过EC06或启动EC07。真实客户端及模型授权继续暂缓。
+
 ### 9.3 生命周期、日志与故障恢复
 
 prepare 完成版本/权限/依赖/容量/隔离预检后才 start。启动前写入 intent 和 attemptId，启动后登记带进程开始身份、受控进程组/容器 ID 的 handle，不能只存 PID。启动与登记间故障通过专属 supervisor/可发现运行标签对账；无法核实则 unknown，禁止自动重发。
