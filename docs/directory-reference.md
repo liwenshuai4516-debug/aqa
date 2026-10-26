@@ -440,3 +440,5 @@ EC04规模与分页回归：`tests/agent-evaluation-desktop-test.mjs --scale`使
 EC04工具通道补验：`tests/fixtures/agent-evaluation/tool-channel.mjs`只提供本地脚本化SSE；`tests/agent-evaluation-native-desktop-test.mjs --tool-matrix`驱动原SDK工具，核对get成功、review入口拒绝及可信UI正对照，不修改产品或调用真实模型，见[证据](agent-evaluation-evidence/EC04-tool-channel-diagnostics.json)。
 
 `tests/agent-evaluation-ui-matrix-test.mjs`：41条本地UI真实执行混合状态夹具；`tests/fixtures/data-space/ui-{design-fixture,fixture}.mjs`仅增测试规模与按名称前缀的目标故障控制，默认单用例行为保留。详见[EC04执行分页证据](agent-evaluation-evidence/EC04-executed-matrix-diagnostics.json)。
+
+EC04 规则扩展补验：`tests/agent-evaluation-desktop-test.mjs --rule-upgrade`使用`tests/fixtures/agent-evaluation/rule-upgrade.mjs`，在自有profile追加纯规则、V1/V2并存、精确重评和无数据空间F07；原执行器/注册表/引擎/存储不替换，合成调用历史不冒充真实执行，见[证据](agent-evaluation-evidence/EC04-rule-upgrade-diagnostics.json)。

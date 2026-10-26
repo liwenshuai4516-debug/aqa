@@ -22,6 +22,12 @@ import {
 import { longEvidenceText, verifyEvidenceMatrix } from "./fixtures/agent-evaluation/evidence-matrix.mjs";
 import { installRollbackFixture, verifyRollback } from "./fixtures/agent-evaluation/rollback.mjs";
 import { verifyScale } from "./fixtures/agent-evaluation/scale.mjs";
+import { installRuleUpgradeProbe, verifyRuleUpgrade } from "./fixtures/agent-evaluation/rule-upgrade.mjs";
+const ruleUpgrade = process.argv.includes("--rule-upgrade");
+assert.ok(
+	!ruleUpgrade || !process.argv.some((arg) => ["--scale", "--rollback", "--active-jobs"].includes(arg)),
+	"Run rule upgrade separately from other plugin injections",
+);
 const scale = process.argv.includes("--scale");
 assert.ok(
 	!(scale && (process.argv.includes("--rollback") || process.argv.includes("--active-jobs"))),
@@ -96,6 +102,9 @@ assert.equal(await readFile(join(agentDir, "settings.json"), "utf8"), settingsBe
 if (rollback) await installRollbackFixture(repo, dataDir, agentDir);
 const activeJobProbe = process.argv.includes("--active-jobs")
 	? await installActiveJobProbe(repo, dataDir, output)
+	: undefined;
+const ruleUpgradeProbe = ruleUpgrade
+	? await installRuleUpgradeProbe(repo, dataDir, agentDir, output, workspace)
 	: undefined;
 const reservation = createServer().listen(0, "127.0.0.1");
 await once(reservation, "listening");
@@ -184,12 +193,12 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.26" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.27" && p.active),
 			),
 		),
 	);
 	result.checks.push(
-		"Real app loads plugin 0.4.26 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Real app loads plugin 0.4.27 in explicitly registered app directories; seeded SDK history opened without a model prompt",
 	);
 	stage("settings and slash discovery");
 	const settings = async (tab) => {
@@ -264,7 +273,7 @@ try {
 							f.plugins.some(
 								(p) =>
 									p.id === "agent-evaluation" &&
-									p.version === "0.4.26" &&
+									p.version === "0.4.27" &&
 									p.agentTools?.some((tool) => tool.name === "agent_evaluation"),
 							),
 					),
@@ -281,7 +290,7 @@ try {
 	await candidate.waitFor();
 	await input.fill("");
 	result.checks.push(
-		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.26; skill, slash discovery and tool registration remain enabled",
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.27; skill, slash discovery and tool registration remain enabled",
 	);
 	stage("product diagnosis flow");
 	const openView = async () => {
@@ -865,7 +874,7 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.26" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.27" && p.active),
 			),
 		),
 	);
@@ -884,7 +893,7 @@ try {
 	assert.equal(await skill().getByRole("switch").getAttribute("aria-checked"), "true");
 	await closeSettings();
 	result.checks.push(
-		"Graceful real Electron exit and a second native process load plugin 0.4.26 and preserve enabled skill/plugin registration",
+		"Graceful real Electron exit and a second native process load plugin 0.4.27 and preserve enabled skill/plugin registration",
 	);
 	result.checks.push(
 		"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",
@@ -1023,6 +1032,20 @@ try {
 		result.checks.push(
 			"Actual Electron traverses every report list page and opens seven-finding reports backed by a synthetic 1000-evidence snapshot; native service returns every reference without loss",
 		);
+	}
+	if (ruleUpgradeProbe) {
+		stage("trusted pure-rule registration, exact version upgrade and F07 without data space");
+		result.ruleUpgrade = await verifyRuleUpgrade({
+			page,
+			probe: ruleUpgradeProbe,
+			original,
+			originalSessionPath: sessionPath,
+			output,
+			dataDir,
+			until,
+			settings,
+			closeSettings,
+		});
 	}
 	stage("development URL cannot acquire the native identity");
 	await writeFile(join(output, "app-restarted-process.log"), app.getLogs());

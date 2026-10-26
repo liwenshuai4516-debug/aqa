@@ -1,0 +1,242 @@
+{
+	"scope": "EC04 AC02/AC15 actual Electron pure rule addition and version coexistence; v0.4.27 exact historical report restoration fixes",
+	"timestamp": "2026-10-26T01:59:53.105762+00:00",
+	"baseline": "ac56792a3430f39f5a7eb09f5c5072ccc385d479",
+	"pluginVersion": "0.4.27",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-rule-upgrade/index.json",
+		"bytes": 144982,
+		"sha256": "65787e1403e39faa365c8a79b0dced1cc5c24501224fd32ae27b9a5f400fb041"
+	},
+	"archiveFiles": 663,
+	"changes": [
+		"New scoring identity hashes fully expanded rule IDs, versions and configs; identical user params with upgraded rules no longer conflict.",
+		"Historical configuration completeness checked against its own frozen evaluatorVersions, not the current default rule count. Original digest, precise registered rule/dependency availability and config validation remain required. Legacy configuration IDs remain usable."
+	],
+	"actualDesktop": {
+		"status": "PASS",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-Z82tpt",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-rule-upgrade/files/desktop-final/result.json",
+			"bytes": 18155,
+			"sha256": "1a727972d331c7b1dc7d43277f4ba8c4fe8cbd3a461cd0c2801eae51caf3e380"
+		},
+		"ruleUpgrade": {
+			"beforeExtensionReportRescored": {
+				"kind": "evaluations",
+				"id": "2f366afe-4fa3-4a75-baf8-db470579d138",
+				"revision": 1
+			},
+			"beforeExtensionConfigurationUnchanged": true,
+			"registryChecks": [
+				{
+					"version": "1",
+					"checks": [
+						{
+							"name": "duplicate",
+							"code": "VERSION_CONFLICT"
+						},
+						{
+							"name": "cycle",
+							"code": "INVALID_INPUT"
+						},
+						{
+							"name": "missing",
+							"code": "INVALID_INPUT"
+						}
+					],
+					"atomicRejection": true
+				},
+				{
+					"version": "2",
+					"checks": [
+						{
+							"name": "duplicate",
+							"code": "VERSION_CONFLICT"
+						},
+						{
+							"name": "cycle",
+							"code": "INVALID_INPUT"
+						},
+						{
+							"name": "missing",
+							"code": "INVALID_INPUT"
+						}
+					],
+					"atomicRejection": true
+				}
+			],
+			"oldReport": {
+				"kind": "evaluations",
+				"id": "62c48cd4-e83f-44a3-a5e4-97b417aed2d1",
+				"revision": 1
+			},
+			"newReport": {
+				"kind": "evaluations",
+				"id": "02e84436-21b8-4fcf-b56f-6ee66e0d4d68",
+				"revision": 1
+			},
+			"rescored": [
+				{
+					"id": "fc81ca54-fe29-4c06-a413-d2e42b8e269d",
+					"versions": {
+						"F01": "1",
+						"F02": "1",
+						"F04": "1",
+						"F05": "1",
+						"F06": "1",
+						"F07": "1",
+						"F08": "1",
+						"UpgradeProbe": "1"
+					}
+				},
+				{
+					"id": "414c56d0-0e05-49c4-98a2-571a788915d7",
+					"versions": {
+						"F01": "1",
+						"F02": "1",
+						"F04": "1",
+						"F05": "1",
+						"F06": "1",
+						"F07": "1",
+						"F08": "1",
+						"UpgradeProbe": "2"
+					}
+				}
+			],
+			"behavior": {
+				"candidates": [
+					{
+						"callIds": ["a", "b"],
+						"nature": "unconfirmed",
+						"prerequisiteIdentity": "only observed repair boundaries; other changes unknown",
+						"repeatedFailures": 2,
+						"toolName": "read"
+					}
+				],
+				"excludedPolling": 2
+			},
+			"oldReportUnchanged": true,
+			"noNewAttemptsOrSnapshots": true,
+			"withoutDataSpace": true,
+			"actualModelCalls": 0,
+			"actualCliCalls": 0,
+			"actualToolExecutions": 0,
+			"provenance": "Actual Electron and original service/registry/engine/store; only owned profile extension injection and seeded SDK history"
+		},
+		"scope": "Actual Electron trusted rescan, new pure rule, V1/V2 reports opened in UI, each rescored at exact versions, and original seven-rule report rescored after extension. Original service/registry/engine/store unchanged by probe; only owned internal profile injection. Main lifecycle, 40-page evidence, missing pack/recovery and offline restart also executed."
+	},
+	"nativeDesktop": {
+		"status": "PASS",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-native-desktop-ZvDCRF",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-rule-upgrade/files/native-desktop-final/result.json",
+			"bytes": 4313,
+			"sha256": "1478a17198f1c22549587a709d626178e4916715c590bcde2b03581073aa0292"
+		},
+		"scope": "Ordinary unmodified profile 0.4.27 actual Electron: historical executed 41-case UI 27pass/14target failures and 41 pending synthetic plan; 20/20/1 pagination, manifest missing/changed rejection, sealed full readback and restoration. Reuses previous execution evidence, no new UI runner invocation."
+	},
+	"registeredSource": {
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-rule-upgrade/files/registered-plugin-files.json",
+			"bytes": 15981,
+			"sha256": "9f9e6c98442732a414e47ff8f0c5f8b9ddd37adcc3be8c1085c885d1eb28f8a0"
+		},
+		"scope": "Primary executable source matches repository except owned profiles/internal.mjs probe; README differs because docs were edited after app stopped. Native registration resolves original ESM source, all tracked files match. No separate tracked bundle."
+	},
+	"verification": {
+		"units": {
+			"status": "PASS",
+			"files": 18,
+			"tests": 300,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-rule-upgrade/files/unit-complete-final.log",
+				"bytes": 229,
+				"sha256": "dc4b06a71e59928931da0f7ca588eccca94450383faba3c8298a1acf5f370148"
+			}
+		},
+		"typecheck": {
+			"status": "PASS",
+			"configurations": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-rule-upgrade/files/typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"lint": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-rule-upgrade/files/lint-final.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-rule-upgrade/files/protocol-final.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"limitation": "Version33/type-only checks passed; historical git-tag heuristic explicitly SKIP because no tag is available."
+		},
+		"i18n": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-rule-upgrade/files/i18n-final.log",
+				"bytes": 615,
+				"sha256": "80312d8da86db05c5343b06b015ff85dbb3f374e280ecc1b044c87014878d1cd"
+			}
+		}
+	},
+	"retainedFailures": [
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-rule-upgrade/files/reproduction.log",
+				"bytes": 1332,
+				"sha256": "8e9d4785089cbb4dfd3891facd3eca3ea23f3188f789838e9b315e70a7d9d75d"
+			},
+			"scope": "Before identity fix, isolated new version regression fails VERSION_CONFLICT; filtered tests not full suite."
+		},
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-rule-upgrade/files/addition-reproduction.log",
+				"bytes": 1302,
+				"sha256": "67dfb127b982bbe08b6974d2a112541967a7ff02250ee7e33a5426980db7e814"
+			},
+			"scope": "Temporarily restoring old count guard makes added-rule historical re-score regression fail CAPABILITY_UNAVAILABLE; candidate restored before final suite."
+		},
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-rule-upgrade/files/unit-concurrent-timeout.log",
+				"bytes": 1232,
+				"sha256": "413188d5ea0d4b6584c2f3699b4d1ad0eaaa616133eaf17f9019a7afb08bcfe9"
+			},
+			"scope": "Earlier desktop-concurrent full suite 298pass/1 timeout; not a pass and not attributed to sleep. Independently rerun final 300pass."
+		},
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-rule-upgrade/files/desktop-initial/result.json",
+				"bytes": 7100,
+				"sha256": "1ebb96e7f9d8d53e514577799afabfe9fcff8e0bf4664c1a16f5f37b7c4ef595"
+			},
+			"scope": "Earlier fixture failed ambiguous summary locator. Narrowed selector; later actual desktop matrix passed. Initial raw result unchanged."
+		}
+	],
+	"notExecuted": [
+		"Real CLI/model calls and actual tool/business executions: zero. Seeded F07 calls are synthetic history.",
+		"No formal collection performance rerun for service-only profile fixes; 0.4.26 FAIL remains historical, not relabeled for 0.4.27.",
+		"Complete AC01–AC20 combinations, full rollback/scale/identity matrix not rerun for 0.4.27. Updated version assertions do not imply execution."
+	],
+	"remaining": [
+		"EC04/M1 and overall goal incomplete; AC39 collection performance still FAIL.",
+		"EC06 detached child containment remains unresolved; dependent execution stages held.",
+		"EC08 real CLI testing deferred by user."
+	]
+}

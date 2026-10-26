@@ -731,8 +731,8 @@ export class EvaluationService {
 					requireValue(
 						configuration.profileVersion === "1" &&
 							(configuration.profileId === "internal" || /^internal-[a-f0-9]{55}$/.test(configuration.profileId)) &&
-							configuration.rules.length === known.length &&
-							known.every((id) => configuration.rules.some((r) => r.id === id)),
+							configuration.rules.length === Object.keys(original.data.evaluatorVersions).length &&
+							configuration.rules.every((rule) => original.data.evaluatorVersions[rule.id] === rule.version),
 						"CAPABILITY_UNAVAILABLE",
 						"Only complete internal profiles can be restored for exact re-scoring",
 					);
@@ -751,7 +751,9 @@ export class EvaluationService {
 						"INVALID_INPUT",
 						"Unknown rule configuration",
 					);
-					profile = internalProfile(configs, { id: `internal-${digest(configs).slice(0, 55)}` });
+					profile = internalProfile(configs);
+					// Versions and expanded defaults are part of scoring identity, too.
+					profile.id = `internal-${digest(profile.rules).slice(0, 55)}`;
 				}
 				const key = `${profile.id}@${profile.version}`;
 				if (!this.profiles) this.profiles = new Set();

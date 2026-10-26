@@ -9,6 +9,7 @@ import { readEvaluationEvidence } from "../../server/agent/evaluation-evidence.j
 import { readEvaluationArtifact } from "../../server/agent/evaluation-artifact.js";
 import { ClientSession } from "../../server/agent/agent-service.js";
 import { digest } from "../../plugins/agent-evaluation/schema.mjs";
+import { internalEvaluators } from "../../plugins/agent-evaluation/profiles/internal.mjs";
 const cleanup: Array<() => void> = [];
 afterEach(() => {
 	vi.restoreAllMocks();
@@ -841,6 +842,10 @@ describe("EC04 product service", () => {
 			"missing-version",
 		);
 		const changed = persist({ ...scored.report.data, configuration }, "mismatched-config-digest");
+		const inconsistent = persist(
+			{ ...scored.report.data, evaluatorVersions: { ...scored.report.data.evaluatorVersions, F01: "999" } },
+			"inconsistent-frozen-version-list",
+		);
 		f.service.close();
 		const restarted = new EvaluationService(f.host);
 		cleanup.push(() => restarted.close());
@@ -850,6 +855,7 @@ describe("EC04 product service", () => {
 		await expect(request("evaluate", { ref: legacy })).rejects.toMatchObject({ code: "EVIDENCE_GAP" });
 		await expect(request("evaluate", { ref: unavailable })).rejects.toMatchObject({ code: "CAPABILITY_UNAVAILABLE" });
 		await expect(request("evaluate", { ref: changed })).rejects.toMatchObject({ code: "STORE_CORRUPT" });
+		await expect(request("evaluate", { ref: inconsistent })).rejects.toMatchObject({ code: "CAPABILITY_UNAVAILABLE" });
 		const job = await request("evaluate", { ref: scored.reportRef });
 		let status: any;
 		await vi.waitFor(async () => {
@@ -860,6 +866,90 @@ describe("EC04 product service", () => {
 		expect(report.data.configuration).toEqual(scored.report.data.configuration);
 		expect(report.data.configDigest).toBe(scored.report.data.configDigest);
 		expect(report.data.snapshotRef).toEqual(scored.snapshotRef);
+	});
+	it("keeps old and upgraded rule profiles distinct for identical inputs and re-scores each exact version", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const legacyConfiguration = {
+			...scored.report.data.configuration,
+			profileId: `internal-${digest({ F01: { checks: [{ conditionId: "artifact", path: "result.json" }] } }).slice(0, 55)}`,
+		};
+		const legacy = f.service.store!.write(f.service.authorize(f.ui, {}).context, {
+			kind: "evaluations",
+			requestId: "legacy-profile-id",
+			data: {
+				...scored.report.data,
+				configuration: legacyConfiguration,
+				profileVersion: `${legacyConfiguration.profileId}@1`,
+				configDigest: digest(legacyConfiguration),
+			},
+		});
+		const position = internalEvaluators.findIndex((rule: any) => rule.manifest.id === "F01");
+		const original = internalEvaluators[position];
+		const upgraded = { ...original, manifest: { ...original.manifest, version: "2" } };
+		f.service.registry.registerEvaluators([upgraded]);
+		internalEvaluators[position] = upgraded;
+		cleanup.push(() => {
+			internalEvaluators[position] = original;
+		});
+		const attempts = await f.request("list", { kind: "attempts" });
+		const snapshots = await f.request("list", { kind: "snapshots" });
+		f.host.readEvaluationEvidence.mockClear();
+		f.host.readEvaluationArtifact.mockClear();
+		const wait = async (job: any) => {
+			let status: any;
+			await vi.waitFor(async () => {
+				status = await f.request("status", { jobId: job.jobId });
+				expect(status.state).toBe("completed");
+			});
+			return f.request("get", { ref: status.reportRef });
+		};
+		const newer = await wait(
+			await f.request("evaluate", {
+				ref: scored.snapshotRef,
+				configs: { F01: { checks: [{ conditionId: "artifact", path: "result.json" }] } },
+			}),
+		);
+		expect(newer.data.evaluatorVersions.F01).toBe("2");
+		expect(newer.data.configuration.profileId).not.toBe(scored.report.data.configuration.profileId);
+		for (const report of [scored.report, newer, legacy]) {
+			const again = await wait(
+				await f.request("evaluate", { ref: { kind: "evaluations", id: report.id, revision: report.revision } }),
+			);
+			expect(again.data.configuration).toEqual(report.data.configuration);
+			expect(again.data.configDigest).toBe(report.data.configDigest);
+			expect(again.data.evaluatorVersions).toEqual(report.data.evaluatorVersions);
+		}
+		expect(await f.request("get", { ref: scored.reportRef })).toEqual(scored.report);
+		expect(await f.request("list", { kind: "attempts" })).toEqual(attempts);
+		expect(await f.request("list", { kind: "snapshots" })).toEqual(snapshots);
+		expect(f.host.readEvaluationArtifact).not.toHaveBeenCalled();
+		expect(
+			f.host.readEvaluationEvidence.mock.calls.filter(([, query]: any[]) => query.mode === "collect"),
+		).toHaveLength(0);
+	});
+	it("restores a complete historical profile after the current default adds a pure rule", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		const base = internalEvaluators.find((rule: any) => rule.manifest.id === "F06")!;
+		f.service.registry.registerEvaluators([{ ...base, manifest: { ...base.manifest, id: "AddedPureRule" } }]);
+		const profile = f.service.registry.profile.bind(f.service.registry);
+		vi.spyOn(f.service.registry, "profile").mockImplementation((id: string, version: string) => {
+			const current = profile(id, version);
+			return id === "internal"
+				? { ...current, rules: [...current.rules, { id: "AddedPureRule", version: "1", config: {} }] }
+				: current;
+		});
+		const job = await f.request("evaluate", { ref: scored.reportRef });
+		let status: any;
+		await vi.waitFor(async () => {
+			status = await f.request("status", { jobId: job.jobId });
+			expect(status.state).toBe("completed");
+		});
+		const again = await f.request("get", { ref: status.reportRef });
+		expect(again.data.configuration).toEqual(scored.report.data.configuration);
+		expect(again.data.evaluatorVersions).toEqual(scored.report.data.evaluatorVersions);
+		expect(again.data.evaluatorVersions.AddedPureRule).toBeUndefined();
 	});
 	it("stops only the disabled client's scoring and observation, then permits explicit re-enable", async () => {
 		const f = fixture(),

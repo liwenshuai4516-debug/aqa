@@ -144,3 +144,5 @@ EC04规模与分页回归：`tests/agent-evaluation-desktop-test.mjs --scale`使
 EC04工具通道补验：`tests/agent-evaluation-native-desktop-test.mjs --tool-matrix`复用`tests/fixtures/agent-evaluation/tool-channel.mjs`的本地确定性SSE，经实际Electron/SDK验证get正对照、review输入schema拒绝与可信UI追加对照；无真实模型调用，见[证据](agent-evaluation-evidence/EC04-tool-channel-diagnostics.json)。
 
 EC04实际执行多页：`tests/agent-evaluation-ui-matrix-test.mjs`复用原UI诊断/正式runner和data-space夹具，产生41条真实本地混合结果；原生桌面跑器逐行核对分页与历史读取边界，见[证据](agent-evaluation-evidence/EC04-executed-matrix-diagnostics.json)。
+
+EC04 规则扩展补验：`tests/agent-evaluation-desktop-test.mjs --rule-upgrade`使用`tests/fixtures/agent-evaluation/rule-upgrade.mjs`，在自有profile追加纯规则、V1/V2并存、精确重评和无数据空间F07；原执行器/注册表/引擎/存储不替换，合成调用历史不冒充真实执行，见[证据](agent-evaluation-evidence/EC04-rule-upgrade-diagnostics.json)。
