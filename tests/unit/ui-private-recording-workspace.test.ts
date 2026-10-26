@@ -7,8 +7,9 @@ import { access, chmod, lstat, mkdir, mkdtemp, readFile, realpath, rm, symlink, 
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
-import { authState, type UiEnvironment } from "pi-ui-testing";
+import { ArtifactStore, RecordingService, authState, validateArtifact, type UiEnvironment } from "pi-ui-testing";
 import { preparePrivateRecordingWorkspace } from "../../.pi/skills/ui-testing-workflow/assets/private-recording-workspace.mjs";
+import { preparePrivateRecordingSession } from "../../.pi/skills/ui-testing-workflow/assets/private-recording-session.mjs";
 const roots: string[] = [],
 	references: string[] = [],
 	prepared: Array<{ revoke(): Promise<void> }> = [];
@@ -246,4 +247,68 @@ it("invalidates every pending request on close while a fresh snapshot remains in
 	await fresh.publish(() => writeFileSync(join(f.workspace, "fresh.ts"), "new", { flag: "wx" }));
 	await expect(access(join(f.workspace, "stale.ts"))).rejects.toThrow();
 	expect(await readFile(join(f.workspace, "fresh.ts"), "utf8")).toBe("new");
+});
+
+it("prepares host privacy and snapshot from the native session binding, preserving its public receipt", async () => {
+	const f = await fixture(),
+		store = new ArtifactStore(f.workspace),
+		service = new RecordingService(f.workspace);
+	const source = await store.putFile("qa/ui/scopes/binding/source.md", "Synthetic fixture heading is visible.");
+	const envelope = (kind: string, data: unknown) =>
+		validateArtifact({
+			schema_version: "1.0",
+			kind,
+			id: "binding",
+			created_at: new Date().toISOString(),
+			data,
+		});
+	const scope = await store.put(
+		envelope("scope", {
+			project_id: "synthetic",
+			environment_id: f.input.environment.environment_id,
+			role: f.input.environment.role,
+			goal: "Observe synthetic heading",
+			base_url: f.input.environment.base_url,
+			allowed_actions: ["Observe fixture only"],
+			sources: [{ source_id: "S1", oracle_type: "declaration", ref: source, statement: "Fixture heading is visible" }],
+			budget: { max_review_rounds: 3, max_tool_calls: 10 },
+		}),
+	);
+	const inventory = await store.put(
+		envelope("inventory", { scope_ref: scope, features: [], unexplored: ["Business behavior"] }),
+	);
+	const environment = await store.putFile("qa/ui/scopes/binding/environment.json", JSON.stringify(f.input.environment));
+	const seed = f.input.inputRefs.find((ref) => ref.path === "tests/seed.spec.ts")!;
+	const sessionRef = await service.start({
+		id: "binding",
+		scope_ref: scope,
+		inventory_ref: inventory,
+		initial_state_ref: source,
+		data_rules_ref: source,
+		seed_ref: seed,
+		output_file: "tests/generated.spec.ts",
+		backend: "mcp__fixture__",
+		project: "chromium",
+		max_steps: 10,
+		max_duration_ms: 60000,
+		max_no_progress: 3,
+		test_data: [],
+		private_recording: { environment_ref: environment, input_refs: f.input.inputRefs },
+	});
+	const host = await preparePrivateRecordingSession({ workspace: f.workspace, authority: f.authority, sessionRef });
+	prepared.push(host.snapshot);
+	await host.snapshot.assertCurrent();
+	expect(host.receipt.session_ref).toEqual(sessionRef);
+	expect(host.receipt.inputs).toEqual([...f.input.inputRefs, environment, sessionRef]);
+	const serialized = JSON.stringify(host.receipt);
+	expect(serialized).not.toContain(f.state.origins[0].localStorage[0].value);
+	expect(serialized).not.toContain(f.parentPath);
+	expect(host.privacy.text(f.state.origins[0].localStorage[0].value)).not.toContain(
+		f.state.origins[0].localStorage[0].value,
+	);
+	await writeFile(join(f.workspace, environment.path), "changed binding");
+	await expect(host.snapshot.assertCurrent()).rejects.toThrow();
+	await expect(
+		preparePrivateRecordingSession({ workspace: f.workspace, authority: f.authority, sessionRef }),
+	).rejects.toThrow();
 });

@@ -5,7 +5,7 @@
 | 维护内容                                     | 唯一位置                                                                                                        |
 | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | 技能名称、描述、调度入口                     | `../SKILL.md`                                                                                                   |
-| 原版工作流分发包                             | `../assets/pi-ui-testing-0.1.14.tgz`                                                                            |
+| 原版工作流分发包                             | `../assets/pi-ui-testing-0.1.15.tgz`                                                                            |
 | 原生测试 MCP 适配                            | `../assets/mcp-extension.mjs`                                                                                   |
 | Chromium 执行配置                            | `../assets/playwright.config.mjs`                                                                               |
 | 录制 seed 前置校验                           | `../assets/recording-preflight.mjs`（由 MCP 执行钩子调用，不另建 runner）                                       |
@@ -17,8 +17,8 @@
 | 管理页与快捷发现的公共逻辑                   | `server/skill/`、`server/settings-service.ts`、`server/slash-commands.ts`                                       |
 | 测试资产与执行证据                           | 被测工作区 `qa/ui/`，不写进技能目录                                                                             |
 
-原版包来源提交：`92235e882a94d79106039a1c0f05fdaaf5f3c827`（上游本地提交；未推送上游远端）。
-SHA-256：`9057851aa90a923b57aa3aa23af8de0eaeea400e4a153c88f6c8381a839554e1`。0.1.4 仅在一次引用核验内按 path+sha256 复用成功读取；不同摘要、后续调用及并发调用仍独立核验，不增加跨请求缓存，不改变批准或产物协议。
+原版包来源提交：`c473a606323c8f3ac40341fe2ee263f6403031c5`（上游本地提交；未推送上游远端）。
+SHA-256：`adbbdbe25d927c8ab77d21a68c67f8f4178e523ceee5a7c8fbac135516b04042`。0.1.4 仅在一次引用核验内按 path+sha256 复用成功读取；不同摘要、后续调用及并发调用仍独立核验，不增加跨请求缓存，不改变批准或产物协议。
 
 保留 0.1.3：将认证诊断/正式执行的原始捕获保存在工作区外的宿主私有目录，公开副本脱敏已知值并隐藏图片/二进制资源；真实失败保留，缺失原始附件时不声明完整证据。trace 读取绑定实际 Playwright 1.62.1，避免误用独立安装的 core 1.63.0。0.1.3当时未覆盖录制、运行中新凭据、任意编码和脚本自行写文件；数据空间私密桥接继续 not-ready，不因该版本放行真实环境。
 
@@ -89,3 +89,5 @@ MCP 运行时选择由 `assets/playwright-runtime.mjs` 负责：CLI 与配置均
 存储事件内部观察器现于创建文件/CDP前校验当前blank、单frame/单page，记录frameattached历史并在读取时拒绝，即使随后移除也不放行；dispose解除该监听。真实浏览器前后及实际SDK旧版放行/修正版partial、CDP解除partial/正向留证，见[边界证据](../../../../docs/ui-testing-evidence/optimization-u02-recording-storage-boundaries.json)。blank检查不是过去导航历史证明，依赖受控fixture的新context事实；仅拒绝未覆盖frame，不代表支持多frame，产品record仍unsupported。
 
 录制配置检查补充：`recording-preflight-reporter.mjs`通过目标Playwright公开Reporter API只返回项目名、testDir、测试文件及storageState配置布尔值，不序列化use原值、metadata或收集错误。所选project的storageState（含继承配置及contextOptions）暂时阻塞；其他project不连带阻塞。该检查在实际SDK setup钩子生效，不读取状态文件，不执行seed；数据空间execute引用仍可用于原正式执行入口。只覆盖配置层，不能检测seed/test.use或自定义fixture运行时自行注入认证，也不解决配置收集与MCP执行间的修改竞态，不作为通用隐私保证。产品私密record继续unsupported。
+
+0.1.15为原生录制启动契约增加可选`private_recording:{environment_ref,input_refs}`，校验同范围环境ID/角色/入口、受管独立context、唯一输入集合及seed摘要；每次新动作前再验认证，过期保留status/finish和已初始化context的close。`RecordingService.privateContext`从已核验会话返回公开环境/输入引用。宿主内部`private-recording-session.mjs`据此复用原生PrivateEvidence及既有私有工作区模块，将环境文件和session本身一并冻结到副本输入，回执不含认证内容/私有路径。真实SDK已验证该绑定、宿主准备和未启浏览器时partial结束；产品MCP仍未接入捕获/过滤，不因启动契约可用而开放私密record。输入集合仍需显式登记依赖，不证明任意依赖闭包。

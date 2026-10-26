@@ -162,3 +162,5 @@ UI 私密录制连接守卫：`.pi/skills/ui-testing-workflow/assets/private-rec
 UI 私密存储事件内部模块：`.pi/skills/ui-testing-workflow/assets/private-recording-storage-events.mjs` 由受控seed在Chromium导航前安装CDP监听，私有记录历史值，宿主读取后复用原生过滤；当前blank单page/frame前提、指定origin，新增页面/frame历史拒绝，未接入产品record。不会自动修改业务seed或注册模型工具。
 
 UI 录制配置预检：`.pi/skills/ui-testing-workflow/assets/recording-preflight-reporter.mjs`经Playwright公开Reporter API收集最小元数据，为已有setup钩子提供所选project的storageState配置拒绝依据；不读取认证值或执行seed。
+
+UI 私密会话准备内部模块：`.pi/skills/ui-testing-workflow/assets/private-recording-session.mjs`从原生`RecordingService.privateContext`取得受摘要绑定的环境/输入，复用原生过滤器及私有工作区，将环境与会话文件纳入副本；尚未接入产品MCP捕获路径。

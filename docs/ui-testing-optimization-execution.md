@@ -1147,3 +1147,23 @@ scope明确8次helper/30工具/128事件/2MiB及受控负向frame附加移除/�
 剩余边界：配置层检查不检测 test.use、自定义 fixture 或 seed 运行时认证注入；不解决收集与执行间配置竞态。内部私有输入副本、事件捕获与生命周期适配尚未连入产品录制入口。产品私密 record 仍 unsupported；整体 U02 与优化计划继续实施中。PMS 剩余 2 次设计评审额度保留，report-2 未结果批准。
 
 [本轮证据](ui-testing-evidence/optimization-u02-recording-product-preflight.json)保留修复前失败与修复后真实SDK、Electron证据；权威Electron项目另存阶段文档及证据快照，0700/0600回读校验，store不改动；未创建应用文档索引，不声称文档列表已显示。plan_update不可用，沿用本文及阶段表。其他协作差异保留，任务开始/交付clean仅预览，整体goal active。
+
+### U02 续跑：原生私密会话绑定及宿主准备（2026-10-26）
+
+2026-10-26，macOS arm64，pi-ui-testing 0.1.15 / SDK 1.2.0 / Playwright Test 1.62.1，隔离 SDK 与 Electron。模型调用、正式批次、真实 PMS 业务写入均为 0。剩余 PMS 2 次设计评审额度保留，旧 report-2 未结果批准。
+
+原生新增可选 private_recording:{environment_ref,input_refs}：只冻结公开引用，要求同范围环境 ID、角色、入口及受管独立 context；明确输入集合唯一且包含同摘要 seed。新动作前再验认证。privateContext 从原生会话校验后返回环境、环境引用及输入集合，供宿主复用。过期阻止新动作，但状态查询、已初始化 context 的关闭和 partial 结束仍可进行。匿名旧配置兼容。
+
+宿主内部 private-recording-session.mjs 使用该原生入口，复用 PrivateEvidence 和既有 private-recording-workspace；环境文件、会话文件及明确输入一起冻结到私有副本。回执无合成秘密或宿主私有路径；环境文件变化后已准备副本拒绝继续使用。没有复制过滤规则、runner 或批准规则，没有新增模型工具。
+
+新增原生 5 项测试在旧版失败（缺 schema/方法），新版全部通过。首次夹具错误地用原生附件接口向 qa/ui 外写文件，5 项均在准备失败；修正夹具后重新验证旧版，不将最初夹具错误当产品缺陷。既有录制/环境和私密证据回归通过，原生两组日志为 10 项与 13 项，存在重复，不能相加作独立总数；最终环境引用返回值修改另跑新增 5 项通过。
+
+完整 5 配置类型检查、相关 4 文件 35 项 Vitest、lint、协议同步、size 和 diff 检查通过。初次宿主单测遇到早期同版本候选被 npm 锁缓存，明确失败；清除本项目该依赖及对应锁条目后重新安装，核验最终包 SHA-512 与 lock、安装源码及 export manifest 一致。初次类型检查的夹具类型错误已修正。并行 SDK/Electron 验证期间一项原预检测试超过既有 5 秒超时；保留失败，待相关进程结束按原设置重跑 35/35 通过，未削弱断言或延长超时。
+
+真实 SDK 使用 data-space 合成受管引用启动原生私密会话，并由宿主准备副本；未派发浏览器的该会话结束为 partial，保存未接通产品捕获的缺口。匿名真实 Chromium 打开、快照、定位、点击及关闭继续通过。隔离 Electron 技能发现、启停、重载持久、87 个直连 MCP 工具及重连通过；使用既有构建，不操作个人当前窗口。
+
+原生维护源已创建本地提交 f3de57b 和 c473a60，后者为最终分发来源，未推上游。正式本仓分发包为 0.1.15，SHA-256 adbbdbe25d927c8ab77d21a68c67f8f4178e523ceee5a7c8fbac135516b04042。旧包保留。早期 export 因 npm 缓存目录权限失败，后改用本任务自有缓存；早期 source-update.json 仅为初次同步清单，不代表最终源码，最终以 export manifest/包摘要为准。
+
+本轮完成“原生会话→宿主私有准备”的内部连接。产品 mcp-extension 仍未导入捕获/过滤链，私密 record 继续 unsupported。明确输入集合不证明任意项目依赖闭包；完整重连续录、实际目标 frame/target 支持、通用产品生命周期及 Electron 真实业务录制未完成。下一步将该绑定用于产品 MCP 连接选择、固定捕获及私有发布，再执行桌面全链验收。U00 完整计量、U03/U07 与 M1/M2 仍未完成。
+
+[本轮证据](ui-testing-evidence/optimization-u02-recording-session-binding.json)保留前后测试、精确源码、安装与SDK/Electron日志；工程产物与Electron项目文档分别保存，不将文件落盘称为应用文档索引已显示。plan_update不可用，沿用本文及阶段表，保留其他协作差异。

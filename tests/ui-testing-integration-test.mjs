@@ -6,7 +6,7 @@ import { tmpdir } from "node:os";
 import { join, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Type } from "typebox";
-import { ArtifactStore } from "pi-ui-testing";
+import { ArtifactStore, sha256 } from "pi-ui-testing";
 import {
 	createAgentSessionFromServices,
 	createAgentSessionServices,
@@ -17,6 +17,7 @@ import {
 import { ensureBuild } from "./lib/ensure-build.mjs";
 import { enableUiTesting } from "../scripts/enable-ui-testing.mjs";
 import { createPrivateBrowserStates } from "../plugins/data-space/private-browser-state.mjs";
+import { preparePrivateRecordingSession } from "../.pi/skills/ui-testing-workflow/assets/private-recording-session.mjs";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
 ensureBuild(repo, "ui-testing-integration");
@@ -313,6 +314,124 @@ try {
 	assert.equal(privateSetup.details.isError, true, JSON.stringify(privateSetup.content));
 	assert.match(JSON.stringify(privateSetup.content), /storageState/);
 	assert.equal(existsSync(join(target, "seed-executed")), false);
+	const privateStore = new ArtifactStore(target);
+	const source = await privateStore.putFile(
+		"qa/ui/scopes/private-binding/source.md",
+		"Observe only the synthetic capability heading.",
+	);
+	const envelope = (kind, data) => ({
+		schema_version: "1.0",
+		kind,
+		id: "private-binding",
+		created_at: new Date().toISOString(),
+		data,
+	});
+	const privateScope = await privateStore.put(
+		envelope("scope", {
+			project_id: "synthetic",
+			environment_id: "test",
+			role: "synthetic",
+			goal: "Observe synthetic heading",
+			base_url: "http://127.0.0.1:18981/",
+			allowed_actions: ["Observe synthetic fixture only"],
+			sources: [
+				{ source_id: "S1", oracle_type: "declaration", ref: source, statement: "Capability heading is visible" },
+			],
+			budget: { max_review_rounds: 3, max_tool_calls: 10 },
+		}),
+	);
+	const privateInventory = await privateStore.put(
+		envelope("inventory", { scope_ref: privateScope, features: [], unexplored: ["Real business behavior"] }),
+	);
+	const environmentRef = await privateStore.putFile(
+		"qa/ui/scopes/private-binding/environment.json",
+		JSON.stringify({
+			schema_version: "1.0",
+			environment_id: "test",
+			deployment_version: "synthetic",
+			role: "synthetic",
+			base_url: "http://127.0.0.1:18981/",
+			identity: { selector: "h1", text: "Fixture" },
+			initial_state: { selector: "h1", text: "Fixture" },
+			isolation: "context",
+			timeout_ms: 1000,
+			auth: prepared.auth,
+		}),
+	);
+	const seedRef = { path: "tests/seed.spec.ts", sha256: sha256(await readFile(join(target, "tests/seed.spec.ts"))) };
+	const configRef = { path: "playwright.config.mjs", sha256: sha256(await readFile(configPath)) };
+	const privateStart = JSON.parse(
+		(
+			await invoke("ui_discover_record", {
+				request: {
+					operation: "start",
+					configuration: {
+						id: "private-binding",
+						scope_ref: privateScope,
+						inventory_ref: privateInventory,
+						initial_state_ref: source,
+						data_rules_ref: source,
+						seed_ref: seedRef,
+						output_file: "tests/private-binding.spec.ts",
+						backend,
+						project: "chromium",
+						max_steps: 10,
+						max_duration_ms: 60000,
+						max_no_progress: 3,
+						test_data: [],
+						private_recording: { environment_ref: environmentRef, input_refs: [configRef, seedRef] },
+					},
+				},
+			})
+		).content[0].text,
+	);
+	assert.equal(privateStart.status, "completed", JSON.stringify(privateStart));
+	const authority = join(temporary, "recording-authority");
+	await mkdir(authority, { mode: 0o700 });
+	const hostPreparation = await preparePrivateRecordingSession({
+		workspace: target,
+		authority,
+		sessionRef: privateStart.artifact_refs[0],
+	});
+	try {
+		await hostPreparation.snapshot.assertCurrent();
+		assert.deepEqual(hostPreparation.receipt.inputs, [
+			configRef,
+			seedRef,
+			environmentRef,
+			privateStart.artifact_refs[0],
+		]);
+		assert.equal(JSON.stringify(hostPreparation.receipt).includes("synthetic-only"), false);
+	} finally {
+		await hostPreparation.snapshot.revoke();
+	}
+	const privateFinish = JSON.parse(
+		(
+			await invoke("ui_discover_record", {
+				request: {
+					operation: "finish",
+					session_ref: privateStart.artifact_refs[0],
+					inventory_ref: privateInventory,
+					initial_state: "No browser started",
+					goal_reached: false,
+					gaps: ["Product private capture is not connected"],
+					completion: {
+						initial_state_rebuildable: false,
+						replaceable_data: false,
+						stable_locators: false,
+						assertion_sources: false,
+						cleanup_owned: false,
+					},
+				},
+			})
+		).content[0].text,
+	);
+	assert.equal(privateFinish.status, "completed", JSON.stringify(privateFinish));
+	assert.equal((await privateStore.load(privateFinish.artifact_refs[0])).data.status, "partial");
+	assert.equal(existsSync(join(target, "seed-executed")), false);
+	checks.push(
+		"native SDK private session binds host preparation; no browser or private output is opened, unfinished recording stays partial",
+	);
 	privateStates.dispose();
 	await writeFile(configPath, anonymousConfig);
 	checks.push("real execution-only data-space reference is rejected by SDK recording hook before seed execution");
