@@ -100,9 +100,10 @@ flowchart LR
 | 位置                                                                         | 职责与引入时机                                                              |
 | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | `server/agent/evaluation-evidence.ts`                                        | EC02：受控源读取、任务/尝试关联、持久采集接线                               |
-| `server/external-evaluation-runtime.ts`                                      | EC06：已实现宿主私有VZ环境生命周期；guest CLI协议/产品ExecutionAdapter仍待接通               |
+| `server/external-evaluation-runtime.ts`                                      | EC06：已实现宿主私有VZ生命周期及固定guest假CLI接线；产品ExecutionAdapter仍待完成               |
 | `server/external-evaluation-log.ts` | EC06：已实现宿主有界原始流/JSONL解析组件；执行器/持久游标接线仍待完成 |
 | `server/external-evaluation-guest.ts` | EC06：有界argv/stdin编码与guest分帧解析；假CLI协议已验证，产品接线待完成 |
+| `server/external-evaluation-guest-session.ts` | EC06：固定假CLI登记/worker串口、背压与独立日志；统一attempt/store与产品入口待接通 |
 | `plugins/agent-evaluation/{index,store,evaluate}.mjs`                        | EC01/EC03：注册、持久化、评分编排；不堆进一个入口                           |
 | `plugins/agent-evaluation/{adapters,evaluators,profiles}/`                   | Pi、原生测试、ATIF、数据空间证据适配；规则；声明式配置                      |
 | `plugins/agent-evaluation/{targets,executors,verifiers}/`                    | EC06 起：客户端档案、唯一首批执行后端、可信核验器                           |

@@ -12,7 +12,7 @@
 | EC03      | 工程范围完成               | [进展](EC03.md)：七条规则/指标、默认 profile、179 项单测、原生评分与重评零执行对照                                         |
 | EC04 | 进行中 | [实施与验收](EC04.md)：0.4.32评分作业发现/重启unknown卡片及权限子项通过，295项回归；AC39仍FAIL，M1未完成 |
 | EC05      | 适用范围完成               | [记录](EC05.md)：0.4.20分段上传/人工确认/统一离线报告，472项回归及两组实际Electron通过；限ATIF-v1.8严格profile/macOS arm64 |
-| EC06      | 环境/guest协议通过；执行器待接通 | [环境组件](EC06-runtime-diagnostics.json)与[guest协议](EC06-guest-diagnostics.json)通过Node/Electron Node模式验证；完整执行器及产品入口待接通             |
+| EC06      | 固定假CLI worker已接通；产品待完成 | [worker接线](EC06-guest-worker-diagnostics.json)通过真实崩溃恢复/取消/超时/64KiB回读；统一attempt/store、产物和产品入口待完成             |
 | EC07      | 待执行，依赖 EC06              | 环境组件已有整机收尾/恢复证据；EC06完整执行器未接通，不提前进入可信核验闭环                                                   |
 | EC08      | 用户暂缓真实实测           | 不沿用旧费用额度，当前不启动                                                                                               |
 | EC09      | 待执行，依赖 EC02–EC04     | 隔离数据空间专项与索引一致性                                                                                               |
@@ -359,3 +359,7 @@ AC14仅补普通任务采集写锁失败、可见错误与显式恢复，不代�
 ## EC06 假CLI guest协议
 
 [本轮证据](EC06-guest-diagnostics.json)：固定无网VZ内以argv向量和独立stdin文件启动假CLI，Node及Electron Node模式各七场景通过，三文件25项回归通过。含64KiB二进制、半行日志/final时仍运行、exit0无产物、真实等待FIFO取消和版本不匹配拒绝；guest帧不认证、不推导目标成功/VM停止。宿主环境worker与统一attempt/store/产品入口仍待接通，EC06未整体验收、EC07待前置。真实CLI/模型0，AC39/M1失败保持。
+
+## EC06 假CLI接入独立worker
+
+[本轮证据](EC06-guest-worker-diagnostics.json)：宿主私有生命周期现在可冻结固定假CLI夹具、argv/stdin并由独立worker传输和采集。真实控制端SIGKILL后同一worker/VM继续，恢复不重复登记或传输入；取消/超时保留缺guest EOF的interrupted日志，最终两路原字节校验后才能cleanup。四文件30项回归、Node与Electron Node模式接线及原环境故障回归通过。限固定可信假CLI，guest帧不认证，统一attempt/store/产物与产品管理入口仍未完成；EC06不整体验收、EC07待前置，真实CLI/模型0，AC39/M1失败保持。

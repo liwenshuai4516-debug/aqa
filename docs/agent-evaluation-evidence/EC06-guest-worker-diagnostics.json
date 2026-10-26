@@ -1,0 +1,101 @@
+{
+	"scope": "EC06 pinned trusted fake CLI connected to existing independent host environment worker; not full product ExecutionAdapter",
+	"baselineCommit": "4909e9c582727e350785c3c2ab5ae8262b3ac51b",
+	"status": "WORKER_GUEST_INTEGRATION_PASS; PRODUCT_EXECUTION_ADAPTER_PENDING",
+	"pluginVersion": "0.4.32",
+	"actualModelCalls": 0,
+	"actualAgentCliCalls": 0,
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-guest-worker/index.json",
+		"bytes": 156602,
+		"sha256": "b3204653746baf3f194346063b0033a49a1e2069b5ae0feee96a122872af734d"
+	},
+	"archiveFiles": 351,
+	"verification": {
+		"timestamp": "2026-10-26T08:54:43.487522+00:00",
+		"pluginFilesUnchanged": 29,
+		"finalSourceAndEmittedModulesMatchBothRuns": true,
+		"guestRawFilesVerified": 16,
+		"inputClaimsMatchFrozenWireBytes": true,
+		"bothFinalRootsReleasedAllAdmissions": true,
+		"allNativeStopProofsAndCleanupVerified": true,
+		"processReadOnlyObservations": {
+			"84901": "",
+			"84906": "",
+			"84960": "",
+			"84968": "",
+			"84977": "",
+			"84982": "",
+			"85023": "",
+			"85028": "",
+			"85829": "",
+			"85838": "",
+			"85880": "",
+			"85885": "",
+			"85897": "",
+			"85902": "",
+			"85958": "",
+			"85964": ""
+		},
+		"allObservedPidsAbsent": true,
+		"note": "No saved PID used for signaling. Native exit0/state0 is the stop proof; observations supplement it. Separate environment regression retains intentional unknown admission."
+	},
+	"raw": {
+		"node-first": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-guest-worker/files/node-first/result.json",
+			"bytes": 105618,
+			"sha256": "8a8fd989955adbf2e4fdadf77761334998849ab125543cdfa778d5478be86f47"
+		},
+		"node-validated": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-guest-worker/files/node-validated/result.json",
+			"bytes": 105618,
+			"sha256": "d3efffdb9976230de854c2beea62a88c079a08eeb66b27f981e3a423e7f5309d"
+		},
+		"electron-node": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-guest-worker/files/electron-node/result.json",
+			"bytes": 105622,
+			"sha256": "f27af80e9fc6a96098693626b8e755289fcd4c8688e5a9c3526dbb2b032906ce"
+		},
+		"environment-regression": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-guest-worker/files/environment-regression/result.json",
+			"bytes": 6899,
+			"sha256": "5a53aa994290d815298fde3adcd1a5e5a06c82de32020c65c8ac35870919db3a"
+		}
+	},
+	"platform": {
+		"system": "macOS26.6.2 arm64",
+		"node": "23.10.0",
+		"electronNode": "44.4.2",
+		"actualDesktopExecutionEntry": "NOT_IMPLEMENTED"
+	},
+	"implementation": [
+		"Optional pinned guest enrollment/argv/stdin frozen into existing intent fingerprint; no new Trial or backend.",
+		"Independent worker publishes one fsync input decision, transfers one pending ACK record at a time, serial Transform waits bounded stdout/stderr file writes.",
+		"Fresh query after real controller SIGKILL attaches to same worker/native instance; no input/launch replay.",
+		"Guest exit/error requests graceful stop then configured force; only native stopped event plus actual exit0 confirm environment stop. No business verdict inferred.",
+		"Final guest log snapshots durable; status/cleanup recheck required guest bytes/hash/EOF-interruption; active cursors remain volatile."
+	],
+	"validation": {
+		"unit": "4 files /30 tests PASS",
+		"typecheck": "All5 configurations PASS",
+		"node": "4 actual VM attempts PASS, final exact source verified",
+		"electronNode": "4 actual VM attempts PASS; Node mode only",
+		"environmentRegression": "PASS, including independent worker crash unknown/no-replay and retained gate",
+		"lint": "PASS",
+		"protocol": "structure/type-only/v33 PASS; historical tag heuristic SKIP",
+		"size": "PASS",
+		"clean": "Preview only; no deletions",
+		"diff": "PASS"
+	},
+	"retainedFailures": [
+		"First unit run: one failed assertion and one uncaught stream error in fixture; listener fixed. Second: one failed assertion due missing real leading frame newline. Final30 tests passed.",
+		"First integration was launched before fixture unit gate passed; retained as intermediate only. Final Node/Electron runs executed after corrected unit pass."
+	],
+	"remaining": [
+		"Only fixed trusted fake CLI; nonce does not authenticate hostile root guest. No arbitrary client/credential/network enrollment.",
+		"Host-private infrastructure only; no public plugin API, registered product TargetProfile/installer, unified TaskContract/store/ExecutionAdapter or actual UI entry.",
+		"No durable active protocol reconstruction after worker crash: unknown/no automatic replay retained.",
+		"No artifact collection/verifier, complete waiting/resource policy or skill/tool/management integration.",
+		"EC06/AC23–AC27 not fully accepted; EC07 waits. AC39 FAIL/M1 incomplete. Real client/model testing user-deferred."
+	]
+}

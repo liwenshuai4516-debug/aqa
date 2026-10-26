@@ -36,6 +36,19 @@ function fixture() {
 	return { root, runtime, attemptId, directory, intent, write };
 }
 describe("EC06 host VM lifecycle persistence", () => {
+	it("refuses mutated frozen guest input before any probe or execution", async () => {
+		const f = fixture();
+		const guest = { version: "ae-offline-fake-cli-1", target: {}, runner: {}, argv: ["echo"], stdinBase64: "" };
+		const intent = { ...f.intent, guest };
+		intent.fingerprint = createHash("sha256")
+			.update(JSON.stringify({ backend: intent.backend, timeoutMs: intent.timeoutMs, graceMs: intent.graceMs, guest }))
+			.digest("hex");
+		f.write("intent.json", intent);
+		expect((await f.runtime.status(f.attemptId)).state).toBe("prepared");
+		f.write("intent.json", { ...intent, guest: { ...guest, stdinBase64: "YQ==" } });
+		await expect(f.runtime.status(f.attemptId)).rejects.toMatchObject({ code: "EVIDENCE_GAP" });
+		expect(fs.readdirSync(f.directory)).toEqual(["intent.json"]);
+	});
 	it("refuses a changed frozen timeout before any probe or execution", async () => {
 		const f = fixture();
 		f.write("intent.json", { ...f.intent, timeoutMs: 2000 });

@@ -10,6 +10,12 @@ import { spawn, execFileSync, type ChildProcess } from "node:child_process";
 import { once } from "node:events";
 import { pipeline } from "node:stream/promises";
 import { ExternalEvaluationLog } from "./external-evaluation-log.js";
+import {
+	ExternalEvaluationGuestSession,
+	guestAssets,
+	guestInput,
+	type OfflineGuestSpec,
+} from "./external-evaluation-guest-session.js";
 
 type Identity = { path: string; sha256: string };
 export type VZEnrollment = { version: "vz-offline-1"; binary: Identity; kernel: Identity; initrd: Identity };
@@ -22,6 +28,7 @@ type Intent = {
 	backend: VZEnrollment;
 	timeoutMs: number;
 	graceMs: number;
+	guest?: OfflineGuestSpec;
 };
 type EnvironmentState =
 	| "prepared"
@@ -80,10 +87,17 @@ function readIntent(directory: string): Intent {
 		!Number.isInteger(value.graceMs) ||
 		value.graceMs < 50 ||
 		value.graceMs > 2000 ||
-		hash(JSON.stringify({ backend: value.backend, timeoutMs: value.timeoutMs, graceMs: value.graceMs })) !==
-			value.fingerprint
+		hash(
+			JSON.stringify({
+				backend: value.backend,
+				timeoutMs: value.timeoutMs,
+				graceMs: value.graceMs,
+				...(value.guest ? { guest: value.guest } : {}),
+			}),
+		) !== value.fingerprint
 	)
 		fail("EVIDENCE_GAP", "Launch configuration or identity changed");
+	if (value.guest) guestInput(value.guest);
 	return value;
 }
 function syncDirectory(directory: string) {
@@ -202,7 +216,7 @@ export class ExternalEvaluationRuntime {
 			fail("EVIDENCE_GAP", "Invalid launch intent");
 		return { directory, intent };
 	}
-	prepare(attemptId: string, backend: VZEnrollment, timeoutMs: number, graceMs: number) {
+	prepare(attemptId: string, backend: VZEnrollment, timeoutMs: number, graceMs: number, guest?: OfflineGuestSpec) {
 		if (
 			!uuid(attemptId) ||
 			!Number.isInteger(timeoutMs) ||
@@ -223,7 +237,19 @@ export class ExternalEvaluationRuntime {
 			kernel: { ...backend.kernel },
 			initrd: { ...backend.initrd },
 		};
-		const fingerprint = hash(JSON.stringify({ backend: frozen, timeoutMs, graceMs }));
+		const frozenGuest = guest
+			? {
+					version: guest.version,
+					target: { ...guest.target },
+					runner: { ...guest.runner },
+					argv: [...guest.argv],
+					stdinBase64: guest.stdinBase64,
+				}
+			: undefined;
+		if (frozenGuest) guestAssets(frozenGuest);
+		const fingerprint = hash(
+			JSON.stringify({ backend: frozen, timeoutMs, graceMs, ...(frozenGuest ? { guest: frozenGuest } : {}) }),
+		);
 		const directory = join(this.root, attemptId);
 		if (fs.existsSync(directory)) {
 			const prior = this.intent(attemptId).intent;
@@ -239,6 +265,7 @@ export class ExternalEvaluationRuntime {
 			nonce: randomUUID(),
 			fingerprint,
 			backend: frozen,
+			...(frozenGuest ? { guest: frozenGuest } : {}),
 			timeoutMs,
 			graceMs,
 		});
@@ -250,6 +277,7 @@ export class ExternalEvaluationRuntime {
 		if (!fileURLToPath(import.meta.url).endsWith(".js"))
 			fail("CAPABILITY_UNAVAILABLE", "Build the host runtime before launching an offline environment");
 		checkBackend(intent.backend);
+		if (intent.guest) guestAssets(intent.guest);
 		try {
 			publish(directory, "launch.json", {
 				action: "start",
@@ -340,6 +368,21 @@ export class ExternalEvaluationRuntime {
 				});
 				if (!confirmed || value.exit?.[0] !== 0 || value.exit?.[1] !== null)
 					fail("EVIDENCE_GAP", "Native stop was not confirmed");
+			}
+			if (intent.guest && value.stopConfirmed && !value.noEnvironmentStarted) {
+				for (const channel of ["stdout", "stderr"]) {
+					const bytes = readBytes(join(directory, `guest-${channel}.raw`)),
+						manifest = value.guest?.logs?.[channel];
+					if (
+						bytes.length > 65536 ||
+						manifest?.storedBytes !== bytes.length ||
+						hash(bytes) !== manifest.sha256 ||
+						manifest.durable !== true ||
+						typeof manifest.streamEnded !== "boolean" ||
+						manifest.interrupted !== !manifest.streamEnded
+					)
+						fail("EVIDENCE_GAP", "Guest log proof is missing or changed");
+				}
 			}
 			return value;
 		}
@@ -447,7 +490,8 @@ async function supervise(directory: string) {
 	});
 	let child: ChildProcess | undefined, timer: ReturnType<typeof setInterval> | undefined;
 	let stdout: ExternalEvaluationLog | undefined, stderr: ExternalEvaluationLog | undefined;
-	let cancellation: { reason: "cancelled" | "timed-out"; at: number } | undefined,
+	let guest: ExternalEvaluationGuestSession | undefined;
+	let cancellation: { reason: "cancelled" | "timed-out" | "ended" | "start-failed"; at: number } | undefined,
 		forced = false,
 		childStarted = false;
 	let runtimeFailure: string | undefined;
@@ -460,13 +504,28 @@ async function supervise(directory: string) {
 			stdio: ["pipe", "pipe", "pipe"],
 			env: { PATH: "/usr/bin:/bin:/usr/sbin:/sbin" },
 		});
+		const spawned = once(child, "spawn");
 		childExit = once(child, "exit") as Promise<[number | null, NodeJS.Signals | null]>;
 		childExit.catch(() => {});
-		// stderr belongs to the enrolled native helper; guest console output is never lifecycle authority.
-		const captured = Promise.all([pipeline(child.stdout!, stdout), pipeline(child.stderr!, stderr)]);
-		captured.catch(() => {});
-		await once(child, "spawn");
+		await spawned;
 		childStarted = true;
+		// stderr belongs to the enrolled native helper; guest console output is never lifecycle authority.
+		if (intent.guest)
+			guest = await ExternalEvaluationGuestSession.create(
+				directory,
+				child.stdin!,
+				intent.nonce,
+				intent.guest,
+				(sha256) => publish(directory, "guest-input.json", { nonce: intent.nonce, instance, sha256 }),
+			);
+		const captured = Promise.all([
+			guest ? pipeline(child.stdout!, guest.serial, stdout) : pipeline(child.stdout!, stdout),
+			pipeline(child.stderr!, stderr),
+		]);
+		captured.catch((error) => {
+			runtimeFailure = String(error).slice(0, 1000);
+			child!.kill("SIGUSR1");
+		});
 		publish(directory, "native-handle.json", {
 			pid: child.pid,
 			nativeStart: nativeStart(child.pid!),
@@ -481,8 +540,24 @@ async function supervise(directory: string) {
 				const running = events.some((entry) => (entry.value as any)?.event === "running");
 				const cancelFile = join(directory, "cancel.json");
 				const requested = fs.existsSync(cancelFile) && read(cancelFile).nonce === intent.nonce;
-				if (!cancellation && (requested || performance.now() - began >= intent.timeoutMs)) {
-					cancellation = { reason: requested ? "cancelled" : "timed-out", at: performance.now() };
+				if (running && !cancellation && !requested && performance.now() - began < intent.timeoutMs) guest?.poll();
+				if (
+					!cancellation &&
+					(requested ||
+						performance.now() - began >= intent.timeoutMs ||
+						(guest?.reportedExit !== null && guest?.reportedExit !== undefined) ||
+						guest?.reportedError)
+				) {
+					cancellation = {
+						reason: requested
+							? "cancelled"
+							: performance.now() - began >= intent.timeoutMs
+								? "timed-out"
+								: guest?.reportedError
+									? "start-failed"
+									: "ended",
+						at: performance.now(),
+					};
 					publish(directory, "cancelling.json", { ...cancellation, nonce: intent.nonce, instance });
 					child!.kill("SIGUSR2");
 				}
@@ -506,6 +581,7 @@ async function supervise(directory: string) {
 								instance,
 								state: cancellation ? "cancelling" : running ? "running" : "starting",
 								stopConfirmed: false,
+								...(guest ? { guest: guest.snapshot() } : {}),
 								logCursors: {
 									console: stdout!.snapshot().storedBytes,
 									native: stderr!.snapshot().storedBytes,
@@ -526,6 +602,7 @@ async function supervise(directory: string) {
 		const exit = await childExit;
 		clearInterval(timer);
 		await captured;
+		const guestResult = await guest?.finish();
 		const events = stderr.snapshot().entries;
 		const stopConfirmed =
 			exit[0] === 0 &&
@@ -543,11 +620,13 @@ async function supervise(directory: string) {
 			forced,
 			error: runtimeFailure,
 			logs: { console: stdout.snapshot(), native: stderr.snapshot() },
+			...(guestResult ? { guest: guestResult } : {}),
 		});
 	} catch (error) {
 		if (child && child.exitCode === null && child.signalCode === null) child.kill("SIGUSR1");
 		if (stdout && !stdout.destroyed) stdout.destroy();
 		if (stderr && !stderr.destroyed) stderr.destroy();
+		if (guest) await guest.finish().catch(() => {});
 		if (!fs.existsSync(join(directory, "result.json")))
 			publish(directory, "result.json", {
 				attemptId: intent.attemptId,
