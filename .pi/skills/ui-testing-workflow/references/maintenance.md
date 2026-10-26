@@ -2,20 +2,21 @@
 
 ## 文件归属
 
-| 维护内容                                     | 唯一位置                                                                                                        |
-| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| 技能名称、描述、调度入口                     | `../SKILL.md`                                                                                                   |
-| 原版工作流分发包                             | `../assets/pi-ui-testing-0.1.15.tgz`                                                                            |
-| 原生测试 MCP 适配                            | `../assets/mcp-extension.mjs`                                                                                   |
-| Chromium 执行配置                            | `../assets/playwright.config.mjs`                                                                               |
-| 录制 seed 前置校验                           | `../assets/recording-preflight.mjs`（由 MCP 执行钩子调用，不另建 runner）                                       |
-| 私有录制输入副本及受管身份派生（内部未接入） | `../assets/private-recording-workspace.mjs`（仅明确摘要输入、子进程引用、请求取消及发布前复验；不开放录制入口） |
-| 私密录制连接/请求守卫（内部未接入）          | `../assets/private-recording-transport.mjs`（真实SDK/MCP使用的生命周期薄适配；过滤与原生writer由调用方负责）    |
-| 八个阶段技能、schema、runner 与评估规则      | 安装后的 `node_modules/pi-ui-testing/`，修改上游源码后重新分发，不直接改安装目录                                |
-| E2E 依赖与版本锁                             | 仓库 `tools/e2e/package.json`、`package-lock.json`                                                              |
-| 项目/应用登记                                | 仓库 `scripts/enable-ui-testing.mjs`                                                                            |
-| 管理页与快捷发现的公共逻辑                   | `server/skill/`、`server/settings-service.ts`、`server/slash-commands.ts`                                       |
-| 测试资产与执行证据                           | 被测工作区 `qa/ui/`，不写进技能目录                                                                             |
+| 维护内容                                | 唯一位置                                                                                                        |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| 技能名称、描述、调度入口                | `../SKILL.md`                                                                                                   |
+| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.15.tgz`                                                                            |
+| 原生测试 MCP 适配                       | `../assets/mcp-extension.mjs`                                                                                   |
+| 产品私密连接准备与握手                  | `../assets/private-recording-connection.mjs`（原生过滤复用，仅握手；不开放浏览器动作）                          |
+| Chromium 执行配置                       | `../assets/playwright.config.mjs`                                                                               |
+| 录制 seed 前置校验                      | `../assets/recording-preflight.mjs`（由 MCP 执行钩子调用，不另建 runner）                                       |
+| 私有录制输入副本及受管身份派生          | `../assets/private-recording-workspace.mjs`（仅明确摘要输入、子进程引用、请求取消及发布前复验；不开放录制入口） |
+| 私密录制连接/请求守卫                   | `../assets/private-recording-transport.mjs`（产品握手及内部SDK/MCP原型复用；过滤与原生writer由调用方负责）      |
+| 八个阶段技能、schema、runner 与评估规则 | 安装后的 `node_modules/pi-ui-testing/`，修改上游源码后重新分发，不直接改安装目录                                |
+| E2E 依赖与版本锁                        | 仓库 `tools/e2e/package.json`、`package-lock.json`                                                              |
+| 项目/应用登记                           | 仓库 `scripts/enable-ui-testing.mjs`                                                                            |
+| 管理页与快捷发现的公共逻辑              | `server/skill/`、`server/settings-service.ts`、`server/slash-commands.ts`                                       |
+| 测试资产与执行证据                      | 被测工作区 `qa/ui/`，不写进技能目录                                                                             |
 
 原版包来源提交：`c473a606323c8f3ac40341fe2ee263f6403031c5`（上游本地提交；未推送上游远端）。
 SHA-256：`adbbdbe25d927c8ab77d21a68c67f8f4178e523ceee5a7c8fbac135516b04042`。0.1.4 仅在一次引用核验内按 path+sha256 复用成功读取；不同摘要、后续调用及并发调用仍独立核验，不增加跨请求缓存，不改变批准或产物协议。
@@ -91,3 +92,7 @@ MCP 运行时选择由 `assets/playwright-runtime.mjs` 负责：CLI 与配置均
 录制配置检查补充：`recording-preflight-reporter.mjs`通过目标Playwright公开Reporter API只返回项目名、testDir、测试文件及storageState配置布尔值，不序列化use原值、metadata或收集错误。所选project的storageState（含继承配置及contextOptions）暂时阻塞；其他project不连带阻塞。该检查在实际SDK setup钩子生效，不读取状态文件，不执行seed；数据空间execute引用仍可用于原正式执行入口。只覆盖配置层，不能检测seed/test.use或自定义fixture运行时自行注入认证，也不解决配置收集与MCP执行间的修改竞态，不作为通用隐私保证。产品私密record继续unsupported。
 
 0.1.15为原生录制启动契约增加可选`private_recording:{environment_ref,input_refs}`，校验同范围环境ID/角色/入口、受管独立context、唯一输入集合及seed摘要；每次新动作前再验认证，过期保留status/finish和已初始化context的close。`RecordingService.privateContext`从已核验会话返回公开环境/输入引用。宿主内部`private-recording-session.mjs`据此复用原生PrivateEvidence及既有私有工作区模块，将环境文件和session本身一并冻结到副本输入，回执不含认证内容/私有路径。真实SDK已验证该绑定、宿主准备和未启浏览器时partial结束；产品MCP仍未接入捕获/过滤，不因启动契约可用而开放私密record。输入集合仍需显式登记依赖，不证明任意依赖闭包。
+
+产品连接阶段现已接入：原生私密start成功后，`mcp-extension.mjs`自动准备并同名替换`ui-playwright-test`，仅在私有副本中启动MCP握手；`private-recording-connection.mjs`将原始协议保存在私有目录，交SDK前复用原生`PrivateEvidence.process`过滤已知初始值。连接仅允许initialize、initialized/cancelled通知、ping及tools/list，浏览器/资源调用继续阻塞；该回执表示准备完成，不承诺异步连接已就绪。准备失败保留原生session供partial结束，不退回匿名；finish撤销身份并异步恢复匿名连接。shutdown、旧连接和迟到准备不得接入新会话；重新连接不复用已撤销快照，不声称完整续录。握手/协议请求也绑定取消并在SDK正常完成前解绑。
+
+无关MCP注册复用锁定SDK 1.2.0的`extensions/mcp/runtime.js`导出`createDefaultTransport`（从其ESM入口定位；升级SDK时须核对该内部模块路径与接口），避免另写配置/认证解析。SDK与隔离Electron已验证加载、87工具、启停/重载及重连；真实私密浏览器捕获、动态值收集和原生草稿安全发布仍未接入，数据空间record继续unsupported。证据见[产品连接阶段](../../../../docs/ui-testing-evidence/optimization-u02-recording-product-connection.json)。

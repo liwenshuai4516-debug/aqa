@@ -1,7 +1,7 @@
 /** Exercise package discovery and the real SDK/MCP binding without model or business requests. */
 import assert from "node:assert/strict";
 import { existsSync, realpathSync } from "node:fs";
-import { cp, copyFile, mkdtemp, mkdir, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { cp, copyFile, mkdtemp, mkdir, readFile, readdir, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, sep } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -17,7 +17,6 @@ import {
 import { ensureBuild } from "./lib/ensure-build.mjs";
 import { enableUiTesting } from "../scripts/enable-ui-testing.mjs";
 import { createPrivateBrowserStates } from "../plugins/data-space/private-browser-state.mjs";
-import { preparePrivateRecordingSession } from "../.pi/skills/ui-testing-workflow/assets/private-recording-session.mjs";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
 ensureBuild(repo, "ui-testing-integration");
@@ -360,9 +359,11 @@ try {
 	);
 	const seedRef = { path: "tests/seed.spec.ts", sha256: sha256(await readFile(join(target, "tests/seed.spec.ts"))) };
 	const configRef = { path: "playwright.config.mjs", sha256: sha256(await readFile(configPath)) };
+	// SDK result hooks run through executeTool; directly invoking a definition skips that part of the pipeline.
+	const invokeRecording = (input) => invoke("integration_native_call", { tool: "ui_discover_record", input });
 	const privateStart = JSON.parse(
 		(
-			await invoke("ui_discover_record", {
+			await invokeRecording({
 				request: {
 					operation: "start",
 					configuration: {
@@ -386,28 +387,48 @@ try {
 		).content[0].text,
 	);
 	assert.equal(privateStart.status, "completed", JSON.stringify(privateStart));
-	const authority = join(temporary, "recording-authority");
-	await mkdir(authority, { mode: 0o700 });
-	const hostPreparation = await preparePrivateRecordingSession({
-		workspace: target,
-		authority,
-		sessionRef: privateStart.artifact_refs[0],
-	});
-	try {
-		await hostPreparation.snapshot.assertCurrent();
-		assert.deepEqual(hostPreparation.receipt.inputs, [
-			configRef,
-			seedRef,
-			environmentRef,
-			privateStart.artifact_refs[0],
-		]);
-		assert.equal(JSON.stringify(hostPreparation.receipt).includes("synthetic-only"), false);
-	} finally {
-		await hostPreparation.snapshot.revoke();
+	const receipt = privateStart.output.private_preparation;
+	assert.equal(privateStart.output.recording, "blocked-capture-not-connected");
+	assert.deepEqual(receipt.inputs, [configRef, seedRef, environmentRef, privateStart.artifact_refs[0]]);
+	assert.equal(JSON.stringify(receipt).includes("synthetic-only"), false);
+	const sessionDirectory = join(agentDir, "sessions");
+	const privateDeadline = Date.now() + 30000;
+	let handshakeFiles = [];
+	while (Date.now() < privateDeadline) {
+		handshakeFiles = (await readdir(sessionDirectory, { recursive: true })).filter((path) =>
+			/handshake-\d+\.json$/.test(path),
+		);
+		if (handshakeFiles.length >= 2) break;
+		await new Promise((resolve) => setTimeout(resolve, 50));
 	}
+	assert.ok(handshakeFiles.length >= 2, "Product private MCP handshake did not complete");
+	const replies = await Promise.all(
+		handshakeFiles.map(async (path) => JSON.parse(await readFile(join(sessionDirectory, path), "utf8"))),
+	);
+	assert.ok(replies.some((message) => message.result?.tools?.some((tool) => tool.name === "generator_setup_page")));
+	const derivedStates = (await readdir(sessionDirectory, { recursive: true })).filter((path) =>
+		/recording-[^/]+\/state\.json$/.test(path),
+	);
+	assert.equal(derivedStates.length, 1);
+	const privateAction = JSON.parse(
+		(
+			await invokeRecording({
+				request: {
+					operation: "action",
+					session_ref: privateStart.artifact_refs[0],
+					operation_id: "private-setup",
+					tool: "generator_setup_page",
+					input: { project: "chromium", seedFile: seedRef.path, plan: "Must remain blocked" },
+					intent: "Verify private browser calls stay blocked until capture is connected",
+				},
+			})
+		).content[0].text,
+	);
+	assert.equal(privateAction.status, "blocked");
+	assert.match(JSON.stringify(privateAction), /捕获与发布尚未接通/);
 	const privateFinish = JSON.parse(
 		(
-			await invoke("ui_discover_record", {
+			await invokeRecording({
 				request: {
 					operation: "finish",
 					session_ref: privateStart.artifact_refs[0],
@@ -429,11 +450,22 @@ try {
 	assert.equal(privateFinish.status, "completed", JSON.stringify(privateFinish));
 	assert.equal((await privateStore.load(privateFinish.artifact_refs[0])).data.status, "partial");
 	assert.equal(existsSync(join(target, "seed-executed")), false);
+	for (const state of derivedStates) assert.equal(existsSync(join(sessionDirectory, state)), false);
 	checks.push(
-		"native SDK private session binds host preparation; no browser or private output is opened, unfinished recording stays partial",
+		"product private session automatically prepares and handshakes through MCP; browser action is blocked, finish stays partial and revokes authentication",
 	);
 	privateStates.dispose();
 	await writeFile(configPath, anonymousConfig);
+	const restoredDeadline = Date.now() + 30000;
+	while (
+		!required.every((name) => session.agent.state.tools.some((tool) => tool.name === backend + name)) &&
+		Date.now() < restoredDeadline
+	)
+		await new Promise((resolve) => setTimeout(resolve, 50));
+	assert.ok(
+		required.every((name) => session.agent.state.tools.some((tool) => tool.name === backend + name)),
+		"Anonymous MCP did not become callable after private finish",
+	);
 	checks.push("real execution-only data-space reference is rejected by SDK recording hook before seed execution");
 	const setup = await invoke("integration_native_call", {
 		tool: backend + "generator_setup_page",

@@ -1,0 +1,335 @@
+{
+	"schema_version": "1.0",
+	"date": "2026-10-26",
+	"stage": "U02 product private MCP preparation, handshake and lifecycle",
+	"status": "PRODUCT_PRIVATE_HANDSHAKE_PASSED_BROWSER_RECORDING_BLOCKED",
+	"baseCommit": "1ce26dbc817c17ae13210fee62d289b3a5f0d2ff",
+	"planComplete": false,
+	"nativeVersion": "0.1.15",
+	"sdkVersion": "1.2.0",
+	"playwrightVersion": "1.62.1",
+	"nativePackageSha256": "adbbdbe25d927c8ab77d21a68c67f8f4178e523ceee5a7c8fbac135516b04042",
+	"modelCalls": 0,
+	"formalRuns": 0,
+	"businessWrites": 0,
+	"unit": {
+		"files": 8,
+		"passed": 54,
+		"newConnectionTests": 5,
+		"newExtensionTests": 4
+	},
+	"oldGuardControl": {
+		"passed": 4,
+		"failed": 1,
+		"failure": "late protocol response after cancellation"
+	},
+	"sdk": {
+		"status": "passed",
+		"checks": 21,
+		"automaticPreparation": true,
+		"privateHandshake": true,
+		"privateBrowserDispatch": "blocked",
+		"finish": "partial",
+		"derivedAuthenticationRevoked": true,
+		"anonymousBrowser": "passed"
+	},
+	"electron": {
+		"status": "PASS",
+		"checks": 7,
+		"mcpTools": 87,
+		"isolatedDirectories": true,
+		"realPmsPrivateRecording": false
+	},
+	"validation": {
+		"typecheck": "PASS: all five configurations",
+		"lint": "PASS",
+		"protocol": "PASS: structure; history heuristic SKIP (no tag)",
+		"layout": "PASS",
+		"diff": "PASS",
+		"size": "PASS: before and after archive",
+		"clean": "preview only, no deletion"
+	},
+	"ledgerSha256": {
+		"u05-authorized-review-budget.json": "34aaec3d27776ad96474be83f0be5a4eebe001fb41467afc69a4372c2b7e31ec",
+		"pms-anonymous-authorized-review-budget.json": "854cec9cb4cb8574adcdec3163d7fd2953ab1016be4c9799f48a2cfa7bba87c3"
+	},
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-u02-recording-product-connection.tar.gz",
+		"sha256": "cb403ed4fde1edaf41c9d7de1d019a4f9490ae09f65153f3b40b73899231ecb2",
+		"bytes": 2370634,
+		"files": 62,
+		"roundtripVerified": true
+	},
+	"members": {
+		"sources/.pi/skills/ui-testing-workflow/SKILL.md": {
+			"sha256": "963c916695f5b636670d4edbb63121cdb3cd79fb696fc52a2ce3258e8348a228",
+			"bytes": 3481
+		},
+		"sources/.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs": {
+			"sha256": "50fe84829dc77905f6ce9ee5265ce81b93d3854be5c9393d7bea9ca80beb3a83",
+			"bytes": 5078
+		},
+		"sources/.pi/skills/ui-testing-workflow/assets/private-recording-connection.mjs": {
+			"sha256": "fb1a4705db6d7cb269bfabe4e3e1754c8478558d44995cf00811cc9a48237e94",
+			"bytes": 1884
+		},
+		"sources/.pi/skills/ui-testing-workflow/assets/private-recording-session.mjs": {
+			"sha256": "ec72b44e46f59007a4604d8717c9f96b97d2abcef3005a53c78661d72b353d47",
+			"bytes": 1368
+		},
+		"sources/.pi/skills/ui-testing-workflow/assets/private-recording-transport.mjs": {
+			"sha256": "3a09221b553794b352a4447fd9cb9545477eb49f9c65a727079da9e09640f54e",
+			"bytes": 4568
+		},
+		"sources/.pi/skills/ui-testing-workflow/assets/private-recording-workspace.mjs": {
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		"sources/.pi/skills/ui-testing-workflow/assets/playwright-runtime.mjs": {
+			"sha256": "fcacd670068659d35d4d1a900cf163a0692daaee47011e7c0c02253a6254cd49",
+			"bytes": 1281
+		},
+		"sources/.pi/skills/ui-testing-workflow/references/maintenance.md": {
+			"sha256": "25a40527e391ba5169cd4c1d5ec9164de49381f62094a65f2864d7199f87014b",
+			"bytes": 15145
+		},
+		"sources/docs/directory-reference.md": {
+			"sha256": "83a02ce710fe590dbff67b8a96ec678783257e1a5d6a4b19a8053d8032fadc32",
+			"bytes": 57203
+		},
+		"sources/docs/project-map.md": {
+			"sha256": "e0b3bf2f827b15005b27a83b8ccaafc6d45a8bde87914ed176cd2f940a2c26e0",
+			"bytes": 23878
+		},
+		"sources/docs/ui-testing-optimization-plan.md": {
+			"sha256": "eae77367762d5f4abd5c2783bc1dc1bfa7327f5d782cf3a8dac5d55a76b0641c",
+			"bytes": 49472
+		},
+		"sources/docs/ui-testing-optimization-execution.md": {
+			"sha256": "7709db6d6dca1174c16d42d7cbdef6be204a89659803aa44e6ed0e4b80759a9a",
+			"bytes": 252133
+		},
+		"sources/tests/ui-testing-integration-test.mjs": {
+			"sha256": "8ba4ff18f136ecce9126fe5e58b5a52ee9ce56842b61ce9450d2f5d7c17853c5",
+			"bytes": 24405
+		},
+		"sources/tests/ui-testing-visibility-test.mjs": {
+			"sha256": "6ca84c18a6c8f97f8857d2033f2dfc83d9766b6f027c5d861ab30ffaffa9a454",
+			"bytes": 8658
+		},
+		"sources/tests/unit/ui-private-recording-connection.test.ts": {
+			"sha256": "342c845ae621cf06d4bc7c60ad255416300cd6504c738404735e93e8a34f9cae",
+			"bytes": 7588
+		},
+		"sources/tests/unit/ui-private-recording-extension.test.ts": {
+			"sha256": "6e0bb716da31a927ce11be82cafe92e980c78509297c46b75fc0e5b4f879a10b",
+			"bytes": 6059
+		},
+		"sources/tests/unit/ui-private-recording-workspace.test.ts": {
+			"sha256": "9497c5100a8e947556dede1bef28043208cb9098b7c8a69844b8dfb26c7d8f94",
+			"bytes": 14754
+		},
+		"sources/tests/unit/ui-private-recording-transport.test.ts": {
+			"sha256": "fe3e31813346d7bb4876039c551f31cbe3cc11af8544272293f0fe8316854785",
+			"bytes": 10678
+		},
+		"sources/tests/unit/ui-private-recording-storage-events.test.ts": {
+			"sha256": "593cf90202a6c57b89c24f3c5cd40ab686cc6edadd05fc92d7f6f5f66321949c",
+			"bytes": 7536
+		},
+		"sources/tests/unit/ui-recording-preflight.test.ts": {
+			"sha256": "ada50710c6cfd3605f79cbb0df858fda9414fba9d84f538249975b346539812a",
+			"bytes": 3861
+		},
+		"sources/tests/unit/ui-testing-registration.test.ts": {
+			"sha256": "835f65527d71415a8ff1716542101fee3927bbbc6eb8f9dfcf04792da5813772",
+			"bytes": 2728
+		},
+		"sources/tests/unit/skill-capability-settings.test.ts": {
+			"sha256": "d4bccf218944b64fba9aa4e57db21b8f894d23c370b078c24b93b9b082baa249",
+			"bytes": 7464
+		},
+		"sources/node_modules/@earendil-works/pi-coding-agent/dist/extensions/mcp/runtime.js": {
+			"sha256": "be9e8eea88363f2fefaea2c25c854845393f112394ee5989d22facd2f1acea6e",
+			"bytes": 16113
+		},
+		"sources/node_modules/@earendil-works/pi-coding-agent/dist/extensions/mcp/index.js": {
+			"sha256": "c0570b9d256120a1df9b65a015964076dff6a3710646e041fcb2770ae7132fde",
+			"bytes": 61680
+		},
+		"sources/tools/e2e/node_modules/pi-ui-testing/dist/private-evidence.js": {
+			"sha256": "989dc9cf6fae12a5727896ebf35a62fc1d75263427c47518e4f294dd92b90484",
+			"bytes": 17319
+		},
+		"sources/tools/e2e/node_modules/pi-ui-testing/dist/extension.js": {
+			"sha256": "38b4fc4dd3e43e6dc0ce5b84065aee0be995c058cb031446f3cac8a5fc137f74",
+			"bytes": 8096
+		},
+		"stage/unit-final.log": {
+			"sha256": "60a6a5bd12aee46af03f1981b87f256afa0c41e673c2a6bd88b4f3c1b1998e85",
+			"bytes": 198
+		},
+		"stage/baseline-test.ts": {
+			"sha256": "db01cb52ea1fcfefbb3b19eb891edbae4d36a2b528808d1de5efe79d20450578",
+			"bytes": 7578
+		},
+		"stage/baseline-connection.mjs": {
+			"sha256": "be19fc44f3fa4b68c825824e2e70fe1a9cc34f84540a8b3d76eb974b1f2549b4",
+			"bytes": 1952
+		},
+		"stage/sdk-initial.log": {
+			"sha256": "fe94adeeadc1029269c2cc4a6624a957e525c8a6efd3edad2d24b5cdd62eb7c4",
+			"bytes": 1200
+		},
+		"stage/sdk-final.log": {
+			"sha256": "1d4a21a1bbb2072a0b94fbe13edfba5f29d846572837930fa628ccbda39277ee",
+			"bytes": 6835
+		},
+		"stage/handshake-cancellation-baseline-final.log": {
+			"sha256": "90ec40be20648e2aaa58236c0ff81480d08dca77061ea83983c68ff48757195e",
+			"bytes": 1292
+		},
+		"stage/project-report.md": {
+			"sha256": "9b859966e8dc1eb00c00c54914789fd35d062cab5fd99e78db01ad0de53a101e",
+			"bytes": 2420
+		},
+		"stage/typecheck-final.log": {
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		"stage/typecheck-initial.log": {
+			"sha256": "1c6d85f4979887640136cafbac15c74be36d783f76f519b9c2696206e444f8da",
+			"bytes": 610
+		},
+		"stage/size-before-archive.log": {
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+			"bytes": 1089
+		},
+		"stage/electron.log": {
+			"sha256": "6691b95c12add5633fc315bea134ed1e2baf2292848950e1dac4bf2aee684f8d",
+			"bytes": 886
+		},
+		"stage/lint.log": {
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+			"bytes": 88
+		},
+		"stage/baseline-test-final.ts": {
+			"sha256": "4f6368bbf7b0b8c1efd12173f7eed1d29b81699614dea559f9340c0ef99b9e80",
+			"bytes": 7643
+		},
+		"stage/layout.log": {
+			"sha256": "803c4a54f00744a8af664f59b8a7e3b24130bbf7633b6642e6f3b8f9595fa77a",
+			"bytes": 803
+		},
+		"stage/handshake-cancellation-baseline.log": {
+			"sha256": "eef2798a661a588a75c4a19b5446b14259f444fead1d547c070b81617b090f7a",
+			"bytes": 1292
+		},
+		"stage/unit-initial.log": {
+			"sha256": "8a9ba8315cd33dd039182e865c14c8c6075852c5c803dcab02f96d463e016d6c",
+			"bytes": 1149
+		},
+		"stage/sdk-final-verified.log": {
+			"sha256": "0dad0e0ce236a46225f9f86880500fa51152eec4fe7f9b67e4407636dc4f362d",
+			"bytes": 1912
+		},
+		"stage/typecheck.log": {
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		"stage/size-final.log": {
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+			"bytes": 1089
+		},
+		"stage/sdk-second.log": {
+			"sha256": "f6aabd8c03751c58167d29aef625aa2ce696080ae8b50e036da64394daac0903",
+			"bytes": 379
+		},
+		"stage/baseline-guard.mjs": {
+			"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+			"bytes": 4568
+		},
+		"stage/sdk-browser.log": {
+			"sha256": "0dad0e0ce236a46225f9f86880500fa51152eec4fe7f9b67e4407636dc4f362d",
+			"bytes": 1912
+		},
+		"stage/unit.log": {
+			"sha256": "8a9ba8315cd33dd039182e865c14c8c6075852c5c803dcab02f96d463e016d6c",
+			"bytes": 1149
+		},
+		"stage/archive.py": {
+			"sha256": "4861b4b6187b81df832f27010e68dfe1e5954dcce7cb46c70302d4d25fb91bbb",
+			"bytes": 5418
+		},
+		"stage/protocol.log": {
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"bytes": 360
+		},
+		"stage/clean-final.log": {
+			"sha256": "11edff7f359e5c0ad036bad6ca5caf7ef19274615efa33463fcabe76958226e5",
+			"bytes": 609
+		},
+		"stage/extension-unit-initial.log": {
+			"sha256": "0e61a6950f1fb8768b967e615033740127d15bd8740ed7d33eeea823044835a4",
+			"bytes": 208
+		},
+		"stage/diff.log": {
+			"sha256": "f0306ef389b79dcafa88a3e6b269e72dd09c967683e80181d7125479eb7a995e",
+			"bytes": 128
+		},
+		"stage/sdk-third.log": {
+			"sha256": "51f5f549c01c4bb51aa3d41c4920dc586e89e30b4e8c2eb199b1897741bf79b6",
+			"bytes": 440
+		},
+		"electron/result.json": {
+			"sha256": "b0a888650d02faf7f3c2f6a2e12ac74c6f7028e18d11bf68a5ee6c263e96aa7e",
+			"bytes": 780
+		},
+		"electron/slash-ui.png": {
+			"sha256": "f2fba9aebcc59b87a083409b4dbac5e52c6279a0601ad00138d6bc461378f0e4",
+			"bytes": 507344
+		},
+		"electron/mcp-status.png": {
+			"sha256": "d1a37bfe5289ba81da4e1d0818d3b949d36a0526ab3bcd7aa2ab93c7956a9a57",
+			"bytes": 461024
+		},
+		"electron/desktop.log": {
+			"sha256": "705f35268de0840afcdcc6fbce6705e3567c1127d58ad4cfea45abfbe485de92",
+			"bytes": 1828
+		},
+		"electron/before-skills.png": {
+			"sha256": "56e320518834456aedae8310e7a2670c94ba329dbed26fd7f7b738fc617524f6",
+			"bytes": 387656
+		},
+		"electron/after-skills.png": {
+			"sha256": "351fb6e254a4a3b79ee2ae3866767c2cf449e55a9b5d362bffed0cb673049478",
+			"bytes": 387676
+		},
+		"electron/discovery-restored.png": {
+			"sha256": "8931015d9ad479868b24d54e1cc153a3fff6de6fa8fff90a36ce966ef11ffa40",
+			"bytes": 479282
+		}
+	},
+	"limits": [
+		"Only protocol handshake is connected; browser capture, dynamic secret observation and native writer publication are not integrated",
+		"Preparation receipt does not promise asynchronous connection readiness",
+		"Explicit inputs do not prove an arbitrary dependency closure",
+		"No full reconnect/resume, real frame/target or PMS role/data acceptance",
+		"SDK default transport uses an internal module of locked SDK 1.2.0; verify on upgrades",
+		"Early failure logs are preserved; not every intermediate source revision was separately retained",
+		"Raw synthetic authentication and protocol captures were cleaned with their owned test fixtures; private retention was asserted during their lifecycle",
+		"Document files are stored in the project directory without an application document index"
+	],
+	"projectStorage": {
+		"systemId": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+		"document": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-recording-product-connection-2026-10-26.md",
+		"snapshot": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/recording-product-connection-1793009518545",
+		"documentSha256": "9b859966e8dc1eb00c00c54914789fd35d062cab5fd99e78db01ad0de53a101e",
+		"archiveSha256": "cb403ed4fde1edaf41c9d7de1d019a4f9490ae09f65153f3b40b73899231ecb2",
+		"storeSha256": "9e4177c773b961573907f305535cb93a4c2480a2216a4a5327661aae0aca6d2d",
+		"storeUnchanged": true,
+		"applicationIndexed": false,
+		"nativeResultsWritten": 0,
+		"files": 3
+	}
+}

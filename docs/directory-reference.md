@@ -28,6 +28,7 @@ pi-web-ui/
 ├── .pi/skills/ui-testing-workflow/ # UI 技能统一维护入口，assets/ 资源、references/ 维护说明
 │   ├── assets/recording-preflight-reporter.mjs # 录制收集最小元数据，不输出认证值；配置storageState暂阻塞
 │   ├── assets/private-recording-session.mjs # 内部原生会话→私有捕获/输入副本准备，不开放MCP录制
+│   ├── assets/private-recording-connection.mjs # 产品私密MCP握手、原生输出过滤；浏览器动作仍阻塞
 │   ├── assets/private-recording-workspace.mjs # 内部私有输入副本及受管身份派生，未开放产品录制
 │   ├── assets/private-recording-transport.mjs # 内部MCP连接/请求失效守卫；不负责过滤或开放入口
 │   └── assets/private-recording-storage-events.mjs # 内部Chromium单page私有CDP存储事件观察/读取，未接产品入口

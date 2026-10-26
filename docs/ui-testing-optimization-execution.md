@@ -1167,3 +1167,19 @@ scope明确8次helper/30工具/128事件/2MiB及受控负向frame附加移除/�
 本轮完成“原生会话→宿主私有准备”的内部连接。产品 mcp-extension 仍未导入捕获/过滤链，私密 record 继续 unsupported。明确输入集合不证明任意项目依赖闭包；完整重连续录、实际目标 frame/target 支持、通用产品生命周期及 Electron 真实业务录制未完成。下一步将该绑定用于产品 MCP 连接选择、固定捕获及私有发布，再执行桌面全链验收。U00 完整计量、U03/U07 与 M1/M2 仍未完成。
 
 [本轮证据](ui-testing-evidence/optimization-u02-recording-session-binding.json)保留前后测试、精确源码、安装与SDK/Electron日志；工程产物与Electron项目文档分别保存，不将文件落盘称为应用文档索引已显示。plan_update不可用，沿用本文及阶段表，保留其他协作差异。
+
+### U02 续跑：产品私密连接握手及取消边界（2026-10-26）
+
+从1ce26db继续，macOS arm64 / 原生0.1.15 / SDK1.2.0 / Playwright1.62.1。此前进度核对仅为状态整理；本轮有实际产品接线。plan_update不可用，继续本文及阶段表；开始clean仅预览，无可清理项。未改原生包、插件、个人安装或已有业务结果，模型调用、正式批次、真实PMS写入均为0，PMS剩余2次仅设计评审额度及U05账本保持不变。
+
+产品mcp-extension现于原生私密start成功后自动读取原生绑定并准备私有副本，同名重新登记ui-playwright-test，以公开session摘要区分连接；私有路径与派生状态不进入注册配置。准备失败保留原session及固定阻塞说明，并撤销注册，不能退回匿名执行；显式成功finish才撤销派生身份并恢复匿名注册。关闭会话时撤销，迟到准备不得重新登记；无关MCP连接沿用锁定SDK的默认transport工厂，不复制配置/认证解析。其内部模块路径是明确维护依赖，升级SDK须核对。
+
+新增private-recording-connection只接握手：真实stdio从私有mirror启动，原始JSON响应wx/0600写入私有目录，再复用原生PrivateEvidence.process过滤已知初始值后交SDK。仅允许initialize、initialized/cancelled通知、ping、tools/list，浏览器与资源请求拒绝并撤销；产品tool_call层同样阻塞私密期间的MCP动作。输入改变、处理失败或旧连接均不能继续使用快照。完整浏览器捕获、动态值收集、原生writer校验/安全发布尚未接通，不把连接成功当录制就绪。
+
+协议请求取消也纳入既有连接守卫。新增真实stdio对照用合成值回显握手，验证公开响应过滤、私有原文/权限、输入变化阻止启动、过滤失败不发布及浏览器请求零派发；另先建立连接再取消迟到ping响应，旧守卫4通过/1失败，修正后5通过。初版取消测试在子进程读取派生state之前取消，进程退出而测试只等响应导致5秒超时；改为先完成握手、再取消延迟协议响应，未放宽断言或延长超时。旧/新测试和日志保留，不把夹具时序问题当产品失败。扩展4项测试覆盖自动准备/恢复、失败保留、shutdown期间迟到准备、非受管后端及失败/错误摘要finish不得清除绑定。
+
+实际SDK集成已替换手工prepare调用，验证产品自动准备、真实MCP握手、native action被拦截、seed未执行、finish为partial且派生身份撤销；等待SDK真正恢复可调用工具后，匿名Chromium打开/定位/点击/关闭通过。最初CommonJS解析ESM-only SDK入口导致加载失败，改用ESM定位；另一轮测试直接调用定义跳过tool_result，改走真实ctx.executeTool管线；恢复中立即取工具的失败保留，现等待实际可调用状态而非重启。受限执行环境启动Chromium被macOS拒绝的一轮保留，获准的隔离测试路径通过。
+
+完整5配置typecheck、相关8文件54项Vitest、SDK集成及能力布局通过。初次新增夹具缺参数类型导致typecheck失败，修正后通过。隔离Electron使用已有构建，7项发现/快捷入口、禁用启用/重载持久及87个MCP工具/重连检查通过；不操作用户当前窗口，不称实际PMS业务录制已完成。技能入口补齐当前私密阻塞说明，模块地图/目录与维护入口同步。
+
+[本轮证据](ui-testing-evidence/optimization-u02-recording-product-connection.json)归档源码、旧守卫对照、全部早期失败、最终工程/SDK/Electron日志。权威Electron项目另存阶段文档及公开证据快照，文件保存不代表应用文档索引显示或正式结果入库。剩余：产品动态捕获与安全发布、通用输入闭包、frame/target支持、完整重连续录、真实角色/租户/数据、U00完整计量、U03/U07及M1/M2；整体goal保持active。

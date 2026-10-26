@@ -98,10 +98,10 @@ export function guardPrivateRecordingTransport({ transport, snapshot, receive })
 			if (closed) throw blocked();
 			let operation;
 			try {
-				if ("method" in message && message.method === "tools/call" && "id" in message) {
+				if ("method" in message && "id" in message) {
 					if (pending.has(message.id)) throw blocked();
 					// Owned browser cleanup remains possible after cancellation while connected.
-					if (message.params?.name !== "browser_close") {
+					if (message.method !== "tools/call" || message.params?.name !== "browser_close") {
 						operation = await snapshot.beginOperation(options?.signal);
 						if (closed) throw blocked();
 						pending.set(message.id, operation);
