@@ -321,12 +321,12 @@ export function validate(kind, value, version = VERSION) {
 			"Historical selection needs a digest",
 		);
 	}
-	if (kind === "evidence")
-		requireValue(
-			Buffer.byteLength(value.content ?? "") <= LIMITS.evidenceBytes,
-			"LIMIT_EXCEEDED",
-			"Evidence exceeds byte limit",
-		);
+	if (kind === "evidence") {
+		const contentBytes = Buffer.byteLength(value.content ?? "");
+		requireValue(contentBytes <= LIMITS.evidenceBytes, "LIMIT_EXCEEDED", "Evidence exceeds byte limit");
+		// Reuse only for this validated value in the current synchronous write.
+		return contentBytes;
+	}
 }
 export function validateRef(value) {
 	requireValue(refValidator.Check(value), "INVALID_INPUT", "Invalid record reference");

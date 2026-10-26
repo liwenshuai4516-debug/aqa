@@ -557,7 +557,7 @@ export class EvaluationStore {
 		}
 		this.validateRelations(kind, data, read);
 		if (kind === "evidence" && redacted) clean.redaction = [...new Set([...clean.redaction, "credentials-v1"])];
-		validate(kind, clean);
+		const contentBytes = validate(kind, clean);
 		const record = {
 			schemaVersion: VERSION,
 			kind,
@@ -574,7 +574,7 @@ export class EvaluationStore {
 		if (originalRef) record.originalRef = originalRef;
 		const content = kind === "evidence" ? clean.content : undefined;
 		if (content !== undefined) {
-			record.contentRef = { sha256: contentHash(content), size: Buffer.byteLength(content) };
+			record.contentRef = { sha256: contentHash(content), size: contentBytes };
 			requireValue(
 				record.contentRef.size <= this.limits.evidenceBytes,
 				"LIMIT_EXCEEDED",

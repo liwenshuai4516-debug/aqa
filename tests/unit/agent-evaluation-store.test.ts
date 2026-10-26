@@ -155,6 +155,27 @@ describe("EC01 contracts and immutable store", () => {
 		expect(data.redaction).toEqual([]);
 		expect(r.redacted).toBe(false);
 	});
+	it("keeps exact UTF-8 blob sizes after redaction for direct and packed evidence", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const bodies = ["", "中文😀\ud800", "中文😀 Bearer synthetic-secret\n"],
+			inputs = bodies.map((content, i) => ({
+				kind: "evidence",
+				requestId: `utf8-packed-${i}`,
+				data: { ...f.evidence.data, sourceEventId: `utf8-${i}`, content },
+			}));
+		const packed = store.writeEvidenceBatch(ctx, inputs);
+		for (let i = 0; i < bodies.length; i++) {
+			const direct = store.write(ctx, { ...inputs[i], requestId: `utf8-direct-${i}` }),
+				clean = redact(bodies[i]),
+				decoded = Buffer.from(clean).toString("utf8");
+			for (const record of [packed[i], direct]) {
+				expect(record.contentRef?.size).toBe(Buffer.byteLength(clean));
+				expect(store.readBlob(record)).toBe(decoded);
+			}
+		}
+	});
 	it("separates two task selections and preserves immutable revisions", () => {
 		const store = open(),
 			ctx = context();

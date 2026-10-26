@@ -1,0 +1,205 @@
+{
+	"scope": "EC04 v0.4.25 reuse the synchronous validated clean-body byte count; normal-awake engineering and actual macOS arm64 Electron validation; formal performance gate still FAIL",
+	"timestamp": "2026-10-26T01:00:08.439942+00:00",
+	"baseline": "59f105a8bbd93f13eac9f08d4e38fbfaecb38db0",
+	"pluginVersion": "0.4.25",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-0425/index.json",
+		"bytes": 47944,
+		"sha256": "8f276363703ac908d23abc1c1cc9716d521e98b3b9eded2f179b6b15fc5cadc8"
+	},
+	"archiveFiles": 231,
+	"change": "validate returns exact UTF-8 evidence content bytes; store reuses only this clean validation result for contentRef.size in the same synchronous write. Original/clean validation, configured limits, hashing, redaction, authorization, sync ordering and readback remain. No cross-request cache.",
+	"formalComparison": {
+		"status": "FAIL",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-0425/files/comparison.json",
+			"bytes": 2052,
+			"sha256": "6bc9029c483fd0ec5f8bf02173cc8a52afa0f62d8025f4c1dd6464213cfe90d6"
+		},
+		"baseline": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-0425/files/baseline-formal-result.json",
+			"bytes": 8595,
+			"sha256": "cbf73720b0df5d5afacbdf32766852ced013f0af98e32ad82aa40315761cdd1c"
+		},
+		"candidate": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-0425/files/candidate-formal-result.json",
+			"bytes": 8543,
+			"sha256": "bed6d14c0f2fb6c583a4bc5be875aac9fa5a09105d95bc289a9c4d6d2e9e494a"
+		},
+		"comparisons": {
+			"scope": "same host, sequential baseline/candidate each30 workers, unchanged harness; baseline only schema/store restored from HEAD0.4.24 temporarily, candidate restored before remaining checks; not concurrent with app/tests",
+			"baseline": [
+				{
+					"workload": "serial",
+					"wallDelta": 54.85945899999999,
+					"wallLimit": 50,
+					"cpuDelta": 45.633,
+					"cpuLimit": 50,
+					"rssDeltas": [2932736, 5210112, 5619712, 4194304, 7372800],
+					"pass": false
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 152.94175099999998,
+					"wallLimit": 50,
+					"cpuDelta": 181.222,
+					"cpuLimit": 50,
+					"rssDeltas": [27639808, 26574848, 28213248, 25427968, 28606464],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 537.429917,
+					"wallLimit": 50,
+					"cpuDelta": 493.545,
+					"cpuLimit": 50,
+					"rssDeltas": [62881792, 64733184, 59965440, 65224704, 63209472],
+					"pass": false
+				}
+			],
+			"candidate": [
+				{
+					"workload": "serial",
+					"wallDelta": 53.12775000000002,
+					"wallLimit": 50,
+					"cpuDelta": 47.844,
+					"cpuLimit": 50,
+					"rssDeltas": [1998848, 3440640, 4964352, 3735552, 4276224],
+					"pass": false
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 147.58637499999998,
+					"wallLimit": 50,
+					"cpuDelta": 178.73,
+					"cpuLimit": 50,
+					"rssDeltas": [26673152, 27262976, 29474816, 26411008, 26050560],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 514.0945,
+					"wallLimit": 50,
+					"cpuDelta": 474.64,
+					"cpuLimit": 50,
+					"rssDeltas": [60719104, 60293120, 62849024, 64421888, 63979520],
+					"pass": false
+				}
+			],
+			"allEvidenceCountsAndGapsExact": true,
+			"allDiskBudgets": true
+		},
+		"sourceHashes": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-0425/files/comparison-source.json",
+			"bytes": 482,
+			"sha256": "ce1ce86240e173e0279823e935765d55c9855cc5dabba704f71bd4cc35ef83ee"
+		},
+		"limitations": "Single sequential baseline/candidate set, five independent off/on pairs per workload; not statistical significance or universal improvement. Manifest stays candidate while only schema/store temporarily return to exact baseline sources for baseline measurement; no desktop executes during this interval."
+	},
+	"actualDesktop": {
+		"status": "PASS",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-wascmf",
+		"result": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-0425/files/desktop/result.json",
+			"bytes": 15576,
+			"sha256": "a752a84ddce530bfe80136271b7dbbb347813fd9e172761042310f327ac158a6"
+		},
+		"flags": ["--evidence-matrix"],
+		"longEvidence": {
+			"characters": 160545,
+			"pages": 40,
+			"mediansMs": {
+				"list": 14.700000047683716,
+				"report": 22.5,
+				"evidence": 14.900000095367432
+			},
+			"errorAndRecovery": {
+				"code": "ENOENT",
+				"message": "ENOENT · ENOENT: no such file or directory, open '/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-wascmf/desktop/data/agent-evaluation/evidence/batch-e5def162-18a4-494c-999b-678700abb1a7.pack'",
+				"restoredBytesUnchanged": true,
+				"retrySucceeded": true
+			}
+		},
+		"nativeStatus": "PASS",
+		"nativeOutput": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-native-desktop-OlsNdq",
+		"nativeResult": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-0425/files/native-desktop/result.json",
+			"bytes": 5071,
+			"sha256": "0cce01f21d9272d4501a438025669f8592351d1e069b620aee3b72733b038599"
+		},
+		"nativeFlags": ["--source-errors", "--native-matrix", "--access-matrix", "--principal-matrix", "--tool-matrix"],
+		"installedIntegrity": {
+			"files": 60,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-0425/files/installed-source-integrity.json",
+				"bytes": 22561,
+				"sha256": "a2d497fe3d1b6354a99a25edc671b9ee916e14aa13ed80368da7d735a3894609"
+			},
+			"note": "Two owned isolated registrations each30 files match repository; real paths disclose repository links, not separate personal installation or copied immutable package."
+		},
+		"nativeBoundaries": [
+			"81 exact selection/principal refusals retained; SDK review calls rejected by input schema before service dispatch",
+			"41 UI plan rows never executed, unknown/incomplete, 20/20/1 exact paging; not actual mixed executed-status run acceptance",
+			"local scripted SSE only; positive get and trusted UI synthetic review control, not real model or human business approval"
+		],
+		"screenshots": "Long evidence narrow layout visually inspected; no overflow"
+	},
+	"validation": {
+		"unit": {
+			"files": 17,
+			"passed": 281,
+			"failed": 0,
+			"skipped": 0,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-0425/files/unit.log",
+				"bytes": 429,
+				"sha256": "f5ed4164a9235be73aae82cd4ea386838fb2f5ead93bf9850496e34f16bea342"
+			}
+		},
+		"typecheck": {
+			"configurations": 5,
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-0425/files/typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"lint": "PASS",
+		"protocol": "structure/v33 PASS; historical tag heuristic SKIP (no tags)",
+		"i18n": "PASS;12 language packs",
+		"size": "PASS",
+		"diff": "PASS",
+		"clean": "preview only, no deletion",
+		"prettier": "all changed sources unchanged after formatting",
+		"wake": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-0425/files/wake-after.txt",
+				"bytes": 153,
+				"sha256": "fc0ab1f96e858b8eb45576341b83aca64271a4d9eac8ba7942b6f7f6e1fc3d76"
+			},
+			"latestWake": "2026-10-26 08:53:22 Asia/Shanghai, unchanged through this validation; user explicitly confirmed awake",
+			"priorFailures": "Retained under EC04-collect-cpu and EC04-maintenance-sleep indexes; never overwritten/reclassified as passing"
+		}
+	},
+	"externalCalls": {
+		"realCLI": 0,
+		"realModels": 0,
+		"nativeRunner": 0,
+		"businessExecution": 0
+	},
+	"remaining": [
+		"AC39 wall/CPU FAIL for frozen workloads; current RSS all rounds below64MiB does not overwrite historical exceedance",
+		"No full rollback/scale matrix rerun; only runner expected version updated, historical evidence not promoted",
+		"Active injected fault and unknown-job matrices not rerun this round; prior evidence retains prior version",
+		"Remaining AC01-20 desktop combinations and real mixed executed native pagination outstanding",
+		"EC06 detached-child containment unresolved; EC07/09 dependent stages held; EC08 realCLI deferred"
+	],
+	"overall": "EC04/M1 and original goal incomplete; small optimization verified and delivered, not performance gate closure"
+}
