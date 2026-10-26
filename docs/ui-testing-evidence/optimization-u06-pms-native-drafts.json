@@ -1,0 +1,998 @@
+{
+	"date": "2026-10-26",
+	"status": "ACTUAL_DESKTOP_STORE_THREE_SOURCE_DRAFTS_IMPORTED_VISIBLE_AFTER_RESTART",
+	"planComplete": false,
+	"actualSelectedDataDirectory": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data",
+	"uiAgentConfiguration": "temporary outside workspace, removed after owned app close; original agent settings unchanged",
+	"prebuiltServerSha256": "d4b557fa2c80fdf7c3fa31bb6b10e05906a48fb17048c657c6df091208074559",
+	"prebuiltDesktopSha256": "b386e560347412e007dd58e636cbc38f3149db56ae4a2502e5112a8693c14fde",
+	"nativeCaseSource": {
+		"root": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-real-target-admission/source-only",
+		"casesRef": {
+			"path": "qa/ui/cases/pms-source-case-drafts-v2/manifest.json",
+			"sha256": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9"
+		},
+		"caseCount": 3,
+		"executable": false,
+		"designApproved": false,
+		"recorded": false,
+		"formalExecutions": 0,
+		"originWorkspaceCleanupKeep": true
+	},
+	"intake": {
+		"pending": {
+			"ok": true,
+			"status": "pending",
+			"project": {
+				"id": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+				"name": "项目管理系统"
+			},
+			"env": {
+				"id": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+				"name": "测试环境"
+			},
+			"workspace": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-real-target-admission/source-only",
+			"engine": "ui",
+			"assetRef": {
+				"path": "qa/ui/cases/pms-source-case-drafts-v2/manifest.json",
+				"sha256": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9"
+			},
+			"revision": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9",
+			"executable": false,
+			"featureId": null,
+			"featureName": null,
+			"imported": 0,
+			"duplicate": 0,
+			"counts": {
+				"new": 0,
+				"existing": 0,
+				"pending": 3,
+				"stale": 0,
+				"unclassified": 0
+			},
+			"total": 3,
+			"classificationComplete": false,
+			"items": [
+				{
+					"nativeCaseId": "PMS-source-authentication",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "authentication",
+					"caseId": null,
+					"featureId": null,
+					"status": "pending",
+					"mappingState": "unclassified",
+					"reason": null
+				},
+				{
+					"nativeCaseId": "PMS-source-drafts",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "drafts",
+					"caseId": null,
+					"featureId": null,
+					"status": "pending",
+					"mappingState": "unclassified",
+					"reason": null
+				},
+				{
+					"nativeCaseId": "PMS-source-contract-state",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "contract-state",
+					"caseId": null,
+					"featureId": null,
+					"status": "pending",
+					"mappingState": "unclassified",
+					"reason": null
+				}
+			],
+			"itemsTruncated": false
+		},
+		"imported": {
+			"ok": true,
+			"status": "archived",
+			"project": {
+				"id": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+				"name": "项目管理系统"
+			},
+			"env": {
+				"id": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+				"name": "测试环境"
+			},
+			"workspace": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-real-target-admission/source-only",
+			"engine": "ui",
+			"assetRef": {
+				"path": "qa/ui/cases/pms-source-case-drafts-v2/manifest.json",
+				"sha256": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9"
+			},
+			"revision": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9",
+			"executable": false,
+			"featureId": null,
+			"featureName": null,
+			"imported": 3,
+			"duplicate": 0,
+			"counts": {
+				"new": 3,
+				"existing": 0,
+				"pending": 0,
+				"stale": 0,
+				"unclassified": 0
+			},
+			"total": 3,
+			"classificationComplete": true,
+			"items": [
+				{
+					"nativeCaseId": "PMS-source-authentication",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "authentication",
+					"caseId": "348a9dd2-d126-4751-a231-667865346ef6",
+					"featureId": "pms-source-authentication",
+					"status": "new",
+					"mappingState": "mapped",
+					"reason": null
+				},
+				{
+					"nativeCaseId": "PMS-source-drafts",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "drafts",
+					"caseId": "5dfda722-8021-4d9f-bf8f-cfbf9a3b92aa",
+					"featureId": "pms-source-drafts",
+					"status": "new",
+					"mappingState": "mapped",
+					"reason": null
+				},
+				{
+					"nativeCaseId": "PMS-source-contract-state",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "contract-state",
+					"caseId": "bcf63bd4-fdba-4507-9c6a-aef1ce8e05e8",
+					"featureId": "pms-source-contract-state",
+					"status": "new",
+					"mappingState": "mapped",
+					"reason": null
+				}
+			],
+			"itemsTruncated": false,
+			"caseIds": [
+				"348a9dd2-d126-4751-a231-667865346ef6",
+				"5dfda722-8021-4d9f-bf8f-cfbf9a3b92aa",
+				"bcf63bd4-fdba-4507-9c6a-aef1ce8e05e8"
+			],
+			"caseIdsTruncated": false
+		},
+		"after": {
+			"ok": true,
+			"status": "archived",
+			"project": {
+				"id": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+				"name": "项目管理系统"
+			},
+			"env": {
+				"id": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+				"name": "测试环境"
+			},
+			"workspace": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-real-target-admission/source-only",
+			"engine": "ui",
+			"assetRef": {
+				"path": "qa/ui/cases/pms-source-case-drafts-v2/manifest.json",
+				"sha256": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9"
+			},
+			"revision": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9",
+			"executable": false,
+			"featureId": null,
+			"featureName": null,
+			"imported": 0,
+			"duplicate": 3,
+			"counts": {
+				"new": 0,
+				"existing": 3,
+				"pending": 0,
+				"stale": 0,
+				"unclassified": 0
+			},
+			"total": 3,
+			"classificationComplete": true,
+			"items": [
+				{
+					"nativeCaseId": "PMS-source-authentication",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "authentication",
+					"caseId": "348a9dd2-d126-4751-a231-667865346ef6",
+					"featureId": "pms-source-authentication",
+					"status": "existing",
+					"mappingState": "mapped",
+					"reason": null
+				},
+				{
+					"nativeCaseId": "PMS-source-drafts",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "drafts",
+					"caseId": "5dfda722-8021-4d9f-bf8f-cfbf9a3b92aa",
+					"featureId": "pms-source-drafts",
+					"status": "existing",
+					"mappingState": "mapped",
+					"reason": null
+				},
+				{
+					"nativeCaseId": "PMS-source-contract-state",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "contract-state",
+					"caseId": "bcf63bd4-fdba-4507-9c6a-aef1ce8e05e8",
+					"featureId": "pms-source-contract-state",
+					"status": "existing",
+					"mappingState": "mapped",
+					"reason": null
+				}
+			],
+			"itemsTruncated": false
+		},
+		"duplicate": {
+			"ok": true,
+			"status": "archived",
+			"project": {
+				"id": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+				"name": "项目管理系统"
+			},
+			"env": {
+				"id": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+				"name": "测试环境"
+			},
+			"workspace": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-real-target-admission/source-only",
+			"engine": "ui",
+			"assetRef": {
+				"path": "qa/ui/cases/pms-source-case-drafts-v2/manifest.json",
+				"sha256": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9"
+			},
+			"revision": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9",
+			"executable": false,
+			"featureId": null,
+			"featureName": null,
+			"imported": 0,
+			"duplicate": 3,
+			"counts": {
+				"new": 0,
+				"existing": 3,
+				"pending": 0,
+				"stale": 0,
+				"unclassified": 0
+			},
+			"total": 3,
+			"classificationComplete": true,
+			"items": [
+				{
+					"nativeCaseId": "PMS-source-authentication",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "authentication",
+					"caseId": "348a9dd2-d126-4751-a231-667865346ef6",
+					"featureId": "pms-source-authentication",
+					"status": "existing",
+					"mappingState": "mapped",
+					"reason": null
+				},
+				{
+					"nativeCaseId": "PMS-source-drafts",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "drafts",
+					"caseId": "5dfda722-8021-4d9f-bf8f-cfbf9a3b92aa",
+					"featureId": "pms-source-drafts",
+					"status": "existing",
+					"mappingState": "mapped",
+					"reason": null
+				},
+				{
+					"nativeCaseId": "PMS-source-contract-state",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "contract-state",
+					"caseId": "bcf63bd4-fdba-4507-9c6a-aef1ce8e05e8",
+					"featureId": "pms-source-contract-state",
+					"status": "existing",
+					"mappingState": "mapped",
+					"reason": null
+				}
+			],
+			"itemsTruncated": false
+		},
+		"revision": 10,
+		"caseCount": 3,
+		"allDraft": true,
+		"allUnbound": true,
+		"caseRows": [
+			{
+				"id": "348a9dd2-d126-4751-a231-667865346ef6",
+				"featureId": "pms-source-authentication",
+				"title": "源码草稿：成功登录后的私有认证状态",
+				"status": "草稿",
+				"nativeSource": {
+					"key": "8808643f9eb2a9813ae6d21fa27e622575521fa9711b6cd493de3069d3bbad72",
+					"workspace": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-real-target-admission/source-only",
+					"engine": "ui",
+					"projectId": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+					"envId": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+					"lineageId": null,
+					"revision": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9",
+					"intakeRevision": 10,
+					"assetRef": {
+						"path": "qa/ui/cases/pms-source-case-drafts-v2/manifest.json",
+						"sha256": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9"
+					},
+					"nativeCaseId": "PMS-source-authentication",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "authentication",
+					"featureId": "pms-source-authentication",
+					"mappingState": "mapped"
+				},
+				"automation": null,
+				"steps": [
+					{
+						"id": "c98dcb15-5939-4d2e-b9c3-4c106237aaf9",
+						"action": "在后续受控浏览器会话中复用私有登录配置，核对登录成功后的认证状态存在；只记录布尔值，不记录 token。",
+						"expect": "private browser token presence after the declared successful login initialization toEqual true"
+					}
+				]
+			},
+			{
+				"id": "5dfda722-8021-4d9f-bf8f-cfbf9a3b92aa",
+				"featureId": "pms-source-drafts",
+				"title": "源码草稿：账号与业务类型的草稿命名空间",
+				"status": "草稿",
+				"nativeSource": {
+					"key": "37b21d76ca9d31ab4d89085544aa1c5ba6dd1fa2b81e3ce8edbd74c83d186843",
+					"workspace": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-real-target-admission/source-only",
+					"engine": "ui",
+					"projectId": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+					"envId": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+					"lineageId": null,
+					"revision": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9",
+					"intakeRevision": 10,
+					"assetRef": {
+						"path": "qa/ui/cases/pms-source-case-drafts-v2/manifest.json",
+						"sha256": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9"
+					},
+					"nativeCaseId": "PMS-source-drafts",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "drafts",
+					"featureId": "pms-source-drafts",
+					"mappingState": "mapped"
+				},
+				"automation": null,
+				"steps": [
+					{
+						"id": "562dfc26-e433-4065-906a-97e901c30b55",
+						"action": "准备隔离且归属明确的账号/业务类型组合；在后续受控草稿交互中核对存储命名空间分别包含该账号和该业务类型。当前不创建草稿。",
+						"expect": "declared draft namespace varies with account and entity type toEqual {\"accountScoped\":true,\"entityTypeScoped\":true}"
+					}
+				]
+			},
+			{
+				"id": "bcf63bd4-fdba-4507-9c6a-aef1ce8e05e8",
+				"featureId": "pms-source-contract-state",
+				"title": "源码草稿：经营合同状态显示映射",
+				"status": "草稿",
+				"nativeSource": {
+					"key": "0641092fc0f1b2addcd3c35b1966fe615495784f4ec0f470b7d81387dded4e0d",
+					"workspace": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-real-target-admission/source-only",
+					"engine": "ui",
+					"projectId": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+					"envId": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+					"lineageId": null,
+					"revision": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9",
+					"intakeRevision": 10,
+					"assetRef": {
+						"path": "qa/ui/cases/pms-source-case-drafts-v2/manifest.json",
+						"sha256": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9"
+					},
+					"nativeCaseId": "PMS-source-contract-state",
+					"nativeModuleId": "operation-contract",
+					"nativeFeatureId": "contract-state",
+					"featureId": "pms-source-contract-state",
+					"mappingState": "mapped"
+				},
+				"automation": null,
+				"steps": [
+					{
+						"id": "cc19efd2-f709-4802-83a3-f722e5c6b2bf",
+						"action": "在后续隔离受控列表中分别提供无冲突的 DRAFT 和 SIGNED 记录，核对各自状态文本；当前不修改真实合同状态。",
+						"expect": "state labels of isolated DRAFT and SIGNED contract rows toEqual {\"DRAFT\":\"草稿\",\"SIGNED\":\"已完成\"}"
+					}
+				]
+			}
+		],
+		"nativeRuns": 0
+	},
+	"reopen": {
+		"id": "1792984383821",
+		"nativeState": {
+			"httpStatus": 200,
+			"ok": true,
+			"selectedProjectMatched": true,
+			"selectedEnvironmentMatched": true,
+			"revision": 10,
+			"modules": 1,
+			"features": 3,
+			"cases": 3
+		},
+		"visibleSourceDrafts": 3,
+		"visibleDraftStatusLabels": 3,
+		"selectedStoreModified": false,
+		"environmentsUnchanged": true,
+		"privateProfileRemoved": true
+	},
+	"attempts": [
+		{
+			"id": "1792982207299",
+			"status": "native-connection-blocked",
+			"nativeCaseImports": 0,
+			"selectedStoreModified": false,
+			"ownedAppClosed": true,
+			"errorCategory": null
+		},
+		{
+			"id": "1792982331752",
+			"status": "blocked",
+			"nativeCaseImports": 0,
+			"selectedStoreModified": false,
+			"ownedAppClosed": true,
+			"errorCategory": null
+		},
+		{
+			"id": "1792982496868",
+			"status": "blocked",
+			"nativeCaseImports": 0,
+			"selectedStoreModified": false,
+			"ownedAppClosed": true,
+			"errorCategory": null
+		},
+		{
+			"id": "1792982640846",
+			"status": "blocked",
+			"nativeCaseImports": 0,
+			"selectedStoreModified": false,
+			"ownedAppClosed": true,
+			"errorCategory": "renderer-navigation"
+		},
+		{
+			"id": "1792982717737",
+			"status": "selected-desktop-native-connection-verified",
+			"nativeCaseImports": 0,
+			"selectedStoreModified": false,
+			"ownedAppClosed": true,
+			"errorCategory": null
+		},
+		{
+			"id": "1792983514772",
+			"status": "blocked",
+			"nativeCaseImports": 0,
+			"selectedStoreModified": false,
+			"ownedAppClosed": true,
+			"errorCategory": "renderer-navigation"
+		},
+		{
+			"id": "1792983598096",
+			"status": "selected-desktop-native-connection-verified",
+			"nativeCaseImports": 0,
+			"selectedStoreModified": false,
+			"ownedAppClosed": true,
+			"errorCategory": "other-runtime-error"
+		},
+		{
+			"id": "1792983729528",
+			"status": "selected-desktop-source-drafts-imported",
+			"nativeCaseImports": 3,
+			"selectedStoreModified": true,
+			"ownedAppClosed": true,
+			"errorCategory": null
+		},
+		{
+			"id": "1792983935600",
+			"status": "selected-desktop-native-connection-verified",
+			"nativeCaseImports": 0,
+			"selectedStoreModified": false,
+			"ownedAppClosed": true,
+			"errorCategory": null
+		},
+		{
+			"id": "1792984383821",
+			"status": "selected-desktop-native-connection-verified",
+			"nativeCaseImports": 0,
+			"selectedStoreModified": false,
+			"ownedAppClosed": true,
+			"errorCategory": null
+		}
+	],
+	"document": {
+		"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-native-case-drafts-2026-10-26.md",
+		"sha256": "0904325aded4fbf76778090078796ee8e8d3d4d3bbf7c3aead7eec23defb7b2a",
+		"documentIndexedInApplication": false,
+		"nativeCasesImported": 3,
+		"nativeCasesVisibleAfterRestart": 3,
+		"nativeResultsWritten": 0
+	},
+	"durablePublicSourceSnapshot": {
+		"directory": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/source-drafts-031a0574bd22",
+		"originalWorkspace": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-real-target-admission/source-only",
+		"casesRef": {
+			"path": "qa/ui/cases/pms-source-case-drafts-v2/manifest.json",
+			"sha256": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9"
+		},
+		"files": [
+			{
+				"path": "qa/ui/cases/pms-source-case-drafts-v2/manifest.json",
+				"sha256": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9"
+			},
+			{
+				"path": "qa/ui/cases/pms-source-case-drafts-v2/data-rules.json",
+				"sha256": "7f7ba57679121c2848cef5751eff95090d8e338132b416b80425c657c9133613"
+			},
+			{
+				"path": "qa/ui/scopes/public-source/permission.js.json",
+				"sha256": "93fa571b3a1746f7d998e7c67bf10961ddae80cf07ee4c6087af9d1cedd332cb"
+			},
+			{
+				"path": "qa/ui/scopes/public-source/tenant.js.json",
+				"sha256": "263fecfe973f1f34ae4697b3e5f7caba58ae61b42276ec1e996abe731506fa6d"
+			},
+			{
+				"path": "qa/ui/scopes/public-source/auth.js.json",
+				"sha256": "0e8e2652ef68db84d2a617a57803de796c8d7bd4c57fecf7f75ce7976b8c9e72"
+			},
+			{
+				"path": "qa/ui/scopes/public-source/login.js.json",
+				"sha256": "9c86c024aee13199f4358ad167fc4ed42fe270a5c6bbdfb8fab3ef20d5de8fe3"
+			},
+			{
+				"path": "qa/ui/scopes/public-source/app.js.json",
+				"sha256": "d1d0157f867ee7d06292708bc20a58e4c6a935578953c0cde29bcefd7471f5d9"
+			},
+			{
+				"path": "qa/ui/scopes/pms-source-case-drafts-v2/manifest.json",
+				"sha256": "5e01c364dc49cd5ca4558c7fb31aa71283a30624913cf15ad20063fec6f863c8"
+			}
+		],
+		"nativeCasesRemainDraft": true,
+		"nativeOriginsUnchanged": true,
+		"documentIndexedInApplication": false
+	},
+	"modelReviewBudgetUnchanged": true,
+	"modelReviewLedgerSha256": "34aaec3d27776ad96474be83f0be5a4eebe001fb41467afc69a4372c2b7e31ec",
+	"harnessModelCalls": 0,
+	"businessContractMutations": 0,
+	"nativeResultsWritten": 0,
+	"codexNativeDataSpaceToolsAvailable": false,
+	"validation": {
+		"typecheck": "passed",
+		"vitestFiles": 4,
+		"vitestTestsPassed": 54,
+		"lint": "passed",
+		"protocolStructure": "passed",
+		"protocolHistory": "skipped-no-tag",
+		"archiveReadback": "passed",
+		"size": "passed",
+		"clean": "preview-only-no-deletion"
+	},
+	"limitations": [
+		"Actual original Data Space read/write through prebuilt Electron with temporary UI/agent settings; not original user agent-profile acceptance",
+		"Only source case intake; no recording, executable asset, independent design approval or formal run",
+		"Role, owned data/cleanup and normal/error diagnostic targets unverified",
+		"Generic private execution/recording bridge, complete U00 measurements and M1/M2 remain incomplete",
+		"Markdown/source snapshots saved in project data directory; no application document index entity"
+	],
+	"archive": {
+		"path": "optimization-u06-pms-native-drafts.tar.gz",
+		"sha256": "f4295037bcc2f3ddd0ba0b1d8dd5329f69678873f1d497e73b04c59aae4b8a2d",
+		"files": [
+			{
+				"path": "checks/ui-pms-desktop-connection-classified.log",
+				"bytes": 2446,
+				"sha256": "ca3e52396a1d5f8edfa42421259bcc5820f17cac287c757ad1ff9879a49ce94f"
+			},
+			{
+				"path": "checks/ui-pms-desktop-connection-diagnostic.log",
+				"bytes": 2404,
+				"sha256": "8fc8c90a04419f1aeee884a02811db0f81220906cd0b4f4ae1a3bbd7d5817923"
+			},
+			{
+				"path": "checks/ui-pms-desktop-connection-final.log",
+				"bytes": 1977,
+				"sha256": "3d8dedae1ac27d749e6f4027732a7758899de3dbbb768a86ab7d6e42251b44b9"
+			},
+			{
+				"path": "checks/ui-pms-desktop-connection-retry.log",
+				"bytes": 1714,
+				"sha256": "9e54999b2b19f9c0cf675992e028c405448368cd6cd5ae9cd0eb1e780c886e5e"
+			},
+			{
+				"path": "checks/ui-pms-desktop-connection.log",
+				"bytes": 1786,
+				"sha256": "39b7254daf7473cd802d898ac32badd3e120ec8c2dec5b080aedb3504ccc0818"
+			},
+			{
+				"path": "checks/ui-pms-desktop-intake-final.log",
+				"bytes": 2444,
+				"sha256": "3868ed52dbcb4924dbda13737ce3f4d4bcb0aba31f858a9338edf960a0810d0e"
+			},
+			{
+				"path": "checks/ui-pms-desktop-intake-verified.log",
+				"bytes": 15377,
+				"sha256": "5d7781e4cedfb30ef68c2087f39ab5a60e28e24e52d5c52f97d82713543fb440"
+			},
+			{
+				"path": "checks/ui-pms-desktop-intake.log",
+				"bytes": 2009,
+				"sha256": "b4833d4e03d632f0ecb3ec2ba1df883b78763eec8640528d68db75b533f79888"
+			},
+			{
+				"path": "checks/ui-pms-desktop-persistence-final.log",
+				"bytes": 1643,
+				"sha256": "e2cc2a78dfc7aaf922aec8019ecaface8ac9bdf54d18841638437f0fbc6a65ee"
+			},
+			{
+				"path": "checks/ui-pms-desktop-persistence.log",
+				"bytes": 1597,
+				"sha256": "3f7c6157ba1035832d9f16f582297eb824bc1ac887574bcfe6bf0460b211f034"
+			},
+			{
+				"path": "checks/ui-pms-native-clean.log",
+				"bytes": 609,
+				"sha256": "11edff7f359e5c0ad036bad6ca5caf7ef19274615efa33463fcabe76958226e5"
+			},
+			{
+				"path": "checks/ui-pms-native-lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			{
+				"path": "checks/ui-pms-native-protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			{
+				"path": "checks/ui-pms-native-size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			},
+			{
+				"path": "checks/ui-pms-native-typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			},
+			{
+				"path": "checks/ui-pms-native-typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			},
+			{
+				"path": "checks/ui-pms-native-vitest.log",
+				"bytes": 444,
+				"sha256": "b40e19e4e4c4873314296317e95930120f1a1b20c6da93c10ae8e782347e1b56"
+			},
+			{
+				"path": "checks/ui-pms-source-cases-final.log",
+				"bytes": 1637,
+				"sha256": "65bcc3b661a6f27d390d716893c97c25a0007a64e13dde168741663f8e35ba79"
+			},
+			{
+				"path": "checks/ui-pms-source-cases.log",
+				"bytes": 346,
+				"sha256": "96d16a8e3927223e53d618861dc0554b027519ea946c14ae6f60af0639d83b87"
+			},
+			{
+				"path": "desktop-runs/1792982207299/harness.mjs",
+				"bytes": 5601,
+				"sha256": "2ad499e24242545f9ef6ce368b9b982999c3c48856326c7c86cd4afc5e3f0701"
+			},
+			{
+				"path": "desktop-runs/1792982207299/plan.json",
+				"bytes": 1018,
+				"sha256": "7d0d4a7883f114361c2ab7cb9a19ae056eb4f1fdda9b1076007c3d5014651725"
+			},
+			{
+				"path": "desktop-runs/1792982207299/result.json",
+				"bytes": 1145,
+				"sha256": "3afa5b987c9cbb684f4404f75eaf92b28ce14aee5d7c526fdf711261fca7dee0"
+			},
+			{
+				"path": "desktop-runs/1792982331752/harness.mjs",
+				"bytes": 5774,
+				"sha256": "94c2bafd8fc1babc426e55f0dba8439d9036ea8112935790fd5e9dcb90091030"
+			},
+			{
+				"path": "desktop-runs/1792982331752/plan.json",
+				"bytes": 1018,
+				"sha256": "7d0d4a7883f114361c2ab7cb9a19ae056eb4f1fdda9b1076007c3d5014651725"
+			},
+			{
+				"path": "desktop-runs/1792982331752/result.json",
+				"bytes": 1109,
+				"sha256": "e229ad8d2117a0219e1dda3abc45b955371b8ddbc644524eb1a553ea6b9279d6"
+			},
+			{
+				"path": "desktop-runs/1792982496868/harness.mjs",
+				"bytes": 6693,
+				"sha256": "c81b43462e4859dbddf9e9b3cde6a602b18c9253582e76439a76212d51d3481a"
+			},
+			{
+				"path": "desktop-runs/1792982496868/plan.json",
+				"bytes": 1018,
+				"sha256": "7d0d4a7883f114361c2ab7cb9a19ae056eb4f1fdda9b1076007c3d5014651725"
+			},
+			{
+				"path": "desktop-runs/1792982496868/result.json",
+				"bytes": 1799,
+				"sha256": "c17a0567e1652801a4dccf6c7c6385a840ff60aa3ee8e5310f0b453a7fa86d9e"
+			},
+			{
+				"path": "desktop-runs/1792982640846/harness.mjs",
+				"bytes": 7234,
+				"sha256": "66004de05bedb172fc8e66d4600aee2321401330cf70ede35018275586e91a24"
+			},
+			{
+				"path": "desktop-runs/1792982640846/plan.json",
+				"bytes": 1018,
+				"sha256": "7d0d4a7883f114361c2ab7cb9a19ae056eb4f1fdda9b1076007c3d5014651725"
+			},
+			{
+				"path": "desktop-runs/1792982640846/result.json",
+				"bytes": 1841,
+				"sha256": "991760eee8e31cd5a38b758b19c86160569136244a85bab103489a80fe4fbd15"
+			},
+			{
+				"path": "desktop-runs/1792982717737/harness.mjs",
+				"bytes": 7632,
+				"sha256": "7c4ad7e3b16d23b3087f3dee898c77dea89734d40ce8f50c0f70f532a02a0dd4"
+			},
+			{
+				"path": "desktop-runs/1792982717737/plan.json",
+				"bytes": 1018,
+				"sha256": "7d0d4a7883f114361c2ab7cb9a19ae056eb4f1fdda9b1076007c3d5014651725"
+			},
+			{
+				"path": "desktop-runs/1792982717737/result.json",
+				"bytes": 1869,
+				"sha256": "7328115be2fbccc463eedfa6089ee9826a1a5c145283000bd0af259d8def8c65"
+			},
+			{
+				"path": "desktop-runs/1792983514772/harness.mjs",
+				"bytes": 12389,
+				"sha256": "adfea0bae88d610b0ca85940fe14aacc73fd71623d098bb4d9f29e57a680c815"
+			},
+			{
+				"path": "desktop-runs/1792983514772/plan.json",
+				"bytes": 1018,
+				"sha256": "7d0d4a7883f114361c2ab7cb9a19ae056eb4f1fdda9b1076007c3d5014651725"
+			},
+			{
+				"path": "desktop-runs/1792983514772/result.json",
+				"bytes": 1412,
+				"sha256": "a119af668d70ebe5df5fdcc6839c44e4ea07aa72f4ff814600135dc926643d95"
+			},
+			{
+				"path": "desktop-runs/1792983598096/harness.mjs",
+				"bytes": 11769,
+				"sha256": "d950fbee4e65d974c2709cdd9e9b4e8f89498c62b96a44511951f3e120a64d17"
+			},
+			{
+				"path": "desktop-runs/1792983598096/plan.json",
+				"bytes": 1018,
+				"sha256": "7d0d4a7883f114361c2ab7cb9a19ae056eb4f1fdda9b1076007c3d5014651725"
+			},
+			{
+				"path": "desktop-runs/1792983598096/result.json",
+				"bytes": 1775,
+				"sha256": "fd1479fcfe107cca8b4140d3abc83df091a022c91db878cc826776603c61496a"
+			},
+			{
+				"path": "desktop-runs/1792983729528/document-receipt.json",
+				"bytes": 416,
+				"sha256": "278deee00d67c39aee3471e2631dc57bd9831ce3c56f5818805ea771b3d62b2e"
+			},
+			{
+				"path": "desktop-runs/1792983729528/harness.mjs",
+				"bytes": 11900,
+				"sha256": "2f9e41649a96c7835f1c9868057b4dab7f0d9fdc0ab50017c9769fd90d2db65c"
+			},
+			{
+				"path": "desktop-runs/1792983729528/native-case-drafts-document.md",
+				"bytes": 3927,
+				"sha256": "0904325aded4fbf76778090078796ee8e8d3d4d3bbf7c3aead7eec23defb7b2a"
+			},
+			{
+				"path": "desktop-runs/1792983729528/plan.json",
+				"bytes": 1018,
+				"sha256": "7d0d4a7883f114361c2ab7cb9a19ae056eb4f1fdda9b1076007c3d5014651725"
+			},
+			{
+				"path": "desktop-runs/1792983729528/result.json",
+				"bytes": 15269,
+				"sha256": "b2b7adc172cb4605c31eaac7cc6c129b1bb5a5d17f282e707a3bcfc3e8820753"
+			},
+			{
+				"path": "desktop-runs/1792983935600/harness.mjs",
+				"bytes": 12820,
+				"sha256": "54743421282546f0d07145eeef6e1576d75933e2fe2b6097d47eed4f3205f3e0"
+			},
+			{
+				"path": "desktop-runs/1792983935600/plan.json",
+				"bytes": 1018,
+				"sha256": "7d0d4a7883f114361c2ab7cb9a19ae056eb4f1fdda9b1076007c3d5014651725"
+			},
+			{
+				"path": "desktop-runs/1792983935600/result.json",
+				"bytes": 1489,
+				"sha256": "89f594ad76cf3b64207fded554061f0d5ef33b28d828c27cf0d27a12190da631"
+			},
+			{
+				"path": "desktop-runs/1792984383821/harness.mjs",
+				"bytes": 13033,
+				"sha256": "ba35e718e3f70888032a861229a6b3ededbf4e35ddd02bd9d697f3582a16be5c"
+			},
+			{
+				"path": "desktop-runs/1792984383821/plan.json",
+				"bytes": 1018,
+				"sha256": "7d0d4a7883f114361c2ab7cb9a19ae056eb4f1fdda9b1076007c3d5014651725"
+			},
+			{
+				"path": "desktop-runs/1792984383821/result.json",
+				"bytes": 1535,
+				"sha256": "80cc832600de72528953b043c4a5b9d89d80a85702a9cf7309e1682e3da295e9"
+			},
+			{
+				"path": "private-profile-cleanup.json",
+				"bytes": 737,
+				"sha256": "f74ef25374de6494653df48f1af580d03da8e69eb799b54774b8cd3f241ab1ef"
+			},
+			{
+				"path": "source-generation/1792983305977/harness.mjs",
+				"bytes": 6624,
+				"sha256": "8ad2ac20aeea80173dc43a45994c5c9faee7cf1d8dbd2c63f74248f54baaf3bd"
+			},
+			{
+				"path": "source-generation/1792983386346/durable-source-receipt.json",
+				"bytes": 1861,
+				"sha256": "9c47a56bab1982dc060610f1f3ca6fa25f340a8202e65ba7df45991309142287"
+			},
+			{
+				"path": "source-generation/1792983386346/harness.mjs",
+				"bytes": 6594,
+				"sha256": "915aa3444bc4adcfe209cb3da4d8ae493039b7fcbc4105f870385bc260715ee9"
+			},
+			{
+				"path": "source-generation/1792983386346/result.json",
+				"bytes": 1535,
+				"sha256": "5eb9962837c72e71038ec7157bc49de19b168c58423d17e682ba58e73e7e14a2"
+			},
+			{
+				"path": "source-project/.cleanup-keep",
+				"bytes": 137,
+				"sha256": "9ee2227338e7cec8bb5d56901144413139fe88a6d4b0a8059f7c929a95d3fd9b"
+			},
+			{
+				"path": "source-project/qa/ui/cases/pms-source-case-drafts-v2/.incomplete.json",
+				"bytes": 59,
+				"sha256": "18c424e7bc07b15fc02de145439d8ed9126102b575d1936cb87784dd61e5bbce"
+			},
+			{
+				"path": "source-project/qa/ui/cases/pms-source-case-drafts-v2/data-rules.json",
+				"bytes": 592,
+				"sha256": "7f7ba57679121c2848cef5751eff95090d8e338132b416b80425c657c9133613"
+			},
+			{
+				"path": "source-project/qa/ui/cases/pms-source-case-drafts-v2/manifest.json",
+				"bytes": 8072,
+				"sha256": "031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9"
+			},
+			{
+				"path": "source-project/qa/ui/cases/pms-source-case-drafts/.incomplete.json",
+				"bytes": 56,
+				"sha256": "36a185011f43468b37379f38f0a4e7fa46550f7511eed86df1222317a052a41e"
+			},
+			{
+				"path": "source-project/qa/ui/cases/pms-source-case-drafts/data-rules.json",
+				"bytes": 592,
+				"sha256": "7f7ba57679121c2848cef5751eff95090d8e338132b416b80425c657c9133613"
+			},
+			{
+				"path": "source-project/qa/ui/cases/pms-source-case-drafts/manifest.json",
+				"bytes": 8063,
+				"sha256": "6d6813f4bc7793abdeb2677cb04ca6ed3a78a1ea29ab8bdc4060cae7ee9a81bf"
+			},
+			{
+				"path": "source-project/qa/ui/catalog.json",
+				"bytes": 1699,
+				"sha256": "1e3b3d724492bffeb0a798ddb6f92053069a1c5d8d66561d41095263e3f6421a"
+			},
+			{
+				"path": "source-project/qa/ui/inventories/operation-contract-source-admission/.incomplete.json",
+				"bytes": 73,
+				"sha256": "003b7bafc75ac6470a8b0aed5e8ffbf0f30827c3270cffbfd2ec1264202aa1b9"
+			},
+			{
+				"path": "source-project/qa/ui/inventories/operation-contract-source-admission/manifest.json",
+				"bytes": 5932,
+				"sha256": "35e5c929112a3f1256c0200c2779f4d66ba6f3781942bbaf4b32690601d75487"
+			},
+			{
+				"path": "source-project/qa/ui/scopes/operation-contract-source-admission/.incomplete.json",
+				"bytes": 69,
+				"sha256": "7016c7e1b8e322890cb583a70ec762552d3dee0482218047250ab1d390a3c091"
+			},
+			{
+				"path": "source-project/qa/ui/scopes/operation-contract-source-admission/manifest.json",
+				"bytes": 2612,
+				"sha256": "13a2b38cf8c9153b3e3e9c7d266549a20b871b661084ea23d235430bd9b846b2"
+			},
+			{
+				"path": "source-project/qa/ui/scopes/pms-source-case-drafts-v2/.incomplete.json",
+				"bytes": 59,
+				"sha256": "07a51c623b6c728bfb1e4351af88d7a0558704d65596f96732e9b5ff8af9c9f2"
+			},
+			{
+				"path": "source-project/qa/ui/scopes/pms-source-case-drafts-v2/manifest.json",
+				"bytes": 2689,
+				"sha256": "5e01c364dc49cd5ca4558c7fb31aa71283a30624913cf15ad20063fec6f863c8"
+			},
+			{
+				"path": "source-project/qa/ui/scopes/pms-source-case-drafts/.incomplete.json",
+				"bytes": 56,
+				"sha256": "f54ae7e633de0b54712b22f5507f494019462aceb152a85b827baf2de78f603d"
+			},
+			{
+				"path": "source-project/qa/ui/scopes/pms-source-case-drafts/manifest.json",
+				"bytes": 2686,
+				"sha256": "6482f948de6e944667f9ec0f6d2955ec01504ea74aed28e90c63f41cd970c46d"
+			},
+			{
+				"path": "source-project/qa/ui/scopes/public-source/.incomplete.json",
+				"bytes": 68,
+				"sha256": "ea2939d8dd187ea566983d5b73f9e975abb5e97994ed46384b7ed8a988ddd2c6"
+			},
+			{
+				"path": "source-project/qa/ui/scopes/public-source/app.js.json",
+				"bytes": 5050,
+				"sha256": "d1d0157f867ee7d06292708bc20a58e4c6a935578953c0cde29bcefd7471f5d9"
+			},
+			{
+				"path": "source-project/qa/ui/scopes/public-source/auth.js.json",
+				"bytes": 1601,
+				"sha256": "0e8e2652ef68db84d2a617a57803de796c8d7bd4c57fecf7f75ce7976b8c9e72"
+			},
+			{
+				"path": "source-project/qa/ui/scopes/public-source/login.js.json",
+				"bytes": 1085,
+				"sha256": "9c86c024aee13199f4358ad167fc4ed42fe270a5c6bbdfb8fab3ef20d5de8fe3"
+			},
+			{
+				"path": "source-project/qa/ui/scopes/public-source/permission.js.json",
+				"bytes": 1088,
+				"sha256": "93fa571b3a1746f7d998e7c67bf10961ddae80cf07ee4c6087af9d1cedd332cb"
+			},
+			{
+				"path": "source-project/qa/ui/scopes/public-source/tenant.js.json",
+				"bytes": 1865,
+				"sha256": "263fecfe973f1f34ae4697b3e5f7caba58ae61b42276ec1e996abe731506fa6d"
+			},
+			{
+				"path": "sources/tests/desktop/native-app.mjs",
+				"bytes": 3948,
+				"sha256": "f5ce62b119a839d43d5ff5eb1984a03a548a4a3bde36de5875e1aaab3bcffeae"
+			},
+			{
+				"path": "sources/tests/lib/ensure-build.mjs",
+				"bytes": 2306,
+				"sha256": "d1658b6b8f55946fda4accf4a66cf034517e681cdcf556e5b10ee42316d44ba3"
+			},
+			{
+				"path": "sources/tests/lib/port-utils.mjs",
+				"bytes": 1640,
+				"sha256": "6e2f90811dce6fcc6356368401bab27c16c26c97e55b9cd3ab1cd008dc70a4d5"
+			},
+			{
+				"path": "sources/tests/ui-pms-desktop-connection.mjs",
+				"bytes": 13033,
+				"sha256": "ba35e718e3f70888032a861229a6b3ededbf4e35ddd02bd9d697f3582a16be5c"
+			},
+			{
+				"path": "sources/tests/ui-pms-source-cases.mjs",
+				"bytes": 6594,
+				"sha256": "915aa3444bc4adcfe209cb3da4d8ae493039b7fcbc4105f870385bc260715ee9"
+			}
+		]
+	}
+}

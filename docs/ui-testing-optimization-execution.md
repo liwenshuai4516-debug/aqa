@@ -783,3 +783,25 @@ U00首次发现→静态候选段有了可复用原始样本，但首次至获�
 [浏览器准备证据](ui-testing-evidence/optimization-u02-pms-browser-preparation.json)包含三轮公开准备回执与当时源码、五份来源声明、数据目录文档副本/回执及校验日志，排除原库、真实身份响应、认证文件与模型缓存。旧源码only清单和旧预期草稿保留，不冒充已录制；真实正常/错误诊断副本、业务角色、独立可清理测试数据、录制隐私、通用私密桥接、原生入库和完整Electron链路仍待完成。U00首次发现到获批连续基线及完整配对未完成，M1/M2和U03/U07依赖不放行，整计划active。
 
 最终验证轮目录1792981439071，源码摘要与当前入口一致；已验证14项相关单测（含10项PMS私有引用边界/清理）、全量typecheck、lint、协议结构和size，协议历史无tag跳过；归档逐成员回读一致。任务开始/交付clean仅预览，无删除。只读进程/监听核对未发现Pi桌面进程或8790监听，其他8788/8940服务未停止或借作所选桌面实例。未构建/替换/发布应用，也未修改插件资源。
+
+### U00/U06 续跑：Electron实际原库连接、源码草稿入库及重开核对（2026-10-26）
+
+浏览器准备后继续处理应用连接，未把“8790不可达”永久当作用户必须处理的阻塞。只读进程/端口核实无Pi桌面进程；所选真实数据目录无scheduler-tasks.json，已安装5插件没有需要随包升级的版本（sol-savings已安装0.2.2高于仓库0.2.1，保持不变；既有data-space/api-testing源码软链接保持不变）。新增入口`tests/ui-pms-desktop-connection.mjs`复用现有prebuilt Electron主进程与server、原安装插件及实际data目录，不构建/替换/发布应用。UI及agent配置单独临时存放，删除继承的模型凭据环境变量，不恢复个人会话；没有读取旧宿主token，鉴权由新启动Electron正常引导和renderer同源fetch完成。不是复制原库到隔离替代数据源，也不声称原用户agent设置或完整桌面业务链已验收。
+
+初次读取404，随后等待.app和额外renderer检查遇到启动导航中断；逐次结果和当时源码保留。检查确认“Execution context was destroyed/navigation”发生在启动导航期间，最终将只读state请求放在宿主侧有界等待循环，正常导航后复读，不强制刷新页面、不重放写入。1792982717737首次HTTP200，项目名/项目ID及环境ID均匹配用户选定Electron项目，revision8且0用例，原库摘要未变。这里只修正测试入口的读取时机，不把正常启动导航描述为已修复产品缺陷。
+
+按data-space-testing与ui-case-design契约，未用/save直接伪造用例或绑定。`tests/ui-pms-source-cases.mjs`从既有公开源码声明构造三条带来源、preconditions、steps、assertions、data_rules和gaps的原生cases：成功登录后的私有认证状态、账号/业务类型的草稿命名空间、无冲突DRAFT/SIGNED输入的状态显示。新scope使用真实项目/环境ID和配置baseUrl，具体入口仍为/pms/OperationContract；业务角色、数据、清理、定位器、录制及诊断缺口明确保留。仅save-cases结构/引用校验，未生成Playwright候选或通过TypeScript候选检查，不称设计获批或业务已执行。
+
+首份cases原生登记后，入口误调用不存在的loadFile作为后置检查而失败；原份已登记产物保留，改用原生ArtifactStore.load核验依赖，保存新v2，不覆盖旧scope/cases，也没有模型评审或换ID重置评审预算。实际入库只使用v2，case摘要031a0574bd22758fdb0e96919e7aba6f716337b262ee1f14e8569b3f39a1e3e9。首次入库入口又在导航前读取中断，后一次请求漏传/automation必需的workspace而被原门禁拒绝；两次均在任何库写入前停止，原库摘要不变。补齐真实workspace后才继续，不绕过项目/环境/引用门禁。
+
+1792983729528通过正常Electron界面API的/save建立“经营合同”模块及三个源码功能（baseRevision乐观并发，case数组保持原值，动态秘密沿服务端原规则保留），随后inspect确认executable=false，带原生module/feature二元ID和已存在目标featureId调用import。回执新增3、逐功能归类完整；archive-status为existing3/pending0/stale0/unclassified0。明确完成后的相同import再次返回新增0、复用3，未覆盖人工字段、未绑定或执行。真实store由revision8到10，仅增加目录及草稿；环境完整序列化摘要不变。3行status=草稿、automation=null、nativeSource绑定所选项目/环境及实际casesRef，执行记录仍0。台账预期由原生assertion导入，不手填通过结果。
+
+随后1792983935600和最终1792984383821分别重新启动Electron并从正常界面读取实际原库，1模块/3功能/3用例、revision10；打开数据空间用例页，实际3条“源码草稿：”行及3个“草稿”状态标签可见，无截图/DOM正文或个人会话内容入证据。该显示计数来自本轮Electron，非隔离库或历史记录。读取入口早期以直接systemId计算feature/case数量的问题按真实module→feature→case层级改正；早期读取时原库均为0，因此未将错误层级计数用于入库后结论。
+
+原生来源工作区保留.cleanup-keep；其8个公开引用文件逐一核对摘要、复制到所选项目project-documents/source-drafts-031a0574bd22，保留原nativeSource路径/修订不迁移历史。新增OperationContract-native-case-drafts-2026-10-26.md，含实际台账ID、步骤、源码预期、引用、未评审/未执行及剩余前置，0600且回读摘要一致。应用没有独立文档索引实体，因此Markdown仍是数据目录文件；三条用例已经在实际用例库显示，这两种状态分开记录。旧预期与浏览器准备文档作为历史保留，不改成已执行。
+
+临时UI/agent配置最初在各入口输出目录中；最终改到工作区外的专用临时目录，关自有app后清理。此前9轮自有配置的18个目录，在确认对应app已退出、18979无监听后按本轮fixture清理；不是常规缓存清理，不触碰真实data目录，所有公开失败源码/计划/结果和错误日志保留，认证/缓存不归档。最终原库只读重开未改store，临时配置删除可核验。共10次桌面启动：6次入口失败/部分就绪、4次完整达到各自目标；不写成10次通过。三条原生草稿不计正式用例执行，主动模型调用0，真实合同修改0；旧付费评审账本与上一归档逐字核对不变。
+
+[真实原库草稿证据](ui-testing-evidence/optimization-u06-pms-native-drafts.json)保存全部10次公开入口证据、两份原生草稿/来源、生成失败与修订、实际原生导入及去重回执、重开界面计数、私有临时配置清理回执和持久文档回执，不含原库环境参数、私有profile、个人认证或模型缓存。只证明原库连接/草稿入库子链；Codex仍没有直接数据空间工具、用户原agent配置未改。U02通用私密执行/录制、真实业务角色/数据/诊断、U00首次获批连续链/配对、M1/M2及U03/U07未放行，整计划保持active。
+
+本阶段最终验证：全量typecheck、4文件54项Vitest、lint、协议结构、size、脚本语法及差异检查通过；协议历史因无tag跳过。归档逐成员回读一致，原库文档及8份持久源码快照摘要与回执一致。开始/交付clean仅预览、无常规缓存删除；仅上述自有临时fixture按生命周期清理。原有.gitignore和db-client锁文件修改保留，不纳入提交。

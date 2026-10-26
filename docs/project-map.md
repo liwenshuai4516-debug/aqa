@@ -152,3 +152,5 @@ PMS 私有环境准备：`tests/ui-pms-private-preparation.mjs --refresh` 对用
 UI 失败链基准：`tests/ui-failed-batch-baseline.mjs` 复用获批六功能资产，验证原生失败分析和仅失败项重跑；`--continue-from` 复用已保存父批次，结果评审另用显式授权，不将子集通过替代原失败。
 
 PMS 浏览器准备：`tests/ui-pms-browser-preparation.mjs --refresh` 用所选项目临时私有引用做同源只读检查、账号匹配/匿名对照和公开脚本摘要对账；不采集截图、DOM或响应正文，不启动录制/正式测试，不代表桌面原生数据空间已接入。
+
+PMS 原库接入与草稿：`tests/ui-pms-desktop-connection.mjs --connect-selected-data` 以临时UI/agent配置启动现有Electron构建，读取真实所选数据目录；可用显式`--intake-source-cases <回执>`经原生接口导入草稿并核对映射/去重。`tests/ui-pms-source-cases.mjs`只保存三项源码声明的原生cases，不生成脚本或批准。
