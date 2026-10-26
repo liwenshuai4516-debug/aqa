@@ -28,10 +28,11 @@ function pairGaps(records, store) {
 	const calls = new Set(),
 		results = new Set(),
 		gaps = [];
-	for (const r of records) {
-		if (r.data.producer !== "pi-evidence-v1" || !r.contentRef) continue;
-		// The caller just authorized these records in this synchronous pass.
-		const value = JSON.parse(store.readBlob(r));
+	// The caller just authorized these records. Prefetch stays within this synchronous pass.
+	for (const { record: r, content } of store.readBlobs(
+		records.filter((r) => r.data.producer === "pi-evidence-v1" && r.contentRef),
+	)) {
+		const value = JSON.parse(content);
 		const message = value.message ?? value;
 		const prefix = `${r.data.attemptRef.id}:${r.data.sourceId}:`;
 		if (message.role === "assistant")

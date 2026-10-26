@@ -214,6 +214,7 @@ describe("EC01 contracts and immutable store", () => {
 		};
 		writeFileSync(store.blobPath(record), bytes);
 		expect(() => store.readBlob(record)).toThrow(/content digest mismatch/);
+		expect(() => [...store.readBlobs([record])]).toThrow(/content digest mismatch/);
 	});
 	it("separates two task selections and preserves immutable revisions", () => {
 		const store = open(),
@@ -768,6 +769,84 @@ store.writeEvidenceBatch({},[${JSON.stringify(input)}]);
 		const smaller = open({ dataDir: store.dataDir, readOnly: true });
 		smaller.limits.readBytes = entry.length;
 		expect(() => smaller.getMany(ctx, refs)).toThrow(/Invalid packed read range/);
+	});
+	it("coalesces selected adjacent bodies and retains direct, duplicate and empty body reads", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const records = store.writeEvidenceBatch(
+			ctx,
+			["first 中文", "second 😀", "third"].map((content, i) => ({
+				kind: "evidence",
+				requestId: `body-range-${i}`,
+				data: { ...f.evidence.data, content },
+			})),
+		);
+		const authorized = store.getMany(ctx, records.map(ref));
+		const range = store.readRange.bind(store),
+			reads: Array<{ offset: number; length: number }> = [];
+		store.readRange = (file: string, offset: number, length: number) => {
+			reads.push({ offset, length });
+			return range(file, offset, length);
+		};
+		const bodies = [...store.readBlobs([authorized[2], authorized[0], authorized[1]])];
+		expect(bodies.map((row) => row.record.id)).toEqual(records.map((row) => row.id));
+		expect(bodies.map((row) => row.content)).toEqual(["first 中文", "second 😀", "third"]);
+		expect(reads).toHaveLength(1);
+		expect(reads[0].length).toBe(records.reduce((n, r) => n + r.contentRef.size, 0));
+		const empty = write(store, ctx, "evidence", { ...f.evidence.data, content: "" });
+		expect([...store.readBlobs([empty, authorized[1], authorized[1]])].map((row) => row.content)).toEqual([
+			"",
+			"second 😀",
+			"second 😀",
+		]);
+		store.limits.recordBytes = Math.max(...records.map((r) => r.contentRef.size));
+		reads.length = 0;
+		expect([...store.readBlobs(authorized)].map((row) => row.content)).toEqual(["first 中文", "second 😀", "third"]);
+		expect(reads.every((row) => row.length <= store.limits.recordBytes)).toBe(true);
+		const bounded = open({ dataDir: store.dataDir, readOnly: true, limits: { readItems: 2 } });
+		expect(() => [...bounded.readBlobs(authorized)]).toThrow(/Too many body references/);
+	});
+	it("never reads unselected body gaps and revalidates selected bytes on each new batch", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const records = store.writeEvidenceBatch(
+			ctx,
+			["body-one", "body-two", "body-three"].map((content, i) => ({
+				kind: "evidence",
+				requestId: `body-gap-${i}`,
+				data: { ...f.evidence.data, content },
+			})),
+		);
+		const authorized = store.getMany(ctx, records.map(ref)),
+			segments = records.map((r) => store.packedBlobs!.get(store.blobPath(r))!);
+		const file = segments[0].file,
+			original = readFileSync(file),
+			changed = Buffer.from(original);
+		changed[segments[1].offset] ^= 1;
+		writeFileSync(file, changed);
+		const range = store.readRange.bind(store),
+			reads: Array<{ offset: number; length: number }> = [];
+		store.readRange = (file: string, offset: number, length: number) => {
+			reads.push({ offset, length });
+			return range(file, offset, length);
+		};
+		expect([...store.readBlobs([authorized[2], authorized[0]])].map((row) => row.content)).toEqual([
+			"body-one",
+			"body-three",
+		]);
+		expect(reads).toEqual([0, 2].map((i) => ({ offset: segments[i].offset, length: segments[i].length })));
+		expect(() => [...store.readBlobs(authorized)]).toThrow(/content digest mismatch/);
+		writeFileSync(file, original);
+		expect([...store.readBlobs(authorized)].map((row) => row.content)).toEqual(["body-one", "body-two", "body-three"]);
+		const later = Buffer.from(original);
+		later[segments[0].offset] ^= 1;
+		writeFileSync(file, later);
+		expect(() => [...store.readBlobs(authorized)]).toThrow(/content digest mismatch/);
+		writeFileSync(file, original);
+		store.limits.readBytes = original.length - 1;
+		expect(() => [...store.readBlobs(authorized)]).toThrow(/Invalid packed read range/);
 	});
 	it("persists only sanitized packed bodies and honors tightened body limits before publication", () => {
 		const store = open(),

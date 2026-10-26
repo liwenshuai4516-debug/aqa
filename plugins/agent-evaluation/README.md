@@ -188,3 +188,7 @@ UI-only动作：uploadStart（byteLength/sha256）、uploadChunk（uploadId/offs
 ## 0.4.28：正文原字节校验后解码
 
 正文回读直接以磁盘Buffer核对原SHA256和字节数，验证UTF-8合法后再解码，减少“先解码、再为摘要编码”的重复转换。独立blob与pack范围读取复用相同检查；目录/链接/范围/读取限额、每次读盘、逐引用授权、不可变格式及写入/fsync顺序保持。中文、emoji、孤立代理项写入后的替代字符、空正文和脱敏回读继续兼容；非法UTF-8、同长度篡改与恢复有回归。正式采集性能仍FAIL，局部长输出改善不代表串行/并行改善或M1完成，详见EC04工作包记录。
+
+## 0.4.29：采集配对时合并连续正文读取
+
+采集末尾只对本次已授权的Pi证据合并同一pack内连续正文范围；未选间隙不读取，每段遵守原recordBytes、pack遵守readBytes，每条仍核对字节数、UTF-8与SHA256。按段消费，不预载全部长输出，不跨请求缓存；独立blob继续原读取路径，逻辑证据/回执、物理格式及写入/fsync顺序不变。正式对照中串行本轮达门槛、并行降低，长输出墙钟未改善，整体AC39仍FAIL；详见[本轮证据](../../docs/agent-evaluation-evidence/EC04-body-batch-diagnostics.json)，不宣称M1完成。

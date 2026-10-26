@@ -1,0 +1,284 @@
+{
+	"scope": "EC04 v0.4.29 selected adjacent packed body reads; AC39 collection gate remains FAIL",
+	"timestamp": "2026-10-26T03:25:47.754923+00:00",
+	"baselineCommit": "f3f8088b1569c0d2ff80d7f3dcff0eebdd7d515f",
+	"pluginVersion": "0.4.29",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/index.json",
+		"bytes": 91528,
+		"sha256": "129530b8985ed721602dfe4c87539a3037ae31374a448ef46177695e1d84bf2d"
+	},
+	"archiveFiles": 421,
+	"change": {
+		"description": "Synchronous collection reuses contiguous reads of selected packed bodies, bounded by existing recordBytes/readItems/readBytes. Gaps, overlaps and duplicates split segments; legacy direct blobs retain single read path. Each body validates original raw size/SHA256/UTF-8 and decodes independently. Caller authorizes records before readBlobs; no cross-request cache, whole-pack preload, authorization relaxation, durable-format/write/fsync/threshold change. Physical read order can differ; pairing uses sets.",
+		"tests": "Adjacent Unicode bodies, shuffled/duplicate refs, legacy empty body, bounded segments/items/bytes, corrupt unselected gap not read, selected corruption rejected, later changes visible, restoration and invalid UTF-8 rejected.",
+		"sourceVerification": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/diagnostics/source-verification.json",
+			"bytes": 551,
+			"sha256": "6778bf55d51491729bcf797d67f29e53fee5d09aac0f7bfbd7ba36f2cdc19f52"
+		},
+		"registeredSource": {
+			"status": "PASS",
+			"trackedFilesMatchedPerRun": 29,
+			"runs": 2,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/diagnostics/registered-plugin-files.json",
+				"bytes": 26192,
+				"sha256": "b00b972dc3278b6e4879d0b73855e9ada2ef11db8e8b1f7499a20aadbd0f24eb"
+			}
+		},
+		"bundle": "Tracked ESM; no separate tracked bundle"
+	},
+	"formalComparison": {
+		"status": "FAIL",
+		"roundsPerVersion": 30,
+		"scope": "Sequential same-host baseline/candidate; three frozen workloads x five off/on pairs. No concurrent owned desktop/unit jobs, unchanged worker and thresholds. Measured candidate before manifest-only 0.4.28->0.4.29 bump; store/collect bytes unchanged. Five repetitions do not establish statistical significance or universal speedup; long wall time worsened. All current RSS pairs <=64MiB; historical failures retained.",
+		"baseline": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/baseline-formal-result.json",
+				"bytes": 8582,
+				"sha256": "c8e1d767ff855d50996c06994f7e14167d1ad68700e884ea295b16a31e9ef3a1"
+			},
+			"status": "FAIL",
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 52.301000999999985,
+					"wallLimit": 50,
+					"cpuDelta": 41.212,
+					"cpuLimit": 50,
+					"rssDeltas": [5160960, 3276800, 2506752, 4620288, 1753088],
+					"pass": false
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 151.303334,
+					"wallLimit": 50,
+					"cpuDelta": 160.22899999999998,
+					"cpuLimit": 50,
+					"rssDeltas": [26705920, 26558464, 26869760, 27852800, 27607040],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 537.9441260000001,
+					"wallLimit": 50,
+					"cpuDelta": 475.36999999999995,
+					"cpuLimit": 50,
+					"rssDeltas": [62291968, 64258048, 61800448, 61980672, 60751872],
+					"pass": false
+				}
+			]
+		},
+		"candidate": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/candidate-formal-result.json",
+				"bytes": 8604,
+				"sha256": "28c8a7f04ec883539841603f28ca0f6a1a2da074d7016646d65786c80b9c316b"
+			},
+			"status": "FAIL",
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 48.509626000000026,
+					"wallLimit": 50,
+					"cpuDelta": 40.495,
+					"cpuLimit": 50,
+					"rssDeltas": [2768896, 3293184, 5570560, 6094848, 3260416],
+					"pass": true
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 108.48279199999996,
+					"wallLimit": 50,
+					"cpuDelta": 125.053,
+					"cpuLimit": 50,
+					"rssDeltas": [23330816, 26574848, 27967488, 27754496, 30441472],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 560.4604589999999,
+					"wallLimit": 50,
+					"cpuDelta": 458.82800000000003,
+					"cpuLimit": 50,
+					"rssDeltas": [59899904, 64372736, 63864832, 64143360, 61145088],
+					"pass": false
+				}
+			]
+		}
+	},
+	"diagnostics": {
+		"stage": {
+			"scope": "Pre-candidate isolated enabled workers, five per workload; original fsync fully executed, wrappers measure source/collect/fsync. Diagnostic timings overlap and must not be summed; not formal off/on comparisons. Long source and sync time each exceed this run 50ms wall allowance, motivating architecture investigation without proving universal impossibility.",
+			"medians": [
+				{
+					"workload": "serial",
+					"rounds": 5,
+					"medians": {
+						"collectMs": 51.41187500000001,
+						"syncCalls": 6,
+						"syncMs": 27.645541999999978,
+						"sourceCalls": 1,
+						"sourceMs": 2.110667000000035
+					}
+				},
+				{
+					"workload": "parallel",
+					"rounds": 5,
+					"medians": {
+						"collectMs": 133.01641599999994,
+						"syncCalls": 6,
+						"syncMs": 28.30487599999998,
+						"sourceCalls": 1,
+						"sourceMs": 5.819749999999999
+					}
+				},
+				{
+					"workload": "long",
+					"rounds": 5,
+					"medians": {
+						"collectMs": 518.5537919999999,
+						"syncCalls": 12,
+						"syncMs": 69.75216800000021,
+						"sourceCalls": 3,
+						"sourceMs": 136.596584
+					}
+				}
+			],
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/diagnostics/stages.json",
+				"bytes": 17787,
+				"sha256": "e38418bce3932b1c04f0076305f4839e4f2db3d46bce4e3acc4f9939cd654ce7"
+			}
+		},
+		"microbenchmarks": {
+			"adopted": false,
+			"scope": "Input Buffer/split serialization gains did not justify complexity; credential-regex prefilter slowed secret-bearing text. Original canonical and redaction rules retained.",
+			"input": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/diagnostics/micro.json",
+				"bytes": 6193,
+				"sha256": "e86d06af6a2477d9c5da8270c9a19ea5cb5618aed239ce395099e8d8e8400385"
+			},
+			"redaction": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/diagnostics/redaction-micro.json",
+				"bytes": 2983,
+				"sha256": "3c519a0de3d9e6aeb3840746153a191171c1b34bd25da9466e5ba3bc41a12fda"
+			}
+		}
+	},
+	"verification": {
+		"unit": {
+			"status": "PASS",
+			"files": 18,
+			"tests": 301,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/diagnostics/unit.log",
+				"bytes": 230,
+				"sha256": "88cc6f78391edba7e0f697c6f35e62570c6b3292982d2635a9404a70c882ff23"
+			}
+		},
+		"typecheck": {
+			"status": "PASS",
+			"configs": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/diagnostics/typecheck-delivery.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"quality": {
+			"lint": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/diagnostics/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			"protocol": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/diagnostics/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"i18n": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/diagnostics/i18n.log",
+				"bytes": 615,
+				"sha256": "80312d8da86db05c5343b06b015ff85dbb3f374e280ecc1b044c87014878d1cd"
+			},
+			"size": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/diagnostics/size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			}
+		},
+		"protocolHistoryHeuristic": "SKIP: no matching historical tag; structural/v33 checks pass",
+		"mainDesktop": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/main/result.json",
+				"bytes": 43116,
+				"sha256": "95ae406cf1d4d14925e0faa28b83b51cbfa0a5f4470a2427be9b3a27fae694cd"
+			},
+			"scope": "Actual Electron 0.4.29 main lifecycle,40 pages/160545 chars exact body,task A/B,10 verdict scenarios,6 dropped application replies and native restart. Synthetic SDK and fixtures; no real model/tool execution."
+		},
+		"nativeDesktop": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/native/result.json",
+				"bytes": 4313,
+				"sha256": "bae06da8334701b3119902e8e7b06924d2c4860bc93741c99b78a926f2c1465f"
+			},
+			"scope": "Actual Electron uses prior41-case UI execution (27pass/14controlled failures) plus41unstarted plan, source errors/paging. Business runner not rerun; full role/tool/rollback/scale/rule-upgrade matrices not rerun."
+		},
+		"reportPerformance": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/report-performance-result.json",
+				"bytes": 1728,
+				"sha256": "fbc5ab13c73e50b011b4185936b2aa97703cef4bcd5c6d5c6ba905c89015d6f5"
+			},
+			"status": "PASS",
+			"checks": {
+				"reportsCompleted": true,
+				"reportMedianMs": 548.6076250000001,
+				"listMedianMs": 4.897500000000036,
+				"evidenceMedianMs": 0.39158299999962765
+			}
+		}
+	},
+	"failedAttempts": [
+		{
+			"scope": "Initial typecheck TS2322 from mutating inferred literal readItems; replaced with separately configured bounded reader, then full check passed.",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/diagnostics/typecheck.log",
+				"bytes": 358,
+				"sha256": "1dc7cc645324a92d7c9b37df2a1d8439d06c491d7d4ad0dc0380c9ae46aac446"
+			}
+		},
+		{
+			"scope": "Initial native desktop correctly failed stale escaped0.4.28 assertion while0.4.29 loaded. Updated exact version assertion and reran full native test.",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/diagnostics/native-desktop.log",
+				"bytes": 2868,
+				"sha256": "4a09a579d710cfb53a9aea2c17221ac91f888c9420eb7c6fda1728bf72cf52b7"
+			}
+		},
+		{
+			"scope": "Initial archive selection stopped at excluded runtime dependency symlink; incomplete399-file archive retained, final421-file archive separately verified.",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-body-batch-complete/files/diagnostics/archive-staging-note.txt",
+				"bytes": 309,
+				"sha256": "b94390832e38c577a996f74637e92c48d95434b9274a8d53dcab820f3b784bce"
+			}
+		}
+	],
+	"calls": {
+		"realModels": 0,
+		"realCli": 0,
+		"nativeRunnerThisTurn": 0,
+		"businessExecution": 0
+	},
+	"remaining": "AC39 FAIL, EC04/M1 incomplete. Other acceptance submatrices remain; EC06 descendant containment unresolved and EC07/09 held. Real CLI/model execution deferred by user. Overall goal active."
+}

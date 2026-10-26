@@ -901,6 +901,9 @@ export class EvaluationStore {
 		const bytes = packed
 			? this.readRange(packed.file, packed.offset, packed.length)
 			: this.readFileBytes(file, this.limits.evidenceBytes);
+		return this.#decodeBlob(record, bytes);
+	}
+	#decodeBlob(record, bytes) {
 		// Validate the persisted bytes before decoding. Invalid UTF-8 must not become
 		// replacement characters with a different digest after the conversion.
 		requireValue(
@@ -909,6 +912,52 @@ export class EvaluationStore {
 			"Evidence content digest mismatch",
 		);
 		return bytes.toString("utf8");
+	}
+
+	/** Read only selected adjacent bodies within one synchronous collection pass. */
+	*readBlobs(records) {
+		requireValue(
+			Array.isArray(records) && records.length <= this.limits.readItems,
+			"LIMIT_EXCEEDED",
+			"Too many body references",
+		);
+		const files = new Map();
+		for (const record of records) {
+			const packed = this.packedBlobs.get(this.blobPath(record));
+			if (!packed) {
+				yield { record, content: this.readBlob(record) };
+				continue;
+			}
+			if (!files.has(packed.file)) files.set(packed.file, []);
+			files.get(packed.file).push({ record, ...packed });
+		}
+		const store = this;
+		for (const [file, entries] of files) {
+			let pending = [],
+				start = 0,
+				end = 0;
+			function* flush() {
+				if (!pending.length) return;
+				const bytes = store.readRange(file, start, end - start);
+				for (const entry of pending)
+					yield {
+						record: entry.record,
+						content: store.#decodeBlob(
+							entry.record,
+							bytes.subarray(entry.offset - start, entry.offset - start + entry.length),
+						),
+					};
+				pending = [];
+			}
+			for (const entry of entries.sort((a, b) => a.offset - b.offset)) {
+				if (pending.length && (entry.offset !== end || entry.offset + entry.length - start > this.limits.recordBytes))
+					yield* flush();
+				if (!pending.length) start = entry.offset;
+				end = entry.offset + entry.length;
+				pending.push(entry);
+			}
+			yield* flush();
+		}
 	}
 
 	originalPath(record) {
