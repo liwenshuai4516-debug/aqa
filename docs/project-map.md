@@ -168,3 +168,5 @@ EC04 半发布恢复补验：`tests/agent-evaluation-desktop-test.mjs --crash-st
 EC04 半报告恢复补验：`tests/agent-evaluation-desktop-test.mjs --crash-report`复用`tests/fixtures/agent-evaluation/crash-store.mjs`，实际sidecar同步23字节报告后退出；确认记录显式复制恢复后unknown作业拒绝旧请求重放，原`--crash-store`干净备份恢复已复跑。见[证据](agent-evaluation-evidence/EC04-crash-report-diagnostics.json)。
 
 EC04 评分作业回查：现有`service.mjs`的`list(kind:"jobs")`与`client/entry.mjs`记录页补齐重启后的作业发现，复用原status及授权；`--crash-report`覆盖实际未知状态卡片，见[证据](agent-evaluation-evidence/EC04-job-discovery-diagnostics.json)。
+
+EC04 普通任务采集故障：`tests/agent-evaluation-native-desktop-test.mjs --collection-fault`复用`tests/fixtures/agent-evaluation/collection-fault.mjs`及原本地SSE，验证真实写锁拒绝时SDK继续、检查点保持和显式恢复；见[证据](agent-evaluation-evidence/EC04-collection-fault-diagnostics.json)。

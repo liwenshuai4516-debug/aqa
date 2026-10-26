@@ -1,0 +1,144 @@
+{
+	"scope": "EC04/AC14 ordinary SDK task resilience during actual observation-store lock rejection",
+	"timestamp": "2026-10-26T06:20:18.971845+00:00",
+	"baselineCommit": "4e1c980c77c9bfcdcfe9ea74ce1d627ca1fbf47f",
+	"pluginVersion": "0.4.32",
+	"productChanges": false,
+	"status": "PASS within stated subset; M1 incomplete",
+	"platform": "macOS arm64 actual development Electron; isolated dataDir/agentDir; original bundled Pi SDK",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/index.json",
+		"bytes": 102129,
+		"sha256": "618bd0836bddff3d481a9c5e178d1385219c76f10e30db253c66c17a75510f65"
+	},
+	"archiveFiles": 408,
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"nativeRunnerCalls": 0,
+	"actualSDKToolCalls": 6,
+	"localScriptedResponses": 12,
+	"scenario": [
+		"Start observation from an existing historical report using the actual UI; source remains the frozen u1..u1 selection.",
+		"Normal control: original SDK runs a local scripted response, executes readonly agent_evaluation.get and persists a final response. Host reader confirms isStreaming false. Collector advances checkpoint without error.",
+		"Replace only exact owned active writer.lock nonce with a random nonce; original store/service/collector code unchanged. Run a second local scripted SDK task with the same readonly tool behavior.",
+		"Actual collector publication rejects STORE_LOCKED; watch catches error. SDK still completes successful tool result and final response, host reports isStreaming false. Latest durable checkpoint remains byte-for-byte equal to baseline and all store files except deliberately changed lock remain exact.",
+		"Actual UI status query displays collection failure. Restore exact original owned lock bytes and verify complete pre-fault store manifest; no product auto-unlock claimed.",
+		"A third explicitly started local SDK task triggers observation again: new durable checkpoint, error/lastError null, UI failure notice cleared. All three tasks have exactly one matching persisted tool result; six scripted local responses total, no replay loop.",
+		"Stop observation through actual UI; server reports stopped/busy:false/pending:false. Original report bytes unchanged."
+	],
+	"raw": {
+		"result.json": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/files/desktop/result.json",
+			"bytes": 2253,
+			"sha256": "44f1c1cd4c83f0af9ba0d794237e881f72ad737f32e960c8b197904c27cc1c74"
+		},
+		"collection-fault-probes.json": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/files/desktop/collection-fault-probes.json",
+			"bytes": 75717,
+			"sha256": "47437d2487383217acbc7a29d865f46c9d66fc24172fcce981f53922515d4ee4"
+		},
+		"tool-channel-observations.json": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/files/desktop/tool-channel-observations.json",
+			"bytes": 59363,
+			"sha256": "08500ddf0c2229da0f4bf9f5881384b9da0fe422bc0f6a2ecf87b077f1845ac9"
+		},
+		"app.log": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/files/desktop/app.log",
+			"bytes": 1865,
+			"sha256": "b002e25899602c5c781b91fb4a2a2cceadf3d7775fd4f4f9ea5b48dde0b6b8bf"
+		}
+	},
+	"independentVerification": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/files/checks/independent-verification.json",
+		"bytes": 369,
+		"sha256": "82a5c025931e618fe152331ba56f4027ccec8c5bc561426a444ad6140e99613a"
+	},
+	"screenshots": {
+		"collection-lock-fault.png": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/files/desktop/collection-lock-fault.png",
+			"bytes": 259791,
+			"sha256": "462b1a0d927527d2a87a84e81371137df1a4ddf1c8169a1ee776f8934aa4c5cf"
+		},
+		"collection-recovered.png": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/files/desktop/collection-recovered.png",
+			"bytes": 250189,
+			"sha256": "ff5e5bbd825fd64e5d2f3e874944c66e53489759657f13f0889942a1c3719aab"
+		}
+	},
+	"screenshotsInspected": true,
+	"validation": {
+		"typecheck": {
+			"status": "PASS",
+			"configs": 5,
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/files/checks/typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"unit": {
+			"status": "PASS",
+			"files": 3,
+			"tests": 77,
+			"skipped": 0,
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/files/checks/unit-final.log",
+				"bytes": 224,
+				"sha256": "b28b5106d4a8915a4713806c35bb0002bccfa2183c9d74a471d4fdc1f07abeac"
+			}
+		},
+		"logs": {
+			"lint": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/files/checks/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			"protocol": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/files/checks/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"size": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/files/checks/size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			},
+			"clean-final": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/files/checks/clean-final.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			}
+		},
+		"protocol": "Structure/type-only/v33 PASS; historical tag heuristic SKIP",
+		"clean": "Preview only, zero deletions",
+		"product": "29 tracked plugin files equal HEAD and actual registration; no plugin version bump required for test/document-only changes"
+	},
+	"retainedFailure": {
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-collection-fault/files/desktop-initial-failure/result.json",
+			"bytes": 2302,
+			"sha256": "7e43d7108cc30e2ede6092595426e8f7830f5d69338e74b70c23230c71b2a0e6"
+		},
+		"reason": "Fixture entered at records view but expected detail watch-start button; no SDK call/fault injection occurred. Reopen report before observing; repaired run and final source run each PASS. Initial failure retained, not counted PASS."
+	},
+	"scopeLimits": [
+		"No new product behavior implemented; actual existing degradation/catch/recovery path verified with owned lock-nonce mismatch, not disk-full or power-loss.",
+		"Frozen historical selection excludes new SDK messages. Events from that same session trigger observation, but new tool results are not claimed as collected evidence. Latest coverage remains partial/gap1; not upgraded to complete.",
+		"Normal work here is a deterministic readonly SDK tool task with final reply, not actual external business mutation or independent correctness validation.",
+		"Existing one UI-source historical41-row native pagination retained (27 passed/14 failed;20/20/1). It is not a newly executed native runner or current task passing result.",
+		"Final selected run has3 tool calls and6 local SSE responses. Repaired prior successful run has another3/6 in its separately retained artifacts; initial failed run has0. Across this workpackage actual SDK tool calls6 and local responses12; external model/CLI calls0."
+	],
+	"notExecuted": [
+		"Formal performance rerun; AC39 prior overall FAIL retained.",
+		"Other collection fault combinations, real ENOSPC/power loss and actual long-running business tasks.",
+		"Dedicated experiment fault policy belongs to EC10; not implemented/executed.",
+		"Other version/platform, full UI theme/language matrices, true CLI/model testing deferred by user."
+	],
+	"remaining": "AC14 ordinary collection-fault desktop subset supplemented; entire AC14, EC04/M1 and full plan incomplete. AC39 performance FAIL, EC06 detached containment gap and downstream gates remain.",
+	"finalRunCalls": {
+		"actualSDKToolCalls": 3,
+		"localScriptedResponses": 6,
+		"actualModelCalls": 0,
+		"actualCliCalls": 0
+	}
+}

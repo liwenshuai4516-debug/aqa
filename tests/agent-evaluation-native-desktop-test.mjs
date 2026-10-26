@@ -17,6 +17,7 @@ const nativeMatrix = process.argv.includes("--native-matrix");
 const accessMatrix = process.argv.includes("--access-matrix");
 const principalMatrix = process.argv.includes("--principal-matrix");
 const toolMatrix = process.argv.includes("--tool-matrix");
+const collectionFault = process.argv.includes("--collection-fault");
 const summary = JSON.parse(await readFile(join(fixture, "summary.json"), "utf8"));
 assert.equal(summary.status, "PASS");
 assert.match(summary.scope, /local synthetic targets/);
@@ -113,6 +114,7 @@ const result = {
 	accessMatrix,
 	principalMatrix,
 	toolMatrix,
+	collectionFault,
 };
 let app, page, scriptedTools;
 async function until(fn) {
@@ -124,7 +126,7 @@ async function until(fn) {
 	throw new Error("Timed out");
 }
 try {
-	if (toolMatrix) {
+	if (toolMatrix || collectionFault) {
 		const { createToolChannelFixture } = await import("./fixtures/agent-evaluation/tool-channel.mjs");
 		scriptedTools = await createToolChannelFixture(agentDir);
 	}
@@ -832,6 +834,23 @@ try {
 				humanUIControlAppended: true,
 				originalReportUnchanged: true,
 			});
+		}
+		if (collectionFault && source === sources.at(-1)) {
+			const { verifyCollectionFault } = await import("./fixtures/agent-evaluation/collection-fault.mjs");
+			result.checks.push(
+				await verifyCollectionFault({
+					page,
+					rpc,
+					until,
+					scriptedTools,
+					source,
+					dataDir,
+					output,
+					reportRef: status.reportRef,
+					reportFile,
+					originalReportBytes: before,
+				}),
+			);
 		}
 	}
 	result.status = "PASS";
