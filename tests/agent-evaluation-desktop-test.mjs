@@ -28,7 +28,8 @@ import { installVerdictFixture, verifyVerdictMatrix } from "./fixtures/agent-eva
 import { beginReceiptLoss, verifyReceiptLoss } from "./fixtures/agent-evaluation/receipt-loss.mjs";
 import { installCostFixture, verifyCostMatrix } from "./fixtures/agent-evaluation/cost-matrix.mjs";
 import { installCapacityFixture, verifyCapacity } from "./fixtures/agent-evaluation/capacity.mjs";
-const capacity = process.argv.includes("--capacity");
+const byteCapacity = process.argv.includes("--byte-capacity");
+const capacity = process.argv.includes("--capacity") || byteCapacity;
 assert.ok(
 	!capacity ||
 		!process.argv.some((arg) =>
@@ -1101,11 +1102,14 @@ try {
 		result.verdictMatrix = await verifyVerdictMatrix({ page, fixture: verdictFixture, dataDir, output, until });
 	}
 	if (capacityFixture) {
-		stage("default record saturation, oversized source gap and stopped owned-pack recovery");
+		stage(
+			`default ${byteCapacity ? "byte" : "record"} saturation, oversized source gap and stopped owned-pack recovery`,
+		);
 		const limited = await verifyCapacity({
 			app,
 			page,
 			fixture: capacityFixture,
+			byteCapacity,
 			repo,
 			output,
 			dataDir,
@@ -1118,7 +1122,7 @@ try {
 		page = limited.page;
 		result.capacity = limited.result;
 		result.checks.push(
-			"Actual desktop retains oversized-source gaps, rejects writes at original10000record limit without changing records, reads old reports and recovers after stopped removal of owned seed packs",
+			`Actual desktop retains oversized-source gaps, rejects writes at original ${byteCapacity ? "256MiB byte" : "10000record"} limit without changing records, reads old reports and recovers after stopped removal of owned seed packs`,
 		);
 	}
 	stage("development URL cannot acquire the native identity");

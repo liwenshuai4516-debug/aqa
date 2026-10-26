@@ -40,6 +40,7 @@ export async function verifyCapacity({
 	app: originalApp,
 	page: originalPage,
 	fixture,
+	byteCapacity = false,
 	repo,
 	output,
 	dataDir,
@@ -242,41 +243,80 @@ export async function verifyCapacity({
 			context = {},
 			identity = { domain: original.domain, sessionIds: [contract.data.scope.sessionId], allowWrite: true };
 		const store = new EvaluationStore({ dataDir, authorize: (c) => (c === context ? identity : undefined) });
-		const seedCount = store.limits.records - store.index.size;
+		let seedCount = 0;
+		const byteFill = { rejectedBodySizes: [] };
 		assert.equal(store.limits.records, LIMITS.records);
-		assert.ok(seedCount > 0);
+		assert.equal(store.limits.capacityBytes, LIMITS.capacityBytes);
 		try {
 			const snapshot = JSON.parse(
 				await readFile(join(root, "snapshots", `${original.data.snapshotRef.id}.1.json`), "utf8"),
 			);
 			const attemptRef = snapshot.data.attemptRefs[0];
-			for (let offset = 0; offset < seedCount; offset += LIMITS.snapshotItems) {
-				store.writeEvidenceBatch(
-					context,
-					Array.from({ length: Math.min(LIMITS.snapshotItems, seedCount - offset) }, (_, i) => {
-						const index = offset + i;
-						return {
-							kind: "evidence",
-							requestId: `capacity-owned-${index}`,
-							data: {
-								attemptRef,
-								sourceId: "capacity-owned-seed",
-								sourceEventId: String(index),
-								sourceRevision: digest(index),
-								sourceLocator: `capacity-owned-seed:${index}`,
-								producer: "capacity-fixture-v1",
-								availability: "available",
-								origin: "harness-observed",
-								kind: "synthetic-capacity",
-								observedAt: "2026-10-26T00:00:00Z",
-								redaction: [],
-								truncated: false,
-							},
-						};
-					}),
-				);
+			const input = (index, bodyBytes) => ({
+				kind: "evidence",
+				requestId: `capacity-owned-${String(index).padStart(6, "0")}`,
+				data: {
+					attemptRef,
+					sourceId: "capacity-owned-seed",
+					sourceEventId: String(index).padStart(6, "0"),
+					sourceRevision: digest(index),
+					sourceLocator: `capacity-owned-seed:${String(index).padStart(6, "0")}`,
+					producer: "capacity-fixture-v1",
+					availability: "available",
+					origin: "harness-observed",
+					kind: "synthetic-capacity",
+					observedAt: "2026-10-26T00:00:00Z",
+					redaction: [],
+					truncated: false,
+					...(bodyBytes === undefined ? {} : { content: String(index).padStart(6, "0") + "x".repeat(bodyBytes - 6) }),
+				},
+			});
+			if (byteCapacity) {
+				const remaining = () => store.limits.capacityBytes - store.usedBytes;
+				while (remaining() > 8 * LIMITS.evidenceBytes) {
+					store.writeEvidenceBatch(
+						context,
+						Array.from({ length: 7 }, (_, i) => input(seedCount + i, LIMITS.evidenceBytes)),
+					);
+					seedCount += 7;
+				}
+				while (remaining() > LIMITS.evidenceBytes + 4096) {
+					store.writeEvidenceBatch(context, [input(seedCount++, LIMITS.evidenceBytes)]);
+				}
+				const beforeTail = { bytes: store.usedBytes, records: store.index.size };
+				// Fill to within64 bytes through the original API. Rejected candidates must publish no receipt.
+				let bodyBytes = Math.min(LIMITS.evidenceBytes, remaining() - 512),
+					filled = false;
+				for (let i = 0; i < 64 && bodyBytes >= 6; i++, bodyBytes -= 64) {
+					const tail = input(seedCount, bodyBytes);
+					try {
+						store.writeEvidenceBatch(context, [tail]);
+						filled = true;
+						seedCount++;
+						break;
+					} catch (error) {
+						assert.equal(error.code, "LIMIT_EXCEEDED");
+						assert.match(error.message, /capacity/);
+						assert.equal(store.usedBytes, beforeTail.bytes);
+						assert.equal(store.index.size, beforeTail.records);
+						assert.equal(store.lookupRequest(context, tail.requestId), undefined);
+						byteFill.rejectedBodySizes.push(bodyBytes);
+					}
+				}
+				assert.ok(filled);
+				assert.ok(remaining() >= 0 && remaining() < 256);
+				assert.ok(store.index.size < LIMITS.records);
+				Object.assign(byteFill, { usedBytes: store.usedBytes, remainingBytes: remaining(), records: store.index.size });
+			} else {
+				seedCount = store.limits.records - store.index.size;
+				assert.ok(seedCount > 0);
+				for (let offset = 0; offset < seedCount; offset += LIMITS.snapshotItems)
+					store.writeEvidenceBatch(
+						context,
+						Array.from({ length: Math.min(LIMITS.snapshotItems, seedCount - offset) }, (_, i) => input(offset + i)),
+					);
+				assert.equal(store.index.size, LIMITS.records);
 			}
-			assert.equal(store.index.size, LIMITS.records);
 		} finally {
 			store.close();
 		}
@@ -286,7 +326,19 @@ export async function verifyCapacity({
 		assert.ok(seeds.every((n) => /^evidence\/batch-[a-f0-9-]+\.pack$/.test(n)));
 		await writeFile(
 			join(output, "capacity-file-manifests.json"),
-			JSON.stringify({ before, full, seeds, seedCount, recordLimit: LIMITS.records }, null, 2),
+			JSON.stringify(
+				{
+					before,
+					full,
+					seeds,
+					seedCount,
+					recordLimit: LIMITS.records,
+					capacityBytes: LIMITS.capacityBytes,
+					...(byteCapacity ? { byteFill } : {}),
+				},
+				null,
+				2,
+			),
 		);
 		await launch();
 		await select(sessionPath, contract.data.scope.sessionId);
@@ -326,6 +378,9 @@ export async function verifyCapacity({
 		const result = {
 			status: "PASS",
 			defaultRecordLimit: LIMITS.records,
+			defaultByteLimit: LIMITS.capacityBytes,
+			mode: byteCapacity ? "bytes" : "records",
+			...(byteCapacity ? { byteFill } : {}),
 			syntheticSeedRecords: seedCount,
 			ownedSeedPacks: seeds,
 			oversized: {
@@ -347,8 +402,9 @@ export async function verifyCapacity({
 			},
 			actualModelCalls: 0,
 			actualCliCalls: 0,
-			scope:
-				"Actual macOS arm64 Electron; original10000record and1MiB source-item defaults, synthetic offline history/packs. Record-count saturation is not physical disk-full or256MiB byte-capacity testing. No retention UI or production cleanup implementation claimed.",
+			scope: byteCapacity
+				? "Actual macOS arm64 Electron; original256MiB byte capacity, below10000records, original1MiB source-item defaults; synthetic owned history/packs. Not physical disk-full/ENOSPC, retention UI or production cleanup."
+				: "Actual macOS arm64 Electron; original10000record and1MiB source-item defaults, synthetic offline history/packs. Record-count saturation is not physical disk-full or256MiB byte-capacity testing. No retention UI or production cleanup implementation claimed.",
 		};
 		await writeFile(join(output, "capacity.json"), JSON.stringify(result, null, 2));
 		return { app, page, result };
