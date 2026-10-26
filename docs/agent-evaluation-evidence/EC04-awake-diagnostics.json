@@ -1,0 +1,122 @@
+{
+	"scope": "Current 0.4.32 post-wake actual Electron main flow/long evidence regression plus unchanged frozen performance; no product change",
+	"baselineCommit": "d88e86a0cd7b6b085e987d943f46615f8becef94",
+	"status": "DESKTOP_PASS; AC39_FAIL; M1_INCOMPLETE",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-awake-validation/index.json",
+		"bytes": 78305,
+		"sha256": "3c07004be58727559223df98b434853bbe944f7212829c63e0104ca3692a55d7"
+	},
+	"archiveFiles": 172,
+	"pluginVersion": "0.4.32",
+	"actualModelCalls": 0,
+	"actualAgentCliCalls": 0,
+	"verification": {
+		"timestamp": "2026-10-26T08:15:51.985018+00:00",
+		"pluginFilesMatchHeadAndInstalled": 29,
+		"fixedHarnessUnchanged": true,
+		"performanceRows": 30,
+		"evidenceCounts": [40, 400, 200],
+		"gaps": [],
+		"noCollectionErrors": true,
+		"diskBudgetsSatisfied": true,
+		"screenshotsViewed": ["detail-light.png", "long-evidence-narrow.png"],
+		"exclusions": "No auth/provider/config/secret files, browser caches or dependencies copied. Only self-owned synthetic SDK source, workspace, evidence and explicitly selected outputs."
+	},
+	"performance": {
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-awake-validation/files/performance/result.json",
+			"bytes": 8605,
+			"sha256": "6075d581e912448118cb384f8033a6e6e9c6356e6ea5f8bf1493b37fef797359"
+		},
+		"status": "FAIL",
+		"exitCode": 1,
+		"comparisons": [
+			{
+				"workload": "serial",
+				"wallDelta": 54.81758300000004,
+				"wallLimit": 50,
+				"cpuDelta": 39.522999999999996,
+				"cpuLimit": 50,
+				"rssDeltas": [7340032, 4931584, 6537216, 5701632, 4292608],
+				"pass": false
+			},
+			{
+				"workload": "parallel",
+				"wallDelta": 120.38570899999999,
+				"wallLimit": 50,
+				"cpuDelta": 117.248,
+				"cpuLimit": 50,
+				"rssDeltas": [26050560, 24395776, 21184512, 24297472, 21397504],
+				"pass": false
+			},
+			{
+				"workload": "long",
+				"wallDelta": 652.6679169999999,
+				"wallLimit": 50,
+				"cpuDelta": 402.912,
+				"cpuLimit": 50,
+				"rssDeltas": [56573952, 56934400, 55820288, 56836096, 56836096],
+				"pass": false
+			}
+		],
+		"interpretation": "All three workloads fail original thresholds. Serial CPU passes but wall fails. All per-round RSS deltas and disk budgets pass this run; historical failures retained. Not a candidate comparison or proof of improvement."
+	},
+	"desktop": {
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-awake-validation/files/desktop/result.json",
+			"bytes": 15556,
+			"sha256": "50c45bdd490530ab3ac3b28c8b3d03e3e3935f6e49cbcac66f3be618ba4fc4b9"
+		},
+		"status": "PASS",
+		"exitCode": 0,
+		"checks": [
+			"Real app loads plugin 0.4.32 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+			"Skill, slash completion and agent_evaluation tool appear in actual desktop management",
+			"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.32; skill, slash discovery and tool registration remain enabled",
+			"Actual desktop switches between sealed file text and original evidence, retaining keyboard focus",
+			"Actual desktop select/create/collect/seal/score, evidence paging, append human review and retain original verdict",
+			"Actual Electron blob download reopens as a valid redacted export, including separate review and verifiable manifest",
+			"Actual Electron pages the complete long evidence, escapes markup/redacts the fixture secret, measures five painted list/report/evidence actions, preserves the sealed view on a real missing-pack error and recovers by explicit retry without creating records",
+			"Actual desktop re-scoring preserves the exact frozen snapshot/configuration and creates no attempt; revision keeps the selection and old reports/reviews, re-observes changed fixture bytes, and leaves added semantic requirements inconclusive",
+			"Actual desktop observation starts from the fixed selection, returns a durable checkpoint, checks status, stops, scores a new snapshot with the original configuration and dismisses without changing the old report or executing a business task",
+			"Actual desktop configuration edits F01 structure and F07 polling through forms, retains malformed input without a report, then scores the original sealed snapshot with new persisted configs and no collection, attempt or snapshot; old report bytes remain unchanged",
+			"Actual desktop adds an installed rule binding in a new contract revision, keeps it inconclusive without configuration, then configures a matching artifact check on that sealed snapshot; the old contract/report remain unchanged and no task runs",
+			"Chinese/English live labels and narrow layout fit verified; screenshots retained for visual inspection",
+			"Actual light theme stylesheet loads; report remains readable with inherited foreground/background tokens",
+			"Plugin disabled state survives page reload and gates the owned skill; re-enable restores the skill",
+			"Actual Electron uploads a >128 KiB inert ATIF fixture in bounded chunks, rejects malformed input, separates child selection, requires human source/condition confirmation and uses the existing provisional report with private original paging",
+			"An actual secondary renderer with the same preload and service origin cannot obtain the main window native identity",
+			"Graceful real Electron exit and a second native process load plugin 0.4.32 and preserve enabled skill/plugin registration",
+			"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",
+			"After full native restart, sealed file view retains original bytes despite later workspace changes",
+			"Full native exit/restart restores the owned desktop client identity and reopens the original immutable report, review and evidence after explicit source authorization",
+			"Actual desktop resolves a sealed SDK evidence entry to the exact visible source message after restart, highlights it, refuses a foreign target and creates no report/attempt/snapshot",
+			"A second real native process reopens the offline report and pages the exact private original without creating records or executing the trajectory",
+			"A real renderer under development URL override receives no native client identity and cannot replace the persisted ID; probe-only, not override UI acceptance"
+		],
+		"longEvidence": {
+			"characters": 160545,
+			"pages": 40,
+			"paintedMediansMs": {
+				"list": 13,
+				"report": 22.600000143051147,
+				"evidence": 16.5
+			},
+			"error": {
+				"code": "ENOENT",
+				"message": "ENOENT · ENOENT: no such file or directory, open '/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-kv93dz/desktop/data/agent-evaluation/evidence/batch-cc6bc736-8aa1-42f4-82ce-a167eea98560.pack'",
+				"restoredBytesUnchanged": true,
+				"retrySucceeded": true
+			},
+			"oldReportBytesUnchanged": true,
+			"readOnlyRecordCountsUnchanged": true
+		}
+	},
+	"validation": "Existing compiled build used through ensureBuild/prebuilt; no product/test changes. Runtime batch five-config typecheck/119 unit tests/quality passed before this evidence-only batch. clean preview only; git diff --check passed.",
+	"remaining": [
+		"AC39 performance remediation and remaining EC04 acceptance; not M1 complete.",
+		"EC06 environment component is separate; guest CLI/product ExecutionAdapter still pending and EC07 waits.",
+		"Real Agent CLI/model tests user-deferred."
+	]
+}
