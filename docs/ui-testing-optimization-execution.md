@@ -1013,3 +1013,21 @@ ui_result_analysis read-trace读取本实例原始ZIP事件。test.trace expect@
 [匿名基线评审及正式失败证据](ui-testing-evidence/optimization-u00-pms-anonymous-reviewed.json)归档148公开文件、398次非可变FileRef核验并逐成员回读一致；5个历史task_ref单列（task manifest按原生checkpoint更新，历史摘要不伪称当前可解析）。私有批准目录、模型缓存、依赖及凭据未复制。Electron权威项目保存OperationContract-anonymous-failed-report-candidate-2026-10-26.md、带有效快照链接的report-2阶段副本、评审范围决定及公开qa快照，0600/0700、回读一致，6个文档链接存在、store未写；文件保存不表示应用文档列表显示或正式结果入库。原库3条源码草稿状态未改。
 
 本轮工程提交4d51cf1已推送且独立核对远端一致。整计划仍active：匿名正式失败触发条件未明/报告结果评审未执行；真实业务角色/租户/数据、产品私密record生命周期接入、Electron全链、U00连续计量、U03/U07及M1/M2仍未完成。结果评审授权被拒不是停止其他工程工作的理由。
+
+### U02 续跑：物理 MCP 断连与新连接拒绝旧快照（2026-10-26）
+
+继续A02-5，上一轮677d998已推送且独立核对一致。本轮开始clean预览无可清理项，保留原.gitignore和db-client锁差异；plan_update仍不可用。用户明确保留PMS剩余2次设计评审额度，未调用模型、不再请求将其改作结果评审，report-2仍为未评审候选。
+
+在实际SDK嵌套工具管线和Playwright1.62.1 MCP中补足此前逻辑revoke的证据边界：原生writer成功响应到达后、公开发布前直接关闭自有StdioTransport，实际onClose回调已观察。等待原异步响应处理结束再检查，publicDraftExists=false、privateNativeDraftExists=true，私有原生草稿与请求字节相同，断连快照assertCurrent被拒。未手工发布、未改写草稿、未放宽原生writer。
+
+最终断连轮1792998424367另建真实MCP连接，初始化及listTools成功、87工具；旧snapshot.beginOperation在浏览器工具派发前拒绝，没有向新连接发送setup或重放旧动作。新连接握手不代表恢复旧录制；正常对照另用全新工作区、父身份、快照及SDK会话，原生5步complete、gaps=[]、1脚本，公开与私有原生草稿逐字节一致。这不是原会话续录或Electron全链证明。
+
+断连原生finish为partial、4步骤、0脚本，保留late-disconnect-publication-blocked、missing-generated-script、browser-cleanup-not-confirmed、goal-not-reached、tool-error-or-cancelled。关闭传输与清理自有进程不替代原生浏览器清理确认；未在断连后伪造browser_close成功，未把partial算通过。首个物理关闭实验保留；两轮harness准备失败因临时生成扩展误含仓库位置裸模块导入，扩展加载失败、未开始录制，保留精确源码/失败摘要，修正后才获得最终证据。
+
+所有实验模型调用、正式批次、真实业务写入均0。公开响应、SDK长输出及工作区未检出本轮已知合成秘密/编码变体、媒体块0；私有原始协议含原文，结束只清理自有进程及本轮原始合成payload。公开raw-log为减少内容后的记录，不代表完整私密原始捕获。
+
+[物理断连证据](ui-testing-evidence/optimization-u02-recording-disconnect.json)归档125文件、151次FileRef核验、逐成员回读一致。Electron权威项目保存OperationContract-recording-disconnect-2026-10-26.md及最终正反70份快照，0700/0600、回读一致、store字节不变。文件保存不代表应用文档索引显示或正式用例/结果入库；两份模型授权账本摘要保留。
+
+本轮没有改产品代码、依赖、个人配置或安装；产品私密record仍unsupported。仍需通用输入闭包、新凭据/嵌套JSON、协议分支、异常进程崩溃、完整重连续录、文件系统并发路径替换及Electron执行侧接入；真实业务角色/租户/数据、U00计量、U03/U07、M1/M2仍待完成。整体goal保持active。
+
+本轮验证：完整五配置typecheck、3文件16项相关Vitest、lint、协议同步、size预算及git差异检查通过；协议tag启发式因无可用tag跳过，未计作完成。开始/交付clean均仅预览，无可清理项。

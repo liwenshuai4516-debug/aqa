@@ -1,0 +1,1464 @@
+{
+	"date": "2026-10-26",
+	"status": "PHYSICAL_DISCONNECT_LATE_PUBLICATION_BLOCKED_NEW_CONNECTION_REJECTS_OLD_SNAPSHOT_NORMAL_CONTROL_COMPLETE",
+	"plan_complete": false,
+	"product_private_recording": "unsupported",
+	"modelCalls": 0,
+	"formalRuns": 0,
+	"businessWrites": 0,
+	"ledgerSha256": {
+		"u05-authorized-review-budget.json": "34aaec3d27776ad96474be83f0be5a4eebe001fb41467afc69a4372c2b7e31ec",
+		"pms-anonymous-authorized-review-budget.json": "854cec9cb4cb8574adcdec3163d7fd2953ab1016be4c9799f48a2cfa7bba87c3"
+	},
+	"current_runs": {
+		"disconnect": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-disconnect/1792998424367",
+			"protectedPrototype": true,
+			"status": "LATE_DISCONNECT_PUBLICATION_BLOCKED_PRIVATE_NATIVE_DRAFT_RETAINED",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 2,
+			"tools": [
+				{
+					"name": "generator_setup_page",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 110162
+				},
+				{
+					"name": "browser_snapshot",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 109854
+				},
+				{
+					"name": "generator_read_log",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 2878
+				},
+				{
+					"name": "generator_write_test",
+					"error": true,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 707
+				}
+			],
+			"findings": [
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 86412
+				},
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 86136
+				}
+			],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "6ddd53d00d31d31ba0c8e84e557e3e3f83fa96aed87e3f49a78d14a4c570d50b",
+					"tests/seed.spec.ts": "1313a1b1bb43e3cd80db9b894d7884a8f1caf0f3801a89eef3d5936f1c33e9b7"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "6ddd53d00d31d31ba0c8e84e557e3e3f83fa96aed87e3f49a78d14a4c570d50b"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "1313a1b1bb43e3cd80db9b894d7884a8f1caf0f3801a89eef3d5936f1c33e9b7"
+						}
+					],
+					"expiresAt": "2026-10-26T07:12:04.377Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"nativeWriterReplyObservedBeforeInterruption": true,
+			"physicalCloseObserved": true,
+			"disconnectedSnapshotRejected": true,
+			"publicDraftExists": false,
+			"privateNativeDraftExists": true,
+			"newConnectionInitialized": true,
+			"newConnectionToolCount": 87,
+			"oldSnapshotRejectedBeforeNewConnectionBrowserDispatch": true,
+			"closeActionNotReplayedAfterDisconnect": true,
+			"hostParentReferenceUnchanged": true,
+			"recordingStatus": "partial",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "7326441410425d5463210e4cf6ecf4f253eb60bb02dd8bc0cb9f52df69457bc2"
+			},
+			"nativeRecordingSteps": 4,
+			"finishGaps": [
+				"late-disconnect-publication-blocked",
+				"missing-generated-script",
+				"browser-cleanup-not-confirmed",
+				"goal-not-reached",
+				"tool-error-or-cancelled"
+			],
+			"publicScriptEqualsNative": null,
+			"rawProtocolRetainedPrivately": true,
+			"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+			"nativeDraftPublication": "not-published-failure-preserved",
+			"ownedRawOutputsRemoved": true
+		},
+		"normal": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-disconnect/1792998440998",
+			"protectedPrototype": true,
+			"status": "PRIVATE_MIRROR_NATIVE_RECORDING_HANDOFF_COMPLETE_NOT_PRODUCT_DELIVERY",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 2,
+			"tools": [
+				{
+					"name": "generator_setup_page",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 110162
+				},
+				{
+					"name": "browser_snapshot",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 109854
+				},
+				{
+					"name": "generator_read_log",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 2878
+				},
+				{
+					"name": "generator_write_test",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 1070
+				},
+				{
+					"name": "browser_close",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 893
+				}
+			],
+			"findings": [
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 86412
+				},
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 86136
+				}
+			],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "2d6e295b7de01bd494eb34e9ae4ae01b80104c1e47a5578a66d722e6a3283f75",
+					"tests/seed.spec.ts": "26f360b4665215152a1609e836a1554b5503235eecf4a34364a7d633e94af161"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "2d6e295b7de01bd494eb34e9ae4ae01b80104c1e47a5578a66d722e6a3283f75"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "26f360b4665215152a1609e836a1554b5503235eecf4a34364a7d633e94af161"
+						}
+					],
+					"expiresAt": "2026-10-26T07:12:21.008Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"hostParentReferenceUnchanged": true,
+			"recordingStatus": "complete",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "9614b44ff383b98785e8bd9e58d9ec039af473317d6630cd08a7a1a108aa2614"
+			},
+			"nativeRecordingSteps": 5,
+			"generatedScriptRef": {
+				"path": "qa/ui/recordings/privacy-mirror/draft.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc"
+			},
+			"finishGaps": [],
+			"publicScriptEqualsNative": true,
+			"rawProtocolRetainedPrivately": true,
+			"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+			"nativeDraftPublication": "native-recording-finish-complete-byte-identical-exclusive-publication",
+			"ownedRawOutputsRemoved": true
+		}
+	},
+	"historical_runs": {
+		"disconnect-guarded.log": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-disconnect/1792998302763",
+			"protectedPrototype": true,
+			"status": "LATE_DISCONNECT_PUBLICATION_BLOCKED_PRIVATE_NATIVE_DRAFT_RETAINED",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 2,
+			"tools": [
+				{
+					"name": "generator_setup_page",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 110162
+				},
+				{
+					"name": "browser_snapshot",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 109854
+				},
+				{
+					"name": "generator_read_log",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 2878
+				},
+				{
+					"name": "generator_write_test",
+					"error": true,
+					"containsSyntheticSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 707
+				}
+			],
+			"findings": [
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 86412
+				},
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 86136
+				}
+			],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "ed5e591cd1d6285845c0515d0b6d1bb2161a7ba41d35f431673a91afc86929a4",
+					"tests/seed.spec.ts": "78779297295e4a8127a12ffa92f79a72842bd85f2af7d3e9b2a445334139191a"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "ed5e591cd1d6285845c0515d0b6d1bb2161a7ba41d35f431673a91afc86929a4"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "78779297295e4a8127a12ffa92f79a72842bd85f2af7d3e9b2a445334139191a"
+						}
+					],
+					"expiresAt": "2026-10-26T07:10:02.772Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"nativeWriterReplyObservedBeforeInterruption": true,
+			"physicalCloseObserved": true,
+			"disconnectedSnapshotRejected": true,
+			"publicDraftExists": false,
+			"privateNativeDraftExists": true,
+			"closeActionNotReplayedAfterDisconnect": true,
+			"hostParentReferenceUnchanged": true,
+			"recordingStatus": "partial",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "c3c84366c882de9a0d798c1eb3d8d8e892a0b00c648b7b92529a488bdce56805"
+			},
+			"nativeRecordingSteps": 4,
+			"finishGaps": [
+				"late-disconnect-publication-blocked",
+				"missing-generated-script",
+				"browser-cleanup-not-confirmed",
+				"goal-not-reached",
+				"tool-error-or-cancelled"
+			],
+			"publicScriptEqualsNative": null,
+			"rawProtocolRetainedPrivately": true,
+			"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+			"nativeDraftPublication": "not-published-failure-preserved",
+			"ownedRawOutputsRemoved": true
+		},
+		"disconnect-reconnect-guarded.log": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-disconnect/1792998379615",
+			"protectedPrototype": true,
+			"status": "blocked",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 0,
+			"tools": [],
+			"findings": [],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "9fc59a73b4d975d4e969a13da5889d2c6f62234d1d79fde949815ef0adf27d68",
+					"tests/seed.spec.ts": "a3d577f3b15765fc9ffa16776e90200968a5905dcb8c8c04f7f6ec5aef3154cf"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "9fc59a73b4d975d4e969a13da5889d2c6f62234d1d79fde949815ef0adf27d68"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "a3d577f3b15765fc9ffa16776e90200968a5905dcb8c8c04f7f6ec5aef3154cf"
+						}
+					],
+					"expiresAt": "2026-10-26T07:11:19.623Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"errorClass": "AssertionError",
+			"errorSummary": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     error: \"Failed to load extension: Cannot find module '@earendil-works/pi-mcp'\\n\" +\n+       'Require stack:\\n' +\n+       '- /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/private-recording-probe-AHug4E/guarded-extension.mjs',\n+     path: '/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/private-recording-probe-AHug4E/guarded-extension.mjs'\n+   }\n+ ]\n- []\n",
+			"publicArtifactCopy": "not-created-or-unavailable",
+			"ownedRawOutputsRemoved": true
+		},
+		"disconnect-normal-control.log": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-disconnect/1792998393408",
+			"protectedPrototype": true,
+			"status": "blocked",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 0,
+			"tools": [],
+			"findings": [],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "6beb59d827b37db766df445791f0b2804ba1f0514364bcf0aa32f943ef985d5b",
+					"tests/seed.spec.ts": "0d13b98a56a76e0aa0a693bd1d321dda79276f84d34b5a3c3d88d036f68b1e77"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "6beb59d827b37db766df445791f0b2804ba1f0514364bcf0aa32f943ef985d5b"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "0d13b98a56a76e0aa0a693bd1d321dda79276f84d34b5a3c3d88d036f68b1e77"
+						}
+					],
+					"expiresAt": "2026-10-26T07:11:33.417Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"errorClass": "AssertionError",
+			"errorSummary": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     error: \"Failed to load extension: Cannot find module '@earendil-works/pi-mcp'\\n\" +\n+       'Require stack:\\n' +\n+       '- /private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/private-recording-probe-TKVccJ/guarded-extension.mjs',\n+     path: '/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/private-recording-probe-TKVccJ/guarded-extension.mjs'\n+   }\n+ ]\n- []\n",
+			"publicArtifactCopy": "not-created-or-unavailable",
+			"ownedRawOutputsRemoved": true
+		}
+	},
+	"refsVerified": 151,
+	"document": {
+		"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-recording-disconnect-2026-10-26.md",
+		"sha256": "c956c14f72fc5feb1653795e2a85fa695c92bf3d54a7fa37edb98dffbd4e7fbf",
+		"storeUnchanged": true
+	},
+	"snapshot": {
+		"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/recording-disconnect-1792998424367",
+		"files": [
+			{
+				"path": "normal/result.json",
+				"sha256": "8aaee8c3b922d0f6ba30dbc1d98fc30609e5ac70719baf459738a9b4e1709888",
+				"bytes": 3476
+			},
+			{
+				"path": "normal/lifecycle-control.mjs",
+				"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+				"bytes": 85
+			},
+			{
+				"path": "normal/seed.spec.ts",
+				"sha256": "26f360b4665215152a1609e836a1554b5503235eecf4a34364a7d633e94af161",
+				"bytes": 446
+			},
+			{
+				"path": "normal/harness.mjs",
+				"sha256": "d37a5b1eb62f475392ae037c9fa370db5d91b6d2dc766cd3abcd3d98e4bfe0b6",
+				"bytes": 22302
+			},
+			{
+				"path": "normal/mirror-prototype.mjs",
+				"sha256": "e9fcdd516f34dc5b0cbb4ce24ba4d5e5f12fd9cd009647d306e1172d9d984b00",
+				"bytes": 6266
+			},
+			{
+				"path": "normal/package.json",
+				"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+				"bytes": 17
+			},
+			{
+				"path": "normal/generated.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+				"bytes": 188
+			},
+			{
+				"path": "normal/workspace-adapter.mjs",
+				"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+				"bytes": 7584
+			},
+			{
+				"path": "normal/playwright.config.mjs",
+				"sha256": "2d6e295b7de01bd494eb34e9ae4ae01b80104c1e47a5578a66d722e6a3283f75",
+				"bytes": 347
+			},
+			{
+				"path": "normal/.cleanup-keep",
+				"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+				"bytes": 70
+			},
+			{
+				"path": "normal/tests/seed.spec.ts",
+				"sha256": "26f360b4665215152a1609e836a1554b5503235eecf4a34364a7d633e94af161",
+				"bytes": 446
+			},
+			{
+				"path": "normal/qa/ui/catalog.json",
+				"sha256": "824e691a64c0b02d29623da0ccf974c4e5d011794949bd6b291fad677c8178c7",
+				"bytes": 1116
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/session.json",
+				"sha256": "67071d158ea73bf8830833be0884a38e2d2c0761959287d32ebab9fc75a299ce",
+				"bytes": 1113
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/raw-log.json",
+				"sha256": "2ddc2c9ba420a63dc835cd42deb894a13f1d4ca7db0d288acdd76511ebec3e3d",
+				"bytes": 229099
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/.incomplete.json",
+				"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+				"bytes": 52
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+				"bytes": 188
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "9614b44ff383b98785e8bd9e58d9ec039af473317d6630cd08a7a1a108aa2614",
+				"bytes": 3793
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+				"sha256": "77a80ac0dbb20c3eccacaafc537895f43bd1be32781cd0f4bc24ec8fa9dceccf",
+				"bytes": 646
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+				"sha256": "1830480cc2afa3ec12f7aa241ee6e2f64631330420786d3cd66256c479638612",
+				"bytes": 781
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+				"sha256": "501ee523997effecb09d748088288158786d151d95fa9380730feeadcf5f2b4a",
+				"bytes": 394
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+				"sha256": "c160d7f3dbd3dc1c7e4baf6032208b320a219164299c75c24fbae1d139a13848",
+				"bytes": 2529
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+				"sha256": "63be84bbc6d2ca4c2d507a505301d17e5dc323432249d21a3aa7d0d8b2e54cb9",
+				"bytes": 439
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+				"sha256": "d33cfa254babbbb80e60fd2d3f83fd0a46a8c4cc76136c91bd50dfe46f79bcb1",
+				"bytes": 542
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+				"sha256": "49d1ec43cac6ef3e1b95c9d4c4baefca93c6160b0c7b35f4f4e1dd666f1fd2e6",
+				"bytes": 567
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+				"sha256": "f93aa8d7d525f0160a2996ce4a804594d28daaa7bf3e1419357ac665604d08ac",
+				"bytes": 109825
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+				"sha256": "f3e570cc1eabd7a643685285be2ecab03e3d40fbc8ab688f9ba507ce12bdb523",
+				"bytes": 392
+			},
+			{
+				"path": "normal/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+				"sha256": "af51811732685e294ab50f5f180ddd3b757997267da5655a5c171164c616c5f7",
+				"bytes": 109511
+			},
+			{
+				"path": "normal/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+				"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+				"bytes": 60
+			},
+			{
+				"path": "normal/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+				"sha256": "94fed30b6fee5be733ffa516908b3519a28902df53a88d2542b525b6f4ebcc74",
+				"bytes": 1582
+			},
+			{
+				"path": "normal/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+				"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+				"bytes": 61
+			},
+			{
+				"path": "normal/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+				"sha256": "ce677adbaefb6ee12287045a511cb35bfa7dacd3f6cd3cd0cae3b0293f06956a",
+				"bytes": 1836
+			},
+			{
+				"path": "normal/qa/ui/scopes/privacy/fixture.json",
+				"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+				"bytes": 284
+			},
+			{
+				"path": "normal/qa/ui/scopes/privacy/.incomplete.json",
+				"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+				"bytes": 53
+			},
+			{
+				"path": "normal/qa/ui/scopes/privacy/data.json",
+				"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+				"bytes": 74
+			},
+			{
+				"path": "normal/qa/ui/scopes/privacy/initial.json",
+				"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+				"bytes": 128
+			},
+			{
+				"path": "normal/qa/ui/scopes/privacy-mirror/.incomplete.json",
+				"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+				"bytes": 48
+			},
+			{
+				"path": "normal/qa/ui/scopes/privacy-mirror/manifest.json",
+				"sha256": "83d4f7bbd3e9d91aee3316bdd4a2614d0be0272e3dcc3d2cd43b1f207eecc953",
+				"bytes": 996
+			},
+			{
+				"path": "disconnect/result.json",
+				"sha256": "09f26c1b401c15835f6caad9877a3f15b7fd84b7702e1e5acf28dcb51a4cb047",
+				"bytes": 3654
+			},
+			{
+				"path": "disconnect/lifecycle-control.mjs",
+				"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+				"bytes": 85
+			},
+			{
+				"path": "disconnect/seed.spec.ts",
+				"sha256": "1313a1b1bb43e3cd80db9b894d7884a8f1caf0f3801a89eef3d5936f1c33e9b7",
+				"bytes": 446
+			},
+			{
+				"path": "disconnect/harness.mjs",
+				"sha256": "d37a5b1eb62f475392ae037c9fa370db5d91b6d2dc766cd3abcd3d98e4bfe0b6",
+				"bytes": 22302
+			},
+			{
+				"path": "disconnect/mirror-prototype.mjs",
+				"sha256": "e9fcdd516f34dc5b0cbb4ce24ba4d5e5f12fd9cd009647d306e1172d9d984b00",
+				"bytes": 6266
+			},
+			{
+				"path": "disconnect/package.json",
+				"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+				"bytes": 17
+			},
+			{
+				"path": "disconnect/workspace-adapter.mjs",
+				"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+				"bytes": 7584
+			},
+			{
+				"path": "disconnect/playwright.config.mjs",
+				"sha256": "6ddd53d00d31d31ba0c8e84e557e3e3f83fa96aed87e3f49a78d14a4c570d50b",
+				"bytes": 347
+			},
+			{
+				"path": "disconnect/.cleanup-keep",
+				"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+				"bytes": 70
+			},
+			{
+				"path": "disconnect/tests/seed.spec.ts",
+				"sha256": "1313a1b1bb43e3cd80db9b894d7884a8f1caf0f3801a89eef3d5936f1c33e9b7",
+				"bytes": 446
+			},
+			{
+				"path": "disconnect/qa/ui/catalog.json",
+				"sha256": "5bace475471ff0634ac3dec9184559ba070bf51d28a769d7294a3bc89a360e74",
+				"bytes": 1116
+			},
+			{
+				"path": "disconnect/qa/ui/recordings/privacy-mirror/session.json",
+				"sha256": "8a8c67cbb4abe0c7965e3bd208c55074243edd1932573fa127ceb5b957e476a7",
+				"bytes": 1113
+			},
+			{
+				"path": "disconnect/qa/ui/recordings/privacy-mirror/raw-log.json",
+				"sha256": "15fc507ed73d8b3bbf5ee99890b67f16722115c504eaa6ec948fb7622544b303",
+				"bytes": 226728
+			},
+			{
+				"path": "disconnect/qa/ui/recordings/privacy-mirror/.incomplete.json",
+				"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+				"bytes": 52
+			},
+			{
+				"path": "disconnect/qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "7326441410425d5463210e4cf6ecf4f253eb60bb02dd8bc0cb9f52df69457bc2",
+				"bytes": 3401
+			},
+			{
+				"path": "disconnect/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+				"sha256": "3b723236ec00d2bff98caf8be32af84622feca8ff1b73669be2c33dd83a8a9a7",
+				"bytes": 646
+			},
+			{
+				"path": "disconnect/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+				"sha256": "beada67d17ad36ada9d535802452ecf1ad8a91193457b2aefd227017fc388ff0",
+				"bytes": 152
+			},
+			{
+				"path": "disconnect/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+				"sha256": "eede13615446b1f60836d3cf084f83c7972603470658c56bb76b0e05ca5597b9",
+				"bytes": 394
+			},
+			{
+				"path": "disconnect/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+				"sha256": "38afb51ccd14aa559599bd951c20ce362c12472d470cf0fa6bdffbf73e85f2f4",
+				"bytes": 2529
+			},
+			{
+				"path": "disconnect/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+				"sha256": "80fa0fd7958c610548cdfe2a4ab44a98212d9a707761ffff3b3af30824fba9dc",
+				"bytes": 567
+			},
+			{
+				"path": "disconnect/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+				"sha256": "60c8e09c6941c77c0ff8f02154e583b2f140e27faabee35c20ff0e8f38bfdcbb",
+				"bytes": 109825
+			},
+			{
+				"path": "disconnect/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+				"sha256": "940957f533b721f40712f3a1305c4c54afffbc0aeec876fdec17dc12f356a586",
+				"bytes": 392
+			},
+			{
+				"path": "disconnect/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+				"sha256": "c5a763b3b66822b2c963f41f817dd3adca7a83857b7dd953ab024928bb1c789e",
+				"bytes": 109511
+			},
+			{
+				"path": "disconnect/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+				"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+				"bytes": 60
+			},
+			{
+				"path": "disconnect/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+				"sha256": "0027e1724d16f51bc14250194671019e7f96cdc61807cf1d84f65a68428464e2",
+				"bytes": 1582
+			},
+			{
+				"path": "disconnect/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+				"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+				"bytes": 61
+			},
+			{
+				"path": "disconnect/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+				"sha256": "46146036ec39edede659467fc4ce3d7f05184fbc1a00790d5e1903ce68238200",
+				"bytes": 1836
+			},
+			{
+				"path": "disconnect/qa/ui/scopes/privacy/fixture.json",
+				"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+				"bytes": 284
+			},
+			{
+				"path": "disconnect/qa/ui/scopes/privacy/.incomplete.json",
+				"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+				"bytes": 53
+			},
+			{
+				"path": "disconnect/qa/ui/scopes/privacy/data.json",
+				"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+				"bytes": 74
+			},
+			{
+				"path": "disconnect/qa/ui/scopes/privacy/initial.json",
+				"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+				"bytes": 128
+			},
+			{
+				"path": "disconnect/qa/ui/scopes/privacy-mirror/.incomplete.json",
+				"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+				"bytes": 48
+			},
+			{
+				"path": "disconnect/qa/ui/scopes/privacy-mirror/manifest.json",
+				"sha256": "c94c171a77b9caf3232e474831948fe32745d052f03c6031ee8a65f8f9bf656f",
+				"bytes": 996
+			}
+		]
+	},
+	"limits": [
+		"New connection only initialized/listed tools; no original-session recording recovery",
+		"Normal control is an independent new workspace/identity/session",
+		"Native browser-cleanup-not-confirmed gap retained",
+		"No product/Electron/private record enablement; generic privacy and filesystem races unproven",
+		"Raw synthetic payloads removed; public logs reduced"
+	],
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-u02-recording-disconnect.tar.gz",
+		"sha256": "9fb5094b643aa60c1cf6bc56f5acd83f0d43c874802847f30fb8eefc06780f0e",
+		"bytes": 233469,
+		"files": 125,
+		"roundtrip_verified": true
+	},
+	"files": [
+		{
+			"path": ".pi/skills/ui-testing-workflow/assets/private-recording-workspace.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/archive-recording-disconnect.py",
+			"sha256": "654a194ffcd57a27e45b9579722c30f3dcdac812559d41757252d8bfb040386e",
+			"bytes": 8013
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/disconnect-guarded.log",
+			"sha256": "4c4ad7d9c5bfc3fdca48732cccdfc2674dcfaf145f04f8b06f742a1e7a39e9f4",
+			"bytes": 3626
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/disconnect-normal-control-v2.log",
+			"sha256": "b860316c8c5b4788608aedea6fc2f7623014854a99d3cd38241dbc9934b1fffe",
+			"bytes": 3581
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/disconnect-normal-control.log",
+			"sha256": "d7b70449817985ff575a20775acf5b0b20d537601a648ef8c4fc041d62b1e1c7",
+			"bytes": 2341
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/disconnect-reconnect-guarded-v2.log",
+			"sha256": "7fe46bddb0561341ed0022a0e24dc80d7c33a4338c4a5b583e54e8d32fe8f2a2",
+			"bytes": 3759
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/disconnect-reconnect-guarded.log",
+			"sha256": "076e92143686fdf4f773d3ff97237a0cf1f324b84c60e8ac95bc5d66c363ae96",
+			"bytes": 2341
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/disconnect-recording-prototype.mjs",
+			"sha256": "e9fcdd516f34dc5b0cbb4ce24ba4d5e5f12fd9cd009647d306e1172d9d984b00",
+			"bytes": 6266
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/probe-recording-disconnect.mjs",
+			"sha256": "d37a5b1eb62f475392ae037c9fa370db5d91b6d2dc766cd3abcd3d98e4bfe0b6",
+			"bytes": 22302
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/recording-disconnect-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/.cleanup-keep",
+			"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+			"bytes": 70
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/harness.mjs",
+			"sha256": "1b74281eb6588a9d369f4fbc1b1825f29ecc905423e389b63571c176548dc2d5",
+			"bytes": 21057
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/mirror-prototype.mjs",
+			"sha256": "e9fcdd516f34dc5b0cbb4ce24ba4d5e5f12fd9cd009647d306e1172d9d984b00",
+			"bytes": 6266
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/package.json",
+			"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+			"bytes": 17
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/playwright.config.mjs",
+			"sha256": "ed5e591cd1d6285845c0515d0b6d1bb2161a7ba41d35f431673a91afc86929a4",
+			"bytes": 347
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/catalog.json",
+			"sha256": "adb8f792bb5ad714df432086551fa51110ac3f6f4595ede908b638dd4ba0c126",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "86a4c790be789474167867e45ada2bce3b6597c7c49d44d0dbd38f734c1801d0",
+			"bytes": 1582
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "dd33bac3ad643cf2a762b5c0d09d7f8e059e845a63c5d86632f5d6210742d3f8",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "d4f78e79b9ead61e926e1917a489926845e26028788764c5f1b5c34737202bc4",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "bdc11774dcfda3a16fa5ecbea40f6ea97821effbf8767b2e8be7ffa5e897d1f9",
+			"bytes": 109825
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "c4e59e3282ac36ea1a184f417686491754bf811c683ebd268df1e60420d30714",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "81dc4d491f6a6b00aff7435ab0801539ef77f910e25c5c3d077399389b595ff4",
+			"bytes": 109511
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "9b796644c8d820cf51198050ef9026bcc121bcbcb5534782080524cd3bbc1487",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "af332609ce13559ca49e80313a9aef6dca616f70e1794515256780df418b81e7",
+			"bytes": 2529
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "3a886c7549fd29f8a20eec19ec35e373281e8297f80bfce5f39976a1bd1ee34d",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "a46518127838e4938a9bef18d7761252d017e22d0e7e2c466e23dea8fc396023",
+			"bytes": 152
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "c3c84366c882de9a0d798c1eb3d8d8e892a0b00c648b7b92529a488bdce56805",
+			"bytes": 3401
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "1e054898909d5fcc2a2da21072ad3d5c383a14df56fa6e238ba6117249c92ad0",
+			"bytes": 226728
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "6c7089f00f348f611b7b9f639bb380803cadeb1b63abca45a32ba9f1629ee720",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "c707fd2329b545cc660c6657b8e051ae26b6e18b1cc192b5a3be8148c4b3cd5a",
+			"bytes": 996
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/result.json",
+			"sha256": "ad011fce4fea42bdb34e0bd99f2cd290f90368da9e65b74d18b97cfa7698e5c4",
+			"bytes": 3521
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/seed.spec.ts",
+			"sha256": "78779297295e4a8127a12ffa92f79a72842bd85f2af7d3e9b2a445334139191a",
+			"bytes": 446
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/tests/seed.spec.ts",
+			"sha256": "78779297295e4a8127a12ffa92f79a72842bd85f2af7d3e9b2a445334139191a",
+			"bytes": 446
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998302763/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998379615/.cleanup-keep",
+			"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+			"bytes": 70
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998379615/harness.mjs",
+			"sha256": "9ce4cd89e19201ec2a978226e748e8dee20827fbd200384981a671e7e280f628",
+			"bytes": 22519
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998379615/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998379615/mirror-prototype.mjs",
+			"sha256": "e9fcdd516f34dc5b0cbb4ce24ba4d5e5f12fd9cd009647d306e1172d9d984b00",
+			"bytes": 6266
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998379615/result.json",
+			"sha256": "6fa5078697e3e04a512fea9e07bbb2475e1aa032569e2c227506ef36b53db1cd",
+			"bytes": 2236
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998379615/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998393408/.cleanup-keep",
+			"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+			"bytes": 70
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998393408/harness.mjs",
+			"sha256": "9ce4cd89e19201ec2a978226e748e8dee20827fbd200384981a671e7e280f628",
+			"bytes": 22519
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998393408/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998393408/mirror-prototype.mjs",
+			"sha256": "e9fcdd516f34dc5b0cbb4ce24ba4d5e5f12fd9cd009647d306e1172d9d984b00",
+			"bytes": 6266
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998393408/result.json",
+			"sha256": "29a6804f694bcc4d07c10a30fb6bdb8ad6fb26bc38f13169350ace2c4c18451e",
+			"bytes": 2236
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998393408/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/.cleanup-keep",
+			"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+			"bytes": 70
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/harness.mjs",
+			"sha256": "d37a5b1eb62f475392ae037c9fa370db5d91b6d2dc766cd3abcd3d98e4bfe0b6",
+			"bytes": 22302
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/mirror-prototype.mjs",
+			"sha256": "e9fcdd516f34dc5b0cbb4ce24ba4d5e5f12fd9cd009647d306e1172d9d984b00",
+			"bytes": 6266
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/package.json",
+			"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+			"bytes": 17
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/playwright.config.mjs",
+			"sha256": "6ddd53d00d31d31ba0c8e84e557e3e3f83fa96aed87e3f49a78d14a4c570d50b",
+			"bytes": 347
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/catalog.json",
+			"sha256": "5bace475471ff0634ac3dec9184559ba070bf51d28a769d7294a3bc89a360e74",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "0027e1724d16f51bc14250194671019e7f96cdc61807cf1d84f65a68428464e2",
+			"bytes": 1582
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "46146036ec39edede659467fc4ce3d7f05184fbc1a00790d5e1903ce68238200",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "80fa0fd7958c610548cdfe2a4ab44a98212d9a707761ffff3b3af30824fba9dc",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "60c8e09c6941c77c0ff8f02154e583b2f140e27faabee35c20ff0e8f38bfdcbb",
+			"bytes": 109825
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "940957f533b721f40712f3a1305c4c54afffbc0aeec876fdec17dc12f356a586",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "c5a763b3b66822b2c963f41f817dd3adca7a83857b7dd953ab024928bb1c789e",
+			"bytes": 109511
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "eede13615446b1f60836d3cf084f83c7972603470658c56bb76b0e05ca5597b9",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "38afb51ccd14aa559599bd951c20ce362c12472d470cf0fa6bdffbf73e85f2f4",
+			"bytes": 2529
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "3b723236ec00d2bff98caf8be32af84622feca8ff1b73669be2c33dd83a8a9a7",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "beada67d17ad36ada9d535802452ecf1ad8a91193457b2aefd227017fc388ff0",
+			"bytes": 152
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "7326441410425d5463210e4cf6ecf4f253eb60bb02dd8bc0cb9f52df69457bc2",
+			"bytes": 3401
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "15fc507ed73d8b3bbf5ee99890b67f16722115c504eaa6ec948fb7622544b303",
+			"bytes": 226728
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "8a8c67cbb4abe0c7965e3bd208c55074243edd1932573fa127ceb5b957e476a7",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "c94c171a77b9caf3232e474831948fe32745d052f03c6031ee8a65f8f9bf656f",
+			"bytes": 996
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/result.json",
+			"sha256": "09f26c1b401c15835f6caad9877a3f15b7fd84b7702e1e5acf28dcb51a4cb047",
+			"bytes": 3654
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/seed.spec.ts",
+			"sha256": "1313a1b1bb43e3cd80db9b894d7884a8f1caf0f3801a89eef3d5936f1c33e9b7",
+			"bytes": 446
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/tests/seed.spec.ts",
+			"sha256": "1313a1b1bb43e3cd80db9b894d7884a8f1caf0f3801a89eef3d5936f1c33e9b7",
+			"bytes": 446
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998424367/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/.cleanup-keep",
+			"sha256": "c95ef17039b82938957e1a297c8509631c970b38453b018897c10508b0b07a06",
+			"bytes": 70
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/generated.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/harness.mjs",
+			"sha256": "d37a5b1eb62f475392ae037c9fa370db5d91b6d2dc766cd3abcd3d98e4bfe0b6",
+			"bytes": 22302
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/mirror-prototype.mjs",
+			"sha256": "e9fcdd516f34dc5b0cbb4ce24ba4d5e5f12fd9cd009647d306e1172d9d984b00",
+			"bytes": 6266
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/package.json",
+			"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+			"bytes": 17
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/playwright.config.mjs",
+			"sha256": "2d6e295b7de01bd494eb34e9ae4ae01b80104c1e47a5578a66d722e6a3283f75",
+			"bytes": 347
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/catalog.json",
+			"sha256": "824e691a64c0b02d29623da0ccf974c4e5d011794949bd6b291fad677c8178c7",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "94fed30b6fee5be733ffa516908b3519a28902df53a88d2542b525b6f4ebcc74",
+			"bytes": 1582
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "ce677adbaefb6ee12287045a511cb35bfa7dacd3f6cd3cd0cae3b0293f06956a",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "63be84bbc6d2ca4c2d507a505301d17e5dc323432249d21a3aa7d0d8b2e54cb9",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "d33cfa254babbbb80e60fd2d3f83fd0a46a8c4cc76136c91bd50dfe46f79bcb1",
+			"bytes": 542
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "49d1ec43cac6ef3e1b95c9d4c4baefca93c6160b0c7b35f4f4e1dd666f1fd2e6",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "f93aa8d7d525f0160a2996ce4a804594d28daaa7bf3e1419357ac665604d08ac",
+			"bytes": 109825
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "f3e570cc1eabd7a643685285be2ecab03e3d40fbc8ab688f9ba507ce12bdb523",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "af51811732685e294ab50f5f180ddd3b757997267da5655a5c171164c616c5f7",
+			"bytes": 109511
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "501ee523997effecb09d748088288158786d151d95fa9380730feeadcf5f2b4a",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "c160d7f3dbd3dc1c7e4baf6032208b320a219164299c75c24fbae1d139a13848",
+			"bytes": 2529
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "77a80ac0dbb20c3eccacaafc537895f43bd1be32781cd0f4bc24ec8fa9dceccf",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "1830480cc2afa3ec12f7aa241ee6e2f64631330420786d3cd66256c479638612",
+			"bytes": 781
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "9614b44ff383b98785e8bd9e58d9ec039af473317d6630cd08a7a1a108aa2614",
+			"bytes": 3793
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "2ddc2c9ba420a63dc835cd42deb894a13f1d4ca7db0d288acdd76511ebec3e3d",
+			"bytes": 229099
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "67071d158ea73bf8830833be0884a38e2d2c0761959287d32ebab9fc75a299ce",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "83d4f7bbd3e9d91aee3316bdd4a2614d0be0272e3dcc3d2cd43b1f207eecc953",
+			"bytes": 996
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/result.json",
+			"sha256": "8aaee8c3b922d0f6ba30dbc1d98fc30609e5ac70719baf459738a9b4e1709888",
+			"bytes": 3476
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/seed.spec.ts",
+			"sha256": "26f360b4665215152a1609e836a1554b5503235eecf4a34364a7d633e94af161",
+			"bytes": 446
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/tests/seed.spec.ts",
+			"sha256": "26f360b4665215152a1609e836a1554b5503235eecf4a34364a7d633e94af161",
+			"bytes": 446
+		},
+		{
+			"path": "tests/scratch/ui-recording-disconnect/1792998440998/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		}
+	]
+}
