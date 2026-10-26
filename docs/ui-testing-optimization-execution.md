@@ -715,3 +715,19 @@ U00首次发现→静态候选段有了可复用原始样本，但首次至获�
 范围仍有限：无trace的未知值、录制MCP、任意业务秘密/嵌套编码/脚本自行写文件及数据空间私密执行桥接仍未覆盖；不宣称通用秘密识别或U02完成。认证成功留trace会增加开销，未做0.1.9性能对照，旧U00样本继续标0.1.7。OperationContract角色/测试数据/预期依据仍缺，完整Electron/M1/M2、U03/U07等原依赖保留；整计划未完成，plan_update不可用，继续复用第8节。
 
 本阶段收尾又补强成功用例：业务断言到达=1、missing/unplanned为空，issues必须精确等于私有资源R3及其汇总R3，不允许其他缺口借complete=false混入。补强时错用issue字段名、随后漏计汇总R3，造成三次测试断言失败，均保留摘要/日志；核对原生真实结构后按两条明确预期修正，最终两个场景重新全部通过，不归因为产品错误或隐去失败。
+
+### U00/U02 续跑：真实数据空间定位与部署源码准入（2026-10-26）
+
+用户新授权：项目资料从数据空间的“项目管理系统”读取，允许操作本项目数据，预期文档归入数据空间。原角色／数据位置完全未知的阻塞已有新线索，本轮继续独立准入工作；未扩大已有模型调用授权。plan_update不可用，继续维护第8节；目标工具仍显示旧blocked状态，其接口不支持主动恢复，不将该状态当作停止独立工作的理由。
+
+按data-space-testing规范，通过现有createDataSpaceTools对内存快照做只读脱敏查询，不激活插件、不迁移或改写原库。实际发现Electron和旧Web两套同名项目：桌面项目e2f5d42d-2781-4e68-a452-4c87c7d1d346、环境f46a32da-2eac-43ca-86b8-2fa5eca5385c，revision=8、模块/功能/用例均0；旧版sys-pms、环境6cb8715f-0ced-4acc-89a1-032e8105369e，revision=51、有7条本项目用例，其中4条经营合同。环境地址均为192.168.90.224:8238，但ID和登录提取路径不同，未混用。已询问以哪套为准，等待答复期间仅继续公开源码工作，未执行任何数据空间写入。
+
+四条经营合同PMS-001至PMS-004逐字段对比plugins/data-space/seed.mjs：featureId、code、title、priority、status、preconditions、note及全部steps.action/expect与内置示例相同。三条UI用例PMS-001、002及004仅type由UI变为“功能”；PMS-003仍为接口。忽略生成时间和步骤UUID进行语义比较，不把这些字段差异伪装成业务需求变化。示例的已评审状态不等于原生批准，金额上限、错误文案、审批后状态等不能直接作为真实业务oracle。
+
+真实OperationContract公开HTML及5个部署JS资源读取成功。最小摘录保存完整资源SHA256、字节数、字符偏移、行号和原文；完整大bundle只留本地scratch，不堆入主仓。源码表明axios前缀/api、登录POST/base-service/login、响应读取data.token；token/account/x-client等storage key不加pms_前缀，其他键按X3映射。桌面提取路径data.token与该声明一致，旧版data.access_token不一致；尚未刷新、登录或改写配置。登录后还涉及租户选择与permission初始化，authorized-resource影响权限隐藏；源码包含按username/业务实体划分的草稿键和DRAFT/SIGNED状态映射。这些都是declaration，不是浏览器观察、产品需求或已验证状态。
+
+使用安装版原生ArtifactStore及schema保存独立source-only scope和3项inventory（登录/权限、草稿、合同状态），回读并递归核对引用摘要通过；source research项目/环境标签明确不冒充选定数据空间ID。discovery=source、coverage=discovered，真实定位器、浏览器交互、角色与数据清理、正常/错误诊断副本仍为缺口，未生成recording或设计批准。当前数据空间schema仅有项目/模块/功能/用例/环境及备注，没有独立需求文档字段；在已查两套项目中未定位到真实需求文档，未杜撰需求或擅自开发文档库。
+
+[真实目标准入索引](ui-testing-evidence/optimization-real-target-source-admission.json)及其归档保存原生清单、公开源码摘录、示例来源对比和生成脚本，逐文件归档回读一致；不包含原store、凭据、私有storageState或完整大bundle。本轮0模型、0浏览器会话、0正式业务测试、0数据空间写入，不复用合成链路的批准作为真实业务验收。私密执行桥接仍未支持，不绕过执行/评审门禁。待项目选择确认后，再办理该项目的环境准备、预期/用例归档和真实浏览器准入；M1/M2、U03/U07及整计划保持未完成。
+
+本轮仅更新证据与文档；全量typecheck、2文件8项Vitest、lint、协议结构及差异检查通过。无tag协议历史启发式检查明确跳过。未改业务代码，不把既有Electron验收算本轮执行；未运行新的桌面业务链。开始与结束clean均仅预览、无删除。

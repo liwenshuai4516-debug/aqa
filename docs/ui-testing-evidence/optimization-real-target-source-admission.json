@@ -1,0 +1,180 @@
+{
+	"date": "2026-10-26",
+	"status": "SOURCE_DISCOVERED_REAL_BROWSER_ADMISSION_PENDING",
+	"plan_complete": false,
+	"scope": "OperationContract public deployed source; Data Space provenance read-only",
+	"receipt": {
+		"created_at": "2026-10-26T01:06:54.684Z",
+		"kind": "source-only-admission",
+		"scope_ref": {
+			"path": "qa/ui/scopes/operation-contract-source-admission/manifest.json",
+			"sha256": "13a2b38cf8c9153b3e3e9c7d266549a20b871b661084ea23d235430bd9b846b2"
+		},
+		"inventory_ref": {
+			"path": "qa/ui/inventories/operation-contract-source-admission/manifest.json",
+			"sha256": "35e5c929112a3f1256c0200c2779f4d66ba6f3781942bbaf4b32690601d75487"
+		},
+		"sourceRoot": "tests/scratch/ui-real-target-admission/source-only",
+		"sourceFiles": [
+			{
+				"path": "qa/ui/scopes/public-source/app.js.json",
+				"sha256": "d1d0157f867ee7d06292708bc20a58e4c6a935578953c0cde29bcefd7471f5d9"
+			},
+			{
+				"path": "qa/ui/scopes/public-source/login.js.json",
+				"sha256": "9c86c024aee13199f4358ad167fc4ed42fe270a5c6bbdfb8fab3ef20d5de8fe3"
+			},
+			{
+				"path": "qa/ui/scopes/public-source/auth.js.json",
+				"sha256": "0e8e2652ef68db84d2a617a57803de796c8d7bd4c57fecf7f75ce7976b8c9e72"
+			},
+			{
+				"path": "qa/ui/scopes/public-source/tenant.js.json",
+				"sha256": "263fecfe973f1f34ae4697b3e5f7caba58ae61b42276ec1e996abe731506fa6d"
+			},
+			{
+				"path": "qa/ui/scopes/public-source/permission.js.json",
+				"sha256": "93fa571b3a1746f7d998e7c67bf10961ddae80cf07ee4c6087af9d1cedd332cb"
+			}
+		],
+		"seedComparison": {
+			"seedSource": "plugins/data-space/seed.mjs",
+			"seedSourceSha256": "eef0a7687130496bdf91aedf9f394f9c88f73dd80bd6fe511d47acc2731dff52",
+			"fields": [
+				"featureId",
+				"code",
+				"title",
+				"priority",
+				"status",
+				"preconditions",
+				"note",
+				"steps.action",
+				"steps.expect"
+			],
+			"cases": [
+				{
+					"id": "case-contract-create",
+					"code": "PMS-001",
+					"semanticFieldsMatchSeed": true,
+					"currentType": "功能",
+					"seedType": "UI"
+				},
+				{
+					"id": "case-contract-required",
+					"code": "PMS-002",
+					"semanticFieldsMatchSeed": true,
+					"currentType": "功能",
+					"seedType": "UI"
+				},
+				{
+					"id": "case-contract-amount",
+					"code": "PMS-003",
+					"semanticFieldsMatchSeed": true,
+					"currentType": "接口",
+					"seedType": "接口"
+				},
+				{
+					"id": "case-contract-approve",
+					"code": "PMS-004",
+					"semanticFieldsMatchSeed": true,
+					"currentType": "功能",
+					"seedType": "UI"
+				}
+			]
+		},
+		"dataSpaceSelection": "pending-user-choice",
+		"dataSpaceWrites": 0,
+		"modelCalls": 0,
+		"browserSessions": 0,
+		"businessWrites": 0,
+		"formalRuns": 0,
+		"validation": "Native schema/store-load and recursive reference hashes passed; not a business test or independent approval"
+	},
+	"archive": {
+		"path": "optimization-real-target-source-admission.tar.gz",
+		"sha256": "2b6f29d94f457ec7002b2aa69c1fb755d7e60c4e131e244e17eed073a6dccb74",
+		"files": [
+			{
+				"path": "qa/ui/catalog.json",
+				"sha256": "944ce71759c2dac429c18f32364245eb5decd62273f711f15a8dffb64a5475b9",
+				"bytes": 685
+			},
+			{
+				"path": "qa/ui/inventories/operation-contract-source-admission/.incomplete.json",
+				"sha256": "003b7bafc75ac6470a8b0aed5e8ffbf0f30827c3270cffbfd2ec1264202aa1b9",
+				"bytes": 73
+			},
+			{
+				"path": "qa/ui/inventories/operation-contract-source-admission/manifest.json",
+				"sha256": "35e5c929112a3f1256c0200c2779f4d66ba6f3781942bbaf4b32690601d75487",
+				"bytes": 5932
+			},
+			{
+				"path": "qa/ui/scopes/operation-contract-source-admission/.incomplete.json",
+				"sha256": "7016c7e1b8e322890cb583a70ec762552d3dee0482218047250ab1d390a3c091",
+				"bytes": 69
+			},
+			{
+				"path": "qa/ui/scopes/operation-contract-source-admission/manifest.json",
+				"sha256": "13a2b38cf8c9153b3e3e9c7d266549a20b871b661084ea23d235430bd9b846b2",
+				"bytes": 2612
+			},
+			{
+				"path": "qa/ui/scopes/public-source/.incomplete.json",
+				"sha256": "ea2939d8dd187ea566983d5b73f9e975abb5e97994ed46384b7ed8a988ddd2c6",
+				"bytes": 68
+			},
+			{
+				"path": "qa/ui/scopes/public-source/app.js.json",
+				"sha256": "d1d0157f867ee7d06292708bc20a58e4c6a935578953c0cde29bcefd7471f5d9",
+				"bytes": 5050
+			},
+			{
+				"path": "qa/ui/scopes/public-source/auth.js.json",
+				"sha256": "0e8e2652ef68db84d2a617a57803de796c8d7bd4c57fecf7f75ce7976b8c9e72",
+				"bytes": 1601
+			},
+			{
+				"path": "qa/ui/scopes/public-source/login.js.json",
+				"sha256": "9c86c024aee13199f4358ad167fc4ed42fe270a5c6bbdfb8fab3ef20d5de8fe3",
+				"bytes": 1085
+			},
+			{
+				"path": "qa/ui/scopes/public-source/permission.js.json",
+				"sha256": "93fa571b3a1746f7d998e7c67bf10961ddae80cf07ee4c6087af9d1cedd332cb",
+				"bytes": 1088
+			},
+			{
+				"path": "qa/ui/scopes/public-source/tenant.js.json",
+				"sha256": "263fecfe973f1f34ae4697b3e5f7caba58ae61b42276ec1e996abe731506fa6d",
+				"bytes": 1865
+			},
+			{
+				"path": "receipt.json",
+				"sha256": "7b04f69daf18cdbe4c16f006f476f72dd896855e0f2a99ef4ef280d3ddce85c2",
+				"bytes": 2706
+			},
+			{
+				"path": "save-source-evidence.mjs",
+				"sha256": "29eee20152d53594115cfc027c7369b71a0ae9e70e460fba95d13091a496e4ce",
+				"bytes": 5479
+			}
+		]
+	},
+	"excluded": ["Raw Data Space stores and credentials", "Full 2.5MB deployed bundle", "Private browser state"],
+	"gaps": [
+		"Data Space project selection pending",
+		"No standalone document field in existing Data Space schema; no requirement document identified",
+		"Private browser adapter not implemented",
+		"Identity/role/data and real diagnostics unverified",
+		"No new model call authorization for real target review"
+	],
+	"validation": {
+		"native_artifact_schema_and_hashes": "passed",
+		"archive_readback": "passed",
+		"browser_runs": 0,
+		"formal_business_tests": 0,
+		"model_calls": 0,
+		"data_space_writes": 0
+	}
+}
