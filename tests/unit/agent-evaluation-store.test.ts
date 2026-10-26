@@ -694,6 +694,42 @@ store.writeEvidenceBatch({},[${JSON.stringify(input)}]);
 		expect(store.lookupRequest(ctx, "changing-auth")).toBeUndefined();
 		expect(readdirSync(join(store.root, "evidence")).filter((p) => p.includes(".pack"))).toEqual([]);
 	});
+	it("validates each requested packed record and observes later disk changes without reading unselected gaps", () => {
+		const store = open(),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const records = store.writeEvidenceBatch(
+			ctx,
+			Array.from({ length: 3 }, (_, index) => ({
+				kind: "evidence",
+				requestId: `range-${index}`,
+				data: { ...f.evidence.data, sourceEventId: `range-${index}`, content: `body-${index}` },
+			})),
+		);
+		const refs = records.map(ref);
+		expect(store.getMany(ctx, [refs[2], refs[0], refs[1], refs[0]])).toEqual([
+			records[2],
+			records[0],
+			records[1],
+			records[0],
+		]);
+		const entry = store.index!.get(`evidence/${records[1].id}.1`),
+			original = readFileSync(entry.file);
+		const changed = Buffer.from(original);
+		const text = changed.subarray(entry.offset, entry.offset + entry.length).toString("utf8");
+		const altered = text.replace('"sourceEventId":"range-1"', '"sourceEventId":"range-X"');
+		expect(altered).not.toBe(text);
+		changed.write(altered, entry.offset, entry.length, "utf8");
+		writeFileSync(entry.file, changed);
+		expect(store.getMany(ctx, [refs[2], refs[0]])).toEqual([records[2], records[0]]);
+		expect(() => store.getMany(ctx, refs)).toThrow(/digest/);
+		expect(() => store.getMany(context({ sessionIds: [] }), refs)).toThrow(/authorized/);
+		writeFileSync(entry.file, original);
+		expect(store.getMany(ctx, refs)).toEqual(records);
+		const smaller = open({ dataDir: store.dataDir, readOnly: true });
+		smaller.limits.readBytes = entry.length;
+		expect(() => smaller.getMany(ctx, refs)).toThrow(/Invalid packed read range/);
+	});
 	it("persists only sanitized packed bodies and honors tightened body limits before publication", () => {
 		const store = open(),
 			ctx = context(),

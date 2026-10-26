@@ -1,0 +1,205 @@
+{
+	"scope": "EC04 v0.4.26 request-local coalescing of adjacent requested packed record metadata reads; formal collect performance still FAIL",
+	"timestamp": "2026-10-26T01:37:20.541447+00:00",
+	"baseline": "669ce6eb23584ebd1b5eefdf076b1aa18822568e",
+	"pluginVersion": "0.4.26",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-packed-reads/index.json",
+		"bytes": 45159,
+		"sha256": "000444897559e72b507859e9e1073d5071f65f9c3fcb875c235e4adfba88ad66"
+	},
+	"archiveFiles": 220,
+	"change": {
+		"description": "getMany merges only requested, exactly adjacent metadata ranges from each pack; each range <=recordBytes, total prefetch <=readBytes. Raw text lives in this synchronous request only. Each record still parsed and validated; identity, domain, session, reference digests and existing traversal budgets remain checked. Future requests reopen current files. No gap/body prefetch, persistence format or fsync changes.",
+		"bundle": "Tracked ESM source only; no separate tracked build bundle",
+		"registeredSource": {
+			"status": "PASS",
+			"trackedFilesMatchedPerRun": 29,
+			"actualDesktopRuns": 2,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-packed-reads/files/registered-plugin-files.json",
+				"bytes": 9973,
+				"sha256": "25505d6c96e066e7a89a3b95561c56544d846acb6926a031dae944c888f0bf1d"
+			}
+		}
+	},
+	"formalComparison": {
+		"status": "FAIL",
+		"roundsPerVersion": 30,
+		"scope": "Same host, sequential baseline then candidate each3 workloads x5 off/on workers; no concurrent app/tests. Frozen worker and thresholds unchanged. Baseline0.4.25 store; candidate measured before metadata-only manifest bump to0.4.26, exact store bytes archived and subsequently verified in desktop.",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-packed-reads/files/comparison.json",
+			"bytes": 1766,
+			"sha256": "94b44e4f501a0592e76c7663dd273dfa5f088b910a2c1824602e47414b657453"
+		},
+		"comparisons": {
+			"baseline": [
+				{
+					"workload": "serial",
+					"wallDelta": 52.93645799999999,
+					"wallLimit": 50,
+					"cpuDelta": 48.154,
+					"cpuLimit": 50,
+					"rssDeltas": [3817472, 1671168, 5177344, 2506752, 2785280],
+					"pass": false
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 164.834125,
+					"wallLimit": 50,
+					"cpuDelta": 189.446,
+					"cpuLimit": 50,
+					"rssDeltas": [26705920, 26394624, 26886144, 27394048, 25608192],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 523.2362919999999,
+					"wallLimit": 50,
+					"cpuDelta": 479.18,
+					"cpuLimit": 50,
+					"rssDeltas": [66338816, 61538304, 64782336, 64929792, 60162048],
+					"pass": false
+				}
+			],
+			"candidate": [
+				{
+					"workload": "serial",
+					"wallDelta": 51.69604199999998,
+					"wallLimit": 50,
+					"cpuDelta": 44.256,
+					"cpuLimit": 50,
+					"rssDeltas": [5914624, 3391488, 4161536, 4063232, 2998272],
+					"pass": false
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 130.05891699999998,
+					"wallLimit": 50,
+					"cpuDelta": 153.065,
+					"cpuLimit": 50,
+					"rssDeltas": [26132480, 25837568, 27607040, 26558464, 27967488],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 504.47691599999996,
+					"wallLimit": 50,
+					"cpuDelta": 466.581,
+					"cpuLimit": 50,
+					"rssDeltas": [61734912, 64405504, 61145088, 61243392, 64421888],
+					"pass": false
+				}
+			]
+		},
+		"limitations": "One paired set of median comparisons, no statistical significance or universal performance claim; all3 loads still FAIL. Both versions RSS rounds <=64MiB in this set; prior RSS failures retained."
+	},
+	"reportBoundary": {
+		"status": "PASS",
+		"checks": {
+			"reportsCompleted": true,
+			"reportMedianMs": 561.4334160000001,
+			"listMedianMs": 4.577375000000302,
+			"evidenceMedianMs": 0.40079100000002654
+		},
+		"scope": "5 actual reports from1000-item snapshot,50-row list and evidence page; fixture setup excluded",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-packed-reads/files/report-performance-result.json",
+			"bytes": 1719,
+			"sha256": "aaf9831ebd737b284657f0472ebdd944d228e7ec1d991e2b7231d99f8cb971dc"
+		}
+	},
+	"verification": {
+		"unit": {
+			"status": "PASS",
+			"files": 17,
+			"passed": 282,
+			"failed": 0,
+			"skipped": 0,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-packed-reads/files/unit.log",
+				"bytes": 229,
+				"sha256": "e96c777c8e6edc9ecb027ba244656c19a66e8e18ccdf6a8e9976ec051d8bf19d"
+			}
+		},
+		"pluginToolGuard": {
+			"status": "PASS",
+			"passed": 16,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-packed-reads/files/plugin-tool-guard.log",
+				"bytes": 209,
+				"sha256": "dc4f9eeaa89313b476b61e2d95516b0b3cc146ea38805fe457f64e4eb0a62f16"
+			}
+		},
+		"typecheck": {
+			"status": "PASS",
+			"configurations": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-packed-reads/files/typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"desktopMain": {
+			"status": "PASS",
+			"scope": "actual Electron main process; registration/skills/tools/slash,enable/reload/rescan,revisions/config/watch,offline import,export,normal restart;160545-character40-page evidence and missing-pack restoration",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-packed-reads/files/desktop/result.json",
+				"bytes": 15595,
+				"sha256": "09be8c16695c236d3558c4adb8c44c99a344a512d853aae119907069098ef15e"
+			}
+		},
+		"desktopNative": {
+			"status": "PASS",
+			"scope": "Read existing actual41-case local UI run27passed/14failed; exact20/20/1 pages,manifest missing/change EVIDENCE_GAP,restore/retry,28863-character sealed readback and historical F02 inconclusive; also41pending rows unknown/incomplete. No runner start in this turn.",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-packed-reads/files/native-desktop/result.json",
+				"bytes": 4313,
+				"sha256": "724ee75ebc4734604a674c8435ad1744b645c39ed90e33b8065c4e4f7df2fd87"
+			},
+			"previousExecutionArchive": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-executed-matrix/index.json",
+				"bytes": 82180,
+				"sha256": "653790802ffe141dde9d4ed03a25c3af4838a0b87a6761c0bce5bf385987514a"
+			}
+		},
+		"lint": "PASS",
+		"protocol": "Structure and v33 PASS; historical heuristic SKIP(no tags)",
+		"i18n": "12packs PASS",
+		"size": "PASS",
+		"diff": "PASS",
+		"clean": "preview only;0items"
+	},
+	"preservedFailures": [
+		{
+			"file": "targeted-initial.log",
+			"reason": "Test used reduced readBytes during recovery, pack not indexed; request safely refused, expected budget wording wrong"
+		},
+		{
+			"file": "targeted-budget-expectation.log",
+			"reason": "After normal recovery, reduced readBytes correctly triggered existing packed-range physical file cap; test expected budget wording wrong; corrected exact expected refusal"
+		},
+		{
+			"file": "typecheck-initial.log",
+			"reason": "New test index access TS18048; added non-null assertion consistent with initialized store fixture, later full5-config exit0"
+		}
+	],
+	"remaining": {
+		"AC39": "FAIL; candidate wall deltas51.70/130.06/504.48ms, no gate relaxation",
+		"EC04_M1": "INCOMPLETE; other audited product boundaries pending",
+		"EC06": "Detached-child containment unresolved; dependent packages held",
+		"EC08": "User-deferred realCLI/model testing",
+		"fullRollbackScaleAndPermissionMatrices": "Not rerun; version assertions updated for next explicit run; prior evidence not relabeled"
+	},
+	"externalCalls": {
+		"realCLI": 0,
+		"models": 0,
+		"nativeRunner": 0,
+		"businessExecution": 0
+	}
+}

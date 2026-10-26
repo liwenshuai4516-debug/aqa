@@ -139,8 +139,10 @@ export class EvaluationStore {
 			fs.closeSync(fd);
 		}
 	}
-	load(file, segment = undefined) {
-		const raw = segment ? this.readRange(file, segment.offset, segment.length).toString("utf8") : this.readFile(file);
+	load(file, segment = undefined, prefetched = undefined) {
+		const raw =
+			prefetched ??
+			(segment ? this.readRange(file, segment.offset, segment.length).toString("utf8") : this.readFile(file));
 		let record;
 		try {
 			record = JSON.parse(raw);
@@ -317,7 +319,11 @@ export class EvaluationStore {
 		);
 		const next = new Set(visited);
 		next.add(key(ref));
-		const record = this.load(entry.file, entry.offset === undefined ? undefined : entry);
+		const record = this.load(
+			entry.file,
+			entry.offset === undefined ? undefined : entry,
+			budget.prefetched?.get(key(ref)),
+		);
 		requireValue(same(recordRef(record), ref), "STORE_CORRUPT", "Record identity changed");
 		requireValue(same(record.domain, identity.domain), "PERMISSION_DENIED", "Record domain changed");
 		if (record.kind === "contracts") {
@@ -353,7 +359,52 @@ export class EvaluationStore {
 			started: performance.now(),
 			cache: new Map(),
 			authorization: canonical([identity.domain, identity.sessionIds]),
+			prefetched: new Map(),
 		};
+		// Read only requested, adjacent metadata ranges together. This synchronous
+		// request owns the bytes; every record still passes load/get validation and
+		// every later request reopens the file. Bodies and unselected gaps stay out.
+		const files = new Map();
+		let bytes = 0;
+		for (const ref of refs) {
+			validateRef(ref);
+			const entry = this.index.get(key(ref));
+			requireValue(
+				entry && same(entry.domain, identity.domain),
+				"PERMISSION_DENIED",
+				"Record unavailable in this authorization domain",
+			);
+			if (entry.offset === undefined) continue;
+			if (!files.has(entry.file)) files.set(entry.file, new Map());
+			files.get(entry.file).set(key(ref), entry);
+		}
+		for (const [file, entries] of files) {
+			let pending = [],
+				start = 0,
+				end = 0;
+			const flush = () => {
+				if (!pending.length) return;
+				const length = end - start;
+				if (bytes + length <= this.limits.readBytes) {
+					const raw = this.readRange(file, start, length);
+					bytes += length;
+					for (const [id, entry] of pending)
+						budget.prefetched.set(
+							id,
+							raw.subarray(entry.offset - start, entry.offset - start + entry.length).toString("utf8"),
+						);
+				}
+				pending = [];
+			};
+			for (const item of [...entries].sort(([, a], [, b]) => a.offset - b.offset)) {
+				const entry = item[1];
+				if (pending.length && (entry.offset !== end || end - start + entry.length > this.limits.recordBytes)) flush();
+				if (!pending.length) start = entry.offset;
+				end = entry.offset + entry.length;
+				pending.push(item);
+			}
+			flush();
+		}
 		return refs.map((ref) => this.get(context, ref, new Set(), budget));
 	}
 	list(
