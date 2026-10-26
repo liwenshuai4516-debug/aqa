@@ -857,3 +857,25 @@ U02剩余为录制MCP隐私、真实PMS身份结构转换和角色/测试数据/
 [匿名录制与候选证据](ui-testing-evidence/optimization-pms-anonymous-recording.json)归档153文件、74次公开引用摘要核验、原生快照链接和归档逐文件回读一致，保留失败历史及辅助脚本，不含agent配置/认证、依赖或个人模型缓存。新增付费调用0，账本摘要与原库草稿索引一致。独立设计评审待新范围授权：旧U00额度3/3用完，剩余旧调用仅限U05 v4，不能挪用。已就本匿名候选提出最多3次/每次8192输出tokens/总1美元的新授权问题，未以等待代替批准。
 
 该证据只补真实匿名发现/录制与静态设计，不算U00连续首次获批基线、真实PMS角色/数据或Electron Agent端到端。U02录制隐私、登录身份转换，U03/U07及M1/M2仍待推进，整计划保持active。
+
+### U00/U02 续跑：匿名候选 v2 诊断输入与录制隐私边界审计（2026-10-26）
+
+上一目标轮已提交并同步私密执行桥接及匿名录制，属于实际进展。本轮先核对工作区仅保留原有.gitignore/db-client锁差异，计划及候选仍未获最终放行，评审授权问题尚无答复。没有重复申请同一授权、挪用U05额度或调用付费模型；plan_update仍不可用。
+
+先核查MCP录制隐私的实际源码路径。SDK1.2.0在createMcpToolDefinition.execute中先callTool再convertMcpResult；limitMcpContent会将较长原文保存临时文件，structuredContent和模型文本为独立数据通路。仅tool_result钩子脱敏不能覆盖先行落盘；StdioTransport.onMessage和McpExtensionOptions.createTransport是可用的更早接入点。Playwright1.62.1测试browserBackend构造固定capabilities配置，未转发outputDir；coreBundle默认输出目录依赖clientInfo.cwd/.playwright-mcp。证据保存对应源码完整快照/摘要和核心片段行号。以上为静态审计，不是新的泄露复现或已修复声明；没有改SDK/Playwright安装文件，也不开放通用私密录制。后续需要同时处理协议结果/进度/错误、媒体、structuredContent及公开路径所指原始文件，并通过实际SDK/MCP与Electron验证。
+
+同时推进可独立完成的匿名评审准备。按ui-case-design/ui-design-review，调用原生ui_design_diagnose.schema取得契约，在同一范围/1场景/1断言下建立v2。目标仍为原Electron所选PMS环境；公开app包本次GET的SHA-256与既有部署声明2888c0b0…一致。错误副本源码冻结于独立http://127.0.0.1:18982：保留匿名页面“密码认证”及“登 录”标记，但在/pms/OperationContract返回原地页面、不做/login跳转。它仅提供合成HTML，不读取或修改真实PMS业务数据。未来正反诊断必须使用同一脚本和断言，本轮不执行候选来提前绕过独立批准。
+
+准备期两次静态阻断均保留：1792990292894同时选入v1及复制的v2脚本，导致重复测试映射；仅移除v2 files中的旧脚本项，原v1资产/源码仍留磁盘且可追溯。1792990345137的新配置JSON.parse(readFileSync(...))缺少utf8，原生静态编译按Buffer类型拒绝；只修正两份配置的读取编码。未减少用例、断言、覆盖范围或改变期望。
+
+最终1792990404494原生candidate静态检查issues=[]、planned/covered各1、missing=[]、design_approved=false。v2候选脚本摘要53a09d31…与v1逐字节相同，新增诊断计划、正反environment/config、变异源码/来源和部署/预检回执均纳入修订files供独立审查。诊断计划按工具返回schema验证；probe明确只针对A-anonymous-redirect，错误origin与真实站点不同，角色均anonymous，隔离均context。目标及错误副本各自调用原生preflightEnvironment，站点、匿名页面标记及初态检查完成。该预检不是正反诊断，不授予runtime_ready；真实目标的原生预检不提供请求方法计数，因此未声明真实目标请求为零。本地错误副本只读请求1/写请求0，所有自有服务在finally关闭；恢复诊断前需从冻结源码启动并核对端口归属。
+
+另以独立自有子进程直接导入冻结negative-server.mjs，不复用内联准备服务：核对源码摘要，等待源码加载及监听就绪，GET经营合同路径确认HTTP200且Location为空，原生匿名预检完成，SIGTERM后自有进程正常code0退出。保存exact-negative-preflight回执；未运行候选或改写断言。
+
+v2资产36386b98…及诊断计划d8d021b1…已冻结。新增模型调用0、候选回放0、正式执行0；原三条草稿不变。旧的匿名评审问题继续适用同一范围，但获授权后必须审查最新v2的完整原始材料，不能拿v1批准覆盖新增诊断依赖。
+
+预期/恢复文档已写入实际Electron项目project-documents的OperationContract-anonymous-diagnostic-inputs-2026-10-26.md（0600），并保存anonymous-diagnostics-36386b98265b下63份公开产物；逐文件回读摘要一致，store.json保存前后摘要一致。原v1文档/快照保留，不把文件保存称为应用文档列表已显示或用例台账已入库。
+
+[匿名诊断准备与隐私审计证据](ui-testing-evidence/optimization-pms-anonymous-diagnostics.json)包含205文件、105次原生公开引用摘要核验、两个失败准备工作区及最终静态/环境结果，归档逐成员回读一致；共享付费账本与前轮索引相同。仅文档和证据进入本轮提交，没有运行时源码变更；验证采用原生schema、静态候选、真实/错误环境预检及持久文档回读，不重跑无关全量单测。clean仅预览，交付前另核对size及差异。
+
+独立设计评审授权仍待答复，依赖它的正反诊断及正式执行未开始。U02通用私密录制、PMS登录身份转换/业务角色/数据、U00连续首次获批基线及成对对照、U03/U07、M1/M2和Electron Agent全链仍未完成；整目标保持active。
