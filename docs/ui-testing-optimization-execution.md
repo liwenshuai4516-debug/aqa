@@ -1079,3 +1079,21 @@ ui_result_analysis read-trace读取本实例原始ZIP事件。test.trace expect@
 [认证头采集原型证据](ui-testing-evidence/optimization-u02-recording-runtime-headers.json)归档239文件、294次可用FileRef核验、逐成员回读一致；Electron权威项目保存OperationContract-recording-runtime-headers-2026-10-26.md及七轮228份公开/减少内容快照，0700/0600逐文件回读，store字节不变。localStorage泄露轮公开QA未保留，仅指标/源码/安全草稿；原始私密trace/payload和SDK临时输出按归属清理，trace摘要不冒充可读取FileRef。文档保存不代表应用列表显示或正式结果入库。本轮未新增Electron界面回归，前轮通过未算本轮通过。
 
 本轮只有证据与文档改动：验证合成真实SDK/MCP对照、源码语法、证据摘要/引用/归档回读、模型账本未变；未改长期实现，未重复单测。提交前完整5配置typecheck、lint、协议同步、size及diff检查通过；协议tag启发式无可用tag而跳过，开始/交付clean均仅预览且无可清理项。继续解决动态localStorage/跨frame生命周期、固定helper预算及路径契约，再收敛内部适配并接Electron产品链。通用输入闭包、协议结构、并发替换/关闭认证、完整重连续录、真实角色/租户/数据、U00计量、U03/U07及M1/M2未完成，整体goal active。
+
+### U02 续跑：原生运行时存储观察与首次采集前删除反例（2026-10-26）
+
+从ffa8781继续，开始clean仅预览且无可清理项，保留其他协作差异；plan_update不可用，继续本文与计划。上轮首次认证头采集有实质进展，本轮根据其localStorage泄露反例补实现。PMS剩余2次仅设计额度及U05账本不变，未调用模型、未改结果评审范围。
+
+原生0.1.14新增宿主PrivateEvidence.observeStorageState(state)：完整校验cookies/origins/localStorage值结构后，复用storageSecrets/variants累积一层JSON字符串叶值及既有编码，删除/轮换不遗忘已观察值；create改为复用。先在旧版执行新增测试，明确7通过/1失败（方法不存在）；实现后私密证据/环境15项通过，覆盖新增值/嵌套JSON/编码、删除后保留、坏结构原子拒绝、普通文本和初始过滤不变。未另造过滤器或模型工具。上游本地提交92235e882a94d79106039a1c0f05fdaaf5f3c827，未推送；从源码重新导出/编译分发，e2e清单/lock更新并install:e2e，旧包及证据保留，未改node_modules源文件或个人配置。
+
+内部固定SDK helper在完成trace之前调用Playwright原生context.storageState写私有storage.json，宿主验证路径/普通文件并收紧0600后读取，调用原生观察方法；原始内容不进入SDK公开结果。继续原生认证头收集、生命周期和writer字节校验；5业务动作+4固定helper=9 MCP调用，原生steps仅5，scope明确8次helper/30次工具预算。实际SDK hook事件保留父归属。相对路径仍依赖已知私有mirror布局、unsafe工具仅固定代码，不作为通用产品能力开放。
+
+五轮真实SDK/MCP合成对照：新增localStorage字符串、嵌套JSON两轮均complete/1脚本/gaps=[]、公开和原生草稿字节一致，已知初始/新增秘密及受支持编码未检出于公开工具/SDK长输出/工作区，媒体块0；writer阶段坏状态、采集响应到达时取消分别partial/0脚本，私有草稿保留/公开不存在，保留private-authentication-storage-invalid或private-authentication-capture-cancelled及missing-generated-script/goal-not-reached/tool-error-or-cancelled，实际browser_close成功。坏状态轮早期harness字段仍叫corruptTraceRejected，精确源码只损坏storage.json，不据字段误称损坏trace；后续字段已更名。
+
+边界反例仍失败：seed确认新runtime-token存在，删除并确认null，DOM仍反射旧值；标准认证头不传此值，首次storage采集已无它，setup/snapshot和SDK长输出仍泄露。原生complete/1脚本不算隐私通过。此反例仅保存减少内容指标/精确源码/安全草稿，含秘密公开QA和原始合成payload按归属清理；manifest引用明确未保留，trace/storage摘要不冒称原始FileRef。产品record仍unsupported，不用正向样本掩盖瞬态值缺口。
+
+完整5配置typecheck、4文件29项Vitest、lint、协议同步、size、源码语法及diff检查通过；协议tag启发式无可用tag跳过。SDK集成passed；隔离Electron使用已有构建，技能发现、设置禁用/启用/重载持久、MCP直连87工具及重连PASS，业务请求/模型调用0；未操作个人当前窗口、不把发现验证当真实PMS私密录制。原生测试前后、SDK/桌面和工程日志均归档。
+
+[运行时存储证据](ui-testing-evidence/optimization-u02-recording-runtime-storage.json)归档191文件、219次FileRef核验、逐成员回读一致（约2.4MiB含Electron截图/日志、原生精确源码及包manifest）；实际权威Electron项目新增OperationContract-recording-runtime-storage-2026-10-26.md与五轮160份公开/减少内容快照，0700/0600逐文件回读，store字节不变。文件保存不代表应用文档列表显示或正式结果入库。每轮模型调用、正式批次、真实业务写入0，自有服务/原始合成payload按归属清理。
+
+继续首次采集前删除值的受控采集时机、跨frame/存储生命周期与协议结构，再收敛内部适配并接Electron产品全链；通用输入闭包、并发路径替换、完整重连续录、真实角色/租户/数据、U00计量、U03/U07及M1/M2未完成，整体goal active。

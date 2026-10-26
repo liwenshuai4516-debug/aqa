@@ -5,7 +5,7 @@
 | 维护内容                                     | 唯一位置                                                                                                        |
 | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | 技能名称、描述、调度入口                     | `../SKILL.md`                                                                                                   |
-| 原版工作流分发包                             | `../assets/pi-ui-testing-0.1.13.tgz`                                                                            |
+| 原版工作流分发包                             | `../assets/pi-ui-testing-0.1.14.tgz`                                                                            |
 | 原生测试 MCP 适配                            | `../assets/mcp-extension.mjs`                                                                                   |
 | Chromium 执行配置                            | `../assets/playwright.config.mjs`                                                                               |
 | 录制 seed 前置校验                           | `../assets/recording-preflight.mjs`（由 MCP 执行钩子调用，不另建 runner）                                       |
@@ -81,3 +81,5 @@ MCP 运行时选择由 `assets/playwright-runtime.mjs` 负责：CLI 与配置均
 0.1.13仅从包主入口导出已有`PrivateEvidence`，供受信任录制宿主复用初始storageState的一层JSON字符串叶值及既有编码过滤；规则仍在原实现。内部原型在原生过滤器的私有目录中派生录制副本，响应在SDK转换前过滤并隐藏媒体，保留原始私有协议及原生writer校验。嵌套JSON原型泄露已复现、复用过滤后正常/取消对照留证；运行中新增HttpOnly cookie仍可反射泄露，未完成实时收集，不据此开放产品record入口或宣称通用隐私安全。
 
 后续内部合成原型通过原生SDK固定嵌套trace采集，在公开父响应前复用PrivateEvidence.process，拦截运行中新cookie及立即清除的历史cookie；损坏trace/采集中取消保持partial且阻止公开草稿。真实SDK事件记录额外4次helper归属，不能与5个原生steps混计。一次writer超时未finish保留，新localStorage反例仍泄露；该路径仅串行已知mirror布局、使用固定unsafe工具，不开放产品record。详见[本轮证据](../../../../docs/ui-testing-evidence/optimization-u02-recording-runtime-headers.json)。
+
+0.1.14在原生PrivateEvidence新增宿主observeStorageState(state)：完整核验cookie/localStorage结构后累积现有JSON字符串叶值和编码，删除/轮换不遗忘已观察值，create复用此路径。内部固定SDK采集增加Playwright原生context.storageState私有文件，原始内容不进入SDK结果；新localStorage与嵌套JSON对照已拦截，坏结构和采集中取消阻止公开草稿。方法不启动采集、不开放模型工具；采集前已删除的未知存储值仍是缺口，产品record继续unsupported。
