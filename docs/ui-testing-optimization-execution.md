@@ -1183,3 +1183,21 @@ scope明确8次helper/30工具/128事件/2MiB及受控负向frame附加移除/�
 完整5配置typecheck、相关8文件54项Vitest、SDK集成及能力布局通过。初次新增夹具缺参数类型导致typecheck失败，修正后通过。隔离Electron使用已有构建，7项发现/快捷入口、禁用启用/重载持久及87个MCP工具/重连检查通过；不操作用户当前窗口，不称实际PMS业务录制已完成。技能入口补齐当前私密阻塞说明，模块地图/目录与维护入口同步。
 
 [本轮证据](ui-testing-evidence/optimization-u02-recording-product-connection.json)归档源码、旧守卫对照、全部早期失败、最终工程/SDK/Electron日志。权威Electron项目另存阶段文档及公开证据快照，文件保存不代表应用文档索引显示或正式结果入库。剩余：产品动态捕获与安全发布、通用输入闭包、frame/target支持、完整重连续录、真实角色/租户/数据、U00完整计量、U03/U07及M1/M2；整体goal保持active。
+
+### U02 续跑：原生受管录制 fixture 与固定采集（2026-10-26）
+
+从4e38fdc继续。上一个回合只整理进度，本轮继续U02产品录制缺口；plan_update不可用，沿用阶段表及本文。开始clean仅预览，无可清理项。PMS剩余2次仅设计额度和U05账本摘要不变，所有轮模型调用、正式批次、真实PMS业务写入均0；保留其他协作修改和个人配置。
+
+复用选择：Pi SDK1.2.0嵌套工具/归属、Playwright1.62.1的fixture、storageState、tracing及CDPSession、既有原生uiData/auth和PrivateEvidence；仅补受管采集入口与路径/序号/身份校验，不另建录制器或过滤器。原型seed拷贝观察器、使用相对私有目录的方式不能直接交产品，现迁移CDP存储观察/读取到原生private-recording-storage-events.ts，宿主原模块只re-export。迁移时类型检查发现旧disconnected事件不是Playwright公开CDPSession事件，改用close；原存储/预算/初态守卫回归保留。
+
+原生新增pi-ui-testing/recording-fixtures，在继承的自动uiData导航前安装观察器并启动自有trace，沿用身份、前置及清理。要求受管独立context、工作区外0700证据目录及trace:off；宿主须在runner启动前准备0700 output。固定page.__pi_private_recording_capture只接受1–8顺序编号，不接收路径、不返回原文；实际storage.json、trace.zip及最后写入complete.json放私有output/recording/capture-N目录，0600/wx，目录0700。重复/并发/越界、过期身份、坏路径、frame/page历史、trace失败及dispose后拒绝；不覆盖旧捕获。
+
+初版0.1.16原生18项通过，但SDK收集遇到两份同版本Playwright实例；仅调整隔离目标的peer链接，未修改个人/根现有依赖。之后SDK初始化仍拒绝：预建output消除权限因素后，固定阶段诊断定位为私有根包含隔离mirror的过严检查。新增真实Chromium对照先失败，再修为“实际捕获路径在mirror外”，保留权限/canonical/非symlink守卫。0.1.17最终19项原生回归及上游check通过；原生来源本地提交66f0191、96a603d（最终），未推送上游。0.1.16与诊断候选仅作为历史证据，正式分发0.1.17从源码重新编译，包/lock/安装源码一致；首次install:e2e因未先同步lock失败，离线更新lock后安装通过。package.json子路径检查命令不被exports允许，改用文件内容/摘要核对，不算产品缺陷。
+
+实际SDK/MCP最终五类样本：瞬态嵌套localStorage/sessionStorage、立即清除HttpOnly cookie两类正常均complete/1脚本/gaps=[]，公开/原生writer字节相同；坏事件日志、采集中取消、受控新增第二页面均partial/0脚本，私有草稿保留/公开目标不存在，实际close成功。每轮5原生steps加4固定helper，共9 MCP工具调用；上下文快捷字段toolCallId为空，归属以SDK实际tool_call/tool_result的parentToolCallId为准，已逐次核对。公开响应、SDK长输出和工作区未检出本轮已知初始/新增秘密及受支持编码，媒体块0。坏日志/第二页面早期回执沿用的nativeDraftPublication说明字段错误，未覆盖原始回执，修正harness后分别重跑留证；最终选择以recording状态、script_refs、实际文件及新回执对账。
+
+最终完整5配置typecheck、7文件48项Vitest、共享build、21项SDK/匿名Chromium产品回归、能力布局、lint、协议结构、size及diff通过；协议tag启发式无tag单列SKIP。隔离Electron使用最终构建，7项技能/快捷入口、启停/重载持久、87 MCP工具及重连检查通过，不操作用户当前窗口。产品私密start仍仅自动准备/握手，私密浏览器动作阻塞及partial/撤销/匿名恢复回归通过；上述完整采集样本使用显式私有副本与内部适配，不是产品自动录制已开放。
+
+[本轮证据](ui-testing-evidence/optimization-u02-recording-native-capture.json)包含源码、构建/安装、原生前后对照、所有早期失败与最终SDK/Electron公开证据。原始合成认证、事件/state/trace及SDK临时原文按归属清理，减少内容/摘要不冒充可回读原始FileRef。权威Electron项目保存阶段文档与公开归档/索引；仅文件落盘，不创建应用文档索引或正式结果入库，store字节保持不变。
+
+剩余：将固定采集、过滤及原生writer安全发布接入产品连接并验证取消/断连/重连与额外工具预算；真实角色/租户/测试数据、通用依赖闭包、多frame/其他target、完整重连续录、U00完整计量、U03/U07和M1/M2仍未完成。未将本轮原生采集子链通过视为优化计划完成，整体goal active。

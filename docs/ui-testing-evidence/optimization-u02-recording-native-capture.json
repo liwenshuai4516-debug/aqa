@@ -1,0 +1,2442 @@
+{
+	"schema_version": "1.0",
+	"date": "2026-10-26T10:59:18.160086+00:00",
+	"stage": "U02 native recording fixture and fixed private capture",
+	"status": "NATIVE_CAPTURE_VALIDATED_PRODUCT_BROWSER_RECORDING_STILL_BLOCKED",
+	"planComplete": false,
+	"baseCommit": "4e38fdc61ea5b9ac0375f45df1168e623f876362",
+	"nativeVersion": "0.1.17",
+	"nativeSourceCommit": "96a603d1d498ceb709c7355b1585cbc05bd8ec38",
+	"nativeSourcePushed": false,
+	"nativePackageSha256": "0b25da8ae63342a5e4cd1bd760038210a966beaa2c91ebfd67d2a10f7440bc3f",
+	"installedFilesVerified": 104,
+	"sdkVersion": "1.2.0",
+	"playwrightVersion": "1.62.1",
+	"modelCalls": 0,
+	"formalRuns": 0,
+	"businessWrites": 0,
+	"nativeTests": {
+		"passed": 19,
+		"captureTests": 6,
+		"priorVersionPassed": 18,
+		"missingFeatureBefore": {
+			"passed": 0,
+			"failed": 4
+		},
+		"ancestorControlBefore": {
+			"passed": 0,
+			"failed": 1
+		},
+		"typecheck": "PASS"
+	},
+	"unit": {
+		"files": 7,
+		"passed": 48
+	},
+	"selectedSdkSamples": {
+		"storage": {
+			"status": "PRIVATE_MIRROR_NATIVE_RECORDING_HANDOFF_COMPLETE_NOT_PRODUCT_DELIVERY",
+			"recordingStatus": "complete",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "6d69f42e25bd3754cc3763d7e98fe485bde4fb981a08b151ddb7a9fbd9ab22d6"
+			},
+			"nativeRecordingSteps": 5,
+			"finishGaps": [],
+			"publicDraftExists": null,
+			"privateNativeDraftExists": null,
+			"publicScriptEqualsNative": true,
+			"run": "1793011841375",
+			"mcpCalls": 9,
+			"fixedHelpers": 4,
+			"sdkParentIdentityVerified": true,
+			"knownSecretLeakAssertionsPassed": true,
+			"rawPrivateCapturesRemovedByOwner": true
+		},
+		"corrupt": {
+			"status": "INVALID_STORAGE_EVENTS_BLOCKED_NATIVE_PARTIAL",
+			"recordingStatus": "partial",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "2346fc345f3a568c5aeed98913abf5b2d60aa81f5f3eddeedd899625b1231b91"
+			},
+			"nativeRecordingSteps": 5,
+			"finishGaps": [
+				"private-authentication-storage-events-invalid",
+				"missing-generated-script",
+				"goal-not-reached",
+				"tool-error-or-cancelled"
+			],
+			"publicDraftExists": false,
+			"privateNativeDraftExists": true,
+			"publicScriptEqualsNative": null,
+			"run": "1793012016731",
+			"mcpCalls": 9,
+			"fixedHelpers": 4,
+			"sdkParentIdentityVerified": true,
+			"knownSecretLeakAssertionsPassed": true,
+			"rawPrivateCapturesRemovedByOwner": true
+		},
+		"cancel": {
+			"status": "PRIVATE_CAPTURE_CANCELLED_NATIVE_PARTIAL",
+			"recordingStatus": "partial",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "f6ee883fc0cb8c3ed1ec3ec6264422bdf7ca2514c4c643f7bc6be90d958512e5"
+			},
+			"nativeRecordingSteps": 5,
+			"finishGaps": [
+				"private-authentication-capture-cancelled",
+				"missing-generated-script",
+				"goal-not-reached",
+				"tool-error-or-cancelled"
+			],
+			"publicDraftExists": false,
+			"privateNativeDraftExists": true,
+			"publicScriptEqualsNative": null,
+			"run": "1793011893411",
+			"mcpCalls": 9,
+			"fixedHelpers": 4,
+			"sdkParentIdentityVerified": true,
+			"knownSecretLeakAssertionsPassed": true,
+			"rawPrivateCapturesRemovedByOwner": true
+		},
+		"page": {
+			"status": "UNSUPPORTED_NEW_PAGE_BLOCKED_NATIVE_PARTIAL",
+			"recordingStatus": "partial",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "0f7de6cffea1108c2505e691a5b5bdc9134b04957b6fb7f079780185676418e8"
+			},
+			"nativeRecordingSteps": 5,
+			"finishGaps": [
+				"private-storage-unsupported-new-page",
+				"missing-generated-script",
+				"goal-not-reached",
+				"tool-error-or-cancelled"
+			],
+			"publicDraftExists": false,
+			"privateNativeDraftExists": true,
+			"publicScriptEqualsNative": null,
+			"run": "1793012027153",
+			"mcpCalls": 9,
+			"fixedHelpers": 4,
+			"sdkParentIdentityVerified": true,
+			"knownSecretLeakAssertionsPassed": true,
+			"rawPrivateCapturesRemovedByOwner": true
+		},
+		"cookie": {
+			"status": "PRIVATE_MIRROR_NATIVE_RECORDING_HANDOFF_COMPLETE_NOT_PRODUCT_DELIVERY",
+			"recordingStatus": "complete",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "45af0e708022bebd04a399c0b7968ab6c529e8a4295f290da1939627c566ac7f"
+			},
+			"nativeRecordingSteps": 5,
+			"finishGaps": [],
+			"publicDraftExists": null,
+			"privateNativeDraftExists": null,
+			"publicScriptEqualsNative": true,
+			"run": "1793011953115",
+			"mcpCalls": 9,
+			"fixedHelpers": 4,
+			"sdkParentIdentityVerified": true,
+			"knownSecretLeakAssertionsPassed": true,
+			"rawPrivateCapturesRemovedByOwner": true
+		}
+	},
+	"allSdkAttempts": [
+		{
+			"id": "1793011221891",
+			"status": "blocked",
+			"recordingStatus": null,
+			"steps": null,
+			"helpers": 0
+		},
+		{
+			"id": "1793011305469",
+			"status": "blocked",
+			"recordingStatus": null,
+			"steps": null,
+			"helpers": 0
+		},
+		{
+			"id": "1793011383494",
+			"status": "blocked",
+			"recordingStatus": null,
+			"steps": null,
+			"helpers": 0
+		},
+		{
+			"id": "1793011453856",
+			"status": "blocked",
+			"recordingStatus": null,
+			"steps": null,
+			"helpers": 0
+		},
+		{
+			"id": "1793011623255",
+			"status": "blocked",
+			"recordingStatus": null,
+			"steps": null,
+			"helpers": 0
+		},
+		{
+			"id": "1793011841375",
+			"status": "PRIVATE_MIRROR_NATIVE_RECORDING_HANDOFF_COMPLETE_NOT_PRODUCT_DELIVERY",
+			"recordingStatus": "complete",
+			"steps": 5,
+			"helpers": 4
+		},
+		{
+			"id": "1793011882458",
+			"status": "INVALID_STORAGE_EVENTS_BLOCKED_NATIVE_PARTIAL",
+			"recordingStatus": "partial",
+			"steps": 5,
+			"helpers": 4
+		},
+		{
+			"id": "1793011893411",
+			"status": "PRIVATE_CAPTURE_CANCELLED_NATIVE_PARTIAL",
+			"recordingStatus": "partial",
+			"steps": 5,
+			"helpers": 4
+		},
+		{
+			"id": "1793011904359",
+			"status": "UNSUPPORTED_NEW_PAGE_BLOCKED_NATIVE_PARTIAL",
+			"recordingStatus": "partial",
+			"steps": 5,
+			"helpers": 4
+		},
+		{
+			"id": "1793011953115",
+			"status": "PRIVATE_MIRROR_NATIVE_RECORDING_HANDOFF_COMPLETE_NOT_PRODUCT_DELIVERY",
+			"recordingStatus": "complete",
+			"steps": 5,
+			"helpers": 4
+		},
+		{
+			"id": "1793012016731",
+			"status": "INVALID_STORAGE_EVENTS_BLOCKED_NATIVE_PARTIAL",
+			"recordingStatus": "partial",
+			"steps": 5,
+			"helpers": 4
+		},
+		{
+			"id": "1793012027153",
+			"status": "UNSUPPORTED_NEW_PAGE_BLOCKED_NATIVE_PARTIAL",
+			"recordingStatus": "partial",
+			"steps": 5,
+			"helpers": 4
+		}
+	],
+	"sdkProductRegression": {
+		"checks": 21,
+		"passed": true,
+		"privateBrowserActionStillBlocked": true
+	},
+	"electron": {
+		"checks": 7,
+		"passed": true,
+		"directMcpTools": 87,
+		"scope": "isolated Electron discovery, toggles, persistence and reconnect; not PMS business recording"
+	},
+	"validation": {
+		"typecheck": "PASS: all five configurations",
+		"build": "PASS",
+		"lint": "PASS",
+		"protocol": "PASS: structure; history heuristic SKIP (no tag)",
+		"layout": "PASS",
+		"diff": "PASS: task files",
+		"size": "PASS before and after final archive",
+		"clean": "preview only, no deletion"
+	},
+	"ledgerSha256": {
+		"u05-authorized-review-budget.json": "34aaec3d27776ad96474be83f0be5a4eebe001fb41467afc69a4372c2b7e31ec",
+		"pms-anonymous-authorized-review-budget.json": "854cec9cb4cb8574adcdec3163d7fd2953ab1016be4c9799f48a2cfa7bba87c3"
+	},
+	"limits": [
+		"Only explicit private mirror and internal capture adapter were exercised; product automatic capture/filter/writer publication is not connected",
+		"Multiple frames/targets, arbitrary dependency closure, full reconnect continuation, filesystem races and real PMS role/tenant/data remain unverified",
+		"Fixture and CLI require one physical Playwright instance, not merely equal version strings; existing root installations were preserved",
+		"Original synthetic private state/events/traces and SDK raw temporary outputs were owner-cleaned; summaries and hashes are not archived original FileRefs",
+		"Initial missing-feature tests were later expanded from four to six; the exact first-four test source was not separately saved",
+		"Two earlier partial sample nativeDraftPublication labels were inherited incorrectly; original records remain, final corrupt/page selections use corrected harness and are reconciled against status and real files",
+		"ctx.toolCallId shortcut is absent in this SDK; real tool_call/tool_result parentToolCallId is authoritative",
+		"Project document files do not imply an application document index entity or formal result import"
+	],
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-u02-recording-native-capture.tar.gz",
+		"sha256": "971604074d84ea8fd9ec44c95dd920f07b732f05e91d7da3ddca659bdcf64087",
+		"bytes": 3388791,
+		"files": 430,
+		"allMembersReadbackVerified": true
+	},
+	"members": [
+		{
+			"path": "logs/ancestor-before.log",
+			"sha256": "021fb25c9aa0afeb008e3cf2d12475c3124b7a9ec2bdb583a592370ace73424b",
+			"bytes": 1122
+		},
+		{
+			"path": "logs/clean-final.log",
+			"sha256": "11edff7f359e5c0ad036bad6ca5caf7ef19274615efa33463fcabe76958226e5",
+			"bytes": 609
+		},
+		{
+			"path": "logs/diff-final.log",
+			"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+			"bytes": 0
+		},
+		{
+			"path": "logs/docs-format.log",
+			"sha256": "78f16871ff5c9f6c6cc686bead8841804253cbe5a9c524290fd30afd152a15fe",
+			"bytes": 328
+		},
+		{
+			"path": "logs/electron-final.log",
+			"sha256": "78eb6316dbeb11082108fbf3346d1f0179cbbe2733790f76a0a45c500950f238",
+			"bytes": 886
+		},
+		{
+			"path": "logs/export-diagnostic.log",
+			"sha256": "dcafb9fdf89120dd84bd2990381f4060f85420a28d4c90f5692d048679f8e835",
+			"bytes": 313
+		},
+		{
+			"path": "logs/export-final.log",
+			"sha256": "b03bb822ed8678ca1392ebfc5ea6864379541da195bcd5258c748f6fb1707b4e",
+			"bytes": 303
+		},
+		{
+			"path": "logs/export.log",
+			"sha256": "ba0a9752385d88910d2aab152fe3ccc318263027bc407e2815a98a0085b2fffb",
+			"bytes": 291
+		},
+		{
+			"path": "logs/host-build-final.log",
+			"sha256": "93df30dc891f8b15a13e8c434ab8e58551bfa0277796479fd8e86ba731e49b4a",
+			"bytes": 6101
+		},
+		{
+			"path": "logs/host-build.log",
+			"sha256": "b9c68921004d598cf941b9c094d0899a8ed9c750e518b7a5881406e11bd07417",
+			"bytes": 6101
+		},
+		{
+			"path": "logs/host-format-final.log",
+			"sha256": "75cb75c521c2e2e1ca6d5bea9632ba3156e4a3d6f4e4f5fab02064a1502fddf1",
+			"bytes": 404
+		},
+		{
+			"path": "logs/host-format.log",
+			"sha256": "8262798e6821926241749c7f2957a141d2b37cb6b43d183c43a6dd890a38f427",
+			"bytes": 404
+		},
+		{
+			"path": "logs/host-typecheck-final.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "logs/host-typecheck.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
+		},
+		{
+			"path": "logs/host-vitest-final.log",
+			"sha256": "a997c93fd232f92bf8dc321c7a12b220946f30d9e9b25e9088b9ea3acf50ffea",
+			"bytes": 188
+		},
+		{
+			"path": "logs/host-vitest.log",
+			"sha256": "a9438195d3b7536c1cff2d131d03e177ca29de28ffecadccaad796ae60fe4ece",
+			"bytes": 188
+		},
+		{
+			"path": "logs/install-after-lock.log",
+			"sha256": "941d65e39e9ba5a9402b76dd83ae2b615a4e77e7f5fb578201d0ccbfe0ba759c",
+			"bytes": 132
+		},
+		{
+			"path": "logs/install-final.log",
+			"sha256": "b5860e5d0f38deaeff9e251f51c2b93e6029e1a0a6b921cb0fa20058097adcd6",
+			"bytes": 135
+		},
+		{
+			"path": "logs/install.log",
+			"sha256": "c5411b638bde9de229971ade980bf6abe5427c49daad49e07c3c1f0f39a7d144",
+			"bytes": 1342
+		},
+		{
+			"path": "logs/integration-final.log",
+			"sha256": "97fe55740d340bdf06bf66ed147fc055139de486c30ae8566e15eedb8edc536d",
+			"bytes": 1999
+		},
+		{
+			"path": "logs/integration.log",
+			"sha256": "97fe55740d340bdf06bf66ed147fc055139de486c30ae8566e15eedb8edc536d",
+			"bytes": 1999
+		},
+		{
+			"path": "logs/layout-final.log",
+			"sha256": "f2ff3c900a2e0d99c7d13a60f68400f3b75235e9f0a5615222f8ce85d1d25363",
+			"bytes": 803
+		},
+		{
+			"path": "logs/lint-final.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+			"bytes": 88
+		},
+		{
+			"path": "logs/lint.log",
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+			"bytes": 88
+		},
+		{
+			"path": "logs/lock-final.log",
+			"sha256": "d79d7577731fe9a88e3770662d9ac83a112634d648d4917cd92e1b72ae3ce508",
+			"bytes": 21
+		},
+		{
+			"path": "logs/lock-update.log",
+			"sha256": "76cf9fa125a17bb92052035050021203b25f41064202e301847eebb715fa764e",
+			"bytes": 21
+		},
+		{
+			"path": "logs/native-before.log",
+			"sha256": "d0cd47e5e457ddb840dbba0979b8b33d2c8db394db5c5c38f405311c78da5773",
+			"bytes": 4706
+		},
+		{
+			"path": "logs/native-build-17.log",
+			"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+			"bytes": 0
+		},
+		{
+			"path": "logs/native-build-final.log",
+			"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+			"bytes": 0
+		},
+		{
+			"path": "logs/native-build.log",
+			"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+			"bytes": 0
+		},
+		{
+			"path": "logs/native-check-17.log",
+			"sha256": "f108603c5e71023c7c1a8134326b2077220e38ea28459ea222b061bb1425a6f0",
+			"bytes": 101
+		},
+		{
+			"path": "logs/native-check-final.log",
+			"sha256": "f108603c5e71023c7c1a8134326b2077220e38ea28459ea222b061bb1425a6f0",
+			"bytes": 101
+		},
+		{
+			"path": "logs/native-check-initial.log",
+			"sha256": "08fc69206e4ac45913a5bc443ac973181af1e54725e5ab4f4716f738277e53a3",
+			"bytes": 3205
+		},
+		{
+			"path": "logs/native-check.log",
+			"sha256": "f108603c5e71023c7c1a8134326b2077220e38ea28459ea222b061bb1425a6f0",
+			"bytes": 101
+		},
+		{
+			"path": "logs/native-diagnostic-build.log",
+			"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+			"bytes": 0
+		},
+		{
+			"path": "logs/native-final-17.log",
+			"sha256": "4a3be597871693384b0957071febbc83caeffb275b83b3c21b1ba7f8110f0811",
+			"bytes": 2204
+		},
+		{
+			"path": "logs/native-final.log",
+			"sha256": "41381b72c0d6afc57da90ca10bd9b4690f170dcc1532a8104d1ba40f87992b7f",
+			"bytes": 2089
+		},
+		{
+			"path": "logs/native-first.log",
+			"sha256": "5cb1d2f5e4ff4f031006474636d53f98a58f957bead410bebcf487a69b8b2d07",
+			"bytes": 613
+		},
+		{
+			"path": "logs/native-format-final.log",
+			"sha256": "1e6e1a8218c379bf8205b6be4773f0d342ff22c9a2e353352a35741a6bf851b0",
+			"bytes": 99
+		},
+		{
+			"path": "logs/native-format.log",
+			"sha256": "91bea2c6fa758f724aa28dc44f5699af29a2685721775df60eb158872bf376dd",
+			"bytes": 215
+		},
+		{
+			"path": "logs/protocol-final.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"bytes": 360
+		},
+		{
+			"path": "logs/protocol.log",
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"bytes": 360
+		},
+		{
+			"path": "logs/sdk-cancel-final.log",
+			"sha256": "9f47f017b4fd839f91f33a67b17843c5f0973fce0fd77cfc9807312ed1561f41",
+			"bytes": 12069
+		},
+		{
+			"path": "logs/sdk-cookie-final.log",
+			"sha256": "0546d1a5d80868d74411b7c3cff4840e277634eb75724d2fd3e8d088528a1adf",
+			"bytes": 12115
+		},
+		{
+			"path": "logs/sdk-corrupt-final.log",
+			"sha256": "b353bd12094e89cc21edf4359860d30cf72ad0c64382055bea2ffb4ffa1d43e9",
+			"bytes": 11437
+		},
+		{
+			"path": "logs/sdk-corrupt-reviewed.log",
+			"sha256": "31af9dc32436be245f3bc0f4f4805039d991f862ed2bb3c3a38ffdb159e94469",
+			"bytes": 11399
+		},
+		{
+			"path": "logs/sdk-diagnostic.log",
+			"sha256": "db0e0f754806055017dd7e73787f0101248ceeefd39ca6812d25325fe3422b06",
+			"bytes": 7934
+		},
+		{
+			"path": "logs/sdk-page-final.log",
+			"sha256": "5ee0a066732556c0f4d8d4c6580b08f64dc0130486a32eb02c704bd977aed7f1",
+			"bytes": 11456
+		},
+		{
+			"path": "logs/sdk-page-reviewed.log",
+			"sha256": "12abc42c68ee5807f0fc535820622057555eedcb85b01d610d546b24aa3fb519",
+			"bytes": 11418
+		},
+		{
+			"path": "logs/sdk-positive-2.log",
+			"sha256": "2fd39eaa406b2bedf699f7575fd9ed98e5620c43f47820c0506dabb3dafe87d0",
+			"bytes": 2147
+		},
+		{
+			"path": "logs/sdk-positive-3.log",
+			"sha256": "5496b0da5a53a70b886a81cccdda2525cf59228b2055a0c5a2214d56107ac685",
+			"bytes": 5935
+		},
+		{
+			"path": "logs/sdk-positive-4.log",
+			"sha256": "bd91c68bd4a3773b9a7d052380b80030ff81ea1e203b0a3961416dd8b135413b",
+			"bytes": 5980
+		},
+		{
+			"path": "logs/sdk-positive-final.log",
+			"sha256": "b551e12ac79a86f63c0fc0e0239b9632a8fc8e001b801fe2b11fad875a0d968a",
+			"bytes": 12115
+		},
+		{
+			"path": "logs/sdk-positive.log",
+			"sha256": "0c2b2ebc43a0b8c6cffef845cbb9796a51bb7d7bca4899efc4a1e6accb1b043e",
+			"bytes": 3222
+		},
+		{
+			"path": "logs/size-before.log",
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+			"bytes": 1089
+		},
+		{
+			"path": "logs/size-final.log",
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+			"bytes": 1089
+		},
+		{
+			"path": "logs/base-commit.txt",
+			"sha256": "c9606da434f27dacf33037916bdef260705f5580b36d864d5ae4bdfddd751950",
+			"bytes": 41
+		},
+		{
+			"path": "control/export-manifest.json",
+			"sha256": "63a07504c49d0252c0db328e10513879f647d759824a90c80e1d80104fe5cfac",
+			"bytes": 13071
+		},
+		{
+			"path": "control/export-final-manifest.json",
+			"sha256": "52ac2696e252c374370bbf2c2baf304fda50e8cd88fd7c5c25bd409f14f8360d",
+			"bytes": 13071
+		},
+		{
+			"path": "control/capture-ancestor-before.ts",
+			"sha256": "d8095283f5897dc93a07440817495a921e3c35589f08a6c4f1cce7206e0e0b8a",
+			"bytes": 5204
+		},
+		{
+			"path": "control/capture-ancestor-control.test.mjs",
+			"sha256": "00ec60f2fa1c5dc4309b7437c660191c880113d0c8019363daf6a14243e51b6b",
+			"bytes": 14769
+		},
+		{
+			"path": "control/export-diagnostic-manifest.json",
+			"sha256": "4330b935ad7726c1ddd3c2a62774e9b2cfc6e6c71ec129c046097471b0527546",
+			"bytes": 13071
+		},
+		{
+			"path": "control/pi-ui-testing-0.1.16.tgz",
+			"sha256": "27fbd7a7ad53e5fa361773e2b478791ac83761b1ed3aeed34a7781aa386602ab",
+			"bytes": 202064
+		},
+		{
+			"path": "control/pi-ui-testing-0.1.17-diagnostic.tgz",
+			"sha256": "484c5b72fa2e16c79b26c1f4eeac03909cf82447fe80bdca3bade5f04299c393",
+			"bytes": 202212
+		},
+		{
+			"path": "control/archive-evidence.py",
+			"sha256": "2beb838f4c2f8b8735b020a69500462ee8d9f7b2d4574d37fb2b9b5d92489b13",
+			"bytes": 9943
+		},
+		{
+			"path": "native/packages/ui-testing/src/recording-capture.ts",
+			"sha256": "2a7d4f145272202d9f75a882c191a3cb4075105995493c49cdc465792da8b3f1",
+			"bytes": 5282
+		},
+		{
+			"path": "native/packages/ui-testing/src/recording-fixtures.ts",
+			"sha256": "9948ebe720cecab3b2edd6bcbf8ad985b449cc0a93e2f173f7da4a719846577c",
+			"bytes": 905
+		},
+		{
+			"path": "native/packages/ui-testing/src/private-recording-storage-events.ts",
+			"sha256": "dbb34d8213461579d0faba23fb1d8f06a5a47017cc20898140bda02062fe985d",
+			"bytes": 6042
+		},
+		{
+			"path": "native/packages/ui-testing/src/index.ts",
+			"sha256": "bf334fc88ba5de8080b13961bd3b4bd9277d1f06649cc4fc616c736d1ce91c3c",
+			"bytes": 965
+		},
+		{
+			"path": "native/packages/ui-testing/src/fixtures.ts",
+			"sha256": "48a9b40ecd73405ba8ee74b6d84afc06b9d07023a59a6336fdaea1bfa7d1f569",
+			"bytes": 3990
+		},
+		{
+			"path": "native/packages/ui-testing/src/environment.ts",
+			"sha256": "249a831dd268822e4efa4bafc646e53c8387c9b3bd86059853d7c6a6dc82f886",
+			"bytes": 8983
+		},
+		{
+			"path": "native/packages/ui-testing/package.json",
+			"sha256": "b884ac17d3bc00f659cadc284aa52c561c6ac731b7ab9c583bcd6f3e8e384b33",
+			"bytes": 721
+		},
+		{
+			"path": "native/packages/ui-testing/README.md",
+			"sha256": "bccbd534fcf2bc3d9c4bd0313702f71d8d303e6bb4e31dc7c82b2b3d87e6f7d6",
+			"bytes": 41760
+		},
+		{
+			"path": "native/tests/ui-testing/recording-capture.test.mjs",
+			"sha256": "6a9cbd459cc6b4937f528515ae182f21e009faa89fe72ea46ad6e808b47f9323",
+			"bytes": 14989
+		},
+		{
+			"path": "native/tests/ui-testing/recording-private-binding.test.mjs",
+			"sha256": "d9c268c00559013e9c659d794390a1461955c603a14b1d838604524400c6c3ab",
+			"bytes": 6474
+		},
+		{
+			"path": "native/tests/ui-testing/private-evidence.test.mjs",
+			"sha256": "b0f7009c41422493a08c124169bb8517af50d64a38c7c83d30119d555200f9f6",
+			"bytes": 12435
+		},
+		{
+			"path": "host/docs/ui-testing-optimization-plan.md",
+			"sha256": "bd78e6faa625f84566ccee07712f0fceaf3ed79af93d9f946ab2ebfe3de7524a",
+			"bytes": 50139
+		},
+		{
+			"path": "host/docs/ui-testing-optimization-execution.md",
+			"sha256": "f09a156c9966b26d0996691945f4b3e932cb2a880bbf36350bf7415b006fbd17",
+			"bytes": 256884
+		},
+		{
+			"path": "host/.pi/skills/ui-testing-workflow/SKILL.md",
+			"sha256": "2e927e491311799146c19ac86476a6b44bcb054b37604ac749681f010c509b06",
+			"bytes": 3578
+		},
+		{
+			"path": "host/.pi/skills/ui-testing-workflow/assets/private-recording-storage-events.mjs",
+			"sha256": "6f697eeb6292bee8b31072e773a71542a49b13cdcc3bb2f3e791372820aec875",
+			"bytes": 185
+		},
+		{
+			"path": "host/.pi/skills/ui-testing-workflow/assets/private-recording-connection.mjs",
+			"sha256": "fb1a4705db6d7cb269bfabe4e3e1754c8478558d44995cf00811cc9a48237e94",
+			"bytes": 1884
+		},
+		{
+			"path": "host/.pi/skills/ui-testing-workflow/assets/private-recording-transport.mjs",
+			"sha256": "3a09221b553794b352a4447fd9cb9545477eb49f9c65a727079da9e09640f54e",
+			"bytes": 4568
+		},
+		{
+			"path": "host/.pi/skills/ui-testing-workflow/assets/private-recording-session.mjs",
+			"sha256": "ec72b44e46f59007a4604d8717c9f96b97d2abcef3005a53c78661d72b353d47",
+			"bytes": 1368
+		},
+		{
+			"path": "host/.pi/skills/ui-testing-workflow/assets/private-recording-workspace.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "host/tests/unit/ui-private-recording-storage-events.test.ts",
+			"sha256": "800c1b0e8e2686237810aabc46bd0e5d45458a3195bdf73a8f1f269c72d297b9",
+			"bytes": 7670
+		},
+		{
+			"path": "host/tools/e2e/package.json",
+			"sha256": "68bed362b35eabacbc42146f86746718e7c0ca8ea7a6552fb6030c8e285ff26c",
+			"bytes": 309
+		},
+		{
+			"path": "host/tools/e2e/package-lock.json",
+			"sha256": "b8c6681ae84d923af1fa0f672eaf4238059531cb189c1f47b4be4ea334626589",
+			"bytes": 61464
+		},
+		{
+			"path": "sdk/1793011221891/harness.mjs",
+			"sha256": "edb85866047c858553aca3511e7a3ac6b4d4d9416ae3908e396549ebf27969c0",
+			"bytes": 28686
+		},
+		{
+			"path": "sdk/1793011221891/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "sdk/1793011221891/mirror-prototype.mjs",
+			"sha256": "7f74278bd290da8f57f325180eb51140748e0cbda6b0470fa25bf3d3163be3b2",
+			"bytes": 10542
+		},
+		{
+			"path": "sdk/1793011221891/qa/ui/catalog.json",
+			"sha256": "dc48cf3815d0ecb1afd32f72a1c2f828dda0e01199fd07c7218f8a9febf85ed7",
+			"bytes": 611
+		},
+		{
+			"path": "sdk/1793011221891/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "sdk/1793011221891/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "91f6a00f731947cca9b30e4f98e3f5f908c85b0eb0db0ad5bdab9a8608b6d13d",
+			"bytes": 1582
+		},
+		{
+			"path": "sdk/1793011221891/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "a2ee834f9762e0e93651dc2a5085b0184fb748fb95c800fcaf5e5aa72d74b83b",
+			"bytes": 82
+		},
+		{
+			"path": "sdk/1793011221891/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "ac1c4760351144782d133af48bd9fd3a701e90614ef709d378903f3700e4c427",
+			"bytes": 567
+		},
+		{
+			"path": "sdk/1793011221891/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "25af405b77c3e70cfb56da3637cbc93c13775cd087a44da00e828c0ab36a1020",
+			"bytes": 246
+		},
+		{
+			"path": "sdk/1793011221891/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "1ec5880b0200b926183c49abfc49e56e0350bbc213a66b1a91391ffeb451c565",
+			"bytes": 1113
+		},
+		{
+			"path": "sdk/1793011221891/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "sdk/1793011221891/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "sdk/1793011221891/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "sdk/1793011221891/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "sdk/1793011221891/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "sdk/1793011221891/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "5f3ed4772c6ce81b222442e62dde785a8a3b171e704daae7d9463bc9e1f9fe76",
+			"bytes": 1162
+		},
+		{
+			"path": "sdk/1793011221891/result.json",
+			"sha256": "cc8146d2f3928fd96c76fa51e8b8de1b8069a4a59b1ef4908f78e3168720c5f6",
+			"bytes": 3113
+		},
+		{
+			"path": "sdk/1793011221891/transport-adapter.mjs",
+			"sha256": "3a09221b553794b352a4447fd9cb9545477eb49f9c65a727079da9e09640f54e",
+			"bytes": 4568
+		},
+		{
+			"path": "sdk/1793011221891/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "sdk/1793011305469/collection.log",
+			"sha256": "07f9162c7bdd1bb1303a0b0e4f895f18ac9594cda430dbfcbfa423686f0d1b48",
+			"bytes": 2267
+		},
+		{
+			"path": "sdk/1793011305469/harness.mjs",
+			"sha256": "54d1649722582ea756b4345af96319ff6a5dec408d643234ee2ec6d8764de24a",
+			"bytes": 29390
+		},
+		{
+			"path": "sdk/1793011305469/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "sdk/1793011305469/mirror-prototype.mjs",
+			"sha256": "7f74278bd290da8f57f325180eb51140748e0cbda6b0470fa25bf3d3163be3b2",
+			"bytes": 10542
+		},
+		{
+			"path": "sdk/1793011305469/playwright.config.mjs",
+			"sha256": "eb7273ae7e30b72cc4de83b228df9e9150bf89392d2513f5f4cfaf9bb5de85e8",
+			"bytes": 315
+		},
+		{
+			"path": "sdk/1793011305469/result.json",
+			"sha256": "0abd88b1b342ebea7143ad8fc5f015b76e3342dd7a69b49d4a9688042f9bcd39",
+			"bytes": 2038
+		},
+		{
+			"path": "sdk/1793011305469/seed.spec.ts",
+			"sha256": "80cfd6b9ced7d329bd8a6bf308fbf758aa81ce0ca4b4d92819581fa91208e050",
+			"bytes": 1099
+		},
+		{
+			"path": "sdk/1793011305469/transport-adapter.mjs",
+			"sha256": "3a09221b553794b352a4447fd9cb9545477eb49f9c65a727079da9e09640f54e",
+			"bytes": 4568
+		},
+		{
+			"path": "sdk/1793011305469/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "sdk/1793011383494/collection.log",
+			"sha256": "c2ed8cbfde0492fd7108e4af2efcf3cbfd0550237c4bc6f364510ebd676d0241",
+			"bytes": 93
+		},
+		{
+			"path": "sdk/1793011383494/harness.mjs",
+			"sha256": "98d710559a6accda6f65511684c0c822d0c3cbeea27846b2ab0e5394fbc6f782",
+			"bytes": 29568
+		},
+		{
+			"path": "sdk/1793011383494/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "sdk/1793011383494/mirror-prototype.mjs",
+			"sha256": "7f74278bd290da8f57f325180eb51140748e0cbda6b0470fa25bf3d3163be3b2",
+			"bytes": 10542
+		},
+		{
+			"path": "sdk/1793011383494/playwright.config.mjs",
+			"sha256": "eb7273ae7e30b72cc4de83b228df9e9150bf89392d2513f5f4cfaf9bb5de85e8",
+			"bytes": 315
+		},
+		{
+			"path": "sdk/1793011383494/qa/ui/catalog.json",
+			"sha256": "e843ba1cdc4900b17e35a43417c4500f22c2d55bbca5101bc20b5b63f013c1ff",
+			"bytes": 611
+		},
+		{
+			"path": "sdk/1793011383494/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "sdk/1793011383494/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "796938762554eb062e039a6765b216977422cec81cb619d3a3d62b4212a0b215",
+			"bytes": 1582
+		},
+		{
+			"path": "sdk/1793011383494/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "a2ee834f9762e0e93651dc2a5085b0184fb748fb95c800fcaf5e5aa72d74b83b",
+			"bytes": 82
+		},
+		{
+			"path": "sdk/1793011383494/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "d6ee51c2d9b512f72ebe8c145e94dfdfbc3e1254558ae817123fcc7a5167a2b5",
+			"bytes": 567
+		},
+		{
+			"path": "sdk/1793011383494/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "6c235b57b012eb2a10f512c8fe7f165d626313072dd77dacaf2ef3709b531fea",
+			"bytes": 2756
+		},
+		{
+			"path": "sdk/1793011383494/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "6bf7c0f533632b98d86e9a0cc5ed726c24cb65fb58b7fd612b2c11546288bca2",
+			"bytes": 1113
+		},
+		{
+			"path": "sdk/1793011383494/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "sdk/1793011383494/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "sdk/1793011383494/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "sdk/1793011383494/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "sdk/1793011383494/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "sdk/1793011383494/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "81a6209f1e4f4d5fc5216601435ef6f79d30738a93eb2720ff38dd6c5ef91f90",
+			"bytes": 1162
+		},
+		{
+			"path": "sdk/1793011383494/result.json",
+			"sha256": "9c6cc37e0d110f57f13fcc3b97bc0e12b641ef4f5e5d20cf59cbe70f94fac727",
+			"bytes": 5826
+		},
+		{
+			"path": "sdk/1793011383494/seed.spec.ts",
+			"sha256": "c34158ce736b78e8079b69a2ef6e31f5b089a3bdb52fa75e7fa31d48707588c3",
+			"bytes": 1099
+		},
+		{
+			"path": "sdk/1793011383494/transport-adapter.mjs",
+			"sha256": "3a09221b553794b352a4447fd9cb9545477eb49f9c65a727079da9e09640f54e",
+			"bytes": 4568
+		},
+		{
+			"path": "sdk/1793011383494/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "sdk/1793011453856/collection.log",
+			"sha256": "c2ed8cbfde0492fd7108e4af2efcf3cbfd0550237c4bc6f364510ebd676d0241",
+			"bytes": 93
+		},
+		{
+			"path": "sdk/1793011453856/harness.mjs",
+			"sha256": "420a81e35071bae15560cae9e1bc3091ae3d85179cd1ce9506e5ce9a9279c6dc",
+			"bytes": 29679
+		},
+		{
+			"path": "sdk/1793011453856/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "sdk/1793011453856/mirror-prototype.mjs",
+			"sha256": "7f74278bd290da8f57f325180eb51140748e0cbda6b0470fa25bf3d3163be3b2",
+			"bytes": 10542
+		},
+		{
+			"path": "sdk/1793011453856/playwright.config.mjs",
+			"sha256": "eb7273ae7e30b72cc4de83b228df9e9150bf89392d2513f5f4cfaf9bb5de85e8",
+			"bytes": 315
+		},
+		{
+			"path": "sdk/1793011453856/qa/ui/catalog.json",
+			"sha256": "06b3f11cc44fe82068f22815f99271fa9badd3a8ba66556fc7b42b4c262c35e7",
+			"bytes": 611
+		},
+		{
+			"path": "sdk/1793011453856/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "sdk/1793011453856/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "52553472c64e71e04aa6974e8010b237d303b169a7dc6d6ac7249671942ce15a",
+			"bytes": 1582
+		},
+		{
+			"path": "sdk/1793011453856/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "a2ee834f9762e0e93651dc2a5085b0184fb748fb95c800fcaf5e5aa72d74b83b",
+			"bytes": 82
+		},
+		{
+			"path": "sdk/1793011453856/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "85b1669c41a69a63b1e34f98d9af71e68e19793356ff5703b8fa88d52f084acf",
+			"bytes": 567
+		},
+		{
+			"path": "sdk/1793011453856/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "fa3d8e4eb2237c312fdb620708898f52bc2ac3047896ba590c58df696c3e7d83",
+			"bytes": 2756
+		},
+		{
+			"path": "sdk/1793011453856/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "de2883ae50e4322515212d79f00d911251cc831bd96a1c5c6d7c858c824e7c4a",
+			"bytes": 1113
+		},
+		{
+			"path": "sdk/1793011453856/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "sdk/1793011453856/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "sdk/1793011453856/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "sdk/1793011453856/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "sdk/1793011453856/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "sdk/1793011453856/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "a8b03751a7972c5a0a03be108ba6971f96f863079d67ae8f103ee05177cd11fe",
+			"bytes": 1162
+		},
+		{
+			"path": "sdk/1793011453856/result.json",
+			"sha256": "2ed51bcd126607e7d60dd23377b723ec25090d51bbd3263b654d4912f823efd6",
+			"bytes": 5871
+		},
+		{
+			"path": "sdk/1793011453856/seed.spec.ts",
+			"sha256": "71390dc8fc138c05866316929eb4ae9ad5d03e41d005ea0f176977d6c2c40a92",
+			"bytes": 1099
+		},
+		{
+			"path": "sdk/1793011453856/transport-adapter.mjs",
+			"sha256": "3a09221b553794b352a4447fd9cb9545477eb49f9c65a727079da9e09640f54e",
+			"bytes": 4568
+		},
+		{
+			"path": "sdk/1793011453856/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "sdk/1793011623255/collection.log",
+			"sha256": "48691f1dc81b7def646d401d5a835e6d170c2affd47b5e926f4bfe1d157f5f19",
+			"bytes": 93
+		},
+		{
+			"path": "sdk/1793011623255/harness.mjs",
+			"sha256": "83e17f38e809d491aa3b8d1f31409ec60bab387a914e08074931d8725133740e",
+			"bytes": 29940
+		},
+		{
+			"path": "sdk/1793011623255/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "sdk/1793011623255/mirror-prototype.mjs",
+			"sha256": "7f74278bd290da8f57f325180eb51140748e0cbda6b0470fa25bf3d3163be3b2",
+			"bytes": 10542
+		},
+		{
+			"path": "sdk/1793011623255/playwright.config.mjs",
+			"sha256": "eb7273ae7e30b72cc4de83b228df9e9150bf89392d2513f5f4cfaf9bb5de85e8",
+			"bytes": 315
+		},
+		{
+			"path": "sdk/1793011623255/qa/ui/catalog.json",
+			"sha256": "c82351fadba859dc1cd013e09ad1c1945538d7f3fa9b6372b47a04cca02debf5",
+			"bytes": 611
+		},
+		{
+			"path": "sdk/1793011623255/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "sdk/1793011623255/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "4a138fbf28d9bd7b933c1a782ff9a0cbfe1ae35f6f5a8d6bfd9cef264b52c009",
+			"bytes": 1582
+		},
+		{
+			"path": "sdk/1793011623255/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "a2ee834f9762e0e93651dc2a5085b0184fb748fb95c800fcaf5e5aa72d74b83b",
+			"bytes": 82
+		},
+		{
+			"path": "sdk/1793011623255/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "5346229388071df0fb4eabb812b64827917e2c2668ed19abc695fa450aeac8b3",
+			"bytes": 567
+		},
+		{
+			"path": "sdk/1793011623255/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "6c2b371ee417f8ece33c388c58eb45296c1ea93b35060eece6ce088fff042115",
+			"bytes": 4690
+		},
+		{
+			"path": "sdk/1793011623255/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "20160f45d715a3ba1b83b11a523fdeaa78839b8b7728d32c54c590339ed34abe",
+			"bytes": 1113
+		},
+		{
+			"path": "sdk/1793011623255/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "sdk/1793011623255/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "sdk/1793011623255/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "sdk/1793011623255/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "sdk/1793011623255/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "sdk/1793011623255/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "8ef9029503e2976d49c90b06cbdac47899490f5b9ebce73fb75bc85ef656ab82",
+			"bytes": 1162
+		},
+		{
+			"path": "sdk/1793011623255/result.json",
+			"sha256": "06ced47c65b2a7be792688c10890d046468f847205e361425fb79c44b475cb61",
+			"bytes": 7825
+		},
+		{
+			"path": "sdk/1793011623255/seed.spec.ts",
+			"sha256": "8649172d130a5ba97465ef0acd20f00c81242e45895cbebbc82bf33ec242b34d",
+			"bytes": 1230
+		},
+		{
+			"path": "sdk/1793011623255/transport-adapter.mjs",
+			"sha256": "3a09221b553794b352a4447fd9cb9545477eb49f9c65a727079da9e09640f54e",
+			"bytes": 4568
+		},
+		{
+			"path": "sdk/1793011623255/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "sdk/1793011841375/collection.log",
+			"sha256": "c2ed8cbfde0492fd7108e4af2efcf3cbfd0550237c4bc6f364510ebd676d0241",
+			"bytes": 93
+		},
+		{
+			"path": "sdk/1793011841375/generated.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "sdk/1793011841375/harness.mjs",
+			"sha256": "83e17f38e809d491aa3b8d1f31409ec60bab387a914e08074931d8725133740e",
+			"bytes": 29940
+		},
+		{
+			"path": "sdk/1793011841375/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "sdk/1793011841375/mirror-prototype.mjs",
+			"sha256": "7f74278bd290da8f57f325180eb51140748e0cbda6b0470fa25bf3d3163be3b2",
+			"bytes": 10542
+		},
+		{
+			"path": "sdk/1793011841375/playwright.config.mjs",
+			"sha256": "eb7273ae7e30b72cc4de83b228df9e9150bf89392d2513f5f4cfaf9bb5de85e8",
+			"bytes": 315
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/catalog.json",
+			"sha256": "49fcf200bc1343afe407a3dc517b9ab81c33096b3294b1546c155414c09a02d1",
+			"bytes": 1116
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "6c0a91e91c8c82e20dc2c1886fc1f3faed667146bbb7f813c91976ad56b969a5",
+			"bytes": 1582
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "f349a81a3bb3142b64f712312540beb5bf53ae1a1202ba89bc038030a0f23efc",
+			"bytes": 1836
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "8462e0f672c5bad5aacc2b625dd06e0f419b81867ff135c5a0d4e1a3378d1cec",
+			"bytes": 439
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "6412d808b980da2d067432f7496026c46d08f7571d8053d6a24d05a3b339ea36",
+			"bytes": 543
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "35c14857da9a39c6c535b546dc165c2df03f172b65a873ddcad9b63f74278f53",
+			"bytes": 567
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "f576a1400dae1d6a2c8a0f9275ed3e3257517309f4cff5b31ef99075195267ca",
+			"bytes": 127753
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "5809ece970f9bef52e5249414fbf0dcbed8c1e5d50694feeadee326902b44703",
+			"bytes": 392
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "b21d63ff4e1eea8f1e883326d71a319436fc2eedac8200d78de31e3f7c14becc",
+			"bytes": 127438
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "650d26abe8c783663aae4035c0347324f1db4e07d3309d69c99c3e2044835752",
+			"bytes": 394
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "29be4b3eba07a7094130dd7d0e5e6458d66f344abb47a0955331c0d490a7a15e",
+			"bytes": 4745
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "bb1ed3119b8ee7c9bcc10cbcf3fa1c8b4a3355e1024f7effdda75942a6a66bc7",
+			"bytes": 646
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "ec8e34da65aac24b93c56f9d53e558f0e0b97188c299f8b95c222e5c0b8f336c",
+			"bytes": 783
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "6d69f42e25bd3754cc3763d7e98fe485bde4fb981a08b151ddb7a9fbd9ab22d6",
+			"bytes": 3793
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "4f3b86b352b4bc9522a406cd35a723f1bb9ff174c7eed29c06c688cf5676e7bc",
+			"bytes": 267173
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "33c1d98364c1c85f3a9c697a7f961baef8e17fb4d5953f1e3476c8357886cb2d",
+			"bytes": 1113
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "sdk/1793011841375/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "c7125f575519cf51f58ca0b6f28200442cd8c5b1045d63d2d06ee91724b9ae79",
+			"bytes": 1162
+		},
+		{
+			"path": "sdk/1793011841375/result.json",
+			"sha256": "32aef0d2dab08e2699999b9382a3ddfba6f6ea2241667afd89ce40ff62ed7ce6",
+			"bytes": 12006
+		},
+		{
+			"path": "sdk/1793011841375/seed.spec.ts",
+			"sha256": "8db9d71e25904dd26b40024d031b94388caf6463149aee36e1b736020b0635fd",
+			"bytes": 1099
+		},
+		{
+			"path": "sdk/1793011841375/transport-adapter.mjs",
+			"sha256": "3a09221b553794b352a4447fd9cb9545477eb49f9c65a727079da9e09640f54e",
+			"bytes": 4568
+		},
+		{
+			"path": "sdk/1793011841375/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "sdk/1793011882458/collection.log",
+			"sha256": "c2ed8cbfde0492fd7108e4af2efcf3cbfd0550237c4bc6f364510ebd676d0241",
+			"bytes": 93
+		},
+		{
+			"path": "sdk/1793011882458/harness.mjs",
+			"sha256": "83e17f38e809d491aa3b8d1f31409ec60bab387a914e08074931d8725133740e",
+			"bytes": 29940
+		},
+		{
+			"path": "sdk/1793011882458/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "sdk/1793011882458/mirror-prototype.mjs",
+			"sha256": "7f74278bd290da8f57f325180eb51140748e0cbda6b0470fa25bf3d3163be3b2",
+			"bytes": 10542
+		},
+		{
+			"path": "sdk/1793011882458/playwright.config.mjs",
+			"sha256": "eb7273ae7e30b72cc4de83b228df9e9150bf89392d2513f5f4cfaf9bb5de85e8",
+			"bytes": 315
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/catalog.json",
+			"sha256": "5a8c8c8a894eff210d06014b2d2a3612e95a2086780a4751ed8f055bb26122e8",
+			"bytes": 1116
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "0baf9b780a8ad5bd1182f38f8f7376b5417a9644ddf2cc34520f837d07afdf51",
+			"bytes": 1582
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "94dc051221c4062824d59885a2aae27ebc4a6679b535b30826aa6a1b9a63a28c",
+			"bytes": 1836
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "526a84e160597e1d4a597d609b3debbf4f34d9dae1c5f2d13510908d3e676f09",
+			"bytes": 439
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "20c312fb3c6b756f6753981d7c9eeb20016a396be2c3be168658a99e3e54118b",
+			"bytes": 542
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "7c35fd7c96574e839a42bde1408e4c0083f095dbcc5abf0bbe2afed1ff5cc289",
+			"bytes": 567
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "ca31cc9a07f36ab036604f79bea3603c01153392ad1367921ba191ca78f88cf0",
+			"bytes": 127753
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "251b4ee102afc8c378a121f2931b3da8bb3e34919538849f2d6b3965e2859d8f",
+			"bytes": 392
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "8b93259cb1e4f60e049c7253eb1bbcf4de8dc3a448f3064aec3d5af4eaba6060",
+			"bytes": 127438
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "4e78b0cee7cb743d8c10e5e15fb2054c01b72401b65726d1705c1232488406bb",
+			"bytes": 394
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "b4d2a9f72417409b46f626dd651770b4dff963beb18566089d6e29f239acbd5a",
+			"bytes": 4745
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "87655490376686254de33f5ad3036c026d25ac3576b47e9eb29f9cef1e379b4d",
+			"bytes": 646
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "6436fe8db7c609a33c42a51babb43a753cbbbb034f16c17bdb4a28d781848f67",
+			"bytes": 201
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "bf28b511183e211ff6c5c4711990c5dcd2462bc3eec384216cf6aa8762d95f9b",
+			"bytes": 3773
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "6d9fd7279cd6a70f9f93dfd8800929e2615278aa21fce684cdb8a5f1100d3f33",
+			"bytes": 266476
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "9310724cd2cb609f36f0e3230d69f1b6f01b4de36b92af2cacaa400e20778ae7",
+			"bytes": 1113
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "sdk/1793011882458/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "a65716670f247983e36c7d505867d13d4facc3e86228ecb033575e1745c07b4f",
+			"bytes": 1162
+		},
+		{
+			"path": "sdk/1793011882458/result.json",
+			"sha256": "9ad4f736db7acd1468aa82a2a358f767b2724d3a900437433df855ceb7ac61d8",
+			"bytes": 11328
+		},
+		{
+			"path": "sdk/1793011882458/seed.spec.ts",
+			"sha256": "b87b0a49b7734f44573ec6907289ddeabe5416aa39ec659c821c53e788a8fcfc",
+			"bytes": 1099
+		},
+		{
+			"path": "sdk/1793011882458/transport-adapter.mjs",
+			"sha256": "3a09221b553794b352a4447fd9cb9545477eb49f9c65a727079da9e09640f54e",
+			"bytes": 4568
+		},
+		{
+			"path": "sdk/1793011882458/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "sdk/1793011893411/collection.log",
+			"sha256": "c2ed8cbfde0492fd7108e4af2efcf3cbfd0550237c4bc6f364510ebd676d0241",
+			"bytes": 93
+		},
+		{
+			"path": "sdk/1793011893411/harness.mjs",
+			"sha256": "83e17f38e809d491aa3b8d1f31409ec60bab387a914e08074931d8725133740e",
+			"bytes": 29940
+		},
+		{
+			"path": "sdk/1793011893411/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "sdk/1793011893411/mirror-prototype.mjs",
+			"sha256": "7f74278bd290da8f57f325180eb51140748e0cbda6b0470fa25bf3d3163be3b2",
+			"bytes": 10542
+		},
+		{
+			"path": "sdk/1793011893411/playwright.config.mjs",
+			"sha256": "eb7273ae7e30b72cc4de83b228df9e9150bf89392d2513f5f4cfaf9bb5de85e8",
+			"bytes": 315
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/catalog.json",
+			"sha256": "04b46844c9b0e0a009dea0f88436d0d3972057e899c9fe69ac65d829e6012b9d",
+			"bytes": 1116
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "504180fc7cabe522ec42fa870775649e1092e8228640f26f8fbabe0cef7c4ad5",
+			"bytes": 1582
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "f03a0d0a780882b8a8b7b1328dd24d3a92a2b8ac36c0270405fd9f0d02b50ad0",
+			"bytes": 1836
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "93b331870486554eb821c136142cd0a6e872d81aaca71422603b68003b349a20",
+			"bytes": 439
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "f1baba00fd31e07a4522a9fbcec4a50b240c7f18bf2842805ded65bb1c5a9766",
+			"bytes": 543
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "87698936eb3fe673f5d4c4ec0692496bc62931f9e11bb9a9ffe36ea19ebf80bb",
+			"bytes": 567
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "cf7f92ec0ae14652d366cc30bebc8c5059ff9d9936c1e9a5a5d33be299987151",
+			"bytes": 127753
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "4d5e2a6b97c1a01f4c7af9791ce8c0dfceb1a567fd11129f3caca93821dca6c7",
+			"bytes": 392
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "801322d1b35c283f14b10d3852423455c7d31d2ccbb84a1e3d0615eb8993d354",
+			"bytes": 127438
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "4e90d4bcdd1f4500ab677d3f7e67175e6d834973919ee6935d72b11f59cf829d",
+			"bytes": 394
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "935ebf153184e8359e95e6b89b422409b85002c05a0b716dd9db6edb4189f296",
+			"bytes": 4745
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "df2e58ee25e803a08ef5b948d50c0fb6765aa2e95501d7bf7a943b2ff7eaee05",
+			"bytes": 646
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "db20a68e6387d436eb36c90ea8f164584fd1072376d094a1a040bfc4dab52d87",
+			"bytes": 170
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "f6ee883fc0cb8c3ed1ec3ec6264422bdf7ca2514c4c643f7bc6be90d958512e5",
+			"bytes": 3768
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "649b1b3e2090158d4e90277be535b5df48de46bce6fd6173c015ab52b7ac72b7",
+			"bytes": 266452
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "21feef82aec43eeebec3f3eb0d847816c506842a14e8ad3bb09185063271b38c",
+			"bytes": 1113
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "sdk/1793011893411/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "f21fe862d8406f7cd21dd8b51294eef7c77c9a014ec19aed850ffaa9eb1152e8",
+			"bytes": 1162
+		},
+		{
+			"path": "sdk/1793011893411/result.json",
+			"sha256": "50e8560d5682770aee7b19eff66d24c9ea2cdef047e44699118a49c0cb7cb6cc",
+			"bytes": 11960
+		},
+		{
+			"path": "sdk/1793011893411/seed.spec.ts",
+			"sha256": "117464ffcddf6c8a4525e1f3e17384aaac638fd46d44a813fb4893639f8019da",
+			"bytes": 1099
+		},
+		{
+			"path": "sdk/1793011893411/transport-adapter.mjs",
+			"sha256": "3a09221b553794b352a4447fd9cb9545477eb49f9c65a727079da9e09640f54e",
+			"bytes": 4568
+		},
+		{
+			"path": "sdk/1793011893411/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "sdk/1793011904359/collection.log",
+			"sha256": "c2ed8cbfde0492fd7108e4af2efcf3cbfd0550237c4bc6f364510ebd676d0241",
+			"bytes": 93
+		},
+		{
+			"path": "sdk/1793011904359/harness.mjs",
+			"sha256": "83e17f38e809d491aa3b8d1f31409ec60bab387a914e08074931d8725133740e",
+			"bytes": 29940
+		},
+		{
+			"path": "sdk/1793011904359/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "sdk/1793011904359/mirror-prototype.mjs",
+			"sha256": "7f74278bd290da8f57f325180eb51140748e0cbda6b0470fa25bf3d3163be3b2",
+			"bytes": 10542
+		},
+		{
+			"path": "sdk/1793011904359/playwright.config.mjs",
+			"sha256": "eb7273ae7e30b72cc4de83b228df9e9150bf89392d2513f5f4cfaf9bb5de85e8",
+			"bytes": 315
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/catalog.json",
+			"sha256": "f8c14ef42ade1befdff194036fd02b7dedec9103eb30690c21ee8c7891d98ea7",
+			"bytes": 1116
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "7ac1d9e6b6ead7463d6983b18772f1181a0fb5b4dd596a9b287bca4f0e25178d",
+			"bytes": 1582
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "359cb64710c6455b6801160ef41b594853396af0a16c647050b11e6efa81bfe9",
+			"bytes": 1836
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "719a4653b8e73ca5becac44b3c561aac25c7e11d5c28fc61ccdd8cf5563ba0c9",
+			"bytes": 439
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "050e0adf13c1b0ff75e38fcbc47594eb1f15381bc675d35d1189deb9b7b7549d",
+			"bytes": 798
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "96467640ba74cea4721be8c9d152cf27cb5f1ef6460b96dfcb41af188b915e14",
+			"bytes": 567
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "32f2b0926d65fbbfe5a8c8a99fcf1fbc38ac406258a8325a7f2770d824d5921b",
+			"bytes": 127753
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "36f9d2df2f7f2e60b3bc44cd37c2b03ebc64f73314cd40ea409f8dfcea229648",
+			"bytes": 392
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "3b42298addb4fff42765afe22a842d3b6a9a5beea01cc6706a62a516d81a365e",
+			"bytes": 127438
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "f4eb5519f65640502340218cfd1f9e235faaee639f0666b2d2ce13e29451ebb1",
+			"bytes": 394
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "ec3d10688f4e39fbe4935653db4d09f93a8d7cb7f3660c11a69dda72cdc1b732",
+			"bytes": 4745
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "76ea07766f91074f0705af3da018ff50ab2d722a1698627b12fc81355baf3426",
+			"bytes": 646
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "6b10876e7617e4a70216067339cb20b9d2d3db59929803516f624e0896f1c8e2",
+			"bytes": 200
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "a3bda0d1442637d7b08eea44a0246e7a70bc4b6c6a78c5883d0e9d448c3a997c",
+			"bytes": 3764
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "e0286cd589ceddcb9efae10690327cb558c91187de8835929d17a90f4bb4f490",
+			"bytes": 266731
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "fdd5f5f34ce0bbc10aaab9f6c78331dd4fac3bc2dfc8d73780f3744671da57b5",
+			"bytes": 1113
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "sdk/1793011904359/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "54f8ff0da794a3c209846f6a34aa1194d02de60fc99786c43a76974fece428f1",
+			"bytes": 1162
+		},
+		{
+			"path": "sdk/1793011904359/result.json",
+			"sha256": "e906af209e28661fad5b432a504d99ec89f7c37f3fe744d603f528c6df523a05",
+			"bytes": 11347
+		},
+		{
+			"path": "sdk/1793011904359/seed.spec.ts",
+			"sha256": "d3394cdd132cec4c688bd8323b2e256f9e76428ed02e31a0d04d94356011d995",
+			"bytes": 1099
+		},
+		{
+			"path": "sdk/1793011904359/transport-adapter.mjs",
+			"sha256": "3a09221b553794b352a4447fd9cb9545477eb49f9c65a727079da9e09640f54e",
+			"bytes": 4568
+		},
+		{
+			"path": "sdk/1793011904359/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "sdk/1793011953115/collection.log",
+			"sha256": "c2ed8cbfde0492fd7108e4af2efcf3cbfd0550237c4bc6f364510ebd676d0241",
+			"bytes": 93
+		},
+		{
+			"path": "sdk/1793011953115/generated.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "sdk/1793011953115/harness.mjs",
+			"sha256": "83e17f38e809d491aa3b8d1f31409ec60bab387a914e08074931d8725133740e",
+			"bytes": 29940
+		},
+		{
+			"path": "sdk/1793011953115/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "sdk/1793011953115/mirror-prototype.mjs",
+			"sha256": "7f74278bd290da8f57f325180eb51140748e0cbda6b0470fa25bf3d3163be3b2",
+			"bytes": 10542
+		},
+		{
+			"path": "sdk/1793011953115/playwright.config.mjs",
+			"sha256": "eb7273ae7e30b72cc4de83b228df9e9150bf89392d2513f5f4cfaf9bb5de85e8",
+			"bytes": 315
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/catalog.json",
+			"sha256": "22cc4aa6f841f6785648a7bb2fee917a580b2d59c71b25b40f4183c3182eaf97",
+			"bytes": 1116
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "78189f9ecbd8c9b2dd8dcc95584ee21e8445393ce076d43cf32dc2b35149a28a",
+			"bytes": 1582
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "b4f8f6fabea4f8e812582b3b4c2c0bee7044c11e874c140ba3edc98f1269c2a7",
+			"bytes": 1836
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "2cf0a89b4507de07057b5e9430c0162412844aa4cb09174879c5abefecd64358",
+			"bytes": 439
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "deea2021801d1f8c2dc409f4201c746ab1ee8d35b0129cd87e2730f9d97f467e",
+			"bytes": 543
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "cd0d105db4427e98b2751e5c4af905aa289393a0822246fc100db5d38048ca49",
+			"bytes": 567
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "9a9603e20c78277a85fd4c4fe99ad0c47ce2bb7f9ed5f3cf37d18722a5d28487",
+			"bytes": 127753
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "2cfadff9340edd6a24b6ea608c9d375becf29ab02abb30d155c38bc48f6f9c98",
+			"bytes": 392
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "c9099a997b45bb1885a007e88ee52854deff5753f45b3df6dbc6189104824552",
+			"bytes": 127438
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "5a2c18717d19593bdfa7163cf63583b0de88e5b9329cc23d1f84bc68e7856738",
+			"bytes": 394
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "f6cddc966be6822d46f384712da00b919e7205a0b4d9113aa0563b9ec9f34b7e",
+			"bytes": 4701
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "f75f7c9105031a22f99c18f15e1632953c94b0bf8a67aaabb2e485b1424fc937",
+			"bytes": 646
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "9bdb6a2f83cc2c747ecbc6abd1b26dbf36fd02b76ab6884efe230c4d5ed2ad9a",
+			"bytes": 783
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "45af0e708022bebd04a399c0b7968ab6c529e8a4295f290da1939627c566ac7f",
+			"bytes": 3793
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "eeb712ce28b56bc3647b4f9de3f1a7fdde0cefda579366c0669fde0d42083e70",
+			"bytes": 267129
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "034af0dbfab8d8580cb15222c5b7960e9299a77ace7288ce6a01f7572db527a8",
+			"bytes": 1113
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "sdk/1793011953115/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "4063054e08674907b2d244cf316e53b37ab55504589418b83dbd7aa8c98a8b1e",
+			"bytes": 1162
+		},
+		{
+			"path": "sdk/1793011953115/result.json",
+			"sha256": "6f969eb5aed18468aa17eaef67e9ce467cd6dc489487f1216142ddbb142a5a32",
+			"bytes": 12006
+		},
+		{
+			"path": "sdk/1793011953115/seed.spec.ts",
+			"sha256": "5b7666f52b5314b743d36852de44400244269bebd7e8e8415c5d11b356d38029",
+			"bytes": 1077
+		},
+		{
+			"path": "sdk/1793011953115/transport-adapter.mjs",
+			"sha256": "3a09221b553794b352a4447fd9cb9545477eb49f9c65a727079da9e09640f54e",
+			"bytes": 4568
+		},
+		{
+			"path": "sdk/1793011953115/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "sdk/1793012016731/collection.log",
+			"sha256": "c2ed8cbfde0492fd7108e4af2efcf3cbfd0550237c4bc6f364510ebd676d0241",
+			"bytes": 93
+		},
+		{
+			"path": "sdk/1793012016731/harness.mjs",
+			"sha256": "19aab8e5591f8de2b588efca22d1a7d14433c3dae68abf1f025ae1d8c75511b6",
+			"bytes": 30109
+		},
+		{
+			"path": "sdk/1793012016731/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "sdk/1793012016731/mirror-prototype.mjs",
+			"sha256": "7f74278bd290da8f57f325180eb51140748e0cbda6b0470fa25bf3d3163be3b2",
+			"bytes": 10542
+		},
+		{
+			"path": "sdk/1793012016731/playwright.config.mjs",
+			"sha256": "eb7273ae7e30b72cc4de83b228df9e9150bf89392d2513f5f4cfaf9bb5de85e8",
+			"bytes": 315
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/catalog.json",
+			"sha256": "e73634562355734745496e3cda23b7baaf9f781e831b90ef75139d4e546c4087",
+			"bytes": 1116
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "44189a3d236774db1a60ecfca0375ce3814e1ad16060e0e5473f999205ae081f",
+			"bytes": 1582
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "4991f9bb2878c6db359bbf84a80d9e422db47599a2cb64eaaeb20b53b9f27eae",
+			"bytes": 1836
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "30f8508a3b18c72405abddbe33e3d2f14a27bf88b5d72070f0cb519830c0bb7f",
+			"bytes": 439
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "24341f8f8059b0ea8466ef779f5d0ff4fa83cc0f6e0bd7196acfdaca8b26ae4f",
+			"bytes": 543
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "ac46d66204cec61c441379580d89f2c94961708c03e205571f41384c6e10ae96",
+			"bytes": 567
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "9e85950d70f2627b9b133632a76258a2945f13030c1f055eb2c5be50626044aa",
+			"bytes": 127753
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "3a2bdb13d3e4e43eafbf747ee538181f58a7735b3ed2d38b6bb41e0864216669",
+			"bytes": 392
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "b9431d1a0a81712e9a0d88d620c05762be5c1f26cb9b7c26211282382cf258c7",
+			"bytes": 127438
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "f6670c72225c08022cad0cd7472813cbfe1580fe0fe83aa84a2694a6b6d969f6",
+			"bytes": 394
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "564b438b7abe0670a9d7ff597fb21f27b85237dd35419c015df7bb9d4dc99f1f",
+			"bytes": 4745
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "da5f8e8c80ffd1fc45d2c86a1df2abcfa4240f30a632caa1347cbb2116826e0d",
+			"bytes": 646
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "9398134969231e6d806dbee60676291658552b3ad5c0cf3c8bb7bbe4374bd2fc",
+			"bytes": 201
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "2346fc345f3a568c5aeed98913abf5b2d60aa81f5f3eddeedd899625b1231b91",
+			"bytes": 3773
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "69602cc11679babc58fe5d133c90c87fdd0425da379ada065146fb5fe39760fd",
+			"bytes": 266477
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "4a923bd537b005f7f8016715e4cf2941429db4515129c4809af395c1747d542e",
+			"bytes": 1113
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "sdk/1793012016731/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "4b6f8d660f47fe9450a7e1d8f72c0d3ccfdc1699afea80fb8e11a555ad3e8aa1",
+			"bytes": 1311
+		},
+		{
+			"path": "sdk/1793012016731/result.json",
+			"sha256": "5e18caf1603ad844844de8212b1c7e577004628be5974abbe2f506578f9ba949",
+			"bytes": 11290
+		},
+		{
+			"path": "sdk/1793012016731/seed.spec.ts",
+			"sha256": "95d75f0950e253d93207ed1f2440d7ddab96565eb727d76794275dfc7be9ea0e",
+			"bytes": 1099
+		},
+		{
+			"path": "sdk/1793012016731/transport-adapter.mjs",
+			"sha256": "3a09221b553794b352a4447fd9cb9545477eb49f9c65a727079da9e09640f54e",
+			"bytes": 4568
+		},
+		{
+			"path": "sdk/1793012016731/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "sdk/1793012027153/collection.log",
+			"sha256": "c2ed8cbfde0492fd7108e4af2efcf3cbfd0550237c4bc6f364510ebd676d0241",
+			"bytes": 93
+		},
+		{
+			"path": "sdk/1793012027153/harness.mjs",
+			"sha256": "19aab8e5591f8de2b588efca22d1a7d14433c3dae68abf1f025ae1d8c75511b6",
+			"bytes": 30109
+		},
+		{
+			"path": "sdk/1793012027153/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "sdk/1793012027153/mirror-prototype.mjs",
+			"sha256": "7f74278bd290da8f57f325180eb51140748e0cbda6b0470fa25bf3d3163be3b2",
+			"bytes": 10542
+		},
+		{
+			"path": "sdk/1793012027153/playwright.config.mjs",
+			"sha256": "eb7273ae7e30b72cc4de83b228df9e9150bf89392d2513f5f4cfaf9bb5de85e8",
+			"bytes": 315
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/catalog.json",
+			"sha256": "79560b372197324601d288f054183fdb721078aeec59dc7ed33a298a8fb4e37f",
+			"bytes": 1116
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "1755abb3e9a238e704ef3023e1784aa2477837ebd4780dbc4da04724f1306446",
+			"bytes": 1582
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "8b5d56145e9474a964cde555679cbb48e00b3962525b09b7f1f73c039799a82d",
+			"bytes": 1836
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "69f2e1a1ee823585b712bd3a8cd49c90cc0235a294d1f5b065bd057fb5d12d77",
+			"bytes": 439
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "8be1eeb3c3ae723576d8e23f3603a5b7fd50e7c0443b330ad598bfbea6a0fd29",
+			"bytes": 799
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "bfe4b41125a8e611a12f8dd87dabed1f65eda30ba751c152b6e0c18a3ad97634",
+			"bytes": 567
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "0006e9939aa1c3c1b4923dc0dcde8093102d1a4d0e0ee19d41d8dde0cd902d94",
+			"bytes": 127753
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "d6a33eaaa08bf8a4508d2696b3d4d6880dc3b02010d99e4d1330b41a4e253e9a",
+			"bytes": 392
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "9b30ffdec47a57008534a8db02f6b67c7e7bd82f966988e68235409afabfdfd4",
+			"bytes": 127438
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "75e5d3d2b7d35ade2ab4bf173ec400690fe7c00a54c0df7f8c0521a27d867266",
+			"bytes": 394
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "eddef9cb1b55f644d4259741861a87787808926ee1016b3154a565181740019a",
+			"bytes": 4745
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "e032040c8edd596cfec46db8485fbcd33c867282266446cf869f0314ae484094",
+			"bytes": 646
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "00064f4c3acbc80f0b7e7e7d7b135527357ba8c87fe585a6ffc15d5872887686",
+			"bytes": 200
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "0f7de6cffea1108c2505e691a5b5bdc9134b04957b6fb7f079780185676418e8",
+			"bytes": 3764
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "156495422bf9bd78f511e7556e589532cdc2e33014a4d6ae570398295e09d8d4",
+			"bytes": 266732
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "2fdb316cf691e0b0190087254febfc4dcab41e9d3b32fe4e1f3e051a1d8a4263",
+			"bytes": 1113
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "sdk/1793012027153/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "0dcceb62fb92cf2d958bb6397a7f743e35a9b8eed8bfa3f81bcfaa7e0dea098c",
+			"bytes": 1311
+		},
+		{
+			"path": "sdk/1793012027153/result.json",
+			"sha256": "ddfc58aa815d97d8be4137d980309317d0ad157fb339e867f5026b8d30f603a7",
+			"bytes": 11309
+		},
+		{
+			"path": "sdk/1793012027153/seed.spec.ts",
+			"sha256": "e1e3211e68f8da09864981ac8acc4efd9b4c3ffe5e756f4efadf7f1ccf7c5ce9",
+			"bytes": 1099
+		},
+		{
+			"path": "sdk/1793012027153/transport-adapter.mjs",
+			"sha256": "3a09221b553794b352a4447fd9cb9545477eb49f9c65a727079da9e09640f54e",
+			"bytes": 4568
+		},
+		{
+			"path": "sdk/1793012027153/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "electron/after-skills.png",
+			"sha256": "3657be6de8c2a3b0d77986383498c2ad9eb2b3f6ef7503ca23b4d4820e235133",
+			"bytes": 388422
+		},
+		{
+			"path": "electron/before-skills.png",
+			"sha256": "f4555431b3fa3157c4ffb5d043cf2a4ddef6abc778e532211ef6cb7012a4b267",
+			"bytes": 388206
+		},
+		{
+			"path": "electron/desktop.log",
+			"sha256": "8ae67fd72e4861ff83db4cdf35a24e9ada4e3e08a3e7f7d9e28c699bbd12d06d",
+			"bytes": 1828
+		},
+		{
+			"path": "electron/discovery-restored.png",
+			"sha256": "9246aea5d97aff8311edb94080379c5a04006ab7131465806e3d0ff2e62253a4",
+			"bytes": 481194
+		},
+		{
+			"path": "electron/mcp-status.png",
+			"sha256": "6b59ef258f2469c409d8cf39613e0483bc4a50a15a6a7665960e53ff67b26181",
+			"bytes": 462280
+		},
+		{
+			"path": "electron/result.json",
+			"sha256": "b0a888650d02faf7f3c2f6a2e12ac74c6f7028e18d11bf68a5ee6c263e96aa7e",
+			"bytes": 780
+		},
+		{
+			"path": "electron/slash-ui.png",
+			"sha256": "fae7bf5c3a5315f60bdc0e8338b28088de1b7963f3cb1bf33264d8931c3abcb6",
+			"bytes": 508653
+		}
+	],
+	"projectStorage": {
+		"status": "PASS",
+		"systemId": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+		"directory": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/recording-native-capture-1793012405111",
+		"document": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-recording-native-capture-2026-10-26.md",
+		"documentSha256": "186be786ff4028e7e1d8f9de14023544731df81e2254df52ebf0f15f4aff0c1f",
+		"archiveSha256": "971604074d84ea8fd9ec44c95dd920f07b732f05e91d7da3ddca659bdcf64087",
+		"storeSha256Before": "9e4177c773b961573907f305535cb93a4c2480a2216a4a5327661aae0aca6d2d",
+		"storeSha256After": "9e4177c773b961573907f305535cb93a4c2480a2216a4a5327661aae0aca6d2d",
+		"storeModified": false,
+		"applicationDocumentIndexCreated": false,
+		"directoryMode": "0700",
+		"fileMode": "0600"
+	}
+}

@@ -31,7 +31,7 @@ pi-web-ui/
 │   ├── assets/private-recording-connection.mjs # 产品私密MCP握手、原生输出过滤；浏览器动作仍阻塞
 │   ├── assets/private-recording-workspace.mjs # 内部私有输入副本及受管身份派生，未开放产品录制
 │   ├── assets/private-recording-transport.mjs # 内部MCP连接/请求失效守卫；不负责过滤或开放入口
-│   └── assets/private-recording-storage-events.mjs # 内部Chromium单page私有CDP存储事件观察/读取，未接产品入口
+│   └── assets/private-recording-storage-events.mjs # 仅转接原生0.1.17单page存储观察/读取，录制fixture不自动开放产品动作
 ├── capabilities/ui-testing/    # 旧应用路径兼容转接，无独立实现
 ├── scripts/enable-ui-testing.mjs # 默认项目级登记；显式 --agent-dir 可登记到应用专用 Pi 配置
 ├── scripts/clean-project.mjs    # 预览/回收白名单缓存及测试依赖，保留证据、跟踪文件和保留标记

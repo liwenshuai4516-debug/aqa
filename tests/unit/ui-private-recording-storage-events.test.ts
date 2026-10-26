@@ -1,4 +1,5 @@
 import { afterEach, expect, it } from "vitest";
+import type { Page } from "@playwright/test";
 import { EventEmitter } from "node:events";
 import { mkdtemp, rm, readFile, writeFile, chmod, symlink, realpath } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -44,7 +45,7 @@ async function fixture() {
 	context.pages = () => [page];
 	page.frames = () => [{}];
 	page.url = () => "about:blank";
-	const observer = await observePrivateStorage(page, file);
+	const observer = await observePrivateStorage(page as unknown as Page, file);
 	cleanups.push(observer.dispose);
 	return { root, file, client, context, page, observer, sent, detached: () => detached };
 }
@@ -129,7 +130,7 @@ it("event budget exhaustion blocks the next flush and bounds the private file", 
 
 it("page close disposes listeners and an unavailable connection refuses further flush", async () => {
 	const f = await fixture();
-	f.client.emit("disconnected");
+	f.client.emit("close");
 	await expect(f.observer.flush()).rejects.toThrow("Private storage observation unavailable");
 	f.page.emit("close");
 	await f.observer.dispose();
@@ -142,7 +143,7 @@ it("page close disposes listeners and an unavailable connection refuses further 
 it("does not place raw event captures inside the public workspace", async () => {
 	const f = await fixture();
 	await expect(
-		observePrivateStorage(f.page, join(process.cwd(), "must-not-create-private-storage.ndjson")),
+		observePrivateStorage(f.page as unknown as Page, join(process.cwd(), "must-not-create-private-storage.ndjson")),
 	).rejects.toThrow("Private storage observation unavailable");
 });
 
@@ -163,18 +164,18 @@ it("refuses newly attached frames even if they are detached before the next flus
 it("requires a fresh single-page and single-frame context before installing", async () => {
 	const f = await fixture();
 	f.page.frames = () => [{}, {}];
-	await expect(observePrivateStorage(f.page, join(f.root, "existing-frame.ndjson"))).rejects.toThrow(
+	await expect(observePrivateStorage(f.page as unknown as Page, join(f.root, "existing-frame.ndjson"))).rejects.toThrow(
 		"Private storage observation unavailable",
 	);
 	f.page.frames = () => [{}];
 	f.page.url = () => "http://fixture.invalid/already-navigated";
-	await expect(observePrivateStorage(f.page, join(f.root, "existing-page.ndjson"))).rejects.toThrow(
+	await expect(observePrivateStorage(f.page as unknown as Page, join(f.root, "existing-page.ndjson"))).rejects.toThrow(
 		"Private storage observation unavailable",
 	);
 	expect(f.sent).toEqual(["DOMStorage.enable"]);
 	f.page.url = () => "about:blank";
 	f.context.pages = () => [f.page, {}];
-	await expect(observePrivateStorage(f.page, join(f.root, "multiple-pages.ndjson"))).rejects.toThrow(
+	await expect(observePrivateStorage(f.page as unknown as Page, join(f.root, "multiple-pages.ndjson"))).rejects.toThrow(
 		"Private storage observation unavailable",
 	);
 	expect(f.sent).toEqual(["DOMStorage.enable"]);
