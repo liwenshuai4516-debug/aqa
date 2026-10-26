@@ -28,6 +28,23 @@ import { installVerdictFixture, verifyVerdictMatrix } from "./fixtures/agent-eva
 import { beginReceiptLoss, verifyReceiptLoss } from "./fixtures/agent-evaluation/receipt-loss.mjs";
 import { installCostFixture, verifyCostMatrix } from "./fixtures/agent-evaluation/cost-matrix.mjs";
 import { installCapacityFixture, verifyCapacity } from "./fixtures/agent-evaluation/capacity.mjs";
+import { verifyTimingMatrix } from "./fixtures/agent-evaluation/timing-matrix.mjs";
+const timingMatrix = process.argv.includes("--timing-matrix");
+assert.ok(
+	!timingMatrix ||
+		!process.argv.some((arg) =>
+			[
+				"--capacity",
+				"--byte-capacity",
+				"--scale",
+				"--rollback",
+				"--active-jobs",
+				"--rule-upgrade",
+				"--receipt-loss",
+			].includes(arg),
+		),
+	"Run timing separately from other process/profile probes",
+);
 const byteCapacity = process.argv.includes("--byte-capacity");
 const capacity = process.argv.includes("--capacity") || byteCapacity;
 assert.ok(
@@ -1123,6 +1140,16 @@ try {
 		result.capacity = limited.result;
 		result.checks.push(
 			`Actual desktop retains oversized-source gaps, rejects writes at original ${byteCapacity ? "256MiB byte" : "10000record"} limit without changing records, reads old reports and recovers after stopped removal of owned seed packs`,
+		);
+	}
+	if (timingMatrix) {
+		stage("synthetic timing intervals, clock gaps and frozen upper-bound re-scoring");
+		const timed = await verifyTimingMatrix({ app, repo, output, dataDir, env, sessionPath, original, until });
+		app = timed.app;
+		page = timed.page;
+		result.timingMatrix = timed.result;
+		result.checks.push(
+			"Actual Electron renders synthetic parallel/wait/clock-gap metrics and frozen upper-bound checks; no SDK/tool execution or real clock fault",
 		);
 	}
 	stage("development URL cannot acquire the native identity");

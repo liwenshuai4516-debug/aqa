@@ -1,0 +1,261 @@
+{
+	"scope": "EC04/AC16 actual native Electron synthetic timing boundary supplement; not complete AC16 acceptance",
+	"timestamp": "2026-10-26T04:53:53.659499+00:00",
+	"baselineCommit": "a1730bfe8592a02a5563c7e72fa455ed76626fcb",
+	"pluginVersion": "0.4.31",
+	"productChanges": false,
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64"
+	},
+	"status": "PASS",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-timing-matrix/index.json",
+		"bytes": 51298,
+		"sha256": "0aea03c49338bc9f7351977bb5f5a72d339541739c800cf9640498fe15d938c7"
+	},
+	"archiveFiles": 229,
+	"provenance": "Fixture-authored timing intervals and Pi/live bodies seeded through original store while app stopped. Actual native Electron/service/evaluator/UI, no plugin injection; not real SDK capture, parallel execution, clock fault or elapsed-time measurement.",
+	"cases": [
+		{
+			"scenario": "parallel-wait",
+			"expected": {
+				"wallMs": 10000,
+				"cumulativeWorkMs": 20000,
+				"waitingChildMs": 10000
+			},
+			"actual": {
+				"wallMs": 10000,
+				"cumulativeWorkMs": 20000,
+				"waitingChildMs": 10000
+			},
+			"gaps": [],
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "4b696975-a3bf-41f9-9063-3c445a5e8d7b",
+				"revision": 1
+			},
+			"uiMetricsMatch": true,
+			"upperBoundVerdict": "inconclusive",
+			"missingEvidence": ["complete-monotonic-agent-coverage"]
+		},
+		{
+			"scenario": "different-epochs",
+			"expected": {
+				"wallMs": null,
+				"cumulativeWorkMs": 20000,
+				"waitingChildMs": null
+			},
+			"actual": {
+				"wallMs": null,
+				"cumulativeWorkMs": 20000,
+				"waitingChildMs": null
+			},
+			"gaps": ["multiple-clock-epochs; wall-time cannot be joined across restarts or sources"],
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "1c34a501-7cda-4647-8776-48081de378e9",
+				"revision": 1
+			},
+			"uiMetricsMatch": true,
+			"upperBoundVerdict": "inconclusive",
+			"missingEvidence": ["complete-monotonic-agent-coverage"]
+		},
+		{
+			"scenario": "negative-interval",
+			"expected": {
+				"wallMs": 10000,
+				"cumulativeWorkMs": 10000,
+				"waitingChildMs": null
+			},
+			"actual": {
+				"wallMs": 10000,
+				"cumulativeWorkMs": 10000,
+				"waitingChildMs": null
+			},
+			"gaps": ["invalid-or-non-monotonic-interval"],
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "36da6f58-4053-4ca0-ab93-fc5288f37be9",
+				"revision": 1
+			},
+			"uiMetricsMatch": true,
+			"upperBoundVerdict": "inconclusive",
+			"missingEvidence": ["complete-monotonic-agent-coverage"]
+		},
+		{
+			"scenario": "live-wall-rollback",
+			"expected": {
+				"wallMs": 10000,
+				"cumulativeWorkMs": 10000,
+				"waitingChildMs": null
+			},
+			"actual": {
+				"wallMs": 10000,
+				"cumulativeWorkMs": 10000,
+				"waitingChildMs": null
+			},
+			"gaps": [],
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "b6da6b08-3ccf-4593-9b10-f43ad0a30ef6",
+				"revision": 1
+			},
+			"uiMetricsMatch": true,
+			"upperBoundVerdict": "inconclusive",
+			"missingEvidence": ["complete-monotonic-agent-coverage"]
+		},
+		{
+			"scenario": "live-parallel-wait",
+			"expected": {
+				"wallMs": 10000,
+				"cumulativeWorkMs": 20000,
+				"waitingChildMs": 10000
+			},
+			"actual": {
+				"wallMs": 10000,
+				"cumulativeWorkMs": 20000,
+				"waitingChildMs": 10000
+			},
+			"gaps": [],
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "b85b82f6-f0fa-40ee-b860-e5873c9f025a",
+				"revision": 1
+			},
+			"uiMetricsMatch": true,
+			"upperBoundVerdict": "inconclusive",
+			"missingEvidence": ["complete-monotonic-agent-coverage"]
+		},
+		{
+			"scenario": "live-epoch-mismatch",
+			"expected": {
+				"wallMs": null,
+				"cumulativeWorkMs": null,
+				"waitingChildMs": null
+			},
+			"actual": {
+				"wallMs": null,
+				"cumulativeWorkMs": null,
+				"waitingChildMs": null
+			},
+			"gaps": ["timing-not-observed"],
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "971bf6a4-a619-4afe-991f-630363085326",
+				"revision": 1
+			},
+			"uiMetricsMatch": true,
+			"upperBoundVerdict": "inconclusive",
+			"missingEvidence": ["complete-monotonic-agent-coverage"]
+		},
+		{
+			"scenario": "live-conflict",
+			"expected": {
+				"wallMs": null,
+				"cumulativeWorkMs": null,
+				"waitingChildMs": null
+			},
+			"actual": {
+				"wallMs": null,
+				"cumulativeWorkMs": null,
+				"waitingChildMs": null
+			},
+			"gaps": ["timing-not-observed"],
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "e9c7974e-d74c-47b1-8190-acd39ae54525",
+				"revision": 1
+			},
+			"uiMetricsMatch": true,
+			"upperBoundVerdict": "inconclusive",
+			"missingEvidence": ["complete-monotonic-agent-coverage"]
+		}
+	],
+	"upperBound": {
+		"originalLimit": 20000,
+		"changedLimit": 5000,
+		"originalCheck": "inconclusive",
+		"changedCheck": "fail",
+		"originalReportId": "b6da6b08-3ccf-4593-9b10-f43ad0a30ef6",
+		"changedReportId": "ff964ba5-51ec-4dbd-86f3-ac91220e3a78",
+		"replayReportId": "c92a9cfb-fa8a-4834-a59f-5cd4cd131b2b",
+		"originalBytesUnchanged": true,
+		"createdAttempts": 0,
+		"createdSnapshots": 0
+	},
+	"sourceBytesUnchanged": true,
+	"originalReportBytesUnchanged": true,
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"actualToolCalls": 0,
+	"validation": {
+		"desktop": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-timing-matrix/files/desktop/result.json",
+			"bytes": 52555,
+			"sha256": "ce4800b955f62fd6ccf2cb7c30bf3fde9a83e4a76de47f7b0b38d5fafce97dc6"
+		},
+		"timing": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-timing-matrix/files/desktop/timing-matrix.json",
+			"bytes": 43257,
+			"sha256": "55789c0c24cd9f7d7b5dbf382728db21a12a86d4d556bd6be7b6b5caef4cb2bd"
+		},
+		"sourceRegistration": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-timing-matrix/files/checks/registered-source-verification.json",
+			"bytes": 12817,
+			"sha256": "5b7467e81e2fcbecd31c4a253d6954f45a7bd15b57f99cd311ae02546a0e56fc"
+		},
+		"unit": {
+			"files": 4,
+			"tests": 141,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-timing-matrix/files/checks/unit.log",
+				"bytes": 210,
+				"sha256": "d56e8a14c876e76211f52ed6fe829f3d19639fc23f630ee1702f2c0ff4e8d64f"
+			}
+		},
+		"typecheck": {
+			"configs": 5,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-timing-matrix/files/checks/typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"other": {
+			"lint": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-timing-matrix/files/checks/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			"protocol": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-timing-matrix/files/checks/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"size": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-timing-matrix/files/checks/size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			},
+			"clean-delivery": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-timing-matrix/files/checks/clean-delivery.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			}
+		},
+		"protocolNote": "Structure/type-only/v33 PASS; historical tag heuristic SKIP",
+		"visualInspection": "parallel-wait screenshot inspected; missing usage/partial/inconclusive visible; exact full metric equality asserted through actual UI",
+		"registeredPluginFiles": 29,
+		"clean": "Preview only; zero deletions"
+	},
+	"notExecuted": [
+		"Real SDK parallel/parent-child waiting capture",
+		"Real system clock fault",
+		"Formal performance rerun",
+		"Full other capacity/rollback/scale/identity matrices"
+	],
+	"remaining": "AC16 not complete. AC39 retains prior overall FAIL. EC04/M1 and overall goal incomplete; EC06 isolation and later gates remain. Real CLI/models deferred by user."
+}
