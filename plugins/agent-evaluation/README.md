@@ -192,3 +192,7 @@ UI-only动作：uploadStart（byteLength/sha256）、uploadChunk（uploadId/offs
 ## 0.4.29：采集配对时合并连续正文读取
 
 采集末尾只对本次已授权的Pi证据合并同一pack内连续正文范围；未选间隙不读取，每段遵守原recordBytes、pack遵守readBytes，每条仍核对字节数、UTF-8与SHA256。按段消费，不预载全部长输出，不跨请求缓存；独立blob继续原读取路径，逻辑证据/回执、物理格式及写入/fsync顺序不变。正式对照中串行本轮达门槛、并行降低，长输出墙钟未改善，整体AC39仍FAIL；详见[本轮证据](../../docs/agent-evaluation-evidence/EC04-body-batch-diagnostics.json)，不宣称M1完成。
+
+## 0.4.30：存储层有界采集分块
+
+采集页使用存储层已准备的输入字节和记录大小划分独立持久化分块，移除采集器重复正文预扫描。`writeEvidenceBatch`仍为单次有界原子批次；`writeEvidencePage`逐块发布，后续失败保留已提交前缀，原requestId重试复用回执，检查点最后发布。边界项在前一块发布后重新准备并检查授权；每块继续原输入、物理pack、容量及读写预算，单条过大沿原单记录路径处理，最终encodePack精确限额不变。没有跨请求缓存、格式、摘要校验、脱敏或fsync顺序变化。冻结对照有局部改善，整体AC39仍FAIL，不宣称M1完成；见[本轮证据](../../docs/agent-evaluation-evidence/EC04-storage-partition-diagnostics.json)。

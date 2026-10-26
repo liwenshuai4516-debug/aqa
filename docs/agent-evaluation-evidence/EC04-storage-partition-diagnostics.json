@@ -1,0 +1,260 @@
+{
+	"scope": "EC04 storage-owned page partition; original atomic batch retained; offline engineering and actual Electron regression",
+	"timestamp": "2026-10-26T04:12:11.228432+00:00",
+	"baselineCommit": "685973c8fb2446feab3e0a9944dabc96f7cd04bb",
+	"pluginVersion": "0.4.30",
+	"productChanges": true,
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/index.json",
+		"bytes": 87547,
+		"sha256": "1c9552d82c5272f5972217e977508b7657fec1abc364d15145216cd503bcd371"
+	},
+	"archiveFiles": 399,
+	"implementation": {
+		"changes": [
+			"Collector passes selected page inputs to store without duplicate body/envelope sizing scan",
+			"Original writeEvidenceBatch stays one bounded atomic commit; writeEvidencePage yields independently durable bounded chunks",
+			"Reuse prepared input/record sizes for conservative split; final encodePack remains exact physical authority",
+			"Reprepare boundary input after prefix publication to recheck request receipts, exact bytes and authorization",
+			"Retain existing single-record fallback under tightened pack limits; checkpoint remains last"
+		],
+		"preserved": [
+			"raw/clean validation and redaction",
+			"exact canonical request digest and idempotency",
+			"SHA256 and per-reference authorization",
+			"old formats, read/write limits, writer/capacity checks",
+			"body sync then manifest sync then atomic publish/directory sync; no provisional record escapes",
+			"no cross-request cache"
+		],
+		"measuredSource": {
+			"store.mjs": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/source/plugins/agent-evaluation/store.mjs",
+				"bytes": 39911,
+				"sha256": "b26d5dd58db7f7c4281929f3b11af50dd83481a7e963e77eecc1bb796e9862dc"
+			},
+			"collect.mjs": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/source/plugins/agent-evaluation/collect.mjs",
+				"bytes": 20675,
+				"sha256": "a19392a1267ed0efaf7fe5a44023431e1cd41dbec6cc8afaefaffcf37b000c26"
+			}
+		},
+		"measurementIdentity": "Formal measurement manifest was0.4.29; only manifest/README metadata then advanced to0.4.30. Measured store/collect implementation unchanged thereafter; formatter reported both unchanged. Frozen performance harness unchanged from HEAD."
+	},
+	"performance": {
+		"status": "FAIL",
+		"baseline": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/performance/baseline.json",
+				"bytes": 8615,
+				"sha256": "b23868470e9f368c59b3c2a8bdf4d8cfb4b981b5e19b3f5f3f5c0cf8ed4415ed"
+			},
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 48.774625000000015,
+					"wallLimit": 50,
+					"cpuDelta": 40.326,
+					"cpuLimit": 50,
+					"rssDeltas": [2965504, 2342912, 3227648, 3538944, 4063232],
+					"pass": true
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 108.93045899999998,
+					"wallLimit": 50,
+					"cpuDelta": 125.544,
+					"cpuLimit": 50,
+					"rssDeltas": [29097984, 27099136, 25804800, 27951104, 24657920],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 474.15891700000003,
+					"wallLimit": 50,
+					"cpuDelta": 434.887,
+					"cpuLimit": 50,
+					"rssDeltas": [61718528, 64110592, 62832640, 62799872, 66256896],
+					"pass": false
+				}
+			]
+		},
+		"candidate": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/performance/candidate.json",
+				"bytes": 8606,
+				"sha256": "0fd29101a44a73c356516c8ec441b37924f26483fb2155b67be0de17c61e6a67"
+			},
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 45.96633399999996,
+					"wallLimit": 50,
+					"cpuDelta": 39.161,
+					"cpuLimit": 50,
+					"rssDeltas": [3588096, 3227648, 6275072, 5029888, 7208960],
+					"pass": true
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 106.36970800000003,
+					"wallLimit": 50,
+					"cpuDelta": 115.774,
+					"cpuLimit": 50,
+					"rssDeltas": [25903104, 24903680, 24428544, 28606464, 25149440],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 441.014083,
+					"wallLimit": 50,
+					"cpuDelta": 397.772,
+					"cpuLimit": 50,
+					"rssDeltas": [63078400, 60047360, 61587456, 65159168, 59719680],
+					"pass": false
+				}
+			]
+		},
+		"method": "Each implementation:30 fresh worker processes,3 workloads x5 independent off/on pairs; fixture construction excluded, enabled collection preserves original fsync/validation/limits; baseline and candidate sequential, no concurrent owned heavy validation jobs. Existing frozen harness unchanged. No additional reruns to seek PASS.",
+		"integrity": "All enabled workers evidence40/400/200 with empty gaps; disk budget checks in original harness; current RSS deltas below64MiB in both versions. Historical RSS failures remain valid.",
+		"interpretation": "Local improvement only: long wall474.16->441.01ms and CPU434.89->397.77ms; parallel wall108.93->106.37ms and CPU125.54->115.77ms. Serial passes current50ms gates, parallel/long fail. Five pairs do not establish statistical significance or universal speedup."
+	},
+	"boundaryTests": [
+		"Strict batch rejects combined input overflow before publishing receipts; page yields3 independently bounded Unicode chunks, exact body reads and no new files on reopen retry",
+		"Invalid later item retains only previously committed first chunk; unpublished pending items have no receipts; corrected retry deduplicates prefix and same-key changed input rejects",
+		"Authorization revoked after first yielded chunk rejects next chunk; restored authorization finds only committed first receipt",
+		"Collector interruption after durable source page leaves no checkpoint; exact retry preserves source IDs then publishes final checkpoint; replay adds nothing"
+	],
+	"desktop": {
+		"main": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/main/result.json",
+				"bytes": 43042,
+				"sha256": "fee3b7151f1c6aee292c7a7cce26dbaa52c76cbb61a67ae1009ba8c79ae5bbc9"
+			},
+			"scope": "Actual native Electron main flow,40-page long evidence,source errors,scope/observation,frozen re-score,offline import,disable/reload/settings/slash/tool registration,6 successful reply losses and restart recovery,2 task scopes,10 verdict cases"
+		},
+		"native": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/native/result.json",
+				"bytes": 4313,
+				"sha256": "c9eb9baaa1873b2d4230ff5773e8e0cf8af75a3478659a3958b6b4d9c26b869e"
+			},
+			"scope": "Actual native Electron reads prior41 original UI results27passed/14 controlled failures plus41 synthetic unlaunched unknown plans;20/20/1 pagination,source errors and sealed reads; no new business runner execution"
+		},
+		"registeredSource": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/checks/registered-plugin-files.json",
+				"bytes": 26200,
+				"sha256": "0ab84dca8f6821e5c2bd5be8c7de84494b30c2d8e7655cfeba0744189d35b013"
+			},
+			"filesPerDesktop": 29,
+			"scope": "Post-run tracked files in actual registered plugin paths match final source,29 each. Owned isolated macOS arm64 userData, not personal installation or all-platform packaged release."
+		}
+	},
+	"reportPerformance": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/performance/report.json",
+			"bytes": 1735,
+			"sha256": "03bf6412194741f327e49c0fa19ceab0cc8761131f5726f27aa21cd15872da02"
+		},
+		"checks": {
+			"reportsCompleted": true,
+			"reportMedianMs": 616.9013330000002,
+			"listMedianMs": 4.715208999999959,
+			"evidenceMedianMs": 0.39770800000019335
+		},
+		"scope": "1000 evidence snapshot; fixture construction excluded; five actual report/list/evidence reads",
+		"interpretation": "Report/list/evidence gates pass; does not cancel collection FAIL."
+	},
+	"verification": {
+		"unit": {
+			"status": "PASS",
+			"files": 18,
+			"tests": 311,
+			"raw": [
+				{
+					"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/checks/unit-final.log",
+					"bytes": 230,
+					"sha256": "c723275d227eb3a54105b6eb9eac60f863a80fb92ae210c37be0b8f1fd539b27"
+				},
+				{
+					"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/checks/unit-guard.log",
+					"bytes": 209,
+					"sha256": "6d90062399ceca71a99ab2fd9a050f9259ac121d1e960a3a81a9440f78e67183"
+				}
+			],
+			"breakdown": "17files295tests plus1file16tool guards, disjoint; focused86tests additionally passed"
+		},
+		"typecheck": {
+			"status": "PASS",
+			"configs": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/checks/typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"visualInspection": "Actual narrow long-evidence screenshot inspected: scoped source, sealed evidence notice, scrollable original text, no execution of embedded HTML.",
+		"lint": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/checks/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS structural/type-only/v33; historical tag heuristic SKIP",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/checks/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			}
+		},
+		"size": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/checks/size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			}
+		},
+		"i18n": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/checks/i18n.log",
+				"bytes": 615,
+				"sha256": "80312d8da86db05c5343b06b015ff85dbb3f374e280ecc1b044c87014878d1cd"
+			}
+		},
+		"clean-delivery": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-storage-partition/files/checks/clean-delivery.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			},
+			"scope": "Preview only; zero deletions."
+		}
+	},
+	"notExecuted": [
+		"Full new-version rollback/scale/capacity/role/tool impersonation/rule upgrade/cost matrices; version assertion updates alone do not count as execution",
+		"256MiB byte saturation or physical ENOSPC",
+		"Real CLI, paid models, external business; explicitly deferred by user",
+		"EC06 verified containment remains unresolved; downstream gated work not executed"
+	],
+	"actualCalls": {
+		"realModels": 0,
+		"cli": 0,
+		"businessRunner": 0
+	},
+	"remaining": "AC39 FAIL, EC04/M1 and overall goal incomplete. Remaining acceptance subsets and EC06 isolation gate remain; real CLI/model deferred."
+}

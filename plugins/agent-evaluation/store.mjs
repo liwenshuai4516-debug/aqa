@@ -731,27 +731,68 @@ export class EvaluationStore {
 	}
 	/** One synchronous, bounded commit. No provisional record escapes before both syncs and publication. */
 	writeEvidenceBatch(context, inputs) {
+		return [...this.#writeEvidence(context, inputs, false)].flat();
+	}
+	/** Yield independently durable, bounded chunks; a later error retains committed prefixes. */
+	*writeEvidencePage(context, inputs) {
+		yield* this.#writeEvidence(context, inputs, true);
+	}
+	*#writeEvidence(context, inputs, split) {
 		const identity = this.identity(context, true);
 		requireValue(
 			Array.isArray(inputs) && inputs.length > 0 && inputs.length <= this.limits.snapshotItems,
 			"LIMIT_EXCEEDED",
 			"Invalid evidence batch size",
 		);
-		const budget = {
-				bytes: 0,
-				items: 0,
-				metadataItems: 0,
-				started: performance.now(),
-				cache: new Map(),
-				authorization: canonical([identity.domain, identity.sessionIds]),
-				writerChecked: false,
-			},
+		const freshBudget = () => ({
+			bytes: 0,
+			items: 0,
+			metadataItems: 0,
+			started: performance.now(),
+			cache: new Map(),
+			authorization: canonical([identity.domain, identity.sessionIds]),
+			writerChecked: false,
+		});
+		let budget = freshBudget(),
 			pending = new Map(),
+			result = [],
+			inputSize = 0,
+			packSize = 26;
+		const flush = () => {
+			const committed = this.#publishEvidenceBatch(context, budget, pending, result);
+			budget = freshBudget();
+			pending = new Map();
 			result = [];
-		let inputSize = 0;
+			inputSize = 0;
+			packSize = 26;
+			return committed;
+		};
 		for (const input of inputs) {
 			requireValue(input.kind === "evidence" && !input.previousRef, "INVALID_INPUT", "Batch accepts new evidence only");
-			const prepared = this.#prepareWrite(context, input, budget);
+			let prepared = this.#prepareWrite(context, input, budget);
+			// Raw body bytes plus exact record bytes and a conservative index entry.
+			// encodePack remains the exact physical-budget authority; no body pre-scan.
+			let physicalSize = prepared.existing
+				? 0
+				: Buffer.byteLength(prepared.bytes) + (prepared.record.contentRef?.size ?? 0) + 100;
+			if (
+				split &&
+				result.length &&
+				(inputSize + prepared.inputSize > this.limits.readBytes || packSize + physicalSize > this.limits.readBytes)
+			) {
+				yield flush();
+				// Recheck bytes, receipts and authorization after publishing the prefix.
+				prepared = this.#prepareWrite(context, input, budget);
+				physicalSize = prepared.existing
+					? 0
+					: Buffer.byteLength(prepared.bytes) + (prepared.record.contentRef?.size ?? 0) + 100;
+			}
+			if (split && (prepared.inputSize > this.limits.readBytes || physicalSize + 26 > this.limits.readBytes)) {
+				// Preserve the collector's existing single-record fallback under tighter pack limits.
+				yield [this.#publishPrepared(prepared)];
+				budget = freshBudget();
+				continue;
+			}
 			inputSize += prepared.inputSize;
 			requireValue(inputSize <= this.limits.readBytes, "LIMIT_EXCEEDED", "Evidence batch input exceeds budget");
 			if (prepared.existing) {
@@ -766,9 +807,15 @@ export class EvaluationStore {
 				"VERSION_CONFLICT",
 				"Batch request ID already used with different input",
 			);
-			if (!prior) pending.set(requestKey, prepared);
+			if (!prior) {
+				pending.set(requestKey, prepared);
+				packSize += physicalSize;
+			}
 			result.push(prior?.record ?? record);
 		}
+		if (result.length) yield flush();
+	}
+	#publishEvidenceBatch(context, budget, pending, result) {
 		const items = [...pending.values()];
 		if (!items.length) return structuredClone(result);
 		const finalIdentity = this.identity(context, true);

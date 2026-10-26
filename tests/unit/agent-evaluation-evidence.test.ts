@@ -362,6 +362,30 @@ describe("EC02 authorized SDK sources", () => {
 });
 
 describe("EC02 durable collector", () => {
+	it("does not publish a checkpoint after a durable page prefix interruption, then reuses the prefix", async () => {
+		const f = collectorFixture(),
+			writePage = f.store.writeEvidencePage.bind(f.store);
+		let interrupt = true;
+		f.store.writeEvidencePage = function* (context: any, inputs: any) {
+			for (const records of writePage(context, inputs)) {
+				yield records;
+				if (interrupt) {
+					interrupt = false;
+					throw new Error("controlled page interruption");
+				}
+			}
+		};
+		await expect(f.collector.collect(f.context, f.args)).rejects.toThrow(/controlled page interruption/);
+		expect(f.store.lookupRequest(f.context, `checkpoint-${digest([f.attempt.id, f.args.requestId])}`)).toBeUndefined();
+		const prefix = recordsOf(f.store, f.context, "evidence");
+		expect(prefix).toHaveLength(3);
+		const restored = await f.collector.collect(f.context, f.args);
+		expect(restored.evidenceRefs.map((r: any) => r.id).sort()).toEqual(prefix.map((r: any) => r.id).sort());
+		expect(restored.gaps).toEqual([]);
+		expect(await f.collector.collect(f.context, f.args)).toEqual(restored);
+		expect(recordsOf(f.store, f.context, "evidence")).toHaveLength(4);
+	});
+
 	it("accepts the exact configured snapshot boundary and rejects the next source event", async () => {
 		const f = collectorFixture({ store: { limits: { snapshotItems: 4 } } });
 		const collected = await f.collector.collect(f.context, f.args);

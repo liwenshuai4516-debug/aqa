@@ -2,7 +2,7 @@
  * Replays deduplicate against durable source revisions; a checkpoint is published last.
  * No evaluator, runner, model or business write API is available to this module.
  */
-import { LIMITS, canonical, digest, jsonStringBytes, requireValue } from "./schema.mjs";
+import { LIMITS, digest, requireValue } from "./schema.mjs";
 import { piEvidenceAdapter } from "./adapters/pi.mjs";
 const refOf = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
 const same = (a, b) => digest(a) === digest(b);
@@ -134,20 +134,14 @@ export class EvidenceCollector {
 			return record;
 		};
 		const rememberPage = (data) => {
-			// A v1 envelope, reference digest, content descriptor and range-index entry
-			// add less than 1KiB plus the exact owner-domain encoding per source item.
-			// Raw body bytes cannot exceed their JSON-escaped input. Keep both the
-			// store's exact input cap and encodePack's exact physical cap authoritative.
-			const overhead = 1024 + Buffer.byteLength(canonical(attempt.domain));
-			let pending = [],
-				bytes = 26; // Header, footer and index-array delimiters.
+			let pending = [];
 			const flush = () => {
 				if (!pending.length) return;
 				signal?.throwIfAborted();
-				const records = store.writeEvidenceBatch(context, pending.map(writeInput));
-				pending.forEach((item, i) => remember(item, records[i]));
+				let index = 0;
+				for (const records of store.writeEvidencePage(context, pending.map(writeInput)))
+					for (const record of records) remember(pending[index++], record);
 				pending = [];
-				bytes = 26;
 			};
 			for (const item of data) {
 				if (
@@ -161,27 +155,11 @@ export class EvidenceCollector {
 				) {
 					flush();
 					remember(item);
-					continue;
-				}
-				const input = writeInput(item);
-				// The empty-body envelope has the same ordering and escaping overhead.
-				// Count the original string exactly; the store still serializes and checks it.
-				const size =
-					(item.content === undefined
-						? Buffer.byteLength(canonical(input))
-						: Buffer.byteLength(canonical({ ...input, data: { ...item, content: "" } })) +
-							jsonStringBytes(item.content) -
-							2) + overhead;
-				if (bytes + size > store.limits.readBytes) flush();
-				if (size + 26 > store.limits.readBytes) {
-					remember(item);
-					continue;
-				}
-				pending.push(item);
-				bytes += size;
+				} else pending.push(item);
 			}
 			flush();
 		};
+
 		const collectScope = (scope, convId, scopeAttempt) => {
 			let cursor;
 			let first;

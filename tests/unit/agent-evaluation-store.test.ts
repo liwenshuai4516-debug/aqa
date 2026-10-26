@@ -1,5 +1,15 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { mkdtempSync, rmSync, readFileSync, writeFileSync, readdirSync, symlinkSync, mkdirSync, cpSync } from "node:fs";
+import {
+	mkdtempSync,
+	rmSync,
+	readFileSync,
+	writeFileSync,
+	readdirSync,
+	symlinkSync,
+	mkdirSync,
+	cpSync,
+	statSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -700,6 +710,76 @@ store.writeEvidenceBatch({},[${JSON.stringify(input)}]);
 			expect(readFileSync(join(store.root, "writer.lock"), "utf8")).toContain(String(child.pid));
 		},
 	);
+	it("partitions pages within the original byte cap while strict batches stay atomic", () => {
+		const store = open({ limits: { readBytes: 65536 } }),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const inputs = Array.from({ length: 3 }, (_, i) => ({
+			kind: "evidence",
+			requestId: `page-${i}`,
+			data: { ...f.evidence.data, content: "中文😀".repeat(5000) + i },
+		}));
+		expect(() => store.writeEvidenceBatch(ctx, inputs)).toThrow(/input exceeds budget/);
+		expect(inputs.every((input) => !store.lookupRequest(ctx, input.requestId))).toBe(true);
+		const chunks = [...store.writeEvidencePage(ctx, inputs)];
+		expect(chunks.map((chunk) => chunk.length)).toEqual([1, 1, 1]);
+		const records = chunks.flat();
+		for (let i = 0; i < records.length; i++) expect(store.readBlob(records[i])).toBe(inputs[i].data.content);
+		const directory = join(store.root, "evidence"),
+			packs = readdirSync(directory).filter((name) => name.endsWith(".pack"));
+		expect(packs).toHaveLength(3);
+		for (const name of packs) expect(statSync(join(directory, name)).size).toBeLessThanOrEqual(65536);
+		store.close();
+		const reopened = open({ dataDir: store.dataDir, limits: { readBytes: 65536 } });
+		expect([...reopened.writeEvidencePage(ctx, inputs)].flat()).toEqual(records);
+		expect(readdirSync(directory).filter((name) => name.endsWith(".pack"))).toEqual(packs);
+	});
+	it("retains only durable page prefixes after a later invalid input and resumes by original keys", () => {
+		const store = open({ limits: { readBytes: 65536 } }),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const inputs = Array.from({ length: 3 }, (_, i) => ({
+			kind: "evidence",
+			requestId: `prefix-${i}`,
+			data: { ...f.evidence.data, content: "x".repeat(40000) + i },
+		}));
+		expect(() => [
+			...store.writeEvidencePage(ctx, [
+				inputs[0],
+				inputs[1],
+				{ ...inputs[2], data: { ...inputs[2].data, unexpected: true } },
+			]),
+		]).toThrow(/Invalid evidence/);
+		const prefix = store.lookupRequest(ctx, inputs[0].requestId);
+		expect(prefix).toBeDefined();
+		expect(store.lookupRequest(ctx, inputs[1].requestId)).toBeUndefined();
+		expect(store.lookupRequest(ctx, inputs[2].requestId)).toBeUndefined();
+		const restored = [...store.writeEvidencePage(ctx, inputs)].flat();
+		expect(restored[0]).toEqual(prefix);
+		expect(restored).toHaveLength(3);
+		expect(() => [
+			...store.writeEvidencePage(ctx, [{ ...inputs[0], data: { ...inputs[0].data, content: "changed" } }]),
+		]).toThrow(/different input/);
+		expect(readdirSync(join(store.root, "evidence")).filter((name) => name.endsWith(".pack"))).toHaveLength(3);
+	});
+	it("does not publish later page chunks after authorization changes at a yield", () => {
+		const store = open({ limits: { readBytes: 65536 } }),
+			ctx = context(),
+			f = fixture(store, ctx);
+		const inputs = Array.from({ length: 2 }, (_, i) => ({
+			kind: "evidence",
+			requestId: `auth-page-${i}`,
+			data: { ...f.evidence.data, content: "x".repeat(40000) + i },
+		}));
+		const page = store.writeEvidencePage(ctx, inputs),
+			first = page.next();
+		expect(first.done).toBe(false);
+		contexts.get(ctx).sessionIds = [];
+		expect(() => page.next()).toThrow(/authorization changed/);
+		contexts.get(ctx).sessionIds = ["s1", "s2"];
+		expect(store.lookupRequest(ctx, inputs[0].requestId)).toEqual(first.value[0]);
+		expect(store.lookupRequest(ctx, inputs[1].requestId)).toBeUndefined();
+	});
 	it("rejects conflicting batch IDs and aggregate capacity before publishing any record", () => {
 		const store = open({ limits: { records: 6 } }),
 			ctx = context(),
