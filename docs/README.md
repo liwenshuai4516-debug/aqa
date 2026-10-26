@@ -117,3 +117,5 @@ Agent评估0.4.28正文原字节回读、303项回归/实际Electron与正式采
 EC04 结论边界补验：`tests/agent-evaluation-desktop-test.mjs --verdict-matrix`使用`tests/fixtures/agent-evaluation/verdict-matrix.mjs`构造10组合成历史，经可信桌面连接创建契约并逐一打开报告，核对目标、依赖约束、交付及缺口；零真实工具/模型调用，见[证据](agent-evaluation-evidence/EC04-verdict-matrix-diagnostics.json)。
 
 EC04 丢回执补验：`tests/agent-evaluation-desktop-test.mjs --receipt-loss`使用`tests/fixtures/agent-evaluation/receipt-loss.mjs`阻止6个成功回复向应用交付，经原键重试和完整桌面重启后验证整仓字节不变及报告/review回读；测试接收器保留原生线路回复，不冒充网络故障，见[证据](agent-evaluation-evidence/EC04-receipt-loss-diagnostics.json)。
+
+EC04 费用边界补验：`tests/agent-evaluation-desktop-test.mjs --cost-matrix`通过`tests/fixtures/agent-evaluation/cost-matrix.mjs`在实际Electron核对缺usage、无版本/歧义报价、多币种小计及表单改价后旧报告冻结重评；全为合成SDK历史/价格，不代表真实账单，见[证据](agent-evaluation-evidence/EC04-cost-matrix-diagnostics.json)。

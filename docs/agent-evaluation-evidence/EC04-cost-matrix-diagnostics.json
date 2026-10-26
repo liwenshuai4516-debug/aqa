@@ -1,0 +1,267 @@
+{
+	"scope": "EC04 AC17 actual Electron synthetic usage and frozen price boundaries; no provider billing validation",
+	"timestamp": "2026-10-26T03:33:13.843775+00:00",
+	"baselineCommit": "b5a0b341e518183c0ade352b51ebea75eded1284",
+	"pluginVersion": "0.4.29",
+	"productChanges": false,
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-cost-matrix/index.json",
+		"bytes": 42917,
+		"sha256": "49d184ebf58e2e68d1edc47c18d63472af1ad6166271b219952a5be1913fe1c4"
+	},
+	"archiveFiles": 187,
+	"desktop": {
+		"status": "PASS",
+		"checks": 23,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-cost-matrix/files/desktop/result.json",
+			"bytes": 41513,
+			"sha256": "81e6b924b1d36ef6854e83d851bb09761efc62fbe3bb796380018fb6d02c49ae"
+		},
+		"matrix": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-cost-matrix/files/desktop/cost-matrix.json",
+			"bytes": 32723,
+			"sha256": "0aeeb936430e33e6d9fb2aa72310f865446234fa6b20a29afc6e224d4da03c26"
+		},
+		"registeredSource": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-cost-matrix/files/checks/registered-plugin-files.json",
+			"bytes": 12614,
+			"sha256": "4291923313fcdc747b49377ecdf337da30ff9ce7bc80bda97cd6c89c8af9848a"
+		},
+		"trackedPluginFilesMatched": 29,
+		"actualRegistration": "Owned isolated dataDir; actual recorded paths/realpaths retained, not personal or independently packaged installation"
+	},
+	"cases": [
+		{
+			"scenario": "missing",
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "76f9699b-087c-4f95-b95d-a743a0abe772",
+				"revision": 1
+			},
+			"agentCosts": {
+				"calls": 1,
+				"knownActualByCurrency": {},
+				"knownEstimatedByCurrency": {},
+				"observed": true,
+				"unknownCalls": 1,
+				"unversionedEstimates": []
+			},
+			"missingEvidence": [
+				"timing-not-observed",
+				"usage-or-price-unavailable:sdk:pi:evaluation-cost-matrix:missing",
+				"usage-not-observed:setup",
+				"usage-not-observed:verification",
+				"usage-not-observed:evaluation",
+				"usage-not-observed:cleanup"
+			],
+			"uiMetricsMatch": true
+		},
+		{
+			"scenario": "unversioned",
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "56e329c0-2726-41a8-a1bf-7f74637fd13b",
+				"revision": 1
+			},
+			"agentCosts": {
+				"calls": 1,
+				"knownActualByCurrency": {},
+				"knownEstimatedByCurrency": {},
+				"observed": true,
+				"unknownCalls": 1,
+				"unversionedEstimates": [
+					{
+						"callId": "sdk:pi:evaluation-cost-matrix:unversioned",
+						"counted": false,
+						"currency": null,
+						"reportedAmount": 0.5
+					}
+				]
+			},
+			"missingEvidence": [
+				"timing-not-observed",
+				"usage-or-price-unavailable:sdk:pi:evaluation-cost-matrix:unversioned",
+				"usage-not-observed:setup",
+				"usage-not-observed:verification",
+				"usage-not-observed:evaluation",
+				"usage-not-observed:cleanup"
+			],
+			"uiMetricsMatch": true
+		},
+		{
+			"scenario": "versioned",
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "7e0d690b-676d-4c85-9366-0b1aa0eacaf2",
+				"revision": 1
+			},
+			"agentCosts": {
+				"calls": 1,
+				"knownActualByCurrency": {},
+				"knownEstimatedByCurrency": {
+					"USD": 0.00045
+				},
+				"observed": true,
+				"unknownCalls": 0,
+				"unversionedEstimates": []
+			},
+			"missingEvidence": [
+				"timing-not-observed",
+				"usage-not-observed:setup",
+				"usage-not-observed:verification",
+				"usage-not-observed:evaluation",
+				"usage-not-observed:cleanup"
+			],
+			"uiMetricsMatch": true
+		},
+		{
+			"scenario": "mixed",
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "1f69b196-aaf3-40c5-82c8-6ab2e581624f",
+				"revision": 1
+			},
+			"agentCosts": {
+				"calls": 2,
+				"knownActualByCurrency": {},
+				"knownEstimatedByCurrency": {
+					"CNY": 0.0009,
+					"USD": 0.00045
+				},
+				"observed": true,
+				"unknownCalls": 0,
+				"unversionedEstimates": []
+			},
+			"missingEvidence": [
+				"timing-not-observed",
+				"usage-not-observed:setup",
+				"usage-not-observed:verification",
+				"usage-not-observed:evaluation",
+				"usage-not-observed:cleanup"
+			],
+			"uiMetricsMatch": true
+		},
+		{
+			"scenario": "ambiguous",
+			"reportRef": {
+				"kind": "evaluations",
+				"id": "ccdd0d45-a8e2-4e37-996a-2ca81ac3b43b",
+				"revision": 1
+			},
+			"agentCosts": {
+				"calls": 1,
+				"knownActualByCurrency": {},
+				"knownEstimatedByCurrency": {},
+				"observed": true,
+				"unknownCalls": 1,
+				"unversionedEstimates": [
+					{
+						"callId": "sdk:pi:evaluation-cost-matrix:usd",
+						"counted": false,
+						"currency": null,
+						"reportedAmount": 999
+					}
+				]
+			},
+			"missingEvidence": [
+				"ambiguous-price:sdk:pi:evaluation-cost-matrix:usd",
+				"timing-not-observed",
+				"usage-or-price-unavailable:sdk:pi:evaluation-cost-matrix:usd",
+				"usage-not-observed:setup",
+				"usage-not-observed:verification",
+				"usage-not-observed:evaluation",
+				"usage-not-observed:cleanup"
+			],
+			"uiMetricsMatch": true
+		}
+	],
+	"frozenPrices": {
+		"originalReportId": "7e0d690b-676d-4c85-9366-0b1aa0eacaf2",
+		"changedReportId": "cba1c662-b774-4bf1-9402-048458849081",
+		"replayedReportId": "f394fb16-b880-49a3-95bd-9a7796e822dc",
+		"originalUsdEstimate": 0.00045,
+		"changedUsdEstimate": 0.00065,
+		"originalBytesUnchanged": true,
+		"createdAttempts": 0,
+		"createdSnapshots": 0
+	},
+	"acceptance": {
+		"PASS": [
+			"Missing usage remains unknownCalls=1, no zero substituted",
+			"Unversioned SDK cost0.5 and ambiguous-price SDK cost999 remain uncounted reported amounts; neither labeled actual provider costs",
+			"Explicit frozen token prices estimate USD0.00045; mixed second model estimates CNY0.0009 in a separate subtotal",
+			"Two price versions for the same provider/model yield ambiguous-price, no arbitrary version chosen",
+			"UI price edit v1->v2 and input rate2->4 gives new configuration and USD0.00065 on original snapshot",
+			"Re-evaluating original report restores its exact original configuration/F08 findings, creates no attempt/snapshot, original bytes unchanged",
+			"Each actual UI structured metrics JSON matches original service report; all missing setup/verification/evaluation/cleanup observations retained",
+			"Timing/modelThinking remain null without monotonic evidence; no business completion inferred from cost availability"
+		],
+		"NOT_EXECUTED": [
+			"Real model usage/provider bill reconciliation, explicitly deferred",
+			"Provider-measured phase allocation and same-call SDK/provider dedup in actual desktop (existing unit controls only)",
+			"Actual SDK parallel clocks and parent/child wait desktop matrix",
+			"New formal collection performance, native test pagination, full identity/rollback/scale/rule-upgrade matrices"
+		],
+		"AC17": "Synthetic cost subset PASS; real billing deferred and full AC17 not complete",
+		"AC39": "Prior0.4.29 formal overall FAIL remains; not remeasured this turn"
+	},
+	"verification": {
+		"unit": {
+			"status": "PASS",
+			"files": 4,
+			"tests": 97,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-cost-matrix/files/checks/unit.log",
+				"bytes": 224,
+				"sha256": "31b3efa8d7e723a256b4dec874856fe04e62640d3a30d7e2fd22689c44046da7"
+			}
+		},
+		"typecheck": {
+			"status": "PASS",
+			"configs": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-cost-matrix/files/checks/typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"lint": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-cost-matrix/files/checks/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS structural/type-only/v33; historical tag heuristic SKIP",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-cost-matrix/files/checks/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			}
+		},
+		"size": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-cost-matrix/files/checks/size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			}
+		},
+		"visualInspection": "Actual changed-price screenshot inspected: F08 inconclusive/partial, missing phases and USD0.00065 subtotal visible; no full theme/language Cartesian-product claim"
+	},
+	"actualCalls": {
+		"models": 0,
+		"cli": 0,
+		"tools": 0,
+		"business": 0
+	},
+	"remaining": "EC04/M1 incomplete; AC39 failure and remaining acceptance subsets persist. EC06 containment unresolved, EC07/09 held; real CLI/model deferred. Overall goal active."
+}

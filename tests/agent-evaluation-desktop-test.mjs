@@ -26,6 +26,8 @@ import { installRuleUpgradeProbe, verifyRuleUpgrade } from "./fixtures/agent-eva
 import { installTaskScopeFixture, verifyTaskScope } from "./fixtures/agent-evaluation/task-scope.mjs";
 import { installVerdictFixture, verifyVerdictMatrix } from "./fixtures/agent-evaluation/verdict-matrix.mjs";
 import { beginReceiptLoss, verifyReceiptLoss } from "./fixtures/agent-evaluation/receipt-loss.mjs";
+import { installCostFixture, verifyCostMatrix } from "./fixtures/agent-evaluation/cost-matrix.mjs";
+const costMatrix = process.argv.includes("--cost-matrix");
 const receiptLoss = process.argv.includes("--receipt-loss");
 assert.ok(
 	!receiptLoss ||
@@ -119,6 +121,7 @@ const ruleUpgradeProbe = ruleUpgrade
 	: undefined;
 const taskScopeFixture = taskScope ? await installTaskScopeFixture(agentDir, workspace) : undefined;
 const verdictFixture = verdictMatrix ? await installVerdictFixture(agentDir, workspace) : undefined;
+const costFixture = costMatrix ? await installCostFixture(agentDir, workspace) : undefined;
 const reservation = createServer().listen(0, "127.0.0.1");
 await once(reservation, "listening");
 const port = reservation.address().port;
@@ -1071,6 +1074,13 @@ try {
 			settings,
 			closeSettings,
 		});
+	}
+	if (costFixture) {
+		stage("synthetic usage, frozen prices and unknown cost boundaries");
+		result.costMatrix = await verifyCostMatrix({ page, fixture: costFixture, dataDir, output, until });
+		result.checks.push(
+			"Actual desktop preserves missing usage, unversioned/ambiguous estimates, currency subtotals and frozen price re-scoring over synthetic SDK history",
+		);
 	}
 	if (taskScopeFixture) {
 		stage("same-session task scopes and efficiency-only diagnosis");
