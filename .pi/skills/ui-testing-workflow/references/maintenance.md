@@ -85,3 +85,5 @@ MCP 运行时选择由 `assets/playwright-runtime.mjs` 负责：CLI 与配置均
 0.1.14在原生PrivateEvidence新增宿主observeStorageState(state)：完整核验cookie/localStorage结构后累积现有JSON字符串叶值和编码，删除/轮换不遗忘已观察值，create复用此路径。内部固定SDK采集增加Playwright原生context.storageState私有文件，原始内容不进入SDK结果；新localStorage与嵌套JSON对照已拦截，坏结构和采集中取消阻止公开草稿。方法不启动采集、不开放模型工具；采集前已删除的未知存储值仍是缺口，产品record继续unsupported。
 
 内部`assets/private-recording-storage-events.mjs`由受控seed在导航前安装Chromium CDP DOMStorage监听，使用工作区外0700/0600文件保存实际历史事件；固定page私有flush函数提供屏障，宿主验证事件后仅为原生过滤归一化oldValue/newValue，不伪称浏览器storageState。单page/origin，128事件/2MiB、断连/关闭/坏证据/第二页面拒绝；不改页面Storage方法、不复制过滤器，产品mcp-extension尚未导入。真实SDK瞬态JSON正向及坏日志/取消/第二页面partial留证，跨frame/其他target与完整重连续录未证明。见[存储事件证据](../../../../docs/ui-testing-evidence/optimization-u02-recording-storage-events.json)。
+
+存储事件内部观察器现于创建文件/CDP前校验当前blank、单frame/单page，记录frameattached历史并在读取时拒绝，即使随后移除也不放行；dispose解除该监听。真实浏览器前后及实际SDK旧版放行/修正版partial、CDP解除partial/正向留证，见[边界证据](../../../../docs/ui-testing-evidence/optimization-u02-recording-storage-boundaries.json)。blank检查不是过去导航历史证明，依赖受控fixture的新context事实；仅拒绝未覆盖frame，不代表支持多frame，产品record仍unsupported。

@@ -1113,3 +1113,19 @@ ui_result_analysis read-trace读取本实例原始ZIP事件。test.trace expect@
 [存储事件证据](ui-testing-evidence/optimization-u02-recording-storage-events.json)归档257文件、296次可用FileRef核验、逐成员回读一致；实际Electron项目新增OperationContract-recording-storage-events-2026-10-26.md及七轮234份公开/减少内容快照，0700/0600逐文件核验，store字节不变。早期两失败轮10次缺失输入引用列明，不算可回读通过；原始私有事件/trace/state及SDK临时输出按归属清理，摘要不冒充原始FileRef。文件保存不表示应用文档列表显示或正式结果入库。所有轮模型调用、正式批次、真实业务写入0，自有服务/进程收尾。
 
 本轮解决受控单page/origin的瞬态样本，不证明跨frame/其他target/IndexedDB、既有页面、监听失效、完整重连续录或文件系统竞态。继续补这些执行侧拒绝/生命周期边界后再接产品私密准备；通用输入闭包、实际Electron业务全链、真实角色/租户/数据、U00计量、U03/U07及M1/M2未完成，整体goal active。
+
+### U02 续跑：frame 历史、初态与观察器解除边界（2026-10-26）
+
+从fa6bb0e继续；上轮完成内部存储事件适配和正反证据，本轮针对frame及监听失效补执行侧验证。开始clean仅预览、无可清理项；plan_update不可用，继续本文/计划，PMS剩余2次仅设计与U05账本不变，未调用模型。保留其他协作未提交修改，未改个人配置、安装或原生0.1.14包。
+
+真实Chromium基线：旧观察器接受新增frame、已有frame及已导航页面，解除监听拒绝刷新；修正后四种均拒绝。frame是空合成内容，证明旧版未拒绝未覆盖结构，不冒称复现frame凭据泄露。内部observePrivateStorage在文件/CDP前要求当前page.url=about:blank、frames=1、context.pages=1，记录frameattached历史并于读取侧拒绝，即使随后移除；dispose移除新增监听。当前blank只核对当前前提，不证明过去从未导航，新context事实依赖原Playwright fixture与冻结源码；并发初始化未证明。
+
+实际SDK/MCP四轮：旧模块受控writer前helper实际附加并移除iframe仍complete/1脚本/gaps=[]；修正后同样动作partial/0脚本，私有原生草稿保留、公开不存在，保留private-storage-frame-history-rejected等缺口。受控seed为负向夹具绑定私有dispose，helper await后实际CDP detach，再刷新报错；同样partial/0脚本，保留private-storage-observer-detached及missing-generated-script/goal-not-reached/tool-error-or-cancelled。此为CDP监听解除，不混称MCP全连接断开或完整重连续录。两类partial的browser_close实际成功。正向新context/page瞬态嵌套JSON仍complete/1脚本/gaps=[]，公开/原生字节一致、已知合成初始/新增秘密/编码在公开响应/SDK长输出/工作区未检出、媒体块0。
+
+新增frame历史与初态2项单测：旧版初版8通过/1失败，但初态测试会把重复安装属性时报错误当初态拒绝；已强化“启动CDP前且不创建捕获文件”断言，精确旧模块快照再跑为7通过/2失败。最终相关3文件28项Vitest及完整5配置typecheck通过，lint/协议同步/size/diff通过；协议tag启发式无可用tag跳过。旧弱测试源码未单独保存，日志只作历史；强化负向源码/旧模块/日志保留。临时baseline测试已从正常目录移除，仅在证据内保存，不混入最终通过率。
+
+scope明确8次helper/30工具/128事件/2MiB及受控负向frame附加移除/自有监听解除；正向实际5业务+4helper=9 MCP，原生steps只5，实际SDK parentToolCallId归属已核对。所有轮模型调用、正式批次、真实业务写入0，原始私有事件/trace/state及SDK临时输出按归属清理，自有服务/进程收尾；保留摘要不冒充原始FileRef。
+
+[frame/观察器边界证据](ui-testing-evidence/optimization-u02-recording-storage-boundaries.json)归档178文件、220次FileRef核验及逐成员回读一致；权威Electron项目新增OperationContract-recording-storage-boundaries-2026-10-26.md及四轮156份公开快照，0700/0600逐文件核验，store字节不变。文件保存不表示应用列表显示或正式结果入库。本轮不新增Electron界面回归，产品mcp-extension未导入该内部模块、record仍unsupported，前轮桌面通过不算本轮。
+
+本轮是未覆盖frame/初态及失效观察器的拒绝边界，不是多frame录制交付。后续需实际产品所需frame/target支持、初始化并发/监听完整性、完整重连续录、产品私有准备与生命周期接入；通用输入闭包、真实角色/租户/数据、U00计量、U03/U07与M1/M2未完成，整体goal active。

@@ -15,6 +15,8 @@ const outside = (root, file) => {
 
 /** Installs on one Chromium page before the seed navigates. The file must be outside the workspace. */
 export async function observePrivateStorage(page, file) {
+	if (page.url() !== "about:blank" || page.frames().length !== 1 || page.context().pages().length !== 1)
+		throw blocked();
 	file = resolve(file);
 	if (!outside(process.cwd(), file)) throw blocked();
 	mkdirSync(dirname(file), { recursive: true, mode: 0o700 });
@@ -55,6 +57,7 @@ export async function observePrivateStorage(page, file) {
 		listeners.push([type, listener]);
 	}
 	const unsupported = () => append({ type: "unsupported-new-page" });
+	const unsupportedFrame = () => append({ type: "unsupported-frame" });
 	const disconnected = () => {
 		failed = true;
 	};
@@ -62,6 +65,7 @@ export async function observePrivateStorage(page, file) {
 		if (disposed) return;
 		disposed = true;
 		page.context().off("page", unsupported);
+		page.off("frameattached", unsupportedFrame);
 		client.off("disconnected", disconnected);
 		for (const [type, listener] of listeners) client.off("DOMStorage." + type, listener);
 		await client.detach().catch(() => {});
@@ -79,6 +83,7 @@ export async function observePrivateStorage(page, file) {
 	};
 	client.on("disconnected", disconnected);
 	page.context().on("page", unsupported);
+	page.on("frameattached", unsupportedFrame);
 	page.once("close", () => {
 		void dispose();
 	});

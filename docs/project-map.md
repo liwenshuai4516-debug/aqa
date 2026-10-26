@@ -159,4 +159,4 @@ UI 私有录制准备内部模块：`.pi/skills/ui-testing-workflow/assets/priva
 
 UI 私密录制连接守卫：`.pi/skills/ui-testing-workflow/assets/private-recording-transport.mjs` 将受管快照绑定到实际 MCP 连接/请求生命周期，失效阻断公开发布、失败发送撤销身份、正常响应交付前解绑取消；私有捕获/过滤及原生writer校验仍由调用方负责，尚未开放产品入口。
 
-UI 私密存储事件内部模块：`.pi/skills/ui-testing-workflow/assets/private-recording-storage-events.mjs` 由受控seed在Chromium导航前安装CDP监听，私有记录历史值，宿主读取后复用原生过滤；单页面/指定origin，新增页面拒绝，未接入产品record。不会自动修改业务seed或注册模型工具。
+UI 私密存储事件内部模块：`.pi/skills/ui-testing-workflow/assets/private-recording-storage-events.mjs` 由受控seed在Chromium导航前安装CDP监听，私有记录历史值，宿主读取后复用原生过滤；当前blank单page/frame前提、指定origin，新增页面/frame历史拒绝，未接入产品record。不会自动修改业务seed或注册模型工具。
