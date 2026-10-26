@@ -955,3 +955,21 @@ plan_update仍不可用，以第8节和本记录维护状态。下一步优先�
 [私有副本录制证据](ui-testing-evidence/optimization-u02-private-recording-mirror.json)归档248份公开文件，341次FileRef摘要核验、归档逐成员回读一致；直接保存的seed副本额外恢复到tests/seed.spec.ts相对布局，字节/登记摘要相同，便于核验原生引用，不改旧manifest。评审账本与上一轮索引摘要一致。实际Electron项目project-documents新增OperationContract-private-recording-mirror-2026-10-26.md及正常/3反例共128份公开快照，0600/0700、回读校验且文档保存前后store字节一致；文件保存不表示应用文档索引显示、正式用例或结果入库。
 
 本轮证明已知合成项目可以在私有副本中完成原生录制及安全草稿交接，未登记到产品，data-space prepare-private mode=record仍unsupported。下一步需要把输入闭包、私有副本与受管auth workspace作用域、原生发布及生命周期做成可验证的薄适配，再验JSON存储/新增凭据/协议分支、发布竞态/取消晚响应/重连和Electron管理入口。不把隔离complete当真实私密录制已接入。匿名评审授权、真实角色/租户/数据、U00连续基线/配对计量、U03/U07、M1/M2及整计划仍未完成。
+
+### U02 续跑：内部受管身份副本模块与真实 MCP 正反验证（2026-10-26）
+
+继续 A02-5，plan_update 不可用，以第8节和本记录维护进度。上一轮2f76c6d已推送，但本轮独立远端查询仍因连接超时未完成核对；保留原.gitignore及db-client锁差异。开始clean仅预览，无可清理项；未触碰个人配置、真实PMS、原库用例或SDK安装，没有模型调用或新增评审额度消耗。
+
+新增内部assets/private-recording-workspace.mjs：用原生authState验证父受管身份与原工作区绑定，只复制明确path+SHA-256输入；拒绝路径逃逸、符号链接、敏感配置、摘要变化和非受管state。工作区外authority/副本目录0700、输入/派生state0600，共享依赖链接。派生state仅调整workspace与不延长的有效期，最多5分钟；childEnv只供MCP子进程覆盖原引用，宿主引用不变。assertCurrent检查父引用/字节/期限、authority及副本权限、派生完整性和两侧冻结输入，失效删除派生认证；revoke保留原始私有捕获，不冒称业务authentication/role/data已验证。该文件尚未被产品mcp-extension导入，没有开放工具或快捷入口，数据空间record模式仍unsupported。
+
+新增7项单测覆盖子进程实际原生authState消费与父作用域拒绝对照、两侧输入同时篡改、父认证更新/引用缺失/过期、撤销保留捕获、路径/权限/非受管拒绝、派生篡改及远期期限上限。最初6项通过后完整typecheck发现测试fixture类型和childEnv推断错误；补齐UiEnvironment及JSDoc后通过，新增期限/authority权限检查后再次按格式化→完整typecheck→相关Vitest顺序验证。最终4文件23项全部通过，不降低原生认证约束。
+
+真实SDK/MCP合成验证改用实际createPrivateBrowserStates生成仅含合成localStorage token的受管父state。原父引用直接验证mirror被拒；仅在StdioTransport传childEnv后，seed于MCP进程调用原生authState并验证localStorage token存在，配置及seed字节/来源保持冻结。最初1792995430407仅验证浏览器消费，1792995525524补原生作用域校验；最终模块补authority运行期权限校验后重跑，证据以1792995641628为正常主轮：原ui_discover_record完整5步，原生complete、gaps=[]、1脚本，公开草稿与原生writer字节相同，宿主引用及父state字节不变。
+
+反例1792995555049及最终1792995729279在snapshot/read_log后修改父state。harness显式调用assertCurrent被拒、确认派生state已删除，不派发writer；仍正常close并finish，原生partial、4步骤、0脚本，保留parent-authentication-changed/missing-generated-script/goal-not-reached。此为内部模块与harness组合验证，不能称产品MCP已部署执行门禁，不伪造不存在的writer错误事件。
+
+公开响应、SDK长输出和工作区未检出本轮已知合成秘密/编码变体，媒体块0；私有协议含原文，未删改页面或修改草稿获得通过。全部轮次模型/正式批次/真实业务写入0，结束清理自有会话、MCP/浏览器、本机服务及仅本轮原始合成payload；公开raw-log已过滤，不表示完整原始私密捕获。现有共享评审账本摘要不变。
+
+[受管身份录制副本证据](ui-testing-evidence/optimization-u02-managed-recording.json)归档180文件、261次FileRef核验、归档逐成员回读一致；Electron权威项目文档保存OperationContract-managed-recording-workspace-2026-10-26.md及最终正反68份快照，0600/0700、回读一致、store字节不变。不表示应用文档列表可见、正式用例/测试结果入库。lint、协议检查、size预算通过；协议tag启发式因无可用tag跳过，非协议类型检查失败。
+
+剩余：模块实际MCP生命周期接入、通用输入闭包、新凭据/嵌套JSON、协议分支、发布竞争、取消晚响应/重连、Electron管理入口；真实PMS角色/租户/隔离数据及独立评审/诊断/正式执行、U00连续基线与配对计量、U03/U07和M1/M2仍未完成。整目标active，不因本轮内部模块验证通过标为产品交付。

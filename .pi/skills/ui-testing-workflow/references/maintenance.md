@@ -2,18 +2,19 @@
 
 ## 文件归属
 
-| 维护内容                                | 唯一位置                                                                         |
-| --------------------------------------- | -------------------------------------------------------------------------------- |
-| 技能名称、描述、调度入口                | `../SKILL.md`                                                                    |
-| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.12.tgz`                                             |
-| 原生测试 MCP 适配                       | `../assets/mcp-extension.mjs`                                                    |
-| Chromium 执行配置                       | `../assets/playwright.config.mjs`                                                |
-| 录制 seed 前置校验                      | `../assets/recording-preflight.mjs`（由 MCP 执行钩子调用，不另建 runner）        |
-| 八个阶段技能、schema、runner 与评估规则 | 安装后的 `node_modules/pi-ui-testing/`，修改上游源码后重新分发，不直接改安装目录 |
-| E2E 依赖与版本锁                        | 仓库 `tools/e2e/package.json`、`package-lock.json`                               |
-| 项目/应用登记                           | 仓库 `scripts/enable-ui-testing.mjs`                                             |
-| 管理页与快捷发现的公共逻辑              | `server/skill/`、`server/settings-service.ts`、`server/slash-commands.ts`        |
-| 测试资产与执行证据                      | 被测工作区 `qa/ui/`，不写进技能目录                                              |
+| 维护内容                                     | 唯一位置                                                                                        |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| 技能名称、描述、调度入口                     | `../SKILL.md`                                                                                   |
+| 原版工作流分发包                             | `../assets/pi-ui-testing-0.1.12.tgz`                                                            |
+| 原生测试 MCP 适配                            | `../assets/mcp-extension.mjs`                                                                   |
+| Chromium 执行配置                            | `../assets/playwright.config.mjs`                                                               |
+| 录制 seed 前置校验                           | `../assets/recording-preflight.mjs`（由 MCP 执行钩子调用，不另建 runner）                       |
+| 私有录制输入副本及受管身份派生（内部未接入） | `../assets/private-recording-workspace.mjs`（仅明确摘要输入、子进程引用和撤销；不开放录制入口） |
+| 八个阶段技能、schema、runner 与评估规则      | 安装后的 `node_modules/pi-ui-testing/`，修改上游源码后重新分发，不直接改安装目录                |
+| E2E 依赖与版本锁                             | 仓库 `tools/e2e/package.json`、`package-lock.json`                                              |
+| 项目/应用登记                                | 仓库 `scripts/enable-ui-testing.mjs`                                                            |
+| 管理页与快捷发现的公共逻辑                   | `server/skill/`、`server/settings-service.ts`、`server/slash-commands.ts`                       |
+| 测试资产与执行证据                           | 被测工作区 `qa/ui/`，不写进技能目录                                                             |
 
 原版包来源提交：`8ff42f0eee7c3d9dd6e16d967b229b6c0006d9ed`（上游本地提交；未推送上游远端）。
 SHA-256：`72e6949acc02d7474419f7cd521d0858dd739cfa1ddde5109472b7456aaea0bf`。0.1.4 仅在一次引用核验内按 path+sha256 复用成功读取；不同摘要、后续调用及并发调用仍独立核验，不增加跨请求缓存，不改变批准或产物协议。

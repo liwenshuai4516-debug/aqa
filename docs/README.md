@@ -124,3 +124,5 @@ UI 失败分析与子集重跑：`tests/ui-failed-batch-baseline.mjs`；[获批�
 PMS 真实浏览器准备：`tests/ui-pms-browser-preparation.mjs --refresh`；账号/匿名对照及来源匹配见 [浏览器准备证据](ui-testing-evidence/optimization-u02-pms-browser-preparation.json)。
 
 PMS 原库草稿入库与重开：`tests/ui-pms-source-cases.mjs`、`tests/ui-pms-desktop-connection.mjs`；[原生草稿证据](ui-testing-evidence/optimization-u06-pms-native-drafts.json)记录3条草稿、功能映射、真实原库持久化及未完成项。
+
+UI 受管身份录制副本：[内部模块与真实 SDK/MCP 证据](ui-testing-evidence/optimization-u02-managed-recording.json)，保留原生 complete/partial；产品私密录制仍未开放。
