@@ -1,0 +1,173 @@
+{
+	"scope": "EC04/AC39 UTF-8 request-buffer reuse candidate evaluated and rejected",
+	"timestamp": "2026-10-26T05:40:23.612145+00:00",
+	"baselineCommit": "c61031c9e2adcda5bd82aaaf3ce2698542704186",
+	"pluginVersion": "0.4.31",
+	"productChanges": false,
+	"status": "CANDIDATE_REJECTED",
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-request-buffer/index.json",
+		"bytes": 9070,
+		"sha256": "99e930d10b274349d6dea706433212abb94355b044dcd5880f0fddd517f8d469"
+	},
+	"archiveFiles": 51,
+	"platform": "macOS arm64; isolated offline fixture processes",
+	"candidate": {
+		"change": "Replace canonical input string + Buffer.byteLength with Buffer.from(canonical(data)) and buffer.length; reuse exact UTF-8 buffer in existing request SHA256 update. Canonical format, redacted-input handling, schema and byte caps, hashes, source coverage, authorization and all durable syncs unchanged.",
+		"source": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-request-buffer/files/checks/candidate-store.mjs",
+			"bytes": 40194,
+			"sha256": "f8ac78766cbba8f787f6dc54b0f710a5e0cd62bb8a51b4ccadc7a84692cc7fca"
+		},
+		"patch": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-request-buffer/files/checks/candidate.patch",
+			"bytes": 647,
+			"sha256": "88e2fe8b0b02a3ac60d41ff0ff87b61d4ebe7b987156cb8d9d585771787a5824"
+		},
+		"tests": {
+			"files": 2,
+			"tests": 91,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-request-buffer/files/checks/unit-candidate.log",
+				"bytes": 207,
+				"sha256": "91e21599ec8a71b29b5a267b7e3944d4b5d61b99e2f53566e0f8cb3d294a9aa0"
+			}
+		},
+		"decision": "No material parallel/long wall benefit; long CPU worse and one RSS delta69353472 exceeds frozen64MiB cap. Restore original store byte-exact; no delivered product change."
+	},
+	"performance": {
+		"baseline": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-request-buffer/files/checks/baseline-formal-result.json",
+				"bytes": 8604,
+				"sha256": "fc4e02c0e6a51a0eb7e762bd877677ca7fb24abdf1ed87b26f8dd779ea676e7e"
+			},
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 47.329668,
+					"wallLimit": 50,
+					"cpuDelta": 38.67100000000001,
+					"cpuLimit": 50,
+					"rssDeltas": [1589248, 4636672, 3604480, 3325952, 3899392],
+					"pass": true
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 98.57424999999998,
+					"wallLimit": 50,
+					"cpuDelta": 108.43900000000001,
+					"cpuLimit": 50,
+					"rssDeltas": [24231936, 23609344, 27672576, 26787840, 23773184],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 433.222584,
+					"wallLimit": 50,
+					"cpuDelta": 385.058,
+					"cpuLimit": 50,
+					"rssDeltas": [54132736, 59817984, 56885248, 56918016, 56393728],
+					"pass": false
+				}
+			],
+			"workers": 30,
+			"status": "FAIL"
+		},
+		"candidate": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-request-buffer/files/checks/candidate-formal-result.json",
+				"bytes": 8608,
+				"sha256": "0c02fc74964dbb2d6a5d9573a9fa7173996db20718b3b77fa8f9ef6dc0d8baae"
+			},
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 45.20991699999999,
+					"wallLimit": 50,
+					"cpuDelta": 35.524,
+					"cpuLimit": 50,
+					"rssDeltas": [4997120, 8339456, 4800512, 3866624, 5832704],
+					"pass": true
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 98.77587499999998,
+					"wallLimit": 50,
+					"cpuDelta": 108.017,
+					"cpuLimit": 50,
+					"rssDeltas": [23429120, 24395776, 24281088, 23805952, 23265280],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 431.684334,
+					"wallLimit": 50,
+					"cpuDelta": 389.609,
+					"cpuLimit": 50,
+					"rssDeltas": [63389696, 58998784, 61128704, 59604992, 69353472],
+					"pass": false
+				}
+			],
+			"workers": 30,
+			"status": "FAIL"
+		}
+	},
+	"coverage": "Each candidate/baseline has30 independent workers:3 workloads ×5 off/on pairs. Each enabled worker has40/400/200 evidence items, empty gaps and no collector failure. Raw CPU/wall/RSS/disk/input retained; threshold unchanged. Approximate differences do not prove statistical significance or general acceleration. Formal harness intentionally exits1 on overallFAIL; these are completed failed acceptance runs, not blocked executions.",
+	"restoration": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-request-buffer/files/checks/restoration.json",
+		"bytes": 4546,
+		"sha256": "58415aff2e7d73db06b467d20cfd60c1c57624f848c97eaeff99873d8c188859"
+	},
+	"validation": {
+		"unit": {
+			"files": 2,
+			"tests": 91,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-request-buffer/files/checks/unit-restored.log",
+				"bytes": 207,
+				"sha256": "a8a92e1358aa42776664581b0e18436c7ea3fbd60647b7fd9beedb34c71d5b05"
+			}
+		},
+		"typecheck": {
+			"configs": 5,
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-request-buffer/files/checks/typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"checks": {
+			"lint": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-request-buffer/files/checks/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			"check-protocol": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-request-buffer/files/checks/check-protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"size-check": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-request-buffer/files/checks/size-check.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			},
+			"clean": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-request-buffer/files/checks/clean.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			}
+		},
+		"protocol": "Structure/type-only/v33 PASS; historical git-tag heuristic SKIP",
+		"clean": "Preview only;zero deletions",
+		"desktop": "Not run this turn;29 tracked product files exactly restored, no candidate installed in personal directory. Prior native evidence retains its own scope."
+	},
+	"actualCliCalls": 0,
+	"actualModelCalls": 0,
+	"actualToolCalls": 0,
+	"remaining": "AC39 overallFAIL: baseline wall47.33/98.57/433.22ms and CPU38.67/108.44/385.06ms. EC04/M1 and goal incomplete;EC06 containment unresolved and downstream gates held;realCLI/models deferred. Do not retry unchanged candidate or weaken evidence/hash/durability/thresholds."
+}
