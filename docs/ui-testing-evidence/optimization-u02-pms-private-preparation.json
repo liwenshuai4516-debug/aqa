@@ -1,0 +1,125 @@
+{
+	"date": "2026-10-26",
+	"status": "DESKTOP_PROJECT_SELECTED_PRIVATE_REFERENCE_PREPARED_BROWSER_PENDING",
+	"plan_complete": false,
+	"finalResult": {
+		"createdAt": "2026-10-26T01:31:28.840Z",
+		"status": "private-reference-prepared-browser-unverified",
+		"adapterSha256": "1314d17c5a0319a21b7abb0b89efc1e4f5dedc0b8007271888ca947271e94d72",
+		"browserSessions": 0,
+		"modelCalls": 0,
+		"businessWrites": 0,
+		"dataSpaceStoreWrites": 0,
+		"limitations": [
+			"Test harness adapter, not an installed Agent capability",
+			"Fresh login only; does not refresh persisted Data Space dynamic cache",
+			"Recording privacy, actual browser identity/role/data and formal tests remain unverified"
+		],
+		"preparation": {
+			"systemId": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+			"envId": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+			"revision": 8,
+			"configuration": "matched",
+			"privateState": "prepared-ephemeral",
+			"refresh": "explicit-fresh-login",
+			"authentication": "browser-not-checked",
+			"role": "unknown",
+			"data": "unknown",
+			"tenantCount": 1,
+			"clientCount": 2,
+			"dataSpaceWrites": 0
+		},
+		"nativeReferenceReadable": true,
+		"privateStateRemoved": true,
+		"storeUnchanged": true
+	},
+	"document": {
+		"createdAt": "2026-10-26T01:28:58.789Z",
+		"systemId": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+		"envId": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+		"documentPath": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-expectations-source-draft-2026-10-26.md",
+		"documentSha256": "d1de6e0d7a97dd4856552fcc009e93ef33e57eb023cf2fa0728dc9518a2dba7c",
+		"existing": false,
+		"storeUnchanged": true,
+		"documentIndexedInApplication": false,
+		"nativeCasesImported": 0
+	},
+	"initialAttempt": {
+		"path": "desktop-selection/private-preparation.json",
+		"sourceSnapshotAvailable": false,
+		"notFinalVersionProof": true
+	},
+	"dataSpaceApplication": {
+		"nativeToolsAvailableInCurrentSession": false,
+		"desktopHttpStatus": 401,
+		"nativeInitializationCompleted": false,
+		"nativeCasesImported": 0,
+		"nativeResultsWritten": 0,
+		"documentIndexed": false
+	},
+	"validation": {
+		"typecheck": "passed after mock type correction",
+		"vitestFiles": 3,
+		"vitestTestsPassed": 18,
+		"adapterTestsPassed": 10,
+		"lint": "passed",
+		"protocolStructure": "passed",
+		"protocolHistory": "skipped-no-tag",
+		"archiveReadback": "passed",
+		"privateStateRemoved": true,
+		"storeUnchanged": true
+	},
+	"gaps": [
+		"Supported authenticated Desktop Data Space tool connection",
+		"Application document indexing and native case import",
+		"Recording privacy and actual browser identity/role/data",
+		"General plugin private execution and persisted dynamic-cache integration",
+		"Normal/error diagnostic targets and new real-target review authorization"
+	],
+	"archive": {
+		"path": "optimization-u02-pms-private-preparation.tar.gz",
+		"sha256": "a047717d1f066c29b7a9905fc58c24678ecde6624f4a699335c1f6397b8ec16e",
+		"files": [
+			{
+				"path": "adapter.mjs",
+				"sha256": "1314d17c5a0319a21b7abb0b89efc1e4f5dedc0b8007271888ca947271e94d72",
+				"bytes": 6837
+			},
+			{
+				"path": "harness.mjs",
+				"sha256": "f3df197385be8def507b4dccbb1bbf5eb0bdedf0c704b50f9e664bc2697236f0",
+				"bytes": 3204
+			},
+			{
+				"path": "result.json",
+				"sha256": "0f5795fbc217ab8449c52ff483b6a7427c6e101e325127ac6cc6065442b6c7d9",
+				"bytes": 1064
+			},
+			{
+				"path": "desktop-selection/document-receipt.json",
+				"sha256": "a96aa7c1b85b4add07787f2ac191942666755c17c6969f96d0728c4761d59006",
+				"bytes": 567
+			},
+			{
+				"path": "desktop-selection/expectations-source-draft.md",
+				"sha256": "d1de6e0d7a97dd4856552fcc009e93ef33e57eb023cf2fa0728dc9518a2dba7c",
+				"bytes": 3076
+			},
+			{
+				"path": "desktop-selection/private-preparation.json",
+				"sha256": "00c83d750df169dc5ea4b8e19beb07e3557b2bb96f23a9dc451f91ffbf26d041",
+				"bytes": 770
+			},
+			{
+				"path": "pms-private-session.test.ts",
+				"sha256": "cf20f84a9a790565e1d23a54b46f460c72c3fca153476f68a7faf994f5b0fc00",
+				"bytes": 5228
+			}
+		]
+	},
+	"excluded": [
+		"Real credentials, storageState and raw authenticated responses",
+		"Personal desktop host access token",
+		"Raw Data Space stores"
+	]
+}

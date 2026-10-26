@@ -146,3 +146,5 @@ UI 基准子进程/API观察：`tests/lib/ui-baseline-child-observer.mjs` 可选
 UI 获批结果桌面验证：`tests/ui-approved-archive-desktop-test.mjs` 在原authority验证后，仅投影公开材料与选定run到隔离Electron，覆盖六功能映射、独立绑定、旧结果同步、重启及交付校验；不复制执行授权或新跑业务。
 
 UI 认证轮换回归：`tests/ui-private-evidence-test.mjs --rotated-cookie` 使用运行时新签发的合成Cookie，验证公开日志/trace/附件脱敏，保留真实passed/failed及资源缺口。
+
+PMS 私有环境准备：`tests/ui-pms-private-preparation.mjs --refresh` 对用户选定的 Electron 项目复用声明式登录脚本；`tests/lib/pms-private-session.mjs` 生成临时原生认证引用并清理。仅测试入口，不是已安装的 Agent 能力，不执行浏览器或改写数据空间原库。

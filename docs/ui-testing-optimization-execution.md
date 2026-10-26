@@ -731,3 +731,23 @@ U00首次发现→静态候选段有了可复用原始样本，但首次至获�
 [真实目标准入索引](ui-testing-evidence/optimization-real-target-source-admission.json)及其归档保存原生清单、公开源码摘录、示例来源对比和生成脚本，逐文件归档回读一致；不包含原store、凭据、私有storageState或完整大bundle。本轮0模型、0浏览器会话、0正式业务测试、0数据空间写入，不复用合成链路的批准作为真实业务验收。私密执行桥接仍未支持，不绕过执行/评审门禁。待项目选择确认后，再办理该项目的环境准备、预期/用例归档和真实浏览器准入；M1/M2、U03/U07及整计划保持未完成。
 
 本轮仅更新证据与文档；全量typecheck、2文件8项Vitest、lint、协议结构及差异检查通过。无tag协议历史启发式检查明确跳过。未改业务代码，不把既有Electron验收算本轮执行；未运行新的桌面业务链。开始与结束clean均仅预览、无删除。
+
+### U02 续跑：锁定桌面项目、私有认证准备及预期草稿存储（2026-10-26）
+
+用户已明确两次确认：以Electron桌面数据空间为准，后续预期与用例保存到该项目。锁定systemId=e2f5d42d-2781-4e68-a452-4c87c7d1d346、envId=f46a32da-2eac-43ca-86b8-2fa5eca5385c，重新读取revision=8、用例0；旧版示例不迁入、不充当需求。先前“项目选择待确认”解除；真实业务规则、角色和录制隐私的独立缺口保留。plan_update仍不可用。
+
+新增tests/lib/pms-private-session.mjs与显式--refresh测试入口tests/ui-pms-private-preparation.mjs。这是项目专用测试适配器，不新增Agent工具/技能，不声称个人安装或Electron能力已接入。复用现有runEnvScript执行所选环境的单步POST登录配置，严格限定同源/api/base-service/login及声明data.token；不允许外站、重定向或扩大到任意脚本。检查登录返回账号与配置账号一致、无附加验证且恰好一个租户，再读取同源permission；缺少PMS客户端或权限结构不支持则阻塞，不猜租户/角色、不调用切租户或业务写入接口。512KiB响应上限、超时、公共错误仅固定代码，原始响应/凭据不输出。
+
+根据已保存的部署源码映射token/account/tenant/client/menu/authorized-resource等storageState字段。部署读取器支持原始token字符串，因此该字段使用原始值，使现有原生PrivateEvidence能直接识别认证头中的同值；此处不是通用JSON嵌套秘密识别修复。认证状态位于工作区外临时目录，文件0600；仅以环境变量名引用交给原生authState，不返回明文或路径。dispose删除引用及自己目录。只做显式临时新登录，不刷新数据空间持久动态缓存，不替代A02-3缓存复用或插件通用privateExecution能力，原插件仍保留not-ready。
+
+真实环境准备共两次：第一份临时入口回执保留在desktop-selection/private-preparation.json；其后补账号一致性和最终测试入口，再执行最终源码1792978288836。两次均登录及权限请求成功、一个租户/两个客户端，原生authState可读取私有引用，随后文件、目录和环境引用均清理；store.json前后摘要相同。首轮未另存当时适配器源码，明确不作为最终版本证明。最终轮先保存harness/adapter及摘要再执行，保留configuration matched、authentication browser-not-checked、role/data unknown。0浏览器会话、0模型、0业务写入；这些请求不计正式用例通过。未读取桌面宿主访问令牌。
+
+合成单测10项覆盖原生引用读取与0600、清理、原store不变、显式刷新、跨项目/外站零请求、错误账号、验证码、零/多租户、token截断拒绝、PMS权限缺失和上游错误不回显秘密。与环境Agent及工作流计划单测合计3文件18项通过。首次全量typecheck发现测试fetch mock参数类型比原接口窄；修正mock为接口推断类型后全量typecheck通过，不归因为产品缺陷。未重跑无关旧合成/桌面批次。
+
+预期依据草稿已通过新增文件写入所选数据空间project-documents/<systemId>/OperationContract-expectations-source-draft-2026-10-26.md，0600、写后逐字回读并保存SHA256；没有覆盖原文件。仅登记登录/权限、草稿命名空间、合同状态三项declaration及真实缺口，明确未评审/未执行；不把示例金额边界和错误副本补造为真实需求。当前应用没有独立文档索引/编辑入口，因此文件虽存入数据空间目录，尚未在应用界面登记，也未录入原生用例库。该写入与store.json/runs.json写入分别统计：文档1、原库0、用例0、执行结果0。
+
+实际桌面服务8790的数据空间接口返回401；当前Codex会话没有可调用的数据空间原生工具。另两个无认证服务均为其他工作区/数据源，已只读辨认，未用作所选桌面服务的替代。没有读取个人宿主访问令牌、绕过鉴权、启动第二个实例争写同一原库或离线直接修改store。应用内initialize/import及完整Electron录制/评审/执行链仍未完成，需由可访问所选桌面会话的原生工具继续。已保存数据文件不等于应用界面已接入。
+
+[项目私有准备证据](ui-testing-evidence/optimization-u02-pms-private-preparation.json)保留最终源码、清理回执、文档副本及存储回执；私有认证与原始响应不入归档。原U05设计/结果授权账本未使用，不新增付费调用。整计划、M1/M2及依赖门禁仍未完成。
+
+最终验证：全量typecheck、3文件18项Vitest、lint、协议结构、size及差异检查通过；协议历史因无tag跳过。7个归档成员逐文件回读和最终适配器源码摘要一致，数据空间文档回读摘要与回执一致；开始/交付clean只预览、无删除。本轮未改产品运行代码或插件资源，不升级插件、不构建或替换个人应用，不声称桌面浏览器业务链已验收。

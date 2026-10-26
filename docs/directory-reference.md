@@ -435,6 +435,8 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 
 - `tests/lib/ui-baseline-child-observer.mjs`：U00测试专用Node预载观察器，按工作区Playwright 1.62.1解析同源监听，记录无路径/参数的FS、子进程及API计数；只由显式--observe-children启用。
 
+- `tests/ui-pms-private-preparation.mjs`、`tests/lib/pms-private-session.mjs`：所选 Electron 项目的显式登录准备与临时原生私有认证引用；`tests/unit/pms-private-session.test.ts` 验证账号、租户、目标边界和清理。不执行浏览器、模型或数据空间入库，不代表插件通用私密桥接已交付。
+
 - `tests/ui-approved-archive-desktop-test.mjs`：已获独立批准的六功能证据在真实Electron中的归档/绑定/同步/重启检查；需要预建应用，不执行目标或新增评审。
 
 UI 认证轮换回归：`tests/ui-private-evidence-test.mjs --rotated-cookie` 使用运行时新签发的合成Cookie，验证公开日志/trace/附件脱敏，保留真实passed/failed及资源缺口。

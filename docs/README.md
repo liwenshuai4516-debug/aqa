@@ -36,6 +36,7 @@
 - [本项目环境与数据 fixture](../qa/ui/README.md)：临时服务、身份与初态预检、归属数据、重复执行及中断清理。
 - [P0 守卫与 fixture 验收](ui-testing-p0-evidence.md)：操作分类、实际 SDK/宿主门禁、隔离浏览器和残留证据。
 - [UI 优化执行记录](ui-testing-optimization-execution.md)：分阶段工程证据、私密捕获回归及未完成门禁；分发包维护见[统一入口](../.pi/skills/ui-testing-workflow/references/maintenance.md)。
+- [PMS 私有准备证据](ui-testing-evidence/optimization-u02-pms-private-preparation.json)：桌面项目选择、原生私有引用准备及预期草稿存储回执；不代表浏览器验收或界面入库完成。
 - [U05 源码候选证据](ui-testing-evidence/optimization-u05-source-candidate.json)：六功能、13 断言的静态映射与评审阻塞；不代表设计获批或候选已执行。
 - [U05 定位重验证据](ui-testing-evidence/optimization-u05-locator-revalidation.json)：重复按钮、iframe及受控wrapper变化的原生录制检查，保留partial边界。
 - [U05 诊断输入准备](ui-testing-evidence/optimization-u05-probes.json)：13个错误副本及诊断契约，明确区分HTTP/静态检查与未执行的浏览器正反诊断。
