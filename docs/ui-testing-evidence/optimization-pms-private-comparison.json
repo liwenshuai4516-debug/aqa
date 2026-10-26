@@ -1,0 +1,256 @@
+{
+	"date": "2026-10-26",
+	"status": "COMPARISON_OBSERVED",
+	"plan_complete": false,
+	"modelCalls": 0,
+	"formalRuns": 0,
+	"modelReviewLedgerSha256": "34aaec3d27776ad96474be83f0be5a4eebe001fb41467afc69a4372c2b7e31ec",
+	"ledger_unchanged": true,
+	"result": {
+		"status": "COMPARISON_OBSERVED",
+		"plan": {
+			"systemId": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+			"envId": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+			"revision": 10,
+			"target": "http://192.168.90.224:8238/pms/OperationContract",
+			"comparison": ["anonymous", "managed-token-only", "full-target-session"],
+			"authSource": "One actual configured login and its permission read; same token in both authenticated contexts",
+			"allowed": [
+				"Explicit configured login POST once",
+				"Permission/profile reads",
+				"Same-origin browser GET/HEAD only"
+			],
+			"forbidden": [
+				"Form input/submission",
+				"Business writes",
+				"Foreign origins",
+				"Screenshot/trace/DOM/response body capture"
+			],
+			"snapshot": "Derived in memory from observed login token; authoritative Data Space cache not refreshed",
+			"role": "unknown",
+			"data": "unknown",
+			"modelCalls": 0,
+			"formalRuns": 0
+		},
+		"explicitPreparationRequests": [
+			{
+				"method": "POST",
+				"path": "/api/base-service/login"
+			},
+			{
+				"method": "GET",
+				"path": "/api/base-service/permission"
+			}
+		],
+		"contexts": [
+			{
+				"kind": "anonymous",
+				"allowedReadRequests": 41,
+				"blockedWriteRequests": 0,
+				"blockedForeignRequests": 0,
+				"pageErrors": 0,
+				"httpErrors": 0,
+				"atTargetRoute": false,
+				"atLoginRoute": true,
+				"atAccessDeniedRoute": false,
+				"publicControls": {
+					"查询": 0,
+					"搜索": 0,
+					"新增": 0,
+					"保存草稿": 0,
+					"经营合同": 0
+				},
+				"browserStorage": {
+					"tokenPresent": false,
+					"accountPresent": false,
+					"menuPresent": false,
+					"tenantPresent": false
+				},
+				"status": "observed",
+				"contextClosed": true
+			},
+			{
+				"kind": "managed-token-only",
+				"allowedReadRequests": 30,
+				"blockedWriteRequests": 0,
+				"blockedForeignRequests": 0,
+				"pageErrors": 0,
+				"httpErrors": 0,
+				"atTargetRoute": true,
+				"atLoginRoute": false,
+				"atAccessDeniedRoute": false,
+				"publicControls": {
+					"查询": 1,
+					"搜索": 0,
+					"新增": 0,
+					"保存草稿": 0,
+					"经营合同": 2
+				},
+				"browserStorage": {
+					"tokenPresent": true,
+					"accountPresent": false,
+					"menuPresent": true,
+					"tenantPresent": false
+				},
+				"accountProbe": {
+					"state": "matched",
+					"reason": "same-browser-profile-account-comparison"
+				},
+				"status": "observed",
+				"contextClosed": true
+			},
+			{
+				"kind": "full-target-session",
+				"allowedReadRequests": 30,
+				"blockedWriteRequests": 0,
+				"blockedForeignRequests": 0,
+				"pageErrors": 0,
+				"httpErrors": 0,
+				"atTargetRoute": true,
+				"atLoginRoute": false,
+				"atAccessDeniedRoute": false,
+				"publicControls": {
+					"查询": 1,
+					"搜索": 0,
+					"新增": 0,
+					"保存草稿": 0,
+					"经营合同": 3
+				},
+				"browserStorage": {
+					"tokenPresent": true,
+					"accountPresent": true,
+					"menuPresent": true,
+					"tenantPresent": true
+				},
+				"accountProbe": {
+					"state": "matched",
+					"reason": "same-browser-profile-account-comparison"
+				},
+				"status": "observed",
+				"contextClosed": true
+			}
+		],
+		"modelCalls": 0,
+		"formalRuns": 0,
+		"businessWrites": 0,
+		"originalStoreWrites": 0,
+		"limitations": [
+			"Direct production manager/native authState comparison in test process; not an Electron Agent business run",
+			"In-memory fresh parameter snapshot derived from actual login; not a Data Space refresh tool/cache integration test",
+			"Public marker/route/profile checks do not establish business permissions or test-data readiness",
+			"No private recording or approved diagnostic/formal execution"
+		],
+		"manager": {
+			"nativeConsumption": "authState scope/expiry validation passed",
+			"privateBindings": 1,
+			"currentDynamicTokenConsumed": true,
+			"stateValuesPublic": false,
+			"authentication": "unknown",
+			"role": "unknown",
+			"data": "unknown"
+		},
+		"conclusion": "TOKEN_ONLY_REACHES_TARGET_ACCOUNT_MATCHED_ROLE_DATA_UNVERIFIED",
+		"managedStateRemoved": true,
+		"fullStateRemoved": true,
+		"privateRootRemoved": true,
+		"storeUnchanged": true
+	},
+	"durable_project_documents": {
+		"document": {
+			"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-private-state-comparison-2026-10-26.md",
+			"sha256": "5cab150ef6d1dbe901f1d70dfb85aae3aa68968a0a75f018cda091b57d276b3c",
+			"bytes": 2216
+		},
+		"snapshot": {
+			"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/private-comparison-1792991555884",
+			"files": [
+				{
+					"path": "plan.json",
+					"sha256": "e5a80809f586a83b382256d86c34e59cfb05ca9574935e3953c4e60c1acd32d0",
+					"bytes": 864
+				},
+				{
+					"path": "result.json",
+					"sha256": "c23428d251932ffcb770281a9e8ef983f05df6d5ae49a7df300d020229138293",
+					"bytes": 4364
+				},
+				{
+					"path": "harness.mjs",
+					"sha256": "c8fc50c4db8159901b660845f086ede30937f4b15840cef6d60bea0bcc3a10ad",
+					"bytes": 9266
+				},
+				{
+					"path": "adapter.mjs",
+					"sha256": "1314d17c5a0319a21b7abb0b89efc1e4f5dedc0b8007271888ca947271e94d72",
+					"bytes": 6837
+				},
+				{
+					"path": "manager.mjs",
+					"sha256": "d724170c23405074547e593dccf59a5ed3495251b5bb7496fe483317c096b997",
+					"bytes": 6884
+				}
+			]
+		},
+		"storeUnchanged": true,
+		"application_document_index": "unsupported"
+	},
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-pms-private-comparison.tar.gz",
+		"sha256": "0f59df3445ea72914d8925842241e678f55d85521b8fc117640baac1a1dd2e90",
+		"bytes": 13390,
+		"files": 10,
+		"roundtrip_verified": true
+	},
+	"files": [
+		{
+			"path": "tests/scratch/ui-optimization-u00/archive-pms-private-comparison.py",
+			"sha256": "d160fee22163cf6e0c9f1bf53d1066919f4719512e3fce3b4d794b3f3b402d24",
+			"bytes": 5703
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/compare-pms-private-state.mjs",
+			"sha256": "c8fc50c4db8159901b660845f086ede30937f4b15840cef6d60bea0bcc3a10ad",
+			"bytes": 9266
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/pms-token-comparison.log",
+			"sha256": "b8d7b2c97676617bc3b573beb17a8c98c34c49f73f173decec64808dc6e418e7",
+			"bytes": 4471
+		},
+		{
+			"path": "tests/scratch/ui-pms-private-comparison/1792991555884/.cleanup-keep",
+			"sha256": "7cc4d9e88cd666899d2b0f02f8904072ee1e631c36c9844337a8ba45c59090e0",
+			"bytes": 71
+		},
+		{
+			"path": "tests/scratch/ui-pms-private-comparison/1792991555884/adapter.mjs",
+			"sha256": "1314d17c5a0319a21b7abb0b89efc1e4f5dedc0b8007271888ca947271e94d72",
+			"bytes": 6837
+		},
+		{
+			"path": "tests/scratch/ui-pms-private-comparison/1792991555884/data-space-documents.json",
+			"sha256": "01c2a1a29fe35911277f997040d31900ee266164f83ccf6f3ba51e23191efc3a",
+			"bytes": 1401
+		},
+		{
+			"path": "tests/scratch/ui-pms-private-comparison/1792991555884/harness.mjs",
+			"sha256": "c8fc50c4db8159901b660845f086ede30937f4b15840cef6d60bea0bcc3a10ad",
+			"bytes": 9266
+		},
+		{
+			"path": "tests/scratch/ui-pms-private-comparison/1792991555884/manager.mjs",
+			"sha256": "d724170c23405074547e593dccf59a5ed3495251b5bb7496fe483317c096b997",
+			"bytes": 6884
+		},
+		{
+			"path": "tests/scratch/ui-pms-private-comparison/1792991555884/plan.json",
+			"sha256": "e5a80809f586a83b382256d86c34e59cfb05ca9574935e3953c4e60c1acd32d0",
+			"bytes": 864
+		},
+		{
+			"path": "tests/scratch/ui-pms-private-comparison/1792991555884/result.json",
+			"sha256": "c23428d251932ffcb770281a9e8ef983f05df6d5ae49a7df300d020229138293",
+			"bytes": 4364
+		}
+	]
+}
