@@ -1,0 +1,161 @@
+{
+	"scope": "EC06/AC25 host execution log component and AC26 final-text-versus-process-state subcase; not an integrated ExecutionAdapter",
+	"timestamp": "2026-10-26T07:22:12.959845+00:00",
+	"baselineCommit": "f86935a7fdd67171df8b5c92b4cbe97bbaafd079",
+	"status": "COMPONENT_PASS; EXECUTION_ADAPTER_NOT_IMPLEMENTED",
+	"hostComponentAdded": "server/external-evaluation-log.ts",
+	"pluginVersion": "0.4.32",
+	"pluginFilesChanged": false,
+	"actualModelCalls": 0,
+	"actualAgentCliCalls": 0,
+	"platform": {
+		"timestamp": "2026-10-26T07:22:12.959845+00:00",
+		"finalModuleMatchesExecutedHash": true,
+		"fixtureMatchesExecutedHash": true,
+		"rawHashesAndRangesVerified": true,
+		"pluginFilesUnchanged": 29,
+		"node": "v23.10.0",
+		"kernel": "25.6.0",
+		"architecture": "arm64",
+		"finalExit": [0, null],
+		"checks": "Intermediate raw runs retained; final source/emitted module and validated run are authoritative. No VM or Electron execution is claimed."
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-log/index.json",
+		"bytes": 7828,
+		"sha256": "23735f5d5af4445a04a718acdc82a3d888137951c24d785acd1533cac7d3e370"
+	},
+	"archiveFiles": 52,
+	"raw": {
+		"final": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-log/files/integration-validated/result.json",
+			"bytes": 2107,
+			"sha256": "00c12e5b90c31f425200be13fa172a2e0b79731111d5569427cd8d8d5d12c9e7"
+		},
+		"stdout": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-log/files/integration-validated/stdout.raw",
+			"bytes": 65536,
+			"sha256": "4fdb1e34eded33b75d32206c1ffd8a7336e9e1fd1276477afd3b5954c9bac583"
+		},
+		"stderr": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-log/files/integration-validated/stderr.raw",
+			"bytes": 51,
+			"sha256": "2d877c7c0dd0695216cc3601d3bec8ac66e68fd3305af30dcfc5fe9618dfeb2e"
+		},
+		"verification": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-log/files/checks/verification.json",
+			"bytes": 463,
+			"sha256": "568ecf7448326c98014bb4191fe4f1b609381d8726034335f04297c0effdcf1a"
+		},
+		"deepJsonCounterexample": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-log/files/checks/deep-json-counterexample.log",
+			"bytes": 105,
+			"sha256": "fbedef86988f98b13271d7a89760aeb805fbcb998f269bae0ef7573a36b031e9"
+		},
+		"numericCounterexample": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-log/files/checks/nonfinite-counterexample.log",
+			"bytes": 132,
+			"sha256": "5be35e58cf89af77eeb6a167114c686c0765db7f3129109ebe642289ede866dd"
+		}
+	},
+	"contract": {
+		"input": "Trusted caller authorizes host-private evidence directory; pipe/pipeline supplies byte streams with backpressure. Not a sandbox or launch API.",
+		"maximums": {
+			"rawBytesPerStream": 1048576,
+			"lineBytes": 65536,
+			"entriesPerStream": 1000,
+			"jsonDepth": 64,
+			"highWaterMark": 16384
+		},
+		"parser": "Strict UTF-8 JSONL with raw byte ranges; stderr non-JSON text preserved. Oversized lines, nesting, nonfinite numbers and invalid stdout/UTF-8 produce gaps. Raw output does not authenticate producer truth. Finite numbers use JavaScript numeric precision.",
+		"durability": "Actual partial-write accounting, SHA256 over exactly stored bytes, file and directory fsync, owned fd close. Explicit interruption marker preserves unknown upstream tail. Bounded in-memory snapshot is not automatically persisted/rebuilt yet.",
+		"lifecycle": "streamEnded is source EOF only; neither final text, EOF, durable log nor child exit0 implies task success. No executing process state is inferred."
+	},
+	"integration": {
+		"finalTextWhileRunning": {
+			"exitCode": null,
+			"streamEnded": false
+		},
+		"sourceStdoutBytes": 4194345,
+		"storedStdoutBytes": 65536,
+		"stderrBytes": 51,
+		"readerPauses": 8,
+		"producerDrainEvents": 64,
+		"exit": [0, null],
+		"captureErrors": [],
+		"intermediateRunsRetained": [
+			"integration-first",
+			"integration-validated",
+			"integration-current",
+			"integration-final"
+		]
+	},
+	"validation": {
+		"unit": {
+			"status": "PASS",
+			"files": 4,
+			"tests": 110,
+			"newLogTests": 11,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-log/files/checks/unit-validated.log",
+				"bytes": 211,
+				"sha256": "215b1b1ec4207b4a8894a29dc0c922f58c5bd7263f4d4614e207099852db47e0"
+			}
+		},
+		"typecheck": {
+			"status": "PASS",
+			"configs": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-log/files/checks/typecheck-validated.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"lint": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-log/files/checks/lint-final.log",
+			"bytes": 88,
+			"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+		},
+		"protocol": {
+			"status": "structure/type-only/v33 PASS; historical tag heuristic SKIP",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-log/files/checks/protocol-final.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			}
+		},
+		"size": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-log/files/checks/size-final.log",
+			"bytes": 1089,
+			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+		},
+		"clean": {
+			"status": "Preview only; zero deletions",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-log/files/checks/clean-final.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			}
+		},
+		"diff": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-log/files/checks/diff-final.log",
+			"bytes": 0,
+			"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+		},
+		"build": "ensureBuild completed serial build before first integration; after source changes subsequent ensureBuild rebuilt emitted module. Final emitted hash matched before/after integration and at archive.",
+		"desktop": "NOT_RUN: no UI/plugin/desktop or installed execution-entry change; shared component only."
+	},
+	"faultEvidence": [
+		"Actual Node JSON.parse accepts 5000 levels/10001 bytes but structuredClone throws RangeError; parser pre-bounds depth and raw bytes remain available.",
+		"Actual JSON.parse(1e999) gives Infinity and JSON.stringify changes it to null; parser rejects nonfinite values as a gap.",
+		"Unit FileHandle injection first writes four real bytes then rejects next write with ENOSPC; raw hash/offset reflect only actual four bytes. This is not real disk exhaustion.",
+		"Unit FileHandle sync rejection preserves raw bytes, closes descriptor, and never marks durable/source EOF. This is not sudden-power-loss testing."
+	],
+	"remaining": [
+		"No product TargetProfile/version probe, argv/stdin, admission, start/handle/status/cancel/cleanup API or action.",
+		"No VZ serial-to-executable transport integration, graceful cancellation, timeout/waiting policy, conflicting-attempt gate or product cleanup ledger.",
+		"Parsed snapshot/log cursor persistence, restart replay of raw logs, authorization/redacted delivery and unified evidence sealing must be wired in host lifecycle.",
+		"No actual Electron execution capability, management/skill registration or real client/model test; EC07 still depends on completed EC06.",
+		"AC25/AC26/EC06 are not fully accepted by these component tests. AC39 historical FAIL, EC04/M1 and overall goal remain incomplete."
+	]
+}

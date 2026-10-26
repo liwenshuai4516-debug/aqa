@@ -101,6 +101,7 @@ flowchart LR
 | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | `server/agent/evaluation-evidence.ts`                                        | EC02：受控源读取、任务/尝试关联、持久采集接线                               |
 | `server/external-evaluation-runtime.ts`                                      | EC06：最小进程启动/身份/取消能力；仅在既有宿主 API 不足时新增               |
+| `server/external-evaluation-log.ts` | EC06：已实现宿主有界原始流/JSONL解析组件；执行器/持久游标接线仍待完成 |
 | `plugins/agent-evaluation/{index,store,evaluate}.mjs`                        | EC01/EC03：注册、持久化、评分编排；不堆进一个入口                           |
 | `plugins/agent-evaluation/{adapters,evaluators,profiles}/`                   | Pi、原生测试、ATIF、数据空间证据适配；规则；声明式配置                      |
 | `plugins/agent-evaluation/{targets,executors,verifiers}/`                    | EC06 起：客户端档案、唯一首批执行后端、可信核验器                           |

@@ -339,3 +339,7 @@ AC14仅补普通任务采集写锁失败、可见错误与显式恢复，不代�
 ## EC06 启动窗口崩溃恢复探针
 
 [本轮证据](EC06-vm-recovery-diagnostics.json)：独立测试supervisor在VM启动前持久记录专属claim/身份；原控制端SIGKILL、登记前失联后，通过新鲜查询恢复原VM并确认state0停止。错误nonce/实例身份拒绝，PID替换为旁路进程无控制效果；claim落盘而身份尚未落盘时崩溃及supervisor运行后被SIGKILL均保留unknown，拒绝重复启动。仅离线诊断，不是产品ExecutionAdapter、实际PID复用、断电恢复或Electron执行入口通过；AC23–AC27、AC39/M1及整体目标仍未完成，真实CLI/模型继续暂缓。
+
+## EC06 宿主日志组件
+
+[本轮证据](EC06-execution-log-diagnostics.json)：新增标准Writable原始流/解析组件，真实Node合成进程验证stdout/stderr分离、final-text时仍运行、4MiB输出背压/65,536字节上限及精确缺口；11项新单测、相关共110项与完整类型检查通过。插件仍0.4.32；组件尚未接通VM/产品执行器/Electron，解析游标持久化仍待生命周期接线，不标AC25/26或EC06整体完成，AC39/M1仍未完成。
