@@ -28,6 +28,9 @@ import {
 const key = (ref) => `${ref.kind}/${ref.id}.${ref.revision}`;
 const same = (a, b) => canonical(a) === canonical(b);
 const recordRef = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
+// Index/loaded domains and requested references have passed their fixed schemas.
+const sameDomain = (a, b) => a?.principalId === b.principalId && a?.workspaceId === b.workspaceId;
+const sameRef = (a, b) => a.kind === b.kind && a.id === b.id && a.revision === b.revision;
 const NOFOLLOW = fs.constants.O_NOFOLLOW;
 const contentHash = (text) => createHash("sha256").update(text).digest("hex");
 
@@ -301,7 +304,7 @@ export class EvaluationStore {
 				"Read authorization changed",
 			);
 		requireValue(
-			entry && same(entry.domain, identity.domain),
+			entry && sameDomain(entry.domain, identity.domain),
 			"PERMISSION_DENIED",
 			"Record unavailable in this authorization domain",
 		);
@@ -328,8 +331,8 @@ export class EvaluationStore {
 			entry.offset === undefined ? undefined : entry,
 			budget.prefetched?.get(key(ref)),
 		);
-		requireValue(same(recordRef(record), ref), "STORE_CORRUPT", "Record identity changed");
-		requireValue(same(record.domain, identity.domain), "PERMISSION_DENIED", "Record domain changed");
+		requireValue(sameRef(record, ref), "STORE_CORRUPT", "Record identity changed");
+		requireValue(sameDomain(record.domain, identity.domain), "PERMISSION_DENIED", "Record domain changed");
 		if (record.kind === "contracts") {
 			const scope = record.data.scope;
 			requireValue(
@@ -374,7 +377,7 @@ export class EvaluationStore {
 			validateRef(ref);
 			const entry = this.index.get(key(ref));
 			requireValue(
-				entry && same(entry.domain, identity.domain),
+				entry && sameDomain(entry.domain, identity.domain),
 				"PERMISSION_DENIED",
 				"Record unavailable in this authorization domain",
 			);

@@ -399,6 +399,32 @@ describe("EC01 contracts and immutable store", () => {
 		writeFileSync(path, JSON.stringify({ ...f.evidence, data: { ...f.evidence.data, content: "changed" } }));
 		expect(() => store.get(ctx, ref(f.snapshot))).toThrow(/digest/);
 	});
+	it.each(["id", "revision", "principal", "workspace", "extra-domain"])(
+		"rejects rehashed persisted %s changes and preserves the original authorization boundary",
+		(mode) => {
+			const store = open(),
+				ctx = context(),
+				task = write(store, ctx, "contracts", contract());
+			const file = join(store.root, "contracts", `${task.id}.1.json`),
+				before = readFileSync(file);
+			const changed = structuredClone(task);
+			if (mode === "id") changed.id = "11111111-1111-4111-8111-111111111111";
+			if (mode === "revision") changed.revision++;
+			if (mode === "principal") changed.domain.principalId = "other-user";
+			if (mode === "workspace") changed.domain.workspaceId = "other-workspace";
+			if (mode === "extra-domain") changed.domain.extra = "not-authorized-schema";
+			const { digest: _oldDigest, ...unsigned } = changed;
+			changed.digest = digest(unsigned);
+			const wrong = JSON.stringify(changed);
+			writeFileSync(file, wrong);
+			expect(() => store.get(ctx, ref(task))).toThrow(
+				mode === "id" || mode === "revision" ? /identity changed/ : /domain/,
+			);
+			expect(readFileSync(file, "utf8")).toBe(wrong);
+			writeFileSync(file, before);
+			expect(store.get(ctx, ref(task))).toEqual(task);
+		},
+	);
 	it("revalidates referenced bytes and authorization on every write", () => {
 		const store = open(),
 			ctx = context(),

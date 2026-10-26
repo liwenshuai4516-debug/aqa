@@ -1,0 +1,270 @@
+{
+	"scope": "EC04 fixed-schema domain/reference equality in store reads; fresh frozen performance pair and actual Electron authorization regression",
+	"timestamp": "2026-10-26T04:45:54.781297+00:00",
+	"baselineCommit": "d8cf34aa87da60aaa02c07b29add2dd467fb21a5",
+	"pluginVersion": "0.4.31",
+	"productChanges": true,
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/index.json",
+		"bytes": 90179,
+		"sha256": "5149f0db22a38a68570fc0dc8b86854f4dc9456fe5fb2ef767fa4387b3f4189c"
+	},
+	"archiveFiles": 414,
+	"implementation": {
+		"changed": "After fixed schema validation,compare domain principalId/workspaceId and reference kind/id/revision directly in get/getMany;avoid generic canonical serialization and temporary recordRef objects for these comparisons only.",
+		"preserved": [
+			"Each requested ref and current trusted domain schema checked",
+			"Indexed/loaded domain binding,current session authorization and authorization-change guard",
+			"Original file reload,schema,record SHA256 and transitive reference digest checks",
+			"Body SHA256/UTF8,size limits,redaction,capacity budgets",
+			"Generic canonical comparison for other structures",
+			"No cross-request cache,format/threshold/write/fsync changes"
+		],
+		"source": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/source/plugins/agent-evaluation/store.mjs",
+			"bytes": 40193,
+			"sha256": "033994ea7b66b71b90fddd443b1808c3b7ef9e5026324725d71935044c8e3280"
+		},
+		"patch": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/checks/candidate.patch",
+			"bytes": 13232,
+			"sha256": "6dbccca8a44ccd7e2c7f830f884bb609e2acf2246cc78a8aa1b030b2a5222b3c"
+		},
+		"measurementIdentity": "Formal candidate measured with0.4.30manifest;store implementation byte-identical to delivered0.4.31,formatter reported unchanged. Only version and README metadata advanced afterward. Frozen performance harness unchanged from HEAD."
+	},
+	"profile": {
+		"scope": "One enabled parallel and one enabled long0.4.30collect CPU sample;attribution diagnostic only,not formal off/on or reliable sum of overlapping inclusive time",
+		"raw": [
+			{
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/checks/parallel-cpu.json",
+				"bytes": 101354,
+				"sha256": "15e6f6c431474900b510d50c9edddfe44df0499890f556e7bde98540c9409391"
+			},
+			{
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/checks/long-cpu.json",
+				"bytes": 120713,
+				"sha256": "25b53a1d3d209b5aa9e4d57fc0f5ec7e68d24dcc521cf887ad4cf3655b81dd69"
+			}
+		],
+		"summary": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/checks/summary-final.json",
+			"bytes": 34087,
+			"sha256": "9dc8bede16ebc5976d6de403baf13f804e72e8390838a46c6088d539a477c811"
+		},
+		"collectWallMs": {
+			"parallel": 117.075875,
+			"long": 482.136625
+		},
+		"interpretation": "Parallel collect117.08ms,long482.14ms. Admitted collect-stack samples113.29/472.38ms;excluded Profiler post28.63/30.21ms and GC without collect stack3.38/9.33ms. Exclusion does not imply zeroGCcost. Long self sourceItem58.67ms,canonical append59.63ms,fsync67.41ms;anonymous frames preserved,not all assigned to serialization.",
+		"correction": "Initial commentary incorrectly said store equality used SHA256;inspection of current HEAD confirmed generic canonical byte equality already in place. No hash-removal candidate applied. Delivered change only fixed-field comparisons,while cryptographic integrity checks stay intact."
+	},
+	"performance": {
+		"status": "FAIL",
+		"baseline": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/performance/baseline.json",
+				"bytes": 8617,
+				"sha256": "3b04e07298865ccc42a3d441ff7fc772d285861fc2a1e0f299b4923cc7b4fe46"
+			},
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 47.69062500000001,
+					"wallLimit": 50,
+					"cpuDelta": 40.685,
+					"cpuLimit": 50,
+					"rssDeltas": [4636672, 4374528, 3883008, 5259264, 4030464],
+					"pass": true
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 107.970709,
+					"wallLimit": 50,
+					"cpuDelta": 114.627,
+					"cpuLimit": 50,
+					"rssDeltas": [24150016, 24821760, 30359552, 25329664, 25214976],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 481.282833,
+					"wallLimit": 50,
+					"cpuDelta": 413.648,
+					"cpuLimit": 50,
+					"rssDeltas": [58572800, 60358656, 62963712, 60080128, 63356928],
+					"pass": false
+				}
+			]
+		},
+		"candidate": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/performance/candidate.json",
+				"bytes": 8598,
+				"sha256": "ad8a4b38433bb0699632157a121fcde75723ee028973aa28e911c701f8d73bc8"
+			},
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 48.210583000000014,
+					"wallLimit": 50,
+					"cpuDelta": 40.229,
+					"cpuLimit": 50,
+					"rssDeltas": [1261568, 5128192, 5259264, 4767744, 2899968],
+					"pass": true
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 102.90533400000001,
+					"wallLimit": 50,
+					"cpuDelta": 111.603,
+					"cpuLimit": 50,
+					"rssDeltas": [23052288, 26509312, 24117248, 22478848, 23838720],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 442.5395419999999,
+					"wallLimit": 50,
+					"cpuDelta": 391.68699999999995,
+					"cpuLimit": 50,
+					"rssDeltas": [54657024, 57966592, 58507264, 55148544, 58802176],
+					"pass": false
+				}
+			]
+		},
+		"method": "Each implementation30fresh processes,3workloads x5off/on pairs,baseline then candidate sequential,no owned heavy jobs concurrently,fixture construction excluded. Original fsync/limits/assertions and harness retained. No repeat unchanged measurement seekingPASS.",
+		"integrity": "All enabled40/400/200evidence and empty gaps;currentRSSdeltas<64MiB in both groups,diskchecks original. Historical failures preserved.",
+		"interpretation": "Serial wall47.69->48.21ms CPU40.69->40.23ms,currentPASS;parallel107.97->102.91ms CPU114.63->111.60ms remainsFAIL;long481.28->442.54ms CPU413.65->391.69ms remainsFAIL. Local improvement,not statistical significance or universal speedup;overallAC39FAIL."
+	},
+	"regression": {
+		"newTests": "Five rehashed persisted mutations:id,revision,principalId,workspaceId,extra-domain key. All reject on loaded identity/domain schema boundary even with recomputed digest;wrong bytes preserved;restored exact file reads successfully. Existing domain/session/getMany/tampered body tests also passed.",
+		"unit": {
+			"status": "PASS",
+			"files": 18,
+			"tests": 316,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/checks/unit.log",
+				"bytes": 229,
+				"sha256": "4d178a5285e3352d425d9116ab3c16317ab60436dc13ce6763597755ce493e01"
+			}
+		},
+		"typecheck": {
+			"status": "PASS",
+			"configs": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/checks/typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		}
+	},
+	"desktop": {
+		"main": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/main/result.json",
+				"bytes": 43029,
+				"sha256": "0422caca7a36e3cd1d2c077d8fe7930538c2c838de1f6b12d33efa5edcb53e19"
+			},
+			"scope": "Actual native Electron skill/slash/tools/settings/reload/disable persistence,main diagnosis,long40pages/source errors,frozen re-score,offline import,2task scopes,10verdict cases,6dropped successful replies/restart replay"
+		},
+		"native": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/native/result.json",
+				"bytes": 5249,
+				"sha256": "5f9d85e91ba78684a769dbe010b3b308535b9cffe280c53347795d1eef721f23"
+			},
+			"scope": "Actual native Electron original41UI27passed/14controlled failures and41unlaunched synthetic plans,20/20/1pagination,source missing/changed/recovery;no business runner rerun",
+			"accessRejected": 36,
+			"secondPrincipalRejected": 18,
+			"interpretation": "Two source fixtures,this round36access replies(2sources x2probes x9) and18second-principal replies(2sources x9) rejected. Counts include stale/forged request expected errors,not all PERMISSION_DENIED. Entire store unchanged,old reports absent from wrong selection,andoriginal owner/source recovered."
+		},
+		"registeredSource": {
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/checks/registered-plugin-files.json",
+				"bytes": 26200,
+				"sha256": "68415a769310fe8189f0dbfd103a0f31e4ed5e018da077b966a33a1d882ae377"
+			},
+			"filesPerDesktop": 29,
+			"scope": "Exact current tracked plugin matches actual registered paths/realpaths in both isolated native instances;no personal installation or all-platform packaged release."
+		},
+		"visualInspection": "Actual narrow long-evidence screenshot inspected;scoped source/sealed notice,paged original text,no rendered embedded HTML."
+	},
+	"reportPerformance": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/performance/report.json",
+			"bytes": 1713,
+			"sha256": "9a63c3639f1317ac5e522c35420e779ee291dc155800d805ae1f8263e7121fd6"
+		},
+		"checks": {
+			"reportsCompleted": true,
+			"reportMedianMs": 572.467167,
+			"listMedianMs": 4.129124999999931,
+			"evidenceMedianMs": 0.3492919999998776
+		},
+		"scope": "1000 evidence snapshot; fixture construction excluded; five actual report/list/evidence reads",
+		"interpretation": "Report/list/evidence gates pass,does not cancel collectionFAIL."
+	},
+	"verification": {
+		"lint": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/checks/lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS structural/type-only/v33;historical tag heuristicSKIP",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/checks/protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			}
+		},
+		"i18n": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/checks/i18n.log",
+				"bytes": 615,
+				"sha256": "80312d8da86db05c5343b06b015ff85dbb3f374e280ecc1b044c87014878d1cd"
+			}
+		},
+		"size": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/checks/size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			}
+		},
+		"clean-delivery": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-field-equality/files/checks/clean-delivery.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			},
+			"scope": "Preview only,zero deletions."
+		}
+	},
+	"notExecuted": [
+		"Full0.4.31capacity/backup/rollback/scale/cost/rule-upgrade/tool-impersonation matrices;version assertion updates not execution,0.4.30evidence retains historical scope",
+		"PhysicalENOSPC/power-loss/stale-lock repair",
+		"EC06verifiedcontainment unresolved,downstream gates unchanged",
+		"RealCLI/paidmodels explicitly deferred by user"
+	],
+	"actualCalls": {
+		"realModels": 0,
+		"cli": 0,
+		"businessRunner": 0
+	},
+	"remaining": "AC39FAIL,EC04/M1and fullgoal incomplete. Remaining acceptance subsets/EC06isolationgatepersist;realCLI/modelsdeferred."
+}

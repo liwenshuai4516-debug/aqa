@@ -196,3 +196,7 @@ UI-only动作：uploadStart（byteLength/sha256）、uploadChunk（uploadId/offs
 ## 0.4.30：存储层有界采集分块
 
 采集页使用存储层已准备的输入字节和记录大小划分独立持久化分块，移除采集器重复正文预扫描。`writeEvidenceBatch`仍为单次有界原子批次；`writeEvidencePage`逐块发布，后续失败保留已提交前缀，原requestId重试复用回执，检查点最后发布。边界项在前一块发布后重新准备并检查授权；每块继续原输入、物理pack、容量及读写预算，单条过大沿原单记录路径处理，最终encodePack精确限额不变。没有跨请求缓存、格式、摘要校验、脱敏或fsync顺序变化。冻结对照有局部改善，整体AC39仍FAIL，不宣称M1完成；见[本轮证据](../../docs/agent-evaluation-evidence/EC04-storage-partition-diagnostics.json)。
+
+## 0.4.31：固定结构的读取身份比较
+
+存储读取对已通过固定schema的授权域逐字段比较principalId/workspaceId，对已校验引用比较kind/id/revision，减少通用规范序列化与临时对象。其他结构比较维持原canonical字节语义。每次读取仍校验请求和当前授权、原文件schema/摘要/引用、正文SHA256；无缓存、格式、阈值、写入或同步顺序变化。冻结对照有局部改善，AC39整体仍FAIL；见[本轮证据](../../docs/agent-evaluation-evidence/EC04-field-equality-diagnostics.json)，不宣称M1完成。
