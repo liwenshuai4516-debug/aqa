@@ -1,0 +1,204 @@
+{
+	"scope": "EC04 AC09 successful-write/lost-application-reply and original-key replay across full native desktop restart",
+	"timestamp": "2026-10-26T02:58:41.208401+00:00",
+	"baseline": "c682019d3a837b935cb9f4332642bd74a4a1c2a3",
+	"pluginVersion": "0.4.28",
+	"productCodeChanged": false,
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/index.json",
+		"bytes": 129267,
+		"sha256": "0178d8f1aba5e50916e6c0c8e1ba07d35b48713a03837c1d4d89d5d574b974dd"
+	},
+	"archiveFiles": 549,
+	"actualDesktop": {
+		"status": "PASS",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-qXFtK5",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/desktop-final/result.json",
+			"bytes": 8098,
+			"sha256": "df001f2dd7a5c3826cf1ab7db72daaa19f9cc0bbd9ae6ecf5d471f3e76e52b8b"
+		},
+		"receiptLoss": {
+			"droppedRequests": 6,
+			"droppedFrames": 6,
+			"replayed": [
+				{
+					"action": "createContract",
+					"requestId": "ebbb5774-8232-46eb-8801-43bda0bd4909",
+					"sameReferenceOrJob": true
+				},
+				{
+					"action": "createAttempt",
+					"requestId": "d4b744b1-1786-404f-85e4-991b6691f0eb",
+					"sameReferenceOrJob": true
+				},
+				{
+					"action": "collect",
+					"requestId": "8e7db9ec-9574-4edd-8272-fa98540ce0c6",
+					"sameReferenceOrJob": true
+				},
+				{
+					"action": "seal",
+					"requestId": "2176939b-9c50-430c-a7dc-1dbcfd58982d",
+					"sameReferenceOrJob": true
+				},
+				{
+					"action": "evaluate",
+					"requestId": "35320a34-b7a3-440b-8fd7-c4a7e68cc626",
+					"sameReferenceOrJob": true
+				},
+				{
+					"action": "review",
+					"requestId": "69cdb209-e592-4723-a139-5ad6740d3d9c",
+					"sameReferenceOrJob": true
+				}
+			],
+			"sourceBindingRetained": true,
+			"sameProcessReplaysCreatedFiles": 0,
+			"restartedReplaysCreatedFiles": 0,
+			"allStoredBytesUnchangedExceptNewWriterLease": true,
+			"uiReportAndReviewReopened": true,
+			"actualModelCalls": 0,
+			"actualCliCalls": 0,
+			"actualToolExecutions": 0,
+			"provenance": "Real native desktop, original production service/store. Test receiver intercepts six actual successful server replies before application event delivery. Native wire reception is retained separately from delivered application frames. Explicit original-key requests over trusted socket, not UI automatic timeout/retry. Full native restart, no execution or production injection."
+		},
+		"requestsAndLostReplies": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/desktop-final/receipt-loss-requests.json",
+			"bytes": 3653,
+			"sha256": "6cd479dcb21392122c05600ee83777bf9c2980f8de440cc3f163b3a31d881d20"
+		},
+		"storeFingerprintsAndWireReceipts": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/desktop-final/receipt-loss-before-restart.json",
+			"bytes": 32271,
+			"sha256": "35fcb12b7a8a7dfe6381bf25487d4ec17cc33912ea60b80026041ef8d17e7a55"
+		},
+		"restoredReviewScreenshot": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/desktop-final/receipt-loss-restored-review.png",
+			"bytes": 223474,
+			"sha256": "d504b885fc31986f265b68d6799e4904ba0f5e8581b91d7cead14a9da264c27e"
+		},
+		"checks": [
+			"Six successful original-service replies are saved by the first test socket listener and stopImmediatePropagation prevents their application delivery. All selected request IDs are absent from normal delivered-frame recorder before retry. The raw field rendererReceivedOriginal=false refers to this application delivery recorder, not absence of native wire reception.",
+			"createContract/createAttempt/collect/seal/evaluate/review each retry exact original requestId and payload. Non-scoring refs are identical; scoring uses same jobId despite queued/completed state changes.",
+			"All requests reissued after completion in the first native process: full store filenames and SHA256 map unchanged after every replay.",
+			"Full native application exit/restart preserves source binding and every stored byte except the replaced writer.lock lease. Same six original requests replay without changing the new full store map.",
+			"Exactly one new contract/target/attempt/snapshot/evaluation/review compared with pre-mutation store, including all replay operations. No duplicate scoring report or review.",
+			"Actual restarted UI opens the report and original review. Original verdict stays visible; review is not semantic approval.",
+			"Main desktop flow, settings/slash/reload, revision/configuration/observation, language/theme/layout, offline import and native restart also executed."
+		]
+	},
+	"registeredSource": {
+		"status": "PASS",
+		"trackedFiles": 29,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/registered-plugin-files.json",
+			"bytes": 6901,
+			"sha256": "9098009fa24de50d1eb0b1834bf5f9813a8dc1db7212177f8974ad6e27fbae0e"
+		}
+	},
+	"verification": {
+		"typecheck": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/EC04-receipt-loss-typecheck-final.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			},
+			"configurations": 5
+		},
+		"unit": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/EC04-receipt-loss-unit.log",
+				"bytes": 226,
+				"sha256": "8205eb0839774566dc55bc0dae88709395cf3be70899035325d9f2e5961c9bfe"
+			},
+			"files": 5,
+			"tests": 140
+		},
+		"lint": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/EC04-receipt-loss-lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/EC04-receipt-loss-protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"limitation": "Protocol v33/type-only checks passed; historical git-tag heuristic SKIP because no tag available."
+		},
+		"i18n": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/EC04-receipt-loss-i18n.log",
+				"bytes": 615,
+				"sha256": "80312d8da86db05c5343b06b015ff85dbb3f374e280ecc1b044c87014878d1cd"
+			}
+		},
+		"size": {
+			"status": "PASS",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/EC04-receipt-loss-size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			}
+		}
+	},
+	"retainedFailures": [
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/desktop-failed-1/result.json",
+				"bytes": 5490,
+				"sha256": "77898e19c03a19b1a462091bec074608416255962364cee7591bb5b880d04ea6"
+			},
+			"cause": "Initial network route and native-socket recorder observed different delivery boundaries; suppressed route reply still appeared in the underlying wire recorder, so no loss claim was accepted. Replaced this probe with first-listener application delivery suppression, retaining the wire receipt separately."
+		},
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/desktop-failed-2/result.json",
+				"bytes": 5490,
+				"sha256": "f9f3db2f31d20232086e074b35ce8e7feec31b7cdd57bc3f2a5428d2e96dd933"
+			},
+			"cause": "Initial network route and native-socket recorder observed different delivery boundaries; suppressed route reply still appeared in the underlying wire recorder, so no loss claim was accepted. Replaced this probe with first-listener application delivery suppression, retaining the wire receipt separately."
+		},
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/desktop-failed-3/result.json",
+				"bytes": 5490,
+				"sha256": "84a145218102550dfdbc6d7fd36da439b35db275e2229f42751f2efce9b9a225"
+			},
+			"cause": "Initial network route and native-socket recorder observed different delivery boundaries; suppressed route reply still appeared in the underlying wire recorder, so no loss claim was accepted. Replaced this probe with first-listener application delivery suppression, retaining the wire receipt separately."
+		},
+		{
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-receipt-loss/files/desktop-failed-4/result.json",
+				"bytes": 5603,
+				"sha256": "b97542fb6637672f6093f5fb62608b5b606ed03d654cc24f697ca442c14629be"
+			},
+			"cause": "After reload the desired session was already current. Fixture waited for a fresh switch snapshot from a no-op switch and timed out. Fixed by describing current authorized source first; switches only when necessary."
+		}
+	],
+	"provenance": "Original plugin/service/store on actual macOS arm64 Electron; only test receiver and owned synthetic SDK history. Explicit requests through trusted desktop socket. No model/CLI/tool/business execution, paid calls, personal configuration or product code changes.",
+	"notExecuted": [
+		"This is application event-delivery loss after native wire reception, not an OS/network outage. Explicit original-key retries are not a test of form timeout/automatic retry or crash before commit.",
+		"AC09 additional observation-time range review remains unverified; AC03 half-manifest crash and AC19 forced-kill/unknown runtime matrices remain open.",
+		"No formal collection performance rerun or full identity/rollback/scale/long-evidence/native business matrix rerun. Historical evidence retains its original scope."
+	],
+	"remaining": [
+		"EC04/M1 and overall goal incomplete; AC39 collection performance FAIL remains.",
+		"EC06 detached child containment unresolved; dependent execution held.",
+		"EC08 real CLI/model tests deferred by user."
+	]
+}

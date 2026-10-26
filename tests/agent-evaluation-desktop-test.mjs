@@ -25,6 +25,13 @@ import { verifyScale } from "./fixtures/agent-evaluation/scale.mjs";
 import { installRuleUpgradeProbe, verifyRuleUpgrade } from "./fixtures/agent-evaluation/rule-upgrade.mjs";
 import { installTaskScopeFixture, verifyTaskScope } from "./fixtures/agent-evaluation/task-scope.mjs";
 import { installVerdictFixture, verifyVerdictMatrix } from "./fixtures/agent-evaluation/verdict-matrix.mjs";
+import { beginReceiptLoss, verifyReceiptLoss } from "./fixtures/agent-evaluation/receipt-loss.mjs";
+const receiptLoss = process.argv.includes("--receipt-loss");
+assert.ok(
+	!receiptLoss ||
+		!process.argv.some((arg) => ["--active-jobs", "--rollback", "--scale", "--rule-upgrade"].includes(arg)),
+	"Run receipt loss separately from other native process/profile probes",
+);
 const verdictMatrix = process.argv.includes("--verdict-matrix");
 const taskScope = process.argv.includes("--task-scope");
 const ruleUpgrade = process.argv.includes("--rule-upgrade");
@@ -172,7 +179,13 @@ try {
 					window.__evaluationSocket = this;
 					this.addEventListener("message", (e) => {
 						try {
-							window.__evaluationFrames.push(JSON.parse(e.data));
+							const frame = JSON.parse(e.data);
+							if (window.__receiptLossDropIds?.includes(frame.payload?.requestId)) {
+								window.__receiptLossDropped.push(frame);
+								e.stopImmediatePropagation();
+								return;
+							}
+							window.__evaluationFrames.push(frame);
 						} catch {}
 					});
 				}
@@ -821,6 +834,8 @@ try {
 	result.checks.push(
 		"An actual secondary renderer with the same preload and service origin cannot obtain the main window native identity",
 	);
+	if (receiptLoss) stage("drop successful replies before application delivery and replay original keys");
+	const lostReceipts = receiptLoss ? await beginReceiptLoss({ page, until, output, dataDir, sessionPath }) : undefined;
 	stage("full app restart persistence");
 	const interruptedJob = activeJobProbe
 		? await beginInterruptedJob({ page, until, output, probe: activeJobProbe, original, reports, dataDir })
@@ -1007,6 +1022,10 @@ try {
 		);
 	}
 
+	if (lostReceipts) {
+		stage("lost successful replies recover after native restart without duplicate records");
+		result.receiptLoss = await verifyReceiptLoss({ page, until, output, dataDir, pending: lostReceipts });
+	}
 	if (rollback) {
 		stage("plugin revert, full userData backup restore and unsupported older format");
 		const restored = await verifyRollback({
