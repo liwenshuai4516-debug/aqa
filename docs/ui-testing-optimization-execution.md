@@ -1045,3 +1045,21 @@ ui_result_analysis read-trace读取本实例原始ZIP事件。test.trace expect@
 [内部连接适配证据](ui-testing-evidence/optimization-u02-recording-adapter.json)归档159文件、209次FileRef核验，逐成员回读一致；实际Electron权威项目新增OperationContract-recording-adapter-2026-10-26.md与四轮144份快照，0700/0600、回读一致，store字节未写。没有建立应用文档索引、正式用例或执行结果入库；两份模型授权账本与上轮摘要相同。四轮模型调用、正式批次、真实业务写入均0，已知合成秘密/编码/媒体扫描通过，私有协议含原文；只清理本轮原始合成payload及自有进程，公开raw-log不是完整私密原文。
 
 本轮实现的是实际SDK/MCP已使用的内部生命周期薄适配，尚未开放产品入口；维护索引/地图/目录已同步，不宣称Electron安装发现、管理禁用/重载或完整业务录制已完成。下一步继续输入闭包、新凭据/嵌套JSON和协议分支，再接产品私有准备/管理入口并做实际桌面全链；文件系统竞态、异常崩溃与完整重连续录、真实角色/租户/数据、U00计量、U03/U07和M1/M2仍待验，整体goal active。
+
+### U02 续跑：JSON 叶值原生过滤复用及新增 cookie 泄露反例（2026-10-26）
+
+上一轮a0ac959已推送且独立核对远端一致，本轮继续A02-5。开始clean仅预览，无可清理项；保留原.gitignore/db-client锁差异及其他协作新增文件，plan_update不可用。两份评审账本与上轮摘要一致，PMS剩余2次设计额度未使用、report-2结果评审状态不变。
+
+先用真实SDK嵌套ui_discover_record/MCP复现：原原型只过滤完整存储值，将合成token存于JSON session.credentials[0].token后，seed原生authState与实际localStorage叶值/页面比对通过，但公开setup/snapshot、SDK长输出及工作区记录仍包含叶值。原生5步complete、1脚本不能证明隐私通过；此为明确失败，未改原生状态。
+
+复用原实现：上游0.1.13仅从主入口导出既有PrivateEvidence，private-evidence测试改从主入口消费；过滤器TS及编译JS与0.1.12逐字节相同，不复制或改写规则。原生私密证据及环境14项测试通过；上游本地提交f8fad767efddf1f6987c69215e0a66caa5564c32，未推送。重新导出/安装分发包，e2e清单与锁文件更新，SHA-256 fd3f902d3828b5f53c6c9de5112d623e319d2d509cb2022b377e506e54f250c4，与lock完整性一致；保留历史包及资产。
+
+内部原型将受管录制副本放在PrivateEvidence私有目录内，SDK转换前直接复用text过滤，媒体屏蔽、原始私有协议、原生writer字节校验与生命周期守卫继续保留。相同JSON输入正常5步complete、gaps=[]、1脚本且公开/原生字节一致，公开响应/SDK长输出/工作区未检出叶值；晚取消仍partial、0脚本、私有草稿保留/公开不存在。额外编码轮同时反射原文、JSON字符串、URI/URL、Base64/Base64URL形式（相同变体去重），私有协议确认实际出现，公开扫描未检出，仍5步complete；不宣称任意编码安全。
+
+另用原生初始过滤器验证运行中新增认证值：响应设置HttpOnly qa_rotated cookie，seed检查context已收到，页面反射新值。初始JSON token在所有公开工具结果中均被过滤，但新cookie仍出现在setup/snapshot及SDK长输出。原生finish仍complete、1脚本，隐私验证明确失败，未把complete当安全、未从任意响应正文收集字符串掩盖缺陷。产品私密record继续unsupported，下一步必须解决公开前可靠收集实际新增认证值。
+
+泄露基线/轮换两轮只保存减少内容后的指标、源码与不含秘密的草稿，原始公开QA和SDK临时输出随归属合成payload清理，result中的原生manifest引用明确列为未保留，不能冒称可回读的完整原始证据。正常、取消、编码轮保留可核验公开QA；全部原始合成私密payload按归属清理，自有SDK/MCP/浏览器/HTTP服务关闭。模型调用/正式批次/真实业务写入均0。
+
+完整五配置typecheck、相关6文件34项Vitest、lint、协议、size及差异检查通过，协议tag启发式无可用tag而跳过。真实SDK集成passed；隔离Electron可见性PASS，验证技能页及快捷入口、禁用/启用/重载持久、MCP直连87工具及重连，未验证真实业务私密录制。使用已有构建，不重启用户应用、不覆盖个人安装。原生14项测试原始日志未另存，以本轮工具输出为依据，不编造回放日志。
+
+[JSON过滤及运行中认证缺口证据](ui-testing-evidence/optimization-u02-recording-json.json)归档161文件、169次FileRef核验及逐成员回读一致，含隔离Electron截图/日志；实际权威项目新增OperationContract-recording-json-2026-10-26.md与五轮136份公开/减少内容快照，0700/0600、回读一致、store未写。文件保存不表示应用文档列表显示或正式结果入库。产品实时认证收集、通用输入闭包、协议字段冲突、文件系统竞态、完整重连续录、Electron业务全链、真实角色/租户/数据、U00计量、U03/U07与M1/M2仍待完成；整体goal active。
