@@ -1063,3 +1063,19 @@ ui_result_analysis read-trace读取本实例原始ZIP事件。test.trace expect@
 完整五配置typecheck、相关6文件34项Vitest、lint、协议、size及差异检查通过，协议tag启发式无可用tag而跳过。真实SDK集成passed；隔离Electron可见性PASS，验证技能页及快捷入口、禁用/启用/重载持久、MCP直连87工具及重连，未验证真实业务私密录制。使用已有构建，不重启用户应用、不覆盖个人安装。原生14项测试原始日志未另存，以本轮工具输出为依据，不编造回放日志。
 
 [JSON过滤及运行中认证缺口证据](ui-testing-evidence/optimization-u02-recording-json.json)归档161文件、169次FileRef核验及逐成员回读一致，含隔离Electron截图/日志；实际权威项目新增OperationContract-recording-json-2026-10-26.md与五轮136份公开/减少内容快照，0700/0600、回读一致、store未写。文件保存不表示应用文档列表显示或正式结果入库。产品实时认证收集、通用输入闭包、协议字段冲突、文件系统竞态、完整重连续录、Electron业务全链、真实角色/租户/数据、U00计量、U03/U07与M1/M2仍待完成；整体goal active。
+
+### U02 续跑：公开响应前的认证头采集原型（2026-10-26）
+
+从c3fb289继续，未改产品代码、分发包、依赖或个人配置。复用工作流/录制技能，plan_update不可用，继续原计划与本文；PMS剩余2次仅设计评审额度保留，report-2未结果批准。本轮模型调用、正式批次、真实业务写入均0。
+
+内部合成原型在父MCP响应交付SDK前，使用当前原生ctx.executeTool调用固定browser_run_code_unsafe：完成私有trace chunk并开启下一chunk，复用原生PrivateEvidence.process收集标准认证头，再过滤父响应。不复制trace解析或runner；媒体继续屏蔽。scope显式允许最多8次固定私有采集、总工具预算30，录制max_steps10；正常实际5个业务工具加4个采集工具，原生steps仅5，不冒称已包含全部调用。unsafe工具能执行任意代码，当前仅固定trace代码；路径依赖已知私有mirror布局，非通用产品能力。
+
+运行中新HttpOnly cookie与立即清除cookie两类均原生complete、1脚本、gaps=[]、公开/原生草稿字节一致，已知初始/新增秘密及编码未检出于公开响应/SDK长输出/工作区。立即清除样本seed确认cookie先存在后不存在，DOM仍反射旧值，验证采集历史认证头而非仅当前storageState。SDK实际tool_call/tool_result保存parentToolCallId，最终正向轮确认9次MCP调用、4个helper归属当前业务工具，helper结果均先于父响应；较早两轮未安装该事件记录，不能追认。早期ctx自报parentToolCallId=null不作为归属依据。
+
+两个反例：writer采集trace被自有故障钩子破坏时，原生过滤器拒绝发布；helper响应到达时取消原signal，也阻止公开草稿。两者均私有原生草稿保留、公开不存在、finish partial/0脚本，分别保留private-authentication-trace-corrupt或private-authentication-capture-cancelled以及missing-generated-script/goal-not-reached/tool-error-or-cancelled。browser_close真实成功，不伪造清理。
+
+新增localStorage反例仍失败：服务器不设置新增cookie，页面仅写runtime-token，seed确认非空；4次头采集仍不能识别该新值，setup/snapshot及SDK长输出泄露，初始JSON token过滤有效。原生complete/1脚本不算隐私通过，产品record继续unsupported。首次增加SDK归属记录的ephemeral轮writer在45秒报MCP request aborted，未finish，保持unknown/未完成，不归类partial或通过。精确源码/原生错误响应保留；当时尚未在finally汇出SDK事件与采集指标，部分已清理输入不可回读，索引列明。另起已确认无真实业务副作用的独立合成轮补证通过，不覆盖超时失败，不声称稳定性完成。
+
+[认证头采集原型证据](ui-testing-evidence/optimization-u02-recording-runtime-headers.json)归档239文件、294次可用FileRef核验、逐成员回读一致；Electron权威项目保存OperationContract-recording-runtime-headers-2026-10-26.md及七轮228份公开/减少内容快照，0700/0600逐文件回读，store字节不变。localStorage泄露轮公开QA未保留，仅指标/源码/安全草稿；原始私密trace/payload和SDK临时输出按归属清理，trace摘要不冒充可读取FileRef。文档保存不代表应用列表显示或正式结果入库。本轮未新增Electron界面回归，前轮通过未算本轮通过。
+
+本轮只有证据与文档改动：验证合成真实SDK/MCP对照、源码语法、证据摘要/引用/归档回读、模型账本未变；未改长期实现，未重复单测。提交前完整5配置typecheck、lint、协议同步、size及diff检查通过；协议tag启发式无可用tag而跳过，开始/交付clean均仅预览且无可清理项。继续解决动态localStorage/跨frame生命周期、固定helper预算及路径契约，再收敛内部适配并接Electron产品链。通用输入闭包、协议结构、并发替换/关闭认证、完整重连续录、真实角色/租户/数据、U00计量、U03/U07及M1/M2未完成，整体goal active。

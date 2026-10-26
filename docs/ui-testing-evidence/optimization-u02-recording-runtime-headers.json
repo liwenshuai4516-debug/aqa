@@ -1,0 +1,4153 @@
+{
+	"date": "2026-10-26",
+	"status": "COOKIE_HEADER_CAPTURE_PROTOTYPE_VERIFIED_RUNTIME_STORAGE_STILL_LEAKS",
+	"plan_complete": false,
+	"product_private_recording": "unsupported",
+	"current_runs": {
+		"rotation": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-runtime-headers/1793000878388",
+			"protectedPrototype": true,
+			"status": "PRIVATE_MIRROR_NATIVE_RECORDING_HANDOFF_COMPLETE_NOT_PRODUCT_DELIVERY",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 2,
+			"fixtureEncodingVariants": 1,
+			"tools": [
+				{
+					"name": "generator_setup_page",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 128090
+				},
+				{
+					"name": "browser_snapshot",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 127781
+				},
+				{
+					"name": "generator_read_log",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 4534
+				},
+				{
+					"name": "generator_write_test",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 1072
+				},
+				{
+					"name": "browser_close",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 894
+				}
+			],
+			"findings": [
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 104412
+				},
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 104136
+				}
+			],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"nativeFilterReused": true,
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "050e57e2f8a1620dcd7b5892950b546806c50f013da51c332f6dcf6032a88c0c",
+					"tests/seed.spec.ts": "b5692b93e4915c9336acb0a0aefbb02da4da5987a0d1c6300b2a78457db4ec66"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "050e57e2f8a1620dcd7b5892950b546806c50f013da51c332f6dcf6032a88c0c"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "b5692b93e4915c9336acb0a0aefbb02da4da5987a0d1c6300b2a78457db4ec66"
+						}
+					],
+					"expiresAt": "2026-10-26T07:52:58.398Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"hostParentReferenceUnchanged": true,
+			"privateHeaderCaptures": [
+				{
+					"ordinal": 1,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "ec6597c5192edcc917d63d6eafa21b39ba2f950944a16c31ada99340623e3b39",
+					"traceBytes": 37601,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 2,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "77950f6950e025d493a6d17a29018ba5b6fb43f97f2d0e7b8744f3990ebd7eef",
+					"traceBytes": 135196,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 3,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "9485fea7087f2686b73df004f4d06fed1c129f4fb697b3ebf140c812748ba090",
+					"traceBytes": 124755,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 4,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "fb5718bce5400c51758940c007b65c96873c0d5a12e4bf7014b59823a18f7856",
+					"traceBytes": 124740,
+					"status": "headers-observed-before-public-response"
+				}
+			],
+			"recordingStatus": "complete",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "72466384e931771d44f36fc0f6cae1900e390d8fcd79374bc894292463627732"
+			},
+			"nativeRecordingSteps": 5,
+			"generatedScriptRef": {
+				"path": "qa/ui/recordings/privacy-mirror/draft.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc"
+			},
+			"finishGaps": [],
+			"publicScriptEqualsNative": true,
+			"rawProtocolRetainedPrivately": true,
+			"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+			"nativeDraftPublication": "native-recording-finish-complete-byte-identical-exclusive-publication",
+			"ownedRawOutputsRemoved": true
+		},
+		"ephemeral": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-runtime-headers/1793001178648",
+			"protectedPrototype": true,
+			"status": "PRIVATE_MIRROR_NATIVE_RECORDING_HANDOFF_COMPLETE_NOT_PRODUCT_DELIVERY",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 3,
+			"fixtureEncodingVariants": 1,
+			"tools": [
+				{
+					"name": "generator_setup_page",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 128090
+				},
+				{
+					"name": "browser_snapshot",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 127781
+				},
+				{
+					"name": "generator_read_log",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 4784
+				},
+				{
+					"name": "generator_write_test",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 1072
+				},
+				{
+					"name": "browser_close",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 894
+				}
+			],
+			"findings": [
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 104412
+				},
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 104136
+				}
+			],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"nativeFilterReused": true,
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "76dcce2a0aed93e16c0f999b4a345953c44487b279e5d7249b7ab95e76609ab9",
+					"tests/seed.spec.ts": "c6b9a36d1c42d249254e26b762c7ee33433d67f593479b770e5f5257f649f92b"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "76dcce2a0aed93e16c0f999b4a345953c44487b279e5d7249b7ab95e76609ab9"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "c6b9a36d1c42d249254e26b762c7ee33433d67f593479b770e5f5257f649f92b"
+						}
+					],
+					"expiresAt": "2026-10-26T07:57:58.657Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"hostParentReferenceUnchanged": true,
+			"sdkCaptureReceipts": [
+				{
+					"ordinal": 1,
+					"parentToolCallId": null,
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 2,
+					"parentToolCallId": null,
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 3,
+					"parentToolCallId": null,
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 4,
+					"parentToolCallId": null,
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				}
+			],
+			"privateHeaderCaptures": [
+				{
+					"ordinal": 1,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "ea75e660e20bfd07f9b7b23b8746b96f44c456d18828ddcef470e6a819a56a92",
+					"traceBytes": 147082,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 2,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "3885400d09cbb7b4e7091d100f70f60b8f12e0421b65cbe4287343db1f0a0e38",
+					"traceBytes": 139455,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 3,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "614559ccd69c0362e9d81ef9fbce339ef2ca2cca43b7a245959f5ab86fae4f28",
+					"traceBytes": 128998,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 4,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "ac9ab08f6068305509bf0ea9981532d36dbcca53a9399c5600c1eb2374fa9ef7",
+					"traceBytes": 129004,
+					"status": "headers-observed-before-public-response"
+				}
+			],
+			"recordingStatus": "complete",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "ccfc57ade7404d1af42c781775018f1085a27b54e8d26263a97169f8ce44f2fc"
+			},
+			"nativeRecordingSteps": 5,
+			"generatedScriptRef": {
+				"path": "qa/ui/recordings/privacy-mirror/draft.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc"
+			},
+			"finishGaps": [],
+			"publicScriptEqualsNative": true,
+			"rawProtocolRetainedPrivately": true,
+			"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+			"nativeDraftPublication": "native-recording-finish-complete-byte-identical-exclusive-publication",
+			"ephemeralCookieClearedInSeed": true,
+			"corruptTraceRejected": false,
+			"ownedRawOutputsRemoved": true
+		},
+		"corrupt": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-runtime-headers/1793001208564",
+			"protectedPrototype": true,
+			"status": "CORRUPT_TRACE_BLOCKED_NATIVE_PARTIAL",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 2,
+			"fixtureEncodingVariants": 1,
+			"tools": [
+				{
+					"name": "generator_setup_page",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 128090
+				},
+				{
+					"name": "browser_snapshot",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 127781
+				},
+				{
+					"name": "generator_read_log",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 4534
+				},
+				{
+					"name": "generator_write_test",
+					"error": true,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 756
+				},
+				{
+					"name": "browser_close",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 894
+				}
+			],
+			"findings": [
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 104412
+				},
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 104136
+				}
+			],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"nativeFilterReused": true,
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "c5a9ba29ca2983ee69ab24558d077c053f61030c14a32c82a248412e84c68c38",
+					"tests/seed.spec.ts": "7425d2344b9582d73ee13054634596a3927a77d497d2d7e1172e1f5806c62ff1"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "c5a9ba29ca2983ee69ab24558d077c053f61030c14a32c82a248412e84c68c38"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "7425d2344b9582d73ee13054634596a3927a77d497d2d7e1172e1f5806c62ff1"
+						}
+					],
+					"expiresAt": "2026-10-26T07:58:28.573Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"publicDraftExists": false,
+			"privateNativeDraftExists": true,
+			"hostParentReferenceUnchanged": true,
+			"sdkEvents": [
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__generator_setup_page",
+					"toolCallId": "handoff-3/1",
+					"parentToolCallId": "handoff-3"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-3/1/1",
+					"parentToolCallId": "handoff-3/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-3/1/1",
+					"parentToolCallId": "handoff-3/1",
+					"isError": false
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__generator_setup_page",
+					"toolCallId": "handoff-3/1",
+					"parentToolCallId": "handoff-3",
+					"isError": false
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_snapshot",
+					"toolCallId": "handoff-5/1",
+					"parentToolCallId": "handoff-5"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-5/1/1",
+					"parentToolCallId": "handoff-5/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-5/1/1",
+					"parentToolCallId": "handoff-5/1",
+					"isError": false
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_snapshot",
+					"toolCallId": "handoff-5/1",
+					"parentToolCallId": "handoff-5",
+					"isError": false
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__generator_read_log",
+					"toolCallId": "handoff-8/1",
+					"parentToolCallId": "handoff-8"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-8/1/1",
+					"parentToolCallId": "handoff-8/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-8/1/1",
+					"parentToolCallId": "handoff-8/1",
+					"isError": false
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__generator_read_log",
+					"toolCallId": "handoff-8/1",
+					"parentToolCallId": "handoff-8",
+					"isError": false
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__generator_write_test",
+					"toolCallId": "handoff-10/1",
+					"parentToolCallId": "handoff-10"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-10/1/1",
+					"parentToolCallId": "handoff-10/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-10/1/1",
+					"parentToolCallId": "handoff-10/1",
+					"isError": true
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__generator_write_test",
+					"toolCallId": "handoff-10/1",
+					"parentToolCallId": "handoff-10",
+					"isError": true
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_close",
+					"toolCallId": "handoff-12/1",
+					"parentToolCallId": "handoff-12"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_close",
+					"toolCallId": "handoff-12/1",
+					"parentToolCallId": "handoff-12",
+					"isError": false
+				}
+			],
+			"sdkCaptureReceipts": [
+				{
+					"ordinal": 1,
+					"parentToolCallId": null,
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 2,
+					"parentToolCallId": null,
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 3,
+					"parentToolCallId": null,
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 4,
+					"parentToolCallId": null,
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": true,
+					"detailsKeys": []
+				}
+			],
+			"privateHeaderCaptures": [
+				{
+					"ordinal": 1,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "e2fb843d04669dc46344968ef343a044df6300879059d629827edb7a75556e67",
+					"traceBytes": 140130,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 2,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "2c6dc5ecfdcf93e3b0c010509cadaf20b0af7f6a8bdd76f6af2881709e68c105",
+					"traceBytes": 137379,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 3,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "5b08cd49a1cb63d8b9ae75309f1cf32fc3469e84d974dcfea9100d3ef032c81d",
+					"traceBytes": 126924,
+					"status": "headers-observed-before-public-response"
+				}
+			],
+			"recordingStatus": "partial",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "59d3f9c12b44e4bbda1b2432fd6f181538bfe05100c361ccceb82b2b14ae9e17"
+			},
+			"nativeRecordingSteps": 5,
+			"finishGaps": [
+				"private-authentication-trace-corrupt",
+				"missing-generated-script",
+				"goal-not-reached",
+				"tool-error-or-cancelled"
+			],
+			"publicScriptEqualsNative": true,
+			"rawProtocolRetainedPrivately": true,
+			"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+			"nativeDraftPublication": "native-recording-finish-complete-byte-identical-exclusive-publication",
+			"ephemeralCookieClearedInSeed": false,
+			"corruptTraceRejected": true,
+			"ownedRawOutputsRemoved": true
+		},
+		"cancel": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-runtime-headers/1793001237743",
+			"protectedPrototype": true,
+			"status": "PRIVATE_CAPTURE_CANCELLED_NATIVE_PARTIAL",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 2,
+			"fixtureEncodingVariants": 1,
+			"tools": [
+				{
+					"name": "generator_setup_page",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 128090
+				},
+				{
+					"name": "browser_snapshot",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 127782
+				},
+				{
+					"name": "generator_read_log",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 4534
+				},
+				{
+					"name": "generator_write_test",
+					"error": true,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 721
+				},
+				{
+					"name": "browser_close",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 894
+				}
+			],
+			"findings": [
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 104412
+				},
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 104136
+				}
+			],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"nativeFilterReused": true,
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "d03b851b3bfe685225d2a39e25c8779b7ecc003a9e2e5909b4802f2e581741c7",
+					"tests/seed.spec.ts": "8985f7d8bde34d4ccc646917dfb4dd60acfa466315ec2b08da9d62722448516a"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "d03b851b3bfe685225d2a39e25c8779b7ecc003a9e2e5909b4802f2e581741c7"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "8985f7d8bde34d4ccc646917dfb4dd60acfa466315ec2b08da9d62722448516a"
+						}
+					],
+					"expiresAt": "2026-10-26T07:58:57.754Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"cancelledAtPrivateCapture": true,
+			"publicDraftExists": false,
+			"privateNativeDraftExists": true,
+			"hostParentReferenceUnchanged": true,
+			"sdkEvents": [
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__generator_setup_page",
+					"toolCallId": "handoff-3/1",
+					"parentToolCallId": "handoff-3"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-3/1/1",
+					"parentToolCallId": "handoff-3/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-3/1/1",
+					"parentToolCallId": "handoff-3/1",
+					"isError": false
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__generator_setup_page",
+					"toolCallId": "handoff-3/1",
+					"parentToolCallId": "handoff-3",
+					"isError": false
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_snapshot",
+					"toolCallId": "handoff-5/1",
+					"parentToolCallId": "handoff-5"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-5/1/1",
+					"parentToolCallId": "handoff-5/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-5/1/1",
+					"parentToolCallId": "handoff-5/1",
+					"isError": false
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_snapshot",
+					"toolCallId": "handoff-5/1",
+					"parentToolCallId": "handoff-5",
+					"isError": false
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__generator_read_log",
+					"toolCallId": "handoff-8/1",
+					"parentToolCallId": "handoff-8"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-8/1/1",
+					"parentToolCallId": "handoff-8/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-8/1/1",
+					"parentToolCallId": "handoff-8/1",
+					"isError": false
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__generator_read_log",
+					"toolCallId": "handoff-8/1",
+					"parentToolCallId": "handoff-8",
+					"isError": false
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__generator_write_test",
+					"toolCallId": "handoff-10/1",
+					"parentToolCallId": "handoff-10"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-10/1/1",
+					"parentToolCallId": "handoff-10/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__generator_write_test",
+					"toolCallId": "handoff-10/1",
+					"parentToolCallId": "handoff-10",
+					"isError": true
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-10/1/1",
+					"parentToolCallId": "handoff-10/1",
+					"isError": true
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_close",
+					"toolCallId": "handoff-12/1",
+					"parentToolCallId": "handoff-12"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_close",
+					"toolCallId": "handoff-12/1",
+					"parentToolCallId": "handoff-12",
+					"isError": false
+				}
+			],
+			"sdkCaptureReceipts": [
+				{
+					"ordinal": 1,
+					"parentToolCallId": null,
+					"toolCallId": "handoff-3/1/1",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 2,
+					"parentToolCallId": null,
+					"toolCallId": "handoff-5/1/1",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 3,
+					"parentToolCallId": null,
+					"toolCallId": "handoff-8/1/1",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 4,
+					"parentToolCallId": null,
+					"toolCallId": "handoff-10/1/1",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": true,
+					"detailsKeys": []
+				}
+			],
+			"privateHeaderCaptures": [
+				{
+					"ordinal": 1,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "8f5377fb4dc40e118d80ba3ac7be0933cc4f89c73e652eec29e43c5c0de3ce80",
+					"traceBytes": 137435,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 2,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "a28ffaa52cb83313c386f616011949949ef3da8e2fd80e5a48cc6bb89c9ed834",
+					"traceBytes": 135206,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 3,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "6f3a60151d957b6d2edc6ce2edd13fca0fd618233bdd0eb5502c41f72c0b518c",
+					"traceBytes": 124760,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 4,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "9b200bf179308f6a9447fcbe349721be0e461b27205ffffc2366a00f10955661",
+					"traceBytes": 124735,
+					"status": "headers-observed-before-public-response"
+				}
+			],
+			"recordingStatus": "partial",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "1d9ca0a5c75a83d7df415913c57cb5a8451cd2db7d406d33e0a8325a67d684f6"
+			},
+			"nativeRecordingSteps": 5,
+			"finishGaps": [
+				"private-authentication-capture-cancelled",
+				"missing-generated-script",
+				"goal-not-reached",
+				"tool-error-or-cancelled"
+			],
+			"publicScriptEqualsNative": null,
+			"rawProtocolRetainedPrivately": true,
+			"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+			"nativeDraftPublication": "not-published-failure-preserved",
+			"ephemeralCookieClearedInSeed": false,
+			"corruptTraceRejected": false,
+			"ownedRawOutputsRemoved": true
+		},
+		"storage": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-runtime-headers/1793001269111",
+			"protectedPrototype": true,
+			"status": "RUNTIME_LOCALSTORAGE_LEAK_REPRODUCED_DESPITE_HEADER_CAPTURE",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 2,
+			"fixtureEncodingVariants": 1,
+			"tools": [
+				{
+					"name": "generator_setup_page",
+					"error": false,
+					"containsSyntheticSecret": true,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": true,
+					"mediaBlocks": 0,
+					"bytes": 199948
+				},
+				{
+					"name": "browser_snapshot",
+					"error": false,
+					"containsSyntheticSecret": true,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": true,
+					"mediaBlocks": 0,
+					"bytes": 199638
+				},
+				{
+					"name": "generator_read_log",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 4532
+				},
+				{
+					"name": "generator_write_test",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 1072
+				},
+				{
+					"name": "browser_close",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 894
+				}
+			],
+			"findings": [
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": true,
+					"bytes": 176412
+				},
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": true,
+					"bytes": 176136
+				},
+				{
+					"surface": "workspace-file",
+					"path": "work/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+					"containsSyntheticSecret": true,
+					"bytes": 199611
+				},
+				{
+					"surface": "workspace-file",
+					"path": "work/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+					"containsSyntheticSecret": true,
+					"bytes": 199295
+				},
+				{
+					"surface": "workspace-file",
+					"path": "work/qa/ui/recordings/privacy-mirror/raw-log.json",
+					"containsSyntheticSecret": true,
+					"bytes": 410326
+				}
+			],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"nativeFilterReused": true,
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "caa621f58de37f34d666903e95e8d144cfb8c5cd63a5a9b3d2c1abc372758b44",
+					"tests/seed.spec.ts": "7fe7c0df1d227fb350204430d2f0fe3e70440f0f89c31fcb9370d7700d3d06ac"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "caa621f58de37f34d666903e95e8d144cfb8c5cd63a5a9b3d2c1abc372758b44"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "7fe7c0df1d227fb350204430d2f0fe3e70440f0f89c31fcb9370d7700d3d06ac"
+						}
+					],
+					"expiresAt": "2026-10-26T07:59:29.120Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"hostParentReferenceUnchanged": true,
+			"sdkEvents": [
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__generator_setup_page",
+					"toolCallId": "handoff-3/1",
+					"parentToolCallId": "handoff-3"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-3/1/1",
+					"parentToolCallId": "handoff-3/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-3/1/1",
+					"parentToolCallId": "handoff-3/1",
+					"isError": false
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__generator_setup_page",
+					"toolCallId": "handoff-3/1",
+					"parentToolCallId": "handoff-3",
+					"isError": false
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_snapshot",
+					"toolCallId": "handoff-5/1",
+					"parentToolCallId": "handoff-5"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-5/1/1",
+					"parentToolCallId": "handoff-5/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-5/1/1",
+					"parentToolCallId": "handoff-5/1",
+					"isError": false
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_snapshot",
+					"toolCallId": "handoff-5/1",
+					"parentToolCallId": "handoff-5",
+					"isError": false
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__generator_read_log",
+					"toolCallId": "handoff-8/1",
+					"parentToolCallId": "handoff-8"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-8/1/1",
+					"parentToolCallId": "handoff-8/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-8/1/1",
+					"parentToolCallId": "handoff-8/1",
+					"isError": false
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__generator_read_log",
+					"toolCallId": "handoff-8/1",
+					"parentToolCallId": "handoff-8",
+					"isError": false
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__generator_write_test",
+					"toolCallId": "handoff-10/1",
+					"parentToolCallId": "handoff-10"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-10/1/1",
+					"parentToolCallId": "handoff-10/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-10/1/1",
+					"parentToolCallId": "handoff-10/1",
+					"isError": false
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__generator_write_test",
+					"toolCallId": "handoff-10/1",
+					"parentToolCallId": "handoff-10",
+					"isError": false
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_close",
+					"toolCallId": "handoff-12/1",
+					"parentToolCallId": "handoff-12"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_close",
+					"toolCallId": "handoff-12/1",
+					"parentToolCallId": "handoff-12",
+					"isError": false
+				}
+			],
+			"sdkCaptureReceipts": [
+				{
+					"ordinal": 1,
+					"parentToolCallId": null,
+					"toolCallId": "handoff-3/1/1",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 2,
+					"parentToolCallId": null,
+					"toolCallId": "handoff-5/1/1",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 3,
+					"parentToolCallId": null,
+					"toolCallId": "handoff-8/1/1",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 4,
+					"parentToolCallId": null,
+					"toolCallId": "handoff-10/1/1",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				}
+			],
+			"privateHeaderCaptures": [
+				{
+					"ordinal": 1,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "1142f7c34373efbb456c443b1ba669bbf8b7da8acd00503021156676a315103f",
+					"traceBytes": 143033,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 2,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "481cffb96cd19815ca2f31ba5b4e9b372c9e89a0d1c302a259e300ea698f15aa",
+					"traceBytes": 135155,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 3,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "8dd3c773773cd4346c01ad34d33989456147f485f81063fcc66b35212a94c58d",
+					"traceBytes": 124710,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 4,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "d2ecb44fe624ed7b13f5b5dbb35428c00a78482606a84e4765c552bb286a9b89",
+					"traceBytes": 124698,
+					"status": "headers-observed-before-public-response"
+				}
+			],
+			"recordingStatus": "complete",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "b3487d9f06a5ac8c74cf92ede82792d6b5f4ddb5eb8335f94116274d4b4d4286"
+			},
+			"nativeRecordingSteps": 5,
+			"generatedScriptRef": {
+				"path": "qa/ui/recordings/privacy-mirror/draft.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc"
+			},
+			"finishGaps": [],
+			"publicScriptEqualsNative": true,
+			"runtimeAuthenticationLeakReproduced": true,
+			"runtimeStorageLeakDespiteHeaderCapture": true,
+			"rawProtocolRetainedPrivately": true,
+			"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+			"nativeDraftPublication": "native-recording-finish-complete-byte-identical-exclusive-publication",
+			"runtimeStorageOnly": true,
+			"ephemeralCookieClearedInSeed": false,
+			"corruptTraceRejected": false,
+			"ownedRawOutputsRemoved": true
+		},
+		"ephemeral-sdk": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-runtime-headers/1793001466483",
+			"protectedPrototype": true,
+			"status": "PRIVATE_MIRROR_NATIVE_RECORDING_HANDOFF_COMPLETE_NOT_PRODUCT_DELIVERY",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 3,
+			"fixtureEncodingVariants": 1,
+			"tools": [
+				{
+					"name": "generator_setup_page",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 128090
+				},
+				{
+					"name": "browser_snapshot",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 127781
+				},
+				{
+					"name": "generator_read_log",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 4784
+				},
+				{
+					"name": "generator_write_test",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 1072
+				},
+				{
+					"name": "browser_close",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 894
+				}
+			],
+			"findings": [
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 104412
+				},
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 104136
+				}
+			],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"nativeFilterReused": true,
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "586041dc535b337dab07579580ee882b9684eb91b1afbc36adb7f163ded352b6",
+					"tests/seed.spec.ts": "6410bc65d04579d178ce718cd7a4e5a591dbc9a4e5837d4e05b49da916778e10"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "586041dc535b337dab07579580ee882b9684eb91b1afbc36adb7f163ded352b6"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "6410bc65d04579d178ce718cd7a4e5a591dbc9a4e5837d4e05b49da916778e10"
+						}
+					],
+					"expiresAt": "2026-10-26T08:02:46.492Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"hostParentReferenceUnchanged": true,
+			"sdkEvents": [
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__generator_setup_page",
+					"toolCallId": "handoff-3/1",
+					"parentToolCallId": "handoff-3"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-3/1/1",
+					"parentToolCallId": "handoff-3/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-3/1/1",
+					"parentToolCallId": "handoff-3/1",
+					"isError": false
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__generator_setup_page",
+					"toolCallId": "handoff-3/1",
+					"parentToolCallId": "handoff-3",
+					"isError": false
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_snapshot",
+					"toolCallId": "handoff-5/1",
+					"parentToolCallId": "handoff-5"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-5/1/1",
+					"parentToolCallId": "handoff-5/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-5/1/1",
+					"parentToolCallId": "handoff-5/1",
+					"isError": false
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_snapshot",
+					"toolCallId": "handoff-5/1",
+					"parentToolCallId": "handoff-5",
+					"isError": false
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__generator_read_log",
+					"toolCallId": "handoff-8/1",
+					"parentToolCallId": "handoff-8"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-8/1/1",
+					"parentToolCallId": "handoff-8/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-8/1/1",
+					"parentToolCallId": "handoff-8/1",
+					"isError": false
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__generator_read_log",
+					"toolCallId": "handoff-8/1",
+					"parentToolCallId": "handoff-8",
+					"isError": false
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__generator_write_test",
+					"toolCallId": "handoff-10/1",
+					"parentToolCallId": "handoff-10"
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-10/1/1",
+					"parentToolCallId": "handoff-10/1"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"toolCallId": "handoff-10/1/1",
+					"parentToolCallId": "handoff-10/1",
+					"isError": false
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__generator_write_test",
+					"toolCallId": "handoff-10/1",
+					"parentToolCallId": "handoff-10",
+					"isError": false
+				},
+				{
+					"kind": "tool_call",
+					"toolName": "mcp__ui_playwright_test__browser_close",
+					"toolCallId": "handoff-12/1",
+					"parentToolCallId": "handoff-12"
+				},
+				{
+					"kind": "tool_result",
+					"toolName": "mcp__ui_playwright_test__browser_close",
+					"toolCallId": "handoff-12/1",
+					"parentToolCallId": "handoff-12",
+					"isError": false
+				}
+			],
+			"sdkCaptureReceipts": [
+				{
+					"ordinal": 1,
+					"parentToolCallId": null,
+					"toolCallId": "handoff-3/1/1",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 2,
+					"parentToolCallId": null,
+					"toolCallId": "handoff-5/1/1",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 3,
+					"parentToolCallId": null,
+					"toolCallId": "handoff-8/1/1",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				},
+				{
+					"ordinal": 4,
+					"parentToolCallId": null,
+					"toolCallId": "handoff-10/1/1",
+					"toolName": "mcp__ui_playwright_test__browser_run_code_unsafe",
+					"outcomeKeys": ["toolCall", "result", "isError", "durationMs"],
+					"isError": false,
+					"detailsKeys": ["server", "tool"]
+				}
+			],
+			"privateHeaderCaptures": [
+				{
+					"ordinal": 1,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "3ab2fc03131864346662f3c55f2536be29adb8239c2a9a2da807cfab5f4528d9",
+					"traceBytes": 43844,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 2,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "50f5caab1f2e781c99670aea17701b41f7bd3dcae5fe026972975d8b452caf71",
+					"traceBytes": 131973,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 3,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "8fc9aa7ceddcd00d22f40f68a4b40e95896eef2e69eb32a742ba2eca36288a37",
+					"traceBytes": 121526,
+					"status": "headers-observed-before-public-response"
+				},
+				{
+					"ordinal": 4,
+					"tool": "browser_run_code_unsafe",
+					"throughSdkExecuteTool": true,
+					"traceSha256": "e7f3f4d63fcbe45908877bb2c900400bf915943d57ac6862cf62c283ed0016fe",
+					"traceBytes": 121509,
+					"status": "headers-observed-before-public-response"
+				}
+			],
+			"recordingStatus": "complete",
+			"recordingRef": {
+				"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "3d39fb248dbdcc3c25c4cb7bfc3e68be7411c3788a1fd8dc1cf21ba253327ac6"
+			},
+			"nativeRecordingSteps": 5,
+			"generatedScriptRef": {
+				"path": "qa/ui/recordings/privacy-mirror/draft.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc"
+			},
+			"finishGaps": [],
+			"publicScriptEqualsNative": true,
+			"rawProtocolRetainedPrivately": true,
+			"rawSnapshotRetainedPrivately": "Protocol capture contains original setup/snapshot; no filename requested",
+			"nativeDraftPublication": "native-recording-finish-complete-byte-identical-exclusive-publication",
+			"runtimeStorageOnly": false,
+			"ephemeralCookieClearedInSeed": true,
+			"corruptTraceRejected": false,
+			"ownedRawOutputsRemoved": true
+		},
+		"sdk-timeout": {
+			"output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/ui-recording-runtime-headers/1793001347790",
+			"protectedPrototype": true,
+			"status": "blocked",
+			"modelCalls": 0,
+			"formalRuns": 0,
+			"businessWrites": 0,
+			"fixtureRequests": 3,
+			"fixtureEncodingVariants": 1,
+			"tools": [
+				{
+					"name": "generator_setup_page",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 128090
+				},
+				{
+					"name": "browser_snapshot",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 127781
+				},
+				{
+					"name": "generator_read_log",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 4784
+				},
+				{
+					"name": "generator_write_test",
+					"error": false,
+					"containsSyntheticSecret": false,
+					"containsInitialSecret": false,
+					"containsRotatedSecret": false,
+					"mediaBlocks": 0,
+					"bytes": 1072
+				}
+			],
+			"findings": [
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 104412
+				},
+				{
+					"surface": "sdk-full-output-file",
+					"containsSyntheticSecret": false,
+					"bytes": 104136
+				}
+			],
+			"limits": [
+				"Synthetic fixture only; not a PMS business recording or generic privacy proof",
+				"Existing runtime reproduction; no recording gate or approval is bypassed for real data"
+			],
+			"nativeFilterReused": true,
+			"snapshot": {
+				"inputFiles": ["package.json", "playwright.config.mjs", "tests/seed.spec.ts"],
+				"inputHashes": {
+					"package.json": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+					"playwright.config.mjs": "22d351796bf2f35dbbdf87e95ff298023b32fe1eb03433835283684e7da4e7cf",
+					"tests/seed.spec.ts": "5904f80052b28e1ce38020b465550fd2742b733126938d456388c09df192e175"
+				},
+				"byteIdentical": true,
+				"sharedDependencyLink": true,
+				"receipt": {
+					"status": "private-snapshot-prepared",
+					"inputs": [
+						{
+							"path": "package.json",
+							"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+						},
+						{
+							"path": "playwright.config.mjs",
+							"sha256": "22d351796bf2f35dbbdf87e95ff298023b32fe1eb03433835283684e7da4e7cf"
+						},
+						{
+							"path": "tests/seed.spec.ts",
+							"sha256": "5904f80052b28e1ce38020b465550fd2742b733126938d456388c09df192e175"
+						}
+					],
+					"expiresAt": "2026-10-26T08:00:47.799Z",
+					"authentication": "unknown",
+					"role": "unknown",
+					"data": "unknown",
+					"inputClosure": "explicit-inputs-only"
+				},
+				"parentScopeRejectsMirror": true
+			},
+			"errorClass": "AssertionError",
+			"errorSummary": "{\"schema_version\":\"1.0\",\"capability_id\":\"ui-discover-record\",\"capability_version\":\"0.1.0\",\"status\":\"blocked\",\"artifact_refs\":[{\"path\":\"qa/ui/recordings/privacy-mirror/events/step-11/response.json\",\"sha256\":\"0ac554e7637cf831cbf60f6f4abf42c0af9812e3d33270532c1f213b8e625adf\"}],\"errors\":[{\"category\":\"precondition\",\"message\":\"原生录制工具返回错误，证据已保留；停止分支并核对副作用\",\"recoverable\":false}],\"output\":{\"content\":[{\"type\":\"text\",\"text\":\"MCP request aborted\"}],\"details\":{},\"isError\":true,\"duration_ms\":45003,\"unknown\":true,\"observation_ref\":{\"path\":\"qa/ui/recordings/privacy-mirror/events/step-11/response.json\",\"sha256\":\"0ac554e7637cf831cbf60f6f4abf42c0af9812e3d33270532c1f213b8e625adf\"}}}\n+ actual - expected\n\n+ 'blocked'\n- 'completed'\n",
+			"ownedRawOutputsRemoved": true
+		}
+	},
+	"refsVerified": 294,
+	"modelCalls": 0,
+	"formalRuns": 0,
+	"businessWrites": 0,
+	"ledgerSha256": {
+		"u05-authorized-review-budget.json": "34aaec3d27776ad96474be83f0be5a4eebe001fb41467afc69a4372c2b7e31ec",
+		"pms-anonymous-authorized-review-budget.json": "854cec9cb4cb8574adcdec3163d7fd2953ab1016be4c9799f48a2cfa7bba87c3"
+	},
+	"sdkOwnership": {
+		"source": "actual tool_call/tool_result events",
+		"verifiedRun": "ephemeral-sdk",
+		"mcpCalls": 9,
+		"privateCaptures": 4,
+		"parentResultAfterCaptureResult": true
+	},
+	"unretainedRefs": {
+		"timeoutInputs": [
+			{
+				"run": "sdk-timeout",
+				"path": "tests/seed.spec.ts",
+				"sha256": "5904f80052b28e1ce38020b465550fd2742b733126938d456388c09df192e175"
+			},
+			{
+				"run": "sdk-timeout",
+				"path": "package.json",
+				"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1"
+			},
+			{
+				"run": "sdk-timeout",
+				"path": "playwright.config.mjs",
+				"sha256": "22d351796bf2f35dbbdf87e95ff298023b32fe1eb03433835283684e7da4e7cf"
+			},
+			{
+				"run": "sdk-timeout",
+				"path": "tests/seed.spec.ts",
+				"sha256": "5904f80052b28e1ce38020b465550fd2742b733126938d456388c09df192e175"
+			}
+		],
+		"storage": {
+			"path": "qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "b3487d9f06a5ac8c74cf92ede82792d6b5f4ddb5eb8335f94116274d4b4d4286"
+		},
+		"reason": "Synthetic secret leak in public QA; removed with owned raw payload, source and reduced metrics retained; raw trace hashes are observations, not retained FileRefs"
+	},
+	"document": {
+		"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-recording-runtime-headers-2026-10-26.md",
+		"sha256": "1d80249196f0f863f8da2a2356d66d7e46acb2c9146667460505dcd8e8064790",
+		"storeUnchanged": true
+	},
+	"snapshot": {
+		"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/recording-runtime-headers-1793001466483",
+		"files": [
+			{
+				"path": "cancel/result.json",
+				"sha256": "6cbbc90ea0a0b9041c75027ed9fb6f499cae48efc640d53cb9aa9166cc62150d",
+				"bytes": 10173
+			},
+			{
+				"path": "cancel/lifecycle-control.mjs",
+				"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+				"bytes": 85
+			},
+			{
+				"path": "cancel/seed.spec.ts",
+				"sha256": "8985f7d8bde34d4ccc646917dfb4dd60acfa466315ec2b08da9d62722448516a",
+				"bytes": 625
+			},
+			{
+				"path": "cancel/harness.mjs",
+				"sha256": "32394fad5514e095e31488a1d619346209defb0576afc8e8b504f97215d542ef",
+				"bytes": 26210
+			},
+			{
+				"path": "cancel/mirror-prototype.mjs",
+				"sha256": "3ee11d852c8d9e0da805b6f7103b1e4851af5fe195298b6a2d83ec6c0fcdcd54",
+				"bytes": 8697
+			},
+			{
+				"path": "cancel/package.json",
+				"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+				"bytes": 17
+			},
+			{
+				"path": "cancel/transport-adapter.mjs",
+				"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+				"bytes": 4568
+			},
+			{
+				"path": "cancel/workspace-adapter.mjs",
+				"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+				"bytes": 7584
+			},
+			{
+				"path": "cancel/playwright.config.mjs",
+				"sha256": "d03b851b3bfe685225d2a39e25c8779b7ecc003a9e2e5909b4802f2e581741c7",
+				"bytes": 358
+			},
+			{
+				"path": "cancel/.cleanup-keep",
+				"sha256": "a68e50569a614e488d66e88d53b3794199b95f60ab1ecbbeffff5180fde1024a",
+				"bytes": 69
+			},
+			{
+				"path": "cancel/tests/seed.spec.ts",
+				"sha256": "8985f7d8bde34d4ccc646917dfb4dd60acfa466315ec2b08da9d62722448516a",
+				"bytes": 625
+			},
+			{
+				"path": "cancel/qa/ui/catalog.json",
+				"sha256": "a9a1f2bdd203af5158409820a3be3a6a45ee60a26712630541d2e54a36dbeb02",
+				"bytes": 1116
+			},
+			{
+				"path": "cancel/qa/ui/recordings/privacy-mirror/session.json",
+				"sha256": "12940f575d6ea15a54c664d1ae2494660177af65f71528b6c3d13754fd9732f7",
+				"bytes": 1113
+			},
+			{
+				"path": "cancel/qa/ui/recordings/privacy-mirror/raw-log.json",
+				"sha256": "1a7f997ffaba7938268a11a785ad2c14dbdf078eafe096532ad20fec90df8c05",
+				"bytes": 265893
+			},
+			{
+				"path": "cancel/qa/ui/recordings/privacy-mirror/.incomplete.json",
+				"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+				"bytes": 52
+			},
+			{
+				"path": "cancel/qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "1d9ca0a5c75a83d7df415913c57cb5a8451cd2db7d406d33e0a8325a67d684f6",
+				"bytes": 3768
+			},
+			{
+				"path": "cancel/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+				"sha256": "e93816c2de501ce5e90284dc716fec55be23478bd36a04093773c4c0bc66aae8",
+				"bytes": 646
+			},
+			{
+				"path": "cancel/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+				"sha256": "1a9465a00edc84e3d5ddc3c9363dbadee22d29caae38c94427b63b12e533f586",
+				"bytes": 170
+			},
+			{
+				"path": "cancel/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+				"sha256": "fb87dd434e1fd7542d9a92e1b4b1882cb8aee287ba477df99dc661193cf683ac",
+				"bytes": 394
+			},
+			{
+				"path": "cancel/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+				"sha256": "5504411b7b568e6281c30e8e15b9063279f78e89c758a09a1132ce24727213ef",
+				"bytes": 4185
+			},
+			{
+				"path": "cancel/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+				"sha256": "9c3ff59780a93d7cab53e48f4dc9e0e0249cc5bfb861667d7c77016c05743a27",
+				"bytes": 439
+			},
+			{
+				"path": "cancel/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+				"sha256": "d20202797fe3a0f53c58d29bf46af3f08066923c82e15eacc5ef43c6d3b7295f",
+				"bytes": 543
+			},
+			{
+				"path": "cancel/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+				"sha256": "dc0660df62eaa945c8bc03a837f43f39c3154dbe2165cc06f86e679b44945a74",
+				"bytes": 567
+			},
+			{
+				"path": "cancel/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+				"sha256": "164cbec0876377b774edfb2914ec8b21b24c442a02e9bb24fbf623cf9ff6375a",
+				"bytes": 127753
+			},
+			{
+				"path": "cancel/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+				"sha256": "c99fe11bba72132ea392c3c5c72f3aca68e55adabcbd5f22a4aee769cac282a0",
+				"bytes": 392
+			},
+			{
+				"path": "cancel/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+				"sha256": "d7cb0060d12826229dbef78a805f37edbb7165f9c53aa0e155ea92897a8dea9c",
+				"bytes": 127439
+			},
+			{
+				"path": "cancel/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+				"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+				"bytes": 60
+			},
+			{
+				"path": "cancel/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+				"sha256": "0046768b64dfe323dc561fe100e5636fd97b641002337df223c4a2c9f5e4724e",
+				"bytes": 1582
+			},
+			{
+				"path": "cancel/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+				"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+				"bytes": 61
+			},
+			{
+				"path": "cancel/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+				"sha256": "22c6e969d2409d8e28cf51a6355099719c59256b84cdbe09619185348b52ea4d",
+				"bytes": 1836
+			},
+			{
+				"path": "cancel/qa/ui/scopes/privacy/fixture.json",
+				"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+				"bytes": 284
+			},
+			{
+				"path": "cancel/qa/ui/scopes/privacy/.incomplete.json",
+				"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+				"bytes": 53
+			},
+			{
+				"path": "cancel/qa/ui/scopes/privacy/data.json",
+				"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+				"bytes": 74
+			},
+			{
+				"path": "cancel/qa/ui/scopes/privacy/initial.json",
+				"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+				"bytes": 128
+			},
+			{
+				"path": "cancel/qa/ui/scopes/privacy-mirror/.incomplete.json",
+				"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+				"bytes": 48
+			},
+			{
+				"path": "cancel/qa/ui/scopes/privacy-mirror/manifest.json",
+				"sha256": "0edd6f65c350308b483531196841c7720b46e95d8b30dd5c102ba6729e233061",
+				"bytes": 1071
+			},
+			{
+				"path": "corrupt/result.json",
+				"sha256": "3247cdc9b418bc9536a6c335311e92d8f2bd5a697f92b03ed2022ee6fafa13b9",
+				"bytes": 9450
+			},
+			{
+				"path": "corrupt/lifecycle-control.mjs",
+				"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+				"bytes": 85
+			},
+			{
+				"path": "corrupt/seed.spec.ts",
+				"sha256": "7425d2344b9582d73ee13054634596a3927a77d497d2d7e1172e1f5806c62ff1",
+				"bytes": 625
+			},
+			{
+				"path": "corrupt/harness.mjs",
+				"sha256": "a0e4998c683138b25863298a040348e4ffd14a54171fb86e466a845f19b6cd08",
+				"bytes": 25781
+			},
+			{
+				"path": "corrupt/mirror-prototype.mjs",
+				"sha256": "5593b2639fd39d85581bd498468ee7126e450954093d423e408ac14f78df08ba",
+				"bytes": 8546
+			},
+			{
+				"path": "corrupt/package.json",
+				"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+				"bytes": 17
+			},
+			{
+				"path": "corrupt/transport-adapter.mjs",
+				"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+				"bytes": 4568
+			},
+			{
+				"path": "corrupt/workspace-adapter.mjs",
+				"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+				"bytes": 7584
+			},
+			{
+				"path": "corrupt/playwright.config.mjs",
+				"sha256": "c5a9ba29ca2983ee69ab24558d077c053f61030c14a32c82a248412e84c68c38",
+				"bytes": 358
+			},
+			{
+				"path": "corrupt/.cleanup-keep",
+				"sha256": "a68e50569a614e488d66e88d53b3794199b95f60ab1ecbbeffff5180fde1024a",
+				"bytes": 69
+			},
+			{
+				"path": "corrupt/tests/seed.spec.ts",
+				"sha256": "7425d2344b9582d73ee13054634596a3927a77d497d2d7e1172e1f5806c62ff1",
+				"bytes": 625
+			},
+			{
+				"path": "corrupt/qa/ui/catalog.json",
+				"sha256": "384f8f6e02b14388d1434f3118ead90978740fc4716e7477c0de5dcd642f8296",
+				"bytes": 1116
+			},
+			{
+				"path": "corrupt/qa/ui/recordings/privacy-mirror/session.json",
+				"sha256": "7918adaa4c4462d9f3682f7435a95efc25d0d40ea56b8227039798302c97cb59",
+				"bytes": 1113
+			},
+			{
+				"path": "corrupt/qa/ui/recordings/privacy-mirror/raw-log.json",
+				"sha256": "5c9b4bc4058291e1c93def0fca7e2d0b330559fa7371c1ec854682022fd769e0",
+				"bytes": 265917
+			},
+			{
+				"path": "corrupt/qa/ui/recordings/privacy-mirror/.incomplete.json",
+				"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+				"bytes": 52
+			},
+			{
+				"path": "corrupt/qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "59d3f9c12b44e4bbda1b2432fd6f181538bfe05100c361ccceb82b2b14ae9e17",
+				"bytes": 3764
+			},
+			{
+				"path": "corrupt/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+				"sha256": "9a8ef022cd5cecb0e5cf0babd57c6bf8434cf01ea393922f6c86f06cad041933",
+				"bytes": 646
+			},
+			{
+				"path": "corrupt/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+				"sha256": "9526e081c3c9d3ebaf10b314dc7c1657c4b2d4d808e71dac8babce27b08646e2",
+				"bytes": 201
+			},
+			{
+				"path": "corrupt/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+				"sha256": "7b37009d641bf9c243ab8f79271d6836a8b59c6d24dcd85bc0669513edeaa263",
+				"bytes": 394
+			},
+			{
+				"path": "corrupt/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+				"sha256": "a90c15a59de300779f7423d4525c2782eb393affe25d2b7d26be07f12ab30b8d",
+				"bytes": 4185
+			},
+			{
+				"path": "corrupt/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+				"sha256": "3e8ee79f3748b17fdb7d63603a1821e963fb2c16eac5c15ded676c9df59ba489",
+				"bytes": 439
+			},
+			{
+				"path": "corrupt/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+				"sha256": "af422bda504a65d6a9ce6272c339491a724951d90be4b5aa28d2a49f5fe0e785",
+				"bytes": 543
+			},
+			{
+				"path": "corrupt/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+				"sha256": "31fffa06dd88b6672bcdf1317e7dcf0b21afb860788235a1799a1ed8fda3add6",
+				"bytes": 567
+			},
+			{
+				"path": "corrupt/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+				"sha256": "48709a2eb02f19ed5a180dddb3d6200ce141f60bbcc0f7cc24d09e4f8f8aedf7",
+				"bytes": 127753
+			},
+			{
+				"path": "corrupt/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+				"sha256": "18acd9d582e62763ca52eca11fee3119e902f193c3de9a4528cdaf6836442d9e",
+				"bytes": 392
+			},
+			{
+				"path": "corrupt/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+				"sha256": "ee2af33c586a2318a70836325ea73b09b488cfaa8e90dc91f2fc79645085b3e5",
+				"bytes": 127438
+			},
+			{
+				"path": "corrupt/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+				"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+				"bytes": 60
+			},
+			{
+				"path": "corrupt/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+				"sha256": "d6ecc61e034b002e2be32556783d01e615401efb5b58850a48d685054e3fd01e",
+				"bytes": 1582
+			},
+			{
+				"path": "corrupt/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+				"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+				"bytes": 61
+			},
+			{
+				"path": "corrupt/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+				"sha256": "57d0f3417351ba4b36124b5b309787078010bcb5d582ffd565eca8df14d83fcc",
+				"bytes": 1836
+			},
+			{
+				"path": "corrupt/qa/ui/scopes/privacy/fixture.json",
+				"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+				"bytes": 284
+			},
+			{
+				"path": "corrupt/qa/ui/scopes/privacy/.incomplete.json",
+				"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+				"bytes": 53
+			},
+			{
+				"path": "corrupt/qa/ui/scopes/privacy/data.json",
+				"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+				"bytes": 74
+			},
+			{
+				"path": "corrupt/qa/ui/scopes/privacy/initial.json",
+				"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+				"bytes": 128
+			},
+			{
+				"path": "corrupt/qa/ui/scopes/privacy-mirror/.incomplete.json",
+				"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+				"bytes": 48
+			},
+			{
+				"path": "corrupt/qa/ui/scopes/privacy-mirror/manifest.json",
+				"sha256": "dbc59194b1cedcffe65448fbc1ebc814596edc24c98a22fdd13384274c66b782",
+				"bytes": 1071
+			},
+			{
+				"path": "storage/result.json",
+				"sha256": "b91c4a557f247a335b2c08c7fe27d320137f044ea2b5c6ea9aa631e4700e9886",
+				"bytes": 10888
+			},
+			{
+				"path": "storage/lifecycle-control.mjs",
+				"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+				"bytes": 85
+			},
+			{
+				"path": "storage/seed.spec.ts",
+				"sha256": "7fe7c0df1d227fb350204430d2f0fe3e70440f0f89c31fcb9370d7700d3d06ac",
+				"bytes": 624
+			},
+			{
+				"path": "storage/harness.mjs",
+				"sha256": "34b6b9fac1edb0c0b834976650647eb1c37fb1aec82f44ab8f357991a385e79a",
+				"bytes": 26686
+			},
+			{
+				"path": "storage/mirror-prototype.mjs",
+				"sha256": "3ee11d852c8d9e0da805b6f7103b1e4851af5fe195298b6a2d83ec6c0fcdcd54",
+				"bytes": 8697
+			},
+			{
+				"path": "storage/package.json",
+				"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+				"bytes": 17
+			},
+			{
+				"path": "storage/generated.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+				"bytes": 188
+			},
+			{
+				"path": "storage/transport-adapter.mjs",
+				"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+				"bytes": 4568
+			},
+			{
+				"path": "storage/workspace-adapter.mjs",
+				"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+				"bytes": 7584
+			},
+			{
+				"path": "storage/playwright.config.mjs",
+				"sha256": "caa621f58de37f34d666903e95e8d144cfb8c5cd63a5a9b3d2c1abc372758b44",
+				"bytes": 358
+			},
+			{
+				"path": "storage/.cleanup-keep",
+				"sha256": "a68e50569a614e488d66e88d53b3794199b95f60ab1ecbbeffff5180fde1024a",
+				"bytes": 69
+			},
+			{
+				"path": "storage/tests/seed.spec.ts",
+				"sha256": "7fe7c0df1d227fb350204430d2f0fe3e70440f0f89c31fcb9370d7700d3d06ac",
+				"bytes": 624
+			},
+			{
+				"path": "sdk-timeout/result.json",
+				"sha256": "f129752fe93ce7cecb13603bd7a9ffd12bbc6569105c190c56f5b1c6894ee5ad",
+				"bytes": 3786
+			},
+			{
+				"path": "sdk-timeout/lifecycle-control.mjs",
+				"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+				"bytes": 85
+			},
+			{
+				"path": "sdk-timeout/harness.mjs",
+				"sha256": "34b6b9fac1edb0c0b834976650647eb1c37fb1aec82f44ab8f357991a385e79a",
+				"bytes": 26686
+			},
+			{
+				"path": "sdk-timeout/mirror-prototype.mjs",
+				"sha256": "3ee11d852c8d9e0da805b6f7103b1e4851af5fe195298b6a2d83ec6c0fcdcd54",
+				"bytes": 8697
+			},
+			{
+				"path": "sdk-timeout/transport-adapter.mjs",
+				"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+				"bytes": 4568
+			},
+			{
+				"path": "sdk-timeout/workspace-adapter.mjs",
+				"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+				"bytes": 7584
+			},
+			{
+				"path": "sdk-timeout/.cleanup-keep",
+				"sha256": "a68e50569a614e488d66e88d53b3794199b95f60ab1ecbbeffff5180fde1024a",
+				"bytes": 69
+			},
+			{
+				"path": "sdk-timeout/qa/ui/catalog.json",
+				"sha256": "6214b271b33820c3f24efecd764585f39a060e56ed4d5c4bd83c9e60c7fa5ed9",
+				"bytes": 912
+			},
+			{
+				"path": "sdk-timeout/qa/ui/recordings/privacy-mirror/session.json",
+				"sha256": "e2e3a88c7d381ed091df62d43ed4ba4066e1520b43bca20aa99397d9066dbea6",
+				"bytes": 1113
+			},
+			{
+				"path": "sdk-timeout/qa/ui/recordings/privacy-mirror/.incomplete.json",
+				"sha256": "00fb9465ac7c373870a39e2a9325c41a82140f7cfa523c6f3d69aed097c5ce98",
+				"bytes": 83
+			},
+			{
+				"path": "sdk-timeout/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+				"sha256": "7a8f2541c89c65e2b8e377d69c58474fdc3bae7e51e3feb9a1dc87b21b831072",
+				"bytes": 646
+			},
+			{
+				"path": "sdk-timeout/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+				"sha256": "067ef5fd1aad0e6b375c362f733f338b562c11a503ccaba53ec9d1337a9de572",
+				"bytes": 783
+			},
+			{
+				"path": "sdk-timeout/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+				"sha256": "5affcba810027d033d6b14173c0c3a1fd74fad0b29ca8d89c4c3916b127f68f7",
+				"bytes": 394
+			},
+			{
+				"path": "sdk-timeout/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+				"sha256": "a1fd48cc69f800824b4d37343e2267d02afe5e37b34541128d60ef7371ad8f75",
+				"bytes": 4435
+			},
+			{
+				"path": "sdk-timeout/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+				"sha256": "0a366b77c09d9d45e47d1f14d575ad1ccaa633a1b35944882ace55247c3cf930",
+				"bytes": 439
+			},
+			{
+				"path": "sdk-timeout/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+				"sha256": "0ac554e7637cf831cbf60f6f4abf42c0af9812e3d33270532c1f213b8e625adf",
+				"bytes": 172
+			},
+			{
+				"path": "sdk-timeout/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+				"sha256": "2ef8b814c02a5758cb9fe2c98baa5189deb0e649079cf9a757c3e176ebe78917",
+				"bytes": 567
+			},
+			{
+				"path": "sdk-timeout/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+				"sha256": "d21c9be2f2f7b4be755b58e0dda18dcc765a35dfe8fd92422b398f062ed8853d",
+				"bytes": 127753
+			},
+			{
+				"path": "sdk-timeout/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+				"sha256": "b8d263cfe5989c77131920fd63082e468b06cff68500b5ed9d4b785890833552",
+				"bytes": 392
+			},
+			{
+				"path": "sdk-timeout/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+				"sha256": "858f153519a0b81965d18ec6d19b7bf23dc2d9683608c792663cfb9856b3dda7",
+				"bytes": 127438
+			},
+			{
+				"path": "sdk-timeout/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+				"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+				"bytes": 60
+			},
+			{
+				"path": "sdk-timeout/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+				"sha256": "d93d40642e21c59ff947e93152ed9ed11626203350e38213556272160d7657f1",
+				"bytes": 1582
+			},
+			{
+				"path": "sdk-timeout/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+				"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+				"bytes": 61
+			},
+			{
+				"path": "sdk-timeout/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+				"sha256": "f71dfe743b4d26a1d84fff374a2a33bff170a41194519cb9dd6e5b7adcd51ba0",
+				"bytes": 1836
+			},
+			{
+				"path": "sdk-timeout/qa/ui/scopes/privacy/fixture.json",
+				"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+				"bytes": 284
+			},
+			{
+				"path": "sdk-timeout/qa/ui/scopes/privacy/.incomplete.json",
+				"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+				"bytes": 53
+			},
+			{
+				"path": "sdk-timeout/qa/ui/scopes/privacy/data.json",
+				"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+				"bytes": 74
+			},
+			{
+				"path": "sdk-timeout/qa/ui/scopes/privacy/initial.json",
+				"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+				"bytes": 128
+			},
+			{
+				"path": "sdk-timeout/qa/ui/scopes/privacy-mirror/.incomplete.json",
+				"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+				"bytes": 48
+			},
+			{
+				"path": "sdk-timeout/qa/ui/scopes/privacy-mirror/manifest.json",
+				"sha256": "2b91c8f0db8b73720c38b973e35e4d438332b14ec36599e5aa94c056cf51bbc3",
+				"bytes": 1071
+			},
+			{
+				"path": "rotation/result.json",
+				"sha256": "78c81e78bfb515ca493ba4174439f7651662744540beb3aab1e94952fbed45ad",
+				"bytes": 5096
+			},
+			{
+				"path": "rotation/lifecycle-control.mjs",
+				"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+				"bytes": 85
+			},
+			{
+				"path": "rotation/seed.spec.ts",
+				"sha256": "b5692b93e4915c9336acb0a0aefbb02da4da5987a0d1c6300b2a78457db4ec66",
+				"bytes": 625
+			},
+			{
+				"path": "rotation/harness.mjs",
+				"sha256": "438fd7e5b81cc49fbe7c3567c7141fece98d20a444b79db6dffbc3293d2b2c77",
+				"bytes": 24897
+			},
+			{
+				"path": "rotation/mirror-prototype.mjs",
+				"sha256": "ffc35c0c75de27e867214ad9896b214c28f99d56bd7624b70ef58346b46585a6",
+				"bytes": 7956
+			},
+			{
+				"path": "rotation/package.json",
+				"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+				"bytes": 17
+			},
+			{
+				"path": "rotation/generated.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+				"bytes": 188
+			},
+			{
+				"path": "rotation/transport-adapter.mjs",
+				"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+				"bytes": 4568
+			},
+			{
+				"path": "rotation/workspace-adapter.mjs",
+				"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+				"bytes": 7584
+			},
+			{
+				"path": "rotation/playwright.config.mjs",
+				"sha256": "050e57e2f8a1620dcd7b5892950b546806c50f013da51c332f6dcf6032a88c0c",
+				"bytes": 358
+			},
+			{
+				"path": "rotation/.cleanup-keep",
+				"sha256": "a68e50569a614e488d66e88d53b3794199b95f60ab1ecbbeffff5180fde1024a",
+				"bytes": 69
+			},
+			{
+				"path": "rotation/tests/seed.spec.ts",
+				"sha256": "b5692b93e4915c9336acb0a0aefbb02da4da5987a0d1c6300b2a78457db4ec66",
+				"bytes": 625
+			},
+			{
+				"path": "rotation/qa/ui/catalog.json",
+				"sha256": "a4f25293ab3385ab5e53a637f59eda1222badca8c50afb729e53f310d5e68cab",
+				"bytes": 1116
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/session.json",
+				"sha256": "dbe4591524e24eab713befd2988e01d4969d47608471f16ebcea915f87966df5",
+				"bytes": 1113
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/raw-log.json",
+				"sha256": "bcf5816e62b770ccecec340985b3f99fb1b176622bedcf8d3b4ddd4ee86c7266",
+				"bytes": 266613
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/.incomplete.json",
+				"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+				"bytes": 52
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+				"bytes": 188
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "72466384e931771d44f36fc0f6cae1900e390d8fcd79374bc894292463627732",
+				"bytes": 3793
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+				"sha256": "7414124fcf3b7da3ad9187d60b380669fc167251e59133b3167962a99ab24280",
+				"bytes": 646
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+				"sha256": "5cbeafa52ad45695c4f11c5852169380dc9746bf63e2c39a0d73cb3f13e2ac11",
+				"bytes": 783
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+				"sha256": "e87c4dc2324b2fa959e1972180c1c13406c0b249d7ef1dfceff6bc4fb2e78925",
+				"bytes": 394
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+				"sha256": "dcaf20050680bfb5fa2bd342f1bf94df51c9118029c3f592215a4c12efeeaa26",
+				"bytes": 4185
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+				"sha256": "935204ae42457e9bcd562a5586c2dde19ca04ee6315161f7f1d58d672348aa95",
+				"bytes": 439
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+				"sha256": "d9c488ca4a92c4c767beb51bdcabbf66429692e9cb2266ac8d1c7112d02e5c8f",
+				"bytes": 543
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+				"sha256": "c0ddbba94308fec9c44adbcf20d47100efb7e49b3d7f96e55cfcfe7c48458a3a",
+				"bytes": 567
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+				"sha256": "fded78bf2c73f51393f0fa295b1c1a26886e052534ad6d8442074c27173a533a",
+				"bytes": 127753
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+				"sha256": "9e3f762627700416e7da1e4decc07ddcb4f95112703d3f63f5772a122c95a459",
+				"bytes": 392
+			},
+			{
+				"path": "rotation/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+				"sha256": "0221536ce847b2b3fcbf6a35799094a931c700c670077b40b59d05a3b694799c",
+				"bytes": 127438
+			},
+			{
+				"path": "rotation/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+				"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+				"bytes": 60
+			},
+			{
+				"path": "rotation/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+				"sha256": "8534d6d59770420efc466425d5738b4cad67f4f64bc5591c4f0ca3e5f5e7078a",
+				"bytes": 1582
+			},
+			{
+				"path": "rotation/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+				"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+				"bytes": 61
+			},
+			{
+				"path": "rotation/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+				"sha256": "62510b375fd976afb94584910b702693c7ba46a0c09d60964591288ac374bcb7",
+				"bytes": 1836
+			},
+			{
+				"path": "rotation/qa/ui/scopes/privacy/fixture.json",
+				"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+				"bytes": 284
+			},
+			{
+				"path": "rotation/qa/ui/scopes/privacy/.incomplete.json",
+				"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+				"bytes": 53
+			},
+			{
+				"path": "rotation/qa/ui/scopes/privacy/data.json",
+				"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+				"bytes": 74
+			},
+			{
+				"path": "rotation/qa/ui/scopes/privacy/initial.json",
+				"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+				"bytes": 128
+			},
+			{
+				"path": "rotation/qa/ui/scopes/privacy-mirror/.incomplete.json",
+				"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+				"bytes": 48
+			},
+			{
+				"path": "rotation/qa/ui/scopes/privacy-mirror/manifest.json",
+				"sha256": "c60d2e8b13e2beaa6c9937ae20757e684a5a88dc980c70014567de6e68f68db3",
+				"bytes": 1071
+			},
+			{
+				"path": "ephemeral-sdk/result.json",
+				"sha256": "8312d17edc92292c7fa2ae5fb3f3b70b7ded904d3ba414d739ddfa18800d9ced",
+				"bytes": 10248
+			},
+			{
+				"path": "ephemeral-sdk/lifecycle-control.mjs",
+				"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+				"bytes": 85
+			},
+			{
+				"path": "ephemeral-sdk/seed.spec.ts",
+				"sha256": "6410bc65d04579d178ce718cd7a4e5a591dbc9a4e5837d4e05b49da916778e10",
+				"bytes": 750
+			},
+			{
+				"path": "ephemeral-sdk/harness.mjs",
+				"sha256": "a318c71d33f442e287377b95dab4008fb2d6aa087704ede848dc2dc1f617e058",
+				"bytes": 26865
+			},
+			{
+				"path": "ephemeral-sdk/mirror-prototype.mjs",
+				"sha256": "3ee11d852c8d9e0da805b6f7103b1e4851af5fe195298b6a2d83ec6c0fcdcd54",
+				"bytes": 8697
+			},
+			{
+				"path": "ephemeral-sdk/package.json",
+				"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+				"bytes": 17
+			},
+			{
+				"path": "ephemeral-sdk/generated.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+				"bytes": 188
+			},
+			{
+				"path": "ephemeral-sdk/transport-adapter.mjs",
+				"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+				"bytes": 4568
+			},
+			{
+				"path": "ephemeral-sdk/workspace-adapter.mjs",
+				"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+				"bytes": 7584
+			},
+			{
+				"path": "ephemeral-sdk/playwright.config.mjs",
+				"sha256": "586041dc535b337dab07579580ee882b9684eb91b1afbc36adb7f163ded352b6",
+				"bytes": 358
+			},
+			{
+				"path": "ephemeral-sdk/.cleanup-keep",
+				"sha256": "a68e50569a614e488d66e88d53b3794199b95f60ab1ecbbeffff5180fde1024a",
+				"bytes": 69
+			},
+			{
+				"path": "ephemeral-sdk/tests/seed.spec.ts",
+				"sha256": "6410bc65d04579d178ce718cd7a4e5a591dbc9a4e5837d4e05b49da916778e10",
+				"bytes": 750
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/catalog.json",
+				"sha256": "2e7ca2062e6ef72474bc9615074cff1ba5f090dc414e1b1b7b67a1a27e9e0134",
+				"bytes": 1116
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/session.json",
+				"sha256": "8ef28beeb60929cf62eab8eda45f3bfd9f821e9ad00fdccc7480e90bd1d26774",
+				"bytes": 1113
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/raw-log.json",
+				"sha256": "34f2473688188f8d308e644be9c757e292ae19ec5a798fb6d548a2558eb051e9",
+				"bytes": 266863
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/.incomplete.json",
+				"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+				"bytes": 52
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+				"bytes": 188
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "3d39fb248dbdcc3c25c4cb7bfc3e68be7411c3788a1fd8dc1cf21ba253327ac6",
+				"bytes": 3793
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+				"sha256": "4c1f372aee1b0246bb8546de3e7bf6514c2439a6992c026e56ba5c0a5ddaba0f",
+				"bytes": 646
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+				"sha256": "1c5872a795335b9923aa8a077416e8a1edb8a5ca3154bbd34fc8284cb6cb009a",
+				"bytes": 783
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+				"sha256": "7fa8b247e5db33e0003519f9c376b7d9687621ea5612b242c2eb3659c062db1b",
+				"bytes": 394
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+				"sha256": "2098b162fd4410d90238d9e3204dbc1d97c2f2c51ab6871b867c4d7787438705",
+				"bytes": 4435
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+				"sha256": "b9bbb083ff897972a16bec879d54d8d66264b1e5a675c004c9556b3117f9c573",
+				"bytes": 439
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+				"sha256": "8d764c179468e39c9a0f7d61a77711317cef3b2267fea179882099ee4fdc115a",
+				"bytes": 543
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+				"sha256": "d2f944f4bd67a71e404e7eb0e4695d0fa68e9587b77fd18463d017ea78341265",
+				"bytes": 567
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+				"sha256": "d658ef8785e3c655be4a5de029ab81505ccfeb76a8a6e3d1dbbf02f145d1662c",
+				"bytes": 127753
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+				"sha256": "8750be2c9af85fd2b498b57cb6ad611a1738a0ed132f98f25f98b231c6f16316",
+				"bytes": 392
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+				"sha256": "e28d6416d06a4be28c15b2921742e40285f5d41c4f2535e57d8a6014f82c9d3f",
+				"bytes": 127438
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+				"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+				"bytes": 60
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+				"sha256": "f760f7266d9eae40b68dc55b401daacc731603247154c07665ac93196bf308d1",
+				"bytes": 1582
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+				"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+				"bytes": 61
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+				"sha256": "4ff341d31b8c85704940ab3492bde0ffada1fc4712b99eb1f08f9ddc38727aaf",
+				"bytes": 1836
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/scopes/privacy/fixture.json",
+				"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+				"bytes": 284
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/scopes/privacy/.incomplete.json",
+				"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+				"bytes": 53
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/scopes/privacy/data.json",
+				"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+				"bytes": 74
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/scopes/privacy/initial.json",
+				"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+				"bytes": 128
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/scopes/privacy-mirror/.incomplete.json",
+				"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+				"bytes": 48
+			},
+			{
+				"path": "ephemeral-sdk/qa/ui/scopes/privacy-mirror/manifest.json",
+				"sha256": "770eb49490eb7d43a18e3f1caee27922f89057deeeee5f913aec2c910b56667c",
+				"bytes": 1071
+			},
+			{
+				"path": "ephemeral/result.json",
+				"sha256": "7c8dfbfa8a6f485dabefbd11d7cdf6853fb80def54278ae529345ac059908840",
+				"bytes": 6252
+			},
+			{
+				"path": "ephemeral/lifecycle-control.mjs",
+				"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+				"bytes": 85
+			},
+			{
+				"path": "ephemeral/seed.spec.ts",
+				"sha256": "c6b9a36d1c42d249254e26b762c7ee33433d67f593479b770e5f5257f649f92b",
+				"bytes": 750
+			},
+			{
+				"path": "ephemeral/harness.mjs",
+				"sha256": "566d1d05889ebc3ea4ba09733aec6f8ee960ba5d480cc42602a2f7927fb5faf8",
+				"bytes": 25734
+			},
+			{
+				"path": "ephemeral/mirror-prototype.mjs",
+				"sha256": "5c8bb54598c0c8cf101cf168b3864312bea12606a23d2759599752b40566893b",
+				"bytes": 8200
+			},
+			{
+				"path": "ephemeral/package.json",
+				"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+				"bytes": 17
+			},
+			{
+				"path": "ephemeral/generated.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+				"bytes": 188
+			},
+			{
+				"path": "ephemeral/transport-adapter.mjs",
+				"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+				"bytes": 4568
+			},
+			{
+				"path": "ephemeral/workspace-adapter.mjs",
+				"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+				"bytes": 7584
+			},
+			{
+				"path": "ephemeral/playwright.config.mjs",
+				"sha256": "76dcce2a0aed93e16c0f999b4a345953c44487b279e5d7249b7ab95e76609ab9",
+				"bytes": 358
+			},
+			{
+				"path": "ephemeral/.cleanup-keep",
+				"sha256": "a68e50569a614e488d66e88d53b3794199b95f60ab1ecbbeffff5180fde1024a",
+				"bytes": 69
+			},
+			{
+				"path": "ephemeral/tests/seed.spec.ts",
+				"sha256": "c6b9a36d1c42d249254e26b762c7ee33433d67f593479b770e5f5257f649f92b",
+				"bytes": 750
+			},
+			{
+				"path": "ephemeral/qa/ui/catalog.json",
+				"sha256": "4b415335f66d4185c97ff78bbb02103068f093e390d986993807b9642a0c22d9",
+				"bytes": 1116
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/session.json",
+				"sha256": "291e7997e6cc010585f0bc025f78f23c83412b02aca7bc44c7a9da738159a97b",
+				"bytes": 1113
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/raw-log.json",
+				"sha256": "7a72057f0fe50129320f7526f58306be2847204f580581ecaf4747df16fbb566",
+				"bytes": 266863
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/.incomplete.json",
+				"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+				"bytes": 52
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+				"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+				"bytes": 188
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/manifest.json",
+				"sha256": "ccfc57ade7404d1af42c781775018f1085a27b54e8d26263a97169f8ce44f2fc",
+				"bytes": 3793
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+				"sha256": "86e7b4749e7142839ae4291070d9e545b09521c4a340e4aa4212a683852d25b4",
+				"bytes": 646
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+				"sha256": "1c5872a795335b9923aa8a077416e8a1edb8a5ca3154bbd34fc8284cb6cb009a",
+				"bytes": 783
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+				"sha256": "4cb4eb28bb4836176f508c37b2de2b04ed4a06832e7794541c9a09152e749c12",
+				"bytes": 394
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+				"sha256": "a25aa5574f675d83524a4dae048480a7c32dc19a2deb69f7bb95e66cdaf1b36f",
+				"bytes": 4435
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+				"sha256": "6e92aec9020135c97dbd5c3b6ab6752aa0c023ac394fada42840592e9eed391b",
+				"bytes": 439
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+				"sha256": "9480abdfeb4e4fc1d5bc872caa6bea04fb6561d44a3e64f74cdacfe1bcded9c2",
+				"bytes": 543
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+				"sha256": "90001d46251a3a9f1132426cb82ad011cb9cdb560882f674de3dfdb0d85c7b63",
+				"bytes": 567
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+				"sha256": "6ed3104a12abeff3e397c89404ac5101c771f8988b6d62fa2888e11fc146dc87",
+				"bytes": 127753
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+				"sha256": "c78fc886bf4da6463fd5c6fb00c503a0ae06b75ba7326ba8d7123a174e66f96c",
+				"bytes": 392
+			},
+			{
+				"path": "ephemeral/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+				"sha256": "b9487039b7f03689eb7b42ba1c69441b5c8596a414a274862371b2c06d69ce52",
+				"bytes": 127438
+			},
+			{
+				"path": "ephemeral/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+				"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+				"bytes": 60
+			},
+			{
+				"path": "ephemeral/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+				"sha256": "1c8b8fc3d260fe83ec7c728aae45a0be27fc87cdfd40c762ae61a26310229906",
+				"bytes": 1582
+			},
+			{
+				"path": "ephemeral/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+				"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+				"bytes": 61
+			},
+			{
+				"path": "ephemeral/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+				"sha256": "4f17605583407346bf8559a62e93eeab6135aa0019c683cf59c8596fb7745ced",
+				"bytes": 1836
+			},
+			{
+				"path": "ephemeral/qa/ui/scopes/privacy/fixture.json",
+				"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+				"bytes": 284
+			},
+			{
+				"path": "ephemeral/qa/ui/scopes/privacy/.incomplete.json",
+				"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+				"bytes": 53
+			},
+			{
+				"path": "ephemeral/qa/ui/scopes/privacy/data.json",
+				"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+				"bytes": 74
+			},
+			{
+				"path": "ephemeral/qa/ui/scopes/privacy/initial.json",
+				"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+				"bytes": 128
+			},
+			{
+				"path": "ephemeral/qa/ui/scopes/privacy-mirror/.incomplete.json",
+				"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+				"bytes": 48
+			},
+			{
+				"path": "ephemeral/qa/ui/scopes/privacy-mirror/manifest.json",
+				"sha256": "6b9e0a4d60a4114ae43b703692083da1f36972f0df9002195f22b23553fbf162",
+				"bytes": 1071
+			}
+		]
+	},
+	"limits": [
+		"Internal serial synthetic prototype only; no product entry, dependency or personal configuration changes",
+		"Runtime localStorage still leaks despite trace header capture; native complete is not privacy approval",
+		"Fixed unsafe helper only; relative trace path assumes known private mirror layout",
+		"No concurrency/filesystem race, close-time credential or cross-frame storage proof",
+		"No new Electron business/visibility run; previous Electron evidence not counted as this round"
+	],
+	"archive": {
+		"path": "docs/ui-testing-evidence/optimization-u02-recording-runtime-headers.tar.gz",
+		"sha256": "e793a886ec9c80ea8b37c3f2d0d92204650e7fb5cc21c4ff54d4cf650b2d6ebd",
+		"bytes": 439068,
+		"files": 239,
+		"roundtrip_verified": true
+	},
+	"files": [
+		{
+			"path": "tests/scratch/ui-optimization-u00/archive-recording-runtime-headers.py",
+			"sha256": "365af8bc8a9b297af8e09aa42040f767ed37bc32747c59b6d8393fba82ed1fcc",
+			"bytes": 7127
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/probe-recording-runtime-headers.mjs",
+			"sha256": "a318c71d33f442e287377b95dab4008fb2d6aa087704ede848dc2dc1f617e058",
+			"bytes": 26865
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/recording-runtime-headers-document.md",
+			"sha256": "1d80249196f0f863f8da2a2356d66d7e46acb2c9146667460505dcd8e8064790",
+			"bytes": 4736
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/runtime-header-cancel-capture.log",
+			"sha256": "4ecca010e666db06039afaa39c0ea3f25e583509210ffc0595a76b23392d6640",
+			"bytes": 10283
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/runtime-header-corrupt.log",
+			"sha256": "291138a2219aceea2c0163cbbc41bec3e35385a9b586c9c1ea0b0d059ce2de4f",
+			"bytes": 9560
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/runtime-header-ephemeral-sdk-timeout.log",
+			"sha256": "5177cef9b5ed55960a3e47401dfdb77bb832ceab06c783dd1dffb3d4090060a6",
+			"bytes": 3896
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/runtime-header-ephemeral-sdk.log",
+			"sha256": "bebeaffee22e4d7b21b68e52170766772810de300d2fc32aab5c28ff47fd0ac1",
+			"bytes": 10358
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/runtime-header-ephemeral.log",
+			"sha256": "13dedb4038a67e716af05e01d26477c2ae3a921e9129e2be8941d9f3b762ddf6",
+			"bytes": 6362
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/runtime-header-recording-prototype.mjs",
+			"sha256": "3ee11d852c8d9e0da805b6f7103b1e4851af5fe195298b6a2d83ec6c0fcdcd54",
+			"bytes": 8697
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/runtime-header-rotated.log",
+			"sha256": "874b35c2c072fb90d7180d3b0683b95b8e972b2d3500fe7dbdb7466b64018e5b",
+			"bytes": 5206
+		},
+		{
+			"path": "tests/scratch/ui-optimization-u00/runtime-header-storage.log",
+			"sha256": "7e53c7c065c0700b632d7d3350091eff484f9791527ca6a56d6d459ae0421dd8",
+			"bytes": 10998
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/.cleanup-keep",
+			"sha256": "a68e50569a614e488d66e88d53b3794199b95f60ab1ecbbeffff5180fde1024a",
+			"bytes": 69
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/generated.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/harness.mjs",
+			"sha256": "438fd7e5b81cc49fbe7c3567c7141fece98d20a444b79db6dffbc3293d2b2c77",
+			"bytes": 24897
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/mirror-prototype.mjs",
+			"sha256": "ffc35c0c75de27e867214ad9896b214c28f99d56bd7624b70ef58346b46585a6",
+			"bytes": 7956
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/package.json",
+			"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+			"bytes": 17
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/playwright.config.mjs",
+			"sha256": "050e57e2f8a1620dcd7b5892950b546806c50f013da51c332f6dcf6032a88c0c",
+			"bytes": 358
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/catalog.json",
+			"sha256": "a4f25293ab3385ab5e53a637f59eda1222badca8c50afb729e53f310d5e68cab",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "8534d6d59770420efc466425d5738b4cad67f4f64bc5591c4f0ca3e5f5e7078a",
+			"bytes": 1582
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "62510b375fd976afb94584910b702693c7ba46a0c09d60964591288ac374bcb7",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "935204ae42457e9bcd562a5586c2dde19ca04ee6315161f7f1d58d672348aa95",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "d9c488ca4a92c4c767beb51bdcabbf66429692e9cb2266ac8d1c7112d02e5c8f",
+			"bytes": 543
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "c0ddbba94308fec9c44adbcf20d47100efb7e49b3d7f96e55cfcfe7c48458a3a",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "fded78bf2c73f51393f0fa295b1c1a26886e052534ad6d8442074c27173a533a",
+			"bytes": 127753
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "9e3f762627700416e7da1e4decc07ddcb4f95112703d3f63f5772a122c95a459",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "0221536ce847b2b3fcbf6a35799094a931c700c670077b40b59d05a3b694799c",
+			"bytes": 127438
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "e87c4dc2324b2fa959e1972180c1c13406c0b249d7ef1dfceff6bc4fb2e78925",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "dcaf20050680bfb5fa2bd342f1bf94df51c9118029c3f592215a4c12efeeaa26",
+			"bytes": 4185
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "7414124fcf3b7da3ad9187d60b380669fc167251e59133b3167962a99ab24280",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "5cbeafa52ad45695c4f11c5852169380dc9746bf63e2c39a0d73cb3f13e2ac11",
+			"bytes": 783
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "72466384e931771d44f36fc0f6cae1900e390d8fcd79374bc894292463627732",
+			"bytes": 3793
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "bcf5816e62b770ccecec340985b3f99fb1b176622bedcf8d3b4ddd4ee86c7266",
+			"bytes": 266613
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "dbe4591524e24eab713befd2988e01d4969d47608471f16ebcea915f87966df5",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "c60d2e8b13e2beaa6c9937ae20757e684a5a88dc980c70014567de6e68f68db3",
+			"bytes": 1071
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/result.json",
+			"sha256": "78c81e78bfb515ca493ba4174439f7651662744540beb3aab1e94952fbed45ad",
+			"bytes": 5096
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/seed.spec.ts",
+			"sha256": "b5692b93e4915c9336acb0a0aefbb02da4da5987a0d1c6300b2a78457db4ec66",
+			"bytes": 625
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/tests/seed.spec.ts",
+			"sha256": "b5692b93e4915c9336acb0a0aefbb02da4da5987a0d1c6300b2a78457db4ec66",
+			"bytes": 625
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/transport-adapter.mjs",
+			"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+			"bytes": 4568
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793000878388/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/.cleanup-keep",
+			"sha256": "a68e50569a614e488d66e88d53b3794199b95f60ab1ecbbeffff5180fde1024a",
+			"bytes": 69
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/generated.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/harness.mjs",
+			"sha256": "566d1d05889ebc3ea4ba09733aec6f8ee960ba5d480cc42602a2f7927fb5faf8",
+			"bytes": 25734
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/mirror-prototype.mjs",
+			"sha256": "5c8bb54598c0c8cf101cf168b3864312bea12606a23d2759599752b40566893b",
+			"bytes": 8200
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/package.json",
+			"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+			"bytes": 17
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/playwright.config.mjs",
+			"sha256": "76dcce2a0aed93e16c0f999b4a345953c44487b279e5d7249b7ab95e76609ab9",
+			"bytes": 358
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/catalog.json",
+			"sha256": "4b415335f66d4185c97ff78bbb02103068f093e390d986993807b9642a0c22d9",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "1c8b8fc3d260fe83ec7c728aae45a0be27fc87cdfd40c762ae61a26310229906",
+			"bytes": 1582
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "4f17605583407346bf8559a62e93eeab6135aa0019c683cf59c8596fb7745ced",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "6e92aec9020135c97dbd5c3b6ab6752aa0c023ac394fada42840592e9eed391b",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "9480abdfeb4e4fc1d5bc872caa6bea04fb6561d44a3e64f74cdacfe1bcded9c2",
+			"bytes": 543
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "90001d46251a3a9f1132426cb82ad011cb9cdb560882f674de3dfdb0d85c7b63",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "6ed3104a12abeff3e397c89404ac5101c771f8988b6d62fa2888e11fc146dc87",
+			"bytes": 127753
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "c78fc886bf4da6463fd5c6fb00c503a0ae06b75ba7326ba8d7123a174e66f96c",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "b9487039b7f03689eb7b42ba1c69441b5c8596a414a274862371b2c06d69ce52",
+			"bytes": 127438
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "4cb4eb28bb4836176f508c37b2de2b04ed4a06832e7794541c9a09152e749c12",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "a25aa5574f675d83524a4dae048480a7c32dc19a2deb69f7bb95e66cdaf1b36f",
+			"bytes": 4435
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "86e7b4749e7142839ae4291070d9e545b09521c4a340e4aa4212a683852d25b4",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "1c5872a795335b9923aa8a077416e8a1edb8a5ca3154bbd34fc8284cb6cb009a",
+			"bytes": 783
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "ccfc57ade7404d1af42c781775018f1085a27b54e8d26263a97169f8ce44f2fc",
+			"bytes": 3793
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "7a72057f0fe50129320f7526f58306be2847204f580581ecaf4747df16fbb566",
+			"bytes": 266863
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "291e7997e6cc010585f0bc025f78f23c83412b02aca7bc44c7a9da738159a97b",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "6b9e0a4d60a4114ae43b703692083da1f36972f0df9002195f22b23553fbf162",
+			"bytes": 1071
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/result.json",
+			"sha256": "7c8dfbfa8a6f485dabefbd11d7cdf6853fb80def54278ae529345ac059908840",
+			"bytes": 6252
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/seed.spec.ts",
+			"sha256": "c6b9a36d1c42d249254e26b762c7ee33433d67f593479b770e5f5257f649f92b",
+			"bytes": 750
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/tests/seed.spec.ts",
+			"sha256": "c6b9a36d1c42d249254e26b762c7ee33433d67f593479b770e5f5257f649f92b",
+			"bytes": 750
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/transport-adapter.mjs",
+			"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+			"bytes": 4568
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001178648/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/.cleanup-keep",
+			"sha256": "a68e50569a614e488d66e88d53b3794199b95f60ab1ecbbeffff5180fde1024a",
+			"bytes": 69
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/harness.mjs",
+			"sha256": "a0e4998c683138b25863298a040348e4ffd14a54171fb86e466a845f19b6cd08",
+			"bytes": 25781
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/mirror-prototype.mjs",
+			"sha256": "5593b2639fd39d85581bd498468ee7126e450954093d423e408ac14f78df08ba",
+			"bytes": 8546
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/package.json",
+			"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+			"bytes": 17
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/playwright.config.mjs",
+			"sha256": "c5a9ba29ca2983ee69ab24558d077c053f61030c14a32c82a248412e84c68c38",
+			"bytes": 358
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/catalog.json",
+			"sha256": "384f8f6e02b14388d1434f3118ead90978740fc4716e7477c0de5dcd642f8296",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "d6ecc61e034b002e2be32556783d01e615401efb5b58850a48d685054e3fd01e",
+			"bytes": 1582
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "57d0f3417351ba4b36124b5b309787078010bcb5d582ffd565eca8df14d83fcc",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "3e8ee79f3748b17fdb7d63603a1821e963fb2c16eac5c15ded676c9df59ba489",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "af422bda504a65d6a9ce6272c339491a724951d90be4b5aa28d2a49f5fe0e785",
+			"bytes": 543
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "31fffa06dd88b6672bcdf1317e7dcf0b21afb860788235a1799a1ed8fda3add6",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "48709a2eb02f19ed5a180dddb3d6200ce141f60bbcc0f7cc24d09e4f8f8aedf7",
+			"bytes": 127753
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "18acd9d582e62763ca52eca11fee3119e902f193c3de9a4528cdaf6836442d9e",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "ee2af33c586a2318a70836325ea73b09b488cfaa8e90dc91f2fc79645085b3e5",
+			"bytes": 127438
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "7b37009d641bf9c243ab8f79271d6836a8b59c6d24dcd85bc0669513edeaa263",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "a90c15a59de300779f7423d4525c2782eb393affe25d2b7d26be07f12ab30b8d",
+			"bytes": 4185
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "9a8ef022cd5cecb0e5cf0babd57c6bf8434cf01ea393922f6c86f06cad041933",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "9526e081c3c9d3ebaf10b314dc7c1657c4b2d4d808e71dac8babce27b08646e2",
+			"bytes": 201
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "59d3f9c12b44e4bbda1b2432fd6f181538bfe05100c361ccceb82b2b14ae9e17",
+			"bytes": 3764
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "5c9b4bc4058291e1c93def0fca7e2d0b330559fa7371c1ec854682022fd769e0",
+			"bytes": 265917
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "7918adaa4c4462d9f3682f7435a95efc25d0d40ea56b8227039798302c97cb59",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "dbc59194b1cedcffe65448fbc1ebc814596edc24c98a22fdd13384274c66b782",
+			"bytes": 1071
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/result.json",
+			"sha256": "3247cdc9b418bc9536a6c335311e92d8f2bd5a697f92b03ed2022ee6fafa13b9",
+			"bytes": 9450
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/seed.spec.ts",
+			"sha256": "7425d2344b9582d73ee13054634596a3927a77d497d2d7e1172e1f5806c62ff1",
+			"bytes": 625
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/tests/seed.spec.ts",
+			"sha256": "7425d2344b9582d73ee13054634596a3927a77d497d2d7e1172e1f5806c62ff1",
+			"bytes": 625
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/transport-adapter.mjs",
+			"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+			"bytes": 4568
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001208564/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/.cleanup-keep",
+			"sha256": "a68e50569a614e488d66e88d53b3794199b95f60ab1ecbbeffff5180fde1024a",
+			"bytes": 69
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/harness.mjs",
+			"sha256": "32394fad5514e095e31488a1d619346209defb0576afc8e8b504f97215d542ef",
+			"bytes": 26210
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/mirror-prototype.mjs",
+			"sha256": "3ee11d852c8d9e0da805b6f7103b1e4851af5fe195298b6a2d83ec6c0fcdcd54",
+			"bytes": 8697
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/package.json",
+			"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+			"bytes": 17
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/playwright.config.mjs",
+			"sha256": "d03b851b3bfe685225d2a39e25c8779b7ecc003a9e2e5909b4802f2e581741c7",
+			"bytes": 358
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/catalog.json",
+			"sha256": "a9a1f2bdd203af5158409820a3be3a6a45ee60a26712630541d2e54a36dbeb02",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "0046768b64dfe323dc561fe100e5636fd97b641002337df223c4a2c9f5e4724e",
+			"bytes": 1582
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "22c6e969d2409d8e28cf51a6355099719c59256b84cdbe09619185348b52ea4d",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "9c3ff59780a93d7cab53e48f4dc9e0e0249cc5bfb861667d7c77016c05743a27",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "d20202797fe3a0f53c58d29bf46af3f08066923c82e15eacc5ef43c6d3b7295f",
+			"bytes": 543
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "dc0660df62eaa945c8bc03a837f43f39c3154dbe2165cc06f86e679b44945a74",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "164cbec0876377b774edfb2914ec8b21b24c442a02e9bb24fbf623cf9ff6375a",
+			"bytes": 127753
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "c99fe11bba72132ea392c3c5c72f3aca68e55adabcbd5f22a4aee769cac282a0",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "d7cb0060d12826229dbef78a805f37edbb7165f9c53aa0e155ea92897a8dea9c",
+			"bytes": 127439
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "fb87dd434e1fd7542d9a92e1b4b1882cb8aee287ba477df99dc661193cf683ac",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "5504411b7b568e6281c30e8e15b9063279f78e89c758a09a1132ce24727213ef",
+			"bytes": 4185
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "e93816c2de501ce5e90284dc716fec55be23478bd36a04093773c4c0bc66aae8",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "1a9465a00edc84e3d5ddc3c9363dbadee22d29caae38c94427b63b12e533f586",
+			"bytes": 170
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "1d9ca0a5c75a83d7df415913c57cb5a8451cd2db7d406d33e0a8325a67d684f6",
+			"bytes": 3768
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "1a7f997ffaba7938268a11a785ad2c14dbdf078eafe096532ad20fec90df8c05",
+			"bytes": 265893
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "12940f575d6ea15a54c664d1ae2494660177af65f71528b6c3d13754fd9732f7",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "0edd6f65c350308b483531196841c7720b46e95d8b30dd5c102ba6729e233061",
+			"bytes": 1071
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/result.json",
+			"sha256": "6cbbc90ea0a0b9041c75027ed9fb6f499cae48efc640d53cb9aa9166cc62150d",
+			"bytes": 10173
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/seed.spec.ts",
+			"sha256": "8985f7d8bde34d4ccc646917dfb4dd60acfa466315ec2b08da9d62722448516a",
+			"bytes": 625
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/tests/seed.spec.ts",
+			"sha256": "8985f7d8bde34d4ccc646917dfb4dd60acfa466315ec2b08da9d62722448516a",
+			"bytes": 625
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/transport-adapter.mjs",
+			"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+			"bytes": 4568
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001237743/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001269111/.cleanup-keep",
+			"sha256": "a68e50569a614e488d66e88d53b3794199b95f60ab1ecbbeffff5180fde1024a",
+			"bytes": 69
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001269111/generated.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001269111/harness.mjs",
+			"sha256": "34b6b9fac1edb0c0b834976650647eb1c37fb1aec82f44ab8f357991a385e79a",
+			"bytes": 26686
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001269111/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001269111/mirror-prototype.mjs",
+			"sha256": "3ee11d852c8d9e0da805b6f7103b1e4851af5fe195298b6a2d83ec6c0fcdcd54",
+			"bytes": 8697
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001269111/package.json",
+			"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+			"bytes": 17
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001269111/playwright.config.mjs",
+			"sha256": "caa621f58de37f34d666903e95e8d144cfb8c5cd63a5a9b3d2c1abc372758b44",
+			"bytes": 358
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001269111/result.json",
+			"sha256": "b91c4a557f247a335b2c08c7fe27d320137f044ea2b5c6ea9aa631e4700e9886",
+			"bytes": 10888
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001269111/seed.spec.ts",
+			"sha256": "7fe7c0df1d227fb350204430d2f0fe3e70440f0f89c31fcb9370d7700d3d06ac",
+			"bytes": 624
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001269111/tests/seed.spec.ts",
+			"sha256": "7fe7c0df1d227fb350204430d2f0fe3e70440f0f89c31fcb9370d7700d3d06ac",
+			"bytes": 624
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001269111/transport-adapter.mjs",
+			"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+			"bytes": 4568
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001269111/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/.cleanup-keep",
+			"sha256": "a68e50569a614e488d66e88d53b3794199b95f60ab1ecbbeffff5180fde1024a",
+			"bytes": 69
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/harness.mjs",
+			"sha256": "34b6b9fac1edb0c0b834976650647eb1c37fb1aec82f44ab8f357991a385e79a",
+			"bytes": 26686
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/mirror-prototype.mjs",
+			"sha256": "3ee11d852c8d9e0da805b6f7103b1e4851af5fe195298b6a2d83ec6c0fcdcd54",
+			"bytes": 8697
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/catalog.json",
+			"sha256": "6214b271b33820c3f24efecd764585f39a060e56ed4d5c4bd83c9e60c7fa5ed9",
+			"bytes": 912
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "d93d40642e21c59ff947e93152ed9ed11626203350e38213556272160d7657f1",
+			"bytes": 1582
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "f71dfe743b4d26a1d84fff374a2a33bff170a41194519cb9dd6e5b7adcd51ba0",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "00fb9465ac7c373870a39e2a9325c41a82140f7cfa523c6f3d69aed097c5ce98",
+			"bytes": 83
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "0a366b77c09d9d45e47d1f14d575ad1ccaa633a1b35944882ace55247c3cf930",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "0ac554e7637cf831cbf60f6f4abf42c0af9812e3d33270532c1f213b8e625adf",
+			"bytes": 172
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "2ef8b814c02a5758cb9fe2c98baa5189deb0e649079cf9a757c3e176ebe78917",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "d21c9be2f2f7b4be755b58e0dda18dcc765a35dfe8fd92422b398f062ed8853d",
+			"bytes": 127753
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "b8d263cfe5989c77131920fd63082e468b06cff68500b5ed9d4b785890833552",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "858f153519a0b81965d18ec6d19b7bf23dc2d9683608c792663cfb9856b3dda7",
+			"bytes": 127438
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "5affcba810027d033d6b14173c0c3a1fd74fad0b29ca8d89c4c3916b127f68f7",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "a1fd48cc69f800824b4d37343e2267d02afe5e37b34541128d60ef7371ad8f75",
+			"bytes": 4435
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "7a8f2541c89c65e2b8e377d69c58474fdc3bae7e51e3feb9a1dc87b21b831072",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "067ef5fd1aad0e6b375c362f733f338b562c11a503ccaba53ec9d1337a9de572",
+			"bytes": 783
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "e2e3a88c7d381ed091df62d43ed4ba4066e1520b43bca20aa99397d9066dbea6",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "2b91c8f0db8b73720c38b973e35e4d438332b14ec36599e5aa94c056cf51bbc3",
+			"bytes": 1071
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/result.json",
+			"sha256": "f129752fe93ce7cecb13603bd7a9ffd12bbc6569105c190c56f5b1c6894ee5ad",
+			"bytes": 3786
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/transport-adapter.mjs",
+			"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+			"bytes": 4568
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001347790/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/.cleanup-keep",
+			"sha256": "a68e50569a614e488d66e88d53b3794199b95f60ab1ecbbeffff5180fde1024a",
+			"bytes": 69
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/generated.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/harness.mjs",
+			"sha256": "a318c71d33f442e287377b95dab4008fb2d6aa087704ede848dc2dc1f617e058",
+			"bytes": 26865
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/lifecycle-control.mjs",
+			"sha256": "afecb389b839f0099f4b394fe544fcc80d6fa291b42ef0bd11b735a49e31d22d",
+			"bytes": 85
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/mirror-prototype.mjs",
+			"sha256": "3ee11d852c8d9e0da805b6f7103b1e4851af5fe195298b6a2d83ec6c0fcdcd54",
+			"bytes": 8697
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/package.json",
+			"sha256": "6dc1b06d6b093e9cccb20bee06a93836eee0420ae26803ca2ce4065d82f070d1",
+			"bytes": 17
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/playwright.config.mjs",
+			"sha256": "586041dc535b337dab07579580ee882b9684eb91b1afbc36adb7f163ded352b6",
+			"bytes": 358
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/catalog.json",
+			"sha256": "2e7ca2062e6ef72474bc9615074cff1ba5f090dc414e1b1b7b67a1a27e9e0134",
+			"bytes": 1116
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/inventories/privacy-mirror-initial/.incomplete.json",
+			"sha256": "043503ef21ec49deb2bf3f10696ad3282edaf3f3553dfe998ba8a001664daaa1",
+			"bytes": 60
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/inventories/privacy-mirror-initial/manifest.json",
+			"sha256": "f760f7266d9eae40b68dc55b401daacc731603247154c07665ac93196bf308d1",
+			"bytes": 1582
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/inventories/privacy-mirror-observed/.incomplete.json",
+			"sha256": "424046c4752584175f56b44dc7d56b013ff8eac0b52c5180d2a2c976089ae7a8",
+			"bytes": 61
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/inventories/privacy-mirror-observed/manifest.json",
+			"sha256": "4ff341d31b8c85704940ab3492bde0ffada1fc4712b99eb1f08f9ddc38727aaf",
+			"bytes": 1836
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/.incomplete.json",
+			"sha256": "c3488c7c3ddc7533a68fa5a58def93ab95812f54d0920f7da507a4d6d3b3d8ec",
+			"bytes": 52
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/draft.spec.ts",
+			"sha256": "5084f2aed8548174f1fa56bb50cae4cb9bf9f7fe39ef148323912e4953c77efc",
+			"bytes": 188
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/events/step-11/request.json",
+			"sha256": "b9bbb083ff897972a16bec879d54d8d66264b1e5a675c004c9556b3117f9c573",
+			"bytes": 439
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/events/step-11/response.json",
+			"sha256": "8d764c179468e39c9a0f7d61a77711317cef3b2267fea179882099ee4fdc115a",
+			"bytes": 543
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/events/step-2/request.json",
+			"sha256": "d2f944f4bd67a71e404e7eb0e4695d0fa68e9587b77fd18463d017ea78341265",
+			"bytes": 567
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/events/step-2/response.json",
+			"sha256": "d658ef8785e3c655be4a5de029ab81505ccfeb76a8a6e3d1dbbf02f145d1662c",
+			"bytes": 127753
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/events/step-4/request.json",
+			"sha256": "8750be2c9af85fd2b498b57cb6ad611a1738a0ed132f98f25f98b231c6f16316",
+			"bytes": 392
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/events/step-4/response.json",
+			"sha256": "e28d6416d06a4be28c15b2921742e40285f5d41c4f2535e57d8a6014f82c9d3f",
+			"bytes": 127438
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/events/step-7/request.json",
+			"sha256": "7fa8b247e5db33e0003519f9c376b7d9687621ea5612b242c2eb3659c062db1b",
+			"bytes": 394
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/events/step-7/response.json",
+			"sha256": "2098b162fd4410d90238d9e3204dbc1d97c2f2c51ab6871b867c4d7787438705",
+			"bytes": 4435
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/events/step-9/request.json",
+			"sha256": "4c1f372aee1b0246bb8546de3e7bf6514c2439a6992c026e56ba5c0a5ddaba0f",
+			"bytes": 646
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/events/step-9/response.json",
+			"sha256": "1c5872a795335b9923aa8a077416e8a1edb8a5ca3154bbd34fc8284cb6cb009a",
+			"bytes": 783
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/manifest.json",
+			"sha256": "3d39fb248dbdcc3c25c4cb7bfc3e68be7411c3788a1fd8dc1cf21ba253327ac6",
+			"bytes": 3793
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/raw-log.json",
+			"sha256": "34f2473688188f8d308e644be9c757e292ae19ec5a798fb6d548a2558eb051e9",
+			"bytes": 266863
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/recordings/privacy-mirror/session.json",
+			"sha256": "8ef28beeb60929cf62eab8eda45f3bfd9f821e9ad00fdccc7480e90bd1d26774",
+			"bytes": 1113
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/scopes/privacy-mirror/.incomplete.json",
+			"sha256": "82900115adb99327d99059947c139a397628b45924348bce187166b92c02b613",
+			"bytes": 48
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/scopes/privacy-mirror/manifest.json",
+			"sha256": "770eb49490eb7d43a18e3f1caee27922f89057deeeee5f913aec2c910b56667c",
+			"bytes": 1071
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/scopes/privacy/.incomplete.json",
+			"sha256": "8fce0437954ff36dc3ab82a2081a039d5ccbf61f750cf4095bbc27fa4daa9a3c",
+			"bytes": 53
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/scopes/privacy/data.json",
+			"sha256": "4503e1adbde68cd632430d4c3a821d1536c8f538c9dc06c5ee9a1e4096013c00",
+			"bytes": 74
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/scopes/privacy/fixture.json",
+			"sha256": "cfffbba696d54cb19d62e5dee7a6cf0715a1d738d967ea5047a04edc4572a8c1",
+			"bytes": 284
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/qa/ui/scopes/privacy/initial.json",
+			"sha256": "4dd1f5d17ded0e992521e09323b1ee599b1057ccfe6cca32f90e5638c3ba33e1",
+			"bytes": 128
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/result.json",
+			"sha256": "8312d17edc92292c7fa2ae5fb3f3b70b7ded904d3ba414d739ddfa18800d9ced",
+			"bytes": 10248
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/seed.spec.ts",
+			"sha256": "6410bc65d04579d178ce718cd7a4e5a591dbc9a4e5837d4e05b49da916778e10",
+			"bytes": 750
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/tests/seed.spec.ts",
+			"sha256": "6410bc65d04579d178ce718cd7a4e5a591dbc9a4e5837d4e05b49da916778e10",
+			"bytes": 750
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/transport-adapter.mjs",
+			"sha256": "020ca76a01711e3211c47df5710d3b07e0fb645cf9aca40941483ebd38b4cef5",
+			"bytes": 4568
+		},
+		{
+			"path": "tests/scratch/ui-recording-runtime-headers/1793001466483/workspace-adapter.mjs",
+			"sha256": "a45f5f972d80299ef16bfb8b689a8151499a9728fb60272cad89e2199e9648e1",
+			"bytes": 7584
+		}
+	],
+	"verification": {
+		"typecheck": "all 5 configurations passed",
+		"lint": "passed",
+		"protocol": "sync passed; git tag heuristic skipped, no available tag",
+		"size": "passed",
+		"diff": "passed",
+		"clean": "start and end preview; 0 cleanup candidates",
+		"unitTests": "not repeated; no tracked implementation changes",
+		"electron": "project document/snapshot readback only; no new UI business run"
+	}
+}

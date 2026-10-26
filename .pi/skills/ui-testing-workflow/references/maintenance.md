@@ -79,3 +79,5 @@ MCP 运行时选择由 `assets/playwright-runtime.mjs` 负责：CLI 与配置均
 0.1.12 导出受管认证消费契约1：消费数据空间生成的私有引用前核对引用名、私有文件/目录权限、工作区、目标origin及base URL路径边界、有效期；诊断、私密证据捕获及Playwright fixture均传入实际项目根。数据空间0.17.0的prepare-private只显式映射当前有效参数到localStorage，逻辑引用可续准备而不改冻结资产，失效引用初始化阻塞。0.1.11为本机中间包、未交付。录制MCP仍未支持私密认证输出。
 
 0.1.13仅从包主入口导出已有`PrivateEvidence`，供受信任录制宿主复用初始storageState的一层JSON字符串叶值及既有编码过滤；规则仍在原实现。内部原型在原生过滤器的私有目录中派生录制副本，响应在SDK转换前过滤并隐藏媒体，保留原始私有协议及原生writer校验。嵌套JSON原型泄露已复现、复用过滤后正常/取消对照留证；运行中新增HttpOnly cookie仍可反射泄露，未完成实时收集，不据此开放产品record入口或宣称通用隐私安全。
+
+后续内部合成原型通过原生SDK固定嵌套trace采集，在公开父响应前复用PrivateEvidence.process，拦截运行中新cookie及立即清除的历史cookie；损坏trace/采集中取消保持partial且阻止公开草稿。真实SDK事件记录额外4次helper归属，不能与5个原生steps混计。一次writer超时未finish保留，新localStorage反例仍泄露；该路径仅串行已知mirror布局、使用固定unsafe工具，不开放产品record。详见[本轮证据](../../../../docs/ui-testing-evidence/optimization-u02-recording-runtime-headers.json)。
