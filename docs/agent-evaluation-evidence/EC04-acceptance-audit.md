@@ -39,7 +39,7 @@
 | AC40插件回退/恢复           | 所述子项通过；M1交付仍阻塞 | [当前0.4.30回退与完整userData恢复](EC04-current-restore-diagnostics.json)：0.4.19兼容回读、0.4.18安全拒写及两次同路径完整恢复通过；限同宿主/macOS arm64，不是签名宿主/任意版本回退             |
 | 历史0.4.22/0.4.23 typecheck | **失败，更正误标**         | 两份原始日志均有store新测试回调TS2345；此前JSON/PASS和EC04正文“五配置通过”不成立。本轮只更正索引状态并追加说明，原日志/hash不改                                   |
 | 本轮typecheck               | 通过                       | 测试投影补齐原推导返回类型的kind/revision/createdAt/digest字段，原预算/授权断言保持；另存真正退出0的完整五配置日志，不倒填旧结果                                  |
-| EC06/EC07                   | 阻塞                       | 原生detached反例保留；[无网VM](EC06-vm-diagnostics.json)已证整机收尾，但EC06持久生命周期/输入日志/取消对账仍未实现，可信核验闭环不启动                                                                                              |
+| EC06/EC07                   | 阻塞                       | 原生detached反例保留；[无网VM](EC06-vm-diagnostics.json)已证整机收尾，；[宿主环境生命周期](EC06-runtime-diagnostics.json)已实现并验证，guest CLI输入/产物和产品执行器仍待接通，可信核验闭环不启动                                                                                              |
 | 真实CLI/模型                | 未执行                     | 用户暂缓；本轮真实CLI、模型、原生runner、业务执行均0                                                                                                              |
 
 后续[41项未启动UI计划补验](EC04-native-matrix-diagnostics.json)为独立新增证据：4文件88项与五配置typecheck通过，不重计首次审计272项；没有产品/版本修改。UI清单异常和未启动计划分页已补，实际执行多页仍未验。

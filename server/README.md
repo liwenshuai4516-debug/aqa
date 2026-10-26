@@ -17,3 +17,5 @@
 构建目录相应为 `dist/server/<目录>/`，启动入口仍是 `dist/server/index.js`。修改引用时同步测试内源码读取路径、动态导入和文档链接；源码扫描守卫必须继续覆盖已移动的原文件。
 
 EC06执行日志组件：`server/external-evaluation-log.ts`提供有界原始字节、UTF-8/JSONL解析与背压/缺口记录，`tests/agent-evaluation-execution-log-test.mjs`以可信合成进程验证；尚未接入产品执行器，见[证据](../docs/agent-evaluation-evidence/EC06-execution-log-diagnostics.json)。
+
+EC06宿主环境生命周期：`server/external-evaluation-runtime.ts`为固定无网VZ环境提供持久启动/新鲜查询/取消超时/日志校验与cleanup；`tests/agent-evaluation-runtime-test.mjs`验证Node和Electron Node模式。guest CLI和产品执行入口未接通，见[证据](../docs/agent-evaluation-evidence/EC06-runtime-diagnostics.json)。

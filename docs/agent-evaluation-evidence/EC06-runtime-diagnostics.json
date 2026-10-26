@@ -1,0 +1,84 @@
+{
+	"scope": "EC06 host-private idle VZ environment lifecycle; not full CLI ExecutionAdapter",
+	"baselineCommit": "7bef09b0309f71b94422fbf51322fdedb7f382ee",
+	"status": "ENVIRONMENT_COMPONENT_PASS; FULL_EXECUTION_ADAPTER_PENDING",
+	"pluginVersion": "0.4.32",
+	"actualModelCalls": 0,
+	"actualAgentCliCalls": 0,
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-runtime/index.json",
+		"bytes": 120833,
+		"sha256": "793ad1d127beb6b0ef92bc2f77e9825f348fbc9c8e4c98c88839df955f2b1b25"
+	},
+	"archiveFiles": 277,
+	"platform": {
+		"system": "macOS 26.6.2 arm64",
+		"node": "23.10.0",
+		"electronNode": "44.4.2",
+		"desktopUI": "NOT_RUN"
+	},
+	"verification": {
+		"time": "2026-10-26T08:07:37.351592+00:00",
+		"moduleSha256": "c4ac744a963af4b1df4b7cea742b21aa721ad43e90bd3bc34af2317bae3be52c",
+		"helperSourceSha256": "166aece573f257d1d87907af7325cf60f245cb1117b6b2e1553dea88d396789e",
+		"pluginFilesUnchanged": 29,
+		"finalRawLogsVerified": [
+			"/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-runtime-kxMzkI/environments/e01a65d6-0cb7-4083-8a59-f998285b2efb/console.raw",
+			"/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-runtime-kxMzkI/environments/e01a65d6-0cb7-4083-8a59-f998285b2efb/native.raw",
+			"/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-runtime-kxMzkI/environments/b6fd631d-fc5c-4b47-8bb3-b40656c65632/console.raw",
+			"/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-runtime-kxMzkI/environments/b6fd631d-fc5c-4b47-8bb3-b40656c65632/native.raw",
+			"/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-runtime-L72gQ8/environments/e9666536-da4b-4c04-8b5a-de2cd285ddc1/console.raw",
+			"/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-runtime-L72gQ8/environments/e9666536-da4b-4c04-8b5a-de2cd285ddc1/native.raw",
+			"/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-runtime-L72gQ8/environments/28cbaffc-809d-4b96-87ce-e17eaed12dea/console.raw",
+			"/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-runtime-L72gQ8/environments/28cbaffc-809d-4b96-87ce-e17eaed12dea/native.raw"
+		],
+		"processReadOnlyObservations": {
+			"50893": "",
+			"50918": "",
+			"50953": "",
+			"51012": "",
+			"51036": "",
+			"51042": "",
+			"52616": "",
+			"52621": "",
+			"52668": "",
+			"52677": "",
+			"52692": "",
+			"52697": ""
+		},
+		"allObservedPidsAbsent": true,
+		"note": "No saved PID used for signaling. Absence does not confirm VZ stop. Unknown synthetic admission remains retained."
+	},
+	"runs": {
+		"node-final": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-runtime/files/node-final/result.json",
+			"bytes": 6899,
+			"sha256": "361014bee973dd436ec15ea3a81a0f4f3c01e5b833e4d6e99716ee8b1c6887e0"
+		},
+		"electron-node": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-runtime/files/electron-node/result.json",
+			"bytes": 6903,
+			"sha256": "6706684038d41f82853d3fbbc800ee837904992b7e7727ec9240c37dc663dc41"
+		}
+	},
+	"validation": {
+		"unit": "5 files / 119 tests PASS",
+		"typecheck": "5 configs PASS; initial TS7023 FAIL retained, fixed explicit status return type",
+		"lint": "PASS",
+		"swiftFormat": "PASS",
+		"protocol": "structure/type-only/v33 PASS; historical tag heuristic SKIP",
+		"size": "PASS",
+		"clean": "preview only; no deletions",
+		"isolationRegression": "PASS; no network/share/disk/vsock; whole-VM stop, peer/bystander unaffected"
+	},
+	"limitations": [
+		"Idle shell environment only; no guest fake CLI argv/stdin or artifacts.",
+		"Helper is test fixture enrollment, not shipped installer/backend.",
+		"No TaskContract/store/ExecutionAdapter/verifier/product UI/skill/management integration.",
+		"Electron Node mode is not actual Electron UI or packaged asar acceptance.",
+		"Live log cursors volatile; final snapshots persisted and raw hashes checked.",
+		"Worker SIGKILL retains unknown and admission; native process absence is not trusted stop confirmation.",
+		"Stored PID substitution tested; actual OS PID reuse, sudden power loss and all launch races not claimed.",
+		"AC23–AC27/EC06 not fully accepted; EC07 waits, AC39 FAIL/M1 incomplete; real CLI/model user-deferred."
+	]
+}

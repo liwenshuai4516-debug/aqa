@@ -12,8 +12,8 @@
 | EC03      | 工程范围完成               | [进展](EC03.md)：七条规则/指标、默认 profile、179 项单测、原生评分与重评零执行对照                                         |
 | EC04 | 进行中 | [实施与验收](EC04.md)：0.4.32评分作业发现/重启unknown卡片及权限子项通过，295项回归；AC39仍FAIL，M1未完成 |
 | EC05      | 适用范围完成               | [记录](EC05.md)：0.4.20分段上传/人工确认/统一离线报告，472项回归及两组实际Electron通过；限ATIF-v1.8严格profile/macOS arm64 |
-| EC06      | 离线VM隔离候选通过；产品未实现 | [隔离](EC06-vm-diagnostics.json)与[恢复探针](EC06-vm-recovery-diagnostics.json)通过：控制端崩溃可找回/停止原VM，未知不重发；产品生命周期待实现             |
-| EC07      | 待执行，依赖 EC06              | VM候选已有整机收尾证据，EC06产品生命周期尚未实现，不提前进入可信核验闭环                                                   |
+| EC06      | 环境生命周期已实现；执行器待接通 | [环境组件](EC06-runtime-diagnostics.json)通过119项回归、Node/Electron Node模式故障验证；guest CLI及产品执行入口待接通             |
+| EC07      | 待执行，依赖 EC06              | 环境组件已有整机收尾/恢复证据；EC06完整执行器未接通，不提前进入可信核验闭环                                                   |
 | EC08      | 用户暂缓真实实测           | 不沿用旧费用额度，当前不启动                                                                                               |
 | EC09      | 待执行，依赖 EC02–EC04     | 隔离数据空间专项与索引一致性                                                                                               |
 | EC10–EC11 | 待执行，真实执行前置未满足 | 不绕过 EC08/独立客户端授权                                                                                                 |
@@ -343,3 +343,7 @@ AC14仅补普通任务采集写锁失败、可见错误与显式恢复，不代�
 ## EC06 宿主日志组件
 
 [本轮证据](EC06-execution-log-diagnostics.json)：新增标准Writable原始流/解析组件，真实Node合成进程验证stdout/stderr分离、final-text时仍运行、4MiB输出背压/65,536字节上限及精确缺口；11项新单测、相关共110项与完整类型检查通过。插件仍0.4.32；组件尚未接通VM/产品执行器/Electron，解析游标持久化仍待生命周期接线，不标AC25/26或EC06整体完成，AC39/M1仍未完成。
+
+## EC06 宿主环境生命周期
+
+[本轮证据](EC06-runtime-diagnostics.json)：固定无网VZ候选的prepare/start/status/cancel/cleanup、持久启动决定、独占门禁、新鲜查询与最终日志校验已实现。119项回归、真实Node及Electron44.4.2 Node模式通过；后者不等于实际桌面UI验收。控制端SIGKILL可恢复同一VM；worker SIGKILL则保留unknown与门禁，拒绝重发/清理。guest假CLI输入/产物协议、统一attempt/store及产品入口仍待接通，EC06未整体验收、EC07待前置。真实CLI/模型0次，AC39/M1仍未完成。

@@ -47,6 +47,17 @@ final class Delegate: NSObject, VZVirtualMachineDelegate {
 }
 let delegate = Delegate()
 vm.delegate = delegate
+signal(SIGUSR2, SIG_IGN)
+let graceful = DispatchSource.makeSignalSource(signal: SIGUSR2, queue: .main)
+graceful.setEventHandler {
+  do {
+    try vm.requestStop()
+    event(["event": "graceful-stop-request"])
+  } catch {
+    event(["event": "graceful-stop-error", "error": String(describing: error)])
+  }
+}
+graceful.resume()
 signal(SIGUSR1, SIG_IGN)
 let stop = DispatchSource.makeSignalSource(signal: SIGUSR1, queue: .main)
 stop.setEventHandler {
