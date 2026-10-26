@@ -120,3 +120,5 @@ UI 获批产物桌面归档：`tests/ui-approved-archive-desktop-test.mjs`，复
 UI 首次候选计量：`tests/ui-function-discovery-test.mjs --complete-candidate --measure`；范围和未测项见 [优化执行记录](ui-testing-optimization-execution.md)。
 
 UI 失败分析与子集重跑：`tests/ui-failed-batch-baseline.mjs`；[获批报告证据](ui-testing-evidence/optimization-u00-failed-rerun.json)保留原失败、报告修订及独立评审。
+
+PMS 真实浏览器准备：`tests/ui-pms-browser-preparation.mjs --refresh`；账号/匿名对照及来源匹配见 [浏览器准备证据](ui-testing-evidence/optimization-u02-pms-browser-preparation.json)。

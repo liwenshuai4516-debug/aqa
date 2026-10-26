@@ -442,3 +442,5 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 UI 认证轮换回归：`tests/ui-private-evidence-test.mjs --rotated-cookie` 使用运行时新签发的合成Cookie，验证公开日志/trace/附件脱敏，保留真实passed/failed及资源缺口。
 
 - `tests/ui-failed-batch-baseline.mjs`：既有六功能资产的失败批次、原生 trace 分析和仅失败项重跑；支持从已保存失败回执续跑，付费独立结果评审及交付另行登记。
+
+- `tests/ui-pms-browser-preparation.mjs`：PMS临时认证浏览器与匿名对照、五份公开来源脚本的实际加载摘要核对；同源GET/HEAD守卫、身份输出最小化和清理。角色/业务数据未知，未导入用例或执行正式测试。

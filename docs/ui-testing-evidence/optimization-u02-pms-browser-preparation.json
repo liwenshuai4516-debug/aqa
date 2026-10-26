@@ -1,0 +1,488 @@
+{
+	"date": "2026-10-26",
+	"status": "browser-account-verified-role-data-pending",
+	"planComplete": false,
+	"finalRun": "1792981439071",
+	"firstAttempt": "1792981072928",
+	"sourceComparisonRun": "1792981232039",
+	"finalResult": {
+		"createdAt": "2026-10-26T02:23:59.104Z",
+		"status": "browser-account-verified-role-data-pending",
+		"plan": {
+			"systemId": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+			"envId": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+			"revision": 8,
+			"target": "http://192.168.90.224:8238/pms/OperationContract",
+			"mode": "read-only-browser-preparation",
+			"responseCapture": false,
+			"screenshots": false,
+			"trace": false,
+			"allowedBrowserMethods": ["GET", "HEAD"],
+			"foreignRequests": "blocked",
+			"role": "unknown",
+			"data": "unknown",
+			"modelCalls": 0,
+			"formalTests": 0,
+			"nativeCaseImports": 0,
+			"dataSpaceStoreWrites": 0,
+			"publicSourceDeclarations": [
+				{
+					"name": "app",
+					"url": "http://192.168.90.224:8238/assets/index-C3vVbRNe.js",
+					"sha256": "2888c0b0da892a1802d954396c626c063a413416cd63407f9a9072adac222d37"
+				},
+				{
+					"name": "auth",
+					"url": "http://192.168.90.224:8238/assets/auth-BqGDvgoe.js",
+					"sha256": "bf59cd6bc8a3164674d78b57150b9a1793aa06912591cfa6d8fb13e7512775b0"
+				},
+				{
+					"name": "permission",
+					"url": "http://192.168.90.224:8238/assets/usePermission-zXACj9X4.js",
+					"sha256": "6afd79f4e3ec82cdd0f02d308cc1c64d5132eb27e20fa365682d565949b76110"
+				},
+				{
+					"name": "login",
+					"url": "http://192.168.90.224:8238/assets/index-uGPruASh.js",
+					"sha256": "586bcad2fe28f83f56729500ff8ee47fd9b3631170984aea1e6c910d308ec21d"
+				},
+				{
+					"name": "tenant",
+					"url": "http://192.168.90.224:8238/assets/useTenant-BRl2JReV.js",
+					"sha256": "951c998cc250c537d63e8447f0a26acbc11bd3fb38a063620a0d2068ca7b8774"
+				}
+			]
+		},
+		"browserLaunches": 1,
+		"contexts": [
+			{
+				"authenticatedReference": true,
+				"browserErrors": 0,
+				"httpErrors": 0,
+				"permittedReadRequests": 30,
+				"blockedNonReadMethods": 0,
+				"publicSourceComparisons": [
+					{
+						"name": "app",
+						"expectedSha256": "2888c0b0da892a1802d954396c626c063a413416cd63407f9a9072adac222d37",
+						"actualSha256": "2888c0b0da892a1802d954396c626c063a413416cd63407f9a9072adac222d37",
+						"matched": true
+					},
+					{
+						"name": "auth",
+						"expectedSha256": "bf59cd6bc8a3164674d78b57150b9a1793aa06912591cfa6d8fb13e7512775b0",
+						"actualSha256": "bf59cd6bc8a3164674d78b57150b9a1793aa06912591cfa6d8fb13e7512775b0",
+						"matched": true
+					},
+					{
+						"name": "permission",
+						"expectedSha256": "6afd79f4e3ec82cdd0f02d308cc1c64d5132eb27e20fa365682d565949b76110",
+						"actualSha256": "6afd79f4e3ec82cdd0f02d308cc1c64d5132eb27e20fa365682d565949b76110",
+						"matched": true
+					}
+				],
+				"blockedForeignRequests": 0,
+				"atTargetRoute": true,
+				"atLoginRoute": false,
+				"accessDeniedRoute": false,
+				"publicControls": {
+					"查询": 1,
+					"搜索": 0,
+					"新增": 0,
+					"保存草稿": 0,
+					"登录": 0,
+					"经营合同": 3
+				},
+				"identityProbe": {
+					"state": "matched",
+					"reason": "same-browser-profile-account-comparison"
+				},
+				"status": "observed",
+				"contextClosed": true
+			},
+			{
+				"authenticatedReference": false,
+				"browserErrors": 0,
+				"httpErrors": 0,
+				"permittedReadRequests": 41,
+				"blockedNonReadMethods": 0,
+				"publicSourceComparisons": [
+					{
+						"name": "app",
+						"expectedSha256": "2888c0b0da892a1802d954396c626c063a413416cd63407f9a9072adac222d37",
+						"actualSha256": "2888c0b0da892a1802d954396c626c063a413416cd63407f9a9072adac222d37",
+						"matched": true
+					},
+					{
+						"name": "auth",
+						"expectedSha256": "bf59cd6bc8a3164674d78b57150b9a1793aa06912591cfa6d8fb13e7512775b0",
+						"actualSha256": "bf59cd6bc8a3164674d78b57150b9a1793aa06912591cfa6d8fb13e7512775b0",
+						"matched": true
+					},
+					{
+						"name": "permission",
+						"expectedSha256": "6afd79f4e3ec82cdd0f02d308cc1c64d5132eb27e20fa365682d565949b76110",
+						"actualSha256": "6afd79f4e3ec82cdd0f02d308cc1c64d5132eb27e20fa365682d565949b76110",
+						"matched": true
+					},
+					{
+						"name": "app",
+						"expectedSha256": "2888c0b0da892a1802d954396c626c063a413416cd63407f9a9072adac222d37",
+						"actualSha256": "2888c0b0da892a1802d954396c626c063a413416cd63407f9a9072adac222d37",
+						"matched": true
+					},
+					{
+						"name": "login",
+						"expectedSha256": "586bcad2fe28f83f56729500ff8ee47fd9b3631170984aea1e6c910d308ec21d",
+						"actualSha256": "586bcad2fe28f83f56729500ff8ee47fd9b3631170984aea1e6c910d308ec21d",
+						"matched": true
+					},
+					{
+						"name": "auth",
+						"expectedSha256": "bf59cd6bc8a3164674d78b57150b9a1793aa06912591cfa6d8fb13e7512775b0",
+						"actualSha256": "bf59cd6bc8a3164674d78b57150b9a1793aa06912591cfa6d8fb13e7512775b0",
+						"matched": true
+					},
+					{
+						"name": "tenant",
+						"expectedSha256": "951c998cc250c537d63e8447f0a26acbc11bd3fb38a063620a0d2068ca7b8774",
+						"actualSha256": "951c998cc250c537d63e8447f0a26acbc11bd3fb38a063620a0d2068ca7b8774",
+						"matched": true
+					},
+					{
+						"name": "permission",
+						"expectedSha256": "6afd79f4e3ec82cdd0f02d308cc1c64d5132eb27e20fa365682d565949b76110",
+						"actualSha256": "6afd79f4e3ec82cdd0f02d308cc1c64d5132eb27e20fa365682d565949b76110",
+						"matched": true
+					}
+				],
+				"blockedForeignRequests": 0,
+				"atTargetRoute": false,
+				"atLoginRoute": true,
+				"accessDeniedRoute": false,
+				"publicControls": {
+					"查询": 0,
+					"搜索": 0,
+					"新增": 0,
+					"保存草稿": 0,
+					"登录": 0,
+					"经营合同": 0
+				},
+				"status": "observed",
+				"contextClosed": true
+			}
+		],
+		"limitations": [
+			"Target-specific test harness, not installed Agent or Desktop tool integration",
+			"GET/HEAD restriction may block application read APIs using POST",
+			"No recording, approved asset or formal test execution",
+			"Server account match does not establish business role or owned data readiness"
+		],
+		"preparation": {
+			"systemId": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+			"envId": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+			"revision": 8,
+			"configuration": "matched",
+			"privateState": "prepared-ephemeral",
+			"refresh": "explicit-fresh-login",
+			"authentication": "browser-not-checked",
+			"role": "unknown",
+			"data": "unknown",
+			"tenantCount": 1,
+			"clientCount": 2,
+			"dataSpaceWrites": 0
+		},
+		"browserClosed": true,
+		"privateStateRemoved": true,
+		"storeUnchanged": true,
+		"knownTokenAndPathAbsent": true,
+		"harnessSha256": "99483f5a93c1d6d13ad4c958293ba4f64476a87418551f5a7e4925d12298337b"
+	},
+	"runs": [
+		{
+			"id": "1792981072928",
+			"status": "browser-account-verified-role-data-pending",
+			"browserLaunches": 1,
+			"contexts": 2,
+			"harnessSha256": "d441def7e5fa97874688cea129be69143038016ce84854dcd327f5f636ce0766",
+			"storeUnchanged": true,
+			"privateStateRemoved": true
+		},
+		{
+			"id": "1792981232039",
+			"status": "browser-account-verified-role-data-pending",
+			"browserLaunches": 1,
+			"contexts": 2,
+			"harnessSha256": "214debea0fd631393ab4b3fc7d3f12127e59f0a4503a7d7894930ac1a0899eee",
+			"storeUnchanged": true,
+			"privateStateRemoved": true
+		},
+		{
+			"id": "1792981439071",
+			"status": "browser-account-verified-role-data-pending",
+			"browserLaunches": 1,
+			"contexts": 2,
+			"harnessSha256": "99483f5a93c1d6d13ad4c958293ba4f64476a87418551f5a7e4925d12298337b",
+			"storeUnchanged": true,
+			"privateStateRemoved": true
+		}
+	],
+	"publicSourceComparisons": [
+		{
+			"name": "app",
+			"expectedSha256": "2888c0b0da892a1802d954396c626c063a413416cd63407f9a9072adac222d37",
+			"actualSha256": "2888c0b0da892a1802d954396c626c063a413416cd63407f9a9072adac222d37",
+			"matched": true
+		},
+		{
+			"name": "auth",
+			"expectedSha256": "bf59cd6bc8a3164674d78b57150b9a1793aa06912591cfa6d8fb13e7512775b0",
+			"actualSha256": "bf59cd6bc8a3164674d78b57150b9a1793aa06912591cfa6d8fb13e7512775b0",
+			"matched": true
+		},
+		{
+			"name": "permission",
+			"expectedSha256": "6afd79f4e3ec82cdd0f02d308cc1c64d5132eb27e20fa365682d565949b76110",
+			"actualSha256": "6afd79f4e3ec82cdd0f02d308cc1c64d5132eb27e20fa365682d565949b76110",
+			"matched": true
+		},
+		{
+			"name": "login",
+			"expectedSha256": "586bcad2fe28f83f56729500ff8ee47fd9b3631170984aea1e6c910d308ec21d",
+			"actualSha256": "586bcad2fe28f83f56729500ff8ee47fd9b3631170984aea1e6c910d308ec21d",
+			"matched": true
+		},
+		{
+			"name": "tenant",
+			"expectedSha256": "951c998cc250c537d63e8447f0a26acbc11bd3fb38a063620a0d2068ca7b8774",
+			"actualSha256": "951c998cc250c537d63e8447f0a26acbc11bd3fb38a063620a0d2068ca7b8774",
+			"matched": true
+		}
+	],
+	"document": {
+		"path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/data/data-space/project-documents/e2f5d42d-2781-4e68-a452-4c87c7d1d346/OperationContract-browser-preparation-2026-10-26.md",
+		"sha256": "0fb9d709d48212869013bc30eee4c5d7788817fc86920240041ea6f4dc66c8d7",
+		"documentIndexedInApplication": false,
+		"nativeCasesImported": 0,
+		"nativeResultsWritten": 0,
+		"desktopDataSpaceHttpStatus": "unreachable",
+		"historicalDesktopDataSpaceHttpStatus": 401
+	},
+	"documentObservationRun": "1792981232039",
+	"desktopNativeConnection": {
+		"currentStatus": "unreachable",
+		"historicalHttpStatus": 401,
+		"nativeToolsAvailableInCodex": false,
+		"nativeCaseImports": 0,
+		"nativeResultWrites": 0
+	},
+	"validation": {
+		"typecheck": "passed",
+		"vitestFiles": 2,
+		"vitestTestsPassed": 14,
+		"lint": "passed",
+		"protocolStructure": "passed",
+		"protocolHistory": "skipped-no-tag",
+		"size": "passed",
+		"clean": "preview-only-no-deletion",
+		"archiveReadback": "passed"
+	},
+	"gaps": [
+		"Business role and owned test data not verified",
+		"No recording or real-target diagnostic counterparts",
+		"Plugin generic private execution and dynamic-cache integration incomplete",
+		"Desktop native connection, document indexing and cases/results import pending",
+		"No M1/M2 acceptance or complete performance baseline"
+	],
+	"archive": {
+		"path": "optimization-u02-pms-browser-preparation.tar.gz",
+		"sha256": "a424de60ffface46ab806f817d42fc0dd3b5b8ee4fc546437be6c2f21e9b502a",
+		"files": [
+			{
+				"path": "checks/ui-pms-browser-clean.log",
+				"bytes": 609,
+				"sha256": "11edff7f359e5c0ad036bad6ca5caf7ef19274615efa33463fcabe76958226e5"
+			},
+			{
+				"path": "checks/ui-pms-browser-lint.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			{
+				"path": "checks/ui-pms-browser-preparation-final.log",
+				"bytes": 6994,
+				"sha256": "beb45cebf25c4c8f7d4e6dbe12450359f1208cbbf29586e19d5cfe6f1564ecf7"
+			},
+			{
+				"path": "checks/ui-pms-browser-preparation-verified.log",
+				"bytes": 6994,
+				"sha256": "609e6d189b368fca1a0bae03c080cedaf8c6c7c994b48ffd44f2c6a691d015dd"
+			},
+			{
+				"path": "checks/ui-pms-browser-preparation.log",
+				"bytes": 2913,
+				"sha256": "08cdde2f54e7ba6b4cf72d08fd59de031f79cc78b85e2413abbdb6bdc662fea8"
+			},
+			{
+				"path": "checks/ui-pms-browser-protocol.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			{
+				"path": "checks/ui-pms-browser-size.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			},
+			{
+				"path": "checks/ui-pms-browser-typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			},
+			{
+				"path": "checks/ui-pms-browser-vitest.log",
+				"bytes": 188,
+				"sha256": "88eed6055818d69ffab0441293bda82dedfc1c65265d8dd8715b8cf0eb14c001"
+			},
+			{
+				"path": "runs/1792981072928/adapter.mjs",
+				"bytes": 6837,
+				"sha256": "1314d17c5a0319a21b7abb0b89efc1e4f5dedc0b8007271888ca947271e94d72"
+			},
+			{
+				"path": "runs/1792981072928/harness.mjs",
+				"bytes": 7229,
+				"sha256": "d441def7e5fa97874688cea129be69143038016ce84854dcd327f5f636ce0766"
+			},
+			{
+				"path": "runs/1792981072928/plan.json",
+				"bytes": 525,
+				"sha256": "361d39c31818b02e0ef3786c0b01581ef195614b33adb0fb59793352ab81c108"
+			},
+			{
+				"path": "runs/1792981072928/result.json",
+				"bytes": 2805,
+				"sha256": "c08daa95434b5c39f72733fe42897c90025de5c7e614df2d8228a33afbf6bc15"
+			},
+			{
+				"path": "runs/1792981232039/adapter.mjs",
+				"bytes": 6837,
+				"sha256": "1314d17c5a0319a21b7abb0b89efc1e4f5dedc0b8007271888ca947271e94d72"
+			},
+			{
+				"path": "runs/1792981232039/app.source.json",
+				"bytes": 5050,
+				"sha256": "d1d0157f867ee7d06292708bc20a58e4c6a935578953c0cde29bcefd7471f5d9"
+			},
+			{
+				"path": "runs/1792981232039/auth.source.json",
+				"bytes": 1601,
+				"sha256": "0e8e2652ef68db84d2a617a57803de796c8d7bd4c57fecf7f75ce7976b8c9e72"
+			},
+			{
+				"path": "runs/1792981232039/browser-preparation-document.md",
+				"bytes": 2395,
+				"sha256": "0fb9d709d48212869013bc30eee4c5d7788817fc86920240041ea6f4dc66c8d7"
+			},
+			{
+				"path": "runs/1792981232039/document-receipt.json",
+				"bytes": 472,
+				"sha256": "81431af9d71196e09d507ce4ac700ecc50c3f04d2125d6eb710c625ff0d2d21f"
+			},
+			{
+				"path": "runs/1792981232039/harness.mjs",
+				"bytes": 9069,
+				"sha256": "214debea0fd631393ab4b3fc7d3f12127e59f0a4503a7d7894930ac1a0899eee"
+			},
+			{
+				"path": "runs/1792981232039/login.source.json",
+				"bytes": 1085,
+				"sha256": "9c86c024aee13199f4358ad167fc4ed42fe270a5c6bbdfb8fab3ef20d5de8fe3"
+			},
+			{
+				"path": "runs/1792981232039/permission.source.json",
+				"bytes": 1088,
+				"sha256": "93fa571b3a1746f7d998e7c67bf10961ddae80cf07ee4c6087af9d1cedd332cb"
+			},
+			{
+				"path": "runs/1792981232039/plan.json",
+				"bytes": 1510,
+				"sha256": "3f4844d08aec088ade640e6b87289c269599b94f68860014c37cd338f693d077"
+			},
+			{
+				"path": "runs/1792981232039/result.json",
+				"bytes": 6886,
+				"sha256": "96fe736bfda8f69714da35a853b93ba2135a3114ac6e027d416bdcce9a48d0f7"
+			},
+			{
+				"path": "runs/1792981232039/tenant.source.json",
+				"bytes": 1865,
+				"sha256": "263fecfe973f1f34ae4697b3e5f7caba58ae61b42276ec1e996abe731506fa6d"
+			},
+			{
+				"path": "runs/1792981439071/adapter.mjs",
+				"bytes": 6837,
+				"sha256": "1314d17c5a0319a21b7abb0b89efc1e4f5dedc0b8007271888ca947271e94d72"
+			},
+			{
+				"path": "runs/1792981439071/app.source.json",
+				"bytes": 5050,
+				"sha256": "d1d0157f867ee7d06292708bc20a58e4c6a935578953c0cde29bcefd7471f5d9"
+			},
+			{
+				"path": "runs/1792981439071/auth.source.json",
+				"bytes": 1601,
+				"sha256": "0e8e2652ef68db84d2a617a57803de796c8d7bd4c57fecf7f75ce7976b8c9e72"
+			},
+			{
+				"path": "runs/1792981439071/harness.mjs",
+				"bytes": 9206,
+				"sha256": "99483f5a93c1d6d13ad4c958293ba4f64476a87418551f5a7e4925d12298337b"
+			},
+			{
+				"path": "runs/1792981439071/login.source.json",
+				"bytes": 1085,
+				"sha256": "9c86c024aee13199f4358ad167fc4ed42fe270a5c6bbdfb8fab3ef20d5de8fe3"
+			},
+			{
+				"path": "runs/1792981439071/permission.source.json",
+				"bytes": 1088,
+				"sha256": "93fa571b3a1746f7d998e7c67bf10961ddae80cf07ee4c6087af9d1cedd332cb"
+			},
+			{
+				"path": "runs/1792981439071/plan.json",
+				"bytes": 1510,
+				"sha256": "3f4844d08aec088ade640e6b87289c269599b94f68860014c37cd338f693d077"
+			},
+			{
+				"path": "runs/1792981439071/result.json",
+				"bytes": 6886,
+				"sha256": "7039d1431c588aef63ad94fb9bbecf3afd921eb6e9996d98ed2b244d272af3fd"
+			},
+			{
+				"path": "runs/1792981439071/tenant.source.json",
+				"bytes": 1865,
+				"sha256": "263fecfe973f1f34ae4697b3e5f7caba58ae61b42276ec1e996abe731506fa6d"
+			},
+			{
+				"path": "sources/plugins/data-space/env-script.mjs",
+				"bytes": 16456,
+				"sha256": "fdac1fed80595def74638468fa17772579566f164bbf0d27624918e9e0bb4ba8"
+			},
+			{
+				"path": "sources/tests/lib/chrome.mjs",
+				"bytes": 1380,
+				"sha256": "3cc62338c8df4b260e9e577d0ef7c55af20be7221adcdb38c9d9b5e5de3774bc"
+			},
+			{
+				"path": "sources/tests/lib/pms-private-session.mjs",
+				"bytes": 6837,
+				"sha256": "1314d17c5a0319a21b7abb0b89efc1e4f5dedc0b8007271888ca947271e94d72"
+			},
+			{
+				"path": "sources/tests/ui-pms-browser-preparation.mjs",
+				"bytes": 9206,
+				"sha256": "99483f5a93c1d6d13ad4c958293ba4f64476a87418551f5a7e4925d12298337b"
+			}
+		]
+	}
+}
