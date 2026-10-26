@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "stage": "U02 recording product configuration preflight",
+  "status": "partial-plan-in-progress",
+  "modelCalls": 0,
+  "formalRuns": 0,
+  "businessWrites": 0,
+  "baseline": {
+    "passed": 3,
+    "failed": 2,
+    "meaning": "configuration admission only, no seed executed or leak claimed"
+  },
+  "unit": {
+    "files": 3,
+    "passed": 12
+  },
+  "sdk": "passed",
+  "electron": "PASS",
+  "ledgerSha256": {
+    "u05-authorized-review-budget.json": "34aaec3d27776ad96474be83f0be5a4eebe001fb41467afc69a4372c2b7e31ec",
+    "pms-anonymous-authorized-review-budget.json": "854cec9cb4cb8574adcdec3163d7fd2953ab1016be4c9799f48a2cfa7bba87c3"
+  },
+  "archive": {
+    "path": "docs/ui-testing-evidence/optimization-u02-recording-product-preflight.tar.gz",
+    "sha256": "843388477858d1e4061d12cefc61f6b373e72dc45e3e7e17e3bcb312705b6eb8",
+    "files": 28
+  },
+  "files": {
+    ".pi/skills/ui-testing-workflow/assets/recording-preflight-reporter.mjs": "4f7d4c88fbb702aa850933018d474a544b6fbeb41e25441df21f8f5a696ba73b",
+    ".pi/skills/ui-testing-workflow/assets/recording-preflight.mjs": "faa1bafa5b686677dcad7964798431a4fcafe70ad92d1f2e52731259ff581e6c",
+    ".pi/skills/ui-testing-workflow/references/maintenance.md": "6cd0b3ce8f01e3bc57447776e281d6a8c6789737b88d5be49ebbfa80b0526820",
+    "docs/ui-testing-optimization-execution.md": "bde84267e19bcdbfb68dcfe973a32af1ab9710189a5feffcd6e971869a5d7a05",
+    "docs/ui-testing-optimization-plan.md": "1decb12f5dbc7243063931c9859a07acb4f60f7a84f44a3dec90ac012a502a54",
+    "tests/scratch/ui-optimization-u00/recording-product-preflight/archive.py": "56f35ed198b6694df55551bb9539820eaa91eef233a3524ce2294ab51cd3087d",
+    "tests/scratch/ui-optimization-u00/recording-product-preflight/baseline.log": "661bd1fbe579b01002d47608ac81eb524e2add4861cc9e5011226604dc072228",
+    "tests/scratch/ui-optimization-u00/recording-product-preflight/clean-final.log": "11edff7f359e5c0ad036bad6ca5caf7ef19274615efa33463fcabe76958226e5",
+    "tests/scratch/ui-optimization-u00/recording-product-preflight/desktop.log": "f14511195c990d0f317a3bebd6b4bfc9b946f801d10e3ba4a8256b94760d8619",
+    "tests/scratch/ui-optimization-u00/recording-product-preflight/fixed.log": "aa9831c56619e1aa01c0380dc6f2f9293a080f1706e40f462f09ed162542514d",
+    "tests/scratch/ui-optimization-u00/recording-product-preflight/integration.log": "4787802d6179525b3c321ad1664e1cea60782235ba1a7a099d23cdcb59365e9c",
+    "tests/scratch/ui-optimization-u00/recording-product-preflight/lint.log": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223",
+    "tests/scratch/ui-optimization-u00/recording-product-preflight/preflight-before.mjs": "4c346c2c449fb791fed0407bd7b8a7a21821709bdde921d908baa41ab68f7930",
+    "tests/scratch/ui-optimization-u00/recording-product-preflight/protocol.log": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+    "tests/scratch/ui-optimization-u00/recording-product-preflight/size-after-archive.log": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+    "tests/scratch/ui-optimization-u00/recording-product-preflight/size.log": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
+    "tests/scratch/ui-optimization-u00/recording-product-preflight/stage.md": "d3d28ddb4349c314f29d92eb1a20f75d0b93487f409329d1793eb09bb3ccd180",
+    "tests/scratch/ui-optimization-u00/recording-product-preflight/typecheck.log": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+    "tests/scratch/ui-optimization-u00/recording-product-preflight/unit.log": "976903b531da396dff99a36772ada14e9daeb064409f25a53e612a1f61e3da76",
+    "tests/scratch/ui-workflow-visibility/1793004966206/after-skills.png": "327c18cdf9b900bbe19caffafa55a32ca9fcde454af3edd49836c211c4e446d4",
+    "tests/scratch/ui-workflow-visibility/1793004966206/before-skills.png": "320e75d928e1362f6d21f44c467defd32b7300858c0a6be07145ecfe441bec57",
+    "tests/scratch/ui-workflow-visibility/1793004966206/desktop.log": "d80302db8e134de38b2eba9ecaa4ee3bf3722e69014e26027c350f139d45d1cc",
+    "tests/scratch/ui-workflow-visibility/1793004966206/discovery-restored.png": "7d016a03d6be32695674e2cd3eeab2a885be0d49094a275e1c62e7d1d2032012",
+    "tests/scratch/ui-workflow-visibility/1793004966206/mcp-status.png": "94c731878120d22dd8286f00c74389bcf45f93fd0ae371571468b086e4850c36",
+    "tests/scratch/ui-workflow-visibility/1793004966206/result.json": "b0a888650d02faf7f3c2f6a2e12ac74c6f7028e18d11bf68a5ee6c263e96aa7e",
+    "tests/scratch/ui-workflow-visibility/1793004966206/slash-ui.png": "089f07fc31ff7f93f56d0335805e3c7c4d9b3431f9d927ab8bf1cbe5569d8abf",
+    "tests/ui-testing-integration-test.mjs": "9f036bd7c60bab1016882387059d0a220419f8aff1871b181d9c7f65400a0a60",
+    "tests/unit/ui-recording-preflight.test.ts": "ada50710c6cfd3605f79cbb0df858fda9414fba9d84f538249975b346539812a"
+  },
+  "limits": [
+    "configuration only, runtime seed/test.use/fixture injection not covered",
+    "private product recording remains unsupported",
+    "no formal run or review approval",
+    "Electron document files saved without application list index"
+  ]
+}

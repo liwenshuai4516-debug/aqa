@@ -51,3 +51,31 @@ it("requires explicit project and seed, rejects missing browser projects and dep
 		"缺少可用",
 	);
 });
+
+it.each([
+	"{cookies:[],origins:[{origin:'http://127.0.0.1:18981',localStorage:[{name:'token',value:'synthetic-only'}]}]}",
+	"process.env.PI_UI_DATA_SPACE_SYNTHETIC ?? '/private/synthetic-only-state.json'",
+])("blocks configured storageState before executing the seed (%s)", async (state) => {
+	const cwd = fixture();
+	writeFileSync(
+		join(cwd, "playwright.config.mjs"),
+		`export default {testDir:'./tests',use:{storageState:${state}},projects:[{name:'chromium'}]};`,
+	);
+	await expect(validateRecordingSeed(cwd, { project: "chromium", seedFile: "tests/seed.spec.ts" })).rejects.toThrow(
+		"storageState",
+	);
+});
+
+it("checks only the selected project, including inherited contextOptions state", async () => {
+	const cwd = fixture();
+	writeFileSync(
+		join(cwd, "playwright.config.mjs"),
+		"export default {testDir:'./tests',projects:[{name:'chromium'},{name:'private',use:{contextOptions:{storageState:{cookies:[],origins:[]}}}}]};",
+	);
+	await expect(
+		validateRecordingSeed(cwd, { project: "chromium", seedFile: "tests/seed.spec.ts" }),
+	).resolves.toBeUndefined();
+	await expect(validateRecordingSeed(cwd, { project: "private", seedFile: "tests/seed.spec.ts" })).rejects.toThrow(
+		"storageState",
+	);
+});

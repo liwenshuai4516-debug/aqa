@@ -16,6 +16,7 @@ import {
 } from "@earendil-works/pi-coding-agent";
 import { ensureBuild } from "./lib/ensure-build.mjs";
 import { enableUiTesting } from "../scripts/enable-ui-testing.mjs";
+import { createPrivateBrowserStates } from "../plugins/data-space/private-browser-state.mjs";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
 ensureBuild(repo, "ui-testing-integration");
@@ -27,6 +28,7 @@ const agentDir = join(temporary, "agent");
 const checks = [];
 const packageSkills = realpathSync(join(repo, "node_modules/pi-ui-testing/skills"));
 let session;
+let privateStates;
 const guardState = {
 	planMode: false,
 	delegateMode: false,
@@ -268,6 +270,52 @@ try {
 	assert.equal(existsSync(join(target, "seed-executed")), false, "Rejected setup must not run seed body");
 	await writeFile(join(target, "tests/seed.spec.ts"), seedCode);
 	checks.push("missing seed/project and multi-test seed stop before seed-body side effects");
+	const configPath = join(target, "playwright.config.mjs");
+	const anonymousConfig = await readFile(configPath, "utf8");
+	const privateData = join(temporary, "private-data");
+	await mkdir(privateData, { mode: 0o700 });
+	privateStates = createPrivateBrowserStates({
+		dataDir: privateData,
+		store: () => ({
+			revision: 1,
+			systems: [{ id: "synthetic" }],
+			envs: [
+				{
+					id: "test",
+					systemId: "synthetic",
+					baseUrl: "http://127.0.0.1:18981",
+					params: [{ key: "token", value: "synthetic-only" }],
+				},
+			],
+		}),
+	});
+	const prepared = await privateStates.prepare(target, {
+		engine: "ui",
+		mode: "execute",
+		systemId: "synthetic",
+		envId: "test",
+		targetUrl: "http://127.0.0.1:18981/synthetic",
+		privateBindings: [{ parameterKey: "token", storageKey: "token" }],
+	});
+	assert.equal(prepared.preparation.recording, "unsupported");
+	await writeFile(
+		configPath,
+		anonymousConfig.replace("use: {", `use: { storageState: process.env[${JSON.stringify(prepared.auth.reference)}],`),
+	);
+	const privateSetup = await invoke("integration_native_call", {
+		tool: backend + "generator_setup_page",
+		input: {
+			project: "chromium",
+			seedFile: "tests/seed.spec.ts",
+			plan: "Reject unsupported managed private recording before executing seed.",
+		},
+	});
+	assert.equal(privateSetup.details.isError, true, JSON.stringify(privateSetup.content));
+	assert.match(JSON.stringify(privateSetup.content), /storageState/);
+	assert.equal(existsSync(join(target, "seed-executed")), false);
+	privateStates.dispose();
+	await writeFile(configPath, anonymousConfig);
+	checks.push("real execution-only data-space reference is rejected by SDK recording hook before seed execution");
 	const setup = await invoke("integration_native_call", {
 		tool: backend + "generator_setup_page",
 		input: {
@@ -397,6 +445,7 @@ try {
 		),
 	);
 } finally {
+	privateStates?.dispose();
 	if (session) {
 		await session.extensionRunner?.emit({ type: "session_shutdown", reason: "shutdown" });
 		session.dispose();

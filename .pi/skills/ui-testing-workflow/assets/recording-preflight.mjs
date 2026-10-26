@@ -3,6 +3,7 @@ import { execFile } from "node:child_process";
 import { existsSync, realpathSync, statSync } from "node:fs";
 import { basename, dirname, resolve } from "node:path";
 import { promisify } from "node:util";
+import { fileURLToPath } from "node:url";
 import { resolvePlaywrightRuntime } from "./playwright-runtime.mjs";
 const execute = promisify(execFile);
 
@@ -24,7 +25,7 @@ export async function validateRecordingSeed(cwd, input) {
 				runtime.cli,
 				"test",
 				"--list",
-				"--reporter=json",
+				`--reporter=${fileURLToPath(new URL("./recording-preflight-reporter.mjs", import.meta.url))}`,
 				"--config",
 				runtime.config,
 				`--project=${input.project}`,
@@ -43,9 +44,11 @@ export async function validateRecordingSeed(cwd, input) {
 			"UI 初始化阻塞：seed 收集失败；核对项目 Playwright 依赖、配置、浏览器 project 和 seed 文件。未执行 seed。",
 		);
 	}
-	if (report.errors?.length) throw new Error("UI 初始化阻塞：seed 收集存在错误，未执行 seed。");
-	const project = report.config?.projects?.find((p) => p.name === input.project);
+	if (report.version !== 1 || report.errors) throw new Error("UI 初始化阻塞：seed 收集存在错误，未执行 seed。");
+	const project = report.projects?.find((p) => p.name === input.project);
 	if (!project?.testDir) throw new Error("UI 初始化阻塞：浏览器 project 不存在或测试配置不兼容。");
+	if (project.storageStateConfigured)
+		throw new Error("UI 初始化阻塞：录制尚不支持配置 storageState；未执行 seed，私密正式执行入口不受此检查影响。");
 	// Match MCP's testDir / configDir / cwd lookup, but refuse multiple distinct files.
 	const candidates = [
 		...new Set(
@@ -57,16 +60,6 @@ export async function validateRecordingSeed(cwd, input) {
 	];
 	if (candidates.length !== 1)
 		throw new Error(`UI 初始化阻塞：seed 匹配${candidates.length ? "多个文件" : "不到文件"}，请指定唯一文件。`);
-	let tests = 0;
-	const collect = (suites) => {
-		for (const suite of suites ?? []) {
-			for (const spec of suite.specs ?? []) {
-				const file = resolve(report.config.rootDir, spec.file ?? suite.file);
-				if (existsSync(file) && realpathSync(file) === candidates[0]) tests += spec.tests?.length ?? 0;
-			}
-			collect(suite.suites);
-		}
-	};
-	collect(report.suites);
+	const tests = report.tests.filter(({ file }) => existsSync(file) && realpathSync(file) === candidates[0]).length;
 	if (tests !== 1) throw new Error("UI 初始化阻塞：seed 必须收集到单个测试，不执行空或多测试 seed。");
 }

@@ -17,8 +17,8 @@
 | 管理页与快捷发现的公共逻辑                   | `server/skill/`、`server/settings-service.ts`、`server/slash-commands.ts`                                       |
 | 测试资产与执行证据                           | 被测工作区 `qa/ui/`，不写进技能目录                                                                             |
 
-原版包来源提交：`f8fad767efddf1f6987c69215e0a66caa5564c32`（上游本地提交；未推送上游远端）。
-SHA-256：`fd3f902d3828b5f53c6c9de5112d623e319d2d509cb2022b377e506e54f250c4`。0.1.4 仅在一次引用核验内按 path+sha256 复用成功读取；不同摘要、后续调用及并发调用仍独立核验，不增加跨请求缓存，不改变批准或产物协议。
+原版包来源提交：`92235e882a94d79106039a1c0f05fdaaf5f3c827`（上游本地提交；未推送上游远端）。
+SHA-256：`9057851aa90a923b57aa3aa23af8de0eaeea400e4a153c88f6c8381a839554e1`。0.1.4 仅在一次引用核验内按 path+sha256 复用成功读取；不同摘要、后续调用及并发调用仍独立核验，不增加跨请求缓存，不改变批准或产物协议。
 
 保留 0.1.3：将认证诊断/正式执行的原始捕获保存在工作区外的宿主私有目录，公开副本脱敏已知值并隐藏图片/二进制资源；真实失败保留，缺失原始附件时不声明完整证据。trace 读取绑定实际 Playwright 1.62.1，避免误用独立安装的 core 1.63.0。0.1.3当时未覆盖录制、运行中新凭据、任意编码和脚本自行写文件；数据空间私密桥接继续 not-ready，不因该版本放行真实环境。
 
@@ -87,3 +87,5 @@ MCP 运行时选择由 `assets/playwright-runtime.mjs` 负责：CLI 与配置均
 内部`assets/private-recording-storage-events.mjs`由受控seed在导航前安装Chromium CDP DOMStorage监听，使用工作区外0700/0600文件保存实际历史事件；固定page私有flush函数提供屏障，宿主验证事件后仅为原生过滤归一化oldValue/newValue，不伪称浏览器storageState。单page/origin，128事件/2MiB、断连/关闭/坏证据/第二页面拒绝；不改页面Storage方法、不复制过滤器，产品mcp-extension尚未导入。真实SDK瞬态JSON正向及坏日志/取消/第二页面partial留证，跨frame/其他target与完整重连续录未证明。见[存储事件证据](../../../../docs/ui-testing-evidence/optimization-u02-recording-storage-events.json)。
 
 存储事件内部观察器现于创建文件/CDP前校验当前blank、单frame/单page，记录frameattached历史并在读取时拒绝，即使随后移除也不放行；dispose解除该监听。真实浏览器前后及实际SDK旧版放行/修正版partial、CDP解除partial/正向留证，见[边界证据](../../../../docs/ui-testing-evidence/optimization-u02-recording-storage-boundaries.json)。blank检查不是过去导航历史证明，依赖受控fixture的新context事实；仅拒绝未覆盖frame，不代表支持多frame，产品record仍unsupported。
+
+录制配置检查补充：`recording-preflight-reporter.mjs`通过目标Playwright公开Reporter API只返回项目名、testDir、测试文件及storageState配置布尔值，不序列化use原值、metadata或收集错误。所选project的storageState（含继承配置及contextOptions）暂时阻塞；其他project不连带阻塞。该检查在实际SDK setup钩子生效，不读取状态文件，不执行seed；数据空间execute引用仍可用于原正式执行入口。只覆盖配置层，不能检测seed/test.use或自定义fixture运行时自行注入认证，也不解决配置收集与MCP执行间的修改竞态，不作为通用隐私保证。产品私密record继续unsupported。

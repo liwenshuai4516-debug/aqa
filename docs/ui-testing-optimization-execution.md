@@ -1129,3 +1129,21 @@ scope明确8次helper/30工具/128事件/2MiB及受控负向frame附加移除/�
 [frame/观察器边界证据](ui-testing-evidence/optimization-u02-recording-storage-boundaries.json)归档178文件、220次FileRef核验及逐成员回读一致；权威Electron项目新增OperationContract-recording-storage-boundaries-2026-10-26.md及四轮156份公开快照，0700/0600逐文件核验，store字节不变。文件保存不表示应用列表显示或正式结果入库。本轮不新增Electron界面回归，产品mcp-extension未导入该内部模块、record仍unsupported，前轮桌面通过不算本轮。
 
 本轮是未覆盖frame/初态及失效观察器的拒绝边界，不是多frame录制交付。后续需实际产品所需frame/target支持、初始化并发/监听完整性、完整重连续录、产品私有准备与生命周期接入；通用输入闭包、真实角色/租户/数据、U00计量、U03/U07与M1/M2未完成，整体goal active。
+
+### U02 续跑：产品录制配置层拒绝门禁（2026-10-26）
+
+环境：macOS arm64；原生 pi-ui-testing 0.1.14；目标 Playwright CLI；隔离 SDK/MCP 与 Electron。仅使用合成参数、临时数据目录与已有构建，模型调用、正式批次、真实业务写入均为 0。
+
+修复前新增两种配置断言均失败（3 通过 / 2 失败）：内联 storageState、环境变量私有路径均获前置校验放行。没有执行 seed，不将这次配置放行称为已复现秘密泄露。
+
+修复后通过公开 Reporter API 获取最小元数据，在既有 setup 执行钩子拒绝所选 project 的 storageState 及 contextOptions.storageState。覆盖继承配置、其他 project 不连带阻塞；不输出 use 原值、metadata 或错误原文，不读取私有状态文件。
+
+实际 SDK 先由 data-space prepare-private(execute) 生成合成受管引用，再将该引用用于目标配置。调用真实 generator_setup_page 经 SDK 嵌套工具管线被拒绝，seed-executed 文件不存在。恢复匿名配置后真实 Chromium seed、snapshot、定位生成及点击通过，关闭成功。执行专用引用的普通正式执行路径未改动，本轮未重跑其业务测试。
+
+相关 3 文件 12 项 Vitest、完整 5 配置类型检查、lint、协议同步、size 检查通过；协议 Git tag 启发式因无可用 tag 跳过。隔离 Electron 通过技能页与快捷发现、禁用/启用及重载持久、87 个直连 MCP 工具与重连检查；非真实 PMS 私密业务录制，不称当前个人应用已热更新。
+
+同时修正维护文档的 0.1.14 来源提交与 SHA-256，和现有分发包/export manifest 实际核对；没有更新包或个人配置。
+
+剩余边界：配置层检查不检测 test.use、自定义 fixture 或 seed 运行时认证注入；不解决收集与执行间配置竞态。内部私有输入副本、事件捕获与生命周期适配尚未连入产品录制入口。产品私密 record 仍 unsupported；整体 U02 与优化计划继续实施中。PMS 剩余 2 次设计评审额度保留，report-2 未结果批准。
+
+[本轮证据](ui-testing-evidence/optimization-u02-recording-product-preflight.json)保留修复前失败与修复后真实SDK、Electron证据；权威Electron项目另存阶段文档及证据快照，0700/0600回读校验，store不改动；未创建应用文档索引，不声称文档列表已显示。plan_update不可用，沿用本文及阶段表。其他协作差异保留，任务开始/交付clean仅预览，整体goal active。

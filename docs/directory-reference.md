@@ -26,6 +26,7 @@ pi-web-ui/
 │   └── README.md               # 桌面版说明：跑起来 / 约定 / 发布 / 签名（SignPath）
 ├── deploy/                     # 部署示例：launchd plist / systemd unit / Windows 任务 XML
 ├── .pi/skills/ui-testing-workflow/ # UI 技能统一维护入口，assets/ 资源、references/ 维护说明
+│   ├── assets/recording-preflight-reporter.mjs # 录制收集最小元数据，不输出认证值；配置storageState暂阻塞
 │   ├── assets/private-recording-workspace.mjs # 内部私有输入副本及受管身份派生，未开放产品录制
 │   ├── assets/private-recording-transport.mjs # 内部MCP连接/请求失效守卫；不负责过滤或开放入口
 │   └── assets/private-recording-storage-events.mjs # 内部Chromium单page私有CDP存储事件观察/读取，未接产品入口
