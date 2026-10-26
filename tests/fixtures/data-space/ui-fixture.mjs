@@ -11,7 +11,13 @@ export async function setupUiFixture({ discardPersistence = false, optimization 
 		agentDir = join(root, "agent");
 	await mkdir(project);
 	await mkdir(agentDir);
-	const state = { browserRequests: 0, responseStatus: 200, identityText: "Names", saveLabel: "Save" };
+	const state = {
+		browserRequests: 0,
+		responseStatus: 200,
+		identityText: "Names",
+		saveLabel: "Save",
+		discardNamePrefixes: [],
+	};
 	const html = (value) => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 	const server = createServer((_req, res) => {
 		state.browserRequests++;
@@ -20,7 +26,7 @@ export async function setupUiFixture({ discardPersistence = false, optimization 
 		res.end(`<!doctype html><h1>${html(state.identityText)}</h1><form><label>Name <input required name="name"></label><button>${html(state.saveLabel)}</button></form><ul></ul><script>
  const list=document.querySelector('ul'),names=JSON.parse(localStorage.getItem('names')||'[]');
  function render(){list.replaceChildren(...names.map(name=>{const li=document.createElement('li');li.textContent=name;return li}));}
- document.querySelector('form').onsubmit=e=>{e.preventDefault();names.push(new FormData(e.target).get('name'));${discardPersistence ? "localStorage.removeItem('names')" : "localStorage.setItem('names',JSON.stringify(names))"};render();};render();</script>`);
+ document.querySelector('form').onsubmit=e=>{e.preventDefault();names.push(new FormData(e.target).get('name'));${discardPersistence ? "localStorage.removeItem('names')" : "if(!" + JSON.stringify(state.discardNamePrefixes) + ".some(prefix=>String(names.at(-1)).startsWith(prefix)))localStorage.setItem('names',JSON.stringify(names))"};render();};render();</script>`);
 	});
 	await new Promise((ok) => server.listen(0, "127.0.0.1", ok));
 	if (server.address().port < 8900) throw new Error("Fixture port below isolated range");

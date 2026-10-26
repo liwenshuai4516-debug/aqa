@@ -50,7 +50,15 @@ for (const definition of definitions) {
 		try {
 			const run = await reader.read(engine, workspace, reference);
 			if (run.rows.length) {
-				selected = { engine, workspace, reference, run, synthetic, sourceFiles: definition.sourceFiles };
+				selected = {
+					engine,
+					workspace,
+					reference,
+					run,
+					synthetic,
+					expectedRows: definition.expectedRows,
+					sourceFiles: definition.sourceFiles,
+				};
 				break;
 			}
 		} catch (error) {
@@ -317,10 +325,17 @@ try {
 		assert.equal(await detail.locator("tbody tr").count(), Math.min(run.rows.length, 20));
 		assert.ok((await detail.innerText()).toLowerCase().includes(run.rows[0].status.toLowerCase()));
 		const label = source.synthetic ? `${engine}-synthetic` : engine;
-		if (source.synthetic) {
+		if (source.synthetic || source.expectedRows) {
 			assert.equal(run.rows.length, 41);
-			assert.equal(run.complete, false);
-			assert.ok(run.rows.every((row) => row.status === "unknown" && row.evidenceComplete === false));
+			if (source.synthetic) {
+				assert.equal(run.complete, false);
+				assert.ok(run.rows.every((row) => row.status === "unknown" && row.evidenceComplete === false));
+			} else {
+				assert.equal(run.complete, true);
+				assert.deepEqual(run.rows, source.expectedRows);
+				assert.equal(run.rows.filter((row) => row.status === "passed").length, 27);
+				assert.equal(run.rows.filter((row) => row.status === "failed").length, 14);
+			}
 			const displayed = [],
 				pageSizes = [];
 			for (const offset of [0, 20, 40]) {
@@ -330,7 +345,14 @@ try {
 					.evaluateAll((rows) => rows.map((row) => [...row.cells].map((cell) => cell.textContent)));
 				assert.deepEqual(
 					cells,
-					run.rows.slice(offset, offset + 20).map((row) => [row.caseId, row.instanceId, "Unknown", "Partial"]),
+					run.rows
+						.slice(offset, offset + 20)
+						.map((row) => [
+							row.caseId,
+							row.instanceId,
+							{ passed: "Passed", failed: "Failed", unknown: "Unknown" }[row.status],
+							row.evidenceComplete ? "Complete" : "Partial",
+						]),
 				);
 				pageSizes.push(cells.length);
 				displayed.push(...cells.map((row) => row[0]));
@@ -349,19 +371,28 @@ try {
 			assert.equal(await detail.locator('[data-action="evidence-run-first"]').count(), 0);
 			result.checks.push({
 				engine,
-				synthetic: true,
+				synthetic: source.synthetic,
 				pageSizes,
 				returnedToFirst: true,
 				exactOrderedRows: displayed,
-				allUnknownIncomplete: true,
+				allUnknownIncomplete: source.synthetic,
+				complete: run.complete,
+				statusCounts: Object.fromEntries(
+					[...new Set(run.rows.map((row) => row.status))].map((status) => [
+						status,
+						run.rows.filter((row) => row.status === status).length,
+					]),
+				),
 				nativeRunnerCalls: 0,
+				fixtureNativeRunnerCalls: summary.nativeRunnerCalls ?? null,
+				historicalResultCannotProveCurrentAttempt: true,
 			});
 		}
 		await page.screenshot({ path: join(output, `${label}-native-run.png`) });
-		if (sourceErrors && (engine === "api" || source.synthetic)) {
+		if (sourceErrors && (engine === "api" || source.synthetic || source.expectedRows)) {
 			const copiedFile =
 					engine === "api" ? join(dataDir, run.evidence[0].path) : join(source.workspace, source.reference.path),
-				originalFile = source.synthetic ? copiedFile : join(fixture, "data", run.evidence[0].path),
+				originalFile = engine === "ui" ? copiedFile : join(fixture, "data", run.evidence[0].path),
 				originalBytes = await readFile(originalFile),
 				copiedBytes = await readFile(copiedFile);
 			assert.deepEqual(copiedBytes, originalBytes);

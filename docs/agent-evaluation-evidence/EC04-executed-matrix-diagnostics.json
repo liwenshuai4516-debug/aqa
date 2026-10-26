@@ -1,0 +1,111 @@
+{
+	"scope": "EC04 actual executed local UI mixed native result pagination and immutable historical readback; no product change",
+	"timestamp": "2026-10-26T01:24:32.613840+00:00",
+	"baseline": "dba83bde7fd8da6eb8575c4fc4d0369c4abaddff",
+	"pluginVersion": "0.4.25",
+	"platform": {
+		"system": "Darwin",
+		"machine": "arm64",
+		"release": "25.6.0"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-executed-matrix/index.json",
+		"bytes": 82180,
+		"sha256": "653790802ffe141dde9d4ed03a25c3af4838a0b87a6761c0bce5bf385987514a"
+	},
+	"archiveFiles": 311,
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"review": "Explicit protocol response control only; not independent model/human approval",
+	"execution": {
+		"status": "PASS",
+		"formalRunnerStarts": 1,
+		"admission": "Original runtime admission also executed positive/negative probes; not included in formalRunnerStarts",
+		"nativeVerdict": "failed as expected",
+		"rows": 41,
+		"passed": 27,
+		"failed": 14,
+		"complete": true,
+		"targetFault": "After admission, discard persisted names for 14 owned case prefixes; assertions and approved frozen script unchanged",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-executed-matrix/files/fixture/summary.json",
+			"bytes": 1068,
+			"sha256": "05dd1332c966ea783e2d291d928e6a36fa0b9fdf473c340682541cafd7bf07cd"
+		}
+	},
+	"desktop": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-executed-matrix/files/desktop.log",
+			"bytes": 4314,
+			"sha256": "ac87b8445625b74f42b2bb700c95e12424f3f12ac6b2406cec5a4948ee82a564"
+		},
+		"pageSizes": [20, 20, 1],
+		"exactOrderedCells": true,
+		"returnFirst": true,
+		"historicalF02": "inconclusive; no current-attempt-native-execution-link",
+		"missingAndChangedOriginal": "EVIDENCE_GAP; original manifest restored byte-for-byte before explicit retry",
+		"fullSealedChars": 28863,
+		"reportUnchanged": true,
+		"pendingPlanRegression": "41 unknown/incomplete rows; independent 20/20/1 pagination and original source faults retained",
+		"accessPrincipalToolMatrices": "Not rerun; earlier evidence remains version-scoped",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-native-desktop-ZbFpz3"
+	},
+	"rejectedApiAttempt": {
+		"status": "Expected existing guard rejection; initial proposed fixture FAIL preserved",
+		"reason": "prepare allows one to three cases only; 41 rejected before any HTTP request",
+		"requests": 0,
+		"nativeRunnerStarts": 0,
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-executed-matrix/files/api-rejected/summary.json",
+			"bytes": 1792,
+			"sha256": "8082357c98ce446395840dca6f8bc83c931e8eb4b4f0c6681d706e851570c385"
+		},
+		"decision": "Keep existing API boundary; use actual UI native runner instead. No guard bypass, no API implementation change."
+	},
+	"verification": {
+		"unit": {
+			"status": "PASS",
+			"files": 16,
+			"passed": 274,
+			"failed": 0,
+			"skipped": 0,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-executed-matrix/files/unit.log",
+				"bytes": 230,
+				"sha256": "87e4cabb0031a0e464c0a87fbfe33e4757d574485a83b69ea1aeb18529693a2e"
+			}
+		},
+		"typecheck": {
+			"status": "PASS",
+			"configurations": 5,
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-executed-matrix/files/typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"sharedFixtureRegression": {
+			"status": "PASS",
+			"checks": 7,
+			"scope": "real local API pass/fail/retest/cancellation/tamper and original one-case UI admission/formal run; controlled review response",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec04-executed-matrix/files/shared-fixture-regression.log",
+				"bytes": 1361,
+				"sha256": "fad80eeb68deae9fe5d3f3c48021866e2975c987aa827d4f2e078dae934fb432"
+			}
+		},
+		"lint": "PASS",
+		"protocol": "Structure and v33 PASS; historical heuristic SKIP, no tags",
+		"i18n": "12 packs PASS",
+		"size": "PASS",
+		"diff": "PASS",
+		"clean": "preview only, 0 candidates"
+	},
+	"remaining": {
+		"EC04_M1": "INCOMPLETE; AC39 performance FAIL and other audited product boundaries pending",
+		"apiMultiPage": "NOT EXECUTED; existing workflow limit3",
+		"EC06": "BLOCKED by detached-child containment counterexample; no dependency advancement",
+		"EC08": "Real CLI/model postponed by user"
+	}
+}

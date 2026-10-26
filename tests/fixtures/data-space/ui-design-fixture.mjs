@@ -71,6 +71,18 @@ export async function setup(t, options) {
 		c.data.cases[0].assertions[0].expected = { from: "generated input key" };
 		if (options?.comparison) c.data.cases[0].assertions[0].comparison = options.comparison;
 		change(c);
+		if (options?.caseCount) {
+			const template = c.data.cases[0];
+			c.data.cases = Array.from({ length: options.caseCount }, (_, index) => {
+				const row = structuredClone(template),
+					id = index + 1;
+				row.case_id = `C${id}`;
+				row.title = `Name persists ${id}`;
+				row.steps[0].assertion_ids = [`A${id}`];
+				row.assertions[0].assertion_id = `A${id}`;
+				return row;
+			});
+		}
 		const casesRef = await store.put(c);
 		const scriptRef = await store.putFile(`qa/ui/assets/names/revisions/${revision}/name.spec.ts`, code);
 		const asset = artifact(
@@ -83,7 +95,12 @@ export async function setup(t, options) {
 				cases_ref: casesRef,
 				recording_refs: [],
 				files: [scriptRef, dataRules],
-				bindings: [{ case_id: "C1", script_ref: scriptRef, test_title: "C1 Name persists", assertion_ids: ["A1"] }],
+				bindings: c.data.cases.map((row) => ({
+					case_id: row.case_id,
+					script_ref: scriptRef,
+					test_title: `${row.case_id} Name persists`,
+					assertion_ids: row.assertions.map((item) => item.assertion_id),
+				})),
 				dependencies: [{ name: "playwright", version: "1.62.1" }],
 				readiness: "design-only",
 				content_sha256: "0".repeat(64),
@@ -151,8 +168,11 @@ export function decision(input, kind = "approved", improvement = input.previous 
 }
 export const response = (input) => ({ raw: JSON.stringify(decision(input)), provider: "fixture", model: "protocol" });
 
-export async function prepareDiagnostic(t, { targetFault = false, globalSetupSource, testCode, comparison } = {}) {
-	const f = await setup(t, { discardPersistence: targetFault, testCode, comparison }),
+export async function prepareDiagnostic(
+	t,
+	{ targetFault = false, globalSetupSource, testCode, comparison, caseCount } = {},
+) {
+	const f = await setup(t, { discardPersistence: targetFault, testCode, comparison, caseCount }),
 		broken = await setupUiFixture({ discardPersistence: true });
 	t.after(() => broken.close());
 	const base = "qa/ui/assets/names/revisions/v1/probes";
@@ -220,7 +240,7 @@ export async function prepareDiagnostic(t, { targetFault = false, globalSetupSou
 	const spec = {
 		environment_ref: goodEnv,
 		config_ref: config,
-		timeout_ms: 15000,
+		timeout_ms: caseCount ? 120000 : 15000,
 		probes: [
 			{
 				id: "discard-persistence",
@@ -228,7 +248,7 @@ export async function prepareDiagnostic(t, { targetFault = false, globalSetupSou
 				config_ref: negativeConfig,
 				mutation_refs: [badSource, provenance],
 				description: "Save updates the visible list but erases persisted names, so reload loses the submitted Name.",
-				assertion_ids: ["A1"],
+				assertion_ids: f.cases.data.cases.flatMap((row) => row.assertions.map((item) => item.assertion_id)),
 			},
 		],
 	};

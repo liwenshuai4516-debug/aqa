@@ -438,3 +438,5 @@ EC04 回滚验收：`tests/agent-evaluation-desktop-test.mjs --rollback`通过`t
 EC04规模与分页回归：`tests/agent-evaluation-desktop-test.mjs --scale`使用`tests/fixtures/agent-evaluation/scale.mjs`在停止自有应用后生成50份合成报告/1000证据快照，验证实际Electron分页与投影有界；service单测覆盖可见引用摘要，原始失败和结果见[EC04](agent-evaluation-evidence/EC04.md)。
 
 EC04工具通道补验：`tests/fixtures/agent-evaluation/tool-channel.mjs`只提供本地脚本化SSE；`tests/agent-evaluation-native-desktop-test.mjs --tool-matrix`驱动原SDK工具，核对get成功、review入口拒绝及可信UI正对照，不修改产品或调用真实模型，见[证据](agent-evaluation-evidence/EC04-tool-channel-diagnostics.json)。
+
+`tests/agent-evaluation-ui-matrix-test.mjs`：41条本地UI真实执行混合状态夹具；`tests/fixtures/data-space/ui-{design-fixture,fixture}.mjs`仅增测试规模与按名称前缀的目标故障控制，默认单用例行为保留。详见[EC04执行分页证据](agent-evaluation-evidence/EC04-executed-matrix-diagnostics.json)。
