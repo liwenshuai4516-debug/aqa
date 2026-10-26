@@ -141,3 +141,100 @@ describe("EC06 host VM lifecycle persistence", () => {
 		await expect(f.runtime.status(f.attemptId)).rejects.toMatchObject({ code: "EVIDENCE_GAP" });
 	});
 });
+
+function terminalFixture(stdout: Buffer, stderr = Buffer.from("stderr\n")) {
+	const f = fixture();
+	const guest = { version: "ae-offline-fake-cli-1", target: {}, runner: {}, argv: ["echo"], stdinBase64: "" };
+	const intent = { ...f.intent, guest };
+	intent.fingerprint = createHash("sha256")
+		.update(JSON.stringify({ backend: intent.backend, timeoutMs: intent.timeoutMs, graceMs: intent.graceMs, guest }))
+		.digest("hex");
+	f.write("intent.json", intent);
+	const manifest = (name: string, bytes: Buffer) => {
+		fs.writeFileSync(join(f.directory, name), bytes, { mode: 0o600 });
+		return {
+			storedBytes: bytes.length,
+			observedBytes: bytes.length,
+			sha256: createHash("sha256").update(bytes).digest("hex"),
+			durable: true,
+			streamEnded: true,
+			interrupted: false,
+			entries: [],
+			gaps: {},
+		};
+	};
+	const logs = {
+		console: manifest("console.raw", Buffer.alloc(0)),
+		native: manifest("native.raw", Buffer.from('{"event":"force-stopped","state":0}\n')),
+	};
+	const result = {
+		attemptId: f.attemptId,
+		nonce: f.intent.nonce,
+		state: "ended",
+		stopConfirmed: true,
+		exit: [0, null],
+		logs,
+		guest: {
+			reportedExit: 0,
+			logs: { stdout: manifest("guest-stdout.raw", stdout), stderr: manifest("guest-stderr.raw", stderr) },
+		},
+	};
+	f.write("result.json", result);
+	return { ...f, result };
+}
+describe("terminal execution evidence projection", () => {
+	it("redacts both structured JSON and individual JSONL rows while retaining the exact private raw bytes", async () => {
+		const raw = Buffer.from('{"token":"fixture-secret","text":"中文🙂"}\n{"password":"second-secret"}\n');
+		const f = terminalFixture(raw, Buffer.from("Bearer stderr-secret\n"));
+		const bundle = await f.runtime.terminalEvidence(f.attemptId);
+		expect(JSON.stringify(bundle)).not.toContain("fixture-secret");
+		expect(JSON.stringify(bundle)).not.toContain("second-secret");
+		expect(JSON.stringify(bundle)).not.toContain("stderr-secret");
+		expect(bundle.logs[0].text).toContain("中文🙂");
+		expect(bundle.logs[0].redaction).toEqual(["credentials-v1"]);
+		expect(fs.readFileSync(join(f.directory, "guest-stdout.raw"))).toEqual(raw);
+		expect(await f.runtime.terminalEvidence(f.attemptId)).toEqual(bundle);
+	});
+	it("retains invalid UTF-8 privately and returns only its hash and explicit gap, never a base64 escape", async () => {
+		const f = terminalFixture(Buffer.from([0xff, 0, 0xfe, 0x31]));
+		const bundle = await f.runtime.terminalEvidence(f.attemptId);
+		expect(bundle.logs[0]).toMatchObject({ storedBytes: 4, gaps: ["invalid-utf8"] });
+		expect(bundle.logs[0]).not.toHaveProperty("text");
+		expect(JSON.stringify(bundle)).not.toContain("base64");
+	});
+	it("preserves interruption, parser and dropped-byte gaps separately from process termination", async () => {
+		const f = terminalFixture(Buffer.from("part"));
+		Object.assign(f.result.guest.logs.stdout, {
+			streamEnded: false,
+			interrupted: true,
+			observedBytes: 10,
+			entries: [{ kind: "gap", reason: "interrupted" }],
+		});
+		f.write("result.json", f.result);
+		const log = (await f.runtime.terminalEvidence(f.attemptId)).logs[0];
+		expect(log).toMatchObject({ droppedBytes: 6, streamEnded: false, gaps: ["interrupted", "unrecorded-bytes"] });
+		Object.assign(f.result.guest.logs.stdout.gaps, { unrecorded: { start: 4, end: 10, reason: "io-error" } });
+		f.write("result.json", f.result);
+		expect((await f.runtime.terminalEvidence(f.attemptId)).logs[0].gaps).toEqual(["interrupted", "io-error"]);
+	});
+	it("refuses log tampering or unconfirmed termination before any evidence projection", async () => {
+		const f = terminalFixture(Buffer.from("data"));
+		fs.writeFileSync(join(f.directory, "guest-stdout.raw"), "fake");
+		await expect(f.runtime.terminalEvidence(f.attemptId)).rejects.toMatchObject({ code: "EVIDENCE_GAP" });
+		f.write("result.json", { ...f.result, state: "unknown", stopConfirmed: false });
+		await expect(f.runtime.terminalEvidence(f.attemptId)).rejects.toMatchObject({ code: "EXECUTION_UNKNOWN" });
+	});
+});
+
+describe("bounded log credential projection failures", () => {
+	it.each([Buffer.from('{"token":"unfinished-secret'), Buffer.from("[".repeat(40) + "0" + "]".repeat(40))])(
+		"omits unsafe partial/deep structured text with an explicit gap while retaining raw evidence",
+		async (bytes) => {
+			const f = terminalFixture(bytes);
+			const bundle = await f.runtime.terminalEvidence(f.attemptId);
+			expect(bundle.logs[0].gaps).toContain("redaction-unavailable");
+			expect(bundle.logs[0]).not.toHaveProperty("text");
+			expect(fs.readFileSync(join(f.directory, "guest-stdout.raw"))).toEqual(bytes);
+		},
+	);
+});

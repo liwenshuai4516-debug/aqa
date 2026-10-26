@@ -1,0 +1,141 @@
+{
+	"scope": "Host-private pinned fake CLI execution -> existing targets/attempts/evidence/snapshots; product execution entry not enrolled",
+	"status": "ENGINEERING_SUBSET_PASS; EC06_INCOMPLETE; M1_INCOMPLETE",
+	"pluginVersion": "0.4.33",
+	"actualModelCalls": 0,
+	"actualAgentCliCalls": 0,
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-store/final-index.json",
+		"bytes": 557582,
+		"sha256": "eabd32253edfcf2ebb58b6256b6b2e40adc8c10c9508b109f177616e2427a2b9"
+	},
+	"archiveFiles": 1100,
+	"runs": {
+		"node-final": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-Obo49U/result.json",
+			"status": "PASS"
+		},
+		"electron-node-final": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-lpBVSv/result.json",
+			"status": "PASS"
+		},
+		"initial-fail": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-0yOG7e/result.json",
+			"status": "FAIL"
+		},
+		"intermediate-extra-grant": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-Vl828c/result.json",
+			"status": "PASS"
+		},
+		"guest-worker-regression": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-guest-worker-kGJTxo/result.json",
+			"status": "PASS"
+		}
+	},
+	"desktop": {
+		"desktop": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-GzEuaJ/result.json",
+			"status": "PASS",
+			"installedFiles": 29
+		},
+		"native-desktop": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-native-desktop-XaWPG0/result.json",
+			"status": "PASS",
+			"installedFiles": 29
+		}
+	},
+	"validation": {
+		"typecheck": "PASS, all five configs",
+		"unitTests": "PASS, 8 files / 170 tests",
+		"build": "PASS",
+		"lint": "PASS",
+		"protocol": "PASS structure/type-only/v33; historical-tag heuristic SKIP",
+		"size": "PASS",
+		"diff": "PASS",
+		"clean": "preview only; zero deletion",
+		"logs": {
+			"ec06-execution-typecheck-final-verified.log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-store/files/final-candidate/validation/ec06-execution-typecheck-final-verified.log",
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			},
+			"ec06-execution-unit-final-verified.log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-store/files/final-candidate/validation/ec06-execution-unit-final-verified.log",
+				"sha256": "0b76d365215d93e4ab0fd1f18b88844c2bbcb5198f5292f387e91060435b0de4"
+			},
+			"ec06-execution-build-final-verified.log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-store/files/final-candidate/validation/ec06-execution-build-final-verified.log",
+				"sha256": "4b0602724cc1f8ff82a8759617d1c658175b15aa3c9ac6d333a8e76beddbd3ec"
+			},
+			"ec06-execution-lint-verified.log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-store/files/final-candidate/validation/ec06-execution-lint-verified.log",
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			},
+			"ec06-execution-protocol-verified.log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-store/files/final-candidate/validation/ec06-execution-protocol-verified.log",
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"ec06-execution-size-verified.log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-store/files/final-candidate/validation/ec06-execution-size-verified.log",
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			}
+		}
+	},
+	"semantics": [
+		"Selected Pi contract is an authorization/task anchor; no sourceSessionId is claimed for the external attempt.",
+		"Separate trusted allowExecution grant; unknown/interrupted transitions still require trusted reconciled authority.",
+		"Natural VM shutdown carries host stopReason and does not manufacture a cancellation/unknown state.",
+		"Final logs are read with size/hash verification; JSON/JSONL credential projection only; binary/unsafe text stays private with gaps.",
+		"Guest stdout/stderr and reported exit stay target-reported; native stop is harness-observed; no business-success inference.",
+		"Cleanup seals unified evidence first; publication failure, tamper or unknown state retains admission.",
+		"Unified mandatory artifact evaluation remains inconclusive when independent artifact proof is absent."
+	],
+	"intermediate": {
+		"initial": "FAIL: natural shutdown surfaced as cancelling, then store denied ungranted unknown->ended.",
+		"extraGrant": "PASS only as intermediate diagnostic; not final acceptance.",
+		"correction": "Expose host stopReason; keep natural shutdown running until native ended; reproduction unit test added; final Node/Electron fixtures have no reconciled grant.",
+		"gapReasonExpectation": "After preserving source drop reasons, the old raw-limit unit expectation failed once; corrected to unrecorded-bytes with explicit IO-error preservation assertion. Final 170 tests pass; failure log retained."
+	},
+	"remaining": [
+		"Full TargetProfile probe and product installation/management/UI/tool/skill execution entry.",
+		"Artifact snapshot, independent verifier (EC07), complete resource and waiting-input policies.",
+		"Unified store SIGKILL/stale-writer recovery not established by graceful reopen plus separate worker crash tests.",
+		"Live cursors remain worker snapshots; worker death stays unknown without replay.",
+		"AC39 last measured 0.4.32 FAIL; 0.4.33 performance not rerun. M1 and overall plan incomplete.",
+		"Real Agent CLI/model testing remains user-deferred."
+	],
+	"evidenceNotes": [
+		"Final Node and Electron Node runs each use four real VMs plus one cancel-before-start.",
+		"Separate original guest-worker regression includes real controller SIGKILL; not an actual desktop execution entry.",
+		"Actual Electron main flow/40-page evidence and native-source/error/pending-plan paging regressions pass.",
+		"Representative light report and narrow long-evidence screenshots viewed.",
+		"All selected runtime worker/native PIDs observed absent; native stop/exit records remain authoritative.",
+		"Final Node/Electron VM runs rebuilt after drop-reason correction. Prior worker crash and actual desktop tests cover unchanged lifecycle/plugin paths and are retained separately."
+	],
+	"previousArchive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-execution-store/index.json",
+		"bytes": 392127,
+		"sha256": "b05f18a38fe433cd2bee494bf40a79d47ad12f38755324f2b9befd8ceacbecb3"
+	},
+	"priorCorrectedRuns": {
+		"node-final": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-yUZrlG/result.json",
+			"status": "PASS"
+		},
+		"electron-node-final": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-v5XnsS/result.json",
+			"status": "PASS"
+		},
+		"initial-fail": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-0yOG7e/result.json",
+			"status": "FAIL"
+		},
+		"intermediate-extra-grant": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-Vl828c/result.json",
+			"status": "PASS"
+		},
+		"guest-worker-regression": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-guest-worker-kGJTxo/result.json",
+			"status": "PASS"
+		}
+	}
+}

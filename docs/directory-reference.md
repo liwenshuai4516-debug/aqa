@@ -478,3 +478,5 @@ EC06宿主环境生命周期：`server/external-evaluation-runtime.ts`为固定�
 EC06 guest协议：`server/external-evaluation-guest.ts`提供有界argv/stdin编码及原字节分帧解析；`tests/agent-evaluation-guest-test.mjs`配合`guest-cli{,-runner}.sh`验证固定无网VZ假CLI。nonce不认证guest，尚未接通产品执行器，见[证据](agent-evaluation-evidence/EC06-guest-diagnostics.json)。
 
 EC06 worker接线：`server/external-evaluation-guest-session.ts`将固定假CLI协议与独立原字节日志接入现有`external-evaluation-runtime.ts`，冻结输入/夹具摘要且恢复不重发；`tests/agent-evaluation-guest-worker-test.mjs`验证真实控制端SIGKILL、取消/超时/精确二进制回读。限可信假CLI，尚无统一store/产品入口，见[证据](agent-evaluation-evidence/EC06-guest-worker-diagnostics.json)。
+
+EC06统一仓库接线：`server/external-evaluation-execution.ts`将固定离线假CLI的状态、脱敏日志和停止证明接入原EvaluationStore；`tests/agent-evaluation-execution-store-test.mjs`验证真实VM到统一attempt/evidence/snapshot与原评分器。限宿主私有工程入口，产物/verifier及产品执行登记待完成，见[证据](agent-evaluation-evidence/EC06-execution-store-diagnostics.json)。

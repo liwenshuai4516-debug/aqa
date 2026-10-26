@@ -378,6 +378,6 @@ export const transitions = {
 	running: ["waiting-input", "ended", "cancelling", "interrupted", "unknown"],
 	"waiting-input": ["running", "cancelling", "interrupted", "unknown"],
 	cancelling: ["cancelled", "timed-out", "unknown", "interrupted"],
-	interrupted: ["unknown", "running", "ended", "cancelled", "timed-out"],
-	unknown: ["running", "waiting-input", "ended", "cancelled", "timed-out"],
+	interrupted: ["unknown", "running", "ended", "blocked", "start-failed", "cancelled", "timed-out"],
+	unknown: ["running", "waiting-input", "ended", "blocked", "start-failed", "cancelled", "timed-out"],
 };

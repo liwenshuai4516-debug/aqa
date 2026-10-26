@@ -206,3 +206,7 @@ UI-only动作：uploadStart（byteLength/sha256）、uploadChunk（uploadId/offs
 记录页新增“查找评分作业”，通过只读 `list(kind:"jobs", limit, cursor)` 分页读取当前授权来源的持久评分回执，逐行显示目标预览和保存时间。点击“查询评分状态”才调用原 `status(jobId)`：已有报告直接打开；中断作业显示 unknown 和不自动重放/不能确认取消的说明，不提供取消按钮。列表不把 queued 回执当作当前状态，也不重新采集或评分。
 
 来源切换/刷新清空旧列表和当前作业；查询仍逐记录核验主体、工作区、会话及传递引用。过滤只在原 store 完整授权读取后执行，分页按匹配回执计数；新增过滤查询受原2秒读取截止约束，失败不交付部分列表，不改变普通列表行为或持久格式。仅扩展现有只读 list 的 kind，原工具、设置、技能与快捷发现入口沿用；技能已补找回作业说明。
+
+## 0.4.33：外部尝试与内部采集边界
+
+内部Pi collector拒绝CLI target，避免把授权任务锚点误当SDK执行来源。unknown/interrupted经原可信reconciled门禁后允许确认blocked/start-failed。宿主私有`server/external-evaluation-execution.ts`复用本插件原store/评分器保存固定离线假CLI记录；没有给普通UI/工具登记外部执行权限，也没有改变现有技能的只读诊断边界。工程与桌面验证、未执行项见[EC06记录](../../docs/agent-evaluation-evidence/EC06.md)。

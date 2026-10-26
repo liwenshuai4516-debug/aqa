@@ -6,6 +6,8 @@ import * as fs from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash, randomUUID } from "node:crypto";
+import { isUtf8 } from "node:buffer";
+import { redactEvaluationArtifactText } from "./agent/evaluation-evidence.js";
 import { spawn, execFileSync, type ChildProcess } from "node:child_process";
 import { once } from "node:events";
 import { pipeline } from "node:stream/promises";
@@ -196,6 +198,34 @@ function checkBackend(backend: VZEnrollment) {
 		fail("CAPABILITY_UNAVAILABLE", "Enrolled helper lacks virtualization entitlement");
 }
 
+/** Exact persisted configuration bytes; validation still occurs at prepare/start. */
+export function offlineExecutionConfiguration(
+	backend: VZEnrollment,
+	timeoutMs: number,
+	graceMs: number,
+	guest?: OfflineGuestSpec,
+) {
+	const frozen = {
+		version: backend.version,
+		binary: { ...backend.binary },
+		kernel: { ...backend.kernel },
+		initrd: { ...backend.initrd },
+	};
+	const frozenGuest = guest
+		? {
+				version: guest.version,
+				target: { ...guest.target },
+				runner: { ...guest.runner },
+				argv: [...guest.argv],
+				stdinBase64: guest.stdinBase64,
+			}
+		: undefined;
+	const fingerprint = hash(
+		JSON.stringify({ backend: frozen, timeoutMs, graceMs, ...(frozenGuest ? { guest: frozenGuest } : {}) }),
+	);
+	return { backend: frozen, timeoutMs, graceMs, ...(frozenGuest ? { guest: frozenGuest } : {}), fingerprint };
+}
+
 export class ExternalEvaluationRuntime {
 	readonly root: string;
 	constructor(
@@ -216,6 +246,9 @@ export class ExternalEvaluationRuntime {
 			fail("EVIDENCE_GAP", "Invalid launch intent");
 		return { directory, intent };
 	}
+	configurationFingerprint(attemptId: string) {
+		return this.intent(attemptId).intent.fingerprint;
+	}
 	prepare(attemptId: string, backend: VZEnrollment, timeoutMs: number, graceMs: number, guest?: OfflineGuestSpec) {
 		if (
 			!uuid(attemptId) ||
@@ -231,25 +264,9 @@ export class ExternalEvaluationRuntime {
 		const capacity = fs.statfsSync(this.root);
 		if (capacity.bavail * capacity.bsize < 32 * 1024 ** 2)
 			fail("LIMIT_EXCEEDED", "Insufficient environment evidence capacity");
-		const frozen = {
-			version: backend.version,
-			binary: { ...backend.binary },
-			kernel: { ...backend.kernel },
-			initrd: { ...backend.initrd },
-		};
-		const frozenGuest = guest
-			? {
-					version: guest.version,
-					target: { ...guest.target },
-					runner: { ...guest.runner },
-					argv: [...guest.argv],
-					stdinBase64: guest.stdinBase64,
-				}
-			: undefined;
-		if (frozenGuest) guestAssets(frozenGuest);
-		const fingerprint = hash(
-			JSON.stringify({ backend: frozen, timeoutMs, graceMs, ...(frozenGuest ? { guest: frozenGuest } : {}) }),
-		);
+		if (guest) guestAssets(guest);
+		const configuration = offlineExecutionConfiguration(backend, timeoutMs, graceMs, guest);
+		const { backend: frozen, guest: frozenGuest, fingerprint } = configuration;
 		const directory = join(this.root, attemptId);
 		if (fs.existsSync(directory)) {
 			const prior = this.intent(attemptId).intent;
@@ -445,6 +462,74 @@ export class ExternalEvaluationRuntime {
 		}
 		return this.status(attemptId);
 	}
+
+	/** Terminal, redacted projection for the unified store. Private raw bytes never leave this boundary. */
+	async terminalEvidence(attemptId: string) {
+		const status = await this.status(attemptId);
+		const { directory, intent } = this.intent(attemptId);
+		if (!status.stopConfirmed || !fs.existsSync(join(directory, "result.json")))
+			fail("EXECUTION_UNKNOWN", "Terminal evidence requires confirmed stop");
+		const logs = [];
+		if (intent.guest && !status.noEnvironmentStarted) {
+			for (const channel of ["stdout", "stderr"] as const) {
+				const bytes = readBytes(join(directory, `guest-${channel}.raw`));
+				const manifest = (status.guest as any)?.logs?.[channel];
+				if (hash(bytes) !== manifest?.sha256 || bytes.length !== manifest.storedBytes)
+					fail("EVIDENCE_GAP", "Guest log changed during evidence read");
+				const gaps: string[] = [];
+				if (!manifest.streamEnded) gaps.push("interrupted");
+				if (manifest.observedBytes > bytes.length) gaps.push(manifest.gaps?.unrecorded?.reason ?? "unrecorded-bytes");
+				for (const entry of manifest.entries ?? [])
+					if (entry.kind === "gap" && typeof entry.reason === "string") gaps.push(entry.reason);
+				if (manifest.gaps?.entryLimit) gaps.push("entry-limit");
+				if (!isUtf8(bytes)) gaps.push("invalid-utf8");
+				let text: string | undefined;
+				const redaction = new Set<string>();
+				if (isUtf8(bytes)) {
+					try {
+						// Whole JSON and JSONL both use the existing artifact credential projection.
+						const whole = redactEvaluationArtifactText(bytes.toString("utf8"));
+						whole.redaction.forEach((item) => redaction.add(item));
+						text = whole.text
+							.split("\n")
+							.map((line) => {
+								const clean = redactEvaluationArtifactText(line);
+								clean.redaction.forEach((item) => redaction.add(item));
+								// A partial structured credential cannot safely fall back to plain text.
+								if (/"(?:password|secret|token|api[-_]?key|authorization|cookie|credential)"\s*:/i.test(line))
+									JSON.parse(line);
+								return clean.text;
+							})
+							.join("\n");
+					} catch {
+						gaps.push("redaction-unavailable");
+						text = undefined;
+					}
+				}
+				logs.push({
+					channel,
+					sha256: manifest.sha256 as string,
+					storedBytes: bytes.length,
+					observedBytes: manifest.observedBytes as number,
+					droppedBytes: Math.max(0, manifest.observedBytes - bytes.length),
+					streamEnded: manifest.streamEnded as boolean,
+					gaps: [...new Set(gaps)],
+					redaction: [...redaction],
+					...(text === undefined ? {} : { text }),
+				});
+			}
+		}
+		return {
+			fingerprint: intent.fingerprint,
+			state: status.state,
+			stopConfirmed: true,
+			noEnvironmentStarted: status.noEnvironmentStarted === true,
+			observedAt: fs.statSync(join(directory, "result.json")).mtime.toISOString(),
+			reportedExit: (status.guest as any)?.reportedExit ?? null,
+			logs,
+		};
+	}
+
 	async cleanup(attemptId: string) {
 		const { directory, intent } = this.intent(attemptId);
 		const status = await this.status(attemptId);
@@ -580,6 +665,7 @@ async function supervise(directory: string) {
 								attemptId: intent.attemptId,
 								instance,
 								state: cancellation ? "cancelling" : running ? "running" : "starting",
+								stopReason: cancellation?.reason,
 								stopConfirmed: false,
 								...(guest ? { guest: guest.snapshot() } : {}),
 								logCursors: {

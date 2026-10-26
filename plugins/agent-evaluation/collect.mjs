@@ -91,6 +91,11 @@ export class EvidenceCollector {
 			"INVALID_INPUT",
 			"Select at most 20 distinct artifact paths",
 		);
+		requireValue(
+			store.get(context, attempt.data.targetRef).data.kind === "pi",
+			"INVALID_INPUT",
+			"Pi collection cannot attach SDK evidence to an external execution",
+		);
 		const checkpointSource = `collection:${attempt.id}`;
 		const requestDigest = digest({ attemptRef, conversationId, nativeRefs, artifactPaths, liveEvents, liveTruncated });
 		const prior = store.lookupRequest(context, `checkpoint-${digest([attempt.id, requestId])}`);
