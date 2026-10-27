@@ -2,7 +2,8 @@ import { EvaluationRegistry } from "../registry.mjs";
 import { piEvidenceAdapter } from "../adapters/pi.mjs";
 import { basicEvaluators } from "../evaluators/basic.mjs";
 import { F08 } from "../evaluators/metrics.mjs";
-export const internalEvaluators = [...basicEvaluators, F08];
+import { F09 } from "../evaluators/verification.mjs";
+export const internalEvaluators = [...basicEvaluators, F08, F09];
 /** Exact configs are frozen at registration. Empty checks never invent business expectations. */
 export function internalProfile(configs = {}, { id = "internal", version = "1" } = {}) {
 	const defaults = {
@@ -13,6 +14,7 @@ export function internalProfile(configs = {}, { id = "internal", version = "1" }
 		F06: {},
 		F07: { pollingToolNames: [], repairToolNames: ["edit", "write"] },
 		F08: { prices: [], childWaitToolNames: [], checks: [] },
+		F09: { checks: [] },
 	};
 	return {
 		id,
@@ -31,6 +33,13 @@ export function createInternalRegistry(configs = {}, options = {}) {
 	const registry = new EvaluationRegistry();
 	registry.registerAdapter(piEvidenceAdapter);
 	registry.registerEvaluators(internalEvaluators);
-	registry.registerProfile(internalProfile(configs, options));
+	const profile = internalProfile(configs, options);
+	// Keep the published internal@1 identity immutable for exact historical re-scoring.
+	// Product requests freeze expanded rules under their existing content-derived profile ID.
+	if (profile.id === "internal" && profile.version === "1") {
+		profile.rules = profile.rules.filter((r) => r.id !== "F09");
+		profile.required = profile.required.filter((r) => r.id !== "F09");
+	}
+	registry.registerProfile(profile);
 	return registry;
 }

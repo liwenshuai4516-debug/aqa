@@ -416,7 +416,14 @@ export default {
 						value = await rpc.request("offlineCleanup", { ref: selected.attemptRef });
 					if (execution === selected) {
 						selected.snapshotRef = value.snapshotRef;
-						selected.snapshot = await rpc.request("get", { ref: value.snapshotRef, limit: 10 });
+						selected.snapshot = await rpc.request("get", { ref: value.snapshotRef, limit: 20 });
+						for (const ref of selected.snapshot.data.evidenceRefs) {
+							const evidence = await rpc.request("get", { ref });
+							if (evidence.data.kind === "verification-result") {
+								const body = await rpc.request("readEvidence", { ref });
+								selected.verification = JSON.parse(body.text);
+							}
+						}
 					}
 				}
 				if (action === "offline-score") {

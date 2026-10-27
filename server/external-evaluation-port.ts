@@ -8,6 +8,7 @@ import { createHash } from "node:crypto";
 import { ExternalEvaluationExecution, type ExecutionStore } from "./external-evaluation-execution.js";
 import { ExternalEvaluationRuntime, OFFLINE_EXECUTION_POLICY } from "./external-evaluation-runtime.js";
 import { readOfflineEnrollment } from "./external-evaluation-enrollment.js";
+import { supportsArtifacts } from "./external-evaluation-guest-session.js";
 import { encodeGuestInput } from "./external-evaluation-guest.js";
 import { verifyPluginInvocation, type PluginToolContext } from "./mcp/plugin-mcp.js";
 
@@ -48,7 +49,22 @@ export interface OfflineExecutionAuthority {
 	};
 	log(message: string): void;
 }
-const modes = ["echo", "binary", "chunks", "waiting", "empty", "failure"];
+const modes = [
+	"echo",
+	"binary",
+	"chunks",
+	"waiting",
+	"empty",
+	"failure",
+	"artifacts-pass",
+	"artifacts-fail",
+	"artifacts-tamper",
+	"artifacts-missing",
+	"artifacts-link",
+	"artifacts-special",
+	"artifacts-limit",
+	"artifacts-crash",
+];
 const actions = new Set<OfflineExecutionAction>([
 	"offlineDescribe",
 	"offlinePrepare",
@@ -79,6 +95,7 @@ export class OfflineEvaluationPort {
 	>();
 	private readonly owned = new Map<string, { clientId: string; runtime: ExternalEvaluationRuntime }>();
 	private closed = false;
+	private readonly verifications = new Map<AbortController, string>();
 	constructor(
 		private readonly store: ExecutionStore,
 		private readonly dataDir: string,
@@ -103,11 +120,13 @@ export class OfflineEvaluationPort {
 		});
 	}
 	stopClient(clientId: string) {
+		for (const [controller, client] of this.verifications) if (client === clientId) controller.abort();
 		for (const [id, entry] of this.owned) if (entry.clientId === clientId) this.stop(id, entry);
 	}
 	close() {
 		if (this.closed) return;
 		this.closed = true;
+		for (const controller of this.verifications.keys()) controller.abort();
 		for (const [id, entry] of this.owned) this.stop(id, entry);
 	}
 	async dispatch(baseContext: object, binding: OfflineExecutionBinding, request: OfflineExecutionRequest) {
@@ -209,8 +228,11 @@ export class OfflineEvaluationPort {
 			},
 		});
 		let trackedId: string | undefined;
+		const verificationController = new AbortController();
+		this.verifications.set(verificationController, binding.clientId);
 		const signal = binding.invocation ? verifyPluginInvocation("agent-evaluation", binding.invocation) : undefined;
 		const abort = () => {
+			verificationController.abort();
 			const entry = trackedId ? this.owned.get(trackedId) : undefined;
 			if (trackedId && entry) this.stop(trackedId, entry);
 		};
@@ -257,13 +279,18 @@ export class OfflineEvaluationPort {
 					return {
 						available: true,
 						target: "ae-offline-fake-cli-1",
-						modes: [...modes],
+						modes: modes.filter((mode) => supportsArtifacts(enrollment.guest) || !mode.startsWith("artifacts-")),
 						policy: OFFLINE_EXECUTION_POLICY,
 						businessSuccess: "unverified",
-						artifacts: "unsupported",
-						verifier: "unsupported",
+						artifacts: supportsArtifacts(enrollment.guest) ? "partial" : "unsupported",
+						verifier: supportsArtifacts(enrollment.guest) ? "partial" : "unsupported",
 					};
 				const data = request.data!;
+				check(
+					!data.argv[0].startsWith("artifacts-") || supportsArtifacts(enrollment.guest),
+					"CAPABILITY_UNAVAILABLE",
+					"The immutable old enrollment has no artifact export; explicit new enrollment required",
+				);
 				const reference = this.bridge.prepare(context, {
 					requestId: request.requestId,
 					contractRef: request.ref!,
@@ -289,9 +316,9 @@ export class OfflineEvaluationPort {
 				case "offlineCancel":
 					return await this.bridge.cancel(context, request.ref!);
 				case "offlineSeal":
-					return await this.bridge.seal(context, request.ref!);
+					return await this.bridge.seal(context, request.ref!, verificationController.signal);
 				case "offlineCleanup": {
-					const result = await this.bridge.cleanup(context, request.ref!);
+					const result = await this.bridge.cleanup(context, request.ref!, verificationController.signal);
 					this.owned.delete(trackedId!);
 					return result;
 				}
@@ -306,6 +333,7 @@ export class OfflineEvaluationPort {
 		} finally {
 			signal?.removeEventListener("abort", abort);
 			this.identities.delete(context);
+			this.verifications.delete(verificationController);
 		}
 	}
 }

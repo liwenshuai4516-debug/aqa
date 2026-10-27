@@ -124,7 +124,7 @@ export async function verifyDesktopExecution({
 		const cleaned = await rpc("offlineCleanup", { ref: attempt });
 		const snapshot = await rpc("get", { ref: cleaned.snapshotRef, limit: 50 });
 		assert.equal(snapshot.data.coverage, "partial");
-		assert.ok(snapshot.data.gaps.includes("independent-verifier-unavailable"));
+		assert.ok(!snapshot.data.gaps.includes("independent-verifier-unavailable"));
 		const stop = await rpc("get", { ref: snapshot.data.evidenceRefs[0] });
 		const stopBody = JSON.parse((await rpc("readEvidence", { ref: ref(stop) })).text);
 		assert.equal(stopBody.businessSuccess, "unverified");
@@ -228,6 +228,63 @@ export async function verifyDesktopExecution({
 	await seal(timed);
 	await click("offline-dismiss");
 	checks.push("actual UI deadline timeout without extending target-reported wait");
+	// EC07: genuine VM outputs, independent verifier, original evidence/score and UI result.
+	for (const [mode, verdict] of [
+		["pass", "pass"],
+		["fail", "fail"],
+		["tamper", "fail"],
+		["missing", "fail"],
+		["link", "inconclusive"],
+		["special", "inconclusive"],
+		["limit", "inconclusive"],
+		["crash", "inconclusive"],
+	]) {
+		const attempt = await prepare(`artifacts-${mode}`);
+		await click("offline-start");
+		await state(attempt, "ended");
+		const cleaned = await seal(attempt);
+		const result = await page.locator(".aev [data-verification-result]").innerText();
+		assert.match(result, /Independent verification/);
+		const snapshot = await rpc("get", { ref: cleaned.snapshotRef, limit: 20 });
+		const evidence = await Promise.all(
+			snapshot.data.evidenceRefs.map(async (ref) => {
+				const row = await rpc("get", { ref });
+				return { kind: row.data.kind, value: JSON.parse((await rpc("readEvidence", { ref })).text) };
+			}),
+		);
+		const artifacts = evidence.find((e) => e.kind === "artifact-manifest").value;
+		const verified = evidence.find((e) => e.kind === "verification-result").value;
+		assert.equal(verified.verdict, verdict);
+		assert.equal(verified.artifactSnapshotId, artifacts.digest);
+		assert.ok(artifacts.entries.some((e) => e.path === "deleted.txt" && e.change === "deleted"));
+		assert.ok(artifacts.entries.some((e) => e.path === ".ignored" && e.ignored));
+		assert.ok(artifacts.entries.some((e) => e.path === "new.txt" && e.change === "added"));
+		assert.equal(verified.state, ["link", "special", "limit", "crash"].includes(mode) ? "error" : "completed");
+		const before = await readFile(join(root, attempt.id, "verification.json"), "utf8");
+		const score = await rpc("evaluate", { ref: cleaned.snapshotRef });
+		let status;
+		await until(async () => {
+			status = await rpc("status", { jobId: score.jobId });
+			return !!status.reportRef;
+		});
+		const report = await rpc("get", { ref: status.reportRef, limit: 100 });
+		assert.equal(report.data.findings.find((f) => f.ruleId === "F09").verdict, verdict);
+		const accounting = report.data.findings.find((f) => f.ruleId === "F08").metrics.externalAccounting;
+		assert.ok(accounting.observedTotalMs > 0);
+		assert.equal(
+			accounting.observedTotalMs,
+			Object.values(accounting.phases).reduce((a, b) => a + b, 0),
+		);
+		assert.equal(accounting.endToEndWallMs, null);
+		await rpc("offlineSeal", { ref: attempt });
+		assert.equal(await readFile(join(root, attempt.id, "verification.json"), "utf8"), before);
+		if (["pass", "tamper", "crash"].includes(mode))
+			await page.screenshot({ path: join(output, `ec07-${mode}-en.png`) });
+		await click("offline-dismiss");
+		checks.push(
+			`EC07 actual desktop ${mode}: frozen manifest matches independent ${verdict}; F09 and five observed stages reconcile; seal never reruns verifier`,
+		);
+	}
 	// The fixed form uses existing styles; exercise narrow/landscape, text scaling, language, themes and focus.
 	await click("offline-new");
 	await page.locator('.aev form[data-form="offline-execution"]').waitFor();

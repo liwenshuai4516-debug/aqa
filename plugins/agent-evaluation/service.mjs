@@ -6,7 +6,7 @@ import { EvidenceCollector } from "./collect.mjs";
 import { EvaluationEngine } from "./evaluate.mjs";
 import { AtifUploads } from "./upload.mjs";
 import { importAtif } from "./import.mjs";
-import { createInternalRegistry, internalProfile } from "./profiles/internal.mjs";
+import { createInternalRegistry, internalProfile, internalEvaluators } from "./profiles/internal.mjs";
 import { validateConfigSchema } from "./registry.mjs";
 import { Ref, digest, requireValue, references } from "./schema.mjs";
 const ref = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
@@ -201,7 +201,7 @@ export class EvaluationService {
 		if (request.action === "describe")
 			return {
 				...source,
-				rules: this.registry.profile("internal", "1").rules.map((r) => ({ id: r.id, version: r.version })),
+				rules: internalEvaluators.map((r) => ({ id: r.manifest.id, version: r.manifest.version })),
 			};
 		this.initialize();
 		const store = this.store,
@@ -802,7 +802,7 @@ export class EvaluationService {
 			case "evaluate": {
 				let snapshotRef = request.ref,
 					profile;
-				const known = this.registry.profile("internal", "1").rules.map((r) => r.id);
+				const known = internalEvaluators.map((r) => r.manifest.id);
 				if (request.ref?.kind === "evaluations") {
 					requireValue(
 						request.configs === undefined,

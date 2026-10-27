@@ -61,6 +61,13 @@ version=$(env -i PATH=/bin /bin/sh /ae/target --version)
 [ "$version" = 'ae-offline-fake-cli 1' ] || fail version
 frame version "$(printf '%s' "$version" | base64 | tr -d '\n')"
 frame initial "$(printf '%s' "$(ls -A /ae/work)" | base64 | tr -d '\n')"
+case "${1:-}" in
+  artifacts-*)
+    printf 'original\n' > old.txt
+    printf 'remove me\n' > deleted.txt
+    printf 'original ignored\n' > .ignored
+    printf 'public development test\n' > tests.txt ;;
+esac
 mkfifo /ae/stdout /ae/stderr
 stream() {
   channel=$1
@@ -87,6 +94,25 @@ code=$?
 set -e
 wait "$out"
 wait "$err"
+# The pinned target has finished and has no descendants. Freeze its entire agreed tree,
+# including dotfiles, untracked and ignored files. No git-diff or following links.
+find . -mindepth 1 -print0 > /ae/file-list
+files=0
+while IFS= read -r -d '' file; do
+  files=$((files + 1))
+  if [ "$files" -gt 32 ] || [ "${#file}" -gt 130 ]; then frame artifact-error YXJ0aWZhY3QtYnVkZ2V0; break; fi
+  path=$(printf '%s' "${file#./}" | base64 | tr -d '\n')
+  data=''
+  if [ -L "$file" ]; then kind=link
+  elif [ -d "$file" ]; then kind=directory
+  elif [ -f "$file" ]; then
+    kind=file
+    if [ "$(wc -c < "$file")" -gt 512 ]; then kind=oversize
+    else data=$(base64 < "$file" | tr -d '\n'); fi
+  else kind=special; fi
+  frame artifact "$(printf '%s:%s:%s' "$path" "$kind" "$data" | base64 | tr -d '\n')"
+done < /ae/file-list
+frame artifact-end "$(printf '%s' "$files" | base64 | tr -d '\n')"
 frame exit "$code"
 # EOF/exit from the target is not whole-VM stop. Keep the control process alive for host stop.
 while :; do sleep 1; done

@@ -27,6 +27,25 @@ case "$1" in
     mkfifo /ae/work/answer
     IFS= read -r answer < /ae/work/answer
     ;;
+  artifacts-*)
+    case "$1" in
+      artifacts-pass|artifacts-crash) printf '{"answer":42}\n' > result.json ;;
+      *) printf '{"answer":0}\n' > result.json ;;
+    esac
+    printf 'changed\n' > old.txt
+    rm deleted.txt
+    printf 'included ignored\n' > .ignored
+    printf 'untracked\n' > new.txt
+    case "$1" in
+      artifacts-tamper) printf 'all tests pass\n' > tests.txt; printf '{"pass":true}\n' > report.json ;;
+      artifacts-missing) rm result.json ;;
+      artifacts-link) ln -s /etc/passwd escaped ;;
+      artifacts-special) mkfifo special ;;
+      artifacts-limit) dd if=/dev/zero of=huge bs=1024 count=1 2>/dev/null ;;
+    esac
+    test ! -e /ae/hidden-fixture && test ! -e /ae/platform-results || exit 19
+    printf 'all tests pass (untrusted self-report)\n'
+    ;;
   empty) exit 0 ;;
   failure) printf 'expected failure\n' >&2; exit 7 ;;
   *) printf 'unknown diagnostic mode\n' >&2; exit 2 ;;

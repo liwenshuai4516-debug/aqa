@@ -236,3 +236,9 @@ UI-only动作：uploadStart（byteLength/sha256）、uploadChunk（uploadId/offs
 同一宿主内重叠status合并为一次在途新鲜探测，避免共享probe文件被覆盖而错误进入unknown；每个调用仍先校验owner和冻结intent，不延长1500ms探测时限，不缓存已完成结果。独立控制进程之间仍保守处理无法取得新鲜响应的情况，必须显式对账，不自动重发。
 
 实际桌面和故障验收见[EC06当前记录](../../docs/agent-evaluation-evidence/EC06.md)。仅macOS arm64、受信固定无网VZ假CLI；管理员仍须提供已签名helper与固定启动文件，不自动安装个人目录。产物快照/独立验证器属EC07；真实客户端/模型实测属EC08且仍暂缓。M1性能门禁不由本包关闭。
+
+### EC07 固定数据产物核验（0.4.36）
+
+固定 VZ 假 CLI 增加 `artifacts-*` 正反例。确认停止后，原 `offlineSeal/offlineCleanup` 冻结完整约定清单，在独立受限进程调用 `offline-json@1`，原页面显示核验结果，F09 读取封存证据。改测试/自写通过不改变可信预期；产物 fail 与 verifier error 分别保留。原 F08 对账已观测五阶段和费用，未观测时间及缺 usage 不补零。完整范围和验收见 [EC07](../../docs/agent-evaluation-evidence/EC07.md)。
+
+旧不可变登记仍可运行其原场景，但不能使用新产物场景；管理员须显式登记新资源，不覆盖个人安装或旧证据。此包仅支持有界 JSON/文本数据核验：32 条、每文件 512 字节、合计 8192 字节，所有链接/特殊文件拒绝；不执行产物代码。真实 CLI/模型及 EC08 仍按用户决定暂缓。

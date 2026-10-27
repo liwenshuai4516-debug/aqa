@@ -1,0 +1,171 @@
+{
+	"scope": "EC07 fixed offline bounded data artifacts, independent trusted verifier and external accounting",
+	"status": "PASS_FIXED_OFFLINE_EC07; REAL_CLI_POSTPONED; M1_UNCHANGED",
+	"executionDate": "2026-10-27",
+	"baselineCommit": "5022c829a4a8e3a8a6efb5ca8fc197c52166c852",
+	"pluginVersion": "0.4.36",
+	"actualAgentCliCalls": 0,
+	"actualModelCalls": 0,
+	"finalDesktopFixedFakeCliCalls": 17,
+	"finalRecoveryFixedFakeCliCalls": 1,
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec07-verification/index.json",
+		"files": 2441,
+		"bytes": 20975890,
+		"sha256": "90b998628a1a6975aa124d435c28abd9e32ed6b2ff286f8e222d8aef5c2f926b"
+	},
+	"runs": {
+		"ec07-desktop-failure-01": {
+			"status": "FAIL",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-rNjx04"
+		},
+		"ec07-desktop-failure-02": {
+			"status": "FAIL",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-G0fsAS"
+		},
+		"ec07-desktop-failure-03": {
+			"status": "FAIL",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-jba2C1"
+		},
+		"ec07-desktop-final": {
+			"status": "PASS",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-LR79sA"
+		},
+		"ec07-desktop": {
+			"status": "PASS",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-7Ij5Od"
+		},
+		"ec07-recovery-final": {
+			"status": "PASS",
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-verification-recovery-kw1q43"
+		},
+		"ec07-recovery-verified": {
+			"status": "PASS",
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-verification-recovery-7mR5qu"
+		},
+		"ec07-recovery": {
+			"status": "PASS",
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-verification-recovery-wxSE5B"
+		}
+	},
+	"scenarios": [
+		{
+			"mode": "artifacts-tamper",
+			"attemptId": "16f1f3b6-5476-480d-acf2-05404cb272ae",
+			"state": "completed",
+			"verdict": "fail",
+			"exitCode": 1,
+			"error": null,
+			"artifactSnapshotId": "0ca5e1ab20f01ae6461ec024742a32e5e922968c97ce0d19a5590e534002b978",
+			"fixtureDigest": "a80cc5e836593fe607512e90fe5cb1c50527b28811aa0bc34965e870706aa9b3",
+			"manifestComplete": true,
+			"entries": 7
+		},
+		{
+			"mode": "artifacts-crash",
+			"attemptId": "284a30aa-89bc-4db3-b507-440444e45f95",
+			"state": "error",
+			"verdict": "inconclusive",
+			"exitCode": 1,
+			"error": "verifier-crashed-or-invalid-output",
+			"artifactSnapshotId": "9697db537f7cd5bcb584c22cf02fd0b9bb433d8cb32d0534c45bb3c2e50ccd3a",
+			"fixtureDigest": "a80cc5e836593fe607512e90fe5cb1c50527b28811aa0bc34965e870706aa9b3",
+			"manifestComplete": true,
+			"entries": 6
+		},
+		{
+			"mode": "artifacts-limit",
+			"attemptId": "a3a7477d-3b75-4626-a572-63723dd883dd",
+			"state": "error",
+			"verdict": "inconclusive",
+			"exitCode": null,
+			"error": "artifact-snapshot-incomplete-or-changed",
+			"artifactSnapshotId": "6c29cd520c8b2ebe09958381d7939eab005ba61ad699a4f3fa8a1f33c0626dad",
+			"fixtureDigest": "a80cc5e836593fe607512e90fe5cb1c50527b28811aa0bc34965e870706aa9b3",
+			"manifestComplete": false,
+			"entries": 7
+		},
+		{
+			"mode": "artifacts-special",
+			"attemptId": "b9c6eafc-1971-4655-a8a3-1f27b7cd88c2",
+			"state": "error",
+			"verdict": "inconclusive",
+			"exitCode": null,
+			"error": "artifact-snapshot-incomplete-or-changed",
+			"artifactSnapshotId": "676f4e784cc17c19035558cf55ad2f821283c2399bf32bfd3149ce6a6494f447",
+			"fixtureDigest": "a80cc5e836593fe607512e90fe5cb1c50527b28811aa0bc34965e870706aa9b3",
+			"manifestComplete": false,
+			"entries": 7
+		},
+		{
+			"mode": "artifacts-missing",
+			"attemptId": "bdbfe155-0fa3-408a-957e-f72d23ab96fc",
+			"state": "completed",
+			"verdict": "fail",
+			"exitCode": 1,
+			"error": null,
+			"artifactSnapshotId": "02b368783191e9171ad50a198849f8880ef41b0cae12a168b88ac0c2ebedeb54",
+			"fixtureDigest": "a80cc5e836593fe607512e90fe5cb1c50527b28811aa0bc34965e870706aa9b3",
+			"manifestComplete": true,
+			"entries": 5
+		},
+		{
+			"mode": "artifacts-pass",
+			"attemptId": "d4ee88fe-3841-4320-9d7a-21ebc6c2eea8",
+			"state": "completed",
+			"verdict": "pass",
+			"exitCode": 0,
+			"error": null,
+			"artifactSnapshotId": "9697db537f7cd5bcb584c22cf02fd0b9bb433d8cb32d0534c45bb3c2e50ccd3a",
+			"fixtureDigest": "a80cc5e836593fe607512e90fe5cb1c50527b28811aa0bc34965e870706aa9b3",
+			"manifestComplete": true,
+			"entries": 6
+		},
+		{
+			"mode": "artifacts-link",
+			"attemptId": "e149a1d4-01cd-4bb0-990d-e345a3b9fae9",
+			"state": "error",
+			"verdict": "inconclusive",
+			"exitCode": null,
+			"error": "artifact-snapshot-incomplete-or-changed",
+			"artifactSnapshotId": "7964195950cfd46f18a3a5640d3802642038560535d3d854e62b8942b548ec27",
+			"fixtureDigest": "a80cc5e836593fe607512e90fe5cb1c50527b28811aa0bc34965e870706aa9b3",
+			"manifestComplete": false,
+			"entries": 7
+		},
+		{
+			"mode": "artifacts-fail",
+			"attemptId": "ecc381b9-94e8-4e1d-9369-ee22da7f3c90",
+			"state": "completed",
+			"verdict": "fail",
+			"exitCode": 1,
+			"error": null,
+			"artifactSnapshotId": "63e0240a9df16f98ba91bbdc0ccc93bb342b7cffe263f7023d2341bce6e93f6b",
+			"fixtureDigest": "a80cc5e836593fe607512e90fe5cb1c50527b28811aa0bc34965e870706aa9b3",
+			"manifestComplete": true,
+			"entries": 6
+		}
+	],
+	"checks": {
+		"typecheck": "PASS: all five configurations",
+		"unit": "PASS: 25 files, 426 tests; maxWorkers=2; original assertions/timeouts retained",
+		"build": "PASS: serial original build",
+		"actualElectron": "PASS: original page/tool/skill/management, 8 artifact scenarios, lifecycle and restart; 17 fixed fake CLI runs",
+		"verificationControllerSigkill": "PASS: completed passing verifier before copied controller SIGKILL; original recovery unknown without replay",
+		"lint": "PASS",
+		"protocol": "PASS structural/type-only/v33; historical tag heuristic SKIP: no available tags",
+		"i18n": "PASS: 12 language packs",
+		"size": "PASS",
+		"diff": "PASS",
+		"clean": "preview only; zero items/deletions"
+	},
+	"limitations": [
+		"macOS arm64 and pinned trusted fixed VZ fake CLI only; nonce is not malicious guest authentication",
+		"data JSON/text only; no execution of artifact code, arbitrary verifier registration or real client/model use",
+		"all links and special files rejected; 32 entries, 512 bytes/file, 8192 bytes total; safe ASCII paths",
+		"32 MiB V8 heap limit is not an OS RSS hard cap",
+		"observed five-stage sums exclude unobserved controller/user gaps; endToEndWallMs stays null; missing usage stays unknown",
+		"original writer/verification unknown records and failed runs retained; no automatic recovery/replay",
+		"EC04/M1 performance gate is not changed by this package"
+	]
+}

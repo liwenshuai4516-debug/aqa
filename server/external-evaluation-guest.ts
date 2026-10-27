@@ -15,6 +15,9 @@ const CHANNELS = new Set([
 	"stderr",
 	"stdout-eof",
 	"stderr-eof",
+	"artifact",
+	"artifact-end",
+	"artifact-error",
 	"exit",
 	"error",
 ]);
@@ -116,7 +119,9 @@ export class GuestProtocolDecoder {
 								this.ended.add(stream);
 								frames.push({ channel, bytes });
 							}
-						} else frames.push({ channel, bytes });
+						} else if (channel.startsWith("artifact") && (!this.started || this.ended.size !== 2))
+							this.gap("artifact-before-target-end");
+						else frames.push({ channel, bytes });
 					}
 				}
 			}

@@ -8,6 +8,7 @@ import {
 	offlineExecutionConfiguration,
 	type VZEnrollment,
 } from "./external-evaluation-runtime.js";
+import { supportsArtifacts } from "./external-evaluation-guest-session.js";
 import type { OfflineGuestSpec } from "./external-evaluation-guest-session.js";
 
 type Ref = { kind: string; id: string; revision: number };
@@ -136,7 +137,7 @@ export class ExternalEvaluationExecution {
 					toolIO: "unsupported",
 					childAgents: "unsupported",
 					permissions: "unsupported",
-					artifacts: "unsupported",
+					artifacts: supportsArtifacts(input.guest) ? "partial" : "unsupported",
 					usage: "unsupported",
 					waitingInput: "partial",
 					localCancel: "supported",
@@ -234,14 +235,24 @@ export class ExternalEvaluationExecution {
 		await runtime.cancel(attempt.id);
 		return this.status(context, ref);
 	}
-	async seal(context: object, ref: Ref) {
+	async seal(context: object, ref: Ref, signal?: AbortSignal) {
 		await this.status(context, ref);
 		const { attempt, runtime, owner } = this.bound(context, ref);
 		check(terminal.has(attempt.data.state), "EXECUTION_UNKNOWN", "Unresolved attempt cannot be sealed");
 		const bundle = await runtime.terminalEvidence(attempt.id);
 		check(this.owner(context) === owner, "PERMISSION_DENIED", "Execution authorization changed");
 		check(bundle.fingerprint === attempt.data.configDigest, "VERSION_CONFLICT", "Terminal configuration differs");
-		const gaps = ["artifact-snapshot-unavailable", "independent-verifier-unavailable", "live-trajectory-unavailable"];
+		const verification = bundle.artifacts ? await runtime.verify(attempt.id, signal) : undefined;
+		check(this.owner(context) === owner, "PERMISSION_DENIED", "Execution authorization changed");
+		const gaps = [
+			"live-trajectory-unavailable",
+			...(bundle.artifacts ? bundle.artifacts.gaps : ["artifact-snapshot-unavailable"]),
+			...(verification
+				? verification.state === "completed"
+					? []
+					: [verification.error ?? "verifier-error"]
+				: [bundle.artifacts ? "independent-verifier-not-selected" : "independent-verifier-unavailable"]),
+		];
 		const evidenceRefs: Ref[] = [];
 		const writeEvidence = (
 			name: string,
@@ -250,6 +261,7 @@ export class ExternalEvaluationExecution {
 			extraGaps: string[] = [],
 			redaction: string[] = [],
 			truncated = false,
+			kind = name,
 		) => {
 			evidenceRefs.push(
 				refOf(
@@ -264,7 +276,7 @@ export class ExternalEvaluationExecution {
 							sourceRevision: attempt.data.configDigest,
 							producer: "vz-offline-store-1",
 							origin,
-							kind: name,
+							kind,
 							observedAt: bundle.observedAt,
 							availability: extraGaps.length ? "partial" : "available",
 							content: JSON.stringify(content),
@@ -301,6 +313,28 @@ export class ExternalEvaluationExecution {
 				log.droppedBytes > 0,
 			);
 		}
+		if (bundle.artifacts)
+			writeEvidence("artifact-manifest", bundle.artifacts, "harness-observed", bundle.artifacts.gaps);
+		if (verification) writeEvidence("verification-result", verification, "externally-verified");
+		for (const interval of bundle.timings ?? [])
+			writeEvidence(`timing-${interval.phase}`, interval, "harness-observed", [], [], false, "timing-interval");
+		if (verification)
+			writeEvidence(
+				"timing-verification",
+				{
+					id: "verification",
+					phase: "verification",
+					kind: "span",
+					clockEpoch: `verification:${attempt.id}`,
+					startMs: 0,
+					endMs: verification.elapsedMs,
+				},
+				"harness-observed",
+				[],
+				[],
+				false,
+				"timing-interval",
+			);
 		const snapshot = this.store.write(context, {
 			kind: "snapshots",
 			requestId: `execution-snapshot-${attempt.id}`,
@@ -316,8 +350,8 @@ export class ExternalEvaluationExecution {
 		});
 		return refOf(snapshot);
 	}
-	async cleanup(context: object, ref: Ref) {
-		const snapshotRef = await this.seal(context, ref);
+	async cleanup(context: object, ref: Ref, signal?: AbortSignal) {
+		const snapshotRef = await this.seal(context, ref, signal);
 		const { runtime, attempt } = this.bound(context, ref);
 		return { snapshotRef, ...(await runtime.cleanup(attempt.id)) };
 	}

@@ -25,3 +25,5 @@ EC06 guest协议：`server/external-evaluation-guest.ts`提供有界argv/stdin�
 EC06 worker接线：`server/external-evaluation-guest-session.ts`将固定假CLI协议与独立原字节日志接入现有`external-evaluation-runtime.ts`，冻结输入/夹具摘要且恢复不重发；`tests/agent-evaluation-guest-worker-test.mjs`验证真实控制端SIGKILL、取消/超时/精确二进制回读。限可信假CLI，尚无统一store/产品入口，见[证据](../docs/agent-evaluation-evidence/EC06-guest-worker-diagnostics.json)。
 
 EC06统一仓库接线：`server/external-evaluation-execution.ts`将固定离线假CLI的状态、脱敏日志和停止证明接入原EvaluationStore；`tests/agent-evaluation-execution-store-test.mjs`验证真实VM到统一attempt/evidence/snapshot与原评分器。限宿主私有工程入口，产物/verifier及产品执行登记待完成，见[证据](../docs/agent-evaluation-evidence/EC06-execution-store-diagnostics.json)。
+
+EC07 固定离线核验：`external-evaluation-artifacts.ts` 提供有界产物清单，`external-evaluation-verifier.ts` 在独立 macOS 受限进程检查固定 JSON 数据，原 `external-evaluation-runtime.ts` 保存一次性核验意图与结果。不是任意脚本执行器；见 [EC07](../docs/agent-evaluation-evidence/EC07.md)。

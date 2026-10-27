@@ -11,6 +11,8 @@ import { redactEvaluationArtifactText } from "./agent/evaluation-evidence.js";
 import { spawn, execFileSync, type ChildProcess } from "node:child_process";
 import { once } from "node:events";
 import { pipeline } from "node:stream/promises";
+import { artifactDigest, type ArtifactSnapshot } from "./external-evaluation-artifacts.js";
+import { verifyArtifacts, verifierCodeDigest, verifierManifest } from "./external-evaluation-verifier.js";
 import { ExternalEvaluationLog } from "./external-evaluation-log.js";
 import {
 	ExternalEvaluationGuestSession,
@@ -576,7 +578,46 @@ export class ExternalEvaluationRuntime {
 			observedAt: fs.statSync(join(directory, "result.json")).mtime.toISOString(),
 			reportedExit: (status.guest as any)?.reportedExit ?? null,
 			logs,
+			artifacts: (status.guest as any)?.artifacts as ArtifactSnapshot | undefined,
+			timings: (status as any).timings ?? [],
 		};
+	}
+
+	async verify(attemptId: string, signal?: AbortSignal) {
+		const bundle = await this.terminalEvidence(attemptId);
+		const { directory, intent } = this.intent(attemptId);
+		if (!bundle.artifacts || !intent.guest?.argv[0]?.startsWith("artifacts-")) return undefined;
+		const { digest, ...body } = bundle.artifacts;
+		if (artifactDigest(body) !== digest) fail("EVIDENCE_GAP", "Frozen artifact manifest changed");
+		const binding = {
+			artifactSnapshotId: digest,
+			fixtureDigest: verifierManifest.fixtureDigest,
+			verifierCodeDigest,
+			configDigest: intent.fingerprint,
+		};
+		const filename = join(directory, "verification.json");
+		if (fs.existsSync(filename)) {
+			const saved = read(filename);
+			if (JSON.stringify(saved.binding) !== JSON.stringify(binding))
+				fail("VERSION_CONFLICT", "Verification input or trusted version changed");
+			return saved.result;
+		}
+		// Claim before launching. A crashed controller is unknown and never silently reruns verification.
+		try {
+			publish(directory, "verification-intent.json", binding);
+		} catch (error) {
+			if ((error as NodeJS.ErrnoException).code === "EEXIST")
+				fail("EXECUTION_UNKNOWN", "Verification was interrupted or is active; do not replay");
+			throw error;
+		}
+		const checked = await verifyArtifacts(
+			bundle.artifacts,
+			intent.guest?.argv[0] === "artifacts-crash" ? "crash" : "normal",
+			signal,
+		);
+		const result = { ...checked, verificationId: artifactDigest([attemptId, binding]), attemptId };
+		publish(directory, "verification.json", { binding, result });
+		return result;
 	}
 
 	async cleanup(attemptId: string) {
@@ -622,6 +663,7 @@ async function supervise(directory: string) {
 		pid: process.pid,
 		nativeStart: nativeStart(process.pid),
 	});
+	const workerBegan = Number(process.hrtime.bigint()) / 1e6;
 	let child: ChildProcess | undefined, timer: ReturnType<typeof setInterval> | undefined;
 	let stdout: ExternalEvaluationLog | undefined, stderr: ExternalEvaluationLog | undefined;
 	let guest: ExternalEvaluationGuestSession | undefined;
@@ -761,6 +803,18 @@ async function supervise(directory: string) {
 			forced,
 			error: runtimeFailure,
 			logs: { console: stdout.snapshot(), native: stderr.snapshot() },
+			timings: (() => {
+				const end = Number(process.hrtime.bigint()) / 1e6,
+					start = guestResult?.agentTiming.startMs,
+					stop = guestResult?.agentTiming.endMs;
+				return start !== null && start !== undefined && stop !== null && stop !== undefined
+					? [
+							{ id: "setup", phase: "setup", kind: "span", clockEpoch: instance, startMs: workerBegan, endMs: start },
+							{ id: "agent", phase: "agent", kind: "span", clockEpoch: instance, startMs: start, endMs: stop },
+							{ id: "cleanup", phase: "cleanup", kind: "span", clockEpoch: instance, startMs: stop, endMs: end },
+						]
+					: [];
+			})(),
 			...(guestResult ? { guest: guestResult } : {}),
 		});
 	} catch (error) {

@@ -7,6 +7,7 @@ import { createHash } from "node:crypto";
 import { once } from "node:events";
 import { Transform, type Writable } from "node:stream";
 import { encodeGuestInput, GuestProtocolDecoder } from "./external-evaluation-guest.js";
+import { ArtifactCollector } from "./external-evaluation-artifacts.js";
 import { ExternalEvaluationLog } from "./external-evaluation-log.js";
 
 type Asset = { path: string; sha256: string };
@@ -21,6 +22,12 @@ const HASHES = {
 	target: "0417f66bcf192fe8eb7e0034cba5e1b7dd72a79fc43d3ea82da1ac1c796aa141",
 	runner: "9f979b6d3f89308ad8806c23913d85a35cc12f9f564c7ace06e1ab52a9341a87",
 };
+export const ARTIFACT_GUEST_HASHES = {
+	target: "46cce53db08241997244d3f003cbf1a8d86b494938190502aed1e8e20864b4d1",
+	runner: "3ce1b7355250246fde581ab19b1c0a636e0eed3d28f686e6f9047e97928d1d37",
+};
+export const supportsArtifacts = (spec: OfflineGuestSpec) =>
+	spec.target.sha256 === ARTIFACT_GUEST_HASHES.target && spec.runner.sha256 === ARTIFACT_GUEST_HASHES.runner;
 const digest = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
 function fail(code: string, message: string): never {
 	throw Object.assign(new Error(message), { code });
@@ -39,7 +46,11 @@ export function guestAssets(spec: OfflineGuestSpec) {
 	const result = {} as Record<"target" | "runner", Buffer>;
 	for (const name of ["target", "runner"] as const) {
 		const asset = spec[name];
-		if (!asset || asset.sha256 !== HASHES[name] || typeof asset.path !== "string")
+		if (
+			!asset ||
+			asset.sha256 !== (supportsArtifacts(spec) ? ARTIFACT_GUEST_HASHES[name] : HASHES[name]) ||
+			typeof asset.path !== "string"
+		)
 			fail("VERSION_CONFLICT", "Guest fixture enrollment changed");
 		if (fs.realpathSync(asset.path) !== asset.path) fail("VERSION_CONFLICT", "Guest asset must be a real path");
 		const fd = fs.openSync(asset.path, fs.constants.O_RDONLY | fs.constants.O_NOFOLLOW);
@@ -63,6 +74,10 @@ export class ExternalEvaluationGuestSession {
 	reportedExit: number | null = null;
 	reportedError?: string;
 	private shell = "";
+	private readonly artifacts: ArtifactCollector;
+	private readonly artifactSupport: boolean;
+	private agentStart: number | null = null;
+	private agentEnd: number | null = null;
 	private bootstrapped = false;
 	private ready = false;
 	private sent = 0;
@@ -86,6 +101,8 @@ export class ExternalEvaluationGuestSession {
 		spec: OfflineGuestSpec,
 		private readonly claimInput: (sha256: string) => void,
 	) {
+		this.artifactSupport = supportsArtifacts(spec);
+		this.artifacts = new ArtifactCollector(spec.argv[0]?.startsWith("artifacts-") === true);
 		this.input = guestInput(spec);
 		this.lines = this.input.toString().trimEnd().split("\n");
 		this.decoder = new GuestProtocolDecoder(nonce);
@@ -144,15 +161,21 @@ export class ExternalEvaluationGuestSession {
 				if (!this.versionChecked || this.acked !== this.lines.length)
 					throw new Error("Guest started before preflight/input completion");
 				this.started = true;
+				this.agentStart = Number(process.hrtime.bigint()) / 1e6;
 			} else if (frame.channel === "stdout" || frame.channel === "stderr") {
 				await new Promise<void>((resolve, reject) =>
 					this.logs[frame.channel as "stdout" | "stderr"].write(frame.bytes, (error) =>
 						error ? reject(error) : resolve(),
 					),
 				);
-			} else if (frame.channel.endsWith("-eof")) this.eof.add(frame.channel.slice(0, -4));
-			else if (frame.channel === "exit") this.reportedExit = Number(value);
-			else if (frame.channel === "error") this.reportedError = value.slice(0, 64);
+			} else if (frame.channel === "artifact") this.artifacts.add(frame.bytes);
+			else if (frame.channel === "artifact-end") this.artifacts.end(value);
+			else if (frame.channel === "artifact-error") this.artifacts.reject(value.slice(0, 64));
+			else if (frame.channel.endsWith("-eof")) this.eof.add(frame.channel.slice(0, -4));
+			else if (frame.channel === "exit") {
+				this.reportedExit = Number(value);
+				this.agentEnd = Number(process.hrtime.bigint()) / 1e6;
+			} else if (frame.channel === "error") this.reportedError = value.slice(0, 64);
 		}
 		if (this.decoder.gaps.length) throw new Error(`Guest protocol gap: ${this.decoder.gaps.join(",")}`);
 	}
@@ -190,6 +213,8 @@ export class ExternalEvaluationGuestSession {
 			waitingInput,
 			waitingInputSource: "fixed-fixture stderr; target-reported",
 			source: "guest-reported; trusted fixture only",
+			agentTiming: { startMs: this.agentStart, endMs: this.agentEnd },
+			...(this.artifactSupport ? { artifacts: this.artifacts.freeze() } : {}),
 			inputRecordsSent: this.sent,
 			inputRecordsAcknowledged: this.acked,
 			started: this.started,

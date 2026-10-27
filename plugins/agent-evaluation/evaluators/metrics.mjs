@@ -237,7 +237,13 @@ export const F08 = define(
 		const timing = timingMetrics(intervals),
 			costs = costMetrics(usage);
 		const missing = [...gaps, ...timing.gaps, ...costs.gaps];
-		const metrics = { timing, costs, unobservedTime: null, modelThinkingMs: null };
+		const metrics = {
+			timing,
+			costs,
+			unobservedTime: null,
+			modelThinkingMs: null,
+			...(items.some((item) => item.data.producer === "vz-offline-store-1") ? { externalStages: true } : {}),
+		};
 		const output = [
 			finding(
 				null,
@@ -276,3 +282,20 @@ export const F08 = define(
 		return output;
 	},
 );
+
+/** Account observed stage durations; human/controller gaps are not an invented end-to-end clock. */
+export function externalAccounting(timing, evaluationMs) {
+	const phases = Object.fromEntries(
+		["setup", "agent", "verification", "cleanup"].map((phase) => [phase, timing.phases[phase]?.wallMs ?? null]),
+	);
+	phases.evaluation = evaluationMs;
+	const known = Object.values(phases).filter((v) => v !== null);
+	return {
+		phases,
+		knownSubtotalMs: known.reduce((s, v) => s + v, 0),
+		observedTotalMs: known.length === 5 ? known.reduce((s, v) => s + v, 0) : null,
+		endToEndWallMs: null,
+		gaps: ["unobserved-controller-and-user-wait"],
+		costs: "F08 costs are deduplicated per call; actual and versioned estimates remain separate",
+	};
+}

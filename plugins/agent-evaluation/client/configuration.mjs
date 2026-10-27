@@ -5,6 +5,7 @@ const fields = {
 	F04: ["prerequisiteToolCallId", "dependentToolCallId"],
 	F05: ["claimEvidenceId", "claimPath", "basisEvidenceId", "basisPath", "expectedValue"],
 	F08: ["maxAgentWallMs"],
+	F09: ["verifierId"],
 	prices: [
 		"provider",
 		"model",
@@ -55,7 +56,7 @@ export function configurationHtml(configs, conditions, t, esc) {
 		`<div data-config-rows="${rule}" data-next-index="${values.length}">${values.map((v, i) => configurationRow(rule, i, v, conditions, t, esc)).join("")}</div><button type="button" data-action="config-add" data-rule="${rule}" ${rule !== "prices" && !conditions.some((c) => [rule, `${rule}@1`].includes(c.ruleRef)) ? "disabled" : ""}>${esc(t(rule === "prices" ? "addPrice" : "addCheck"))}</button>`;
 	const list = (rule, key) =>
 		`<label>${esc(t(`cfg-${key}`))}<textarea name="config-${key}" data-config-list="${rule}" data-field="${key}" maxlength="24000">${esc((configs[rule]?.[key] ?? []).join("\n"))}</textarea></label>`;
-	return `<section data-configuration><h2>${esc(t("editConfiguration"))}</h2><p>${esc(t("configurationHint"))}</p><details><summary>${esc(t("frozenConditions"))}</summary>${conditions.map((c) => `<p><b>${esc(c.id)}</b> · ${esc(c.statement)}</p>`).join("")}</details>${["F01", "F02", "F04", "F05", "F06", "F07", "F08"].map((rule) => `<details ${rule === "F01" ? "open" : ""}><summary>${rule} · ${esc(t(`cfg-${rule}`))}</summary><p>${esc(t(`cfg-${rule}-hint`))}</p>${fields[rule] ? rows(rule, configs[rule]?.checks ?? []) : ""}${rule === "F07" ? list(rule, "pollingToolNames") + list(rule, "repairToolNames") : ""}${rule === "F08" ? list(rule, "childWaitToolNames") + rows("prices", configs.F08?.prices ?? []) : ""}</details>`).join("")}</section>`;
+	return `<section data-configuration><h2>${esc(t("editConfiguration"))}</h2><p>${esc(t("configurationHint"))}</p><details><summary>${esc(t("frozenConditions"))}</summary>${conditions.map((c) => `<p><b>${esc(c.id)}</b> · ${esc(c.statement)}</p>`).join("")}</details>${["F01", "F02", "F04", "F05", "F06", "F07", "F08", "F09"].map((rule) => `<details ${rule === "F01" ? "open" : ""}><summary>${rule} · ${esc(t(`cfg-${rule}`))}</summary><p>${esc(t(`cfg-${rule}-hint`))}</p>${fields[rule] ? rows(rule, configs[rule]?.checks ?? []) : ""}${rule === "F07" ? list(rule, "pollingToolNames") + list(rule, "repairToolNames") : ""}${rule === "F08" ? list(rule, "childWaitToolNames") + rows("prices", configs.F08?.prices ?? []) : ""}</details>`).join("")}</section>`;
 }
 /** @returns {Record<string, any>} */
 export function readConfiguration(form, t) {
@@ -67,6 +68,7 @@ export function readConfiguration(form, t) {
 		F06: {},
 		F07: {},
 		F08: { checks: [], prices: [] },
+		F09: { checks: [] },
 	};
 	for (const row of form.querySelectorAll("[data-config-row]")) {
 		const rule = row.dataset.configRow,

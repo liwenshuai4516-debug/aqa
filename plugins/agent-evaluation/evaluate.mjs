@@ -3,6 +3,7 @@ import { Check } from "typebox/value";
 import { Finding, LIMITS, digest, requireValue, EvaluationError } from "./schema.mjs";
 import { recordsOf, readEvidenceJson } from "./collect.mjs";
 import { deepFreeze } from "./registry.mjs";
+import { externalAccounting } from "./evaluators/metrics.mjs";
 import { aggregate } from "./aggregate.mjs";
 const refOf = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
 const refKey = (r) => `${r.kind}:${r.id}:${r.revision}`;
@@ -452,6 +453,10 @@ export class EvaluationEngine {
 				requiredRuleGaps.push(`${ruleKey(required)} did not complete successfully`);
 		const state = job.controller.signal.aborted ? "cancelled" : globalError ? "failed" : "completed";
 		const endedAt = new Date().toISOString();
+		const elapsedMs = performance.now() - startedMono;
+		for (const finding of findings)
+			if (finding.ruleId === "F08" && finding.metrics?.externalStages)
+				finding.metrics.externalAccounting = externalAccounting(finding.metrics.timing, elapsedMs);
 		const data = {
 			snapshotRef: refOf(snapshot),
 			contractRef: refOf(contract),
@@ -478,7 +483,7 @@ export class EvaluationEngine {
 				queuedAt: job.queuedAt,
 				startedAt,
 				endedAt,
-				elapsedMs: performance.now() - startedMono,
+				elapsedMs,
 				clockSource: "process-monotonic",
 				...(job.cancellationRequestedAt
 					? { cancellationRequestedAt: job.cancellationRequestedAt, cancellationConfirmedAt: endedAt }
