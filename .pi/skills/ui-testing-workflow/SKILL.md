@@ -41,3 +41,13 @@ description: UI 自动化测试工作流入口：发现录制、用例设计与�
 维护安装、资源归属与升级时，查阅 [维护入口](references/maintenance.md)。
 
 按任务 ID 的最小交接、诊断查询复用和分析候选请按运行包内 `ui-test-workflow`、`ui-design-review`、`ui-result-analysis` 当前阶段说明执行；仍保留完整资产执行授权与独立结果评审，不复制运行规则。版本与验收见[维护入口](references/maintenance.md)。
+
+## 失败分支索引（触发 → 一线 → 兜底；规则以正文为准）
+
+- **数据空间工具未安装或停用** → 明确报告无法录入用例库 → 不虚构关联，停在此步
+- **Playwright 配置 / 依赖 / seed 不匹配** → 报具体缺项，停在录制前 → 不向个人目录装依赖、不把 seed 改成绝对路径
+- **工作区无 MCP 配置** → 用 `qa/ui` 后备配置 → 仍无业务 baseURL 则回工作区补齐，不猜地址
+- **私密录制未声明 `capture:"chromium-single-page-v1"`** → 只准备/握手，浏览器动作阻塞 → 不匿名回退、不覆盖已有草稿
+- **录制中断 / 预算耗尽 / 证据坏** → 存 partial 与真实缺口，关闭自有 context 后显式 finish → 不换任务重放、不从点击中间续跑
+- **原生关闭动作被拒** → 保留 `browser-cleanup-not-confirmed` → 不把连接退出当作浏览器关闭成功
+- **入库缺 `featureId` 或扩展能力** → 报阻塞并回工作区 → 不提前建 candidate、绑定或执行
