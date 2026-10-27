@@ -297,6 +297,10 @@ export function createMockHost(overrides) {
 		readEvaluationEvidence: () => {
 			throw Object.assign(new Error("No evaluation source configured in mock"), { code: "CAPABILITY_UNAVAILABLE" });
 		},
+		registerEvaluationDataSpace: sub("registerEvaluationDataSpace"),
+		evaluationDataSpace: async () => {
+			throw Object.assign(new Error("No Data Space interface configured in mock"), { code: "CAPABILITY_UNAVAILABLE" });
+		},
 		readEvaluationArtifact: () => {
 			throw Object.assign(new Error("No evaluation artifact source configured in mock"), {
 				code: "CAPABILITY_UNAVAILABLE",

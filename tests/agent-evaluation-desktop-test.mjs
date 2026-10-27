@@ -1,3 +1,4 @@
+import { installDataSpace, verifyDataSpace, reopenDataSpace } from "./fixtures/agent-evaluation/data-space-desktop.mjs";
 /** Real Electron, isolated data and seeded SDK history; optional fixed offline CLI, never a model. */
 import assert from "node:assert/strict";
 import { mkdtemp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
@@ -175,6 +176,9 @@ await enableAgentEvaluation(repo, { agentDir, dataDir });
 const executionEnrollment = executionInstallation
 	? enrollDesktopExecution(repo, dataDir, executionInstallation)
 	: undefined;
+const dataSpaceFixture = process.argv.includes("--data-space")
+	? await installDataSpace({ repo, workspace, dataDir })
+	: undefined;
 const settingsBefore = await readFile(join(agentDir, "settings.json"), "utf8");
 await enableAgentEvaluation(repo, { agentDir, dataDir });
 assert.equal(await readFile(join(agentDir, "settings.json"), "utf8"), settingsBefore);
@@ -284,12 +288,12 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.36" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.37" && p.active),
 			),
 		),
 	);
 	result.checks.push(
-		"Real app loads plugin 0.4.36 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Real app loads plugin 0.4.37 in explicitly registered app directories; seeded SDK history opened without a model prompt",
 	);
 	stage("settings and slash discovery");
 	const settings = async (tab) => {
@@ -364,7 +368,7 @@ try {
 							f.plugins.some(
 								(p) =>
 									p.id === "agent-evaluation" &&
-									p.version === "0.4.36" &&
+									p.version === "0.4.37" &&
 									p.agentTools?.some((tool) => tool.name === "agent_evaluation"),
 							),
 					),
@@ -381,7 +385,7 @@ try {
 	await candidate.waitFor();
 	await input.fill("");
 	result.checks.push(
-		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.36; skill, slash discovery and tool registration remain enabled",
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.37; skill, slash discovery and tool registration remain enabled",
 	);
 	stage("product diagnosis flow");
 	const openView = async () => {
@@ -700,7 +704,7 @@ try {
 		await page
 			.locator('.aev [name="additionalRuleRef"] option')
 			.evaluateAll((options) => options.map((option) => option.value)),
-		["", "F01@1", "F02@1", "F04@1", "F05@1", "F08@1", "F09@1"],
+		["", "F01@1", "F02@1", "F04@1", "F05@1", "F08@1", "F09@1", "F03@1"],
 	);
 	await page.screenshot({ path: join(output, "binding-revision-en.png") });
 	await page.locator('.aev form[data-form="revision"] button[type="submit"]').click();
@@ -898,6 +902,19 @@ try {
 	result.checks.push(
 		"Actual Electron uploads a >128 KiB inert ATIF fixture in bounded chunks, rejects malformed input, separates child selection, requires human source/condition confirmation and uses the existing provisional report with private original paging",
 	);
+	if (dataSpaceFixture) {
+		stage("EC09 real Data Space selection, F03 and report index");
+		result.dataSpace = await verifyDataSpace({
+			page,
+			until,
+			output,
+			dataDir,
+			fixture: dataSpaceFixture,
+			original,
+			settings,
+			closeSettings,
+		});
+	}
 	stage("desktop identity is withheld from a secondary renderer");
 	const nativeClientId = await page.evaluate(() => sessionStorage.getItem("pi-web-client-id"));
 	const secondaryClientId = await app.evaluate(
@@ -986,7 +1003,7 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.36" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.37" && p.active),
 			),
 		),
 	);
@@ -1005,7 +1022,7 @@ try {
 	assert.equal(await skill().getByRole("switch").getAttribute("aria-checked"), "true");
 	await closeSettings();
 	result.checks.push(
-		"Graceful real Electron exit and a second native process load plugin 0.4.36 and preserve enabled skill/plugin registration",
+		"Graceful real Electron exit and a second native process load plugin 0.4.37 and preserve enabled skill/plugin registration",
 	);
 	result.checks.push(
 		"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",
@@ -1034,6 +1051,10 @@ try {
 		),
 	);
 	await until(() => page.locator(".msg").filter({ hasText: "synthetic offline fixture" }).count());
+	if (result.dataSpace) {
+		await reopenDataSpace({ page, until, dataDir, result: result.dataSpace });
+		result.dataSpace.restartReceiptVerified = true;
+	}
 	await openView();
 	// The restored plugin view deliberately keeps its prior fixed source until an explicit refresh.
 	await page.locator('.aev [data-action="refresh"]:not([disabled])').click();

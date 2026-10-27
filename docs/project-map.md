@@ -196,3 +196,5 @@ EC06 产品离线入口（0.4.35）：`plugins/agent-evaluation/client/offline.m
 EC07 固定产物核验：`server/external-evaluation-artifacts.ts` 建立有界冻结清单，`external-evaluation-verifier.ts` 执行独立受限数据检查；原 runtime/execution/port 与统一仓库接线，插件 `evaluators/verification.mjs` 提供 F09。真实桌面和中断恢复见 [EC07](agent-evaluation-evidence/EC07.md)。
 
 EC04 性能验收入口：`tests/agent-evaluation-performance-test.mjs` 与 `tests/fixtures/agent-evaluation/performance-policy.mjs` 维护固定历史批量采集的版本化预算，保留旧参考线；边界回归见同名 policy 单测，[评审](agent-evaluation-evidence/EC04-performance-gate-review.md)说明适用范围及授权。
+
+EC09 数据空间接入：`server/evaluation-data-space.ts`定义私有桥接类型，原PluginManager与引擎守卫绑定主体/会话/工作区和专用索引权限；`plugins/data-space/evaluation.mjs`持有关系回查与报告索引，`plugins/agent-evaluation/evaluators/data-space.mjs`实现F03，`project-sync.mjs`维护不可变同步账本，`client/data-space.mjs`提供选择/回执状态；不引入用例导入或结果runner。验收见[EC09](agent-evaluation-evidence/EC09.md)。

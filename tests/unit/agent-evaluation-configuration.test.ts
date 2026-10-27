@@ -11,7 +11,7 @@ const esc = (value: unknown) =>
 	);
 afterEach(() => document.body.replaceChildren());
 function form(configs: any) {
-	const conditions = ["F01", "F02", "F04", "F05", "F08"].map((id) => ({
+	const conditions = ["F01", "F02", "F03", "F04", "F05", "F08"].map((id) => ({
 		id: `c-${id}`,
 		statement: `Frozen ${id} requirement <img src=x>`,
 		ruleRef: `${id}@1`,
@@ -39,6 +39,20 @@ describe("installed rule configuration form", () => {
 				],
 			},
 			F02: { checks: [{ conditionId: "c-F02", runId: "run-1", caseIds: [] }] },
+			F03: {
+				checks: [
+					{
+						conditionId: "c-F03",
+						spaceId: "s",
+						projectId: "p",
+						environmentId: "e",
+						environmentRevision: "env-v1",
+						batchRevision: "batch-v1",
+						batchIdentity: "identity",
+						nativeCaseIds: ["N1", "N2"],
+					},
+				],
+			},
 			F04: { checks: [{ conditionId: "c-F04", prerequisiteToolCallId: "first", dependentToolCallId: "second" }] },
 			F05: {
 				checks: [

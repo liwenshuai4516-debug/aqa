@@ -1,3 +1,4 @@
+import { createEvaluationInterface } from "./evaluation.mjs";
 /**
  * data-space 服务端入口 —— 测试资产（项目 / 模块 / 功能 / 用例 / 环境）的唯一事实源。
  *
@@ -406,6 +407,15 @@ export default {
 		}
 
 		const offs = [];
+		if (host.registerEvaluationDataSpace) {
+			try {
+				offs.push(
+					host.registerEvaluationDataSpace(createEvaluationInterface({ host, store: () => store, automation })),
+				);
+			} catch (error) {
+				host.log("warn", "Evaluation report interface unavailable", error.code ?? "IO_ERROR");
+			}
+		}
 		const route = (method, path, handler) => {
 			offs.push(
 				host.route(method, path, (req, res) => {

@@ -1,3 +1,4 @@
+import { dataSpaceHtml } from "./data-space.mjs";
 import { offlineHtml as executionHtml, offlineAttemptsHtml } from "./offline.mjs";
 import { transport } from "./transport.mjs";
 import { translator } from "./i18n.mjs";
@@ -27,7 +28,7 @@ export default {
 			reviews = [],
 			jobs,
 			job;
-		let draft, revision, observation, configuration, upload, execution, offlineAttempts;
+		let draft, revision, observation, configuration, upload, execution, offlineAttempts, projectData;
 		let view = "records",
 			error = "",
 			notice = "",
@@ -46,6 +47,10 @@ export default {
 			if (closed) return;
 			const offlineForm = root.querySelector("form[data-form=offline-execution]");
 			if (execution && offlineForm) execution.form = Object.fromEntries(new FormData(offlineForm));
+			const projectForm = root.querySelector('form[data-form="data-space"]');
+			if (projectData && projectForm) projectData.selection = Object.fromEntries(new FormData(projectForm));
+			const projectRequirement = root.querySelector('form[data-form="data-space-score"] textarea');
+			if (projectData && projectRequirement) projectData.statement = projectRequirement.value;
 			const importForm = root.querySelector("form[data-form=import]");
 			if (upload && importForm) {
 				const values = new FormData(importForm);
@@ -117,7 +122,7 @@ export default {
 			if (configuration)
 				return `<form data-form="configuration"><section><h2>${esc(t("configureRules"))}</h2><p>${esc(t("configureSnapshotHint"))}</p><p>${esc(configuration.contract.data.objective)}</p><p>${esc(report.id)} · ${esc(snapshot.id)}</p></section>${configurationHtml(configuration.configs, [...configuration.contract.data.conditions, ...configuration.contract.data.constraints], t, esc)}<div class="actions"><button type="submit" class="primary">${esc(t("saveConfiguration"))}</button>${button("discard-configuration", "discardRevision")}</div></form>`;
 			const d = report.data;
-			return `<section><h2>${esc(contract.data.objective)}</h2><div class="grid">${field("source", esc(targetKind === "cli" ? t("offlineDiagnostic") : contract.data.scope.source === "offline" ? t("offline") : "Pi SDK"))}${field("summary", badge(d.summary.deliveryVerdict))}${field("goal", badge(d.summary.goal))}${field("scoringState", badge(d.state))}${field("stage", badge(d.assessmentStage))}${field("coverage", badge(snapshot.data.coverage))}</div><p>${contract.data.scope.source === "offline" ? esc(t("offline")) : `${esc(contract.data.scope.startMessageId)} → ${esc(contract.data.scope.endMessageId)}`}</p><small>${esc(report.id)} · r${report.revision} · ${esc(report.createdAt)}</small><p>${esc(t("contractRevision"))}: ${esc(contract.revision)}</p><div class="actions">${button("export", "export")}${button("reevaluate", "reevaluate")}${contract.data.scope.source === "pi" ? button("offline-new", "offlineDiagnostic") : ""}${contract.data.scope.source !== "offline" && targetKind !== "cli" ? button("revise", "revise") : ""}${button("configure", "configureRules", observation && observation.state !== "stopped" ? "disabled" : "")}${contract.data.scope.source !== "offline" && targetKind !== "cli" && !observation && snapshot.data.attemptRefs?.length ? button("watch-start", "startObservation") : ""}</div><p class="muted">${esc(t("reevaluateHint"))}</p></section>${contract.data.scope.source === "offline" ? offlineHtml() : ""}<section><h2>${esc(t("findings"))}</h2>${d.findings
+			return `<section><h2>${esc(contract.data.objective)}</h2><div class="grid">${field("source", esc(targetKind === "cli" ? t("offlineDiagnostic") : contract.data.scope.source === "offline" ? t("offline") : "Pi SDK"))}${field("summary", badge(d.summary.deliveryVerdict))}${field("goal", badge(d.summary.goal))}${field("scoringState", badge(d.state))}${field("stage", badge(d.assessmentStage))}${field("coverage", badge(snapshot.data.coverage))}</div><p>${contract.data.scope.source === "offline" ? esc(t("offline")) : `${esc(contract.data.scope.startMessageId)} → ${esc(contract.data.scope.endMessageId)}`}</p><small>${esc(report.id)} · r${report.revision} · ${esc(report.createdAt)}</small><p>${esc(t("contractRevision"))}: ${esc(contract.revision)}</p><div class="actions">${button("data-space", "dataSpace")}${button("export", "export")}${button("reevaluate", "reevaluate")}${contract.data.scope.source === "pi" ? button("offline-new", "offlineDiagnostic") : ""}${contract.data.scope.source !== "offline" && targetKind !== "cli" ? button("revise", "revise") : ""}${button("configure", "configureRules", observation && observation.state !== "stopped" ? "disabled" : "")}${contract.data.scope.source !== "offline" && targetKind !== "cli" && !observation && snapshot.data.attemptRefs?.length ? button("watch-start", "startObservation") : ""}</div><p class="muted">${esc(t("reevaluateHint"))}</p></section>${dataSpaceHtml(projectData, { t, esc, button })}${contract.data.scope.source === "offline" ? offlineHtml() : ""}<section><h2>${esc(t("findings"))}</h2>${d.findings
 				.map(
 					(f, index) =>
 						`<article><h3>${esc(f.ruleId)} · ${esc(f.conditionId ?? f.findingId)}</h3>${badge(f.verdict)}${badge(f.evidenceState)}<p><b>${esc(t("reason"))}</b> · ${esc(t(f.reason))}</p>${f.missingEvidence.length ? `<p><b>${esc(t("missing"))}</b> · ${esc(f.missingEvidence.map((item) => t(item)).join("; "))}</p>` : ""}<div class="actions">${f.evidenceRefs.map((_, j) => button("evidence", "evidence", `data-finding="${index}" data-evidence="${j}"`)).join("") || `<p>${esc(t("noEvidence"))}</p>`}</div><details><summary>${esc(t("reviews"))}</summary><p>${esc(t("reviewHint"))}</p><p>${esc(t("original"))}: ${esc(t(f.verdict))}</p>${
@@ -235,6 +240,7 @@ export default {
 			job = undefined;
 			jobs = undefined;
 			report = undefined;
+			projectData = undefined;
 			view = "records";
 			page = { items: [] };
 			await run(async () => {
@@ -263,6 +269,7 @@ export default {
 				reviewRows.push(...result.items);
 				cursor = result.nextCursor;
 			} while (cursor && reviewRows.length < 1000);
+			if (report?.id !== value.id) projectData = undefined;
 			report = value;
 			contract = c;
 			snapshot = s;
@@ -504,6 +511,9 @@ export default {
 						await status();
 					}
 				}
+				if (action === "data-space") {
+					projectData = { ...(await rpc.request("dataSpaceDescribe")), selection: {} };
+				}
 				if (action === "configure") {
 					configuration = { configs: reportConfigs(), contract: await completeContract(ref(contract)) };
 					draft = undefined;
@@ -610,6 +620,15 @@ export default {
 			input.setCustomValidity(file && file.size > 0 && file.size <= 512 * 1024 ? "" : t("uploadHint"));
 			if (!input.checkValidity()) input.reportValidity();
 		});
+		root.addEventListener("change", (event) => {
+			const form = event.target.closest?.('form[data-form="data-space"]');
+			if (!form || !projectData) return;
+			projectData.selection = Object.fromEntries(new FormData(form));
+			projectData.observation = undefined;
+			projectData.query = undefined;
+			projectData.status = undefined;
+			render();
+		});
 		root.addEventListener("submit", (event) => {
 			const form = event.target.closest("form");
 			if (!form || busy) return;
@@ -674,6 +693,8 @@ export default {
 					}
 					const fingerprint = JSON.stringify([
 						form.dataset.form,
+						projectData?.query,
+						report?.id,
 						source.conversationId,
 						source.sessionId,
 						revision ? ref(revision.contract) : null,
@@ -687,6 +708,84 @@ export default {
 						if (!steps.has(action)) steps.set(action, await rpc.request(action, data));
 						return steps.get(action);
 					};
+					if (form.dataset.form === "data-space") {
+						projectData.selection = values;
+						const [pi, ei] = (values.environment ?? "").split(":").map(Number),
+							p = projectData.projects[pi],
+							e = p?.environments[ei];
+						if (!p || !e) throw new Error(t("projectUnavailable"));
+						const operation = event.submitter?.dataset.projectOperation ?? "inspect";
+						if (operation === "inspect") {
+							const asset = projectData.assets[Number(values.asset)];
+							if (!asset) throw new Error(t("projectUnavailable"));
+							const query = {
+								projectRef: p.projectRef,
+								environmentRef: { environmentId: e.environmentId, revision: e.revision },
+								engine: asset.engine,
+								assetRef: asset.assetRef,
+							};
+							const observation = await rpc.request("dataSpaceObserve", { data: query });
+							projectData.query = query;
+							projectData.observation = observation;
+						} else
+							projectData.status = await rpc.request(
+								operation === "sync" ? "syncProjectReport" : "projectReportStatus",
+								{ ref: ref(report), data: { projectRef: p.projectRef } },
+							);
+						return;
+					}
+					if (form.dataset.form === "data-space-score") {
+						if (values.confirmed !== "on" || !projectData?.observation || !values.statement?.trim())
+							throw new Error(t("projectConfirm"));
+						if (contract.data.scope.source !== "pi" || targetKind === "cli") throw new Error(t("projectPiOnly"));
+						const original = await completeContract(ref(contract)),
+							o = projectData.observation,
+							configs = reportConfigs();
+						const conditionId = "data-space-" + o.batchRef.identity.slice(0, 16);
+						const data = {
+							...original.data,
+							conditions: [
+								...original.data.conditions.filter((c) => c.id !== conditionId),
+								{
+									id: conditionId,
+									statement: values.statement,
+									sourceRef: "human-ui:data-space",
+									sourceType: "user",
+									required: true,
+									applicableWhen: "always",
+									ruleRef: "F03@1",
+								},
+							],
+							provenance: `human-confirmed Data Space reconciliation at observation time; derived from ${report.id}`,
+						};
+						configs.F03 = {
+							checks: [
+								{
+									conditionId,
+									spaceId: o.projectRef.spaceId,
+									projectId: o.projectRef.projectId,
+									environmentId: o.environmentRef.environmentId,
+									environmentRevision: o.environmentRef.revision,
+									batchRevision: o.batchRef.revision,
+									batchIdentity: o.batchRef.identity,
+									nativeCaseIds: o.items.map((r) => r.nativeCaseId),
+								},
+							],
+						};
+						const c = await step("createContract", { data });
+						const a = await step("createAttempt", { ref: c });
+						const collected = await step("collect", {
+							ref: a,
+							dataSpaceRefs: [projectData.query],
+							artifactPaths: [...new Set((configs.F01?.checks ?? []).map((c) => c.path))],
+						});
+						const sealed = await step("seal", { ref: collected.checkpointRef });
+						job = await step("evaluate", { ref: sealed, configs });
+						view = "records";
+						await list();
+						await status();
+						return;
+					}
 					if (form.dataset.form === "import") {
 						if (values.confirm !== "on" || !selectedPointers.length || !lines(values.conditions).length)
 							throw new Error(t("confirmOffline"));

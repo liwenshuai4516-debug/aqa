@@ -242,3 +242,17 @@ UI-only动作：uploadStart（byteLength/sha256）、uploadChunk（uploadId/offs
 固定 VZ 假 CLI 增加 `artifacts-*` 正反例。确认停止后，原 `offlineSeal/offlineCleanup` 冻结完整约定清单，在独立受限进程调用 `offline-json@1`，原页面显示核验结果，F09 读取封存证据。改测试/自写通过不改变可信预期；产物 fail 与 verifier error 分别保留。原 F08 对账已观测五阶段和费用，未观测时间及缺 usage 不补零。完整范围和验收见 [EC07](../../docs/agent-evaluation-evidence/EC07.md)。
 
 旧不可变登记仍可运行其原场景，但不能使用新产物场景；管理员须显式登记新资源，不覆盖个人安装或旧证据。此包仅支持有界 JSON/文本数据核验：32 条、每文件 512 字节、合计 8192 字节，所有链接/特殊文件拒绝；不执行产物代码。真实 CLI/模型及 EC08 仍按用户决定暂缓。
+
+## EC09 数据空间专项诊断
+
+插件 0.4.37 通过宿主受控桥读取数据空间 0.16.1 的项目/环境、批次、用例及可选 run 引用。`dataSpaceDescribe` 仅枚举当前工作区已配置通道；`dataSpaceObserve` 使用明确 `projectRef={spaceId,projectId}`、`environmentRef={environmentId,revision}`、engine、assetRef 与可选 runRef。读取原生资产、原有 `archive-status` 回执及当前归属；可选 run 只走 `sync-status`。评估不调用 import、sync 或 runner，不读取数据空间私有文件。项目名、URL、目录相似度不作身份匹配。
+
+F03@1 配置 checks 的每项为 conditionId、spaceId、projectId、environmentId、environmentRevision、batchRevision、batchIdentity 与明确 nativeCaseIds（1–100项）。批次 identity 是 engine 与规范 assetRef 的摘要，不能仅凭同版本字符串串批。规则只消费封存的 `data-space-reader-v1` 可信观察；缺回执/回查、旧版本或不唯一观察均未知；数量缺失、重复或错项目判失败。通过只表示所选集合在 observedAt 时的数量与项目归属已核对，不推定任务结束时已完成，不替代分类、业务语义或原生执行通过。F07直接复用；已发布 internal@1 仍保留原七条规则，产品扩展配置沿用内容寻址 profile。
+
+详情“数据空间专项诊断”用项目/环境和批次下拉读取关系；明确确认数量/归属要求后，冻结派生新契约、新采集和新报告，保留原契约/报告。此入口不修订已存在后继版本的历史契约。改变选择会清除旧观察，失败保留输入；离线报告仍可同步索引，但不能冒充 Pi 新采集。普通配置表单也支持明确 F03 检查字段。
+
+`syncProjectReport(ref:evaluationRef,data:{projectRef})` 写入由数据空间维护的专用评估报告索引：只含 evaluationId、reportDigest、稳定项目引用、回执和时间。幂等键含主体、工作区、evaluationId 与 projectRef；正文仍留评估中心。`tools:evaluation-index-write` 仅开放该固定索引写操作；不授予用例、环境、结果写入或 Agent/模型执行权限。UI与工具均重验所属会话、来源、插件启停与执行限制；工具还核对真实 invocation。只读/计划/委派/目标审查状态拒绝写入。
+
+同步账本以不可变 evidence 逐条追加 pending/failed/synced；不修订已封存证据。每次重试先只读 `indexStatus`，核对回执中的报告摘要与项目身份。`projectReportStatus` 不写本地账本/业务文件；同 requestId 仅对账，不重复提交；确认 missing 后的新显式请求可重试原索引。丢回执/重启不导入用例、不重执行、不覆盖结果。项目改名保留身份，删除/停用/环境变化不静默改绑。索引最多10,000条、8MiB，原子发布和目录同步；坏版本/冲突拒写并保留原件；可选接口初始化失败不阻断数据空间原有能力。
+
+验收入口：`tests/unit/agent-evaluation-data-space.test.ts`、原 host/service/client/configuration 回归，以及实际 Electron `tests/agent-evaluation-desktop-test.mjs --data-space`；先串行构建，再设 `PI_WEB_SMOKE_PREBUILT=1` 复用构建。实现和本轮结果见 [EC09](../../docs/agent-evaluation-evidence/EC09.md)。限本机 macOS arm64 隔离样本，不声明真实业务库、真实模型或全部 M1/M2 完成。

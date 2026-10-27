@@ -327,6 +327,7 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns })
 		call,
 		sync,
 		status: () => ({ error: syncError }),
+		channels: () => channel.list(),
 		dispose() {
 			disposed = true;
 			off?.();

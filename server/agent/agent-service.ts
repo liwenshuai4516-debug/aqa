@@ -4024,6 +4024,14 @@ export class ClientSession {
 	/** Human offline controls share the conversation's execution restrictions; tool calls also
 	 * retain their original createPluginInvocation checks. Never fall back to the active tab.
 	 */
+	verifyEvaluationDataSpaceForPlugins(conversationId: string): void {
+		if (
+			!this.convs.has(conversationId) ||
+			["data-space", "agent-evaluation"].some((id) => (this.settingsSvc.current.disabledPlugins ?? []).includes(id))
+		)
+			throw new EvidenceReadError("PERMISSION_DENIED", "Data Space evaluation is disabled for this client");
+	}
+
 	verifyEvaluationExecutionForPlugins(conversationId: string): void {
 		const target = this.convs.get(conversationId);
 		if (!target)

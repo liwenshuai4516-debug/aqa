@@ -1,6 +1,6 @@
 ---
 name: agent-evaluation
-description: 对明确选区的 Pi 任务做证据诊断、耗时与费用核对，查看或重评封存报告，包括人工导入的离线 ATIF 轨迹。可显式运行已登记的固定离线假 CLI；不会启动真实客户端、模型或原业务测试；人工复核仅在 Agent 评估中心界面完成。
+description: 对明确选区的 Pi 任务做证据诊断、耗时与费用核对，查看或重评封存报告，包括人工导入的离线 ATIF 轨迹。可核对数据空间入库数量、项目归属和报告索引；可显式运行已登记的固定离线假 CLI；不会启动真实客户端、模型或原业务测试；人工复核仅在 Agent 评估中心界面完成。
 metadata:
   display-name: Agent 评估中心
   description-zh: 对任务选区做只读证据诊断，保留来源、未知项和人工复核。
@@ -31,3 +31,11 @@ F01 仅验证存在/格式/明确 schema/摘要，不能证明全部语义正确
 `list(kind:"offlineAttempts")` 查询当前授权来源的持久尝试修订，列表状态是保存时的值；`offlineStatus(ref)`才查询当前状态并追加实际观察修订。重启/刷新后只查询原尝试，不重放start；unknown/interrupted要显式`offlineReconcile`，仍未知则保留句柄及占用门禁。`offlineCancel` 请求取消，stopConfirmed:false不当停止成功；waiting-input仅目标自报，无交互答复通道，按原超时或显式取消收尾，不自动补输入。`offlineSeal`仅在停止确认后冻结完整约定产物（含新增、删除、未跟踪和.ignored），并在独立受限进程执行固定可信数据核验，封存原日志、清单、摘要与核验结果；`offlineCleanup`先封存再释放占用，失败保留证据。之后可用原`evaluate`对snapshot评分，F09消费匹配冻结产物的offline-json@1结果；产物fail与verifier error分别记录，错误时未知。拒绝链接、特殊文件与超限产物；只检查固定JSON数据，不执行产物代码。旧登记无产物能力时保留缺口与目标未知。核验启动后控制端崩溃不自动重发。评分cancel/status与offlineCancel/offlineStatus不是同一作业。
 
 产品页在Pi报告详情点击“固定离线诊断”；记录页“查找离线尝试”可回到已保存尝试。只读、计划/委派/目标审查、受限预设、插件/工具禁用会拒绝执行控制；禁用/重载会保存取消请求，不自动恢复启动。环境停止、exit0、最终文本都不代表业务成功；当前无产物采集/独立验证器，不宣称EC06完整验收或支持任意CLI。
+
+## 数据空间专项诊断（EC09）
+
+`dataSpaceDescribe` 只列当前授权工作区已配置的项目/环境及原生批次；`dataSpaceObserve(data:{projectRef,environmentRef,engine,assetRef,runRef?})` 只读核对身份关系、真实入库回执和有效回查。稳定引用不得按名称、目录或 URL 猜测。项目改名不换 ID，环境修订不匹配须重新选择；来源删除/停用时显示不可用，普通诊断仍可继续。
+
+`collect` 的 `dataSpaceRefs` 最多 5 项，逐项采用上述显式引用，保存观察时点与批次身份；F03 的冻结 checks 包含 conditionId、spaceId、projectId、environmentId、environmentRevision、batchRevision、batchIdentity 和明确 nativeCaseIds（1–100项）。F03只核验观察时点的所选集合，不证明任务结束时已经入库，也不推定集合外的业务预期。没有匹配的可信回执/回查即未知；Agent成功声明不替代证据。界面从报告详情的“数据空间专项诊断”读取批次，用户确认条件后冻结新契约与新报告；原报告保留。F07沿用原重复调用候选规则。
+
+`syncProjectReport(ref:evaluationRef,data:{projectRef})` 仅在明确要求同步时调用。独立权限 `tools:evaluation-index-write` 只允许报告ID、摘要与项目引用的索引写入，不授予用例、环境或原生结果写入权限；只读/计划/委派/审查模式及停用状态拒绝写入。`projectReportStatus` 只读查询原索引，返回 pending/failed/synced与回执；来源不可用保留错误。成功回执丢失或重启先查询，原 requestId 重试只对账；确认 missing 后若需再次提交索引，使用新的明确请求。重评及索引重试不导入用例、不执行 Agent/测试、不调用模型、不覆盖原生结果。数据空间私有文件仅由其原实现维护。

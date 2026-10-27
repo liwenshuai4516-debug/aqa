@@ -492,3 +492,5 @@ EC06 产品离线入口（0.4.35）：`plugins/agent-evaluation/client/offline.m
 EC07：`server/external-evaluation-artifacts.ts` 管理完整约定产物与删除/摘要；`server/external-evaluation-verifier.ts` 只运行登记的独立数据检查，拒绝不完整快照；`plugins/agent-evaluation/evaluators/verification.mjs` 为 F09。`tests/agent-evaluation-verification-recovery-test.mjs` 与原桌面执行夹具验证持久核验和正反例，详见 [记录](agent-evaluation-evidence/EC07.md)。
 
 EC04 性能标准：`tests/fixtures/agent-evaluation/performance-policy.mjs` 只用于固定批量采集验收，版本 `ec04-batch-v2`；`tests/agent-evaluation-performance-test.mjs` 同时保存现行/旧参考线和完整性、RSS、落盘结果，`tests/unit/agent-evaluation-performance-policy.test.ts` 覆盖边界与无效/缺失证据拒绝。依据见 [评审](agent-evaluation-evidence/EC04-performance-gate-review.md)，不改变产品采集代码。
+
+EC09：`server/evaluation-data-space.ts`为私有受控桥类型；`plugins/data-space/evaluation.mjs`为关系/索引事实源；`plugins/agent-evaluation/evaluators/data-space.mjs`、`project-sync.mjs`、`client/data-space.mjs`分别负责F03、同步账本和表单；测试夹具`tests/fixtures/agent-evaluation/data-space{,-desktop}.mjs`提供75条隔离入库与真实Electron验收，原入口加`--data-space`。详见[EC09](agent-evaluation-evidence/EC09.md)。

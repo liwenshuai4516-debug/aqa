@@ -53,7 +53,7 @@ export class EvidenceCollector {
 		this.closed = false;
 	}
 	/** @param {any} context
-	 * @param {{attemptRef: any, conversationId: string, requestId: string, nativeRefs?: Array<{engine: string, reference: unknown}>, artifactPaths?: string[], liveEvents?: any[], liveTruncated?: boolean, signal?: AbortSignal}} options */
+	 * @param {{attemptRef: any, conversationId: string, requestId: string, dataSpaceRefs?: any[], nativeRefs?: Array<{engine: string, reference: unknown}>, artifactPaths?: string[], liveEvents?: any[], liveTruncated?: boolean, signal?: AbortSignal}} options */
 	async collect(
 		context,
 		{
@@ -61,6 +61,7 @@ export class EvidenceCollector {
 			conversationId,
 			requestId,
 			nativeRefs = [],
+			dataSpaceRefs = [],
 			artifactPaths = [],
 			liveEvents = [],
 			liveTruncated = false,
@@ -82,6 +83,11 @@ export class EvidenceCollector {
 			"INVALID_INPUT",
 			"Invalid collection request ID",
 		);
+		requireValue(
+			Array.isArray(dataSpaceRefs) && dataSpaceRefs.length <= 5,
+			"LIMIT_EXCEEDED",
+			"Too many Data Space references",
+		);
 		requireValue(Array.isArray(nativeRefs) && nativeRefs.length <= 20, "LIMIT_EXCEEDED", "Too many native references");
 		requireValue(liveEvents.length <= 1000, "LIMIT_EXCEEDED", "Too many live observations");
 		requireValue(
@@ -97,7 +103,15 @@ export class EvidenceCollector {
 			"Pi collection cannot attach SDK evidence to an external execution",
 		);
 		const checkpointSource = `collection:${attempt.id}`;
-		const requestDigest = digest({ attemptRef, conversationId, nativeRefs, artifactPaths, liveEvents, liveTruncated });
+		const requestDigest = digest({
+			attemptRef,
+			conversationId,
+			nativeRefs,
+			artifactPaths,
+			liveEvents,
+			liveTruncated,
+			...(dataSpaceRefs.length ? { dataSpaceRefs } : {}),
+		});
 		const prior = store.lookupRequest(context, `checkpoint-${digest([attempt.id, requestId])}`);
 		if (prior) {
 			const body = readEvidenceJson(store, context, refOf(prior));
@@ -399,6 +413,38 @@ export class EvidenceCollector {
 				gaps.push(`live-start-not-observed:${r.data.sourceId}:${value.toolCallId}`);
 		}
 		requireValue(evidence.length < store.limits.snapshotItems, "LIMIT_EXCEEDED", "Snapshot evidence budget reached");
+		for (const query of dataSpaceRefs) {
+			try {
+				requireValue(
+					typeof this.host.evaluationDataSpace === "function",
+					"CAPABILITY_UNAVAILABLE",
+					"Data Space read interface unavailable",
+				);
+				const value = await this.host.evaluationDataSpace(
+					{ clientId: context.clientId, conversationId, sessionId: contract.data.scope.sessionId },
+					{ ...query, action: "observe" },
+				);
+				signal?.throwIfAborted();
+				remember({
+					attemptRef,
+					sourceId: `data-space:${value.projectRef.spaceId}`,
+					sourceEventId: digest(query),
+					sourceLocator: `data-space:${value.projectRef.projectId}:${value.environmentRef.environmentId}`,
+					sourceRevision: digest(value),
+					producer: "data-space-reader-v1",
+					availability: "available",
+					origin: "harness-observed",
+					kind: "data-space-observation",
+					observedAt: value.observedAt,
+					content: JSON.stringify(value),
+					redaction: [],
+					truncated: false,
+				});
+			} catch (error) {
+				if (signal?.aborted) throw error;
+				gaps.push(`data-space-unavailable:${error.code ?? "EVIDENCE_GAP"}`);
+			}
+		}
 		const paired = pairGaps(store.getMany(context, evidence), store);
 		gaps.push(...paired);
 		const result = {

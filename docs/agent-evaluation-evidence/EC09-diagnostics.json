@@ -1,0 +1,430 @@
+{
+	"scope": "EC09/AC32–AC33 internal diagnostics and actual macOS arm64 Electron delivery; not whole M1 or all-platform acceptance",
+	"date": "2026-10-27",
+	"baselineCommit": "80386d85c946bb79a09d3451ef76e564c534a789",
+	"branch": "codex/agent-evaluation",
+	"versions": {
+		"agent-evaluation": "0.4.37",
+		"data-space": "0.16.1",
+		"node": "v23.10.0"
+	},
+	"status": "PASS within documented scope; EC09 delivered",
+	"environment": "Actual development Electron, isolated dataDir/agentDir and own 75-case native UI asset fixture; no personal credentials or business data",
+	"actualModelCalls": 0,
+	"actualCliCalls": 0,
+	"nativeBusinessTestExecutions": 0,
+	"prerequisiteAudit": {
+		"scope": "Necessary EC02/EC03/EC04 subset is met; historical evidence retains original version/date and is not counted as new-version full-matrix execution",
+		"performance": "ec04-batch-v2 reviewed and already passed before EC09; same thresholds reverified this run",
+		"references": [
+			"EC02.md",
+			"EC03.md",
+			"EC04-native-access-diagnostics.json",
+			"EC04-native-principal-diagnostics.json",
+			"EC04-tool-channel-diagnostics.json",
+			"EC04-crash-store-diagnostics.json",
+			"EC04-crash-report-diagnostics.json",
+			"EC04-collection-fault-diagnostics.json",
+			"EC04-performance-gate-review.md"
+		],
+		"notDependencies": [
+			"EC08",
+			"WaterMate GUI/CLI authentication",
+			"second client",
+			"other platforms",
+			"supplier billing",
+			"high-frequency live watch"
+		]
+	},
+	"actualDesktop": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-verified/result.json",
+			"bytes": 7218,
+			"sha256": "b12277843b4457c173228a0b9fc308b24f79f9e36c702f42e694f73b8d481c55"
+		},
+		"log": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-verified/app.log",
+			"bytes": 332,
+			"sha256": "6e57d5656bb59bb309abb1f1c64481615635b97d424b4303ecd845a02e7831ce"
+		},
+		"flags": ["--data-space"],
+		"checks": [
+			"Real app loads plugin 0.4.37 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+			"Skill, slash completion and agent_evaluation tool appear in actual desktop management",
+			"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.37; skill, slash discovery and tool registration remain enabled",
+			"Actual desktop switches between sealed file text and original evidence, retaining keyboard focus",
+			"Actual desktop select/create/collect/seal/score, evidence paging, append human review and retain original verdict",
+			"Actual Electron blob download reopens as a valid redacted export, including separate review and verifiable manifest",
+			"Actual desktop re-scoring preserves the exact frozen snapshot/configuration and creates no attempt; revision keeps the selection and old reports/reviews, re-observes changed fixture bytes, and leaves added semantic requirements inconclusive",
+			"Actual desktop observation starts from the fixed selection, returns a durable checkpoint, checks status, stops, scores a new snapshot with the original configuration and dismisses without changing the old report or executing a business task",
+			"Actual desktop configuration edits F01 structure and F07 polling through forms, retains malformed input without a report, then scores the original sealed snapshot with new persisted configs and no collection, attempt or snapshot; old report bytes remain unchanged",
+			"Actual desktop adds an installed rule binding in a new contract revision, keeps it inconclusive without configuration, then configures a matching artifact check on that sealed snapshot; the old contract/report remain unchanged and no task runs",
+			"Chinese/English live labels and narrow layout fit verified; screenshots retained for visual inspection",
+			"Actual light theme stylesheet loads; report remains readable with inherited foreground/background tokens",
+			"Plugin disabled state survives page reload and gates the owned skill; re-enable restores the skill",
+			"Actual Electron uploads a >128 KiB inert ATIF fixture in bounded chunks, rejects malformed input, separates child selection, requires human source/condition confirmation and uses the existing provisional report with private original paging",
+			"An actual secondary renderer with the same preload and service origin cannot obtain the main window native identity",
+			"Graceful real Electron exit and a second native process load plugin 0.4.37 and preserve enabled skill/plugin registration",
+			"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",
+			"After full native restart, sealed file view retains original bytes despite later workspace changes",
+			"Full native exit/restart restores the owned desktop client identity and reopens the original immutable report, review and evidence after explicit source authorization",
+			"Actual desktop resolves a sealed SDK evidence entry to the exact visible source message after restart, highlights it, refuses a foreign target and creates no report/attempt/snapshot",
+			"A second real native process reopens the offline report and pages the exact private original without creating records or executing the trajectory",
+			"A real renderer under development URL override receives no native client identity and cannot replace the persisted ID; probe-only, not override UI acceptance"
+		],
+		"dataSpace": {
+			"status": "PASS",
+			"cases": 75,
+			"indexCount": 2,
+			"duplicateIndexCount": 1,
+			"projectRenamed": true,
+			"writeDeniedAndRecovered": true,
+			"planWriteDenied": true,
+			"businessUnchanged": true,
+			"modelCalls": 0,
+			"testExecutions": 0,
+			"index": {
+				"key": "c1d9f2788642220778743e33112a0a0b20ca32b40dd28454a61be789565219ab",
+				"evaluationId": "99bd58d9-44ab-4afa-9755-8dce29f8feb2",
+				"projectRef": {
+					"spaceId": "84b714cd-6673-4843-a952-25318a46ad88",
+					"projectId": "ec09-project"
+				},
+				"reportDigest": "0c68a2aa7e29127dbd685a0330c1b4b14e2dcff6731173c05579c33b7b196308",
+				"syncedAt": "2026-10-27T07:21:25.947Z"
+			},
+			"restartReceiptVerified": true
+		},
+		"receipts": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-verified/data-space-receipts.json",
+			"bytes": 57499,
+			"sha256": "8d6deb06b6d61291215d187142442f775334993862fddfd63afd4ecef9c49698"
+		}
+	},
+	"acceptance": {
+		"AC32": {
+			"status": "PASS within stated scope",
+			"desktop": [
+				"75 first/repeated original intakes",
+				"F03 pass for all 75",
+				"re-score and index retries do not change business bytes before intentional rename"
+			],
+			"unit": [
+				"50/75 partial failure",
+				"wrong project ownership",
+				"receipt loss/restart readback",
+				"missing trusted readback",
+				"target self-report cannot pass",
+				"old environment/batch revisions and foreign batch identity stay unknown"
+			]
+		},
+		"AC33": {
+			"status": "PASS within stated scope",
+			"desktop": [
+				"Data Space disabled rejects specialized query while ordinary re-score works",
+				"re-enable and full native restart",
+				"duplicate same-report index stays one",
+				"second report gets distinct second index",
+				"actual EACCES preserves previous index",
+				"plan-mode write denial and readonly status success",
+				"explicit retry after permission restored",
+				"real original API project rename retains projectRef/cases/environments"
+			],
+			"unit": [
+				"committed index receipt loss/reconciliation without rewrite",
+				"new explicit retry only after confirmed missing",
+				"source project deletion rejection",
+				"corrupt/unknown index preserves bytes",
+				"different digest conflict",
+				"read query does not append local ledger",
+				"bound tool and selection/permission changes rejected",
+				"same-report service concurrency serialized"
+			]
+		}
+	},
+	"performance": {
+		"collection": {
+			"status": "PASS",
+			"policyId": "ec04-batch-v2",
+			"legacyStatus": "FAIL",
+			"comparisons": [
+				{
+					"workload": "serial",
+					"policyId": "ec04-batch-v2",
+					"wallDelta": 45.247625,
+					"wallLimit": 100,
+					"cpuDelta": 37.737,
+					"cpuLimit": 100,
+					"rssDeltas": [6029312, 7077888, 4177920, 4653056, 4112384],
+					"pairsComplete": true,
+					"telemetryValid": true,
+					"coverageComplete": true,
+					"resourcePass": true,
+					"legacyWallLimit": 50,
+					"legacyCpuLimit": 50,
+					"legacyPass": true,
+					"pass": true
+				},
+				{
+					"workload": "parallel",
+					"policyId": "ec04-batch-v2",
+					"wallDelta": 97.72387499999999,
+					"wallLimit": 250,
+					"cpuDelta": 108.518,
+					"cpuLimit": 250,
+					"rssDeltas": [24985600, 25657344, 24084480, 23543808, 22462464],
+					"pairsComplete": true,
+					"telemetryValid": true,
+					"coverageComplete": true,
+					"resourcePass": true,
+					"legacyWallLimit": 50,
+					"legacyCpuLimit": 50,
+					"legacyPass": false,
+					"pass": true
+				},
+				{
+					"workload": "long",
+					"policyId": "ec04-batch-v2",
+					"wallDelta": 442.54925000000003,
+					"wallLimit": 1000,
+					"cpuDelta": 385.955,
+					"cpuLimit": 750,
+					"rssDeltas": [58179584, 54034432, 58130432, 57704448, 58720256],
+					"pairsComplete": true,
+					"telemetryValid": true,
+					"coverageComplete": true,
+					"resourcePass": true,
+					"legacyWallLimit": 50,
+					"legacyCpuLimit": 50,
+					"legacyPass": false,
+					"pass": true
+				}
+			],
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/performance/agent-evaluation-performance-mml9GM/result.json",
+				"bytes": 9361,
+				"sha256": "500c4775c2577eea6aa504d4173a799dbb668fa301ebdd55c82f7a8f0a61f543"
+			},
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/checks/ec09-collection-performance.log",
+				"bytes": 1113,
+				"sha256": "8f3083e875630eaed3ce4e9951ddc688c72341877ac540d6a78835260792c2e5"
+			}
+		},
+		"report": {
+			"status": "PASS",
+			"checks": {
+				"reportsCompleted": true,
+				"reportMedianMs": 506.849292,
+				"listMedianMs": 4.187666999999919,
+				"evidenceMedianMs": 0.37225000000034925
+			},
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/performance/agent-evaluation-report-performance-8X3nlL/result.json",
+				"bytes": 1712,
+				"sha256": "5c497b9500409c68bdc2c9603092739e6645dcc0a28dd4f1ccdc3a9b1907fc1b"
+			},
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/checks/ec09-report-performance.log",
+				"bytes": 1713,
+				"sha256": "96146ad311eaff3285f6a4f56cad2d2b2b6221f97cd7acba7cc5307290de294d"
+			}
+		},
+		"thresholdChangesThisRun": false,
+		"measurement": "Serial collection then report test, after desktop/build/unit processes ended; fixture construction excluded; not live runtime overhead"
+	},
+	"validation": {
+		"unit": {
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/checks/ec09-unit-verified.log",
+				"bytes": 230,
+				"sha256": "ae1063b07a35f4cd94f6d40b7f90a31c75c61857187b4968a4857039fc8c2fb5"
+			},
+			"files": 12,
+			"tests": 195,
+			"skipped": 0
+		},
+		"typecheck": {
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/checks/ec09-typecheck-verified.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			},
+			"configs": 5
+		},
+		"lint": {
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/checks/ec09-lint-verified.log",
+				"bytes": 88,
+				"sha256": "9c4dd2c25dd58c97bf304501958d5d5ef22c088b9d1d7943c601261550718223"
+			}
+		},
+		"protocol": {
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/checks/ec09-protocol-verified.log",
+				"bytes": 360,
+				"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60"
+			},
+			"historicalTagHeuristic": "SKIP: no available tag; type-only and v33 checks PASS"
+		},
+		"size": {
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/checks/ec09-size-verified.log",
+				"bytes": 1089,
+				"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164"
+			}
+		},
+		"format": {
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/checks/ec09-format-verified.log",
+				"bytes": 66,
+				"sha256": "17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+			}
+		},
+		"diff": {
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/checks/ec09-diff-check.log",
+				"bytes": 0,
+				"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+			}
+		},
+		"clean": {
+			"status": "preview only; zero items and zero deletions",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/checks/ec09-clean-final.log",
+				"bytes": 171,
+				"sha256": "b68ae2b33f0377645408e860c1ddb7042f71ab520ebf35ad358a8ba210b43ab5"
+			}
+		}
+	},
+	"registration": {
+		"status": "PASS",
+		"files": 67,
+		"bothPluginDirectoriesMatchRepository": true,
+		"sourceHashList": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/registration.json",
+			"bytes": 32171,
+			"sha256": "1506c7f3ef2655b7cc4016ed3b1bf127ea615b73303dfbe16e0bfaadb6041e7f"
+		},
+		"installation": "Explicit isolated actual Electron dataDir plugin symlinks; no overwrite of personal installation"
+	},
+	"screenshots": {
+		"data-space-synced-en.png": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-verified/data-space-synced-en.png",
+			"bytes": 42273,
+			"sha256": "2937ba3307683b2cb6139f21a238f0133fba8e4a1edeadac128668a45b699912"
+		},
+		"data-space-synced-zh-narrow.png": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-verified/data-space-synced-zh-narrow.png",
+			"bytes": 43999,
+			"sha256": "c3a5b09ebf2622e08cfef709e44a80c935cdb11bc1009bbf7f325fc9c3b56f44"
+		},
+		"data-space-write-failed.png": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-verified/data-space-write-failed.png",
+			"bytes": 42838,
+			"sha256": "d337f9379909af96e6d8fe006b6ee9c461dc34e5f41142cbce4a75cbe158fcc0"
+		}
+	},
+	"visualInspection": {
+		"performed": true,
+		"scope": "English success, Chinese 800px window, real filesystem-denied synchronization; complete new-panel captures, no horizontal overflow; not full accessibility/mobile certification"
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/index.json",
+		"files": 1443,
+		"sha256": "99f11beaf0a342ef680d795456aeea9142a093e7179c8c9c2a54c8b277409f80",
+		"registrationFiles": 67,
+		"totalBytes": 40205674,
+		"indexBytes": 607677
+	},
+	"failedRunsRetained": [
+		{
+			"raw": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-final/result.json",
+			"status": "PASS",
+			"stage": "development URL cannot acquire the native identity",
+			"error": null
+		},
+		{
+			"raw": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-run-10/result.json",
+			"status": "PASS",
+			"stage": "development URL cannot acquire the native identity",
+			"error": null
+		},
+		{
+			"raw": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-run-3/result.json",
+			"status": "FAIL",
+			"stage": "new rule binding remains unknown until checks are configured",
+			"error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  [\n    '',\n    'F01@1',\n    'F02@1',\n    'F04@1',\n...\n    'F09@1',\n+   'F03@1'\n  ]\n\n    at file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:703:9"
+		},
+		{
+			"raw": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-run-4/result.json",
+			"status": "FAIL",
+			"stage": "EC09 real Data Space selection, F03 and report index",
+			"error": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Pass/. Input:\n\n'F03 · F03@1:1\\n' +\n  'InconclusiveEvidence unavailable\\n' +\n  '\\n' +\n  'Reason · F03: no frozen checks selected\\n' +\n  '\\n' +\n  'Missing evidence / next steps · condition-configuration-required\\n' +\n  '\\n' +\n  'No locatable evidence for this finding; it cannot establish a pass.\\n' +\n  '\\n' +\n  'Human reviews\\n' +\n  'Inspect structured configuration / metrics'\n\n    at verifyDataSpace (file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/fixtures/agent-evaluation/data-space-desktop.mjs:108:9)\n    at async file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:907:22"
+		},
+		{
+			"raw": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-run-5/result.json",
+			"status": "FAIL",
+			"stage": "EC09 real Data Space selection, F03 and report index",
+			"error": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.aev [data-form=\"data-space-score\"]') to be hidden\u001b[22m\n\u001b[2m    63 × locator resolved to visible <form data-form=\"data-space-score\">…</form>\u001b[22m\n\n    at verifyDataSpace (/Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/fixtures/agent-evaluation/data-space-desktop.mjs:102:60)\n    at async file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:907:22"
+		},
+		{
+			"raw": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-run-6/result.json",
+			"status": "FAIL",
+			"stage": "settings opened before cold-start settings arrive",
+			"error": "AssertionError [ERR_ASSERTION]: {\"requestId\":\"336faf8b-d89c-4c7c-b46e-9d6cd6fcc637\",\"ok\":false,\"error\":{\"code\":\"PERMISSION_DENIED\",\"stage\":\"projectReportStatus\",\"retryable\":false,\"missingConditions\":[],\"message\":\"Session selection is not authorized\"}}\n\nfalse !== true\n\n    at reopenDataSpace (file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/fixtures/agent-evaluation/data-space-desktop.mjs:191:9)\n    at async file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:1032:3"
+		},
+		{
+			"raw": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-run-7/result.json",
+			"status": "PASS",
+			"stage": "development URL cannot acquire the native identity",
+			"error": null
+		},
+		{
+			"raw": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-run-8/result.json",
+			"status": "FAIL",
+			"stage": "EC09 real Data Space selection, F03 and report index",
+			"error": "Error: Timeout at EC09 real Data Space selection, F03 and report index\n    at until (file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:232:8)\n    at async verifyDataSpace (file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/fixtures/agent-evaluation/data-space-desktop.mjs:150:2)\n    at async file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:907:22"
+		},
+		{
+			"raw": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-run-9/result.json",
+			"status": "FAIL",
+			"stage": "EC09 real Data Space selection, F03 and report index",
+			"error": "Error: Timeout at EC09 real Data Space selection, F03 and report index\n    at until (file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:232:8)\n    at async verifyDataSpace (file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/fixtures/agent-evaluation/data-space-desktop.mjs:201:2)\n    at async file:///Users/liyingjun/.codex/worktrees/agent-evaluation/15-aqa/tests/agent-evaluation-desktop-test.mjs:907:22"
+		},
+		{
+			"raw": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec09/files/desktop-runs/ec09-desktop-verified/result.json",
+			"status": "PASS",
+			"stage": "development URL cannot acquire the native identity",
+			"error": null
+		}
+	],
+	"otherFailuresRetained": [
+		"Initial TypeScript strip-only fixture import failure",
+		"initial repeated assertion IDs",
+		"rule-list expectation missing F03",
+		"old-report and session-selection timing",
+		"contract revision invocation then replacement by explicitly derived new frozen contract",
+		"initial TS7006 test annotation",
+		"Scoring failed used for index failure, replaced with specialized synchronization label"
+	],
+	"limits": [
+		"Single application owns each isolated dataDir; no cross-process shared-store transaction claim",
+		"Environment revision uses id/project/name/baseUrl and original updatedAt save-version; external edits that bypass that contract are outside this guarantee",
+		"F03 proves selected case set at observedAt only, not historical task completion or business semantic success",
+		"At most 100 explicit cases per observation, at most 48 KiB bridge reply; over-budget is rejected, not truncated into a pass",
+		"75 cases and P0/P1 proportions are fixtures, not rule constants",
+		"Source deletion covered by unit integration; rename and stop/restart covered by actual Electron",
+		"No other-platform, physical ENOSPC/power loss or complete new-version M1 matrix execution",
+		"EC08 actual client authorization/GUI boundary is unchanged; EC10/EC11 not executed",
+		"Archive excludes auth/models/settings/secrets/browser cache/dependencies; not full userData backup"
+	]
+}

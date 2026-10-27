@@ -1,3 +1,5 @@
+import { verifyPluginInvocation } from "./mcp/plugin-mcp.js";
+import type { DataSpaceEvaluationProvider } from "./evaluation-data-space.js";
 import { OfflineEvaluationPort, type OfflineExecutionBinding } from "./external-evaluation-port.js";
 import type { ExecutionStore } from "./external-evaluation-execution.js";
 import { TestAssetReader, type TestEngine } from "./test-asset-reader.js";
@@ -432,6 +434,10 @@ export interface PluginHost {
 	readEvaluationEvidence(clientId: string, query: AgentEvaluationEvidenceQuery): AgentEvaluationEvidencePage;
 	/** Fixed offline backend only; requires tools:offline-execution and an engine execution guard. */
 	createOfflineEvaluationExecution(store: ExecutionStore): OfflineEvaluationPort;
+	/** Fixed provider registration, accepted only from the Data Space plugin. */
+	registerEvaluationDataSpace(provider: DataSpaceEvaluationProvider): () => void;
+	/** Selected-source reads; index writes additionally require tools:evaluation-index-write and the execution guard. */
+	evaluationDataSpace(binding: OfflineExecutionBinding, request: Record<string, unknown>): Promise<unknown>;
 	readEvaluationArtifact(clientId: string, query: AgentEvaluationArtifactQuery): AgentEvaluationArtifactSnapshot;
 	readEvaluationNative(
 		clientId: string,
@@ -2349,6 +2355,8 @@ export class PluginManager {
 	conversationProvider: ((options?: PluginConversationQuery) => PluginConversationSnapshot | null) | undefined =
 		undefined;
 	/** Execution-side source/mode/settings guard. Missing engines fail closed. */
+	evaluationDataSpaceGuard: ((binding: OfflineExecutionBinding) => void) | undefined;
+	private evaluationDataSpaceProvider: DataSpaceEvaluationProvider | undefined;
 	evaluationExecutionGuard: ((binding: OfflineExecutionBinding) => void) | undefined;
 	evaluationEvidenceProvider:
 		((clientId: string, query: AgentEvaluationEvidenceQuery) => AgentEvaluationEvidencePage) | undefined = undefined;
@@ -3905,6 +3913,79 @@ export class PluginManager {
 				if (!self.evaluationEvidenceProvider)
 					throw new EvidenceReadError("CAPABILITY_UNAVAILABLE", "This engine has no evaluation evidence provider");
 				return self.evaluationEvidenceProvider(clientId, query);
+			},
+			registerEvaluationDataSpace: (provider) => {
+				if (info.id !== "data-space" || !can("tools") || typeof provider !== "function")
+					throw new EvidenceReadError("PERMISSION_DENIED", "Only Data Space can register its evaluation interface");
+				if (self.evaluationDataSpaceProvider) throw new Error("Data Space evaluation provider already registered");
+				self.evaluationDataSpaceProvider = provider;
+				return effects.add("evaluationDataSpace", () => {
+					if (self.evaluationDataSpaceProvider === provider) self.evaluationDataSpaceProvider = undefined;
+				});
+			},
+			evaluationDataSpace: async (binding, request) => {
+				request = structuredClone(request);
+				const provider = self.evaluationDataSpaceProvider;
+				const source = host.readEvaluationEvidence(binding.clientId, {
+					conversationId: binding.conversationId,
+					mode: "describe",
+					limit: 1,
+				});
+				const write = ["syncIndex", "authorizeIndex"].includes(String(request.action));
+				const verify = () => {
+					if (
+						info.id !== "agent-evaluation" ||
+						!can("tools") ||
+						!self.canUse("data-space", "tools") ||
+						!provider ||
+						self.evaluationDataSpaceProvider !== provider
+					)
+						throw new EvidenceReadError("CAPABILITY_UNAVAILABLE", "Data Space evaluation interface unavailable");
+					if (!["describe", "observe", "indexStatus", "syncIndex", "authorizeIndex"].includes(String(request.action)))
+						throw new EvidenceReadError("PERMISSION_DENIED", "Unsupported Data Space evaluation operation");
+					if (!self.evaluationDataSpaceGuard)
+						throw new EvidenceReadError("CAPABILITY_UNAVAILABLE", "This engine has no Data Space access guard");
+					self.evaluationDataSpaceGuard(binding);
+					const fresh = host.readEvaluationEvidence(binding.clientId, {
+						conversationId: binding.conversationId,
+						mode: "describe",
+						limit: 1,
+					});
+					if (
+						fresh.principalId !== binding.clientId ||
+						fresh.sessionId !== binding.sessionId ||
+						fresh.workspaceId !== source.workspaceId
+					)
+						throw new EvidenceReadError("PERMISSION_DENIED", "Data Space source selection changed");
+					if (write) {
+						if (!permsDeclared.includes("tools:evaluation-index-write"))
+							throw new EvidenceReadError("PERMISSION_DENIED", "Separate evaluation report index permission required");
+						if (!self.evaluationExecutionGuard)
+							throw new EvidenceReadError("CAPABILITY_UNAVAILABLE", "This engine has no evaluation write guard");
+						self.evaluationExecutionGuard(binding);
+						if (binding.invocation) {
+							if (
+								binding.invocation.clientId !== binding.clientId ||
+								binding.invocation.conversationId !== binding.conversationId ||
+								binding.invocation.toolName !== "agent_evaluation" ||
+								binding.invocation.cwd !== source.workspace
+							)
+								throw new EvidenceReadError("PERMISSION_DENIED", "Invalid bound evaluation invocation");
+							verifyPluginInvocation("agent-evaluation", binding.invocation);
+						}
+					}
+				};
+				verify();
+				if (request.action === "authorizeIndex") return { authorized: true };
+				const result = await provider!(
+					request,
+					{ principalId: source.principalId, workspaceId: source.workspaceId, workspace: source.workspace },
+					verify,
+				);
+				verify();
+				if (Buffer.byteLength(JSON.stringify(result)) > 48 * 1024)
+					throw new EvidenceReadError("LIMIT_EXCEEDED", "Data Space observation exceeds response budget");
+				return result;
 			},
 			createOfflineEvaluationExecution: (store) => {
 				const verify = (binding: OfflineExecutionBinding) => {

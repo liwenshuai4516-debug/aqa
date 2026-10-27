@@ -1,3 +1,4 @@
+import { recordsOf } from "../../plugins/agent-evaluation/collect.mjs";
 import { createHash } from "node:crypto";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync, existsSync, readFileSync } from "node:fs";
@@ -1311,4 +1312,51 @@ describe("EC05 offline service", () => {
 			code: "PERMISSION_DENIED",
 		});
 	});
+});
+
+describe("EC09 optional Data Space collection", () => {
+	it("keeps ordinary diagnosis usable without Data Space and seals an explicit unavailable gap", async () => {
+		const f = fixture(),
+			scored = await diagnose(f);
+		await expect(f.request("dataSpaceDescribe")).rejects.toMatchObject({ code: "CAPABILITY_UNAVAILABLE" });
+		const collected = await f.request("collect", {
+			ref: scored.attemptRef,
+			requestId: "ds-gap",
+			dataSpaceRefs: [{ projectRef: { spaceId: "absent", projectId: "p" } }],
+		});
+		const snapshotRef = await f.request("seal", { ref: collected.checkpointRef });
+		const snapshot = await f.request("get", { ref: snapshotRef });
+		expect(snapshot.data.gaps).toContain("data-space-unavailable:CAPABILITY_UNAVAILABLE");
+		expect((await f.request("get", { ref: scored.reportRef })).data.summary).toEqual(scored.report.data.summary);
+	});
+});
+
+it("serializes concurrent report-index requests and rejects substituted report/project identities", async () => {
+	const { dataSpaceFixture } = await import("../fixtures/agent-evaluation/data-space.mjs");
+	const ds = await dataSpaceFixture();
+	cleanup.push(ds.cleanup);
+	const f = fixture(),
+		scored = await diagnose(f);
+	let writes = 0;
+	f.host.evaluationDataSpace = async (_binding: any, q: any) => {
+		if (q.action === "authorizeIndex") return { authorized: true };
+		if (q.action === "syncIndex") writes++;
+		return ds.call(q);
+	};
+	const input = { ref: scored.reportRef, data: { projectRef: ds.query.projectRef } };
+	const results = await Promise.all([f.request("syncProjectReport", input), f.request("syncProjectReport", input)]);
+	expect(results.map((r: any) => r.status)).toEqual(["synced", "synced"]);
+	expect(results[0].receipt.key).toBe(results[1].receipt.key);
+	expect(writes).toBe(1);
+	await expect(f.request("syncProjectReport", { ...input, ref: scored.contractRef })).rejects.toMatchObject({
+		code: "INVALID_INPUT",
+	});
+	await expect(
+		f.request("syncProjectReport", { ...input, data: { projectRef: { ...ds.query.projectRef, owner: "forged" } } }),
+	).rejects.toMatchObject({ code: "INVALID_INPUT" });
+	const before = recordsOf(f.service.store!, f.service.authorize(f.ui, { action: "get" }).context, "evidence").length;
+	expect(await f.request("projectReportStatus", input)).toMatchObject({ status: "synced" });
+	expect(recordsOf(f.service.store!, f.service.authorize(f.ui, { action: "get" }).context, "evidence")).toHaveLength(
+		before,
+	);
 });

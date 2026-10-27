@@ -1,3 +1,4 @@
+import { syncProjectReport } from "./project-sync.mjs";
 /** Product operations over the existing store/collector/engine. Identities are supplied by transport code. */
 import { Type as T } from "typebox";
 import { Check } from "typebox/value";
@@ -13,6 +14,9 @@ const ref = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
 const string = T.String({ minLength: 1, maxLength: 16384 });
 export const queryActions = [
 	"describe",
+	"dataSpaceDescribe",
+	"dataSpaceObserve",
+	"projectReportStatus",
 	"list",
 	"get",
 	"readEvidence",
@@ -34,6 +38,7 @@ export const offlineActions = [
 export const toolActions = [
 	...offlineActions,
 	...queryActions,
+	"syncProjectReport",
 	"createContract",
 	"reviseContract",
 	"createAttempt",
@@ -75,6 +80,7 @@ export const requestSchema = T.Object(
 		cursor: T.Optional(T.String({ maxLength: 256 })),
 		offset: T.Optional(T.Integer({ minimum: 0 })),
 		limit: T.Optional(T.Integer({ minimum: 1, maximum: 100 })),
+		dataSpaceRefs: T.Optional(T.Array(T.Record(T.String(), T.Unknown()), { maxItems: 5 })),
 		artifactPaths: T.Optional(T.Array(string, { maxItems: 20, uniqueItems: true })),
 		nativeRefs: T.Optional(
 			T.Array(
@@ -128,6 +134,7 @@ export class EvaluationService {
 		this.pending = new Set();
 		this.controllers = new Map();
 		this.watches = new Map();
+		this.projectSync = new Map();
 		this.uploads = new AtifUploads();
 	}
 	initialize() {
@@ -245,6 +252,46 @@ export class EvaluationService {
 				...(previousRef ? { previousRef } : {}),
 			});
 		switch (request.action) {
+			case "dataSpaceObserve":
+			case "dataSpaceDescribe":
+				requireValue(
+					typeof this.host.evaluationDataSpace === "function",
+					"CAPABILITY_UNAVAILABLE",
+					"Data Space interface unavailable",
+				);
+				return this.host.evaluationDataSpace(
+					{ clientId: trusted.clientId, conversationId, sessionId: source.sessionId },
+					request.action === "dataSpaceObserve" ? { ...request.data, action: "observe" } : { action: "describe" },
+				);
+			case "projectReportStatus":
+			case "syncProjectReport": {
+				const key = digest([source.principalId, source.workspaceId, request.ref, request.data?.projectRef]);
+				const previous = this.projectSync.get(key) ?? Promise.resolve();
+				const pending = previous
+					.catch(() => {})
+					.then(() =>
+						syncProjectReport(
+							this,
+							context,
+							{
+								clientId: trusted.clientId,
+								conversationId,
+								sessionId: source.sessionId,
+								...(trusted.channel === "tool" ? { invocation: trusted.invocation } : {}),
+							},
+							request.ref,
+							request.data?.projectRef,
+							requestId,
+							request.action === "projectReportStatus",
+						),
+					);
+				this.projectSync.set(key, pending);
+				try {
+					return await pending;
+				} finally {
+					if (this.projectSync.get(key) === pending) this.projectSync.delete(key);
+				}
+			}
 			case "uploadStart":
 				return this.uploads.start(trusted.clientId, source, requestId, request.data);
 			case "uploadChunk":
@@ -784,6 +831,7 @@ export class EvaluationService {
 						requestId,
 						artifactPaths: request.artifactPaths ?? [],
 						nativeRefs: request.nativeRefs ?? [],
+						dataSpaceRefs: request.dataSpaceRefs ?? [],
 						signal: signal ? AbortSignal.any([signal, controller.signal]) : controller.signal,
 					});
 					return {

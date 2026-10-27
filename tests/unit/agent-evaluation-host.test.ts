@@ -1,6 +1,15 @@
 /** Isolated real SDK + PluginManager integration; no AgentSession prompt/model calls. */
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import {
+	cpSync,
+	mkdirSync,
+	mkdtempSync,
+	readFileSync,
+	realpathSync,
+	rmSync,
+	symlinkSync,
+	writeFileSync,
+} from "node:fs";
 import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { SessionManager } from "@earendil-works/pi-coding-agent";
@@ -16,8 +25,9 @@ afterEach(() => {
 	vi.restoreAllMocks();
 	for (const fn of cleanup.splice(0).reverse()) fn();
 	delete (globalThis as any).__evaluationFixture;
+	delete (globalThis as any).__dataSpaceFixture;
 });
-async function harness() {
+async function harness(dataSpace = false, grantIndex = true) {
 	const dir = mkdtempSync(join(tmpdir(), "evaluation-host-"));
 	cleanup.push(() => rmSync(dir, { recursive: true, force: true }));
 	const workspace = join(dir, "workspace");
@@ -39,7 +49,7 @@ async function harness() {
 	cpSync(resolve("plugins/agent-evaluation"), plugin, { recursive: true });
 	symlinkSync(resolve("node_modules"), join(dir, "node_modules"), "dir");
 	const manifest = JSON.parse(readFileSync(join(plugin, "manifest.json"), "utf8"));
-	manifest.permissions = ["tools"];
+	manifest.permissions = ["tools", ...(dataSpace && grantIndex ? ["tools:evaluation-index-write"] : [])];
 	// This host-reader probe deliberately has no UI; remove product contributions copied with the source.
 	manifest.view = false;
 	delete manifest.ui;
@@ -56,6 +66,22 @@ export default { activate(host) {
  return host.onMessage((payload,from)=>{try{state.last=host.readEvaluationEvidence(from,payload.query);}catch(error){state.error=error.code;}});
 }};`,
 	);
+	if (dataSpace) {
+		client.goalReviewTurnOf = () => undefined;
+		client.settingsSvc = { current: { defaultPermissionPreset: "default", disabledPlugins: [] } };
+		mgr.evaluationDataSpaceGuard = (b) => service.verifyEvaluationDataSpaceForPlugins(b.clientId, b.conversationId);
+		mgr.evaluationExecutionGuard = (b) => service.verifyEvaluationExecutionForPlugins(b.clientId, b.conversationId);
+		const ds = join(dir, "plugins/data-space");
+		mkdirSync(ds, { recursive: true });
+		writeFileSync(
+			join(ds, "manifest.json"),
+			JSON.stringify({ id: "data-space", name: "fixture", version: "1.0.0", apiVersion: 2, permissions: ["tools"] }),
+		);
+		writeFileSync(
+			join(ds, "index.mjs"),
+			`export default {activate(host){const state=globalThis.__dataSpaceFixture={calls:0}; return host.registerEvaluationDataSpace(async(q,b,verify)=>{state.calls++;state.binding=b; if(state.wait)await state.wait;verify();return {action:q.action};});}};`,
+		);
+	}
 	await mgr.ensureLoaded();
 	const fixture = (globalThis as any).__evaluationFixture;
 	expect(fixture?.host).toBeTruthy();
@@ -347,5 +373,62 @@ describe("EC02 host integration", () => {
 		expect(() => h.host.readEvaluationEvidence("client1", h.query)).toThrow(/no evaluation/);
 		h.mgr.dispose();
 		expect(() => h.host.readEvaluationEvidence("client1", h.query)).toThrow(/permission/);
+	});
+});
+
+describe("EC09 owner-bound Data Space bridge", () => {
+	it("binds the workspace and principal, enforces separate index permission and denies read-only/plan/disabled clients", async () => {
+		const h = await harness(true),
+			binding = { clientId: "client1", conversationId: "conv1", sessionId: h.query.sessionId! },
+			ds = (globalThis as any).__dataSpaceFixture;
+		expect(await h.host.evaluationDataSpace(binding, { action: "describe" })).toEqual({ action: "describe" });
+		expect(ds.binding).toMatchObject({ principalId: "client1", workspace: realpathSync(h.workspace) });
+		expect(await h.host.evaluationDataSpace(binding, { action: "authorizeIndex" })).toEqual({ authorized: true });
+		expect(ds.calls).toBe(1);
+		await expect(
+			h.host.evaluationDataSpace({ ...binding, clientId: "foreign" }, { action: "describe" }),
+		).rejects.toThrow();
+		await expect(
+			h.host.evaluationDataSpace({ ...binding, sessionId: "changed" }, { action: "describe" }),
+		).rejects.toThrow();
+		await expect(h.host.evaluationDataSpace(binding, { action: "import" })).rejects.toThrow(/Unsupported/);
+		const conv = h.client.convs.get("conv1");
+		for (const attrs of [{ planMode: true }, { delegateMode: true }, { permissionPreset: "read-only" }]) {
+			Object.assign(conv, attrs);
+			await expect(h.host.evaluationDataSpace(binding, { action: "authorizeIndex" })).rejects.toThrow(/disabled/);
+			Object.keys(attrs).forEach((k) => delete conv[k]);
+		}
+		h.client.settingsSvc.current.disabledPlugins = ["data-space"];
+		await expect(h.host.evaluationDataSpace(binding, { action: "describe" })).rejects.toThrow(/disabled/);
+		h.client.settingsSvc.current.disabledPlugins = [];
+		const reads = ds.calls;
+		await expect(
+			h.host.evaluationDataSpace(
+				{
+					...binding,
+					invocation: {
+						clientId: "client1",
+						conversationId: "conv1",
+						cwd: h.workspace,
+						toolName: "agent_evaluation",
+						pluginId: "agent-evaluation",
+					} as any,
+				},
+				{ action: "syncIndex" },
+			),
+		).rejects.toThrow();
+		expect(ds.calls).toBe(reads);
+	});
+	it("rejects undeclared writes and revokes in-flight reads on unload", async () => {
+		const h = await harness(true, false),
+			binding = { clientId: "client1", conversationId: "conv1", sessionId: h.query.sessionId! },
+			ds = (globalThis as any).__dataSpaceFixture;
+		await expect(h.host.evaluationDataSpace(binding, { action: "syncIndex" })).rejects.toThrow(/Separate/);
+		let release!: () => void;
+		ds.wait = new Promise<void>((r) => (release = r));
+		const pending = h.host.evaluationDataSpace(binding, { action: "describe" });
+		h.mgr.dispose();
+		release();
+		await expect(pending).rejects.toThrow(/unavailable/);
 	});
 });

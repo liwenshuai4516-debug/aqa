@@ -1,14 +1,16 @@
+import { F03 } from "../evaluators/data-space.mjs";
 import { EvaluationRegistry } from "../registry.mjs";
 import { piEvidenceAdapter } from "../adapters/pi.mjs";
 import { basicEvaluators } from "../evaluators/basic.mjs";
 import { F08 } from "../evaluators/metrics.mjs";
 import { F09 } from "../evaluators/verification.mjs";
-export const internalEvaluators = [...basicEvaluators, F08, F09];
+export const internalEvaluators = [...basicEvaluators, F08, F09, F03];
 /** Exact configs are frozen at registration. Empty checks never invent business expectations. */
 export function internalProfile(configs = {}, { id = "internal", version = "1" } = {}) {
 	const defaults = {
 		F01: { checks: [] },
 		F02: { checks: [] },
+		F03: { checks: [] },
 		F04: { checks: [] },
 		F05: { checks: [] },
 		F06: {},
@@ -37,8 +39,8 @@ export function createInternalRegistry(configs = {}, options = {}) {
 	// Keep the published internal@1 identity immutable for exact historical re-scoring.
 	// Product requests freeze expanded rules under their existing content-derived profile ID.
 	if (profile.id === "internal" && profile.version === "1") {
-		profile.rules = profile.rules.filter((r) => r.id !== "F09");
-		profile.required = profile.required.filter((r) => r.id !== "F09");
+		profile.rules = profile.rules.filter((r) => !["F09", "F03"].includes(r.id));
+		profile.required = profile.required.filter((r) => !["F09", "F03"].includes(r.id));
 	}
 	registry.registerProfile(profile);
 	return registry;

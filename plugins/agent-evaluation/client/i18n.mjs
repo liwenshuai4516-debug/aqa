@@ -1,4 +1,52 @@
 const labels = {
+	projectSyncFailed: ["同步未确认", "Synchronization failed"],
+	receipt: ["回执", "Receipt"],
+	project: ["项目", "Project"],
+	environment: ["环境", "Environment"],
+	projectSyncRetry: [
+		"同步未确认。先查询状态；来源恢复后可明确重试同一报告索引。",
+		"Synchronization unconfirmed. Check status first; explicitly retry the same report index after the source recovers.",
+	],
+	dataSpace: ["数据空间专项诊断", "Data Space diagnosis"],
+	dataSpaceHint: [
+		"只读核对选定批次；同步仅保存报告索引。不会导入用例、运行测试或调用模型。",
+		"Read the selected batch; synchronization writes its report index only. No case intake, tests or model calls.",
+	],
+	projectEnvironment: ["项目与环境", "Project and environment"],
+	nativeBatch: ["原生批次", "Native batch"],
+	inspectProject: ["读取批次关系", "Inspect batch relationships"],
+	projectStatus: ["查询同步状态", "Check synchronization"],
+	projectSync: ["同步此报告索引", "Synchronize report index"],
+	projectObservation: ["核对时间与用例数", "Observation time and case count"],
+	projectRequirement: ["本次确认的数量及项目归属要求", "Confirmed count and project requirement"],
+	projectConfirm: [
+		"我确认上述要求适用于此批次，按本次核对时点生成新报告。",
+		"I confirm this requirement for the selected batch at observation time.",
+	],
+	projectScore: ["核验所选批次并生成新报告", "Diagnose selected batch in a new report"],
+	projectUnavailable: [
+		"所选项目、环境或批次不可用，请重新读取。",
+		"Selected project, environment or batch is unavailable. Inspect again.",
+	],
+	projectPiOnly: [
+		"仅 Pi 来源支持新增专项采集；此报告仍可同步索引。",
+		"Only Pi sources support a new collection; this report can still synchronize its index.",
+	],
+	"cfg-F03": ["用例入库与项目归属", "Case intake and project ownership"],
+	"cfg-F03-hint": [
+		"按冻结批次、环境版本和明确用例集合，只核对观察时的真实回执与回查。",
+		"Reconcile receipts and readback at observation time for a frozen batch, environment revision and explicit case set.",
+	],
+	"cfg-spaceId": ["数据空间身份", "Space identity"],
+	"cfg-projectId": ["项目身份", "Project identity"],
+	"cfg-environmentId": ["环境身份", "Environment identity"],
+	"cfg-environmentRevision": ["环境版本", "Environment revision"],
+	"cfg-batchRevision": ["批次版本", "Batch revision"],
+	"cfg-batchIdentity": ["批次身份摘要", "Batch identity digest"],
+	"cfg-nativeCaseIds": ["原生用例 ID（每行一项）", "Native case IDs (one per line)"],
+	pending: ["待同步或待对账", "Pending synchronization or reconciliation"],
+	synced: ["已同步", "Synchronized"],
+
 	offlineDiagnostic: ["固定离线诊断", "Fixed offline diagnostic"],
 	offlineDiagnosticHint: [
 		"仅运行无网络环境中的固定诊断程序，不调用真实客户端或模型。环境停止和退出码不代表业务成功；产物场景由独立可信检查给出结果，核验错误保留未知。",

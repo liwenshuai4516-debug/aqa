@@ -973,3 +973,62 @@ it("focuses the offline availability error when no diagnostic form can open", as
 	expect(f.root.textContent).toContain("No enrolled backend");
 	expect(f.root.querySelector("form[data-form=offline-execution]")).toBeNull();
 });
+
+it("keeps Data Space errors actionable and invalidates observations after selecting another project", async () => {
+	const { root, h } = await openReport(),
+		send = h.ctx.send;
+	const project = (id: string) => ({
+		projectRef: { spaceId: "space", projectId: id },
+		name: `${id}<img>`,
+		environments: [{ environmentId: `${id}-env`, revision: "revision", name: "test" }],
+	});
+	const observation = {
+		projectRef: project("p1").projectRef,
+		environmentRef: { environmentId: "p1-env", revision: "revision" },
+		batchRef: { revision: "v1", identity: "b".repeat(64) },
+		observedAt: "2026-10-27T00:00:00Z",
+		items: [{ nativeCaseId: "N1" }],
+	};
+	h.ctx.send = (m: any) => {
+		const result =
+			m.action === "dataSpaceDescribe"
+				? {
+						projects: [project("p1"), project("p2")],
+						assets: [
+							{ engine: "ui", title: "Isolated batch", assetRef: { path: "manifest.json", sha256: "a".repeat(64) } },
+						],
+					}
+				: m.action === "dataSpaceObserve"
+					? observation
+					: m.action === "projectReportStatus"
+						? { status: "failed", error: { code: "CAPABILITY_UNAVAILABLE" } }
+						: undefined;
+		if (result) {
+			h.sent.push(m);
+			queueMicrotask(() => h.reply(m, result));
+		} else send(m);
+	};
+	root.querySelector<HTMLButtonElement>('[data-action="data-space"]')!.click();
+	await vi.waitFor(() => expect(root.querySelector("[data-project-panel]")).toBeTruthy());
+	const form = root.querySelector<HTMLFormElement>('[data-form="data-space"]')!;
+	form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+	await vi.waitFor(() => expect(root.querySelector('[data-form="data-space-score"]')).toBeTruthy());
+	expect(root.querySelector("[data-project-panel] img")).toBeNull();
+	const select = root.querySelector<HTMLSelectElement>('[name="environment"]')!;
+	select.value = "1:0";
+	select.dispatchEvent(new Event("change", { bubbles: true }));
+	expect(root.querySelector('[data-form="data-space-score"]')).toBeNull();
+	expect(root.querySelector<HTMLSelectElement>('[name="environment"]')!.value).toBe("1:0");
+	const button = root.querySelector<HTMLButtonElement>('[data-project-operation="status"]')!;
+	root
+		.querySelector<HTMLFormElement>('[data-form="data-space"]')!
+		.dispatchEvent(new SubmitEvent("submit", { bubbles: true, cancelable: true, submitter: button }));
+	await vi.waitFor(() =>
+		expect(root.querySelector("[data-project-status]")?.textContent).toContain("CAPABILITY_UNAVAILABLE"),
+	);
+	expect(root.querySelector("[data-project-panel]")?.textContent).toContain("Check status first");
+	expect(h.sent.at(-1)).toMatchObject({
+		action: "projectReportStatus",
+		data: { projectRef: project("p2").projectRef },
+	});
+});

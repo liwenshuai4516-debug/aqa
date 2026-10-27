@@ -210,6 +210,18 @@ export interface PluginHost {
 	getActiveConversation(options?: { clientId?: string; fallback?: "latest-non-subagent" }): unknown;
 	/** Selected evidence only; identity must come from the trusted sender/tool context. */
 	readEvaluationEvidence(clientId: string, query: unknown): unknown;
+	/** Reserved owner-bound Data Space bridge; no intake or native execution operations. */
+	registerEvaluationDataSpace(
+		provider: (
+			request: Record<string, unknown>,
+			binding: { principalId: string; workspaceId: string; workspace: string },
+			verify: () => void,
+		) => Promise<unknown>,
+	): () => void;
+	evaluationDataSpace(
+		binding: { clientId: string; conversationId: string; sessionId: string; invocation?: PluginToolContext },
+		request: Record<string, unknown>,
+	): Promise<unknown>;
 	/** Reserved for agent-evaluation; engine/store identities and separate declaration are required.
 	 * The original store authorizer must use port.identity as its fallback. close/disable persists
 	 * raw cancellation without depending on the store. Only fixed administrator-enrolled diagnostics.

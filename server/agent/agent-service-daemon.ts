@@ -581,6 +581,12 @@ export class AgentService {
 		return n;
 	}
 
+	verifyEvaluationDataSpaceForPlugins(clientId: string, conversationId: string): void {
+		const client = this.clients.get(clientId);
+		if (!client) throw new EvidenceReadError("PERMISSION_DENIED", "Evaluation client is unavailable");
+		client.verifyEvaluationDataSpaceForPlugins(conversationId);
+	}
+
 	verifyEvaluationExecutionForPlugins(clientId: string, conversationId: string): void {
 		const client = this.clients.get(clientId);
 		if (!client) throw new EvidenceReadError("PERMISSION_DENIED", "Evaluation client is unavailable");
