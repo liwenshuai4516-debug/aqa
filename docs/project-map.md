@@ -166,3 +166,5 @@ UI 录制配置预检：`.pi/skills/ui-testing-workflow/assets/recording-preflig
 UI 私密会话准备模块：`.pi/skills/ui-testing-workflow/assets/private-recording-session.mjs`从原生`RecordingService.privateContext`取得受摘要绑定的环境/输入及可选固定采集协议/预算。显式协议由`private-recording-preflight.mjs`检查受信seed；`private-recording-actions.mjs`核对SDK真实父子调用；`private-recording-connection.mjs`消费原生采集、过滤并独占发布writer。省略协议时仍只握手，finish撤销派生身份并恢复匿名连接。真实产品合成回归为`tests/ui-private-recording-product-test.mjs`，不代替真实PMS/Electron业务验收。
 
 原生0.1.18采集声明在创建会话前为动作/helper/清理保留范围预算；宿主仅对显式声明预建私有output及子进程引用，不开放浏览器动作。见[阶段证据](ui-testing-evidence/optimization-u02-recording-capture-contract.json)。
+
+Darwin 技能：[`darwin-skill`](../.pi/skills/darwin-skill/SKILL.md)，项目级安装、来源版本与使用说明见 [接入记录](darwin-skill-installation.md)。

@@ -137,3 +137,5 @@ PMS 匿名基线：[独立设计批准、正反诊断与正式失败证据](ui-t
 UI 私密录制连接守卫：[内部适配与真实SDK/MCP验证](ui-testing-evidence/optimization-u02-recording-adapter.json)，保留正常complete、取消/父身份变化/断连partial；产品私密录制仍未开放。
 
 UI 私密录制JSON过滤：[原生过滤器复用与运行中新增cookie泄露证据](ui-testing-evidence/optimization-u02-recording-json.json)，0.1.13初始嵌套叶值/编码及取消对照通过，轮换cookie仍泄露；产品私密record继续unsupported，原生complete不等于隐私通过。
+
+Darwin 技能：[`darwin-skill`](../.pi/skills/darwin-skill/SKILL.md)，项目级安装、来源版本与使用说明见 [接入记录](darwin-skill-installation.md)。

@@ -455,3 +455,5 @@ UI 认证轮换回归：`tests/ui-private-evidence-test.mjs --rotated-cookie` �
 - `tests/ui-pms-browser-preparation.mjs`：PMS临时认证浏览器与匿名对照、五份公开来源脚本的实际加载摘要核对；同源GET/HEAD守卫、身份输出最小化和清理。角色/业务数据未知，未导入用例或执行正式测试。
 
 - `tests/ui-pms-source-cases.mjs`、`tests/ui-pms-desktop-connection.mjs`：三项源码声明的原生非执行草稿、实际Electron鉴权界面连接原库、显式功能映射、原生入库去重及重开显示；不读取宿主令牌或修改环境凭据。前置检查拒绝遗留定时任务/插件自动升级，UI与agent临时配置位于工作区外并清理。
+
+Darwin 技能：[`darwin-skill`](../.pi/skills/darwin-skill/SKILL.md)，项目级安装、来源版本与使用说明见 [接入记录](darwin-skill-installation.md)。
