@@ -316,3 +316,5 @@ OpenCode（开源的编程 agent）仓库里有一份 AGENTS.md，专门有一�
 ### 真实匿名基线未结项（2026-10-27）
 
 [匿名续跑记录](ui-testing-anonymous-closure.md)与[完整证据](ui-testing-evidence/optimization-pms-anonymous-closure.json)：原 v2 正式失败保留；v3 不改同源 /login 预期及 3000ms 期限，改为 URL 轮询并保存成功 trace，独立设计批准、正反诊断及 Electron 新正式批次 1/1 通过。历史失败和新通过两份修订报告均获真实独立结果评审批准，Electron deliver/checkpoint 后两任务 completed。匿名执行与报告交付未结项已关闭；历史底层中止原因仍 unknown，不冒充 PMS 服务端修复，也不将整份优化计划或 M1/M2 标完成。未做匿名入库/绑定。原生报告冻结声明时点缺陷修复随 0.1.21 分发，未改原始资产和原批次。
+
+最终分发补记：同名 0.1.21 被并行说明优化覆盖后，已在维护源合并其说明并使用独立 0.1.22；104 个安装文件全部一致，Electron 重开两份获批报告通过。未新增付费调用或正式批次，原始结果不变，原生追加 11 项回归及宿主 62 项检查通过。

@@ -71,29 +71,28 @@
 	"design_reserved_usd": 0.09281099999999999,
 	"result_review_calls": 3,
 	"result_review_reserved_usd": 0.344445,
-	"native_source_commit": "c295a265f400cc43e7a35cf88badab42295d4e69",
+	"native_source_commit": "14589c92c1abc3f80ad458b787e63b4a92cb1212",
 	"distribution": {
-		"version": "0.1.21",
-		"sha256": "27d84248e6107d2c6967f7317bf6bd42cfc18ce94a20e761fcb4c61e7c64ba73",
-		"native_commit": "c295a265f400cc43e7a35cf88badab42295d4e69",
+		"version": "0.1.22",
+		"sha256": "29f2cc1817e36eee877bbf6ff15b5306d82891ee7af30be52c593acd940f5c5f",
+		"native_commit": "14589c92c1abc3f80ad458b787e63b4a92cb1212",
 		"native_upstream_pushed": false,
 		"installed_files_compared": 104,
-		"all_equal": false,
+		"all_equal": true,
 		"all_runtime_equal": true,
-		"documentation_differences": [
-			{
-				"path": "README.md",
-				"distribution_sha256": "7e822a3e0854cfbec016ebcb85538220b9372b58ad3d0cb0cd58d13c8245a25e",
-				"installed_sha256": "27733d851264e4d982bc0cc79e4968b80ed292295305e1ab2e7ea08061689727",
-				"status": "preserved unrelated installed documentation difference; attribution not established"
-			},
-			{
-				"path": "skills/ui-test-workflow/SKILL.md",
-				"distribution_sha256": "039b7d6764962fede86e4cc545834b3c9383d3ff3ba15c23d76afa122e651e16",
-				"installed_sha256": "10bf9d5d6c25922ffe486611df46e9576b5883f86cdaa24578a781bb0e7bd023",
-				"status": "preserved unrelated installed documentation difference; attribution not established"
-			}
-		]
+		"documentation_differences": []
+	},
+	"final_electron_reopen": {
+		"status": "ELECTRON_022_APPROVED_REPORTS_REOPENED_TASKS_COMPLETE",
+		"version": "0.1.22",
+		"modelCalls": 0,
+		"formalRuns": 0
+	},
+	"distribution_collision_resolution": {
+		"earlier_commit": "29888b5",
+		"parallel_commit": "6607107",
+		"final_version": "0.1.22",
+		"preserved_parallel_0.1.21_working_file": true
 	},
 	"immutable_refs_verified": 1004,
 	"historical_mutable_task_refs": [],
@@ -109,7 +108,7 @@
 	},
 	"durable_snapshot_files": 214,
 	"validation": {
-		"native_regression": "22 passed, 1 live-model test skipped",
+		"native_regression": "22 passed, 1 live-model test skipped; 11 additional contract/maintenance tests passed",
 		"host_unit": "62 passed in 4 files",
 		"typecheck": "passed, all 5 configurations",
 		"lint": "passed",
@@ -125,9 +124,9 @@
 	],
 	"archive": {
 		"path": "docs/ui-testing-evidence/optimization-pms-anonymous-closure.tar.gz",
-		"sha256": "b44c063f00e7f521ef2af9aeaedb242eb87a814ae0322e8bdf971ada8113f5d1",
-		"bytes": 6318397,
-		"files": 305,
+		"sha256": "36e6e5f9aab9a3e8dad0f81ad19919205b2782ca537f313f9ad616a889e82dd8",
+		"bytes": 6770217,
+		"files": 328,
 		"roundtrip_verified": true
 	},
 	"files": [
@@ -137,9 +136,14 @@
 			"bytes": 4463
 		},
 		{
-			"path": "tests/scratch/ui-pms-anonymous-closure/archive-complete.log",
+			"path": "tests/scratch/ui-pms-anonymous-closure/archive-022.log",
 			"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
 			"bytes": 0
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/archive-complete.log",
+			"sha256": "5a2c32ffb3e3f017efced2555ba2e0fafe8d22f0fdece00fa185e58f03f53dc2",
+			"bytes": 3546
 		},
 		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/archive-final.log",
@@ -153,8 +157,8 @@
 		},
 		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/archive.py",
-			"sha256": "aa51509f9bfa45a76ea3caeb20fa6c3268ee70953fdae500b85829814bc7ebe2",
-			"bytes": 8769
+			"sha256": "8d9ece810656ecd6a4fe1e6636789ba6a24c5a5236bde6b9ac18b8406a47d73e",
+			"bytes": 9386
 		},
 		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/attempt2/investigation.json",
@@ -223,8 +227,13 @@
 		},
 		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/distribution-check.json",
-			"sha256": "4d2980ed6bfd53643d6e7f659fd0ddf618b4764b555dace793763666878a5902",
-			"bytes": 1016
+			"sha256": "04554c0558600a54610db36f24ad3f2f34553e5c021e3f8b34c2345d95594794",
+			"bytes": 324
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/distribution-doc-change.json",
+			"sha256": "4870181677236edc8004f7b38acef351476928f9daa7917ddbdb98ff9bbc5a94",
+			"bytes": 1002
 		},
 		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/electron-1793087944920/electron-result.png",
@@ -297,6 +306,66 @@
 			"bytes": 9077
 		},
 		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/electron-reopen-022-1793089592785/harness.mjs",
+			"sha256": "5cc2ea51f675d82d712d2f1fa794e2e00584721cf2ac2cd3ffde565b74bf2edc",
+			"bytes": 9492
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/electron-reopen-022-1793089592785/parent-recovery-plan.json",
+			"sha256": "636b3e54374aebf1ce0d5081c9b2ee7c89042ea96925eb518e2f515b45075d48",
+			"bytes": 753
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/electron-reopen-022-1793089592785/progress.json",
+			"sha256": "4ab7d9dba4a4884bfedb70d6ba216d7350709cc97670d34403c25d9a7555def3",
+			"bytes": 2511
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/electron-reopen-022-1793089592785/result.json",
+			"sha256": "689f695429265fb705f915a4d71b2a258f94742949add325e0bb118a1da676f4",
+			"bytes": 2586
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/electron-reopen-022-1793089656508/electron-result.png",
+			"sha256": "f6da7dd81079b318506aeea626164eee6b850bda10b76ef89eba6b43b68cd090",
+			"bytes": 449528
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/electron-reopen-022-1793089656508/harness.mjs",
+			"sha256": "718772b1977251f687df166698878136bd7c2027579014fafa5403e42946470c",
+			"bytes": 9498
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/electron-reopen-022-1793089656508/parent-recovery-plan.json",
+			"sha256": "636b3e54374aebf1ce0d5081c9b2ee7c89042ea96925eb518e2f515b45075d48",
+			"bytes": 753
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/electron-reopen-022-1793089656508/progress.json",
+			"sha256": "f1861f14ff7a91e99bf2950792b007d77ca80e7cbf21b3bb36925aa86cba82af",
+			"bytes": 17943
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/electron-reopen-022-1793089656508/result.json",
+			"sha256": "a25ccdf0247819fb5b14322253d7a059b604edff3537cb02e4dc349e2780efb0",
+			"bytes": 19341
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/electron-reopen-022-final.log",
+			"sha256": "a25ccdf0247819fb5b14322253d7a059b604edff3537cb02e4dc349e2780efb0",
+			"bytes": 19341
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/electron-reopen-022.log",
+			"sha256": "689f695429265fb705f915a4d71b2a258f94742949add325e0bb118a1da676f4",
+			"bytes": 2586
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/electron-reopen-022.mjs",
+			"sha256": "718772b1977251f687df166698878136bd7c2027579014fafa5403e42946470c",
+			"bytes": 9498
+		},
+		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/formal.mjs",
 			"sha256": "bfdf2fdd44c3f158f58a27866670019abbb27317ab38087d32b7c9cfd8071e8e",
 			"bytes": 3543
@@ -317,9 +386,19 @@
 			"bytes": 224
 		},
 		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/host-unit-022.log",
+			"sha256": "feeda6f54ede3b5f9235ce7ce0cb71290e8d65b6f469ae1af7191e13d8eb1fd2",
+			"bytes": 453
+		},
+		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/host-unit.log",
 			"sha256": "fbe552f320b4070403876643b1e9f108f06e46772a6d80005c08dbf80c3317d0",
 			"bytes": 443
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/install-022.log",
+			"sha256": "941d65e39e9ba5a9402b76dd83ae2b615a4e77e7f5fb578201d0ccbfe0ba759c",
+			"bytes": 132
 		},
 		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/install-profile-retry.log",
@@ -397,9 +476,24 @@
 			"bytes": 6516
 		},
 		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/native-check-022.log",
+			"sha256": "f108603c5e71023c7c1a8134326b2077220e38ea28459ea222b061bb1425a6f0",
+			"bytes": 101
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/native-doc-merge-022.log",
+			"sha256": "7d1c4332533e292c509d36049e74fa14b3a0b5dbc7d276633b3faf1e234394cb",
+			"bytes": 1285
+		},
+		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/native-green.log",
 			"sha256": "78316564ca9697785918d5ebc0333065adeec4290991770f7ff31f2106a41a61",
 			"bytes": 230
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/native-pack-022.log",
+			"sha256": "4050d4c1212045e53bd6cbda2ee2246becda5c4bcdecc2d39dce68b35f8f19d7",
+			"bytes": 4748
 		},
 		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/native-pack.log",
@@ -418,13 +512,18 @@
 		},
 		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/native-source/packages/ui-testing/README.md",
-			"sha256": "7e822a3e0854cfbec016ebcb85538220b9372b58ad3d0cb0cd58d13c8245a25e",
-			"bytes": 44957
+			"sha256": "ccbbe87757e1e96f9ba868394c49a1215b30d12bd220c41832112b5c5e91723b",
+			"bytes": 45757
 		},
 		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/native-source/packages/ui-testing/package.json",
-			"sha256": "3b358de730c98dd8801bd260257baef29433741d3f4f54ebae87fe0947ed670c",
+			"sha256": "ee9803ddf236ff059aec933985d691471cd1d2a45f8f6f4a2f555ba34f4e6bec",
 			"bytes": 721
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/native-source/packages/ui-testing/skills/ui-test-workflow/SKILL.md",
+			"sha256": "10bf9d5d6c25922ffe486611df46e9576b5883f86cdaa24578a781bb0e7bd023",
+			"bytes": 10921
 		},
 		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/native-source/packages/ui-testing/src/results.ts",
@@ -470,6 +569,11 @@
 			"path": "tests/scratch/ui-pms-anonymous-closure/prettier-final.log",
 			"sha256": "97f07a3c03f0a95375133774ed7ddfb029c0bd292d427a564d66dfff602a47ac",
 			"bytes": 112
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/prettier-index.log",
+			"sha256": "e0ed145f7466e46c1fb8ea77a1ca8fde4801988fddbc5cbfd884b259d6326b18",
+			"bytes": 70
 		},
 		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/prettier.log",
@@ -555,6 +659,16 @@
 			"path": "tests/scratch/ui-pms-anonymous-closure/size.log",
 			"sha256": "0005ff8a6a04c8f3f04c3bfc9455f768f52c851963bd9bd3b505ae428b797164",
 			"bytes": 1089
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/stale-index-lock.json",
+			"sha256": "eda84c3c0df5f7035735db856ebebc3a6fdfadbe7f9ba841ada6c0a60d9a1767",
+			"bytes": 265
+		},
+		{
+			"path": "tests/scratch/ui-pms-anonymous-closure/typecheck-022.log",
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"bytes": 251
 		},
 		{
 			"path": "tests/scratch/ui-pms-anonymous-closure/typecheck-final.log",

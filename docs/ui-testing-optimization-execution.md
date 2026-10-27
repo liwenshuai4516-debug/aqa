@@ -1303,3 +1303,5 @@ private-recording-actions只接受本binding的ui_discover_record action，将�
 实际隔离 Electron/SDK 派发启动新正式 run-cee2486c0479f0d6b621c050284b4f76：1通过/0失败、零重试；原 run-46c4dbe44703b9e4abb97a2735a39608 仍为0通过/1失败。本地派发不代表真实模型自主规划。用户另批结果评审最多3次/1美元并授权材料发往配置服务；实际3次、预留0.344445美元，未挪用设计额度。首轮退回缺引用诊断事实及冻结pending状态时点错误；原生0.1.21保留冻结原文并标注历史，新结果/分析/报告保存旧批次，修订后两报告均批准。Electron deliver/checkpoint 完成两任务，截图可见最终交接。
 
 [续跑记录](ui-testing-anonymous-closure.md)及[证据索引](ui-testing-evidence/optimization-pms-anonymous-closure.json)记录22原生通过/1 live skip、62宿主通过、完整typecheck/lint/协议结构/size/diff通过；无tag协议历史启发式单列跳过。原生维护提交c295a26仅本地保存；分发包0.1.21运行代码逐文件一致，安装目录两份说明与包不同的现状保留快照，不覆盖或归因。项目保存214份公开快照及两完整报告有效链接，0600/0700回读一致，原store字节未改，不宣称文档列表登记或匿名用例库入库。匿名执行与报告交付已关闭，历史中止底层原因仍unknown，整优化计划继续active。
+
+最终分发补记：同名 0.1.21 被并行说明优化覆盖后，已在维护源合并其说明并使用独立 0.1.22；104 个安装文件全部一致，Electron 重开两份获批报告通过。未新增付费调用或正式批次，原始结果不变，原生追加 11 项回归及宿主 62 项检查通过。
