@@ -13,7 +13,7 @@ description: UI 自动化测试工作流入口：发现录制、用例设计与�
 
 私密录制仅支持显式受管协议：配置 `private_recording.capture:"chromium-single-page-v1"`，使用同一物理 Playwright 实例的 `pi-ui-testing/recording-fixtures`，直接声明与会话一致的环境/归属及 `trace:off`。受信工作区的明确输入须全部登记；收集配置仍会执行模块代码，不是任意代码安全沙箱或依赖闭包证明。限新建单页面/单frame Chromium，最多8个非清理动作，预算至少 `2 * max_steps + 1`。实际动作必须经本会话 `ui_discover_record`，固定采集仍经过宿主权限门禁；普通嵌套调用不授予私密浏览器权限。准备回执不表示异步MCP已连接或业务身份/数据就绪。
 
-省略采集声明的旧私密路径仍只准备/握手，浏览器动作阻塞。坏证据、取消、失效或预算耗尽保留 partial 和真实缺口，关闭自有 context 后显式 finish；禁止匿名回退、覆盖已有草稿或换任务重放。数据空间通用 `record` 准备仍为 unsupported；本协议的合成产品验证不代表真实 PMS 或 Electron 业务全链已通过。
+省略采集声明的旧私密路径仍只准备/握手，浏览器动作阻塞。坏证据、取消、失效或预算耗尽保留 partial 和真实缺口，关闭自有 context 后显式 finish；禁止匿名回退、覆盖已有草稿或换任务重放。数据空间 `prepare-private` 的显式录制引用使用 `mode=record` 和 `recordingCapture:"chromium-single-page-v1"`，把返回的 `auth` 引用交本次原生环境；准备回执不表示采集或浏览器就绪。未声明协议的通用 `record` 准备仍拒绝；本协议的合成产品验证不代表真实 PMS 或 Electron 业务全链已通过。
 
 录制期间重载 Agent 后，原生只允许查询旧记录，不从点击中间续跑；MCP 重连也不能复用已撤销的私密快照。先核对原日志和数据归属，再保存 partial；原生关闭动作被拒绝时保留 `browser-cleanup-not-confirmed`，不能把连接退出当作浏览器关闭成功。未知副作用仍须核对，不换任务重放。
 
