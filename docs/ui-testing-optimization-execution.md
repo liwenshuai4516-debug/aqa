@@ -1326,3 +1326,11 @@ private-recording-actions只接受本binding的ui_discover_record action，将�
 首次按 OpenAPI 服务根和首次按未加 `/api` 的客户端根请求均分别返回业务码 404、HTTP 405，均未创建数据且临时私有状态已清理。依据前端 `baseURL=/api` 修正后，创建唯一草稿 `AQA-U02-1793091290514` 成功；精确名称 API 查询命中该行且 `contractStatus=DRAFT`。认证 Chromium 页面以该名称查询命中同一行，重置后名称输入为空，随后的列表请求不再携带 `bizName`。本轮数据空间 store 未写入，模型和正式用例调用均为 0；临时浏览器、context 与私有认证状态均已清理。
 
 OpenAPI 和当前前端客户端均未声明经营合同删除操作；草稿行的“删除”控件未出现确认元素，也未产生可观察的经营合同非 GET 请求。因此不伪造删除成功，该唯一草稿作为受控残留保留，名称、状态和查询回执均在 `tests/scratch/ui-pms-owned-data/1793091471070/` 及相邻本轮目录可追溯。对于“管理员查询/重置”范围，角色与数据准备已具备实际依据；完整角色矩阵、跨租户、合同发起/审批，以及可自动清理数据的删除契约仍是 U02/U09 后续项。
+
+### U01 续跑：状态语义回归收口（2026-10-27）
+
+本轮不改生产实现，使用当前构建重新执行 U01 回归。`tests/ui-workflow-admission-test.mjs` 的 5 项检查通过：录制不完整、设计未批准、运行未就绪和前置证据缺失四类场景均保持依赖节点未执行，且每类均为 `child_processes=0`、`target_requests=0`、`formal_runs=0`。`tests/ui-workflow-partial-test.mjs` 的同任务 partial/恢复检查通过，确认 partial 交付可查看、最终节点保持 blocked，并保留原任务历史与恢复入口。
+
+隔离 Electron 的 `tests/ui-workflow-board-desktop-test.mjs` 通过 6 项检查，结果见 `tests/scratch/ui-workflow-board-desktop/1793091735430/result.json`：看板显示 partial 的 1/2 与明确证据缺口，重载后仍保留；同一任务修复前重新阻断且不覆盖历史 partial，修复证据后完成 2/2 而不重放浏览器；原始产品失败报告仍保留 `failed=1`；数据空间保留同一原生批次为 failed 并保持 result ID。该运行 `providerRequests=11`、实际模型调用和业务请求均为 0。
+
+据此 A01-1 至 A01-5 的工程状态语义均已回归通过，U01 标记为“已完成（工程状态语义）”。这不等同于 U02 的真实环境准备、M1/M2 闭环或真实业务质量验收通过；这些依赖仍按各自任务状态保留。
