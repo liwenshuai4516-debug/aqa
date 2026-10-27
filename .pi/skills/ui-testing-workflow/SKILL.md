@@ -3,6 +3,20 @@ name: ui-testing-workflow
 description: UI 自动化测试工作流入口：发现录制、用例设计与独立评估、执行已有资产、分析旧批次和查看证据。复用已安装的 pi-ui-testing 阶段技能与工具。
 ---
 
+## 步骤（按序执行，不跳步）
+
+1. **定模式** · 入：用户意图 → 出：new / record / execute / analyze / view 之一，及所需 `scope_ref` / `asset_ref` / `run_ref`
+2. **核环境** · 入：该模式的 `mode`、`envId` 或目标 URL → 出：`initialize` 返回的地址与非敏感参数、`preparation`
+3. **询资产** · 入：当前工作区 → 出：`catalog` 的资产修订、可信 review_refs、runtime_ready 与最小 Skill 目录
+4. **开任务** · 入：最小 Skill 目录 + 该模式引用 → 出：`start` 的 `task_ref` 与当前阶段
+5. **跑当前阶段** · 入：当前阶段 SKILL.md + 工作区 Playwright 配置与依赖 → 出：该阶段产物与 manifest 引用
+6. **交阶段** · 入：`task_ref`、`stage`、`output_refs` → 出：程序核对通过后的新 stage，或 `block` 的具体缺口
+7. **入库闸门** · 入：原生 `save-cases` 的 cases ref → 出：用户选择；未明确同意前不入库
+
+仅 analyze / view 跳过第 2 步的环境初始化与第 5 步的浏览器动作。下文各段是对应步骤的详解。
+
+---
+
 用户要求新建或执行测试，且数据空间工具可用时，先读 [数据空间测试数据规范](../data-space-testing/SKILL.md)，用 `data_space_automation.initialize` 传当前 `mode`，按目标 URL 或所选 `envId` 核对环境；仅源码设计传 `new/record` 和 `discovery=source`，不创建通道；沿用返回的地址和非敏感参数，读取 `preparation`，动态参数过期时显式刷新再初始化；实际访问、身份和数据仍由原生浏览器预检验证。初始化不授权用例入库。工具未安装或停用时明确无法录入用例库，不虚构关联。仅分析历史结果时按原批次引用处理，不重新初始化或执行。
 
 然后调用 `ui_test_workflow`：`{"request":{"operation":"catalog"}}`，核对当前工作区的资产、阶段技能和运行能力；然后读取原包的 [ui-test-workflow](../../../node_modules/pi-ui-testing/skills/ui-test-workflow/SKILL.md)，按用户意图选择路径并按需加载当前阶段说明。
