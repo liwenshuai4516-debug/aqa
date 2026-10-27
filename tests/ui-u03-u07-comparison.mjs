@@ -6,17 +6,21 @@ import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
 import { pathToFileURL, fileURLToPath } from "node:url";
 import { performance } from "node:perf_hooks";
-import * as current from "pi-ui-testing";
 import { ready } from "./fixtures/data-space/ui-run-fixture.mjs";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
 const output = join(repo, "tests/scratch/ui-u03-u07/comparison", String(Date.now()));
 await mkdir(output, { recursive: true });
 const extracted = await mkdtemp(join(tmpdir(), "ui-u03-baseline-"));
+const currentExtracted = await mkdtemp(join(tmpdir(), "ui-u03-current-"));
 const baselinePackage = join(repo, ".pi/skills/ui-testing-workflow/assets/pi-ui-testing-0.1.18.tgz");
+const currentPackage = join(repo, ".pi/skills/ui-testing-workflow/assets/pi-ui-testing-0.1.23.tgz");
 execFileSync("tar", ["-xzf", baselinePackage, "-C", extracted]);
+execFileSync("tar", ["-xzf", currentPackage, "-C", currentExtracted]);
 await symlink(join(repo, "node_modules"), join(extracted, "package/node_modules"), "dir");
+await symlink(join(repo, "node_modules"), join(currentExtracted, "package/node_modules"), "dir");
 const baseline = await import(pathToFileURL(join(extracted, "package/dist/index.js")).href);
+const current = await import(pathToFileURL(join(currentExtracted, "package/dist/index.js")).href);
 const cleanup = [];
 const d = await ready({ after: (fn) => cleanup.push(fn) });
 const { f } = d;
@@ -30,7 +34,7 @@ const samples = [],
 		actualModelCalls: 0,
 		pairs: 5,
 		baseline_version: "0.1.18",
-		current_version: "0.1.20",
+		current_version: "0.1.23",
 		samples,
 	};
 try {
@@ -39,9 +43,7 @@ try {
 	const browsers = f.fixture.state.browserRequests;
 	result.run_ref = execution.run_ref;
 	result.baseline_package_sha256 = current.sha256(await readFile(baselinePackage));
-	result.current_package_sha256 = current.sha256(
-		await readFile(join(repo, ".pi/skills/ui-testing-workflow/assets/pi-ui-testing-0.1.20.tgz")),
-	);
+	result.current_package_sha256 = current.sha256(await readFile(currentPackage));
 	// Freeze endpoints before measuring: registered analyze task -> normal report candidate pending independent review.
 	for (let pair = 0; pair < 5; pair++) {
 		for (const version of pair % 2 ? ["current", "baseline"] : ["baseline", "current"]) {
@@ -75,7 +77,7 @@ try {
 			assert.equal(state.task.data.stage, "result-review");
 			assert.equal(state.task.data.state, "running");
 			const report = await f.store.load(reportRef);
-			const verified = await current.verifyResults(f.root, report.data.results_ref);
+			const verified = await api.verifyResults(f.root, report.data.results_ref);
 			assert.equal(verified.data.counts.passed, 1);
 			assert.equal(report.data.completeness, "complete");
 			assert.equal(f.fixture.state.browserRequests, browsers);
