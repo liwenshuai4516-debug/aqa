@@ -1283,6 +1283,11 @@ private-recording-actions只接受本binding的ui_discover_record action，将�
 
 最终完整5配置typecheck、3文件10项相关Vitest、lint及协议结构检查通过；无tag协议历史启发式明确SKIP。开始/结束clean仅预览、0可清理项。归档构建首轮因历史索引files字段为数字发生TypeError，修正按实际数组字段读取后重建，旧暂存目录保留；不计测试失败或抹除正式结果。体积/差异检查与归档回读通过。仅提交本轮明确文件及文档差异，其他工作区改动保持。
 
+## 2026-10-27：U00 基线收口
+
+按计划 A00 复核既有基线与真实 PMS 记录：A00-1 至 A00-5 已分别覆盖维护源/分发摘要、冻结范围、三类任务和只读路径、阶段计量、失败与清理证据。A00-6 已登记真实 PMS 的可用范围：经营合同查询/重置具备真实 Electron 录制、正常与错误诊断及正式执行证据；角色、租户、数据初态和完整公开附件不可得，已在真实业务记录中作为 U02/U09 的后续阻塞保留。
+
+因此 U00 标记为“已完成（基线）”。这不把 PMS 的 partial 报告或其结果评审 blocked 改为通过，也不把尚未执行的外层 Agent/冷启动计量、M2 同终点性能对照或 20% 提效目标计入 U00。相关基线、性能限制和原始证据见 `docs/ui-testing-u00-baseline-comparison.md` 与 `docs/ui-testing-evidence/optimization-u00-completion.json`。
 
 ## 2026-10-27：U03/U07 原生实现与 Electron 接入
 
