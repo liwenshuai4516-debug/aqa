@@ -1,0 +1,245 @@
+{
+	"scope": "EC04/AC39 authorized performance gate assessment and fixed historical batch v2; not whole M1 acceptance",
+	"date": "2026-10-27",
+	"baselineCommit": "1ce349e6f64ebc1f2258eca19d9697fc0bda1367",
+	"platform": "macOS arm64",
+	"nodeVersion": "v23.10.0",
+	"pluginVersion": "0.4.36",
+	"productCodeChanged": false,
+	"policy": {
+		"id": "ec04-batch-v2",
+		"frozenBeforeReverification": "2026-10-27T06:13:39.050065+00:00",
+		"authorization": "User 2026-10-27: assess EC04 gate reasonableness; may relax excessive thresholds with justification.",
+		"scope": "explicit historical collection after simulated waits, not live Agent overhead",
+		"wallMs": {
+			"serial": 100,
+			"parallel": 250,
+			"long": 1000
+		},
+		"cpuMs": {
+			"serial": 100,
+			"parallel": 250,
+			"long": 750
+		},
+		"unchanged": {
+			"pairs": 5,
+			"rssBytes": 67108864,
+			"disk": "inputBytes*2+1MiB",
+			"evidenceCounts": {
+				"serial": 40,
+				"parallel": 400,
+				"long": 200
+			},
+			"gaps": 0,
+			"reportMs": 2000,
+			"listAndEvidenceMs": 200
+		},
+		"reason": "Separate batch completion SLO from live runtime overhead. Small manual batch <=100ms; 400 evidence batch <=250ms; 20MB redaction/hash/durable collection <=1s (~20MB/s), CPU<=750ms. Rounded product engineering budgets, not universal thresholds or proof of interactive responsiveness. Legacy formula retained as nonblocking stretch comparison."
+	},
+	"policyDecisionSha256": "645016a5c35481f23e8ada4e75d82786f1685bd289383d32d0946640c725bc81",
+	"originalBaseline": {
+		"status": "FAIL",
+		"rawPath": "/private/tmp/ec04-performance-review-20261027/legacy-baseline.json"
+	},
+	"reverification": {
+		"status": "PASS",
+		"legacyStatus": "FAIL",
+		"rawPath": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-performance-wcJ2PG/result.json",
+		"comparisons": [
+			{
+				"workload": "serial",
+				"policyId": "ec04-batch-v2",
+				"wallDelta": 45.87612500000003,
+				"wallLimit": 100,
+				"cpuDelta": 37.413,
+				"cpuLimit": 100,
+				"rssDeltas": [3145728, 3457024, 6684672, 4194304, 4603904],
+				"pairsComplete": true,
+				"telemetryValid": true,
+				"coverageComplete": true,
+				"resourcePass": true,
+				"legacyWallLimit": 50,
+				"legacyCpuLimit": 50,
+				"legacyPass": true,
+				"pass": true
+			},
+			{
+				"workload": "parallel",
+				"policyId": "ec04-batch-v2",
+				"wallDelta": 106.54962499999996,
+				"wallLimit": 250,
+				"cpuDelta": 113.694,
+				"cpuLimit": 250,
+				"rssDeltas": [24084480, 24788992, 25214976, 22249472, 22822912],
+				"pairsComplete": true,
+				"telemetryValid": true,
+				"coverageComplete": true,
+				"resourcePass": true,
+				"legacyWallLimit": 50,
+				"legacyCpuLimit": 50,
+				"legacyPass": false,
+				"pass": true
+			},
+			{
+				"workload": "long",
+				"policyId": "ec04-batch-v2",
+				"wallDelta": 449.34437400000013,
+				"wallLimit": 1000,
+				"cpuDelta": 391.099,
+				"cpuLimit": 750,
+				"rssDeltas": [54870016, 55951360, 58048512, 55181312, 56229888],
+				"pairsComplete": true,
+				"telemetryValid": true,
+				"coverageComplete": true,
+				"resourcePass": true,
+				"legacyWallLimit": 50,
+				"legacyCpuLimit": 50,
+				"legacyPass": false,
+				"pass": true
+			}
+		],
+		"workers": 30
+	},
+	"reportPerformance": {
+		"status": "PASS",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-report-performance-BjDJwl",
+		"storageFormat": "pack-v1",
+		"scope": "1000 evidence snapshot; fixture construction excluded; five actual report/list/evidence reads",
+		"checks": {
+			"reportsCompleted": true,
+			"reportMedianMs": 540.4178750000003,
+			"listMedianMs": 4.470208000000184,
+			"evidenceMedianMs": 0.4043329999999514
+		},
+		"rounds": [
+			{
+				"round": 0,
+				"evidenceItems": 1000,
+				"reportState": "completed",
+				"reportMs": 642.0756670000001,
+				"listCount": 50,
+				"listMs": 4.470208000000184,
+				"evidenceChars": 37,
+				"evidenceMs": 0.4112910000001193
+			},
+			{
+				"round": 1,
+				"evidenceItems": 1000,
+				"reportState": "completed",
+				"reportMs": 589.6644590000001,
+				"listCount": 50,
+				"listMs": 4.415333000000146,
+				"evidenceChars": 37,
+				"evidenceMs": 1.0534589999999753
+			},
+			{
+				"round": 2,
+				"evidenceItems": 1000,
+				"reportState": "completed",
+				"reportMs": 540.4178750000003,
+				"listCount": 50,
+				"listMs": 4.875750000000153,
+				"evidenceChars": 37,
+				"evidenceMs": 0.33341699999982666
+			},
+			{
+				"round": 3,
+				"evidenceItems": 1000,
+				"reportState": "completed",
+				"reportMs": 518.38825,
+				"listCount": 50,
+				"listMs": 8.9193750000004,
+				"evidenceChars": 37,
+				"evidenceMs": 0.4043329999999514
+			},
+			{
+				"round": 4,
+				"evidenceItems": 1000,
+				"reportState": "completed",
+				"reportMs": 524.1982080000002,
+				"listCount": 50,
+				"listMs": 3.990791999999601,
+				"evidenceChars": 37,
+				"evidenceMs": 0.3199170000002596
+			}
+		]
+	},
+	"desktop": {
+		"status": "PASS",
+		"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-gL82kd",
+		"checks": [
+			"Real app loads plugin 0.4.36 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+			"Skill, slash completion and agent_evaluation tool appear in actual desktop management",
+			"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.36; skill, slash discovery and tool registration remain enabled",
+			"Actual desktop switches between sealed file text and original evidence, retaining keyboard focus",
+			"Actual desktop select/create/collect/seal/score, evidence paging, append human review and retain original verdict",
+			"Actual Electron blob download reopens as a valid redacted export, including separate review and verifiable manifest",
+			"Actual Electron pages the complete long evidence, escapes markup/redacts the fixture secret, measures five painted list/report/evidence actions, preserves the sealed view on a real missing-pack error and recovers by explicit retry without creating records",
+			"Actual desktop re-scoring preserves the exact frozen snapshot/configuration and creates no attempt; revision keeps the selection and old reports/reviews, re-observes changed fixture bytes, and leaves added semantic requirements inconclusive",
+			"Actual desktop observation starts from the fixed selection, returns a durable checkpoint, checks status, stops, scores a new snapshot with the original configuration and dismisses without changing the old report or executing a business task",
+			"Actual desktop configuration edits F01 structure and F07 polling through forms, retains malformed input without a report, then scores the original sealed snapshot with new persisted configs and no collection, attempt or snapshot; old report bytes remain unchanged",
+			"Actual desktop adds an installed rule binding in a new contract revision, keeps it inconclusive without configuration, then configures a matching artifact check on that sealed snapshot; the old contract/report remain unchanged and no task runs",
+			"Chinese/English live labels and narrow layout fit verified; screenshots retained for visual inspection",
+			"Actual light theme stylesheet loads; report remains readable with inherited foreground/background tokens",
+			"Plugin disabled state survives page reload and gates the owned skill; re-enable restores the skill",
+			"Actual Electron uploads a >128 KiB inert ATIF fixture in bounded chunks, rejects malformed input, separates child selection, requires human source/condition confirmation and uses the existing provisional report with private original paging",
+			"An actual secondary renderer with the same preload and service origin cannot obtain the main window native identity",
+			"Graceful real Electron exit and a second native process load plugin 0.4.36 and preserve enabled skill/plugin registration",
+			"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",
+			"After full native restart, sealed file view retains original bytes despite later workspace changes",
+			"Full native exit/restart restores the owned desktop client identity and reopens the original immutable report, review and evidence after explicit source authorization",
+			"Actual desktop resolves a sealed SDK evidence entry to the exact visible source message after restart, highlights it, refuses a foreign target and creates no report/attempt/snapshot",
+			"A second real native process reopens the offline report and pages the exact private original without creating records or executing the trajectory",
+			"A real renderer under development URL override receives no native client identity and cannot replace the persisted ID; probe-only, not override UI acceptance"
+		],
+		"mediansMs": {
+			"list": 13.200000047683716,
+			"report": 21.90000009536743,
+			"evidence": 14.600000143051147
+		},
+		"evidencePages": 40,
+		"evidenceCharacters": 160545,
+		"registeredFiles": 36,
+		"actualModelCalls": 0,
+		"actualCliCalls": 0,
+		"screenshotsViewed": ["detail-light.png", "long-evidence-narrow.png"]
+	},
+	"productSourceSha256": {
+		"plugins/agent-evaluation/collect.mjs": "4c8df5728fe1b1e514a5938edbcf05ba5472a2540fa8335f97704f7511ca52fa",
+		"plugins/agent-evaluation/store.mjs": "11de213055853f99df5f3fa3c32089291b23d1f412253b73337a241a4263ebeb",
+		"server/agent/evaluation-evidence.ts": "78337812b611d3f957a14196e6cb79241a87be0d32bad9c196c7c2d7a58479c7"
+	},
+	"checks": {
+		"typecheck": "PASS (all five configurations, after fixing initial TS7053 in new test)",
+		"unitFiles": 5,
+		"unitTests": 128,
+		"unitStatus": "PASS",
+		"build": "PASS via original ensureBuild before baseline",
+		"desktopBuild": "PASS",
+		"lint": "PASS",
+		"protocol": "PASS structure/v33",
+		"protocolHistoricalTag": "SKIP (no available tag)",
+		"size": "PASS",
+		"syntax": "PASS",
+		"diff": "PASS",
+		"clean": "preview only; zero candidates and zero deletions at start and delivery"
+	},
+	"retainedFailures": [
+		"Original current-code v1 baseline FAIL",
+		"Reverification legacy v1 parallel/long FAIL",
+		"Initial new unit test TS7053 tuple inference error; fixed test tuple, full typecheck then 128 tests passed",
+		"Independent EC04 branch has historical intermittent native quit timeout; this successful normal desktop run does not diagnose or fix it"
+	],
+	"limits": [
+		"No product speedup claimed",
+		"Historical batch only; live overhead and event loop responsiveness under high-frequency collection unmeasured",
+		"Not a full rerun of EC04 permission/fault/rollback matrix",
+		"No new performance authority for EC08/M2 or other platforms"
+	],
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-performance-gate-review/index.json",
+		"sha256": "223c6938d42c7b9c9f8d0e70a898a14e48dc1b13babecbef283d5b34151fcc78",
+		"files": 160,
+		"bytes": 4426214
+	}
+}

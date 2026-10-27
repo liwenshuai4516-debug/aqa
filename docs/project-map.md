@@ -194,3 +194,5 @@ EC06 宿主执行接口：`server/external-evaluation-port.ts` 经原 `PluginHos
 EC06 产品离线入口（0.4.35）：`plugins/agent-evaluation/client/offline.mjs`仅渲染固定假CLI表单与尝试回查，`client/entry.mjs`和原`service.mjs`复用`server/external-evaluation-port.ts`；`tests/fixtures/agent-evaluation/offline-execution.mjs`由实际桌面主用例的`--offline-execution <可信安装目录>`验证启停/封存/重载/重启，`tests/agent-evaluation-execution-recovery-test.mjs`验证真实统一仓库控制端SIGKILL、遗留锁拒写及显式复制恢复。以上各节为历史阶段，当前逐项状态以[EC06记录](agent-evaluation-evidence/EC06.md)为准；产物/verifier不在EC06范围，真实CLI/模型仍暂缓。
 
 EC07 固定产物核验：`server/external-evaluation-artifacts.ts` 建立有界冻结清单，`external-evaluation-verifier.ts` 执行独立受限数据检查；原 runtime/execution/port 与统一仓库接线，插件 `evaluators/verification.mjs` 提供 F09。真实桌面和中断恢复见 [EC07](agent-evaluation-evidence/EC07.md)。
+
+EC04 性能验收入口：`tests/agent-evaluation-performance-test.mjs` 与 `tests/fixtures/agent-evaluation/performance-policy.mjs` 维护固定历史批量采集的版本化预算，保留旧参考线；边界回归见同名 policy 单测，[评审](agent-evaluation-evidence/EC04-performance-gate-review.md)说明适用范围及授权。

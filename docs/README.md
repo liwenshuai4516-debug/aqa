@@ -43,10 +43,10 @@
 - [Agent 评估 EC01 仓库](agent-evaluation-evidence/EC01.md)：契约、版本、权限、原子封存、正文复用、恢复与脱敏导出；工程基础不等于桌面产品完成。
 - [Agent 评估 EC02 证据接线](agent-evaluation-evidence/EC02.md)：可信宿主选区、实时元数据、子任务、原生结果与崩溃恢复；不代表实际桌面产品验收。
 - [Agent 评估 EC03 评分进展](agent-evaluation-evidence/EC03.md)：可信扩展、快照作业、七条基础规则、时间/费用指标及原生评分对照；工程验证不等于 EC04 桌面产品验收。
-- [Agent 评估 EC04 产品进展](agent-evaluation-evidence/EC04.md)：两页、可信人审、绑定/配置表单、技能工具登记、批量证据持久化、桌面主进程身份恢复、原生批次只读详情、活动评分同步卸载与实际 Electron；固定性能对照尚未达标，M1 保持进行中。
+- [Agent 评估 EC04 产品进展](agent-evaluation-evidence/EC04.md)：两页、可信人审、绑定/配置表单、技能工具登记、批量证据持久化、桌面主进程身份恢复、原生批次只读详情、活动评分同步卸载与实际 Electron；[AC39批量v2性能复验](agent-evaluation-evidence/EC04-performance-gate-review.md)已通过，原v1失败保留；M1其余验收待对账。
 - [Agent 评估实际执行混合分页](agent-evaluation-evidence/EC04-executed-matrix-diagnostics.json)：41条本地UI原生结果27通过/14失败；实际Electron分页/源故障通过，API多页未验，M1未完成。
-- [Agent 评估 EC08 接入准备](agent-evaluation-evidence/EC08.md)：WaterMate 1.0.0 安装及 GUI 目标核对、1 USD 授权上限与认证/隔离缺口；EC04 性能门禁未通过，EC08 CLI/M2 未执行。
-- [Agent 评估 EC09 接入核对](agent-evaluation-evidence/EC09.md)：既有数据空间回执/原生结果接口与 F03、报告索引缺口；EC04 硬前置未通过，AC32–AC33 未执行。
+- [Agent 评估 EC08 接入准备](agent-evaluation-evidence/EC08.md)：WaterMate 1.0.0 安装及 GUI 目标核对、1 USD 授权上限与认证/隔离缺口；AC39批量v2已通过，其他前置待对账；EC08 CLI/M2 未执行。
+- [Agent 评估 EC09 接入核对](agent-evaluation-evidence/EC09.md)：既有数据空间回执/原生结果接口与 F03、报告索引缺口；AC39批量性能阻塞已解除，EC04其余前置待对账，AC32–AC33 未执行。
 - [外部 Agent 评估旧入口](external-agent-evaluation-design.md)：转向统一规范，保留旧 EX/T 编号迁移说明，不再维护独立实施方案。
 - [接口测试本机 OS/MCP 隔离补验](api-testing-evidence/isolation-local-mcp.md)：合成文件、进程继承与端口边界；真实目标仍未开放。
 - [接口测试当前完成审计](api-testing-evidence/completion-audit.md)：工程/实际模型证据、真实业务缺口和按需延后项。

@@ -490,3 +490,5 @@ EC06 宿主执行接口：`server/external-evaluation-port.ts` 经原 `PluginHos
 EC06 产品离线入口（0.4.35）：`plugins/agent-evaluation/client/offline.mjs`仅渲染固定假CLI表单与尝试回查，`client/entry.mjs`和原`service.mjs`复用`server/external-evaluation-port.ts`；`tests/fixtures/agent-evaluation/offline-execution.mjs`由实际桌面主用例的`--offline-execution <可信安装目录>`验证启停/封存/重载/重启，`tests/agent-evaluation-execution-recovery-test.mjs`验证真实统一仓库控制端SIGKILL、遗留锁拒写及显式复制恢复。以上各节为历史阶段，当前逐项状态以[EC06记录](agent-evaluation-evidence/EC06.md)为准；产物/verifier不在EC06范围，真实CLI/模型仍暂缓。
 
 EC07：`server/external-evaluation-artifacts.ts` 管理完整约定产物与删除/摘要；`server/external-evaluation-verifier.ts` 只运行登记的独立数据检查，拒绝不完整快照；`plugins/agent-evaluation/evaluators/verification.mjs` 为 F09。`tests/agent-evaluation-verification-recovery-test.mjs` 与原桌面执行夹具验证持久核验和正反例，详见 [记录](agent-evaluation-evidence/EC07.md)。
+
+EC04 性能标准：`tests/fixtures/agent-evaluation/performance-policy.mjs` 只用于固定批量采集验收，版本 `ec04-batch-v2`；`tests/agent-evaluation-performance-test.mjs` 同时保存现行/旧参考线和完整性、RSS、落盘结果，`tests/unit/agent-evaluation-performance-policy.test.ts` 覆盖边界与无效/缺失证据拒绝。依据见 [评审](agent-evaluation-evidence/EC04-performance-gate-review.md)，不改变产品采集代码。

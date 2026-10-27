@@ -1,10 +1,11 @@
-/** EC00 fixed offline workload comparison; separate processes prevent warm caches/RSS leaking across modes. */
+/** Fixed historical batch comparison; versioned acceptance and original EC00 stretch result are both saved. */
 import { spawnSync } from "node:child_process";
 import { mkdtempSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { engineFixture } from "./fixtures/agent-evaluation/engine.mjs";
+import { comparePerformance, PERFORMANCE_POLICY } from "./fixtures/agent-evaluation/performance-policy.mjs";
 import { EvidenceCollector } from "../plugins/agent-evaluation/collect.mjs";
 import { F06 } from "../plugins/agent-evaluation/evaluators/basic.mjs";
 import { ensureBuild } from "./lib/ensure-build.mjs";
@@ -15,7 +16,6 @@ const bytesIn = (dir) =>
 		(n, e) => n + (e.isDirectory() ? bytesIn(join(dir, e.name)) : statSync(join(dir, e.name)).size),
 		0,
 	);
-const median = (values) => [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];
 if (process.argv[2] === "--worker") {
 	const workload = process.argv[3],
 		enabled = process.argv[4] === "on";
@@ -151,22 +151,13 @@ if (process.argv[2] === "--worker") {
 			}
 		const off = rows.filter((r) => r.workload === workload && !r.enabled),
 			on = rows.filter((r) => r.workload === workload && r.enabled);
-		const wallDelta = median(on.map((r) => r.elapsedMs)) - median(off.map((r) => r.elapsedMs));
-		const cpuDelta = median(on.map((r) => r.cpuMs)) - median(off.map((r) => r.cpuMs));
-		const wallLimit = Math.max(median(off.map((r) => r.elapsedMs)) * 0.2, 50),
-			cpuLimit = Math.max(median(off.map((r) => r.cpuMs)) * 0.25, 50);
-		const rssDeltas = on.map((r, i) => r.peakRssBytes - off[i].peakRssBytes);
-		const pass =
-			!on.some((r) => r.failure) &&
-			wallDelta <= wallLimit &&
-			cpuDelta <= cpuLimit &&
-			rssDeltas.every((n) => n <= 64 * 1024 ** 2) &&
-			on.every((r) => r.diskBytes <= r.inputBytes * 2 + 1024 ** 2);
-		comparisons.push({ workload, wallDelta, wallLimit, cpuDelta, cpuLimit, rssDeltas, pass });
+		comparisons.push(comparePerformance(workload, off, on));
 		console.log(JSON.stringify(comparisons.at(-1)));
 	}
 	const result = {
 		status: comparisons.every((r) => r.pass) ? "PASS" : "FAIL",
+		policyId: PERFORMANCE_POLICY.id,
+		legacyStatus: comparisons.every((r) => r.legacyPass) ? "PASS" : "FAIL",
 		scope: "offline task workload then explicit historical collector; no models/CLI; excludes fixture construction",
 		output,
 		rows,
