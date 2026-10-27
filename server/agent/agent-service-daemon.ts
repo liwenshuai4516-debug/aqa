@@ -581,6 +581,12 @@ export class AgentService {
 		return n;
 	}
 
+	verifyEvaluationExecutionForPlugins(clientId: string, conversationId: string): void {
+		const client = this.clients.get(clientId);
+		if (!client) throw new EvidenceReadError("PERMISSION_DENIED", "Evaluation client is unavailable");
+		client.verifyEvaluationExecutionForPlugins(conversationId);
+	}
+
 	/** The caller supplies the sender identity from the trusted plugin callback, never payload.owner. */
 	readEvaluationEvidenceForPlugins(clientId: string, query: AgentEvaluationEvidenceQuery): AgentEvaluationEvidencePage {
 		const client = this.clients.get(clientId);

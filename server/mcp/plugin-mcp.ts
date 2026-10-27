@@ -55,6 +55,16 @@ export function createPluginInvocation(
 	return { context, dispose: () => invocations.delete(context) };
 }
 
+/** Reuse the original tool adapter's identity and live mode/preset/disable checks. */
+export function verifyPluginInvocation(pluginId: string, context: PluginToolContext): AbortSignal | undefined {
+	const invocation = invocations.get(context);
+	if (!invocation || context.pluginId !== pluginId)
+		throw Object.assign(new Error("Plugin invocation identity is missing or expired"), { code: "PERMISSION_DENIED" });
+	invocation.verify();
+	invocation.signal?.throwIfAborted();
+	return invocation.signal;
+}
+
 /** Recheck live permissions during the run; revocation aborts only this dedicated invocation. */
 export async function callPluginMcp(
 	pluginId: string,

@@ -10,6 +10,7 @@ export type PluginPermissionFamily =
 	| "fs:write"
 	| "ui"
 	| "tools"
+	| "tools:offline-execution"
 	| "http"
 	| "chat"
 	| "net"
@@ -209,6 +210,33 @@ export interface PluginHost {
 	getActiveConversation(options?: { clientId?: string; fallback?: "latest-non-subagent" }): unknown;
 	/** Selected evidence only; identity must come from the trusted sender/tool context. */
 	readEvaluationEvidence(clientId: string, query: unknown): unknown;
+	/** Reserved for agent-evaluation; engine/store identities and separate declaration are required.
+	 * The original store authorizer must use port.identity as its fallback. close/disable persists
+	 * raw cancellation without depending on the store. Only fixed administrator-enrolled diagnostics.
+	 */
+	createOfflineEvaluationExecution(store: unknown): {
+		identity(context: object): unknown;
+		dispatch(
+			context: object,
+			binding: { clientId: string; conversationId: string; sessionId: string; invocation?: PluginToolContext },
+			request: {
+				action:
+					| "offlineDescribe"
+					| "offlinePrepare"
+					| "offlineStart"
+					| "offlineStatus"
+					| "offlineReconcile"
+					| "offlineCancel"
+					| "offlineSeal"
+					| "offlineCleanup";
+				requestId: string;
+				ref?: { kind: string; id: string; revision: number };
+				data?: { argv: string[]; stdin?: string; timeoutMs: number; graceMs: number };
+			},
+		): Promise<unknown>;
+		stopClient(clientId: string): void;
+		close(): void;
+	};
 	readEvaluationArtifact(clientId: string, query: unknown): unknown;
 	readEvaluationNative(clientId: string, query: unknown): Promise<unknown>;
 	onConversationChanged(handler: () => void): () => void;

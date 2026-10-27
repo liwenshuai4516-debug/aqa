@@ -12,12 +12,15 @@ import type { OfflineGuestSpec } from "./external-evaluation-guest-session.js";
 
 type Ref = { kind: string; id: string; revision: number };
 type RecordValue = Ref & { createdAt: string; data: any };
-interface ExecutionStore {
+export interface ExecutionStore {
 	identity(
 		context: object,
 		write?: boolean,
 	): {
 		domain: { principalId: string; workspaceId: string };
+		sessionIds?: string[];
+		human?: boolean;
+		allowWrite?: boolean;
 		allowExecution?: boolean;
 		reconciled?: boolean;
 	};

@@ -4021,6 +4021,26 @@ export class ClientSession {
 		}
 	}
 
+	/** Human offline controls share the conversation's execution restrictions; tool calls also
+	 * retain their original createPluginInvocation checks. Never fall back to the active tab.
+	 */
+	verifyEvaluationExecutionForPlugins(conversationId: string): void {
+		const target = this.convs.get(conversationId);
+		if (!target)
+			throw new EvidenceReadError("PERMISSION_DENIED", "Evaluation conversation is not owned by this client");
+		if (
+			target.planMode ||
+			target.delegateMode ||
+			this.goalReviewTurnOf(target.id) ||
+			(target.permissionPreset ?? this.settingsSvc.current.defaultPermissionPreset) === "read-only" ||
+			!presetAllowsPluginTools(target.agentPreset) ||
+			target.subagentBarsPluginTools ||
+			(this.settingsSvc.current.disabledPlugins ?? []).includes("agent-evaluation") ||
+			normalizeDisabledPluginTools(this.settingsSvc.current.disabledPluginTools).includes("agent_evaluation")
+		)
+			throw new EvidenceReadError("PERMISSION_DENIED", "Offline evaluation execution is disabled in this conversation");
+	}
+
 	/** Strict evaluation source: selected conversation only, no active/global fallback. */
 	readEvaluationEvidenceForPlugins(query: AgentEvaluationEvidenceQuery): AgentEvaluationEvidencePage {
 		const target = this.convs.get(query?.conversationId);

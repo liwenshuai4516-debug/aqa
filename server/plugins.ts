@@ -1,3 +1,5 @@
+import { OfflineEvaluationPort, type OfflineExecutionBinding } from "./external-evaluation-port.js";
+import type { ExecutionStore } from "./external-evaluation-execution.js";
 import { TestAssetReader, type TestEngine } from "./test-asset-reader.js";
 import { EvidenceReadError } from "./agent/evaluation-evidence.js";
 import { readEvaluationArtifact } from "./agent/evaluation-artifact.js";
@@ -428,6 +430,8 @@ export interface PluginHost {
 	getActiveConversation(options?: PluginConversationQuery): PluginConversationSnapshot | null;
 	/** Read selected raw public evidence. clientId must come from onMessage/from or a bound tool context. */
 	readEvaluationEvidence(clientId: string, query: AgentEvaluationEvidenceQuery): AgentEvaluationEvidencePage;
+	/** Fixed offline backend only; requires tools:offline-execution and an engine execution guard. */
+	createOfflineEvaluationExecution(store: ExecutionStore): OfflineEvaluationPort;
 	readEvaluationArtifact(clientId: string, query: AgentEvaluationArtifactQuery): AgentEvaluationArtifactSnapshot;
 	readEvaluationNative(
 		clientId: string,
@@ -2344,6 +2348,8 @@ export class PluginManager {
 	 *  #542：按 clientId 取「该标签页正在看的对话」；缺省回落「最近活跃的非子代理」。 */
 	conversationProvider: ((options?: PluginConversationQuery) => PluginConversationSnapshot | null) | undefined =
 		undefined;
+	/** Execution-side source/mode/settings guard. Missing engines fail closed. */
+	evaluationExecutionGuard: ((binding: OfflineExecutionBinding) => void) | undefined;
 	evaluationEvidenceProvider:
 		((clientId: string, query: AgentEvaluationEvidenceQuery) => AgentEvaluationEvidencePage) | undefined = undefined;
 
@@ -3899,6 +3905,30 @@ export class PluginManager {
 				if (!self.evaluationEvidenceProvider)
 					throw new EvidenceReadError("CAPABILITY_UNAVAILABLE", "This engine has no evaluation evidence provider");
 				return self.evaluationEvidenceProvider(clientId, query);
+			},
+			createOfflineEvaluationExecution: (store) => {
+				const verify = (binding: OfflineExecutionBinding) => {
+					if (info.id !== "agent-evaluation" || !permsDeclared.includes("tools:offline-execution") || !can("tools"))
+						throw new EvidenceReadError("PERMISSION_DENIED", "Separate fixed offline execution permission required");
+					if (!self.evaluationExecutionGuard)
+						throw new EvidenceReadError("CAPABILITY_UNAVAILABLE", "This engine has no offline execution guard");
+					self.evaluationExecutionGuard(binding);
+				};
+				if (info.id !== "agent-evaluation" || !permsDeclared.includes("tools:offline-execution") || !can("tools"))
+					throw new EvidenceReadError("PERMISSION_DENIED", "Separate fixed offline execution permission required");
+				const port = new OfflineEvaluationPort(store, self.dataDir, {
+					verify,
+					readSource: (clientId, conversationId) =>
+						host.readEvaluationEvidence(clientId, { conversationId, mode: "describe", limit: 1 }),
+					log: (message) => self.pushRuntimeDiag(info.id, message),
+				});
+				const disabled = (clientId: string) => port.stopClient(clientId);
+				clientDisabledHandlers.add(disabled);
+				effects.add("offlineEvaluation", () => {
+					port.close();
+					clientDisabledHandlers.delete(disabled);
+				});
+				return port;
 			},
 			readEvaluationArtifact: (clientId, query) => {
 				const scope = host.readEvaluationEvidence(clientId, {

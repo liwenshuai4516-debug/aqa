@@ -1,0 +1,64 @@
+{
+	"scope": "Reserved host port for fixed enrolled offline diagnostics, original execution-side guards and lifecycle; product execution UI/tool/skill not connected",
+	"status": "ENGINEERING_SUBSET_PASS; EC06_INCOMPLETE; M1_INCOMPLETE",
+	"baselineCommit": "d4838a2d799dcaf43ccc8d1a4c366bd07447ab0e",
+	"pluginVersion": "0.4.34",
+	"executionDate": "2026-10-26",
+	"finalizedDate": "2026-10-27",
+	"actualAgentCliCalls": 0,
+	"actualModelCalls": 0,
+	"fixedFakeCliCalls": 8,
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-26-ec06-host-port/index.json",
+		"files": 484,
+		"bytes": 191180,
+		"sha256": "58b56787d9ca021e0a82fe5d81078827e9952798d0fb0f2d36e9abea851afba9"
+	},
+	"runs": {
+		"node-initial": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-port-Hqc5yC/result.json",
+			"status": "PASS"
+		},
+		"electron-node-initial": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-port-neM08f/result.json",
+			"status": "PASS"
+		},
+		"node-final": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-port-Yc5nwb/result.json",
+			"status": "PASS"
+		},
+		"electron-node-final": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-port-OMx7ix/result.json",
+			"status": "PASS"
+		},
+		"desktop-original-product": {
+			"path": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-k6Ji4O/result.json",
+			"status": "PASS"
+		}
+	},
+	"validation": {
+		"typecheck": "PASS five configs on final code",
+		"build": "PASS serial build final code",
+		"newHostPortTests": "PASS 40 tests final code",
+		"relatedRegression": "PASS 29 files / 508 tests sequential; preceding parallel run 507 PASS, 1 original 5s timeout preserved",
+		"initialNewTestRuns": "1 test-fixture failure each: body read path, nonexistent preset name; corrected independently, assertions not weakened",
+		"nodeAndElectronNode": "PASS each initial and final; fixed fake CLI only, not desktop execution acceptance",
+		"desktop": "PASS actual Electron original diagnosis/import/long evidence/disabled-reload/native restart; two screenshots visually inspected",
+		"sourceCheck": "PASS 33 tracked plugin files exact source/actual desktop equality; 7 built host modules hashed",
+		"lint": "PASS",
+		"protocol": "PASS type-only/structure/v33; historical-tag heuristic SKIP",
+		"size": "PASS",
+		"diff": "PASS",
+		"clean": "preview only; zero deletion",
+		"processCheck": "2026-10-27 no task worker/test/desktop processes remaining"
+	},
+	"limits": [
+		"Product manifest does not request tools:offline-execution; original service/index/client/tool/skill have no execution actions yet",
+		"No full target-profile/product execution UI/tool/skill, artifact collection or EC07 verifier",
+		"No full desktop execution lifecycle, unified-store kill/stale-lock/resource fault matrix",
+		"Fresh host reload in same test process; not full app process restart or crash execution acceptance",
+		"Trusted fixed fake CLI only, macOS arm64/VZ; no precompiled backend distribution or personal installation change",
+		"EC04/M1 incomplete, AC39 last formal 0.4.32 FAIL; no new performance run",
+		"Real Agent CLI/model tests remain postponed by user"
+	]
+}

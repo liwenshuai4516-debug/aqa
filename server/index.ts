@@ -1567,6 +1567,7 @@ export interface EngineService {
 	/** 当前打开对话的快照（pi 引擎；dsh 引擎无此方法，插件回退空态）。
 	 *  #542：可带 `{clientId}` 取某标签页正在看的对话。 */
 	readConversationForPlugins?: ((options?: PluginConversationQuery) => PluginConversationSnapshot | null) | undefined;
+	verifyEvaluationExecutionForPlugins?: ((clientId: string, conversationId: string) => void) | undefined;
 	readEvaluationEvidenceForPlugins?:
 		((clientId: string, query: AgentEvaluationEvidenceQuery) => AgentEvaluationEvidencePage) | undefined;
 	/** 模型切换成功通知（#542；pi 引擎。dsh 引擎暂无——插件订不到事件但快照照旧可读）。 */
@@ -1768,6 +1769,14 @@ const service: EngineService = {
 			return ensureEngine(eng).readConversationForPlugins?.(options) ?? null;
 		}
 		return piServiceInstance?.readConversationForPlugins?.(options) ?? null;
+	},
+	verifyEvaluationExecutionForPlugins(clientId, conversationId) {
+		const engine = clientEngines.get(clientId);
+		if (!engine) throw new EvidenceReadError("PERMISSION_DENIED", "Evaluation client is unavailable");
+		const target = ensureEngine(engine);
+		if (!target.verifyEvaluationExecutionForPlugins)
+			throw new EvidenceReadError("CAPABILITY_UNAVAILABLE", "This engine has no offline execution guard");
+		target.verifyEvaluationExecutionForPlugins(clientId, conversationId);
 	},
 	readEvaluationEvidenceForPlugins(clientId, query) {
 		const engine = clientEngines.get(clientId);
@@ -2225,6 +2234,11 @@ for (const s of activeEngines()) wireEngineHooks(s);
 // 插件扩展点：当前打开对话的快照（轨迹视图直接显示打开对话的时间线；
 // dsh 引擎无此方法时回退 null，插件显示空态）。#542：透传 {clientId} 选本标签页的对话。
 pluginMgr.conversationProvider = (opts) => service.readConversationForPlugins?.(opts) ?? null;
+pluginMgr.evaluationExecutionGuard = ({ clientId, conversationId }) => {
+	if (!service.verifyEvaluationExecutionForPlugins)
+		throw new EvidenceReadError("CAPABILITY_UNAVAILABLE", "This engine has no offline execution guard");
+	service.verifyEvaluationExecutionForPlugins(clientId, conversationId);
+};
 pluginMgr.evaluationEvidenceProvider = (clientId, query) => {
 	if (!service.readEvaluationEvidenceForPlugins)
 		throw new EvidenceReadError("CAPABILITY_UNAVAILABLE", "This engine has no evaluation evidence provider");

@@ -484,3 +484,5 @@ EC06统一仓库接线：`server/external-evaluation-execution.ts`将固定离�
 EC06 离线资源单源：`plugins/agent-evaluation/runtime/` 随插件保存固定可信假 CLI、guest runner 与 Swift supervisor；测试不再依赖已移除的同名测试夹具。等待输入仅为该目标的自报状态，执行入口/安装登记仍待完成。
 
 EC06 显式后端登记：`server/external-evaluation-enrollment.ts` 管理私有、不可覆盖的固定离线资源登记，`scripts/enroll-agent-evaluation-runtime.mjs` 接收已签名 helper 和固定启动文件；读取不依赖临时测试路径，执行仍需宿主另授权限。产品执行入口尚待接线。
+
+EC06 宿主执行接口：`server/external-evaluation-port.ts` 经原 `PluginHost.createOfflineEvaluationExecution` 提供固定离线执行，原 SDK 会话/模式与工具 invocation 复验、临时 store 授权、宿主禁用/卸载取消；`tests/agent-evaluation-port-test.mjs` 验证真实宿主/VM和关闭仓库后的停止。产品 manifest/页面/工具/技能尚未开放，见[证据](agent-evaluation-evidence/EC06-port-diagnostics.json)。

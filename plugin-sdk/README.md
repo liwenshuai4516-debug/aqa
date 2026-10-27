@@ -194,3 +194,9 @@ export default definePlugin({
 ## 客户端禁用通知（SDK 0.1.6）
 
 `host.onClientDisabled((clientId) => { /* stop this client's active work */ })` 订阅当前插件的权威禁用状态，返回幂等注销函数。设置推送或恢复可能重复通知；处理应幂等，并保留其他客户端工作。宿主自动在插件卸载或激活失败时注销此订阅。该通知来自服务端设置，不通过可由插件发送的 events bus；它不授予新的读取或写入权限。旧宿主无此方法，依赖它的插件须在激活时检查并明确要求升级。
+
+### 固定离线评估宿主接口（保留能力）
+
+`host.createOfflineEvaluationExecution(store)` 仅供 `agent-evaluation` 的 `tools:offline-execution` 显式声明使用；普通 `tools` 不授权执行。调用前按宿主实际API做特性检查。原仓库authorizer保留自己的可信身份，未命中时查询返回port的`identity(context)`；不从参数构造执行或对账权限。`dispatch`接收原sender/选中会话/session及适用的原工具invocation，宿主再核对身份/模式/预设/禁用与固定管理员安装。只允许列明的假CLI诊断模式和有界argv/stdin/超时，不接受任意后端或命令路径。接口没有独立RPC或第二份仓库。
+
+工厂为port登记宿主禁用与卸载清理；`close`/`stopClient`先保存取消标记，不依赖已关闭store，未知运行由原runtime保留。状态查询可能追加revision，因此也受写入限制；恢复未知状态使用显式`offlineReconcile`，不能重放start。当前产品插件还未开放此声明及页面/工具/技能；这是EC06后续产品接线的宿主工程接口，不代表通用CLI支持。
