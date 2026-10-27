@@ -20,9 +20,9 @@
 
 ## 项目技能
 
-`.pi/skills/` 当前维护 `api-test-workflow`、`api-test-review`、`api-test-analyze`、`ui-testing-workflow` 四个真实技能目录。API 入口按需读取插件中的原技能；UI 入口读取已安装 `pi-ui-testing` 包的阶段说明。原版 8 个 UI 阶段技能仍由包登记，不另外维护副本。
+`.pi/skills/` 当前维护 `agent-evaluation`、`api-test-workflow`、`api-test-review`、`api-test-analyze`、`data-space-testing`、`ui-testing-workflow` 六个真实技能目录。Agent 评估入口按需读取插件中的唯一实现；API 入口按需读取插件中的原技能；UI 入口读取已安装 `pi-ui-testing` 包的阶段说明。原版 8 个 UI 阶段技能仍由包登记，不另外维护副本。
 
-Pi SDK 默认发现当前项目 `.pi/skills/`；本项目的非 Pi 磁盘发现也能读取四个入口。UI 包及原生 MCP 登记沿用 `npm run ui-testing:enable`，项目模式指向 `.pi/skills/ui-testing-workflow`，新应用级登记也使用此目录；旧 `capabilities/ui-testing/` 仅保留转接，已有登记继续兼容，重跑不会重复加载。不自动修改个人应用设置。已有项目配置中若仍显式登记旧 UI 入口，应移除该重复项再刷新；本工作区已处理。
+Pi SDK 默认发现当前项目 `.pi/skills/`；本项目的非 Pi 磁盘发现也能读取六个入口。UI 包及原生 MCP 登记沿用 `npm run ui-testing:enable`，项目模式指向 `.pi/skills/ui-testing-workflow`，新应用级登记也使用此目录；旧 `capabilities/ui-testing/` 仅保留转接，已有登记继续兼容，重跑不会重复加载。不自动修改个人应用设置。已有项目配置中若仍显式登记旧 UI 入口，应移除该重复项再刷新；本工作区已处理。
 
 执行 `npm ci` 后运行 `npm run install:e2e` 安装原 UI 包，再按需执行 `npm run ui-testing:enable`；Pi 会话执行 `/reload` 刷新技能。技能被发现不等于运行工具可用：API 仍需当前引擎加载 API testing 插件并授予原权限；UI 仍需原包依赖和测试 MCP。缺失时按现有技能报告阻塞，不改为直接 HTTP 或绕过执行门禁。正式业务测试仍受环境、数据和授权条件约束。
 

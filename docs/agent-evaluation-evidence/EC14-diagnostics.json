@@ -1,0 +1,63 @@
+{
+	"scope": "EC14 WaterMate isolated GUI observation setup",
+	"status": "ENGINEERING_READY; REAL_SCENARIOS_PARTIAL",
+	"executionDate": "2026-10-27",
+	"target": {
+		"product": "WaterMate",
+		"version": "1.0.0",
+		"platform": "macOS arm64",
+		"isolation": "fresh temporary user-data-dir; loopback CDP only"
+	},
+	"privacy": {
+		"personalProfileRead": false,
+		"authenticationRead": false,
+		"cookiesOrStorageExported": false,
+		"screenshotsArchived": false
+	},
+	"uiRuntime": {
+		"projectPackage": "pi-ui-testing 0.1.2",
+		"playwright": "1.62.1",
+		"status": "ready",
+		"note": "The system-level 0.1.0 doctor rejects the project-pinned 0.1.2 package; the project package schema, integration suite and Chromium checks passed."
+	},
+	"scenarios": [
+		{
+			"id": "observe",
+			"result": "pass",
+			"actualModelCalls": 0,
+			"businessRequests": 0,
+			"evidence": "Connected to one WaterMate 1.0.0 page through loopback CDP; textarea visible and send disabled before input."
+		},
+		{
+			"id": "input",
+			"result": "pass",
+			"actualModelCalls": 0,
+			"businessRequests": 0,
+			"evidence": "Keyboard input enabled send; explicit draft cleanup restored disabled send without submission."
+		},
+		{
+			"id": "non-loopback-cdp",
+			"result": "rejected",
+			"actualModelCalls": 0,
+			"businessRequests": 0,
+			"evidence": "The probe rejects a non-loopback CDP endpoint before any connection."
+		},
+		{
+			"id": "unarmed-submit",
+			"result": "rejected",
+			"actualModelCalls": 0,
+			"businessRequests": 0,
+			"evidence": "The probe rejects submit without WATERMATE_EC14_ALLOW_SUBMIT=1 before attaching to the target."
+		}
+	],
+	"engineeringChecks": {
+		"uiIntegration": "passed: 20 checks, zero model calls and zero business requests",
+		"uiRegistrationUnits": "passed: 10 tests",
+		"capabilityLayout": "passed: six project entries plus eight UI stage skills; Agent evaluation source reference resolves"
+	},
+	"remaining": [
+		"A formal native GUI execution adapter is not implemented in the Agent evaluation plugin.",
+		"Agent failure, manual business takeover, in-flight timeout recovery and independent read-only verification remain unexecuted.",
+		"WaterMate has no observable usage or hard cost limit; any submission remains subject to the existing three-submit soft limit and USD 0.25 alert."
+	]
+}

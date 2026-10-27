@@ -496,3 +496,5 @@ EC04 性能标准：`tests/fixtures/agent-evaluation/performance-policy.mjs` 只
 EC09：`server/evaluation-data-space.ts`为私有受控桥类型；`plugins/data-space/evaluation.mjs`为关系/索引事实源；`plugins/agent-evaluation/evaluators/data-space.mjs`、`project-sync.mjs`、`client/data-space.mjs`分别负责F03、同步账本和表单；测试夹具`tests/fixtures/agent-evaluation/data-space{,-desktop}.mjs`提供75条隔离入库与真实Electron验收，原入口加`--data-space`。详见[EC09](agent-evaluation-evidence/EC09.md)。
 
 EC10：`plugins/agent-evaluation/experiments.mjs`、`client/experiments.mjs`负责原执行器串行实验及表单；`tests/fixtures/agent-evaluation/experiments-desktop.mjs`由原桌面跑器`--experiments <installation>`验收。
+
+EC14 WaterMate 隔离 GUI 观察：`tests/watermate-ec14-gui-test.mjs`仅连接已启动、回环 CDP 的临时 WaterMate 1.0.0 profile；默认观察或草稿输入并清理，不提交任务。`submit`、`stop`需要显式环境开关，记录与未执行场景见[EC14](agent-evaluation-evidence/EC14.md)。

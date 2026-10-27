@@ -16,8 +16,12 @@ mkdirSync(project);
 mkdirSync(agentDir);
 cpSync(join(repo, ".pi/skills"), join(project, ".pi/skills"), { recursive: true });
 cpSync(join(repo, "plugins/api-testing/skills"), join(project, "plugins/api-testing/skills"), { recursive: true });
+cpSync(join(repo, "plugins/agent-evaluation/skills"), join(project, "plugins/agent-evaluation/skills"), {
+	recursive: true,
+});
 symlinkSync(join(repo, "node_modules"), join(project, "node_modules"), "junction");
 const expected = [
+	"agent-evaluation",
 	"api-test-analyze",
 	"api-test-review",
 	"api-test-workflow",
@@ -32,12 +36,12 @@ const loaded = loadSkills({
 	skillPaths: [join(project, "node_modules/pi-ui-testing/skills")],
 });
 assert.deepEqual(loaded.diagnostics, []);
-assert.equal(loaded.skills.length, 13);
+assert.equal(loaded.skills.length, 14);
 for (const name of expected) assert(loaded.skills.some((skill) => skill.name === name));
-checks.push("real SDK discovers five project entry skills and eight original UI stages without conflicts");
+checks.push("real SDK discovers six project entry skills and eight original UI stages without conflicts");
 const disk = discoverDiskSkills({ cwd: project, agentDir, includeHome: false });
 assert.deepEqual(disk.map((skill) => skill.name).sort(), expected);
-checks.push("host project directory discovery finds all five entry skills without personal skills");
+checks.push("host project directory discovery finds all six entry skills without personal skills");
 const tool = makeSkillTool({ listSkills: () => loaded.skills });
 for (const name of expected) {
 	const result = await tool.execute("layout-check", { name });

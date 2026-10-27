@@ -21,6 +21,7 @@ npm run test:ui:project  # 真浏览器打开本项目，验证初态、草稿�
 | `isolated-project.spec.ts` | 本项目的最小浏览器验收，不发送模型请求                                                                                                                  |
 | `playwright.config.mjs`    | 单 worker、零重试、禁止 only、复用 Chrome 探测，失败 trace/截图及独立 JSON 报告                                                                         |
 | `parent-watch.mjs`         | 所属父进程管道关闭时终止自身服务，防止强杀测试进程后遗留监听                                                                                            |
+| `watermate-ec14.md`        | 已启动的隔离 WaterMate 窗口的手动 CDP 观察入口；默认不提交任务                                                                                          |
 
 ## 范围、身份与数据
 
