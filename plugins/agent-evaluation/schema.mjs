@@ -85,7 +85,17 @@ const choice = (...values) => T.Union(values.map((v) => T.Literal(v)));
 const obj = (fields) => T.Object(fields, { additionalProperties: false });
 const list = (item, maxItems = 1000) => T.Array(item, { maxItems });
 const optional = T.Optional;
-export const KINDS = ["contracts", "targets", "attempts", "evidence", "snapshots", "evaluations", "reviews"];
+export const KINDS = [
+	"contracts",
+	"targets",
+	"attempts",
+	"evidence",
+	"snapshots",
+	"evaluations",
+	"reviews",
+	"datasets",
+	"experiments",
+];
 export const Ref = obj({ kind: choice(...KINDS), id: uuid, revision: integer });
 const ref = (kind) => obj({ kind: T.Literal(kind), id: uuid, revision: integer });
 export const Domain = obj({ principalId: str, workspaceId: str });
@@ -177,6 +187,62 @@ export const schemas = {
 		environmentRefs: list(str),
 		provenance: str,
 		evaluationSubject: choice("agent-task", "client-software"),
+	}),
+	datasets: obj({
+		name: str,
+		previousDatasetRef: optional(ref("datasets")),
+		confirmed: T.Literal(true),
+		runtimeDigest: hash,
+		rulesDigest: hash,
+		initialState: T.Literal("fresh-pinned-ram"),
+		cases: T.Array(
+			obj({
+				id: T.String({ pattern: "^[A-Za-z0-9_-]{1,64}$" }),
+				title: str,
+				contractRef: ref("contracts"),
+				argv: T.Array(T.String({ maxLength: 1024 }), { minItems: 1, maxItems: 16 }),
+				stdin: T.String({ maxLength: 65536 }),
+				configs: T.Record(str, T.Unknown()),
+			}),
+			{ minItems: 1, maxItems: 5 },
+		),
+	}),
+	experiments: obj({
+		datasetRef: ref("datasets"),
+		policy: obj({
+			repetitions: T.Integer({ minimum: 1, maximum: 5 }),
+			retries: T.Integer({ minimum: 0, maximum: 2 }),
+			failurePolicy: choice("stop", "continue"),
+			maxAttempts: T.Integer({ minimum: 1, maximum: 40 }),
+			timeoutMs: T.Integer({ minimum: 1000, maximum: 30000 }),
+			totalMs: T.Integer({ minimum: 1000, maximum: 600000 }),
+			maxModelCalls: T.Literal(0),
+			necessaryEvidence: T.Literal("stop-on-unknown"),
+		}),
+		state: choice("queued", "running", "blocked", "completed", "stopped"),
+		cursor: T.Integer({ minimum: 0, maximum: 25 }),
+		startedAt: optional(str),
+		deadlineAt: optional(str),
+		reason: optional(str),
+		entries: T.Array(
+			obj({
+				slot: T.Integer({ minimum: 0, maximum: 24 }),
+				timeoutMs: T.Integer({ minimum: 1000, maximum: 30000 }),
+				caseId: str,
+				retry: T.Integer({ minimum: 0, maximum: 2 }),
+				phase: choice("preparing", "starting", "collecting", "finished"),
+				attemptRef: optional(ref("attempts")),
+				snapshotRef: optional(ref("snapshots")),
+				evaluationRef: optional(ref("evaluations")),
+				startedAt: str,
+				endedAt: optional(str),
+				outcome: optional(choice("pass", "fail", "inconclusive")),
+				launched: optional(T.Boolean()),
+				executionState: optional(str),
+				error: optional(str),
+			}),
+			{ maxItems: 40 },
+		),
 	}),
 	targets: obj({
 		kind: choice("pi", "cli", "offline"),
@@ -336,6 +402,13 @@ export function validateDomain(value) {
 }
 export function references(kind, data) {
 	switch (kind) {
+		case "datasets":
+			return [data.previousDatasetRef, ...data.cases.map((c) => c.contractRef)].filter(Boolean);
+		case "experiments":
+			return [
+				data.datasetRef,
+				...data.entries.flatMap((e) => [e.attemptRef, e.snapshotRef, e.evaluationRef]).filter(Boolean),
+			];
 		case "attempts":
 			return [data.contractRef, data.targetRef, data.parentAttemptRef, data.previousAttemptRef].filter(Boolean);
 		case "evidence":

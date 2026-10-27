@@ -1,0 +1,191 @@
+{
+	"scope": "EC10 fixed offline serial experiments; equivalent EC06/EC07 prerequisite per plan 14.1",
+	"status": "PASS_FIXED_OFFLINE_EC10; REAL_CLIENT_EXPERIMENTS_UNVERIFIED",
+	"executionDate": "2026-10-27",
+	"baselineCommit": "ee0fa0fa33b38d8170b54d1c6040348577448ed9",
+	"pluginVersion": "0.4.38",
+	"environment": {
+		"os": "macOS-26.6.2-arm64-arm-64bit",
+		"node": "v23.10.0",
+		"desktop": "actual native Electron, isolated userData/agentDir/dataDir, bundled SDK, no model provider",
+		"backend": "fixed VZ Linux RAM-only guest, no network/disks/shares/vsock"
+	},
+	"actualAgentClientCalls": 0,
+	"actualModelCalls": 0,
+	"finalFixedVmStarts": 8,
+	"finalConfirmedGuestStarts": 8,
+	"allAttemptOutcomes": {
+		"pass": 3,
+		"fail": 2,
+		"inconclusive": 3
+	},
+	"costsUsd": {
+		"target": 0,
+		"verifier": 0,
+		"scorer": 0,
+		"basis": "Fixed offline executable; independent deterministic verifier and scorer; no paid transport or model."
+	},
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec10-experiments/index.json",
+		"sha256": "ed028e01b5219b36121b8d8f034f1c910e045dc86ff1409fcb8e2b212053ef59",
+		"files": 2824,
+		"bytes": 35206831
+	},
+	"runs": [
+		{
+			"name": "ec10-desktop-1",
+			"status": "FAIL",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-HYVhLo"
+		},
+		{
+			"name": "ec10-desktop-2",
+			"status": "FAIL",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-a8B4tc"
+		},
+		{
+			"name": "ec10-desktop-3",
+			"status": "FAIL",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-rzJQ4V"
+		},
+		{
+			"name": "ec10-desktop-4",
+			"status": "FAIL",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-mLEQxV"
+		},
+		{
+			"name": "ec10-desktop-5",
+			"status": "FAIL",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-jw3MMo"
+		},
+		{
+			"name": "ec10-desktop-6",
+			"status": "FAIL",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-F35krk"
+		},
+		{
+			"name": "ec10-desktop-7",
+			"status": "PASS",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-CF6Moy"
+		},
+		{
+			"name": "ec10-desktop-final",
+			"status": "PASS",
+			"output": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-wupzKL"
+		}
+	],
+	"scenarios": [
+		{
+			"scenario": "repeated",
+			"experimentRef": {
+				"kind": "experiments",
+				"id": "7b017af3-0367-41da-9049-a60b7c9968e5",
+				"revision": 15
+			},
+			"state": "completed",
+			"reason": "serial-plan-finished",
+			"attempts": 2,
+			"outcomes": ["pass", "pass"]
+		},
+		{
+			"scenario": "failed",
+			"experimentRef": {
+				"kind": "experiments",
+				"id": "2ff75891-ef07-48c8-bd9c-5797c7fe437e",
+				"revision": 14
+			},
+			"state": "stopped",
+			"reason": "failure-policy",
+			"attempts": 2,
+			"outcomes": ["fail", "fail"]
+		},
+		{
+			"scenario": "max",
+			"experimentRef": {
+				"kind": "experiments",
+				"id": "d3b695b6-1528-4c18-9d0d-561c4b35db7c",
+				"revision": 9
+			},
+			"state": "stopped",
+			"reason": "attempt-budget-exhausted",
+			"attempts": 1,
+			"outcomes": ["pass"]
+		},
+		{
+			"scenario": "budget",
+			"experimentRef": {
+				"kind": "experiments",
+				"id": "30f424ea-4d78-43c8-ac17-088f9bc33a1f",
+				"revision": 8
+			},
+			"state": "stopped",
+			"reason": "total-budget-exhausted",
+			"attempts": 1,
+			"outcomes": ["inconclusive"]
+		},
+		{
+			"scenario": "cancelled",
+			"experimentRef": {
+				"kind": "experiments",
+				"id": "afcc2e17-d66e-4659-8d96-001bbd10b239",
+				"revision": 9
+			},
+			"state": "stopped",
+			"reason": "user-cancelled",
+			"attempts": 1,
+			"outcomes": ["inconclusive"]
+		},
+		{
+			"scenario": "native-restart",
+			"experimentRef": {
+				"kind": "experiments",
+				"id": "915ddd31-d4a2-49c6-8171-72091034759f",
+				"revision": 9
+			},
+			"state": "blocked",
+			"reason": "necessary-evidence-unconfirmed",
+			"attempts": 1,
+			"outcomes": ["inconclusive"],
+			"sameAttemptPreserved": true,
+			"noReplay": true
+		}
+	],
+	"verification": {
+		"unit": {
+			"files": 28,
+			"tests": 456,
+			"status": "PASS"
+		},
+		"typecheck": "PASS_ALL_FIVE_CONFIGS",
+		"build": "PASS_WEB_SERVER_DSH_AND_DESKTOP",
+		"lint": "PASS_ROOT_AND_TARGETED_PLUGIN_FILES",
+		"protocol": "PASS_STRUCTURE_AND_V33; TAG_HEURISTIC_SKIP_NO_TAG",
+		"size": "PASS",
+		"clean": "PREVIEW_ZERO_ITEMS_ZERO_DELETIONS",
+		"diff": "PASS",
+		"nativeUI": "PASS_EN_ZH_NARROW_NO_OVERFLOW; plugin/skill/tools/slash/reload/disable/enable/restart",
+		"performance": {
+			"policy": "ec04-batch-v2",
+			"status": "PASS_3_OF_3_FIXED_BATCH_WORKLOADS",
+			"wallDeltaMs": {
+				"serial": 70.08291600000007,
+				"parallel": 133.75070800000006,
+				"long": 465.72925
+			},
+			"legacy50msStretch": "FAIL_3_OF_3_RETAINED",
+			"note": "Fixed historical batch fixture, with desktop diagnostics also active. Does not establish live Agent overhead."
+		}
+	},
+	"notExecuted": [
+		"Real Pi/WaterMate/client/model experiments",
+		"Arbitrary CLI/network/credentials or paid hard-cost enforcement",
+		"Windows/Linux/macOS x64 and signed distribution",
+		"EC11 second-client comparison"
+	],
+	"limits": [
+		"UI freezes one case per dataset; service supports at most five cases.",
+		"Explicit recovery only; no background auto-resume or distributed execution.",
+		"Unknown execution/cleanup or required evidence blocks later attempts; inconclusive is not a business pass.",
+		"Hard monetary and target-output caps are rejected; raw log 64KiB is retention only.",
+		"Equivalent fixed offline prerequisite does not change EC08 real CLI status."
+	]
+}

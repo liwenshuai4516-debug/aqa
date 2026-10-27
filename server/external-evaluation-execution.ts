@@ -225,6 +225,7 @@ export class ExternalEvaluationExecution {
 			state: attempt.data.state,
 			environmentState: raw.state,
 			stopConfirmed: raw.stopConfirmed,
+			noEnvironmentStarted: raw.noEnvironmentStarted === true,
 			logCursors: raw.logCursors ?? (raw.guest as any)?.logCursors ?? null,
 		};
 	}

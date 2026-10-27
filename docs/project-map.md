@@ -198,3 +198,5 @@ EC07 固定产物核验：`server/external-evaluation-artifacts.ts` 建立有界
 EC04 性能验收入口：`tests/agent-evaluation-performance-test.mjs` 与 `tests/fixtures/agent-evaluation/performance-policy.mjs` 维护固定历史批量采集的版本化预算，保留旧参考线；边界回归见同名 policy 单测，[评审](agent-evaluation-evidence/EC04-performance-gate-review.md)说明适用范围及授权。
 
 EC09 数据空间接入：`server/evaluation-data-space.ts`定义私有桥接类型，原PluginManager与引擎守卫绑定主体/会话/工作区和专用索引权限；`plugins/data-space/evaluation.mjs`持有关系回查与报告索引，`plugins/agent-evaluation/evaluators/data-space.mjs`实现F03，`project-sync.mjs`维护不可变同步账本，`client/data-space.mjs`提供选择/回执状态；不引入用例导入或结果runner。验收见[EC09](agent-evaluation-evidence/EC09.md)。
+
+EC10：`plugins/agent-evaluation/experiments.mjs`复用原执行port/store/engine进行冻结数据集和串行调度，`client/experiments.mjs`提供人工确认/预算/恢复入口；原schema/store新增datasets与experiments，未引入新runner。

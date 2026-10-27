@@ -26,7 +26,7 @@ export function enrollDesktopExecution(repo, dataDir, installation) {
 	assert.equal(child.status, 0, child.stderr || child.error?.message);
 	return JSON.parse(child.stdout);
 }
-function connection(page, until) {
+export function connection(page, until) {
 	return async (action, extra = {}, expectedError) => {
 		const requestId = crypto.randomUUID();
 		await page.evaluate(

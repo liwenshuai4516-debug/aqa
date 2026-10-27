@@ -414,9 +414,17 @@ export class EvaluationStore {
 		}
 		return refs.map((ref) => this.get(context, ref, new Set(), budget));
 	}
+	latest(context, reference) {
+		this.get(context, reference);
+		const found = [...this.index.values()]
+			.filter((e) => e.ref.kind === reference.kind && e.ref.id === reference.id)
+			.sort((a, b) => b.ref.revision - a.ref.revision)[0];
+		return this.get(context, found.ref);
+	}
+
 	list(
 		context,
-		{ kind = "contracts", cursor = "", limit = 50 } = {},
+		{ kind = "contracts", cursor = "", limit = 50, latestOnly = false } = {},
 		project = (record, _read) => ({ ...recordRef(record), createdAt: record.createdAt, digest: record.digest }),
 		accept = undefined,
 	) {
@@ -440,8 +448,19 @@ export class EvaluationStore {
 			"INVALID_INPUT",
 			"Invalid page request",
 		);
+		const latest = new Map();
+		if (latestOnly)
+			for (const e of this.index.values()) {
+				if (e.ref.kind === kind && e.ref.revision > (latest.get(e.ref.id) ?? 0)) latest.set(e.ref.id, e.ref.revision);
+			}
 		const items = [],
-			keys = [...this.index.keys()].filter((k) => k.startsWith(`${kind}/`) && k > cursor).sort();
+			keys = [...this.index.keys()]
+				.filter((k) => {
+					if (!k.startsWith(`${kind}/`) || k <= cursor) return false;
+					const r = this.index.get(k).ref;
+					return !latestOnly || latest.get(r.id) === r.revision;
+				})
+				.sort();
 		let last = cursor;
 		const started = performance.now();
 		for (const k of keys) {
@@ -593,7 +612,7 @@ export class EvaluationStore {
 			revision = 1;
 		if (previousRef) {
 			requireValue(
-				["contracts", "targets", "attempts"].includes(kind),
+				["contracts", "targets", "attempts", "experiments"].includes(kind),
 				"VERSION_CONFLICT",
 				"Sealed records are immutable; create a new object",
 			);
@@ -607,6 +626,13 @@ export class EvaluationStore {
 			);
 			id = previous.id;
 			revision = previous.revision + 1;
+			if (kind === "experiments") {
+				requireValue(
+					same(previous.data.datasetRef, data.datasetRef) && same(previous.data.policy, data.policy),
+					"VERSION_CONFLICT",
+					"Experiment configuration is immutable",
+				);
+			}
 			if (kind === "attempts") {
 				const {
 					state: oldState,
@@ -877,6 +903,32 @@ export class EvaluationStore {
 		return structuredClone(result);
 	}
 	validateRelations(kind, data, read) {
+		if (kind === "experiments") {
+			const dataset = read(data.datasetRef);
+			for (const entry of data.entries) {
+				const c = dataset.data.cases[entry.slot % dataset.data.cases.length];
+				requireValue(c?.id === entry.caseId, "VERSION_CONFLICT", "Experiment case identity differs");
+				if (entry.attemptRef)
+					requireValue(
+						same(read(entry.attemptRef).data.contractRef, c.contractRef),
+						"VERSION_CONFLICT",
+						"Attempt contract differs from dataset",
+					);
+				if (entry.snapshotRef)
+					requireValue(
+						entry.attemptRef && read(entry.snapshotRef).data.attemptRefs.some((r) => r.id === entry.attemptRef.id),
+						"VERSION_CONFLICT",
+						"Snapshot attempt differs",
+					);
+				if (entry.evaluationRef)
+					requireValue(
+						entry.snapshotRef && same(read(entry.evaluationRef).data.snapshotRef, entry.snapshotRef),
+						"VERSION_CONFLICT",
+						"Report snapshot differs",
+					);
+			}
+		}
+
 		if (kind === "attempts") {
 			const contract = read(data.contractRef);
 			if (contract.data.scope.source === "offline")

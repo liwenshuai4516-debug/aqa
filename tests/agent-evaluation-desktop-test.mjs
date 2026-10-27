@@ -1,3 +1,8 @@
+import {
+	verifyExperiments,
+	beginExperimentsRestart,
+	reopenExperiments,
+} from "./fixtures/agent-evaluation/experiments-desktop.mjs";
 import { installDataSpace, verifyDataSpace, reopenDataSpace } from "./fixtures/agent-evaluation/data-space-desktop.mjs";
 /** Real Electron, isolated data and seeded SDK history; optional fixed offline CLI, never a model. */
 import assert from "node:assert/strict";
@@ -38,7 +43,8 @@ import {
 	beginDesktopExecutionRestart,
 	reopenDesktopExecution,
 } from "./fixtures/agent-evaluation/offline-execution.mjs";
-const executionIndex = process.argv.indexOf("--offline-execution");
+const experimentsIndex = process.argv.indexOf("--experiments");
+const executionIndex = experimentsIndex >= 0 ? experimentsIndex : process.argv.indexOf("--offline-execution");
 const executionInstallation = executionIndex >= 0 ? process.argv[executionIndex + 1] : undefined;
 assert.ok(
 	executionIndex < 0 || (executionInstallation && !executionInstallation.startsWith("--")),
@@ -288,12 +294,12 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.37" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.38" && p.active),
 			),
 		),
 	);
 	result.checks.push(
-		"Real app loads plugin 0.4.37 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Real app loads plugin 0.4.38 in explicitly registered app directories; seeded SDK history opened without a model prompt",
 	);
 	stage("settings and slash discovery");
 	const settings = async (tab) => {
@@ -368,7 +374,7 @@ try {
 							f.plugins.some(
 								(p) =>
 									p.id === "agent-evaluation" &&
-									p.version === "0.4.37" &&
+									p.version === "0.4.38" &&
 									p.agentTools?.some((tool) => tool.name === "agent_evaluation"),
 							),
 					),
@@ -385,7 +391,7 @@ try {
 	await candidate.waitFor();
 	await input.fill("");
 	result.checks.push(
-		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.37; skill, slash discovery and tool registration remain enabled",
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.38; skill, slash discovery and tool registration remain enabled",
 	);
 	stage("product diagnosis flow");
 	const openView = async () => {
@@ -853,7 +859,12 @@ try {
 		);
 	}
 
-	if (executionEnrollment) {
+	if (experimentsIndex >= 0) {
+		stage("EC10 native serial experiments");
+		result.experiments = await verifyExperiments({ page, until, output, dataDir, original, openView });
+		result.fixedFakeCliCalls += result.experiments.fixedFakeCliCalls;
+	}
+	if (executionEnrollment && experimentsIndex < 0) {
 		stage("actual native fixed offline execution matrix");
 		result.offlineExecution = await verifyDesktopExecution({
 			page,
@@ -944,9 +955,14 @@ try {
 	const interruptedJob = activeJobProbe
 		? await beginInterruptedJob({ page, until, output, probe: activeJobProbe, original, reports, dataDir })
 		: undefined;
-	const pendingExecution = executionEnrollment
-		? await beginDesktopExecutionRestart({ page, until, dataDir, original })
-		: undefined;
+	if (result.experiments) {
+		await beginExperimentsRestart({ page, until, result: result.experiments, output });
+		result.fixedFakeCliCalls++;
+	}
+	const pendingExecution =
+		executionEnrollment && experimentsIndex < 0
+			? await beginDesktopExecutionRestart({ page, until, dataDir, original })
+			: undefined;
 	if (pendingExecution) result.fixedFakeCliCalls++;
 	await writeFile(join(output, "app-first-process.log"), app.getLogs());
 	await app.close();
@@ -1003,7 +1019,7 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.37" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.38" && p.active),
 			),
 		),
 	);
@@ -1022,7 +1038,7 @@ try {
 	assert.equal(await skill().getByRole("switch").getAttribute("aria-checked"), "true");
 	await closeSettings();
 	result.checks.push(
-		"Graceful real Electron exit and a second native process load plugin 0.4.37 and preserve enabled skill/plugin registration",
+		"Graceful real Electron exit and a second native process load plugin 0.4.38 and preserve enabled skill/plugin registration",
 	);
 	result.checks.push(
 		"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",
@@ -1092,6 +1108,12 @@ try {
 		historySnapshots = await names("snapshots");
 		await page.locator('.aev [data-action="open"][data-id="' + original.id + '"]:not([disabled])').click();
 		await page.locator(".aev article h3").first().waitFor();
+	}
+	if (result.experiments) {
+		result.experimentsRestart = await reopenExperiments({ page, until, dataDir, result: result.experiments, output });
+		historyAttempts = await names("attempts");
+		historySnapshots = await names("snapshots");
+		historyReports = await names("evaluations");
 	}
 	stage("reveal the SDK source message in the actual desktop");
 	const sourceFinding = page.locator(".aev article").filter({ has: page.locator("h3", { hasText: "F08" }) });

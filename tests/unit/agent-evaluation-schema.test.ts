@@ -60,13 +60,41 @@ describe("bundled schema acceleration", () => {
 			);
 		}
 	});
-	it("matches interpreter decisions for all seven persisted kinds and nested malformed values", async () => {
+	it("matches interpreter decisions for all persisted kinds and nested malformed values", async () => {
 		const f = engineFixture({ rules: [F06] });
 		try {
 			const report = await f.engine.evaluate(f.context, f.args);
 			const samples: Record<string, any> = {};
 			for (const kind of Object.keys(schemas)) {
-				if (kind === "reviews")
+				if (kind === "datasets")
+					samples[kind] = {
+						name: "fixed",
+						confirmed: true,
+						runtimeDigest: "a".repeat(64),
+						rulesDigest: "b".repeat(64),
+						initialState: "fresh-pinned-ram",
+						cases: [
+							{ id: "case", title: "case", contractRef: ref(f.contract), argv: ["echo"], stdin: "", configs: {} },
+						],
+					};
+				else if (kind === "experiments")
+					samples[kind] = {
+						datasetRef: { kind: "datasets", id: f.contract.id, revision: 1 },
+						policy: {
+							repetitions: 1,
+							retries: 0,
+							maxAttempts: 1,
+							timeoutMs: 1000,
+							totalMs: 2000,
+							maxModelCalls: 0,
+							necessaryEvidence: "stop-on-unknown",
+							failurePolicy: "stop",
+						},
+						state: "queued",
+						cursor: 0,
+						entries: [],
+					};
+				else if (kind === "reviews")
 					samples[kind] = {
 						evaluationRef: ref(report),
 						findingId: "fixture",

@@ -1,3 +1,4 @@
+import { experimentsHtml, experimentAction } from "./experiments.mjs";
 import { dataSpaceHtml } from "./data-space.mjs";
 import { offlineHtml as executionHtml, offlineAttemptsHtml } from "./offline.mjs";
 import { transport } from "./transport.mjs";
@@ -28,7 +29,7 @@ export default {
 			reviews = [],
 			jobs,
 			job;
-		let draft, revision, observation, configuration, upload, execution, offlineAttempts, projectData;
+		let draft, revision, observation, configuration, upload, execution, offlineAttempts, projectData, experiments;
 		let view = "records",
 			error = "",
 			notice = "",
@@ -45,6 +46,9 @@ export default {
 		const field = (key, content) => `<div><span class="muted">${esc(t(key))}</span><p>${content}</p></div>`;
 		function render() {
 			if (closed) return;
+			for (const f of root.querySelectorAll('form[data-form="dataset"],form[data-form="experiment"]')) {
+				if (experiments) experiments.form = { ...experiments.form, ...Object.fromEntries(new FormData(f)) };
+			}
 			const offlineForm = root.querySelector("form[data-form=offline-execution]");
 			if (execution && offlineForm) execution.form = Object.fromEntries(new FormData(offlineForm));
 			const projectForm = root.querySelector('form[data-form="data-space"]');
@@ -56,14 +60,14 @@ export default {
 				const values = new FormData(importForm);
 				upload.form = { ...Object.fromEntries(values), trajectories: values.getAll("trajectory") };
 			}
-			root.innerHTML = `<style>${CSS}</style><header><div><h1>${esc(t("title"))}</h1><p class="muted">${esc(t(view === "detail" ? "detail" : "records"))}</p></div><div class="actions">${view !== "records" ? button("back", "back") : button("refresh", "refresh")}${view === "records" ? button("import", "import", !source ? "disabled" : "") : ""}${view === "records" ? button("new", "new", `class="primary" ${!source?.choices.length ? "disabled" : ""}`) : ""}</div></header><div role="alert" tabindex="-1">${esc(error)}</div><div class="status" role="status" aria-live="polite">${esc(busy ? t("loading") : notice)}</div>${observation && !configuration ? observationHtml() : ""}${executionHtml(execution, { t, esc, button, badge })}<main>${view === "import" ? importHtml() : view === "new" ? newHtml() : view === "detail" ? detailHtml() : recordsHtml()}</main>`;
+			root.innerHTML = `<style>${CSS}</style><header><div><h1>${esc(t("title"))}</h1><p class="muted">${esc(t(view === "detail" ? "detail" : "records"))}</p></div><div class="actions">${view !== "records" ? button("back", "back") : button("refresh", "refresh")}${view === "records" ? button("import", "import", !source ? "disabled" : "") : ""}${view === "records" ? button("new", "new", `class="primary" ${!source?.choices.length ? "disabled" : ""}`) : ""}</div></header><div role="alert" tabindex="-1">${esc(error)}</div><div class="status" role="status" aria-live="polite">${esc(busy ? t("loading") : notice)}</div>${observation && !configuration ? observationHtml() : ""}${executionHtml(execution, { t, esc, button, badge })}${experimentsHtml(experiments, { t, esc, button })}<main>${view === "import" ? importHtml() : view === "new" ? newHtml() : view === "detail" ? detailHtml() : recordsHtml()}</main>`;
 			if (busy)
 				root.querySelectorAll("button:not([data-action=back])").forEach((b) => {
 					b.disabled = true;
 				});
 		}
 		function recordsHtml() {
-			return `<p class="muted">${esc(t("hint"))}</p>${source ? `<p>${esc(source.sourceId)} · ${esc(source.clientVersion ?? t("unknown"))}</p>` : `<p>${esc(t("noSource"))}</p>`}${job ? jobHtml() : ""}<div class="actions">${button("jobs", "scoringJobs", !source ? "disabled" : "")}${button("offline-attempts", "findOfflineAttempts", !source ? "disabled" : "")}</div>${offlineAttemptsHtml(offlineAttempts, { t, esc, button, badge })}${jobs ? jobsHtml() : ""}${!page.items.length ? `<section class="empty">${esc(t("empty"))}</section>` : `<section class="table-wrap"><table><thead><tr>${["range", "source", "execution", "goal", "coverage", "updated"].map((k) => `<th scope="col">${esc(t(k))}</th>`).join("")}</tr></thead><tbody>${page.items.map((r, i) => `<tr><td><p>${esc(r.objectivePreview)}</p><small>${r.taskRange?.source === "offline" ? esc(t("offline")) : `${esc(r.taskRange?.startMessageId)} → ${esc(r.taskRange?.endMessageId)}`}</small><p>${button("open", "open", `data-index="${i}" data-id="${esc(r.id)}"`)}</p></td><td>${esc(r.targetKind === "cli" ? t("offlineDiagnostic") : r.taskRange?.source === "offline" ? t("offline") : "Pi SDK")}<br>${esc(r.sourceVersion ?? t("unknown"))}</td><td>${badge(r.executionState)}<br><small>${esc(t("scoringState"))}</small> ${badge(r.state)}<br>${badge(r.assessmentStage)}</td><td>${badge(r.summary?.goal)}<br>${badge(r.summary?.deliveryVerdict)}</td><td>${r.summary?.counts?.coverage == null ? esc(t("unknown")) : `${Math.round(r.summary.counts.coverage * 100)}%`}<br>${esc(t(r.evidenceCoverage ?? "unknown"))}</td><td>${esc(r.createdAt)}</td></tr>`).join("")}</tbody></table></section>`}<div class="actions">${button("first", "first")}${page.nextCursor ? button("next", "next") : ""}</div>`;
+			return `<p class="muted">${esc(t("hint"))}</p>${source ? `<p>${esc(source.sourceId)} · ${esc(source.clientVersion ?? t("unknown"))}</p>` : `<p>${esc(t("noSource"))}</p>`}${job ? jobHtml() : ""}<div class="actions">${button("experiments", "experiments", !source ? "disabled" : "")}${button("jobs", "scoringJobs", !source ? "disabled" : "")}${button("offline-attempts", "findOfflineAttempts", !source ? "disabled" : "")}</div>${offlineAttemptsHtml(offlineAttempts, { t, esc, button, badge })}${jobs ? jobsHtml() : ""}${!page.items.length ? `<section class="empty">${esc(t("empty"))}</section>` : `<section class="table-wrap"><table><thead><tr>${["range", "source", "execution", "goal", "coverage", "updated"].map((k) => `<th scope="col">${esc(t(k))}</th>`).join("")}</tr></thead><tbody>${page.items.map((r, i) => `<tr><td><p>${esc(r.objectivePreview)}</p><small>${r.taskRange?.source === "offline" ? esc(t("offline")) : `${esc(r.taskRange?.startMessageId)} → ${esc(r.taskRange?.endMessageId)}`}</small><p>${button("open", "open", `data-index="${i}" data-id="${esc(r.id)}"`)}</p></td><td>${esc(r.targetKind === "cli" ? t("offlineDiagnostic") : r.taskRange?.source === "offline" ? t("offline") : "Pi SDK")}<br>${esc(r.sourceVersion ?? t("unknown"))}</td><td>${badge(r.executionState)}<br><small>${esc(t("scoringState"))}</small> ${badge(r.state)}<br>${badge(r.assessmentStage)}</td><td>${badge(r.summary?.goal)}<br>${badge(r.summary?.deliveryVerdict)}</td><td>${r.summary?.counts?.coverage == null ? esc(t("unknown")) : `${Math.round(r.summary.counts.coverage * 100)}%`}<br>${esc(t(r.evidenceCoverage ?? "unknown"))}</td><td>${esc(r.createdAt)}</td></tr>`).join("")}</tbody></table></section>`}<div class="actions">${button("first", "first")}${page.nextCursor ? button("next", "next") : ""}</div>`;
 		}
 		function observationHtml() {
 			return `<section data-observation><h2>${esc(t("observation"))} · ${esc(t(observation.state ?? "observing"))}</h2><p>${esc(t("observationHint"))}</p><p>${esc(observation.range)} · ${esc(t("evidence"))}: ${observation.latest?.evidenceCount ?? 0} · ${esc(t("gaps"))}: ${observation.latest?.gapCount ?? 0}</p><p>${esc(observation.error?.message ?? observation.lastError?.message ?? "")}</p><div class="actions">${button("watch-status", "checkObservation")}${observation.state !== "stopped" ? button("watch-stop", "stopObservation") : button("watch-dismiss", "dismissObservation")}${observation.latest?.checkpointRef ? button("watch-score", "scoreObservation") : ""}</div></section>`;
@@ -122,7 +126,7 @@ export default {
 			if (configuration)
 				return `<form data-form="configuration"><section><h2>${esc(t("configureRules"))}</h2><p>${esc(t("configureSnapshotHint"))}</p><p>${esc(configuration.contract.data.objective)}</p><p>${esc(report.id)} · ${esc(snapshot.id)}</p></section>${configurationHtml(configuration.configs, [...configuration.contract.data.conditions, ...configuration.contract.data.constraints], t, esc)}<div class="actions"><button type="submit" class="primary">${esc(t("saveConfiguration"))}</button>${button("discard-configuration", "discardRevision")}</div></form>`;
 			const d = report.data;
-			return `<section><h2>${esc(contract.data.objective)}</h2><div class="grid">${field("source", esc(targetKind === "cli" ? t("offlineDiagnostic") : contract.data.scope.source === "offline" ? t("offline") : "Pi SDK"))}${field("summary", badge(d.summary.deliveryVerdict))}${field("goal", badge(d.summary.goal))}${field("scoringState", badge(d.state))}${field("stage", badge(d.assessmentStage))}${field("coverage", badge(snapshot.data.coverage))}</div><p>${contract.data.scope.source === "offline" ? esc(t("offline")) : `${esc(contract.data.scope.startMessageId)} → ${esc(contract.data.scope.endMessageId)}`}</p><small>${esc(report.id)} · r${report.revision} · ${esc(report.createdAt)}</small><p>${esc(t("contractRevision"))}: ${esc(contract.revision)}</p><div class="actions">${button("data-space", "dataSpace")}${button("export", "export")}${button("reevaluate", "reevaluate")}${contract.data.scope.source === "pi" ? button("offline-new", "offlineDiagnostic") : ""}${contract.data.scope.source !== "offline" && targetKind !== "cli" ? button("revise", "revise") : ""}${button("configure", "configureRules", observation && observation.state !== "stopped" ? "disabled" : "")}${contract.data.scope.source !== "offline" && targetKind !== "cli" && !observation && snapshot.data.attemptRefs?.length ? button("watch-start", "startObservation") : ""}</div><p class="muted">${esc(t("reevaluateHint"))}</p></section>${dataSpaceHtml(projectData, { t, esc, button })}${contract.data.scope.source === "offline" ? offlineHtml() : ""}<section><h2>${esc(t("findings"))}</h2>${d.findings
+			return `<section><h2>${esc(contract.data.objective)}</h2><div class="grid">${field("source", esc(targetKind === "cli" ? t("offlineDiagnostic") : contract.data.scope.source === "offline" ? t("offline") : "Pi SDK"))}${field("summary", badge(d.summary.deliveryVerdict))}${field("goal", badge(d.summary.goal))}${field("scoringState", badge(d.state))}${field("stage", badge(d.assessmentStage))}${field("coverage", badge(snapshot.data.coverage))}</div><p>${contract.data.scope.source === "offline" ? esc(t("offline")) : `${esc(contract.data.scope.startMessageId)} → ${esc(contract.data.scope.endMessageId)}`}</p><small>${esc(report.id)} · r${report.revision} · ${esc(report.createdAt)}</small><p>${esc(t("contractRevision"))}: ${esc(contract.revision)}</p><div class="actions">${button("experiments", "experiments")}${button("data-space", "dataSpace")}${button("export", "export")}${button("reevaluate", "reevaluate")}${contract.data.scope.source === "pi" ? button("offline-new", "offlineDiagnostic") : ""}${contract.data.scope.source !== "offline" && targetKind !== "cli" ? button("revise", "revise") : ""}${button("configure", "configureRules", observation && observation.state !== "stopped" ? "disabled" : "")}${contract.data.scope.source !== "offline" && targetKind !== "cli" && !observation && snapshot.data.attemptRefs?.length ? button("watch-start", "startObservation") : ""}</div><p class="muted">${esc(t("reevaluateHint"))}</p></section>${dataSpaceHtml(projectData, { t, esc, button })}${contract.data.scope.source === "offline" ? offlineHtml() : ""}<section><h2>${esc(t("findings"))}</h2>${d.findings
 				.map(
 					(f, index) =>
 						`<article><h3>${esc(f.ruleId)} · ${esc(f.conditionId ?? f.findingId)}</h3>${badge(f.verdict)}${badge(f.evidenceState)}<p><b>${esc(t("reason"))}</b> · ${esc(t(f.reason))}</p>${f.missingEvidence.length ? `<p><b>${esc(t("missing"))}</b> · ${esc(f.missingEvidence.map((item) => t(item)).join("; "))}</p>` : ""}<div class="actions">${f.evidenceRefs.map((_, j) => button("evidence", "evidence", `data-finding="${index}" data-evidence="${j}"`)).join("") || `<p>${esc(t("noEvidence"))}</p>`}</div><details><summary>${esc(t("reviews"))}</summary><p>${esc(t("reviewHint"))}</p><p>${esc(t("original"))}: ${esc(t(f.verdict))}</p>${
@@ -241,6 +245,7 @@ export default {
 			jobs = undefined;
 			report = undefined;
 			projectData = undefined;
+			experiments = undefined;
 			view = "records";
 			page = { items: [] };
 			await run(async () => {
@@ -511,6 +516,33 @@ export default {
 						await status();
 					}
 				}
+				if (action === "experiments") {
+					experiments = {
+						runtime: await rpc.request("offlineDescribe"),
+						anchor: view === "detail" ? contract : undefined,
+						datasets: [],
+						items: [],
+						form: {},
+					};
+					await experimentAction("experiment-list", experiments, rpc);
+				}
+				if (action === "experiment-dismiss") experiments = undefined;
+				if (
+					[
+						"experiment-more",
+						"dataset-more",
+						"experiment-list",
+						"experiment-status",
+						"experiment-select",
+						"experiment-run",
+						"experiment-cancel",
+					].includes(action)
+				) {
+					await experimentAction(action, experiments, rpc, {
+						ref: action === "experiment-select" ? experiments.items[Number(target.dataset.index)] : undefined,
+					});
+				}
+				if (action === "experiment-report") await open({ kind: "evaluations", id: target.dataset.report, revision: 1 });
 				if (action === "data-space") {
 					projectData = { ...(await rpc.request("dataSpaceDescribe")), selection: {} };
 				}
@@ -708,6 +740,74 @@ export default {
 						if (!steps.has(action)) steps.set(action, await rpc.request(action, data));
 						return steps.get(action);
 					};
+					if (form.dataset.form === "dataset") {
+						if (values.confirmed !== "on") throw new Error(t("confirmDataset"));
+						const base = experiments.anchor;
+						const c = await step("createContract", {
+							data: {
+								...base.data,
+								objective: t("fixedExpectation"),
+								conditions: [
+									{
+										id: "verified-artifact",
+										statement: t("fixedExpectation"),
+										sourceRef: "human-ui:dataset",
+										sourceType: "user",
+										required: true,
+										applicableWhen: "always",
+										ruleRef: "F09@1",
+									},
+								],
+								constraints: [],
+								provenance: "human-confirmed fixed offline dataset; history output not used as an answer",
+							},
+						});
+						await step("createDataset", {
+							data: {
+								name: values.name,
+								...(values.previousDataset !== ""
+									? {
+											previousDatasetRef: {
+												kind: "datasets",
+												id: experiments.datasets.find((d) => d.id === values.previousDataset).id,
+												revision: 1,
+											},
+										}
+									: {}),
+								confirmed: true,
+								cases: [
+									{
+										id: "case-1",
+										title: values.name,
+										contractRef: c,
+										argv: [values.mode],
+										stdin: values.stdin,
+										configs: { F09: { checks: [{ conditionId: "verified-artifact", verifierId: "offline-json" }] } },
+									},
+								],
+							},
+						});
+						await experimentAction("experiment-list", experiments, rpc);
+						return;
+					}
+					if (form.dataset.form === "experiment") {
+						const dataset = experiments.datasets.find((d) => d.id === values.datasetId);
+						const policy = {
+							repetitions: Number(values.repetitions),
+							retries: Number(values.retries),
+							maxAttempts: Number(values.maxAttempts),
+							timeoutMs: Number(values.timeout) * 1000,
+							totalMs: Number(values.total) * 1000,
+							failurePolicy: values.failurePolicy,
+							maxModelCalls: 0,
+							necessaryEvidence: "stop-on-unknown",
+							...(values.hardCostLimitUsd !== "" ? { hardCostLimitUsd: Number(values.hardCostLimitUsd) } : {}),
+						};
+						const e = await step("createExperiment", { data: { datasetRef: ref(dataset), policy } });
+						experiments.current = await rpc.request("experimentStatus", { ref: e });
+						await experimentAction("experiment-list", experiments, rpc);
+						return;
+					}
 					if (form.dataset.form === "data-space") {
 						projectData.selection = values;
 						const [pi, ei] = (values.environment ?? "").split(":").map(Number),

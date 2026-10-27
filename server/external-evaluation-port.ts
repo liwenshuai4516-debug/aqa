@@ -2,6 +2,7 @@
  * Transient store identities recheck the original sender/tool and source. Raw cancellation
  * bindings remain usable after plugin/store teardown; unknown execution is never replayed.
  */
+import { verifierManifest, verifierCodeDigest } from "./external-evaluation-verifier.js";
 import { realpathSync } from "node:fs";
 import { join } from "node:path";
 import { createHash } from "node:crypto";
@@ -20,6 +21,7 @@ export type OfflineExecutionBinding = {
 	invocation?: PluginToolContext;
 };
 export type OfflineExecutionAction =
+	| "offlineAuthorize"
 	| "offlineDescribe"
 	| "offlinePrepare"
 	| "offlineStart"
@@ -32,7 +34,7 @@ export type OfflineExecutionRequest = {
 	action: OfflineExecutionAction;
 	requestId: string;
 	ref?: Ref;
-	data?: { argv: string[]; stdin?: string; timeoutMs: number; graceMs: number };
+	data?: { argv: string[]; stdin?: string; timeoutMs: number; graceMs: number; previousAttemptRef?: Ref };
 };
 export interface OfflineExecutionAuthority {
 	verify(binding: OfflineExecutionBinding): void;
@@ -66,6 +68,7 @@ const modes = [
 	"artifacts-crash",
 ];
 const actions = new Set<OfflineExecutionAction>([
+	"offlineAuthorize",
 	"offlineDescribe",
 	"offlinePrepare",
 	"offlineStart",
@@ -143,7 +146,7 @@ export class OfflineEvaluationPort {
 			"Invalid request ID",
 		);
 		const preparing = request.action === "offlinePrepare",
-			describing = request.action === "offlineDescribe";
+			describing = ["offlineDescribe", "offlineAuthorize"].includes(request.action);
 		check(
 			describing ? !request.ref : request.ref && typeof request.ref === "object",
 			"INVALID_INPUT",
@@ -153,7 +156,7 @@ export class OfflineEvaluationPort {
 		if (preparing) {
 			const data = request.data;
 			check(data && typeof data === "object", "INVALID_INPUT", "Offline input required");
-			keys(data, ["argv", "stdin", "timeoutMs", "graceMs"]);
+			keys(data, ["argv", "stdin", "timeoutMs", "graceMs", "previousAttemptRef"]);
 			check(
 				Array.isArray(data.argv) && modes.includes(data.argv[0]),
 				"INVALID_INPUT",
@@ -261,6 +264,7 @@ export class OfflineEvaluationPort {
 			this.owned.set(attempt.id, { clientId: binding.clientId, runtime });
 		};
 		try {
+			if (request.action === "offlineAuthorize") return { authorized: true };
 			if (describing || preparing) {
 				let enrollment;
 				try {
@@ -278,6 +282,18 @@ export class OfflineEvaluationPort {
 				if (describing)
 					return {
 						available: true,
+						runtimeDigest: hash([
+							enrollment.backend.version,
+							enrollment.backend.binary.sha256,
+							enrollment.backend.kernel.sha256,
+							enrollment.backend.initrd.sha256,
+							enrollment.guest.version,
+							enrollment.guest.target.sha256,
+							enrollment.guest.runner.sha256,
+							OFFLINE_EXECUTION_POLICY,
+							verifierManifest,
+							verifierCodeDigest,
+						]),
 						target: "ae-offline-fake-cli-1",
 						modes: modes.filter((mode) => supportsArtifacts(enrollment.guest) || !mode.startsWith("artifacts-")),
 						policy: OFFLINE_EXECUTION_POLICY,
@@ -293,6 +309,7 @@ export class OfflineEvaluationPort {
 				);
 				const reference = this.bridge.prepare(context, {
 					requestId: request.requestId,
+					...(data.previousAttemptRef ? { previousAttemptRef: data.previousAttemptRef } : {}),
 					contractRef: request.ref!,
 					backend: enrollment.backend,
 					guest: {

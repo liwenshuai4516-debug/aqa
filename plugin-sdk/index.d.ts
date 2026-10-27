@@ -233,6 +233,7 @@ export interface PluginHost {
 			binding: { clientId: string; conversationId: string; sessionId: string; invocation?: PluginToolContext },
 			request: {
 				action:
+					| "offlineAuthorize"
 					| "offlineDescribe"
 					| "offlinePrepare"
 					| "offlineStart"
@@ -243,7 +244,13 @@ export interface PluginHost {
 					| "offlineCleanup";
 				requestId: string;
 				ref?: { kind: string; id: string; revision: number };
-				data?: { argv: string[]; stdin?: string; timeoutMs: number; graceMs: number };
+				data?: {
+					argv: string[];
+					stdin?: string;
+					timeoutMs: number;
+					graceMs: number;
+					previousAttemptRef?: { kind: string; id: string; revision: number };
+				};
 			},
 		): Promise<unknown>;
 		stopClient(clientId: string): void;

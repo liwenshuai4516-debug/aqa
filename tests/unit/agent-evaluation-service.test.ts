@@ -1360,3 +1360,10 @@ it("serializes concurrent report-index requests and rejects substituted report/p
 		before,
 	);
 });
+
+it("EC10 keeps human dataset confirmation and experiment controls out of Agent tools", async () => {
+	const f = fixture();
+	for (const action of ["createDataset", "createExperiment", "runExperiment", "cancelExperiment"])
+		await expect(f.request(action, {}, f.tool)).rejects.toMatchObject({ code: "PERMISSION_DENIED" });
+	expect(f.host.readEvaluationNative).not.toHaveBeenCalled();
+});

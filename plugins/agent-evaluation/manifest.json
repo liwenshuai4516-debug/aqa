@@ -2,7 +2,7 @@
 	"id": "agent-evaluation",
 	"name": "Agent 评估中心",
 	"nameEn": "Agent evaluation",
-	"version": "0.4.37",
+	"version": "0.4.38",
 	"description": "任务证据诊断、人工复核与固定离线诊断；不运行真实客户端或模型。",
 	"descriptionEn": "Diagnose task evidence, append human reviews and run fixed offline diagnostics without real Agent clients or models.",
 	"apiVersion": 2,

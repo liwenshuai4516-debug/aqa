@@ -161,3 +161,5 @@ EC06 宿主执行接口：`server/external-evaluation-port.ts` 经原 `PluginHos
 EC06 产品离线入口（0.4.35）：`plugins/agent-evaluation/client/offline.mjs`仅渲染固定假CLI表单与尝试回查，`client/entry.mjs`和原`service.mjs`复用`server/external-evaluation-port.ts`；`tests/fixtures/agent-evaluation/offline-execution.mjs`由实际桌面主用例的`--offline-execution <可信安装目录>`验证启停/封存/重载/重启，`tests/agent-evaluation-execution-recovery-test.mjs`验证真实统一仓库控制端SIGKILL、遗留锁拒写及显式复制恢复。以上各节为历史阶段，当前逐项状态以[EC06记录](agent-evaluation-evidence/EC06.md)为准；产物/verifier不在EC06范围，真实CLI/模型仍暂缓。
 
 - [EC07 固定离线产物核验](agent-evaluation-evidence/EC07.md)：完整约定清单、独立数据验证器、F09、外部阶段对账与桌面验收。
+
+EC10 实施与实际验收：[可重复离线实验](agent-evaluation-evidence/EC10.md)，包含冻结数据集、串行尝试、失败保留、预算和显式恢复；真实客户端实验未验。

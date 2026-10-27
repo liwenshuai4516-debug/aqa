@@ -32,7 +32,7 @@ export default {
 			name: "agent_evaluation",
 			label: "Agent 评估中心",
 			description:
-				"Diagnose selected Pi tasks, inspect or rescore sealed Pi/ATIF reports, or explicitly run the enrolled fixed offline fake CLI. Artifact diagnostics use a registered independent data verifier. No real Agent client, model or business tests. Data Space reads are owner-bound; report-index writes need a separate permission and never import cases. Offline execution needs separate host permission; human reviews, uploads and original archives are UI-only.",
+				"Diagnose selected Pi tasks, inspect or rescore sealed Pi/ATIF reports, or explicitly run the enrolled fixed offline fake CLI. Artifact diagnostics use a registered independent data verifier. No real Agent client, model or business tests. Data Space reads are owner-bound; report-index writes need a separate permission and never import cases. Offline execution needs separate host permission; human reviews, uploads, dataset confirmation and serial experiment controls are UI-only. Query saved experimentStatus without starting work.",
 			promptSnippet: "Inspect task evidence or run a fixed offline diagnostic.",
 			promptGuidelines: [
 				"Select explicit Pi boundaries before collection. Keep proposed conditions optional until human confirmation. Retry unchanged requests with the same requestId. Missing evidence stays unknown.",

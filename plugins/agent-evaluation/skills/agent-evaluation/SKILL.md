@@ -1,6 +1,6 @@
 ---
 name: agent-evaluation
-description: 对明确选区的 Pi 任务做证据诊断、耗时与费用核对，查看或重评封存报告，包括人工导入的离线 ATIF 轨迹。可核对数据空间入库数量、项目归属和报告索引；可显式运行已登记的固定离线假 CLI；不会启动真实客户端、模型或原业务测试；人工复核仅在 Agent 评估中心界面完成。
+description: 对明确选区的 Pi 任务做证据诊断、耗时与费用核对，查看或重评封存报告，包括人工导入的离线 ATIF 轨迹。可查询人工冻结的数据集与串行实验状态；可核对数据空间入库数量、项目归属和报告索引；可显式运行已登记的固定离线假 CLI；不会启动真实客户端、模型或原业务测试；人工复核仅在 Agent 评估中心界面完成。
 metadata:
   display-name: Agent 评估中心
   description-zh: 对任务选区做只读证据诊断，保留来源、未知项和人工复核。
@@ -39,3 +39,9 @@ F01 仅验证存在/格式/明确 schema/摘要，不能证明全部语义正确
 `collect` 的 `dataSpaceRefs` 最多 5 项，逐项采用上述显式引用，保存观察时点与批次身份；F03 的冻结 checks 包含 conditionId、spaceId、projectId、environmentId、environmentRevision、batchRevision、batchIdentity 和明确 nativeCaseIds（1–100项）。F03只核验观察时点的所选集合，不证明任务结束时已经入库，也不推定集合外的业务预期。没有匹配的可信回执/回查即未知；Agent成功声明不替代证据。界面从报告详情的“数据空间专项诊断”读取批次，用户确认条件后冻结新契约与新报告；原报告保留。F07沿用原重复调用候选规则。
 
 `syncProjectReport(ref:evaluationRef,data:{projectRef})` 仅在明确要求同步时调用。独立权限 `tools:evaluation-index-write` 只允许报告ID、摘要与项目引用的索引写入，不授予用例、环境或原生结果写入权限；只读/计划/委派/审查模式及停用状态拒绝写入。`projectReportStatus` 只读查询原索引，返回 pending/failed/synced与回执；来源不可用保留错误。成功回执丢失或重启先查询，原 requestId 重试只对账；确认 missing 后若需再次提交索引，使用新的明确请求。重评及索引重试不导入用例、不执行 Agent/测试、不调用模型、不覆盖原生结果。数据空间私有文件仅由其原实现维护。
+
+## 可重复离线实验（EC10）
+
+用户在 Pi 报告详情进入“离线数据集与实验”，明确确认输入、固定初态和可信预期后冻结不可变 dataset，可关联前版；历史输出不能自动成为答案。界面可设置串行重复、失败重试/停止、最大次数和总时限，每次独立 attempt，旧失败/报告保留。仅已登记固定无网假CLI和确定性核验；真实客户端/模型实验未接入。
+
+工具只用 `list(kind:"datasets"|"experiments")`、`get(ref)` 和 `experimentStatus(ref:experimentRef)` 查看，分页直到 nextCursor=null。人工确认、创建和开始/显式恢复/中止仅限界面，不能工具冒充人工。重启不自动续跑；已有启动意图只查询，未知停止/cleanup或必要证据缺失时阻止后继。硬金额/目标输出上限不支持即拒绝，不能把日志保留上限当硬输出上限；固定离线调用/核验/评分均不调用模型，费用USD0。真实客户端费用未知时不得沿用此零费用结论。

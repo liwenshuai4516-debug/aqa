@@ -19,6 +19,9 @@ export const CSS = `
 .aev [data-configuration] .grid > label, .aev [data-project-panel] .grid > label { min-width: 0; max-width: 100%; }
 .aev [data-configuration] input, .aev [data-configuration] select { width: 100%; min-width: 0; }
 .aev [data-project-panel] select, .aev [data-project-panel] button { min-height: 44px; min-width: 0; }
+.aev [data-experiments] form, .aev [data-experiments] label { min-width: 0; max-width: 100%; }
+.aev [data-experiments] select, .aev [data-experiments] input:not([type=checkbox]) { width: 100%; min-width: 0; }
+.aev [data-experiments] button, .aev [data-experiments] select, .aev [data-experiments] input:not([type=checkbox]) { min-height: 44px; }
 .aev fieldset { border: 1px solid var(--border); border-radius: 6px; min-width: 0; margin: 12px 0; }
 .aev .check-label { display: flex; align-items: center; gap: 10px; min-height: 36px; }
 .aev .check-label span { min-width: 0; overflow-wrap: anywhere; }

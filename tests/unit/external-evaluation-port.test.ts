@@ -22,11 +22,16 @@ vi.mock("../../server/external-evaluation-enrollment.js", () => ({
 		fake.reads++;
 		if (!fake.enrolled) throw Object.assign(new Error("missing"), { code: "ENOENT" });
 		return {
-			backend: { version: "vz-offline-1" },
+			backend: {
+				version: "vz-offline-1",
+				binary: { sha256: "b".repeat(64) },
+				kernel: { sha256: "c".repeat(64) },
+				initrd: { sha256: "d".repeat(64) },
+			},
 			guest: {
 				version: "ae-offline-fake-cli-1",
 				target: { sha256: "a".repeat(64) },
-				runner: {},
+				runner: { sha256: "e".repeat(64) },
 				argv: [],
 				stdinBase64: "",
 			},
@@ -181,6 +186,32 @@ function fixture(human = true) {
 	};
 }
 describe("EC06 guarded offline host port", () => {
+	it("authorizes experiment checkpoints without loading a backend and freezes runtime identity for datasets", async () => {
+		const f = fixture();
+		fake.enrolled = false;
+		await expect(f.run("offlineAuthorize")).resolves.toEqual({ authorized: true });
+		expect(fake.reads).toBe(0);
+		fake.enrolled = true;
+		const first: any = await f.run("offlineDescribe");
+		const second: any = await f.run("offlineDescribe");
+		expect(first.runtimeDigest).toMatch(/^[a-f0-9]{64}$/);
+		expect(first.runtimeDigest).toBe(second.runtimeDigest);
+		expect(JSON.stringify(first)).not.toContain(f.dir);
+		f.revoke();
+		await expect(f.run("offlineAuthorize")).rejects.toMatchObject({ code: "PERMISSION_DENIED" });
+		expect(fake.starts).toBe(0);
+	});
+	it("links experiment repetitions through the original attempt bridge", async () => {
+		const f = fixture();
+		const first = await f.prepare();
+		const second: any = await f.run("offlinePrepare", {
+			ref: refOf(f.contract),
+			data: { ...f.input, previousAttemptRef: first },
+		});
+		expect(second.id).not.toBe(first.id);
+		expect(f.store.get(f.baseContext, second).data.previousAttemptRef).toEqual(first);
+		expect(fake.starts).toBe(0);
+	});
 	it("rejects missing authorization and missing enrollment without creating attempts or launching", async () => {
 		const f = fixture();
 		f.revoke();

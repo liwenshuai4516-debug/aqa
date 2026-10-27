@@ -1032,3 +1032,40 @@ it("keeps Data Space errors actionable and invalidates observations after select
 		data: { projectRef: project("p2").projectRef },
 	});
 });
+
+it("EC10 pages frozen datasets and experiments, strips list metadata and never starts during refresh", async () => {
+	const { experimentAction, experimentsHtml } = await import("../../plugins/agent-evaluation/client/experiments.mjs");
+	const { translator } = await import("../../plugins/agent-evaluation/client/i18n.mjs");
+	const dataset = { kind: "datasets", id: "one", revision: 1, createdAt: "today", digest: "hash" };
+	const experiment = { ...dataset, kind: "experiments" };
+	const rpc = {
+		request: vi.fn(async (action: string, args: any) => {
+			if (action === "list")
+				return { items: [args.kind === "datasets" ? dataset : experiment], nextCursor: args.cursor ? null : "next" };
+			if (action === "get") {
+				expect(Object.keys(args.ref).sort()).toEqual(["id", "kind", "revision"]);
+				return { ...dataset, data: { name: "Frozen" } };
+			}
+			if (action === "experimentStatus") {
+				expect(Object.keys(args.ref).sort()).toEqual(["id", "kind", "revision"]);
+				return { ...experiment, data: {} };
+			}
+			throw new Error(action);
+		}),
+	};
+	const state: any = { datasets: [], items: [] };
+	await experimentAction("experiment-list", state, rpc);
+	await experimentAction("dataset-more", state, rpc);
+	await experimentAction("experiment-more", state, rpc);
+	expect(state.items).toHaveLength(2);
+	expect(state.datasets).toHaveLength(2);
+	expect(state.itemCursor).toBeNull();
+	expect(state.datasetCursor).toBeNull();
+	await experimentAction("experiment-select", state, rpc, { ref: experiment });
+	state.current = undefined;
+	const zh = experimentsHtml(state, { t: translator("zh"), esc: String, button: () => "" });
+	const en = experimentsHtml(state, { t: translator("en"), esc: String, button: () => "" });
+	expect(zh).toContain("离线数据集与实验");
+	expect(en).toContain("Offline datasets and experiments");
+	expect(rpc.request.mock.calls.some(([a]) => a === "runExperiment")).toBe(false);
+});

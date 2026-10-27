@@ -1,3 +1,4 @@
+import { Experiments } from "./experiments.mjs";
 import { syncProjectReport } from "./project-sync.mjs";
 /** Product operations over the existing store/collector/engine. Identities are supplied by transport code. */
 import { Type as T } from "typebox";
@@ -14,6 +15,7 @@ const ref = (r) => ({ kind: r.kind, id: r.id, revision: r.revision });
 const string = T.String({ minLength: 1, maxLength: 16384 });
 export const queryActions = [
 	"describe",
+	"experimentStatus",
 	"dataSpaceDescribe",
 	"dataSpaceObserve",
 	"projectReportStatus",
@@ -52,6 +54,10 @@ export const requestSchema = T.Object(
 		action: T.Union(
 			[
 				...toolActions,
+				"createDataset",
+				"createExperiment",
+				"runExperiment",
+				"cancelExperiment",
 				"review",
 				"watchStart",
 				"watchStatus",
@@ -136,6 +142,7 @@ export class EvaluationService {
 		this.watches = new Map();
 		this.projectSync = new Map();
 		this.uploads = new AtifUploads();
+		this.experiments = new Experiments(this);
 	}
 	initialize() {
 		requireValue(!this.closed, "CAPABILITY_UNAVAILABLE", "Evaluation plugin is stopped");
@@ -213,6 +220,27 @@ export class EvaluationService {
 		this.initialize();
 		const store = this.store,
 			requestId = request.requestId;
+		if (
+			["createDataset", "createExperiment", "runExperiment", "cancelExperiment", "experimentStatus"].includes(
+				request.action,
+			)
+		) {
+			requireValue(
+				request.action === "experimentStatus" || trusted.channel === "ui",
+				"PERMISSION_DENIED",
+				"Experimental execution and human-confirmed datasets require the UI",
+			);
+			return this.experiments.dispatch(
+				context,
+				{
+					clientId: trusted.clientId,
+					conversationId,
+					sessionId: source.sessionId,
+					...(trusted.channel === "tool" ? { invocation: trusted.invocation } : {}),
+				},
+				request,
+			);
+		}
 		if (offlineActions.includes(request.action)) {
 			requireValue(
 				Object.keys(request).every((key) =>
@@ -529,6 +557,7 @@ export class EvaluationService {
 					context,
 					{
 						kind: request.kind ?? "evaluations",
+						latestOnly: ["datasets", "experiments"].includes(request.kind),
 						cursor: request.cursor ?? "",
 						limit: request.limit ?? 50,
 					},
@@ -955,6 +984,7 @@ export class EvaluationService {
 		for (const [controller, owner] of this.controllers) if (owner === clientId) controller.abort();
 		this.uploads.stopClient(clientId);
 		this.engine?.stopClient(clientId);
+		this.experiments.stopClient(clientId);
 		this.execution?.stopClient(clientId);
 	}
 	close() {
@@ -965,6 +995,7 @@ export class EvaluationService {
 		this.collector?.close();
 		// Persist cancellation requests before invalidating identities and releasing the writer lock.
 		this.engine?.close();
+		this.experiments.close();
 		this.execution?.close();
 		this.closed = true;
 		this.store?.close();

@@ -17,6 +17,7 @@ export function extensionToolEffect(name: string, params: unknown): ExtensionToo
 	if (name === "agent_evaluation")
 		return [
 			"describe",
+			"experimentStatus",
 			"dataSpaceDescribe",
 			"dataSpaceObserve",
 			"projectReportStatus",
