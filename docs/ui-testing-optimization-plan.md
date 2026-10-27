@@ -312,3 +312,7 @@ OpenCode（开源的编程 agent）仓库里有一份 AGENTS.md，专门有一�
 ### 2026-10-27：真实 PMS 查询／重置的桌面阶段进展
 
 [真实业务阶段记录](ui-testing-pms-business-closure.md)：原生完整录制、v8 独立设计批准、正反诊断和正式 2/2 断言用例通过；所选 Electron 原库新增两条草稿、完成归类绑定及原 runRef 同步和重开。私密附件导致报告 partial，台账两条仍为“未知”，最终结果评审阶段 blocked；不能据此关闭 U09/M1 或整份计划。独立评审新增授权 3 次已用于设计，原匿名剩余两次设计额度未动。
+
+### 真实匿名基线未结项（2026-10-27）
+
+[匿名续跑记录](ui-testing-anonymous-closure.md)与[完整证据](ui-testing-evidence/optimization-pms-anonymous-closure.json)：原 v2 正式失败保留；v3 不改同源 /login 预期及 3000ms 期限，改为 URL 轮询并保存成功 trace，独立设计批准、正反诊断及 Electron 新正式批次 1/1 通过。历史失败和新通过两份修订报告均获真实独立结果评审批准，Electron deliver/checkpoint 后两任务 completed。匿名执行与报告交付未结项已关闭；历史底层中止原因仍 unknown，不冒充 PMS 服务端修复，也不将整份优化计划或 M1/M2 标完成。未做匿名入库/绑定。原生报告冻结声明时点缺陷修复随 0.1.21 分发，未改原始资产和原批次。

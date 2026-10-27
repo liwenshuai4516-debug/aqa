@@ -135,7 +135,7 @@ UI 受管身份录制副本：[内部模块与真实 SDK/MCP 证据](ui-testing-
 
 UI 私密录制生命周期：[晚到发布缺陷与三类拒绝对照](ui-testing-evidence/optimization-u02-recording-lifecycle.json)，保留旧原型取消后错误发布证据及正常/partial对照；产品入口仍未开放。
 
-PMS 匿名基线：[独立设计批准、正反诊断与正式失败证据](ui-testing-evidence/optimization-u00-pms-anonymous-reviewed.json)。本批0通过/1失败，report-2保留原生导航中断事实、待独立结果评审；剩余设计额度按用户决定不改用于结果评审。
+PMS 匿名基线：[历史正式失败证据](ui-testing-evidence/optimization-u00-pms-anonymous-reviewed.json)保留；[未结项续跑](ui-testing-anonymous-closure.md)记录 v3 Electron 新批次 1/1 通过、两份完整报告独立批准及交付，历史批次仍为 0/1。结果评审使用另批明确授权，未挪用设计额度。
 
 UI 私密录制连接守卫：[内部适配与真实SDK/MCP验证](ui-testing-evidence/optimization-u02-recording-adapter.json)，保留正常complete、取消/父身份变化/断连partial；产品私密录制仍未开放。
 
