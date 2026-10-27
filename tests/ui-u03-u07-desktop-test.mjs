@@ -153,6 +153,14 @@ Object.assign(env, {
 });
 let app, page;
 const send = (message) => page.evaluate((m) => window.__u03socket.send(JSON.stringify(m)), message);
+const pageState = async (check) => {
+	try {
+		return await page.evaluate(check);
+	} catch (error) {
+		if (/Execution context was destroyed/.test(error.message)) return false;
+		throw error;
+	}
+};
 async function launch() {
 	app = await launchNativeApp({ executablePath: electron, packaged: false, env });
 	page = await app.firstWindow();
@@ -171,12 +179,14 @@ async function launch() {
 			}
 		};
 	});
-	await page.reload();
+	await page.reload().catch((error) => {
+		if (!/ERR_ABORTED|frame was detached/.test(error.message)) throw error;
+	});
 	await page.waitForSelector(".app");
-	await waitUntil(() => page.evaluate(() => window.__u03messages.some((m) => m.type === "ready")), "desktop ready");
+	await waitUntil(() => pageState(() => window.__u03messages.some((m) => m.type === "ready")), "desktop ready");
 	await send({ type: "set_model", modelId: "fixture/workflow" });
 	await waitUntil(
-		() => page.evaluate(() => window.__u03messages.some((m) => m.state?.model?.id === "workflow")),
+		() => pageState(() => window.__u03messages.some((m) => m.state?.model?.id === "workflow")),
 		"fixture model",
 	);
 }

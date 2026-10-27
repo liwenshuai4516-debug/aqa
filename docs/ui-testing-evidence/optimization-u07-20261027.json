@@ -1,0 +1,36 @@
+{
+	"date": "2026-10-27",
+	"task": "U07",
+	"scope": "诊断复用、分析幂等、结果评审门禁、隔离 Electron 重启恢复",
+	"native": {
+		"source_commit": "b43dabb",
+		"distribution_version": "0.1.23",
+		"tests": {
+			"passed": 16,
+			"failed": 0,
+			"skipped_live_model": 1,
+			"files": ["results.test.mjs", "result-review.test.mjs", "recovery.test.mjs", "reference-reads.test.mjs"]
+		}
+	},
+	"electron": {
+		"result": "tests/scratch/ui-u03-u07/desktop/1793096413865/result.json",
+		"status": "PASS",
+		"checks": 3,
+		"actual_model_calls": 0,
+		"business_requests": 0
+	},
+	"comparison": {
+		"result": "tests/scratch/ui-u03-u07/comparison/1793096174196/result.json",
+		"baseline_version": "0.1.18",
+		"current_version": "0.1.23",
+		"deterministic_tool_calls": "4->1",
+		"baseline_median_ms": 250.976875,
+		"current_median_ms": 271.298,
+		"performance_target_met": false
+	},
+	"limitations": [
+		"未执行真实模型自主规划或结果评审质量验收。",
+		"对照只覆盖合成、预热后的分析路径，不代表完整 Agent/业务端到端性能。",
+		"性能目标未达成，M2 不放行。"
+	]
+}
