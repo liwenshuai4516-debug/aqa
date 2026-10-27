@@ -1310,3 +1310,11 @@ private-recording-actions只接受本binding的ui_discover_record action，将�
 [续跑记录](ui-testing-anonymous-closure.md)及[证据索引](ui-testing-evidence/optimization-pms-anonymous-closure.json)记录22原生通过/1 live skip、62宿主通过、完整typecheck/lint/协议结构/size/diff通过；无tag协议历史启发式单列跳过。原生维护提交c295a26仅本地保存；分发包0.1.21运行代码逐文件一致，安装目录两份说明与包不同的现状保留快照，不覆盖或归因。项目保存214份公开快照及两完整报告有效链接，0600/0700回读一致，原store字节未改，不宣称文档列表登记或匿名用例库入库。匿名执行与报告交付已关闭，历史中止底层原因仍unknown，整优化计划继续active。
 
 最终分发补记：同名 0.1.21 被并行说明优化覆盖后，已在维护源合并其说明并使用独立 0.1.22；104 个安装文件全部一致，Electron 重开两份获批报告通过。未新增付费调用或正式批次，原始结果不变，原生追加 11 项回归及宿主 62 项检查通过。
+
+### U02 续跑：当前 PMS 环境准备复验（2026-10-27）
+
+按用户本轮请求，重新执行 `tests/ui-pms-private-preparation.mjs --refresh` 与 `tests/ui-pms-browser-preparation.mjs --refresh`。两项均仅使用已选 Electron 数据空间项目 `e2f5d42d-2781-4e68-a452-4c87c7d1d346`、环境 `f46a32da-2eac-43ca-86b8-2fa5eca5385c`；登录、权限和浏览器页面请求均受既有同源与方法限制，不创建合同、用例、结果或数据空间记录。
+
+本轮环境 revision=14：配置匹配、单租户、临时私有引用、浏览器账号一致性及认证/匿名页面对照均通过。认证 context 留在 OperationContract 且“查询”控件计数为 1；匿名 context 跳转登录且该控件计数为 0。两个 context 均无页面或 HTTP 错误，浏览器、context 与临时私有状态均已清理，store 摘要不变。模型调用、正式用例、业务写入和数据空间写入均为 0；公开结果未含已知 token 或临时路径。
+
+该复验只更新 A02-1、A02-5、A02-6、A02-7 的当前准备证据。业务角色、可清理测试数据及完整业务预期仍为 unknown；当前仅验证 GET/HEAD 页面观察，不能将其扩张为录制、正式执行或完整 Electron 业务链。U02 保持实施中。
