@@ -63,6 +63,7 @@ async function openReport() {
 					},
 				],
 				scope: {
+					source: "pi",
 					sessionId: "session",
 					startMessageId: "u",
 					endMessageId: "a",
@@ -74,6 +75,13 @@ async function openReport() {
 				evaluationSubject: "agent-task",
 			},
 		},
+		attempt: {
+			kind: "attempts",
+			id: "attempt",
+			revision: 1,
+			data: { targetRef: { kind: "targets", id: "target", revision: 1 } },
+		},
+		target: { kind: "targets", id: "target", revision: 1, data: { kind: "pi" } },
 		snapshot: {
 			...snapshotRef,
 			data: { coverage: "partial", gaps: [], attemptRefs: [{ kind: "attempts", id: "attempt", revision: 1 }] },
@@ -801,4 +809,167 @@ it("offline report keeps import provenance and requires explicit original access
 		expect(root.querySelector("[data-evidence-panel] pre")!.textContent).toBe("private original fixture"),
 	);
 	expect(h.sent.filter((m) => m.action === "readOriginal")).toHaveLength(1);
+});
+
+async function offlineClient() {
+	const f = await openReport(),
+		original = f.h.ctx.send;
+	const attempt = { kind: "attempts", id: "offline-attempt", revision: 2 };
+	let state = "preparing",
+		timeout = false;
+	f.h.ctx.send = (message: any) => {
+		if (message.action.startsWith("offline")) {
+			f.h.sent.push(message);
+			let result: any;
+			if (message.action === "offlineDescribe") result = { modes: ["echo", "waiting", "empty"] };
+			if (message.action === "offlinePrepare") result = attempt;
+			if (["offlineStart", "offlineStatus", "offlineReconcile", "offlineCancel"].includes(message.action)) {
+				if (message.action === "offlineStart") state = "waiting-input";
+				if (message.action === "offlineCancel") state = "cancelled";
+				if (message.action === "offlineReconcile") state = "running";
+				result = {
+					attemptRef: attempt,
+					state,
+					environmentState: state === "preparing" ? "prepared" : state,
+					stopConfirmed: state === "cancelled",
+				};
+			}
+			queueMicrotask(() =>
+				timeout && message.action === "offlineStart"
+					? f.h.reply(message, { code: "TIMEOUT", message: "status unknown" }, false)
+					: f.h.reply(message, result),
+			);
+		} else if (message.action === "list" && message.kind === "offlineAttempts") {
+			f.h.sent.push(message);
+			queueMicrotask(() =>
+				f.h.reply(message, {
+					items: [{ ...attempt, objectivePreview: "<img onerror=x> diagnostic", state: "unknown" }],
+					nextCursor: null,
+				}),
+			);
+		} else original(message);
+	};
+	const click = async (action: string) => {
+		await vi.waitFor(() =>
+			expect(f.root.querySelector<HTMLButtonElement>(`[data-action="${action}"]`)?.disabled).toBe(false),
+		);
+		f.root.querySelector<HTMLButtonElement>(`[data-action="${action}"]`)!.click();
+	};
+	return {
+		...f,
+		click,
+		attempt,
+		unknownStart: () => {
+			timeout = true;
+		},
+		setState: (value: string) => {
+			state = value;
+		},
+	};
+}
+describe("fixed offline diagnostic controls", () => {
+	it("prepares literal input without starting, disables duplicate submits and renders waiting separately", async () => {
+		const f = await offlineClient();
+		await f.click("offline-new");
+		await vi.waitFor(() => expect(f.root.querySelector("form[data-form=offline-execution]")).toBeTruthy());
+		const form = f.root.querySelector<HTMLFormElement>("form[data-form=offline-execution]")!;
+		(form.elements.namedItem("args") as HTMLTextAreaElement).value = "$(touch x)\n中文🙂";
+		(form.elements.namedItem("stdin") as HTMLTextAreaElement).value = "<img src=x onerror=x>";
+		form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+		form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+		await vi.waitFor(() => expect(f.root.querySelector("[data-action=offline-start]")).toBeTruthy());
+		expect(f.h.sent.filter((m) => m.action === "offlinePrepare")).toHaveLength(1);
+		expect(f.h.sent.find((m) => m.action === "offlinePrepare").data.argv).toEqual(["echo", "$(touch x)", "中文🙂"]);
+		expect(f.h.sent.some((m) => m.action === "offlineStart")).toBe(false);
+		await f.click("offline-start");
+		await vi.waitFor(() =>
+			expect(f.root.querySelector("[data-offline-execution]")?.textContent).toContain("No response channel"),
+		);
+		expect(f.root.querySelector("[data-action=offline-cleanup]")).toBeNull();
+		expect(f.root.querySelector("[data-action=offline-start]")).toBeNull();
+		await f.click("offline-cancel");
+		await vi.waitFor(() => expect(f.root.querySelector("[data-action=offline-cleanup]")).toBeTruthy());
+		expect(f.root.querySelector("[data-offline-execution]")?.textContent).toContain("Confirmed");
+	});
+	it("preserves form values on rejection and never automatically retries an unknown start", async () => {
+		const f = await offlineClient();
+		await f.click("offline-new");
+		await vi.waitFor(() => expect(f.root.querySelector("form[data-form=offline-execution]")).toBeTruthy());
+		const form = f.root.querySelector<HTMLFormElement>("form[data-form=offline-execution]")!;
+		(form.elements.namedItem("stdin") as HTMLTextAreaElement).value = "retained 中文🙂";
+		const original = f.h.ctx.send;
+		let reject = true;
+		f.h.ctx.send = (m: any) => {
+			if (m.action === "offlinePrepare" && reject) {
+				f.h.sent.push(m);
+				queueMicrotask(() => f.h.reply(m, { code: "INVALID_INPUT", message: "edit diagnostic input" }, false));
+			} else original(m);
+		};
+		form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+		await vi.waitFor(() =>
+			expect(f.root.querySelector("[role=alert]")?.textContent).toContain("edit diagnostic input"),
+		);
+		expect(f.root.querySelector<HTMLTextAreaElement>("textarea[name=stdin]")?.value).toBe("retained 中文🙂");
+		reject = false;
+		f.root
+			.querySelector("form[data-form=offline-execution]")!
+			.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+		await f.click("offline-start").then(() => {});
+	});
+	it("unknown start only offers query/reconciliation and never another start", async () => {
+		const f = await offlineClient();
+		await f.click("offline-new");
+		await vi.waitFor(() => expect(f.root.querySelector("form[data-form=offline-execution]")).toBeTruthy());
+		f.root
+			.querySelector("form[data-form=offline-execution]")!
+			.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+		f.unknownStart();
+		await f.click("offline-start");
+		await vi.waitFor(() => expect(f.root.querySelector("[role=alert]")?.textContent).toContain("status unknown"));
+		expect(f.root.querySelector("[data-action=offline-start]")).toBeNull();
+		expect(f.root.querySelector("[data-action=offline-reconcile]")).toBeTruthy();
+		expect(f.h.sent.filter((m) => m.action === "offlineStart")).toHaveLength(1);
+		await f.click("offline-reconcile");
+		await vi.waitFor(() => expect(f.root.querySelector("[data-action=offline-reconcile]")).toBeNull());
+	});
+	it("discovers persisted revisions without starting and clears them on source refresh", async () => {
+		const f = await offlineClient();
+		await f.click("back");
+		await f.click("offline-attempts");
+		await vi.waitFor(() => expect(f.root.querySelector("[data-action=offline-open]")).toBeTruthy());
+		expect(f.root.querySelector("[data-offline-attempts] img")).toBeNull();
+		f.setState("unknown");
+		await f.click("offline-open");
+		await vi.waitFor(() => expect(f.root.querySelector("[data-action=offline-reconcile]")).toBeTruthy());
+		expect(f.h.sent.filter((m) => m.action === "offlineStart")).toHaveLength(0);
+		await f.click("refresh");
+		await vi.waitFor(() => expect(f.root.querySelector("[data-offline-attempts]")).toBeNull());
+		expect(f.root.querySelector("[data-offline-execution]")).toBeNull();
+	});
+});
+
+it("CLI report uses its frozen target and omits Pi-only observation and revision", async () => {
+	const { root, records } = await openReport();
+	records.target.data.kind = "cli";
+	root.querySelector<HTMLButtonElement>("[data-action=back]")!.click();
+	await vi.waitFor(() => expect(root.querySelector<HTMLButtonElement>("[data-action=open]")?.disabled).toBe(false));
+	root.querySelector<HTMLButtonElement>("[data-action=open]")!.click();
+	await vi.waitFor(() => expect(root.textContent).toContain("Fixed offline diagnostic"));
+	expect(root.querySelector("[data-action=watch-start]")).toBeNull();
+	expect(root.querySelector("[data-action=revise]")).toBeNull();
+	expect(root.querySelector("[data-action=reevaluate]")).not.toBeNull();
+});
+
+it("focuses the offline availability error when no diagnostic form can open", async () => {
+	const f = await offlineClient();
+	const original = f.h.ctx.send;
+	f.h.ctx.send = (message: any) => {
+		if (message.action !== "offlineDescribe") return original(message);
+		f.h.sent.push(message);
+		queueMicrotask(() => f.h.reply(message, { code: "CAPABILITY_UNAVAILABLE", message: "No enrolled backend" }, false));
+	};
+	await f.click("offline-new");
+	await vi.waitFor(() => expect(f.root.querySelector("[role=alert]")).toBe(document.activeElement));
+	expect(f.root.textContent).toContain("No enrolled backend");
+	expect(f.root.querySelector("form[data-form=offline-execution]")).toBeNull();
 });

@@ -1,0 +1,225 @@
+{
+	"scope": "EC06 fixed offline execution, original product wiring and actual native/fault acceptance",
+	"status": "PASS_OFFLINE_EC06; EC07_PENDING; M1_INCOMPLETE; REAL_CLI_POSTPONED",
+	"executionDate": "2026-10-27",
+	"baselineCommit": "aa8c0d39ee00bee712a041b9c4623c6ba7fb8502",
+	"pluginVersion": "0.4.35",
+	"actualAgentCliCalls": 0,
+	"actualModelCalls": 0,
+	"finalDesktopFixedFakeCliCalls": 9,
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec06-product-execution/index.json",
+		"files": 3108,
+		"bytes": 38855140,
+		"sha256": "47679daa0dfaef63a6e4550af2a79db75915816e4f34c92d2fbc3bccf77d691a"
+	},
+	"runs": {
+		"desktop-initial": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-lOvvUr",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-lOvvUr/result.json",
+			"status": "FAIL"
+		},
+		"desktop-second": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-vt03T1",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-vt03T1/result.json",
+			"status": "FAIL"
+		},
+		"desktop-third": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-v4Kb8S",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-v4Kb8S/result.json",
+			"status": "FAIL"
+		},
+		"desktop-fourth": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-FiLLkf",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-FiLLkf/result.json",
+			"status": "FAIL"
+		},
+		"desktop-fifth": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-NLZtpc",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-NLZtpc/result.json",
+			"status": "FAIL"
+		},
+		"desktop-sixth": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-czMSND",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-czMSND/result.json",
+			"status": "FAIL"
+		},
+		"desktop-final": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-TthuT3",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-TthuT3/result.json",
+			"status": "FAIL"
+		},
+		"desktop-verified": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-kh8rgj",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-kh8rgj/result.json",
+			"status": "FAIL"
+		},
+		"desktop-delivery": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-KlMVZB",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-KlMVZB/result.json",
+			"status": "PASS"
+		},
+		"recovery-initial": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-recovery-GeRIIx",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-recovery-GeRIIx/result.json",
+			"status": "FAIL"
+		},
+		"recovery-second": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-recovery-4uIcUN",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-recovery-4uIcUN/result.json",
+			"status": "FAIL"
+		},
+		"recovery-third": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-recovery-SdqXcl",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-recovery-SdqXcl/result.json",
+			"status": "PASS"
+		},
+		"recovery-fixed": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-recovery-70v8Xx",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-recovery-70v8Xx/result.json",
+			"status": "PASS"
+		},
+		"recovery-electron": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-recovery-0fr18A",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-recovery-0fr18A/result.json",
+			"status": "PASS"
+		},
+		"runtime-final": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-runtime-T9GJpo",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-runtime-T9GJpo/result.json",
+			"status": "PASS"
+		},
+		"runtime-fixed": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-runtime-9NC3ob",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-runtime-9NC3ob/result.json",
+			"status": "PASS"
+		},
+		"worker-final": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-guest-worker-iITSyf",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-guest-worker-iITSyf/result.json",
+			"status": "PASS"
+		},
+		"worker-fixed": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-guest-worker-J1OOz7",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-guest-worker-J1OOz7/result.json",
+			"status": "PASS"
+		},
+		"store-final": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-lkDOKr",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-lkDOKr/result.json",
+			"status": "PASS"
+		},
+		"store-fixed": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-7xMBXy",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-store-7xMBXy/result.json",
+			"status": "PASS"
+		},
+		"launch-final": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-launch-window-S7f4t1",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-launch-window-S7f4t1/result.json",
+			"status": "PASS"
+		},
+		"guest-delivery": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-guest-T60mLi",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-guest-T60mLi/result.json",
+			"status": "FAIL"
+		},
+		"guest-verified": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-guest-vE7kCr",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-guest-vE7kCr/result.json",
+			"status": "FAIL"
+		},
+		"guest-final-verified": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-guest-zUJAKQ",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-guest-zUJAKQ/result.json",
+			"status": "PASS"
+		},
+		"log-delivery": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-log-d6bvO6",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/evaluation-execution-log-d6bvO6/result.json",
+			"status": "PASS"
+		},
+		"isolation-delivery": {
+			"output": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-vm-EWyrw6",
+			"result": "/private/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-vm-EWyrw6/result.json",
+			"status": "PASS"
+		}
+	},
+	"acceptance": {
+		"AC23": {
+			"status": "PASS_FIXED_FIXTURE",
+			"evidence": [
+				"guest-final-verified: seven scenarios; version2 rejected with zero started/output; argv exact literals",
+				"runtime-fixed: resource profile/wrong signed policy refused before intent/VM",
+				"desktop-delivery: actual original UI input, no shell execution"
+			]
+		},
+		"AC24": {
+			"status": "PASS_FIXED_OFFLINE_BACKEND",
+			"evidence": [
+				"isolation-delivery: no network/share/disk/vsock, host canary invisible, fresh RAM roots and escaped guest process containment",
+				"desktop-delivery: missing installation refuses with focused error; invalid authority fields rejected",
+				"store-fixed: copied enrollment works independently of original helper; conflicts and symlinks rejected"
+			]
+		},
+		"AC25": {
+			"status": "PASS",
+			"evidence": [
+				"log-delivery: 4MiB stream drained under 64KiB cap, nine pauses, raw offsets/digests and gaps",
+				"guest-final-verified: full64KiB binary roundtrip, half JSON/UTF8/emoji and stderr",
+				"worker-fixed/store-fixed: durable originals and parsed logs agree; tamper blocks cleanup"
+			]
+		},
+		"AC26": {
+			"status": "PASS",
+			"evidence": [
+				"desktop-delivery: chunks/empty/failure/waiting/cancel/timeout, no pre-stop cleanup, partial sealed scoring cannot pass mandatory artifact requirement",
+				"guest-final-verified/log-delivery: final text while process still running; exit0 is not native stop or business success"
+			]
+		},
+		"AC27": {
+			"status": "PASS_FIXED_OFFLINE_BACKEND",
+			"evidence": [
+				"launch-final: exact copied-built-runtime actual SIGKILL at controller-before-spawn/worker-claim-before-handle/native-spawn-before-handle; unknown and admission retained, no replay",
+				"runtime-fixed: saved PID replaced with live bystander; owned ChildProcess only, worker SIGKILL remains unknown; conflict blocked",
+				"recovery-fixed/recovery-electron: actual unified writer SIGKILL; stale lock rejects; explicit copied-store recovery keeps same claim/handle and original deadline",
+				"desktop-delivery: actual disable/rescan and full native restart cancel/reopen/cleanup without reexecution"
+			]
+		}
+	},
+	"validation": {
+		"typecheck": "PASS all five configurations",
+		"unit": "PASS 25 files / 422 tests sequential, final product code",
+		"build": "PASS serial web/server/desktop build; native tests reuse ensure-build marker",
+		"desktop": "PASS actual Electron44.4.2 macOS arm64, original plugin0.4.35, nine fixed runs, settings/skill/slash/tool discovery, no personal install",
+		"source": "PASS 34 plugin files source vs actual registered plugin; final built runtime hash recorded",
+		"visual": "3 screenshots inspected; zh/en, 375px/landscape, light/dark and keyboard focus exercised; root-font override is not a native Dynamic Type/VoiceOver or browser zoom acceptance",
+		"lint": "PASS",
+		"protocol": "PASS structure/type-only/v33; historical tag heuristic SKIP",
+		"i18n": "PASS 12 language-pack key checks; plugin zh/en pairs",
+		"size": "PASS",
+		"diff": "PASS",
+		"clean": "preview only, zero deletion",
+		"processCheck": "PASS no active owned test/runtime processes; unknown ledgers/evidence retained; no saved PID signaling"
+	},
+	"defectsFixed": [
+		"overlapping in-host status probes overwrote probe.json: reproduced unknown/running before fix; coalesce in-flight probe after each caller ownership/input recheck; unchanged1500ms timeout, no completed-result cache",
+		"missing enrollment error could not focus summary: offline-new/open focus actual error when no panel opens",
+		"CLI report inherited Pi anchor source UI: frozen target kind now controls source and omits Pi-only observation/revision"
+	],
+	"preservedFailures": [
+		"initial four new service tests lacked verified message boundaries; corrected fixture, guard unchanged",
+		"desktop initial strict evidence selector, two plan snapshot-vs-delta waits, two pagination fixture runs, one missing-focus defect, one admission-file-vs-attempt-directory assertion; actual probe-overwrite defect reproduced separately; all raw failures retained",
+		"recovery first stale lock expected at wrong boundary; next expected running rather than actual waiting-input; corrected to actual contract",
+		"guest initial arbitrary kernel/prompt tail produced partial-line; first attempted panic-trailer wait timed out; final rejection-only harness keeps init shell alive and waits exact exit22 marker, all old protocol assertions unchanged"
+	],
+	"remaining": [
+		"EC07 artifact snapshot and independent verifier/AC28-30 not implemented; partial evidence explicitly records gaps",
+		"EC08 real Agent CLI/model postponed by user; no inferred billing authorization",
+		"only fixed trusted fake CLI/macOS arm64/VZ; no arbitrary programs, network, precompiled helper distribution or personal-install upgrade",
+		"active cursors are worker observations; worker death without confirmed native stop stays unknown and holds admission; explicit operator recovery only",
+		"cross-process overlapping probes may conservatively become unknown; same-host in-flight coalescing does not authenticate or serialize independent controllers",
+		"EC04/M1 performance remains incomplete; no new performance acceptance or EC04 branch merge",
+		"native Dynamic Type/VoiceOver and actual browser zoom not executed"
+	]
+}

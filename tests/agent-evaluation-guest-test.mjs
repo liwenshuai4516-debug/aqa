@@ -142,7 +142,11 @@ async function run(label, argv, stdin = Buffer.alloc(0), expectedExit = 0, obser
 					: target,
 			) + upload("runner", runner),
 		);
-		child.stdin.write(`stty raw -echo; exec /bin/sh /ae/runner ${nonce}\n`);
+		child.stdin.write(
+			expectedError
+				? `stty raw -echo; /bin/sh /ae/runner ${nonce}; printf '\nAE_DIAGNOSTIC_REJECTED:%s\n' "$?"; while :; do sleep 1; done\n`
+				: `stty raw -echo; exec /bin/sh /ae/runner ${nonce}\n`,
+		);
 		await until(() => value("ready").length === 1, label + " receiver ready");
 		fs.writeFileSync(path.join(directory, "request.raw"), encodeGuestInput(argv, stdin));
 		const lines = encodeGuestInput(argv, stdin).toString().trimEnd().split("\n");
@@ -156,6 +160,12 @@ async function run(label, argv, stdin = Buffer.alloc(0), expectedExit = 0, obser
 			await until(() => text("error") === expectedError, label + " preflight error");
 			assert.equal(value("started").length, 0);
 			assert.equal(text("stdout"), "");
+			// Keep the diagnostic init shell alive on expected preflight rejection so
+			// unrelated panic/prompt bytes do not race the exact protocol-gap assertion.
+			await until(
+				() => Buffer.concat(vm.console).toString().includes("AE_DIAGNOSTIC_REJECTED:22\n"),
+				label + " complete rejection marker",
+			);
 		} else {
 			await until(() => value("started").length === 1, label + " started");
 			assert.equal(text("version"), "ae-offline-fake-cli 1");

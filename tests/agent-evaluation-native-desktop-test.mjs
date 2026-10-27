@@ -173,7 +173,7 @@ try {
 	const setup = page.locator(".setup-modal .modal-close");
 	if (await setup.isVisible()) await setup.click();
 	assert.match(app.getLogs(), /\[plugin:agent-evaluation\] activated \(v0\.4\.34\)/);
-	result.pluginVersion = "0.4.34";
+	result.pluginVersion = "0.4.35";
 	async function rpc(action, data = {}, expectedError = undefined, targetPage = page) {
 		const requestId = crypto.randomUUID();
 		await targetPage.evaluate((m) => window.__nativeSocket.send(JSON.stringify(m)), {

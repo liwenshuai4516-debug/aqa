@@ -3,6 +3,8 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createHash } from "node:crypto";
+import { EvaluationService } from "../../plugins/agent-evaluation/service.mjs";
+import plugin from "../../plugins/agent-evaluation/index.mjs";
 import { EvaluationStore } from "../../plugins/agent-evaluation/store.mjs";
 import { OfflineEvaluationPort, type OfflineExecutionRequest } from "../../server/external-evaluation-port.js";
 import { createPluginInvocation } from "../../server/mcp/plugin-mcp.js";
@@ -349,5 +351,133 @@ describe("EC06 guarded offline host port", () => {
 		await expect(f.run("offlineStart", { ref })).rejects.toThrow("stopped");
 		expect(fake.rows.get(ref.id).state).toBe("cancelled");
 		scope.dispose();
+	});
+});
+
+function productFixture() {
+	const f = fixture();
+	let registered: any;
+	const source = {
+		...f.source,
+		sourceId: "pi:s1",
+		children: [],
+		choices: [],
+		clientVersion: "fixture",
+		rangeStart: "m1",
+		rangeEnd: "m1",
+	};
+	let productPort: OfflineEvaluationPort;
+	const host: any = {
+		dataDir: f.dir + "/product",
+		getActiveConversation: ({ clientId }: any) => ({ clientId, conversationId: "c1" }),
+		readEvaluationEvidence: (clientId: string, query: any) => {
+			if (clientId !== "owner" || query.conversationId !== "c1")
+				throw Object.assign(new Error("source"), { code: "PERMISSION_DENIED" });
+			return source;
+		},
+		createOfflineEvaluationExecution: (store: any) =>
+			(productPort = new OfflineEvaluationPort(store, f.dir, f.authority)),
+		onRunEvent: () => () => {},
+		onClientDisabled: () => () => {},
+		onMessage: () => () => {},
+		sendTo: () => {},
+		registerAgentTool: (tool: any) => {
+			registered = tool;
+			return () => {};
+		},
+	};
+	const service = new EvaluationService(host);
+	cleanups.push(() => service.close());
+	const trusted = { channel: "ui", clientId: "owner" };
+	let sequence = 0;
+	const run = (action: string, extra: any = {}, identity = trusted) =>
+		service.dispatch(identity, { action, requestId: `p${++sequence}`, ...extra });
+	const contract = { ...f.store.get(f.baseContext, refOf(f.contract)).data };
+	return { ...f, host, service, run, trusted, contract, productPort: () => productPort, registered: () => registered };
+}
+describe("EC06 original plugin service and tool wiring", () => {
+	it("prepares/starts/cancels through the original service and discovers authorized attempt revisions", async () => {
+		const f = productFixture(),
+			anchor: any = await f.run("createContract", { data: f.contract });
+		const attempt: any = await f.run("offlinePrepare", { ref: anchor, data: f.input });
+		expect(fake.starts).toBe(0);
+		expect(await f.run("offlineStart", { ref: attempt })).toMatchObject({ state: "running" });
+		expect(await f.run("offlineCancel", { ref: attempt })).toMatchObject({ state: "cancelled" });
+		const page: any = await f.run("list", { kind: "offlineAttempts", limit: 2 });
+		expect(page.items).toHaveLength(2);
+		expect(page.nextCursor).toBeTruthy();
+		expect(page.items.every((row: any) => row.id === attempt.id && row.sourceVersion === "ae-offline-fake-cli-1")).toBe(
+			true,
+		);
+		const final: any = await f.run("offlineCleanup", { ref: attempt });
+		expect((await f.run("get", { ref: final.snapshotRef })).data.gaps).toContain("independent-verifier-unavailable");
+	});
+	it("keeps Pi attachment out of offline discovery and rejects unexpected action fields", async () => {
+		const f = productFixture(),
+			anchor = await f.run("createContract", { data: f.contract });
+		await f.run("createAttempt", { ref: anchor });
+		expect((await f.run("list", { kind: "offlineAttempts" })).items).toEqual([]);
+		await expect(f.run("offlinePrepare", { ref: anchor, data: f.input, configs: {} })).rejects.toMatchObject({
+			code: "INVALID_INPUT",
+		});
+		await expect(
+			f.run("offlinePrepare", { ref: anchor, data: { ...f.input, reconciled: true } }),
+		).rejects.toMatchObject({ code: "INVALID_INPUT" });
+		expect(fake.rows.size).toBe(0);
+	});
+	it("old hosts keep ordinary diagnosis and reject execution explicitly", async () => {
+		const f = productFixture();
+		delete f.host.createOfflineEvaluationExecution;
+		expect(await f.run("describe")).toMatchObject({ sourceId: "pi:s1" });
+		await expect(f.run("offlineDescribe")).rejects.toMatchObject({ code: "CAPABILITY_UNAVAILABLE" });
+		expect(fake.reads).toBe(0);
+	});
+	it("product close persists cancellation before invalidating store authorization", async () => {
+		const f = productFixture(),
+			anchor = await f.run("createContract", { data: f.contract });
+		const attempt: any = await f.run("offlinePrepare", { ref: anchor, data: f.input });
+		await f.run("offlineStart", { ref: attempt });
+		f.service.close();
+		expect(fake.rows.get(attempt.id).state).toBe("cancelled");
+		expect(fake.cancels).toBe(1);
+		await expect(f.run("offlineStatus", { ref: attempt })).rejects.toMatchObject({ code: "CAPABILITY_UNAVAILABLE" });
+	});
+	it("real registered tool preserves the original invocation rather than copying model identity fields", async () => {
+		const f = productFixture(),
+			stop = plugin.activate(f.host);
+		cleanups.push(stop);
+		const anchor = await f.run("createContract", { data: f.contract });
+		// The product plugin owns a distinct store writer; close the direct service first.
+		f.service.close();
+		const request = { action: "offlinePrepare", requestId: "toolprepare", ref: anchor, data: f.input };
+		const identity = {
+			clientId: "owner",
+			conversationId: "c1",
+			cwd: f.dir,
+			pluginId: "agent-evaluation",
+			toolName: "agent_evaluation",
+		};
+		const forged = await f.registered().execute("forged", request, undefined, undefined, identity);
+		expect(forged.isError).toBe(true);
+		expect(forged.details.code).toBe("PERMISSION_DENIED");
+		expect(fake.rows.size).toBe(0);
+		const invocation = createPluginInvocation(identity, () => {});
+		const prepared = await f.registered().execute("bound", request, undefined, undefined, invocation.context);
+		expect(prepared.isError).not.toBe(true);
+		expect(prepared.details.kind).toBe("attempts");
+		expect(fake.starts).toBe(0);
+		invocation.dispose();
+		const expired = await f
+			.registered()
+			.execute(
+				"expired",
+				{ action: "offlineStart", requestId: "start", ref: prepared.details },
+				undefined,
+				undefined,
+				invocation.context,
+			);
+		expect(expired.isError).toBe(true);
+		expect(expired.details.code).toBe("PERMISSION_DENIED");
+		expect(fake.starts).toBe(0);
 	});
 });

@@ -180,7 +180,7 @@ try {
 	await app.close();
 	fs.writeFileSync(path.join(output, "app.log"), app.getLogs());
 	assert.ok(!app.getLogs().includes("[control] socket error"), "Packaged control socket starts at a bounded path");
-	assert.ok(app.getLogs().includes("[plugin:agent-evaluation] activated (v0.4.34)"));
+	assert.ok(app.getLogs().includes("[plugin:agent-evaluation] activated (v0.4.35)"));
 	app = undefined;
 	app = await launchNativeApp(launchOptions);
 	const reopened = await app.firstWindow();

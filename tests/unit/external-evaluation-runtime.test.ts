@@ -36,6 +36,35 @@ function fixture() {
 	return { root, runtime, attemptId, directory, intent, write };
 }
 describe("EC06 host VM lifecycle persistence", () => {
+	it("coalesces overlapping probes across runtime instances without overwriting the fresh request", async () => {
+		const f = fixture(),
+			instance = randomUUID();
+		f.write("launch.json", { nonce: f.intent.nonce });
+		f.write("supervisor.json", { attemptId: f.attemptId, nonce: f.intent.nonce, instance });
+		const responder = setInterval(() => {
+			const file = join(f.directory, "probe.json");
+			if (!fs.existsSync(file)) return;
+			const request = JSON.parse(fs.readFileSync(file, "utf8"));
+			f.write("probe-response.json", {
+				...request,
+				attemptId: f.attemptId,
+				instance,
+				state: "running",
+				stopConfirmed: false,
+			});
+		}, 5);
+		try {
+			const statuses = await Promise.all([
+				f.runtime.status(f.attemptId),
+				new ExternalEvaluationRuntime(f.root, owner).status(f.attemptId),
+			]);
+			expect(statuses.map((row) => row.state)).toEqual(["running", "running"]);
+			expect(fs.existsSync(join(f.directory, "unknown.json"))).toBe(false);
+		} finally {
+			clearInterval(responder);
+		}
+	});
+
 	it("refuses mutated frozen guest input before any probe or execution", async () => {
 		const f = fixture();
 		const guest = { version: "ae-offline-fake-cli-1", target: {}, runner: {}, argv: ["echo"], stdinBase64: "" };

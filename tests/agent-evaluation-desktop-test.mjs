@@ -1,4 +1,4 @@
-/** Real Electron, isolated data, seeded SDK history; no model, CLI or business execution. */
+/** Real Electron, isolated data and seeded SDK history; optional fixed offline CLI, never a model. */
 import assert from "node:assert/strict";
 import { mkdtemp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -31,6 +31,18 @@ import { installCapacityFixture, verifyCapacity } from "./fixtures/agent-evaluat
 import { verifyTimingMatrix } from "./fixtures/agent-evaluation/timing-matrix.mjs";
 import { verifyUsageMatrix } from "./fixtures/agent-evaluation/usage-matrix.mjs";
 import { verifyCrashStore } from "./fixtures/agent-evaluation/crash-store.mjs";
+import {
+	enrollDesktopExecution,
+	verifyDesktopExecution,
+	beginDesktopExecutionRestart,
+	reopenDesktopExecution,
+} from "./fixtures/agent-evaluation/offline-execution.mjs";
+const executionIndex = process.argv.indexOf("--offline-execution");
+const executionInstallation = executionIndex >= 0 ? process.argv[executionIndex + 1] : undefined;
+assert.ok(
+	executionIndex < 0 || (executionInstallation && !executionInstallation.startsWith("--")),
+	"Explicit trusted installation directory required",
+);
 const reportCrash = process.argv.includes("--crash-report");
 const crashStore = process.argv.includes("--crash-store") || reportCrash;
 assert.ok(!(reportCrash && process.argv.includes("--crash-store")), "Run evidence and report crashes separately");
@@ -160,6 +172,9 @@ await writeFile(
 		.join("\n") + "\n",
 );
 await enableAgentEvaluation(repo, { agentDir, dataDir });
+const executionEnrollment = executionInstallation
+	? enrollDesktopExecution(repo, dataDir, executionInstallation)
+	: undefined;
 const settingsBefore = await readFile(join(agentDir, "settings.json"), "utf8");
 await enableAgentEvaluation(repo, { agentDir, dataDir });
 assert.equal(await readFile(join(agentDir, "settings.json"), "utf8"), settingsBefore);
@@ -200,6 +215,8 @@ const result = {
 	checks: [],
 	actualModelCalls: 0,
 	actualCliCalls: 0,
+	fixedFakeCliCalls: 0,
+	executionEnrollment,
 };
 let app, page, overrideServer;
 async function until(fn, timeout = 30000) {
@@ -267,12 +284,12 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.34" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.35" && p.active),
 			),
 		),
 	);
 	result.checks.push(
-		"Real app loads plugin 0.4.34 in explicitly registered app directories; seeded SDK history opened without a model prompt",
+		"Real app loads plugin 0.4.35 in explicitly registered app directories; seeded SDK history opened without a model prompt",
 	);
 	stage("settings and slash discovery");
 	const settings = async (tab) => {
@@ -347,7 +364,7 @@ try {
 							f.plugins.some(
 								(p) =>
 									p.id === "agent-evaluation" &&
-									p.version === "0.4.34" &&
+									p.version === "0.4.35" &&
 									p.agentTools?.some((tool) => tool.name === "agent_evaluation"),
 							),
 					),
@@ -364,7 +381,7 @@ try {
 	await candidate.waitFor();
 	await input.fill("");
 	result.checks.push(
-		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.34; skill, slash discovery and tool registration remain enabled",
+		"Actual /reload success notice and settings Rescan advance the catalog epoch for 0.4.35; skill, slash discovery and tool registration remain enabled",
 	);
 	stage("product diagnosis flow");
 	const openView = async () => {
@@ -832,6 +849,21 @@ try {
 		);
 	}
 
+	if (executionEnrollment) {
+		stage("actual native fixed offline execution matrix");
+		result.offlineExecution = await verifyDesktopExecution({
+			page,
+			until,
+			dataDir,
+			output,
+			original,
+			settings,
+			closeSettings,
+			plugin,
+			openView,
+		});
+		result.fixedFakeCliCalls += result.offlineExecution.fixedFakeCliCalls;
+	}
 	stage("plugin disable and reload persistence");
 	await settings("plugins");
 	await page.getByRole("tab", { name: /插件列表|Plugin list/ }).click();
@@ -895,6 +927,10 @@ try {
 	const interruptedJob = activeJobProbe
 		? await beginInterruptedJob({ page, until, output, probe: activeJobProbe, original, reports, dataDir })
 		: undefined;
+	const pendingExecution = executionEnrollment
+		? await beginDesktopExecutionRestart({ page, until, dataDir, original })
+		: undefined;
+	if (pendingExecution) result.fixedFakeCliCalls++;
 	await writeFile(join(output, "app-first-process.log"), app.getLogs());
 	await app.close();
 	app = undefined;
@@ -950,7 +986,7 @@ try {
 			window.__evaluationFrames.some(
 				(f) =>
 					f.type === "plugins" &&
-					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.34" && p.active),
+					f.plugins.some((p) => p.id === "agent-evaluation" && p.version === "0.4.35" && p.active),
 			),
 		),
 	);
@@ -969,7 +1005,7 @@ try {
 	assert.equal(await skill().getByRole("switch").getAttribute("aria-checked"), "true");
 	await closeSettings();
 	result.checks.push(
-		"Graceful real Electron exit and a second native process load plugin 0.4.34 and preserve enabled skill/plugin registration",
+		"Graceful real Electron exit and a second native process load plugin 0.4.35 and preserve enabled skill/plugin registration",
 	);
 	result.checks.push(
 		"Settings opened while settings_state is deliberately held render correctly when the real server reply arrives, without changing React hook order",
@@ -983,7 +1019,7 @@ try {
 		changedServicePort: restartPort !== port,
 	};
 	assert.equal(restartedClientId, original.domain.principalId, "Native client identity must survive full exit");
-	const historyAttempts = await names("attempts"),
+	let historyAttempts = await names("attempts"),
 		historySnapshots = await names("snapshots"),
 		historyReports = await names("evaluations");
 	const restartSwitchOffset = await page.evaluate(() => window.__evaluationFrames.length);
@@ -1029,6 +1065,13 @@ try {
 	);
 
 	await page.screenshot({ path: join(output, "history-reopened.png") });
+	if (pendingExecution) {
+		result.executionRestart = await reopenDesktopExecution({ page, until, dataDir, pending: pendingExecution });
+		historyAttempts = await names("attempts");
+		historySnapshots = await names("snapshots");
+		await page.locator('.aev [data-action="open"][data-id="' + original.id + '"]:not([disabled])').click();
+		await page.locator(".aev article h3").first().waitFor();
+	}
 	stage("reveal the SDK source message in the actual desktop");
 	const sourceFinding = page.locator(".aev article").filter({ has: page.locator("h3", { hasText: "F08" }) });
 	await sourceFinding.locator('[data-action="evidence"]').first().click();

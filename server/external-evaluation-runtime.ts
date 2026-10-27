@@ -266,6 +266,7 @@ export function offlineExecutionConfiguration(
 }
 
 export class ExternalEvaluationRuntime {
+	private static readonly probes = new Map<string, Promise<EnvironmentStatus>>();
 	readonly root: string;
 	constructor(
 		root: string,
@@ -380,6 +381,15 @@ export class ExternalEvaluationRuntime {
 		return { state: "starting" as EnvironmentState, attemptId, stopConfirmed: false };
 	}
 	async status(attemptId: string): Promise<EnvironmentStatus> {
+		// Recheck ownership/frozen input before sharing an in-flight probe in this host.
+		const { directory } = this.intent(attemptId);
+		const existing = ExternalEvaluationRuntime.probes.get(directory);
+		if (existing) return existing;
+		const pending = this.observeStatus(attemptId).finally(() => ExternalEvaluationRuntime.probes.delete(directory));
+		ExternalEvaluationRuntime.probes.set(directory, pending);
+		return pending;
+	}
+	private async observeStatus(attemptId: string): Promise<EnvironmentStatus> {
 		const { directory, intent } = this.intent(attemptId);
 		const terminal = join(directory, "result.json");
 		if (fs.existsSync(terminal)) {
@@ -465,7 +475,7 @@ export class ExternalEvaluationRuntime {
 					return response;
 				}
 			}
-			if (fs.existsSync(terminal)) return this.status(attemptId);
+			if (fs.existsSync(terminal)) return this.observeStatus(attemptId);
 			await pause(25);
 		}
 		if (!fs.existsSync(join(directory, "unknown.json")))

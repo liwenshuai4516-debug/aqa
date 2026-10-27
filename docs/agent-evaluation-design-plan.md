@@ -97,21 +97,21 @@ flowchart LR
 
 以下是职责规划，不表示文件已经存在。EC00 如发现等效实现必须复用，并记录路径映射。
 
-| 位置                                                                         | 职责与引入时机                                                                                                   |
-| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `server/agent/evaluation-evidence.ts`                                        | EC02：受控源读取、任务/尝试关联、持久采集接线                                                                    |
-| `server/external-evaluation-runtime.ts`                                      | EC06：已实现宿主私有VZ生命周期及固定guest假CLI接线；产品ExecutionAdapter仍待完成                                 |
-| `server/external-evaluation-log.ts`                                          | EC06：已实现宿主有界原始流/JSONL解析组件；执行器/持久游标接线仍待完成                                            |
-| `server/external-evaluation-guest.ts`                                        | EC06：有界argv/stdin编码与guest分帧解析；假CLI协议已验证，产品接线待完成                                         |
-| `server/external-evaluation-guest-session.ts`                                | EC06：固定假CLI登记/worker串口、背压与独立日志；统一attempt/store由宿主私有execution桥接通；产物与产品入口待完成 |
-| `server/external-evaluation-execution.ts`                                    | EC06：宿主私有执行到原targets/attempts/evidence/snapshots接线；不包含产品登记和独立核验                          |
-| `plugins/agent-evaluation/{index,store,evaluate}.mjs`                        | EC01/EC03：注册、持久化、评分编排；不堆进一个入口                                                                |
-| `plugins/agent-evaluation/{adapters,evaluators,profiles}/`                   | Pi、原生测试、ATIF、数据空间证据适配；规则；声明式配置                                                           |
-| `plugins/agent-evaluation/{targets,executors,verifiers}/`                    | EC06 起：客户端档案、唯一首批执行后端、可信核验器                                                                |
-| `plugins/agent-evaluation/client/`                                           | EC04 起：统一页面、状态和证据展示                                                                                |
-| `plugins/agent-evaluation/skills/agent-evaluation/SKILL.md`                  | EC04：唯一技能原实现，说明入口和边界，不内置第二套判定逻辑                                                       |
-| `scripts/enable-agent-evaluation.mjs`                                        | 显式 agentDir/dataDir 登记，幂等且保留个人安装与禁用状态                                                         |
-| `tests/unit/agent-evaluation-*.test.ts`、`tests/agent-evaluation-*-test.mjs` | 纯规则、宿主、恢复、桌面集成；fixture 放 `tests/fixtures/agent-evaluation/`                                      |
+| 位置                                                                         | 职责与引入时机                                                                                            |
+| ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `server/agent/evaluation-evidence.ts`                                        | EC02：受控源读取、任务/尝试关联、持久采集接线                                                             |
+| `server/external-evaluation-runtime.ts`                                      | EC06：固定无网VZ生命周期与持久假CLI执行；0.4.35接入原产品宿主接口                                         |
+| `server/external-evaluation-log.ts`                                          | EC06：有界原始流/JSONL解析，最终日志持久校验；活跃游标为worker易失观察                                    |
+| `server/external-evaluation-guest.ts`                                        | EC06：有界argv/stdin编码与guest分帧解析；固定可信假CLI，不接受任意程序                                    |
+| `server/external-evaluation-guest-session.ts`                                | EC06：固定假CLI登记/worker串口、背压与独立日志；原execution/port接入产品；产物留EC07                      |
+| `server/external-evaluation-execution.ts`                                    | EC06：固定执行到原targets/attempts/evidence/snapshots；登记在enrollment，原执行授权在port，独立核验留EC07 |
+| `plugins/agent-evaluation/{index,store,evaluate}.mjs`                        | EC01/EC03：注册、持久化、评分编排；不堆进一个入口                                                         |
+| `plugins/agent-evaluation/{adapters,evaluators,profiles}/`                   | Pi、原生测试、ATIF、数据空间证据适配；规则；声明式配置                                                    |
+| `plugins/agent-evaluation/{targets,executors,verifiers}/`                    | EC06 起：客户端档案、唯一首批执行后端、可信核验器                                                         |
+| `plugins/agent-evaluation/client/`                                           | EC04 起：统一页面、状态和证据展示                                                                         |
+| `plugins/agent-evaluation/skills/agent-evaluation/SKILL.md`                  | EC04：唯一技能原实现，说明入口和边界，不内置第二套判定逻辑                                                |
+| `scripts/enable-agent-evaluation.mjs`                                        | 显式 agentDir/dataDir 登记，幂等且保留个人安装与禁用状态                                                  |
+| `tests/unit/agent-evaluation-*.test.ts`、`tests/agent-evaluation-*-test.mjs` | 纯规则、宿主、恢复、桌面集成；fixture 放 `tests/fixtures/agent-evaluation/`                               |
 
 跨端协议只在 `server/protocol.ts` 定义；插件宿主接口沿现有 `server/plugins.ts`；工具目录和守卫联动 `server/tool-manager.ts`。实际新增模块时同步模块地图、目录和文档导航；设计阶段不登记不存在的实现模块。
 
@@ -707,3 +707,7 @@ EC10 依赖 EC08 是当前 CLI 优先路线的排期，不是内部 Pi 实验必
 结论：**核心目标一致，合并版 2.0 存在实际排期变化和部分约束遗漏，不能称为完全无偏差。** 2.1 已修复发现的遗漏及不合理耦合，保留并显式记录有依据的结构/排期调整。上述差异审计是设计核对，不是新增功能实测；没有把未实现的旧需求标为完成。
 
 2.1 本轮验证：两份原文逐节对照完成；本地链接、15 个工作包定义/依赖、40 项验收编号、旧 E/EX/A/T 编号完整映射及版本一致性检查通过。完整 typecheck、3 个相关既有测试文件共 48 项单测、lint、差异检查通过；协议结构检查通过，历史版本启发式因无可用标签跳过。仅修改文档，未执行新增功能、真实客户端或桌面功能验收；clean 仅预览。
+
+## EC06 续做记录（2026-10-27）
+
+0.4.35在原评估中心增加固定离线诊断及尝试回查，复用原宿主port/执行器/仓库/评分器；范围和逐项验收见[EC06当前记录](agent-evaluation-evidence/EC06.md)。之前补充中“产品未接线”等是各轮历史事实，不代表当前状态。产物快照与独立验证器归EC07/AC28–30，不因其未实现倒推EC06无执行器。真实CLI/模型实测仍由用户暂缓；EC04/M1性能门禁继续独立，不能用本包抵消。

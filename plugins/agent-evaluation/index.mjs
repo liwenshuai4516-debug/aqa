@@ -32,10 +32,11 @@ export default {
 			name: "agent_evaluation",
 			label: "Agent 评估中心",
 			description:
-				"Diagnose a selected Pi task using frozen contracts and read-only evidence. Collect, seal, score or inspect local Pi and offline ATIF reports. Does not execute tests, external clients or models. Human reviews, offline uploads and original archives are UI-only.",
-			promptSnippet: "Inspect task evidence or prepare an internal task diagnosis.",
+				"Diagnose selected Pi tasks, inspect or rescore sealed Pi/ATIF reports, or explicitly run the enrolled fixed offline fake CLI. No real Agent client, model or business tests. Offline execution needs separate host permission; human reviews, uploads and original archives are UI-only.",
+			promptSnippet: "Inspect task evidence or run a fixed offline diagnostic.",
 			promptGuidelines: [
-				"Select explicit Pi boundaries before collection. Keep proposed conditions optional until human confirmation. Retry unchanged operations with the same requestId. Missing evidence stays unknown.",
+				"Select explicit Pi boundaries before collection. Keep proposed conditions optional until human confirmation. Retry unchanged requests with the same requestId. Missing evidence stays unknown.",
+				"Start offline diagnostics only on explicit request; reconcile unknown attempts without replaying start.",
 			],
 			parameters: toolSchema,
 			execute: async (_id, request, signal, _update, context) => {
@@ -44,7 +45,12 @@ export default {
 						throw Object.assign(new Error("A bound evaluation invocation is required"), { code: "PERMISSION_DENIED" });
 					const value = bounded(
 						await service.dispatch(
-							{ channel: "tool", clientId: context.clientId, conversationId: context.conversationId },
+							{
+								channel: "tool",
+								clientId: context.clientId,
+								conversationId: context.conversationId,
+								invocation: context,
+							},
 							request,
 							signal,
 						),

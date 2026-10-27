@@ -21,7 +21,18 @@ export const queryActions = [
 	"export",
 	"status",
 ];
+export const offlineActions = [
+	"offlineDescribe",
+	"offlinePrepare",
+	"offlineStart",
+	"offlineStatus",
+	"offlineReconcile",
+	"offlineCancel",
+	"offlineSeal",
+	"offlineCleanup",
+];
 export const toolActions = [
+	...offlineActions,
 	...queryActions,
 	"createContract",
 	"reviseContract",
@@ -124,7 +135,8 @@ export class EvaluationService {
 		if (this.store) return;
 		this.store = new EvaluationStore({
 			dataDir: this.host.dataDir,
-			authorize: (context) => (this.closed ? undefined : this.identities.get(context)),
+			authorize: (context) =>
+				this.closed ? undefined : (this.identities.get(context) ?? this.execution?.identity(context)),
 		});
 		this.collector = new EvidenceCollector(this.store, this.host);
 		this.engine = new EvaluationEngine(this.store, this.registry);
@@ -194,6 +206,37 @@ export class EvaluationService {
 		this.initialize();
 		const store = this.store,
 			requestId = request.requestId;
+		if (offlineActions.includes(request.action)) {
+			requireValue(
+				Object.keys(request).every((key) =>
+					["action", "requestId", "conversationId", "sessionId", "ref", "data"].includes(key),
+				),
+				"INVALID_INPUT",
+				"Unexpected offline execution field",
+			);
+			requireValue(
+				typeof this.host.createOfflineEvaluationExecution === "function",
+				"CAPABILITY_UNAVAILABLE",
+				"This host has no fixed offline execution interface; upgrade the host",
+			);
+			this.execution ??= this.host.createOfflineEvaluationExecution(store);
+			return this.execution.dispatch(
+				context,
+				{
+					clientId: trusted.clientId,
+					conversationId,
+					sessionId: source.sessionId,
+					...(trusted.channel === "tool" ? { invocation: trusted.invocation } : {}),
+				},
+				{
+					action: request.action,
+					requestId,
+					...(request.ref ? { ref: request.ref } : {}),
+					...(request.data !== undefined ? { data: request.data } : {}),
+				},
+			);
+		}
+
 		const write = (kind, data, suffix = "", previousRef) =>
 			store.write(context, {
 				kind,
@@ -389,6 +432,34 @@ export class EvaluationService {
 				return this.watchStatus(entry);
 			}
 			case "list": {
+				if (request.kind === "offlineAttempts") {
+					requireValue(!request.ref, "INVALID_INPUT", "Offline attempt discovery does not accept a report filter");
+					return store.list(
+						context,
+						{ kind: "attempts", cursor: request.cursor ?? "", limit: request.limit ?? 20 },
+						(record, read) => {
+							const contract = read(record.data.contractRef),
+								target = read(record.data.targetRef);
+							return {
+								...ref(record),
+								createdAt: record.createdAt,
+								contractRef: record.data.contractRef,
+								objectivePreview: contract.data.objective.slice(0, 160),
+								sourceVersion: target.data.clientVersion,
+								state: record.data.state,
+							};
+						},
+						(record) => {
+							const target = store.get(context, record.data.targetRef);
+							return (
+								target.data.kind === "cli" &&
+								target.data.adapterVersion === "vz-offline-store-1" &&
+								target.data.clientVersion === "ae-offline-fake-cli-1"
+							);
+						},
+					);
+				}
+
 				if (request.kind === "jobs") {
 					requireValue(!request.ref, "INVALID_INPUT", "Job listing does not accept a report filter");
 					return store.list(
@@ -427,6 +498,7 @@ export class EvaluationService {
 							digest: record.digest,
 							objectivePreview: (data.objective ?? contract?.objective)?.slice(0, 160),
 							sourceVersion: target?.clientVersion,
+							targetKind: target?.kind,
 							executionState: attempt?.state,
 							evidenceCoverage: snapshot?.coverage,
 							taskRange: contract?.scope,
@@ -835,6 +907,7 @@ export class EvaluationService {
 		for (const [controller, owner] of this.controllers) if (owner === clientId) controller.abort();
 		this.uploads.stopClient(clientId);
 		this.engine?.stopClient(clientId);
+		this.execution?.stopClient(clientId);
 	}
 	close() {
 		if (this.closed) return;
@@ -844,6 +917,7 @@ export class EvaluationService {
 		this.collector?.close();
 		// Persist cancellation requests before invalidating identities and releasing the writer lock.
 		this.engine?.close();
+		this.execution?.close();
 		this.closed = true;
 		this.store?.close();
 	}
