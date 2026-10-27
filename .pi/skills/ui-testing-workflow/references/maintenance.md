@@ -7,7 +7,9 @@
 | 技能名称、描述、调度入口                | `../SKILL.md`                                                                                                   |
 | 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.18.tgz`                                                                            |
 | 原生测试 MCP 适配                       | `../assets/mcp-extension.mjs`                                                                                   |
-| 产品私密连接准备与握手                  | `../assets/private-recording-connection.mjs`（原生过滤复用，仅握手；不开放浏览器动作）                          |
+| 产品私密连接、采集消费与发布            | `../assets/private-recording-connection.mjs`（显式受管协议；原生过滤复用、私有原文及writer独占发布）            |
+| 私密动作的SDK调用归属                   | `../assets/private-recording-actions.mjs`（真实父子ID、单次授权与固定helper；不绕过宿主门禁）                   |
+| 显式协议seed准入                        | `../assets/private-recording-preflight.mjs`（直接fixture/环境/归属、同物理运行时及trace:off；非代码沙箱）       |
 | Chromium 执行配置                       | `../assets/playwright.config.mjs`                                                                               |
 | 录制 seed 前置校验                      | `../assets/recording-preflight.mjs`（由 MCP 执行钩子调用，不另建 runner）                                       |
 | 私有录制输入副本及受管身份派生          | `../assets/private-recording-workspace.mjs`（仅明确摘要输入、子进程引用、请求取消及发布前复验；不开放录制入口） |
@@ -104,3 +106,7 @@ MCP 运行时选择由 `assets/playwright-runtime.mjs` 负责：CLI 与配置均
 0.1.18为私密会话增加可选固定声明`private_recording.capture:"chromium-single-page-v1"`。从原生已核验会话返回seed/project/outputFile与采集预算事实；要求受管后端、最多8个非清理动作、范围预算至少`2 * max_steps + 1`（逐步动作/采集各1次，另留1次关闭）。预算不足在创建session前拒绝；初始化失败仍允许一次自有context清理，close已请求后不追加或重复分派，原operation_id仍返回缓存。预算耗尽及初始化失败保留partial缺口。
 
 宿主准备只在显式capture时预建0700的私有output并向子进程交原生私有证据环境引用；普通回执只含协议及数量，不含私有路径。未声明采集的旧私密/匿名配置兼容。此阶段未核验seed是否使用受管fixture、未连接采集helper或writer发布，不据此开放产品浏览器动作；产品仍仅握手并保留`blocked-capture-not-connected`。实际SDK验证预算不足零session/零seed、有效声明回执及私有目录权限，随后仍按partial结束。详见[证据](../../../../docs/ui-testing-evidence/optimization-u02-recording-capture-contract.json)。
+
+显式产品接线阶段（2026-10-27）：宿主在准备和setup前校验直接受管fixture、literal环境/归属、同物理Playwright和Chromium/trace:off；新协议才允许原生动作的真实SDK子调用。每个非清理响应在SDK转换前，以真实MCP父ID派发一次固定helper，核验原生完成标记、存储历史/state及trace，复用原生过滤并隐藏媒体。原生writer只能写声明目标，公开副本须在最终生命周期核验后同步、字节一致、wx/0600发布；不覆盖、不跟随符号链接。未声明协议的旧路径仍只握手。
+
+此准入适用于受信工作区，不证明任意配置/依赖代码安全，不支持多frame/其他target或中断后完整续录；数据空间通用record仍unsupported。取消、坏证据、宿主门禁拒绝、预算和路径冲突保留partial及清理入口。实际产品SDK/Chromium回归入口：`PI_WEB_SMOKE_PREBUILT=1 node tests/ui-private-recording-product-test.mjs --mode=normal`；其他模式及桌面证据见[阶段索引](../../../../docs/ui-testing-evidence/optimization-u02-recording-product-actions.json)。

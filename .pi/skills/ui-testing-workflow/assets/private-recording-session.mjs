@@ -1,8 +1,9 @@
 // Internal host preparation. Native session facts are authoritative; no MCP or model tool is opened.
-import { dirname, join } from "node:path";
-import { mkdir } from "node:fs/promises";
+import { basename, dirname, join } from "node:path";
+import { mkdir, realpath } from "node:fs/promises";
 import { PrivateEvidence, RecordingService } from "pi-ui-testing";
 import { preparePrivateRecordingWorkspace } from "./private-recording-workspace.mjs";
+import { validatePrivateRecordingSeed } from "./private-recording-preflight.mjs";
 
 /** @param {{workspace: string, authority: string, sessionRef: import("pi-ui-testing").FileRef}} options */
 export async function preparePrivateRecordingSession({ workspace, authority, sessionRef }) {
@@ -21,11 +22,26 @@ export async function preparePrivateRecordingSession({ workspace, authority, ses
 		],
 	});
 	if (context.capture) Object.assign(snapshot.childEnv, privacy.env);
+	const captureContext = context.capture
+		? {
+				workspace: await realpath(workspace),
+				environment: context.environment,
+				sessionId: basename(dirname(sessionRef.path)),
+			}
+		: undefined;
+	if (context.capture) {
+		try {
+			await validatePrivateRecordingSeed({ capture: context.capture, captureContext, snapshot });
+		} catch (error) {
+			await snapshot.revoke();
+			throw error;
+		}
+	}
 	return {
 		// Private handles stay inside the host; only receipt is suitable for ordinary output.
 		privacy,
 		snapshot,
-		...(context.capture ? { capture: context.capture } : {}),
+		...(context.capture ? { capture: context.capture, captureContext } : {}),
 		receipt: {
 			session_ref: sessionRef,
 			...snapshot.receipt,

@@ -24,9 +24,9 @@ function fixture() {
 }
 it("collects a relative seed from a custom testDir without running its test body", async () => {
 	const cwd = fixture();
-	await expect(
-		validateRecordingSeed(cwd, { project: "chromium", seedFile: "tests/seed.spec.ts" }),
-	).resolves.toBeUndefined();
+	await expect(validateRecordingSeed(cwd, { project: "chromium", seedFile: "tests/seed.spec.ts" })).resolves.toEqual({
+		project: { name: "chromium", testDir: join(cwd, "tests"), browserName: "chromium", storageStateConfigured: false },
+	});
 });
 it("blocks missing, ambiguous and multi-test seeds before business actions", async () => {
 	const cwd = fixture();
@@ -72,9 +72,9 @@ it("checks only the selected project, including inherited contextOptions state",
 		join(cwd, "playwright.config.mjs"),
 		"export default {testDir:'./tests',projects:[{name:'chromium'},{name:'private',use:{contextOptions:{storageState:{cookies:[],origins:[]}}}}]};",
 	);
-	await expect(
-		validateRecordingSeed(cwd, { project: "chromium", seedFile: "tests/seed.spec.ts" }),
-	).resolves.toBeUndefined();
+	await expect(validateRecordingSeed(cwd, { project: "chromium", seedFile: "tests/seed.spec.ts" })).resolves.toEqual({
+		project: { name: "chromium", testDir: join(cwd, "tests"), browserName: "chromium", storageStateConfigured: false },
+	});
 	await expect(validateRecordingSeed(cwd, { project: "private", seedFile: "tests/seed.spec.ts" })).rejects.toThrow(
 		"storageState",
 	);

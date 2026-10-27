@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { resolvePlaywrightRuntime } from "./playwright-runtime.mjs";
 const execute = promisify(execFile);
 
-export async function validateRecordingSeed(cwd, input) {
+export async function validateRecordingSeed(cwd, input, childEnv = undefined) {
 	if (
 		typeof input?.project !== "string" ||
 		!input.project.trim() ||
@@ -34,6 +34,7 @@ export async function validateRecordingSeed(cwd, input) {
 			],
 			{
 				cwd,
+				...(childEnv ? { env: { ...process.env, ...childEnv } } : {}),
 				timeout: 30_000,
 				maxBuffer: 2 * 1024 * 1024,
 			},
@@ -62,4 +63,5 @@ export async function validateRecordingSeed(cwd, input) {
 		throw new Error(`UI 初始化阻塞：seed 匹配${candidates.length ? "多个文件" : "不到文件"}，请指定唯一文件。`);
 	const tests = report.tests.filter(({ file }) => existsSync(file) && realpathSync(file) === candidates[0]).length;
 	if (tests !== 1) throw new Error("UI 初始化阻塞：seed 必须收集到单个测试，不执行空或多测试 seed。");
+	return { project };
 }

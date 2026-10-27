@@ -7,6 +7,8 @@ export default class RecordingPreflightReporter {
 			testDir: project.testDir,
 			storageStateConfigured:
 				project.use.storageState !== undefined || project.use.contextOptions?.storageState !== undefined,
+			browserName: project.use.browserName ?? "chromium",
+			trace: typeof project.use.trace === "string" ? project.use.trace : undefined,
 		}));
 		this.report.tests = suite.allTests().map((test) => ({ file: test.location.file }));
 	}

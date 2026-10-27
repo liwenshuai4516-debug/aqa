@@ -12,7 +12,7 @@ const cleanup: Array<() => Promise<void>> = [];
 afterEach(async () => {
 	for (const close of cleanup.splice(0).reverse()) await close();
 });
-async function fixture() {
+async function fixture(unexpectedRequest = false) {
 	const root = await realpath(await mkdtemp(join(tmpdir(), "recording-connection-")));
 	cleanup.push(() => rm(root, { recursive: true, force: true }));
 	const workspace = join(root, "public"),
@@ -68,7 +68,7 @@ require('node:readline').createInterface({ input: process.stdin }).on('line', li
  const m = JSON.parse(line); if (m.id === undefined) return;
  if (m.method === 'tools/call') fs.writeFileSync('dispatched-browser', 'unexpected');
  const result = m.method === 'initialize' ? {protocolVersion:'2025-03-26',capabilities:{tools:{}},serverInfo:{name:'fixture',version:'1'},instructions:secret} : {tools:[{name:'fixture',description:secret,inputSchema:{type:'object'}}]};
- const reply = () => process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n');
+ const reply = () => { if (${unexpectedRequest}) process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:'unexpected',method:'unknown/private',params:{value:secret}})+String.fromCharCode(10)); process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n'); };
  if (m.params && m.params.delay) setTimeout(reply, 50); else reply();
 });
 `,
@@ -86,6 +86,20 @@ require('node:readline').createInterface({ input: process.stdin }).on('line', li
 	const connection = createPrivateRecordingConnection({
 		snapshot,
 		privacy,
+		...(unexpectedRequest
+			? {
+					capture: {
+						protocol: "chromium-single-page-v1" as const,
+						seedRef: { path: "tests/seed.spec.ts", sha256: "0".repeat(64) },
+						project: "chromium",
+						outputFile: "tests/generated.spec.ts",
+						maxSteps: 4,
+						maxToolCalls: 9,
+						reservedToolCalls: 9,
+					},
+					captureContext: { workspace, environment, sessionId: "fixture" },
+				}
+			: {}),
 		receipt: { session_ref: { path: "fixture", sha256: "0".repeat(64) }, ...snapshot.receipt },
 	});
 	cleanup.push(() => connection.close());
@@ -116,6 +130,19 @@ it("filters a real stdio handshake with the native filter and retains its origin
 	await f.connection.close();
 	await expect(access(f.snapshot.childEnv[f.reference])).rejects.toThrow();
 	expect(await readFile(f.state, "utf8")).toContain(f.secret);
+});
+it("rejects unexpected server requests instead of converting them into notifications", async () => {
+	const f = await fixture(true);
+	await f.handshake();
+	await expect(f.snapshot.assertCurrent()).rejects.toThrow();
+	expect(JSON.stringify(f.responses)).not.toContain(f.secret);
+	expect(f.responses.some((message) => "method" in message)).toBe(false);
+	const raw = await Promise.all(
+		(await readdir(f.privacy.directory))
+			.filter((name) => /^handshake-\d+\.json$/.test(name))
+			.map((name) => readFile(join(f.privacy.directory, name), "utf8")),
+	);
+	expect(raw.some((text) => text.includes("unknown/private"))).toBe(true);
 });
 it("rejects browser and resource requests before dispatch and refuses reuse after revocation", async () => {
 	for (const method of ["tools/call", "resources/read"]) {

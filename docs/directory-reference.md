@@ -27,9 +27,11 @@ pi-web-ui/
 ├── deploy/                     # 部署示例：launchd plist / systemd unit / Windows 任务 XML
 ├── .pi/skills/ui-testing-workflow/ # UI 技能统一维护入口，assets/ 资源、references/ 维护说明
 │   ├── assets/recording-preflight-reporter.mjs # 录制收集最小元数据，不输出认证值；配置storageState暂阻塞
-│   ├── assets/private-recording-session.mjs # 内部原生会话→私有捕获/输入副本与可选采集预算准备，不开放MCP录制
-│   ├── assets/private-recording-connection.mjs # 产品私密MCP握手、原生输出过滤；浏览器动作仍阻塞
-│   ├── assets/private-recording-workspace.mjs # 内部私有输入副本及受管身份派生，未开放产品录制
+│   ├── assets/private-recording-session.mjs # 原生绑定→私有副本、采集预算与显式协议seed准入
+│   ├── assets/private-recording-actions.mjs # SDK真实父子调用的单次授权及固定采集helper
+│   ├── assets/private-recording-preflight.mjs # 受信seed直接fixture/环境/归属与同物理Chromium检查
+│   ├── assets/private-recording-connection.mjs # 显式协议采集消费、SDK前过滤、原生writer独占发布；旧路径仅握手
+│   ├── assets/private-recording-workspace.mjs # 产品会话准备复用的私有输入副本及受管身份派生
 │   ├── assets/private-recording-transport.mjs # 内部MCP连接/请求失效守卫；不负责过滤或开放入口
 │   └── assets/private-recording-storage-events.mjs # 仅转接原生0.1.17单page存储观察/读取，录制fixture不自动开放产品动作
 ├── capabilities/ui-testing/    # 旧应用路径兼容转接，无独立实现
@@ -414,6 +416,7 @@ API 管理与快捷入口：`scripts/enable-api-testing.mjs` 为项目/应用配
 - `qa/ui/`：本项目隔离服务、数据、Playwright fixture 与预检，维护见 [README](../qa/ui/README.md)。
 - `tests/ui-tool-guards-test.mjs`、`tests/ui-project-fixture-test.mjs`、`tests/ui-project-browser-test.mjs`：门禁、生命周期及真实浏览器验收。
 - `tests/ui-private-evidence-test.mjs`：合成认证的原生诊断/正式捕获回归，扫描公开文件、附件正文和 trace；不使用真实秘密，不放行数据空间私密桥接。
+- `tests/ui-private-recording-product-test.mjs`：显式固定协议的实际产品SDK/Chromium合成录制，覆盖采集、过滤、writer及取消/预算/权限/路径反例；不代替真实业务或Electron全链验收。
 - `tests/ui-multifunction-candidate-test.mjs`、`tests/fixtures/data-space/ui-multifunction-candidate.ts`：冻结六功能的源码候选与原生静态门禁回归；不执行候选、不授予批准，保留原浏览器 partial。
 
 数据空间接入：`plugins/data-space/test-channel.mjs`（环境初始化与资产归档）、`environment-preparation.mjs`（模式及非敏感参数准备回执）、`private-browser-state.mjs`（短期执行私有引用及撤销）、`plugins/data-space/automation.mjs`（关联与幂等同步）、`durable.mjs`（原子写）、`client/modal-automation.mjs`（管理入口）；`server/test-asset-reader.ts` / `test-execution-notice.ts`（原生证据桥）；`.pi/skills/data-space-testing/`；`scripts/enable-data-space.mjs`；`tests/data-space-{native,browser}-test.mjs`。

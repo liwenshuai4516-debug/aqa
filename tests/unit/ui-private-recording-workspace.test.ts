@@ -255,6 +255,25 @@ it.each([undefined, "chromium-single-page-v1"] as const)(
 		const f = await fixture(),
 			store = new ArtifactStore(f.workspace),
 			service = new RecordingService(f.workspace);
+		if (capture) {
+			await rm(join(f.workspace, "node_modules"));
+			await mkdir(join(f.workspace, "node_modules/@playwright"), { recursive: true });
+			for (const name of ["@playwright/test", "playwright", "pi-ui-testing"])
+				await symlink(
+					await realpath(join("tools/e2e/node_modules", name)),
+					join(f.workspace, "node_modules", name),
+					"dir",
+				);
+			await writeFile(
+				join(f.workspace, "playwright.config.mjs"),
+				"export default {testDir:'./tests',use:{trace:'off'},projects:[{name:'chromium'}]};",
+			);
+			await writeFile(
+				join(f.workspace, "tests/seed.spec.ts"),
+				`import {test} from 'pi-ui-testing/recording-fixtures';test.use({uiEnvironment:${JSON.stringify(f.input.environment)},uiOwner:{task_id:'binding',kind:'recording',id:'binding'},uiProjectRoot:process.cwd()});test('seed',async({page})=>{});`,
+			);
+			for (const ref of f.input.inputRefs) ref.sha256 = hash(await readFile(join(f.workspace, ref.path)));
+		}
 		const source = await store.putFile("qa/ui/scopes/binding/source.md", "Synthetic fixture heading is visible.");
 		const envelope = (kind: string, data: unknown) =>
 			validateArtifact({

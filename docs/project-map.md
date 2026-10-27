@@ -155,14 +155,14 @@ PMS 浏览器准备：`tests/ui-pms-browser-preparation.mjs --refresh` 用所选
 
 PMS 原库接入与草稿：`tests/ui-pms-desktop-connection.mjs --connect-selected-data` 以临时UI/agent配置启动现有Electron构建，读取真实所选数据目录；可用显式`--intake-source-cases <回执>`经原生接口导入草稿并核对映射/去重。`tests/ui-pms-source-cases.mjs`只保存三项源码声明的原生cases，不生成脚本或批准。
 
-UI 私有录制准备内部模块：`.pi/skills/ui-testing-workflow/assets/private-recording-workspace.mjs` 负责明确输入摘要副本、受管身份的子进程派生与失效撤销；未接入产品录制入口，边界见 [执行记录](ui-testing-optimization-execution.md)。
+UI 私有录制准备内部模块：`.pi/skills/ui-testing-workflow/assets/private-recording-workspace.mjs` 负责明确输入摘要副本、受管身份的子进程派生与失效撤销；由产品会话准备模块复用，边界见 [执行记录](ui-testing-optimization-execution.md)。
 
 UI 私密录制连接守卫：`.pi/skills/ui-testing-workflow/assets/private-recording-transport.mjs` 将受管快照绑定到实际 MCP 连接/请求生命周期，失效阻断公开发布、失败发送撤销身份、正常响应交付前解绑取消；私有捕获/过滤及原生writer校验仍由调用方负责，尚未开放产品入口。
 
-UI 私密存储事件兼容入口：`.pi/skills/ui-testing-workflow/assets/private-recording-storage-events.mjs`仅转接原生包的观察/读取；唯一实现为原生`private-recording-storage-events.ts`。0.1.17的`recording-fixtures`在继承的uiData导航前安装观察器，`recording-capture.ts`使用固定编号保存私有state/trace及完成标记；单page/frame、128事件/2MiB、最多8采集，产品MCP浏览器动作仍阻塞。
+UI 私密存储事件兼容入口：`.pi/skills/ui-testing-workflow/assets/private-recording-storage-events.mjs`仅转接原生包的观察/读取；唯一实现为原生`private-recording-storage-events.ts`。0.1.17的`recording-fixtures`在继承的uiData导航前安装观察器，`recording-capture.ts`使用固定编号保存私有state/trace及完成标记；单page/frame、128事件/2MiB、最多8采集。产品仅显式固定协议接入该采集，旧私密路径仍阻塞动作。
 
 UI 录制配置预检：`.pi/skills/ui-testing-workflow/assets/recording-preflight-reporter.mjs`经Playwright公开Reporter API收集最小元数据，为已有setup钩子提供所选project的storageState配置拒绝依据；不读取认证值或执行seed。
 
-UI 私密会话准备模块：`.pi/skills/ui-testing-workflow/assets/private-recording-session.mjs`从原生`RecordingService.privateContext`取得受摘要绑定的环境/输入及可选固定采集协议/预算，复用原生过滤器及私有工作区，将环境与会话文件纳入副本。产品`mcp-extension.mjs`自动调用准备，使用`private-recording-connection.mjs`替换同名MCP连接并过滤握手，finish撤销派生身份并恢复匿名连接；浏览器捕获/草稿发布仍未接通，私密动作继续阻塞。
+UI 私密会话准备模块：`.pi/skills/ui-testing-workflow/assets/private-recording-session.mjs`从原生`RecordingService.privateContext`取得受摘要绑定的环境/输入及可选固定采集协议/预算。显式协议由`private-recording-preflight.mjs`检查受信seed；`private-recording-actions.mjs`核对SDK真实父子调用；`private-recording-connection.mjs`消费原生采集、过滤并独占发布writer。省略协议时仍只握手，finish撤销派生身份并恢复匿名连接。真实产品合成回归为`tests/ui-private-recording-product-test.mjs`，不代替真实PMS/Electron业务验收。
 
 原生0.1.18采集声明在创建会话前为动作/helper/清理保留范围预算；宿主仅对显式声明预建私有output及子进程引用，不开放浏览器动作。见[阶段证据](ui-testing-evidence/optimization-u02-recording-capture-contract.json)。

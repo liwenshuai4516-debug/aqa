@@ -1217,3 +1217,28 @@ scope明确8次helper/30工具/128事件/2MiB及受控负向frame附加移除/�
 [阶段证据](ui-testing-evidence/optimization-u02-recording-capture-contract.json)保存旧/新源码、最终测试、早期失败、安装核对、SDK与Electron证据；早期9项和后续10项是迭代版本，最终10项测试源保存，未把不同测试修订相加为独立总数。合成私有身份及SDK临时目录由原跑器清理；未归档私有原文，不用公开摘要冒充原始FileRef。Electron权威项目另存阶段文档和公开证据，store不变，仅落盘不创建应用文档索引。
 
 下一步仍为产品可信同会话动作绑定、固定helper采集、SDK转换前过滤及原生writer安全发布；取消/断连/预算/坏证据都须留partial并保留自有清理。完整重连续录、多frame/其他target、通用依赖闭包、真实PMS角色/租户/数据、U00完整计量、U03/U07及M1/M2未完成。整体goal active。
+
+### U02 续跑：显式受管协议的产品动作、采集与发布（2026-10-27）
+
+从9bf8c32继续。上一轮盘点后已有未提交接线候选，本轮核对现场后继续；中断前34项单测的执行进程句柄已不存在，日志确认完成，没有重启未知业务。plan_update不可用，继续本文及计划第8节。开始clean仅预览、0可清理项。未调用模型、正式runner或真实PMS，未修改原生包/插件版本、个人配置或安装目录源码。原生仍为0.1.18；PMS与U05账本保持原摘要，PMS剩余2次仅设计用途继续保留。
+
+新增private-recording-preflight，复用目标CLI的收集与原生包固定TypeScript compiler API，要求唯一直接recording-fixtures import、环境literal/会话owner/projectRoot、唯一test及限定test.use，核对同一物理Playwright实例、Chromium及trace:off；prepare和setup前均检查快照。宿主TS7主入口无parser API的早期失败保留，改用原生依赖实例。旧preflight现在返回最小项目元数据、仍不执行seed体；两个旧返回undefined断言已改为完整元数据断言，不删除“不执行seed”证据。
+
+private-recording-actions只接受本binding的ui_discover_record action，将真实SDK父toolCallId、tool和参数绑定为单次许可。MCP wrapper用AsyncLocalStorage传递实际调用，固定helper必须由本父MCP ctx.executeTool派发，ordinal受预算约束；非空parent字段本身不能授予权限。任意direct/nested MCP、其他server及resource不取得许可，普通匿名调用保持SDK原路径；只读/计划/委派/停用门禁仍在SDK执行侧生效。
+
+产品connection在SDK转换前保存0600原文，逐动作以固定helper收集原生完成标记、事件历史、storageState及trace，复用原生过滤器并隐藏媒体；roots只返回私有mirror，通知不回显私有原文，未知带ID服务请求明确拒绝。writer分派前检查声明文件/code、已知敏感值和目标不存在，采集/过滤完成后在最终生命周期核验内同步wx/0600发布与原生writer完全相同的字节。取消、坏证据和宿主门禁拒绝保留私有writer且公开目标不存在；失效后仍允许一次自有context清理。
+
+新增tests/ui-private-recording-product-test.mjs，实际加载产品扩展、原生工具、SDK和Chromium；没有替换transport或手工prepare原型。受管身份仅为本机合成数据，原生动作经真实ctx.executeTool，固定helper父ID由实际SDK事件核对。首次受限环境端口listen EPERM保留，随后获准的隔离执行通过。最终代码12类样本全部符合预期：
+
+- normal、ephemeral各complete/1脚本/gaps=[]，原生writer与公开文件字节一致；覆盖运行时嵌套JSON/localStorage/sessionStorage写入后删除及立即清除HttpOnly cookie。私有原文实际观察到本轮值及受支持编码，公开响应、SDK长输出文件、工作区未检出这些值/编码，媒体块0。
+- corrupt、cancel各partial/0公开脚本，私有writer仍存在；实际close成功。
+- budget保留step-budget与人工说明，existing保留原文件，symlink无外部写入，unsupported在浏览器请求前拒绝；均partial，不以缺口删除换complete。
+- helper-readonly/plan/delegate/disabled在writer实际写入私有文件后、固定helper执行前被原宿主门禁拒绝，公开草稿不存在，恢复门禁仅为清理；均partial。
+
+最终8文件45项单测通过。首次整组45项为44通过/1失败：新增协议反例错误假定异常请求一定对应handshake-1；并发处理允许原始响应先保存。改为按内容核对全部私有协议文件，不改变拒绝/失效/不泄露断言，复验45/45通过。初次命令包含不存在的extension-tool-gate.test.ts，Vitest实际仅运行8个现存文件，未计为第9文件；另跑真实SDK守卫9项通过。
+
+最终5配置typecheck、共享构建、lint、协议结构、能力布局及diff检查通过；协议历史无tag启发式明确SKIP。原SDK/匿名Chromium22项通过，包含不声明capture的旧私密握手阻塞和匿名恢复。隔离Electron使用最终构建，7项技能/快捷发现、禁用启用/重载持久、87工具和重连检查通过，实际截图核看；未操作用户当前窗口，不代表Electron业务录制整链通过。新增模块的维护入口、技能边界、地图/目录同步。
+
+本协议是受信工作区的显式准入，不是任意配置/测试代码沙箱或通用依赖闭包证明；单page/frame Chromium之外不支持，任意业务秘密/任意编码、完整中断续录及真实PMS均未证明。数据空间通用record准备仍unsupported，不能把产品合成样本改写为真实业务就绪。原始合成私密文件和SDK临时原文由自有跑器清理；公开归档保留实际公开qa、日志、源码与摘要，不把摘要当作仍可回读的私有原始证据。
+
+[本轮索引](ui-testing-evidence/optimization-u02-recording-product-actions.json)及归档登记全部早期失败、最终12样本、工程/SDK/Electron证据。权威Electron项目另存阶段文档和公开快照，仅文件落盘，不建立应用文档索引或正式结果入库。剩余真实角色/租户/测试数据、完整重连续录、U00完整计量、U03/U07与M1/M2仍待执行/验收，整体goal保持active。
