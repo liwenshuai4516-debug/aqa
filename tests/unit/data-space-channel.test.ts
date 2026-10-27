@@ -651,3 +651,29 @@ it("emits creation notices only for successful asset-producing calls", () => {
 		nativeTestAssetCreated("ui_case_design", { request: { operation: "candidate" } }, result, true),
 	).toBeUndefined();
 });
+it("archives, binds, routes and syncs a UI page inside the explicitly selected environment", async () => {
+	const f = fixture();
+	await f.a.idle();
+	f.store().envs[0].baseUrl = "http://localhost:18980/pms";
+	f.asset.environment.baseUrl = "http://localhost:18980/pms/OperationContract";
+	expect(await f.intake({ envId: "e" })).toMatchObject({ imported: 1 });
+	await f.bind();
+	expect(await f.a.call(f.cwd, { action: "route", caseId: f.store().cases[0].id })).toMatchObject({ ok: true });
+	expect(await f.a.sync(f.cwd, "ui", "r1")).toMatchObject({ imported: 1, complete: true });
+	f.a.dispose();
+});
+it.each([
+	"http://localhost:18981/pms/contracts",
+	"https://localhost:18980/pms/contracts",
+	"http://other.test:18980/pms/contracts",
+	"http://localhost:18980/pms-other/contracts",
+	"http://localhost:18980/admin",
+])("rejects a native UI target outside the selected origin/path: %s", async (target) => {
+	const f = fixture();
+	await f.a.idle();
+	f.store().envs[0].baseUrl = "http://localhost:18980/pms";
+	f.asset.environment.baseUrl = target;
+	await expect(f.intake({ envId: "e" })).rejects.toThrow("地址与原生用例目标不一致");
+	expect(f.store().cases).toHaveLength(0);
+	f.a.dispose();
+});

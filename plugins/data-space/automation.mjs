@@ -2,7 +2,7 @@
 import { randomUUID } from "node:crypto";
 import { realpathSync } from "node:fs";
 import { caseFingerprint } from "./model.mjs";
-import { createTestChannel, environmentUrl as url } from "./test-channel.mjs";
+import { createTestChannel, matchesNativeEnvironment } from "./test-channel.mjs";
 import { normalizeVerdict } from "./runs.mjs";
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 export function createAutomation({ host, store, runs, commitStore, commitRuns, privateStates = undefined }) {
@@ -35,7 +35,7 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns, p
 		const asset = await host.testing.inspect(input.engine, cwd, input.assetRef);
 		if (asset.executable === false) throw new Error("草稿用例尚未冻结，不能建立自动化关联");
 		if (!asset.cases.some((x) => x.id === input.nativeCaseId)) throw new Error("原生资产没有指定用例");
-		if (url(env.baseUrl) !== url(asset.environment.baseUrl)) throw new Error("项目环境地址与原生资产目标不一致");
+		if (!matchesNativeEnvironment(env.baseUrl, asset)) throw new Error("项目环境地址与原生资产目标不一致");
 		// Recheck after IO: do not bind a changed case/version to a stale snapshot.
 		if (disposed || !same(env, environment(c, input.envId)) || !same(c, find(c.id)))
 			throw new Error("用例已更新，请重试关联");
@@ -112,7 +112,7 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns, p
 			try {
 				env = environment(c, b.envId);
 				item.projectId = env.systemId;
-				if (url(env.baseUrl) !== url(native.environment.baseUrl) || b.nativeEnvironmentId !== native.environment.id)
+				if (!matchesNativeEnvironment(env.baseUrl, native) || b.nativeEnvironmentId !== native.environment.id)
 					throw new Error("原生批次环境与关联环境不同");
 			} catch (error) {
 				item.status = "failed";
@@ -257,7 +257,7 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns, p
 			disposed ||
 			!same(c, find(c.id)) ||
 			!same(env, environment(c, b.envId)) ||
-			url(env.baseUrl) !== url(asset.environment.baseUrl) ||
+			!matchesNativeEnvironment(env.baseUrl, asset) ||
 			asset.environment.id !== b.nativeEnvironmentId
 		)
 			throw new Error("关联或环境已改变，请重新关联");

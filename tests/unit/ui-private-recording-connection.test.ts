@@ -68,7 +68,7 @@ require('node:readline').createInterface({ input: process.stdin }).on('line', li
  const m = JSON.parse(line); if (m.id === undefined) return;
  if (m.method === 'tools/call') fs.writeFileSync('dispatched-browser', 'unexpected');
  const result = m.method === 'initialize' ? {protocolVersion:'2025-03-26',capabilities:{tools:{}},serverInfo:{name:'fixture',version:'1'},instructions:secret} : {tools:[{name:'fixture',description:secret,inputSchema:{type:'object'}}]};
- const reply = () => { if (${unexpectedRequest}) process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:'unexpected',method:'unknown/private',params:{value:secret}})+String.fromCharCode(10)); process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result})+'\\n'); };
+ const reply = () => { if (${unexpectedRequest}) process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:'unexpected',method:'unknown/private',params:{value:secret}})+String.fromCharCode(10)); process.stdout.write(JSON.stringify({jsonrpc:'2.0',id:m.id,result,extra:secret})+'\\n'); };
  if (m.params && m.params.delay) setTimeout(reply, 50); else reply();
 });
 `,
@@ -130,6 +130,17 @@ it("filters a real stdio handshake with the native filter and retains its origin
 	await f.connection.close();
 	await expect(access(f.snapshot.childEnv[f.reference])).rejects.toThrow();
 	expect(await readFile(f.state, "utf8")).toContain(f.secret);
+});
+it("preserves JSON-RPC framing when a private storage value equals the protocol version", async () => {
+	const f = await fixture();
+	f.privacy.observeStorageState({
+		cookies: [],
+		origins: [{ origin: "http://127.0.0.1:18983", localStorage: [{ name: "version", value: "2.0" }] }],
+	});
+	const output = await f.handshake();
+	expect(output).toMatchObject({ jsonrpc: "2.0", id: 1, result: { instructions: "[PRIVATE]" }, extra: "[PRIVATE]" });
+	expect(JSON.stringify(output)).not.toContain(f.secret);
+	await f.snapshot.assertCurrent();
 });
 it("rejects unexpected server requests instead of converting them into notifications", async () => {
 	const f = await fixture(true);

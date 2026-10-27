@@ -79,6 +79,14 @@ function fixture() {
 		event: () => listener({ phase: "end", cwd, testRun: { engine: "api", reference: "r" } }),
 	};
 }
+it("keeps API environment matching exact when a UI page can be nested", async () => {
+	const f = fixture();
+	await f.a.idle();
+	f.native.environment.baseUrl = "http://localhost:9999/api";
+	await expect(f.bind()).rejects.toThrow("环境地址与原生资产目标不一致");
+	expect(f.store().cases[0].automation).toBeUndefined();
+	f.a.dispose();
+});
 it("queries pending native results without writing, then reconciles concurrent sync receipts", async () => {
 	const f = fixture();
 	await f.a.idle();

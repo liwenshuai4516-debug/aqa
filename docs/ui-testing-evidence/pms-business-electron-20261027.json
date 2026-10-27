@@ -1,0 +1,263 @@
+{
+  "status": "REAL_PMS_EXECUTED_AND_ELECTRON_ARCHIVED_FINAL_REPORT_BLOCKED",
+  "scope": {
+    "cases": 2,
+    "assertions": 5,
+    "businessWrites": 0,
+    "modules": [
+      "operation-contract/query-reset"
+    ]
+  },
+  "assetRef": {
+    "path": "qa/ui/assets/pms-contract-query-reset/revisions/v8/manifest.json",
+    "sha256": "0a75f57e234e410fafd5532794b0be06f86b18027b8623c0a2f52e031840e5c8"
+  },
+  "recordingRef": {
+    "path": "qa/ui/recordings/pms-business-readonly-20261027-r6/manifest.json",
+    "sha256": "d0111c9742bac36434eb8dad42b3127e428a051b61528907ae16d0863989125b"
+  },
+  "designReviewRef": {
+    "path": "qa/ui/assets/pms-contract-query-reset/revisions/v8/reviews/design-7eccbb18-6f44-4f5e-ae07-8758024faf3d/manifest.json",
+    "sha256": "fbfc93021456b3af0cefb31cb3ce52e27a6b8a7a61c16412f667e025db36e13b"
+  },
+  "diagnosticRef": {
+    "path": "qa/ui/assets/pms-contract-query-reset/revisions/v8/diagnostics/diagnostic-f3ace711-8697-458e-b2fb-8ad1a2f8f307/summary.json",
+    "sha256": "dda2144dce4ff29d8d313adc627ce900e82ba4a4493de1eef2fb52263b7a1a79"
+  },
+  "runRef": {
+    "path": "qa/ui/runs/run-c55f8ba697f6ccf99d346e7d238f9ba7/manifest.json",
+    "sha256": "e002176adaf0e8fb250f46ad210a61a9e393fa39023fc1d185afe36343add737"
+  },
+  "nativeCounts": {
+    "passed": 2,
+    "failed": 0,
+    "blocked": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "not-run": 0,
+    "flaky": 0,
+    "unknown": 0
+  },
+  "reportRef": {
+    "path": "qa/ui/runs/run-c55f8ba697f6ccf99d346e7d238f9ba7/report/pms-business-formal-1-report/manifest.json",
+    "sha256": "6307fe2d37729a6f5c52fbe085e7975bd2dad0f179a5e612d1d1a2ff117895a7"
+  },
+  "reportCompleteness": "partial",
+  "independentResultApproval": false,
+  "taskFinalStage": "blocked",
+  "archive": {
+    "cases": 2,
+    "classificationComplete": true,
+    "syncComplete": true,
+    "nativeCaseCount": 2,
+    "verdicts": [
+      "未知",
+      "未知"
+    ],
+    "deduplicated": {
+      "new": 0,
+      "existing": 2,
+      "pending": 0,
+      "unmatched": 0,
+      "stale": 0,
+      "failed": 0
+    },
+    "visibleBusinessCases": 2,
+    "reopenedReadOnly": true,
+    "reopenStoreUnchanged": true,
+    "environmentsUnchanged": true
+  },
+  "budget": {
+    "authorization_id": "pms-business-review-20261027",
+    "question_call_id": "call_a3e47d9351c34e8c8a982053b465f6be",
+    "human_reply": "授权新增额度，继续闭环",
+    "purpose": "Independent design and result review of current real PMS query/reset loop",
+    "authorized_provider": "gpt",
+    "authorized_model": "gpt-6.1-sol",
+    "max_calls": 3,
+    "max_output_tokens": 8192,
+    "max_input_bytes": 1048576,
+    "max_cost_usd": 1,
+    "price_upper_bound_usd_per_million": 0.3333333333333333,
+    "prior_anonymous_budget_untouched": true,
+    "attempts": [
+      {
+        "number": 1,
+        "request_id": "pms-business-design-1",
+        "purpose": "design",
+        "provider": "gpt",
+        "model": "gpt-6.1-sol",
+        "input_bytes": 296115,
+        "max_output_tokens": 8192,
+        "reserved_usd": 0.10143566666666666,
+        "status": "stop",
+        "started_at": "2026-10-27T02:52:30.748Z",
+        "usage": {
+          "input": 81595,
+          "output": 2470,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "reasoning": 185,
+          "totalTokens": 84065,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        },
+        "duration_ms": 52218,
+        "finished_at": "2026-10-27T02:53:23.028Z"
+      },
+      {
+        "number": 2,
+        "request_id": "pms-business-design-2",
+        "purpose": "design",
+        "provider": "gpt",
+        "model": "gpt-6.1-sol",
+        "input_bytes": 333759,
+        "max_output_tokens": 8192,
+        "reserved_usd": 0.11398366666666666,
+        "status": "stop",
+        "started_at": "2026-10-27T02:58:38.691Z",
+        "usage": {
+          "input": 92485,
+          "output": 2372,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "reasoning": 116,
+          "totalTokens": 94857,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        },
+        "duration_ms": 58012,
+        "finished_at": "2026-10-27T02:59:36.763Z"
+      },
+      {
+        "number": 3,
+        "request_id": "pms-business-design-3",
+        "purpose": "design",
+        "provider": "gpt",
+        "model": "gpt-6.1-sol",
+        "input_bytes": 338791,
+        "max_output_tokens": 8192,
+        "reserved_usd": 0.115661,
+        "status": "stop",
+        "started_at": "2026-10-27T03:06:39.745Z",
+        "usage": {
+          "input": 93753,
+          "output": 2061,
+          "cacheRead": 0,
+          "cacheWrite": 0,
+          "reasoning": 40,
+          "totalTokens": 95814,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0,
+            "total": 0
+          }
+        },
+        "duration_ms": 39613,
+        "finished_at": "2026-10-27T03:07:19.419Z"
+      }
+    ],
+    "native_attempts": [
+      {
+        "request_id": "pms-business-design-1",
+        "purpose": "design",
+        "status": "completed",
+        "asset_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/v6/manifest.json",
+          "sha256": "a3c2d67578728501ac57263e2beb45de26c5663912138c6cae52d6902dd6bd16"
+        },
+        "started_at": "2026-10-27T02:52:29.393Z",
+        "artifact_refs": [
+          {
+            "path": "qa/ui/assets/pms-contract-query-reset/revisions/v6/reviews/design-5111db3a-3ce2-4ec0-bef4-97dda578222b/manifest.json",
+            "sha256": "6255ce87a36f53ac8a156e9e93f33768bca13bb8e57ffbbf62ace7b834ea3940"
+          }
+        ]
+      },
+      {
+        "request_id": "pms-business-design-2",
+        "purpose": "design",
+        "status": "completed",
+        "asset_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/v7/manifest.json",
+          "sha256": "e1e788d01415d0dbb7bf59221ffb659ccd345e28b6ce5d87d5462ca63a4516c7"
+        },
+        "started_at": "2026-10-27T02:58:37.414Z",
+        "artifact_refs": [
+          {
+            "path": "qa/ui/assets/pms-contract-query-reset/revisions/v7/reviews/design-c9787ec7-e017-45ac-b6ac-d675877c3a71/manifest.json",
+            "sha256": "2bb7695a5d00e7b6a8399ddd8ee54c5f7d40f6c3453d75b69e9cbfaf72875d9b"
+          }
+        ]
+      },
+      {
+        "request_id": "pms-business-design-3",
+        "purpose": "design",
+        "status": "completed",
+        "asset_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/v8/manifest.json",
+          "sha256": "0a75f57e234e410fafd5532794b0be06f86b18027b8623c0a2f52e031840e5c8"
+        },
+        "started_at": "2026-10-27T03:06:37.938Z",
+        "artifact_refs": [
+          {
+            "path": "qa/ui/assets/pms-contract-query-reset/revisions/v8/reviews/design-7eccbb18-6f44-4f5e-ae07-8758024faf3d/manifest.json",
+            "sha256": "fbfc93021456b3af0cefb31cb3ce52e27a6b8a7a61c16412f667e025db36e13b"
+          }
+        ]
+      }
+    ],
+    "data_egress_authorization": {
+      "question_call_id": "call_6a6a12d124844733b0e1c63645d510fc",
+      "human_reply": "授权上述材料发往该服务",
+      "destination_origin": "https://api.sudorelay.com",
+      "provider": "gpt",
+      "model": "gpt-6.1-sol",
+      "scope": "Frozen test source, redacted native recording replies and visible contract names/numbers; excludes raw authentication state and credential files",
+      "prior_auto_review_rejection": "Missing explicit authorization for sensitive business data egress; no process/request ran on rejected attempt"
+    }
+  },
+  "limitations": [
+    "Public authenticated evidence withholds private attachments; R3 prevents complete report approval",
+    "Ledger verdicts remain unknown although native assertions passed",
+    "Current bindings retain private temporary workspace; durable migration needs native revalidation",
+    "Only query/reset and HTTP transport; no row-filtering, contract-write, tenant isolation or real outer model planning claim",
+    "Other pre-existing uncommitted changes excluded from this change submission"
+  ],
+  "verification": {
+    "typecheck": "passed",
+    "lint": "passed",
+    "protocol": "structure passed; no-tag history heuristic skipped",
+    "vitest": "66 passed, 1 unrelated db-client version-guard failure (67 total)",
+    "sdk": "final controlled Chromium/MCP recording passed",
+    "isolatedDesktop": "data-space 0.17.2 discovery, enable/disable/reload, archive and private preparation passed",
+    "clean": "preview only, zero candidates"
+  },
+  "archiveFile": "pms-business-electron-20261027.tar.gz",
+  "archiveSha256": "583801e975700b028c835ff830c5a48b0c528d9365e5bdafd6a022bfa0f1ff8e",
+  "members": 45,
+  "archiveBytes": 727089,
+  "privateOriginalsExcluded": true,
+  "sources": {
+    "source/.pi/skills/ui-testing-workflow/assets/private-recording-connection.mjs": "a70c7bf7df8eeb07cbc80bdbb2031525b05203a574522f979e53da7cb2616d5c",
+    "source/tests/unit/ui-private-recording-connection.test.ts": "4ee715858fd60a67649b4960eeed9227e42b3a5dc6017dd59c542f5b6db29d17",
+    "source/plugins/data-space/test-channel.mjs": "0be2d876f71ed97b61fa9ba2f2131f2775d38a32c0b774bb51880295da504d09",
+    "source/plugins/data-space/automation.mjs": "618d5b0a85c0e51f827982438a58f6b42e2e644e6acb9c0cd5a3d8dcf019ecea",
+    "source/plugins/data-space/manifest.json": "88cc84b493d834d817efe69f88e0a49a9e229b5ed01881c8cfb6e6a40889b59a",
+    "source/tests/unit/data-space-channel.test.ts": "38e20849b6a743ec3b4f271bd9233892125bda5e59d9746f0e31df2bc1126dbf",
+    "source/tests/unit/data-space-automation.test.ts": "c4b39f8f1e0664343a6e7e43383fd4a003afa2e808ced9cfa3e262b57522c98c",
+    "source/docs/ui-testing-pms-business-closure.md": "bd2d3e856ab614f4eb7b8244f5967a16a879868a9e969b2bf9033b42bf0c2668"
+  }
+}

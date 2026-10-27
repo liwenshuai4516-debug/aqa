@@ -1258,3 +1258,11 @@ private-recording-actions只接受本binding的ui_discover_record action，将�
 完整5配置typecheck、8文件52项相关Vitest、lint、协议结构和能力布局检查通过；无Git tag的协议历史启发式明确SKIP。能力布局首次误用不存在的scripts入口、第二次漏加tsx加载器，均未实际运行检查，原日志保留；最终node --import tsx tests/capability-layout-test.mjs实际通过，发现13个技能、0模型/业务调用。本轮无生产代码变更、未重复构建或新增Electron界面回归，不把前轮桌面结果算本轮通过；技能边界及维护说明同步。公开证据逐文件摘要和归档回读核验，早期失败与最终测试源码分别保留；原始合成私密协议/state/trace由跑器清理，公开摘要不冒充可回读原件。
 
 [生命周期证据索引](ui-testing-evidence/optimization-u02-recording-product-lifecycle.json)及归档、阶段文档另存权威Electron项目文档目录，逐文件回读、store字节不变；仅文件落盘，不建立应用文档索引、不导入用例或结果。真实PMS角色/租户/数据、通用record准备、其他产品生命周期、Electron业务全链、U00完整计量、U03/U07及M1/M2仍未完成，整体goal保持active。
+
+### 真实 PMS 与 Electron 查询／重置续跑（2026-10-27）
+
+本轮补齐真实 Electron→SDK→MCP 的 PMS 完整只读录制、2 用例/5 断言 v8 候选、三轮真实独立设计评审（revise/revise/approved）、正反诊断和 1 个正式批次（2 passed）。修复私密数据“2.0”误脱敏 JSON-RPC framing 导致的45秒超时；其余 payload 包括扩展字段仍过滤。真实归档进一步复现站点基址与页面范围严格相等的拒绝，data-space 0.17.2 按 UI 同 origin/路径边界修复，API 保持精确匹配，回归覆盖入库/绑定/route/sync与拒绝路径。
+
+按本批明确授权，将两条用例录入所选 PMS 原项目“经营合同/合同查询与重置”，绑定 v8 并按原 runRef 同步；重复导入/同步复用原行，新 Electron 进程只读重开确认。原有三条源码草稿保留，环境配置未变。原生认证公开附件不全导致4项R3阻断，报告partial，台账两条为“未知”，阶段交付已保存，最终结果评审节点保留blocked。未调用额外结果模型，未绕过证据门禁；3次新增模型额度已耗尽，保守预留0.331081美元以内，非供应商账单。
+
+完整typecheck、lint、协议结构、最终SDK/Chromium与隔离桌面回归通过；协议无tag启发式SKIP。扩大单测66通过1失败，该失败为既有db-client锁文件未同步版本的守卫，不动无关改动。开始/结束clean仅预览、0清理。初始录制partial、两轮设计退回、归档跑器错误及导航定位失败全部保留，不计产品通过或正式失败。完整批准、长期私有工作区迁移、租户/其他角色/发起审批、真实外层模型规划与U00/U03/U07及M1/M2仍未完成。[阶段说明](ui-testing-pms-business-closure.md)与[公开索引](ui-testing-evidence/pms-business-electron-20261027.json)逐项列依据及限制，私密原件不进入公开归档。

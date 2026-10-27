@@ -24,6 +24,16 @@ export function environmentUrl(value) {
 		throw new Error("环境地址必须是无凭据、查询参数和片段的 HTTP(S) URL");
 	return parsed.href.replace(/\/+$/, "");
 }
+// UI scopes may name a page below the selected environment. API bases stay exact.
+export function matchesNativeEnvironment(baseUrl, asset) {
+	const base = environmentUrl(baseUrl),
+		target = environmentUrl(asset.environment.baseUrl);
+	if (base === target) return true;
+	if (asset.engine !== "ui") return false;
+	const selected = new URL(base),
+		page = new URL(target);
+	return selected.origin === page.origin && page.pathname.startsWith(selected.pathname.replace(/\/+$/, "") + "/");
+}
 /** 默认归档目录：模块「测试用例」，功能按引擎区分；目录 ID 持久化后跟随用户重命名。 */
 const DEFAULT_MODULE = "测试用例";
 const defaultFeature = (engine) => (engine === "ui" ? "UI用例" : "API用例");
@@ -147,12 +157,12 @@ export function createTestChannel({ host, store, commitStore }) {
 	 */
 	function resolve(asset, input) {
 		const s = store(),
-			base = environmentUrl(asset.environment.baseUrl),
 			envId = str(input.envId, 64);
 		if (envId) {
 			const env = s.envs.find((e) => e.id === envId);
 			if (!env || !s.systems.some((p) => p.id === env.systemId)) throw new Error("所选环境不存在或已删除，未导入用例");
-			if (environmentUrl(env.baseUrl) !== base) throw new Error("所选环境地址与原生用例目标不一致，未导入用例");
+			if (!matchesNativeEnvironment(env.baseUrl, asset))
+				throw new Error("所选环境地址与原生用例目标不一致，未导入用例");
 			const channel =
 				channels.find((c) => c.workspace === asset.workspace && c.engine === asset.engine && c.envId === env.id) ??
 				null;

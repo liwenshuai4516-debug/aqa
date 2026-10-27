@@ -166,7 +166,10 @@ export function createPrivateRecordingConnection(prepared, { currentCall = () =>
 				const collected = await request.capture(++ordinal);
 				if (collected.isError) throw blocked();
 			}
-			const output = hideMedia(await privacy.process(message));
+			// JSON-RPC framing is transport metadata, not private payload. Storage may
+			// contain literals such as "2.0"; redacting that version loses the reply.
+			const { jsonrpc, id, ...payload } = message;
+			const output = { ...hideMedia(await privacy.process(payload)), jsonrpc, ...("id" in message ? { id } : {}) };
 			if (request?.tool === "mcp__ui_playwright_test__generator_write_test") {
 				const code = request.input.code;
 				if (privacy.text(code) !== code) throw blocked();
