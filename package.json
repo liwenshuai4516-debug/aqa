@@ -73,6 +73,8 @@
 		"test:unit": "vitest run",
 		"clean": "node scripts/clean-project.mjs",
 		"clean:apply": "node scripts/clean-project.mjs --apply",
+		"clean:junk": "node scripts/clean-project.mjs --residue --apply",
+		"clean:junk:preview": "node scripts/clean-project.mjs --residue",
 		"ui-testing:enable": "node scripts/enable-ui-testing.mjs",
 		"test:ui:integration": "node tests/ui-testing-integration-test.mjs",
 		"test:ui:guards": "node tests/ui-tool-guards-test.mjs",

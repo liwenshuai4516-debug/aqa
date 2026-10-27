@@ -11,6 +11,17 @@ const portable = (path) => path.split(sep).join("/");
 const inside = (parent, path) => path === parent || path.startsWith(parent + sep);
 const mib = (bytes) => `${(bytes / 1024 ** 2).toFixed(1)} MiB`;
 
+/** Execution residue: produced by tests and aborted tool writes, rebuildable, so no retention window. */
+const residueDirs = [".workbuddy/tmp", ".tmp-test-data"];
+const residueKinds = new Set(["run-residue", "stray-file", "stale-lock"]);
+const strayNames = new Set([".DS_Store", "Thumbs.db"]);
+const straySuffixes = [".orig", ".rej", ".tmp", "~"];
+const straySkipDirs = new Set(["node_modules", ".git", "dist", "release", ".watermate", "tests"]);
+const strayMaxDepth = 4;
+const strayRootMaxBytes = 64;
+const lockNames = ["index.lock", "HEAD.lock", "config.lock", "packed-refs.lock"];
+const lockGraceMs = 10 * 60 * 1000;
+
 function trackedPaths(root) {
 	return execFileSync("git", ["ls-files", "--cached", "-z"], {
 		cwd: root,
@@ -62,6 +73,58 @@ function pinnedAncestor(root, path) {
 	return false;
 }
 
+/** Any entry, file or directory, whose ancestors are real directories inside the repository. */
+function safeEntry(root, path) {
+	if (!inside(root, path) || path === root) return false;
+	try {
+		if (lstatSync(path).isSymbolicLink()) return false;
+	} catch {
+		return false;
+	}
+	const parent = dirname(path);
+	return parent === root || safeDirectory(root, parent);
+}
+
+/** Root-level extension-less micro files are left behind by aborted tool writes. */
+function rootStrayName(name) {
+	return name.length <= 16 && !name.includes(".") && /^[A-Za-z0-9_-]+$/.test(name);
+}
+
+function findStrayFiles(root) {
+	const found = [];
+	const walk = (dir, depth) => {
+		for (const entry of readdirSync(dir, { withFileTypes: true })) {
+			if (entry.isSymbolicLink()) continue;
+			const child = join(dir, entry.name);
+			if (entry.isDirectory()) {
+				if (depth < strayMaxDepth && !straySkipDirs.has(entry.name)) walk(child, depth + 1);
+				continue;
+			}
+			if (!entry.isFile()) continue;
+			const byName = strayNames.has(entry.name) || straySuffixes.some((suffix) => entry.name.endsWith(suffix));
+			const rootLeak = depth === 0 && rootStrayName(entry.name) && lstatSync(child).size <= strayRootMaxBytes;
+			if (byName || rootLeak) found.push(relative(root, child));
+		}
+	};
+	walk(root, 0);
+	return found;
+}
+
+/** A lock left by a killed process blocks Git until removed; only stale ones qualify. */
+function findStaleLocks(root, nowMs) {
+	return lockNames
+		.map((name) => join(root, ".git", name))
+		.filter((path) => {
+			try {
+				const stat = lstatSync(path);
+				return stat.isFile() && nowMs - stat.mtimeMs > lockGraceMs;
+			} catch {
+				return false;
+			}
+		})
+		.map((path) => relative(root, path));
+}
+
 /** Only dependency trees in scratch with both install manifests, and explicit tool caches. */
 export function planCleanup(root, { days = 7, now = Date.now() } = {}) {
 	if (!Number.isFinite(days) || days < 0) throw new Error("days must be a non-negative number");
@@ -92,6 +155,19 @@ export function planCleanup(root, { days = 7, now = Date.now() } = {}) {
 	};
 	scan(join(root, "tests/scratch"));
 	for (const path of cachePaths) add(join(root, path), "tool-cache");
+	/** Execution residue is rebuildable by the next run, so the retention window does not apply. */
+	const addResidue = (path, kind) => {
+		if (!safeEntry(root, path)) return;
+		const name = portable(relative(root, path));
+		const info = treeInfo(path);
+		let reason;
+		if (tracked.some((file) => file === name || file.startsWith(name + "/"))) reason = "Git 跟踪文件";
+		else if (info.pinned || pinnedAncestor(root, path)) reason = ".cleanup-keep 保留标记";
+		candidates.push({ path: name, kind, bytes: info.bytes, eligible: !reason, reason });
+	};
+	for (const path of residueDirs) addResidue(join(root, path), "run-residue");
+	for (const path of findStrayFiles(root)) addResidue(join(root, path), "stray-file");
+	for (const path of findStaleLocks(root, now)) addResidue(join(root, path), "stale-lock");
 	return candidates.sort((a, b) => b.bytes - a.bytes || a.path.localeCompare(b.path));
 }
 
@@ -117,33 +193,42 @@ export function applyCleanup(root, { days = 7, only = [] } = {}) {
 
 function main(args) {
 	let apply = false;
+	let residue = false;
+	let quiet = false;
 	let days = 7;
 	const only = [];
 	for (let i = 0; i < args.length; i++) {
 		if (args[i] === "--apply") apply = true;
+		else if (args[i] === "--residue") residue = true;
+		else if (args[i] === "--quiet") quiet = true;
 		else if (args[i] === "--days" && args[i + 1] !== undefined && args[i + 1].trim() !== "") {
 			days = Number(args[++i]);
 		} else if (args[i] === "--only" && args[i + 1]) only.push(args[++i]);
-		else throw new Error("用法: npm run clean -- [--apply] [--days 7] [--only 白名单中的相对目录]");
+		else
+			throw new Error("用法: npm run clean -- [--apply] [--residue] [--quiet] [--days 7] [--only 白名单中的相对路径]");
 	}
-	if (apply && days === 0 && !only.length) throw new Error("--days 0 执行时必须用 --only 指定精确候选");
+	if (apply && days === 0 && !only.length && !residue) throw new Error("--days 0 执行时必须用 --only 指定精确候选");
 	const entries = planCleanup(projectRoot, { days });
 	for (const path of only) {
 		if (!entries.some((entry) => entry.path === path)) throw new Error(`不在清理白名单中: ${path}`);
 	}
-	const selected = entries.filter((entry) => !only.length || only.includes(entry.path));
-	console.log(
-		apply ? "执行清理（请先结束使用这些目录的测试/构建进程）" : "仅预览；未删除文件。执行前先结束相关测试/构建进程。",
-	);
-	for (const entry of selected) {
+	const scoped = residue ? entries.filter((entry) => residueKinds.has(entry.kind)) : entries;
+	const selected = scoped.filter((entry) => !only.length || only.includes(entry.path));
+	if (!quiet)
 		console.log(
-			`${entry.eligible ? "可清理" : "保留"}\t${mib(entry.bytes)}\t${entry.path}${entry.reason ? ` · ${entry.reason}` : ""}`,
+			apply ? "执行清理（请先结束使用这些目录的测试/构建进程）" : "仅预览；未删除文件。执行前先结束相关测试/构建进程。",
 		);
-	}
+	if (!quiet)
+		for (const entry of selected) {
+			console.log(
+				`${entry.eligible ? "可清理" : "保留"}\t${mib(entry.bytes)}\t${entry.path}${entry.reason ? ` · ${entry.reason}` : ""}`,
+			);
+		}
 	const eligible = selected.filter((entry) => entry.eligible);
 	console.log(`可清理 ${eligible.length} 项，共 ${mib(eligible.reduce((sum, entry) => sum + entry.bytes, 0))}。`);
 	if (apply) {
-		const removed = applyCleanup(projectRoot, { days, only });
+		const selection = residue ? eligible.map((entry) => entry.path) : only;
+		const removed = residue && !selection.length ? [] : applyCleanup(projectRoot, { days, only: selection });
 		console.log(
 			`实际删除 ${removed.length} 项，逻辑大小 ${mib(removed.reduce((sum, entry) => sum + entry.bytes, 0))}。`,
 		);

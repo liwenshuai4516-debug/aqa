@@ -23,12 +23,17 @@
 ```bash
 npm run clean                 # 只预览，零删除
 npm run clean:apply           # 清理超过 7 天的合格候选
+npm run clean:junk:preview    # 只预览执行期残留
+npm run clean:junk            # 立即回收执行期残留（不受保留期约束）
 ```
 
 白名单仅包括：
 
 - `tests/scratch/` 内真实的 `node_modules` 目录，父目录须同时保留 `package.json`、`package-lock.json`。
 - 根依赖下 `node_modules/.vite`、`.vite-temp`、`.cache`。
+- 执行期残留（`--residue` 范围，由下次运行重建，因此不受 7 天保留期约束）：`.workbuddy/tmp/`、`.tmp-test-data/` 两个目录；`.DS_Store`、`Thumbs.db`、`*.orig`、`*.rej`、`*.tmp`、`*~`；仓库根下无扩展名且不超过 64 字节的短名文件（工具写入中断的残留）；超过 10 分钟未被释放的 `.git/{index,HEAD,config,packed-refs}.lock`。
+
+残留扫描深度不超过 4 层，跳过 `node_modules`、`.git`、`dist`、`release`、`.watermate`、`tests`，不跟随符号链接，因此不会进入测试证据目录。跟踪文件和 `.cleanup-keep`、符号链接的保留规则对残留同样生效。
 
 脚本跳过目录链接，删除目录内的链接时不跟随其目标；拒绝清理 Git 跟踪文件。候选树内或祖先目录存在 `.cleanup-keep` 时保留，执行前重新扫描。使用这些目录的进程必须先结束，时间阈值不是进程存活检测；不将清理挂到应用启动或并行测试中。
 
@@ -59,3 +64,11 @@ npm run clean -- --days 0 --only tests/scratch/example/data/plugins/api-testing/
 - 11 项隔离单测通过：预览不删除、保留期/最近写入、锁文件门槛、祖先/子树保留标记、Git 跟踪保护、符号链接边界、定向删除、重复执行、预览后状态重校验及非法参数。首次检查发现 JS 参数类型推断和零天时间边界问题，修正后复验通过。
 - 全部五个类型检查、lint、改动文件格式和差异检查通过；协议单源检查通过，因仓库没有可用 tag，版本启发式子项按原工具行为跳过。实际运行默认 `clean:apply` 再次删除 0 项，三个保留运行环境仍在。未重跑全量业务冒烟或构建，宿主运行代码和依赖版本没有变更。
 - 支持范围为项目本地维护命令；本轮在 macOS arm64 实测，未验证 Windows/Linux。未运行模型或业务接口请求，不修改生产配置或桌面安装包。
+
+## 2026-10-27 执行期残留回收
+
+此前脚本只覆盖依赖缓存，工具写入中断留下的文件、运行时目录和 Git 锁不在范围内，`git status` 会被污染，残留的 `.git/index.lock` 还会阻塞提交。
+
+- 新增 `--residue` / `--quiet` 两个参数和 `npm run clean:junk(:preview)` 入口；残留类别无保留期门槛，其余安全规则不变（跟踪文件、`.cleanup-keep`、符号链接、仓库边界、删除前重扫）。
+- 本轮实际删除：仓库根 9 个 4 字节 `blat` 残留文件、`.workbuddy/tmp/` 内 10 个临时脚本与索引副本、根与 `plugins/` 各 1 个 `.DS_Store`、`AGENTS.md.bak`（`*.bak` 已忽略，原文可从 Git 追溯）、空的 `.tmp-test-data/`。保留 `tests/scratch/` 全部证据、`.workbuddy/{memory,reports}`。
+- 单测由 11 项扩到 14 项，新增「残留不受保留期约束且不动证据」「跟踪文件与保留标记保护残留」「只清超过宽限期的 Git 锁」；`npm run clean` 预览结果与改动前一致（依赖候选仍全部为保留态）。

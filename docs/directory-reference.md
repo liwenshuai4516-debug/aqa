@@ -36,7 +36,7 @@ pi-web-ui/
 │   └── assets/private-recording-storage-events.mjs # 仅转接原生0.1.17单page存储观察/读取，录制fixture不自动开放产品动作
 ├── capabilities/ui-testing/    # 旧应用路径兼容转接，无独立实现
 ├── scripts/enable-ui-testing.mjs # 默认项目级登记；显式 --agent-dir 可登记到应用专用 Pi 配置
-├── scripts/clean-project.mjs    # 预览/回收白名单缓存及测试依赖，保留证据、跟踪文件和保留标记
+├── scripts/clean-project.mjs    # 预览/回收白名单缓存、测试依赖与执行期残留，保留证据、跟踪文件和保留标记
 ├── tests/ui-testing-integration-test.mjs # 真实 SDK/测试 MCP/Chromium 接线，临时项目零模型请求
 ├── tests/ui-testing-visibility-test.mjs # 隔离 Electron 中复现工作区错位、验证技能页与 /ui 菜单
 ├── themes/                     # 内置主题（完整样式表：:root 变量 + 任意选择器/布局覆盖皆可，styles.css 只是共享基线）

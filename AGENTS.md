@@ -50,11 +50,13 @@ npm run build:vendor       # 重建并检查已入库 vendor
 npm run install:api-tests  # 共享锁定 API 测试依赖
 npm run size:check         # 上下文、证据、vendor 与依赖预算
 npm run clean              # 仅预览可重建缓存
+npm run clean:junk         # 立即回收执行期残留（不改依赖缓存）
 ```
 
 - 提交前依次执行：`npx prettier --write <本次文件>` → `npm run typecheck` → 相关 `vitest` 单测；并跑 `npm run lint`、`npm run check:protocol`、`git diff --check` 和相关集成回归。缺少可选依赖时先安装，不能把未执行写成通过。
 - 测试端口 >=8900，临时 dataDir/agentDir 隔离，只清理自己进程；禁止 `pkill -f`。冒烟不得自行构建，使用 `tests/lib/ensure-build.mjs`；已串行构建后跑器可用 `--no-build`。Chrome 路径走 `tests/lib/chrome.mjs`。
 - 任务开始和交付前运行 `npm run clean` 预览；确认无进程使用后仅清理超过 7 天的白名单缓存/可重装依赖。`.cleanup-keep`、Git 跟踪文件、符号链接、证据、个人数据和当前可运行版本均须保留。禁止 `git clean -fdx`；详见 [体积维护](docs/project-cleanup.md)。
+- 任务收尾须清理自己产生的执行期残留：临时脚本、索引/日志副本、试写文件统一放 `.workbuddy/tmp/`，交付前执行 `npm run clean:junk`（等价 `npm run clean -- --residue --apply`，只动残留、不碰依赖缓存与测试证据），并在交付说明中报告删除结果。禁止把临时文件落在仓库根或业务目录；被中断的写入、`.DS_Store`、`.tmp-test-data/` 和过期的 `.git/*.lock` 由该命令统一回收。
 - 体积与构建策略见 [项目精简](docs/project-slimming.md)。共享 API 依赖、浏览器缓存，不复制整份依赖进运行证据；失败证据不自动删除。新增大型原始证据先归档并保留校验索引，不继续堆入主仓。
 
 ## 提交与备份（持续授权）

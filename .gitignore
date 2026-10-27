@@ -77,6 +77,13 @@ test-driver-prompt.ts
 capsule-palettes.html
 
 
+# 执行期残留（`npm run clean:junk` 回收；忽略项只影响入库，不负责磁盘回收）
+.workbuddy/tmp/
+.tmp-test-data/
+*.orig
+*.rej
+*~
+
 # Vendored Darwin skill reference media
 !.pi/skills/darwin-skill/assets/**
 !.pi/skills/darwin-skill/templates/result-card.png
