@@ -90,7 +90,7 @@ const plan = {
 	deployment:
 		"Controlled synthetic fixture u00-1: A-edit-2 response variant at original target origin, then frozen positive bytes. Environment version is a family label; do not describe the two response variants as identical deployments or a real product fix.",
 	measurement:
-		"Sequential native service invocation elapsed time and host async FS counts; direct child starts only, including host preflight browsers. Nested runner/worker browser counts, OS cache state and full workflow before/after pairs are unmeasured. Setup-warmed with observer overhead; service invocation count is not Agent orchestration call count.",
+		"Sequential native service invocation elapsed time and host async FS counts; continuous old-failure analysis to failed-only rerun report candidate, excluding setup/diagnostics/creation of the parent failure. Direct child starts only, including host preflight browsers. Nested runner/worker browser counts, OS cache state and full workflow before/after pairs are unmeasured. Setup-warmed with observer overhead; service invocation count is not Agent orchestration call count.",
 	endpoint:
 		"Failure report candidate and separate failed-only rerun report candidate; independent result review/delivery are not authorized by existing v4 design-only remainder and remain pending.",
 	modelCalls: 0,
@@ -172,6 +172,7 @@ try {
 	assert.equal(same.replayed, true);
 	await running?.close();
 	running = undefined;
+	const recoveryStarted = performance.now();
 	const beforeAnalysis = measurement.stop();
 	result.executionMeasurement = beforeAnalysis;
 	// Separate observer makes the read-only stage's zero child-start assertion unambiguous.
@@ -316,6 +317,7 @@ try {
 	} finally {
 		result.rerunMeasurement = rerunMeasurement.stop();
 	}
+	result.failedAnalysisToRerunReportMs = performance.now() - recoveryStarted;
 	for (const ref of immutable) assert.equal(sha256(await fs.readFile(join(root, ref.path))), ref.sha256);
 	assert.equal(sha256(await fs.readFile(ledgerPath)), ledgerHash);
 	result.status = "PASS_CANDIDATES_REVIEW_PENDING";

@@ -1,5 +1,5 @@
 /** U05 controlled discovery through the installed native recording tool and real SDK/MCP.
- * No model decisions, design approval, formal runner or business-environment requests. */
+ * Optional explicitly authorized U00 review; no formal runner or business requests. */
 import assert from "node:assert/strict";
 import { cp, mkdir, readFile, realpath, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
@@ -20,8 +20,17 @@ import { optimizationScope } from "./fixtures/data-space/ui-optimization-page.mj
 
 const completeCandidate = process.argv.includes("--complete-candidate");
 const measured = process.argv.includes("--measure");
+const approvedBaseline = process.argv.includes("--review-baseline");
+assert.ok(
+	!approvedBaseline || (measured && completeCandidate),
+	"--review-baseline requires a measured complete candidate",
+);
 assert.ok(!measured || completeCandidate, "--measure requires --complete-candidate");
 const repo = fileURLToPath(new URL("..", import.meta.url));
+const initialReviewCalls = approvedBaseline
+	? JSON.parse(await readFile(join(repo, "tests/scratch/ui-u00-completion/authorized-review-budget.json"), "utf8"))
+			.attempts.length
+	: 0;
 const output = join(
 	repo,
 	completeCandidate ? "tests/scratch/ui-browser-candidate" : "tests/scratch/ui-function-discovery",
@@ -43,16 +52,18 @@ if (measured) {
 				scope: optimizationScope,
 				start:
 					"Empty owned project; fixture and SDK/MCP setup included in total; catalog-empty milestone separates setup",
-				endpoint:
-					"Native ui_case_design candidate returns zero static issues for six cases/thirteen sourced assertions; unapproved v1 synthesis, not approved v4",
-				acceptance:
-					"Original frozen scope and 60-action budget; real SDK/MCP recording; no model, diagnostic or formal-run calls; review gate stays blocked",
+				endpoint: approvedBaseline
+					? "Empty owned project to independently approved fresh six-case/thirteen-assertion candidate; preserve any rejected attempt separately"
+					: "Native ui_case_design candidate returns zero static issues for six cases/thirteen sourced assertions; unapproved v1 synthesis, not approved v4",
+				acceptance: approvedBaseline
+					? "Frozen six-feature scope, real SDK/MCP recording, explicitly authorized independent design approval; no diagnostic or formal run"
+					: "Original frozen scope and 60-action budget; real SDK/MCP recording; no model, diagnostic or formal-run calls; review gate stays blocked",
 				metrics:
 					"Sequential host tool invocation elapsed time and async FS API counts; nested hook tool names; direct child starts only. Observer overhead included; setup-warmed dependency/OS caches, not a cold sample.",
 				unmeasured: [
 					"Nested MCP/runner browser launch and internal API counts",
-					"Model generation/review wait",
-					"v4 diagnostic preparation and approved endpoint",
+					...(approvedBaseline ? [] : ["Model generation/review wait", "Independently approved endpoint"]),
+					"Diagnostic preparation and runtime admission",
 					"Before/after comparison",
 					"Electron business chain",
 				],
@@ -580,6 +591,64 @@ test('seed',async({page})=>{
 			assert.ok(code.includes(JSON.stringify(value)));
 			code = code.replaceAll(JSON.stringify(value), "replayInputs." + key);
 		}
+		if (approvedBaseline) {
+			// D4: check cancellation before reload can discard an erroneous in-memory write.
+			const reload = '\t\tawait expect(page.getByRole("dialog")).toBeHidden();\n\t\tawait page.reload();';
+			assert.ok(code.includes(reload));
+			code = code.replace(
+				reload,
+				`\t\tawait expect(page.getByRole("dialog")).toBeHidden();
+		await page.getByLabel("Query", { exact: true }).fill(ownedName);
+		await page.getByRole("button", { name: "Search", exact: true }).click();
+		await expect(page.getByRole("status")).toHaveText("Empty");
+		await expect(page.getByRole("listitem")).toHaveCount(0);
+		await page.reload();`,
+			);
+			// D8: the frozen contract requires a distinct origin for every test.
+			code = code.replace(
+				'import { test, expect } from "playwright/test";',
+				`import { test as baseTest, expect } from "playwright/test";
+import { createServer } from "node:http";
+import { optimizationPage } from "./u00-fixture.mjs";
+let nextPort = 18900;
+const test = baseTest.extend<{ isolatedOrigin: string }>({
+	isolatedOrigin: async ({}, use) => {
+		const server = createServer((_req, res) => {
+			res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+			res.end(optimizationPage());
+		});
+		// Monotonic ports keep origins distinct; occupied ports belong to other services.
+		while (nextPort < 19000) {
+			const port = nextPort++;
+			try {
+				await new Promise<void>((ok, reject) => {
+					server.once("error", reject);
+					server.listen(port, "127.0.0.1", () => { server.removeListener("error", reject); ok(); });
+				});
+				break;
+			} catch (error) {
+				if ((error as NodeJS.ErrnoException).code !== "EADDRINUSE") throw error;
+			}
+		}
+		if (!server.listening) throw new Error("No unused isolated test port in 18900..18999");
+		try {
+			const port = (server.address() as import("node:net").AddressInfo).port;
+			await use("http://127.0.0.1:" + port);
+		} finally {
+			server.closeAllConnections();
+			await new Promise<void>((ok, reject) => server.close(error => error ? reject(error) : ok()));
+		}
+	},
+});`,
+			);
+			code = code.replace(
+				'test.beforeEach(async ({ page }) => {\n\tawait page.goto("/?role=tester");',
+				'test.beforeEach(async ({ page, isolatedOrigin }) => {\n\tawait page.goto(isolatedOrigin + "/?role=tester");',
+			);
+			const declaration = await readFile(join(repo, "tests/fixtures/data-space/ui-optimization-page.mjs"));
+			await writeFile(join(fixture.project, "tests/u00-fixture.mjs"), declaration);
+			await store.putFile("qa/ui/recordings/tester/u00-fixture.mjs", declaration);
+		}
 		await call("generator_write_test", { fileName: "tests/tester.recorded.spec.ts", code });
 		await call("browser_close", {
 			intent: "Close owned tester context after recording; viewer seed context already closed",
@@ -656,6 +725,9 @@ test('seed',async({page})=>{
 		const casesRef = await store.put(cases);
 		const scriptRef = await store.putFile(`${base}/candidate.spec.ts`, code);
 		const helperRef = await store.putFile(`${base}/u05-replay-inputs.ts`, helper);
+		const originFixture = approvedBaseline
+			? [await store.putFile(`${base}/u00-fixture.mjs`, await readFile(join(fixture.project, "tests/u00-fixture.mjs")))]
+			: [];
 		const provenance = await store.putFile(
 			`${base}/lineage.json`,
 			JSON.stringify({
@@ -665,8 +737,9 @@ test('seed',async({page})=>{
 					"Viewer identity and hidden Add from separate seed context; tester six-feature interactions from real MCP journal. Do not claim viewer MCP interactions.",
 				synthesis:
 					"Replay assertions are sourced from the frozen declaration; generated candidate includes additional explicit checks, not a byte-for-byte MCP-exported action log.",
-				budget:
-					"New recording evidence does not renew exhausted U05 native review authorization; share existing 3-round ledger. Historical partials remain unchanged.",
+				budget: approvedBaseline
+					? "Separate U00 authorization call_30b1ef1f5a9e48b2957656a335890924, at most 3 calls and USD 1; historical U05 budget unchanged."
+					: "New recording evidence does not renew exhausted U05 native review authorization; share existing 3-round ledger. Historical partials remain unchanged.",
 			}),
 		);
 		const asset = envelope("asset", "u05-browser-candidate", {
@@ -676,7 +749,7 @@ test('seed',async({page})=>{
 			inventory_ref: inventoryRef,
 			cases_ref: casesRef,
 			recording_refs: [recordingRef],
-			files: [scriptRef, helperRef, sourceRef, dataRules, provenance],
+			files: [scriptRef, helperRef, ...originFixture, sourceRef, dataRules, provenance],
 			bindings: old.data.bindings.map((b) => ({ ...b, script_ref: scriptRef })),
 			readiness: "design-only",
 			gaps: cases.data.gaps,
@@ -695,6 +768,20 @@ test('seed',async({page})=>{
 		});
 		assert.equal(progress.status, "completed", JSON.stringify(progress));
 		assert.equal(progress.output.next_stage, "design-review");
+		if (approvedBaseline) {
+			const { reviewBaseline } = await import("./lib/ui-baseline-design-review.mjs");
+			const reviewed = await reviewBaseline({
+				root: fixture.project,
+				sessionDir: session.sessionManager.getSessionDir(),
+				taskRef: progress.output.task_ref,
+				assetRef,
+				output,
+				measurement,
+			});
+			result.modelCalls = 1;
+			result.independentReviewRef = reviewed.response.artifact_refs[0];
+			result.providerElapsedMs = reviewed.providerElapsedMs;
+		}
 		const gate = await workflow({
 			operation: "checkpoint",
 			task_ref: progress.output.task_ref,
@@ -706,7 +793,9 @@ test('seed',async({page})=>{
 			operation: "block",
 			task_ref: progress.output.task_ref,
 			reasons: [
-				"This new synthesis has no independent design approval or diagnostic proof. Controlled discovery ends at candidate; it does not inherit another revision's approval or renew shared paid-review authorization.",
+				approvedBaseline
+					? "Independent design approved; U00 measurement endpoint reached. Diagnostics and formal execution are outside this first-generation sample; runtime remains unready."
+					: "This new synthesis has no independent design approval or diagnostic proof. Controlled discovery ends at candidate; it does not inherit another revision's approval or renew shared paid-review authorization.",
 			],
 		});
 		assert.equal(blocked.status, "blocked", JSON.stringify(blocked));
@@ -714,7 +803,9 @@ test('seed',async({page})=>{
 		assert.equal(directory.output.assets.find((a) => a.asset_ref.path === assetRef.path).runtime_ready, false);
 		assert.equal(sha256(await readFile(archive)), history.evidence.archive_sha256);
 		checks.push(
-			"Real browser recording maps all six cases/thirteen sourced assertions into statically valid candidate; approval gate remains blocked, no model/diagnostic/formal run",
+			approvedBaseline
+				? "Fresh six-feature candidate independently approved; runtime admission remains blocked without diagnostics"
+				: "Real browser recording maps all six cases/thirteen sourced assertions into statically valid candidate; approval gate remains blocked, no model/diagnostic/formal run",
 		);
 		Object.assign(result, {
 			status: "PASS",
@@ -880,7 +971,16 @@ test('seed',async({page})=>{
 		process.exitCode = 1;
 	}
 	await fixture.close();
-	await rm(dirname(fixture.project), { recursive: true, force: true });
+	if (approvedBaseline) {
+		result.modelCalls =
+			JSON.parse(await readFile(join(repo, "tests/scratch/ui-u00-completion/authorized-review-budget.json"), "utf8"))
+				.attempts.length - initialReviewCalls;
+		result.originalRoot = fixture.project;
+		await writeFile(
+			join(dirname(fixture.project), ".cleanup-keep"),
+			"U00 original synthetic review authority and evidence; retain for continuation.\n",
+		);
+	} else await rm(dirname(fixture.project), { recursive: true, force: true });
 	if (measurement)
 		await writeFile(join(output, "measurement.json"), JSON.stringify(measurement.stop(), null, 2) + "\n");
 	await writeFile(join(output, "result.json"), JSON.stringify({ ...result, evidence: output }, null, 2) + "\n");

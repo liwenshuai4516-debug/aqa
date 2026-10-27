@@ -18,9 +18,10 @@ const history = JSON.parse(
 const beforeEvidence = JSON.parse(
 	await readFile(join(repo, "docs/ui-testing-evidence/optimization-u02-private-capture.json"), "utf8"),
 );
-const afterEvidence = JSON.parse(
-	await readFile(join(repo, "docs/ui-testing-evidence/optimization-u04-reference-reuse.json"), "utf8"),
-);
+const installedEntry = import.meta.resolve("pi-ui-testing");
+const installedPackage = JSON.parse(await readFile(new URL("../package.json", installedEntry), "utf8"));
+const afterPackage = `.pi/skills/ui-testing-workflow/assets/pi-ui-testing-${installedPackage.version}.tgz`;
+const afterBytes = await readFile(join(repo, afterPackage));
 const baselineCommit = "210280602e50f52f5b35ef04d9c711755b7ab3c0";
 const packagePath = ".pi/skills/ui-testing-workflow/assets/pi-ui-testing-0.1.3.tgz";
 const packageBytes = (
@@ -31,7 +32,14 @@ const packageBytes = (
 	})
 ).stdout;
 assert.equal(sha256(packageBytes), beforeEvidence.package_sha256);
-assert.equal(sha256(await readFile(join(repo, afterEvidence.package.path))), afterEvidence.package.sha256);
+const packedEntry = (
+	await execute("tar", ["-xOf", join(repo, afterPackage), "package/dist/index.js"], { encoding: "buffer" })
+).stdout;
+const packedValidation = (
+	await execute("tar", ["-xOf", join(repo, afterPackage), "package/dist/validation.js"], { encoding: "buffer" })
+).stdout;
+assert.equal(sha256(packedEntry), sha256(await readFile(new URL(installedEntry))));
+assert.equal(sha256(packedValidation), sha256(await readFile(new URL("validation.js", installedEntry))));
 const archive = join(output, "before.tgz"),
 	before = join(output, "before");
 await writeFile(archive, packageBytes);
@@ -49,7 +57,13 @@ const plan = {
 	order: Array.from({ length: 5 }, (_, i) => (i % 2 ? ["after", "before"] : ["before", "after"])),
 	versions: {
 		before: { version: "0.1.3", commit: baselineCommit, package_sha256: sha256(packageBytes) },
-		after: { version: "0.1.4", package_sha256: afterEvidence.package.sha256 },
+		after: {
+			version: installedPackage.version,
+			package_path: afterPackage,
+			package_sha256: sha256(afterBytes),
+			entry_sha256: sha256(packedEntry),
+			validation_sha256: sha256(packedValidation),
+		},
 	},
 	source_archive_sha256: history.evidence.archive_sha256,
 	harness_sha256: sha256(await readFile(join(repo, "tests/ui-catalog-read-benchmark.mjs"))),
@@ -84,6 +98,10 @@ try {
 			const data = JSON.parse(worker.stdout);
 			assert.equal(data.status, "PASS");
 			assert.equal(data.nativeVersion, plan.versions[version].version);
+			if (version === "after") {
+				assert.equal(data.nativeEntrySha256, plan.versions.after.entry_sha256);
+				assert.equal(data.validationSha256, plan.versions.after.validation_sha256);
+			}
 			assert.equal(data.samples.length, 48);
 			assert.equal(data.sourceArchive.archive_sha256, plan.source_archive_sha256);
 			assert.equal(data.modelCalls + data.browserStarts + data.formalRunnerCalls, 0);

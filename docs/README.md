@@ -33,6 +33,8 @@
 
 ## UI 测试维护与验收
 
+- [U00 工程基线与性能对照](ui-testing-u00-baseline-comparison.md)：首次发现到独立批准、已有资产回归、失败分析/重跑及现行五组成对查询；完整 M2 提速未验收。
+
 - [本项目环境与数据 fixture](../qa/ui/README.md)：临时服务、身份与初态预检、归属数据、重复执行及中断清理。
 - [P0 守卫与 fixture 验收](ui-testing-p0-evidence.md)：操作分类、实际 SDK/宿主门禁、隔离浏览器和残留证据。
 - [UI 优化执行记录](ui-testing-optimization-execution.md)：分阶段工程证据、私密捕获回归及未完成门禁；分发包维护见[统一入口](../.pi/skills/ui-testing-workflow/references/maintenance.md)。
