@@ -486,3 +486,5 @@ EC06 离线资源单源：`plugins/agent-evaluation/runtime/` 随插件保存固
 EC06 显式后端登记：`server/external-evaluation-enrollment.ts` 管理私有、不可覆盖的固定离线资源登记，`scripts/enroll-agent-evaluation-runtime.mjs` 接收已签名 helper 和固定启动文件；读取不依赖临时测试路径，执行仍需宿主另授权限。产品执行入口尚待接线。
 
 EC06 宿主执行接口：`server/external-evaluation-port.ts` 经原 `PluginHost.createOfflineEvaluationExecution` 提供固定离线执行，原 SDK 会话/模式与工具 invocation 复验、临时 store 授权、宿主禁用/卸载取消；`tests/agent-evaluation-port-test.mjs` 验证真实宿主/VM和关闭仓库后的停止。产品 manifest/页面/工具/技能尚未开放，见[证据](agent-evaluation-evidence/EC06-port-diagnostics.json)。
+
+EC04 真实文件系统与权限模式补验：`tests/agent-evaluation-desktop-test.mjs --storage-fault`复用`tests/fixtures/agent-evaluation/storage-fault.mjs`，仅在自有64MiB卷验证EACCES/ENOSPC、错误保留、重试和完整桌面重启幂等；`tests/agent-evaluation-native-desktop-test.mjs <自有UI来源> --mode-matrix`经原SDK验证只读/计划模式查询与采集门禁。半写恢复/回退另行复跑；采集性能仍FAIL，详见[证据](agent-evaluation-evidence/EC04-storage-permission-diagnostics.json)。

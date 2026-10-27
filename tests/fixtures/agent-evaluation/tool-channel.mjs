@@ -4,7 +4,7 @@ import { createServer } from "node:http";
 import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
-export async function createToolChannelFixture(agentDir) {
+export async function createToolChannelFixture(agentDir, contextWindow = 32000) {
 	let selected;
 	const observations = [];
 	const server = createServer((request, response) => {
@@ -74,7 +74,7 @@ export async function createToolChannelFixture(agentDir) {
 							id: "offline-tool-fixture",
 							name: "Local scripted tool fixture",
 							input: ["text"],
-							contextWindow: 32000,
+							contextWindow,
 							maxTokens: 512,
 						},
 					],

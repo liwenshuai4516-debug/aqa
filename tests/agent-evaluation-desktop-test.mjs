@@ -1,6 +1,6 @@
 /** Real Electron, isolated data, seeded SDK history; no model, CLI or business execution. */
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, readdir, writeFile, cp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -31,6 +31,27 @@ import { installCapacityFixture, verifyCapacity } from "./fixtures/agent-evaluat
 import { verifyTimingMatrix } from "./fixtures/agent-evaluation/timing-matrix.mjs";
 import { verifyUsageMatrix } from "./fixtures/agent-evaluation/usage-matrix.mjs";
 import { verifyCrashStore } from "./fixtures/agent-evaluation/crash-store.mjs";
+import { prepareStorageFaultVolume, verifyStorageFault } from "./fixtures/agent-evaluation/storage-fault.mjs";
+const storageFault = process.argv.includes("--storage-fault");
+assert.ok(
+	!storageFault ||
+		!process.argv.some((arg) =>
+			[
+				"--crash-store",
+				"--crash-report",
+				"--rollback",
+				"--active-jobs",
+				"--capacity",
+				"--byte-capacity",
+				"--scale",
+				"--rule-upgrade",
+				"--receipt-loss",
+				"--timing-matrix",
+				"--usage-matrix",
+			].includes(arg),
+		),
+	"Run filesystem faults separately from other process/profile probes",
+);
 const reportCrash = process.argv.includes("--crash-report");
 const crashStore = process.argv.includes("--crash-store") || reportCrash;
 assert.ok(!(reportCrash && process.argv.includes("--crash-store")), "Run evidence and report crashes separately");
@@ -103,9 +124,10 @@ assert.ok(!(rollback && process.argv.includes("--active-jobs")), "Run rollback s
 const repo = fileURLToPath(new URL("..", import.meta.url));
 ensureBuild(repo, "agent-evaluation-desktop");
 const output = await mkdtemp(join(tmpdir(), "agent-evaluation-desktop-"));
+const faultVolume = storageFault ? await prepareStorageFaultVolume(output) : undefined;
 const userData = join(output, "desktop"),
 	agentDir = join(userData, "agent"),
-	dataDir = join(userData, "data"),
+	dataDir = faultVolume?.dataDir ?? join(userData, "data"),
 	workspace = join(output, "workspace");
 for (const path of [agentDir, workspace, join(agentDir, "sessions")]) await mkdir(path, { recursive: true });
 await writeFile(join(agentDir, "auth.json"), "{}");
@@ -185,6 +207,7 @@ const env = {
 	TMPDIR: process.env.TMPDIR,
 	LANG: "en_US.UTF-8",
 	PI_DESKTOP_USER_DATA: userData,
+	...(storageFault ? { PI_WEB_DATA_DIR: dataDir } : {}),
 	PI_WEB_CWD: workspace,
 	PI_WEB_PORT: String(port),
 	PI_WEB_PLUGIN_CATALOG_URL: "off",
@@ -1212,6 +1235,82 @@ try {
 				: "Actual sidecar exits after partial manifest, retains dead writer lock and damaged bytes, publishes no half evidence/checkpoint, and explicitly restores exact backup without task replay",
 		);
 	}
+	if (storageFault) {
+		stage("actual filesystem permission denial and bounded-volume disk exhaustion");
+		await page.evaluate((path) => (window.__storageSourcePath = path), sessionPath);
+		result.storageFault = await verifyStorageFault({ page, output, dataDir, volume: faultVolume, original, until });
+		stage("native restart after filesystem fault recovery");
+		const contractCount = (await readdir(join(dataDir, "agent-evaluation/contracts"))).length;
+		const reportFile = join(dataDir, "agent-evaluation/evaluations", `${original.id}.${original.revision}.json`);
+		const reportBytes = await readFile(reportFile);
+		await writeFile(join(output, "storage-recovery-before-restart.log"), app.getLogs());
+		const stoppedProcess = app.process();
+		await app.close();
+		assert.ok(stoppedProcess.exitCode !== null || stoppedProcess.signalCode !== null);
+		app = await launchNativeApp({
+			executablePath: electron,
+			packaged: false,
+			env,
+			mainPath: join(repo, "dist/desktop/main.js"),
+		});
+		page = await app.firstWindow();
+		await page.waitForSelector(".app");
+		await page.addInitScript(() => {
+			const Native = window.WebSocket;
+			window.__evaluationFrames = [];
+			window.WebSocket = class extends Native {
+				constructor(...args) {
+					super(...args);
+					if (String(args[0]).includes("/ws")) window.__evaluationSocket = this;
+					this.addEventListener("message", (e) => {
+						try {
+							window.__evaluationFrames.push(JSON.parse(e.data));
+						} catch {}
+					});
+				}
+			};
+		});
+		await page.reload();
+		await until(() => page.evaluate(() => window.__evaluationFrames.some((f) => f.type === "ready")));
+		await page.evaluate(
+			(path) => window.__evaluationSocket.send(JSON.stringify({ type: "switch_session", path })),
+			sessionPath,
+		);
+		await until(() =>
+			page.evaluate(() =>
+				window.__evaluationFrames.some((f) => f.type === "snapshot" && f.state?.sessionId === "evaluation-desktop"),
+			),
+		);
+		for (const [request, expected] of [
+			[result.storageFault.permissionRequest, result.storageFault.permissionRetry],
+			[result.storageFault.fullRequest, result.storageFault.fullRetry],
+		]) {
+			const offset = await page.evaluate(() => window.__evaluationFrames.length);
+			await page.evaluate(
+				(payload) =>
+					window.__evaluationSocket.send(
+						JSON.stringify({ type: "plugin_message", pluginId: "agent-evaluation", payload }),
+					),
+				request,
+			);
+			let reply;
+			await until(async () => {
+				reply = await page.evaluate(
+					({ offset, id }) =>
+						window.__evaluationFrames.slice(offset).find((f) => f.type === "plugin_data" && f.payload?.requestId === id)
+							?.payload,
+					{ offset, id: request.requestId },
+				);
+				return !!reply;
+			});
+			assert.equal(reply.ok, true, JSON.stringify(reply.error));
+			assert.deepEqual(reply.result, expected);
+		}
+		assert.equal((await readdir(join(dataDir, "agent-evaluation/contracts"))).length, contractCount);
+		assert.deepEqual(await readFile(reportFile), reportBytes);
+		result.storageFault.nativeRestartIdempotent = true;
+		await writeFile(join(output, "storage-fault-result.json"), JSON.stringify(result.storageFault, null, 2));
+	}
 	stage("development URL cannot acquire the native identity");
 	await writeFile(join(output, "app-restarted-process.log"), app.getLogs());
 	await app.close();
@@ -1281,6 +1380,10 @@ try {
 		await app.close();
 	}
 	if (overrideServer) await new Promise((resolve) => overrideServer.close(resolve));
+	if (faultVolume) {
+		await cp(join(dataDir, "agent-evaluation"), join(output, "retained-evaluation-store"), { recursive: true });
+		result.volumeDetach = faultVolume.close();
+	}
 	await writeFile(join(output, "result.json"), JSON.stringify(result, null, 2));
 	console.log(JSON.stringify(result, null, 2));
 }

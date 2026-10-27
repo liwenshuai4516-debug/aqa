@@ -98,7 +98,7 @@ export async function verifyCrashStore({
 				window.__crashFrames.some(
 					(f) =>
 						f.type === "plugins" &&
-						f.plugins.some((p) => p.id === "agent-evaluation" && p.active && p.version === "0.4.32"),
+						f.plugins.some((p) => p.id === "agent-evaluation" && p.active && p.version === "0.4.34"),
 				),
 			),
 		);

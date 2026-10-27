@@ -16,7 +16,8 @@ const sourceErrors = process.argv.includes("--source-errors");
 const nativeMatrix = process.argv.includes("--native-matrix");
 const accessMatrix = process.argv.includes("--access-matrix");
 const principalMatrix = process.argv.includes("--principal-matrix");
-const toolMatrix = process.argv.includes("--tool-matrix");
+const modeMatrix = process.argv.includes("--mode-matrix");
+const toolMatrix = process.argv.includes("--tool-matrix") || modeMatrix;
 const collectionFault = process.argv.includes("--collection-fault");
 const summary = JSON.parse(await readFile(join(fixture, "summary.json"), "utf8"));
 assert.equal(summary.status, "PASS");
@@ -24,7 +25,7 @@ assert.match(summary.scope, /local synthetic targets/);
 const ledger = JSON.parse(await readFile(join(fixture, "ledger.json"), "utf8"));
 const repo = fileURLToPath(new URL("..", import.meta.url));
 ensureBuild(repo, "agent-evaluation-native-desktop");
-const output = await mkdtemp(join(tmpdir(), "agent-evaluation-native-desktop-"));
+const output = await mkdtemp(join(tmpdir(), modeMatrix ? "aev-modes-" : "agent-evaluation-native-desktop-"));
 const userData = join(output, "desktop"),
 	agentDir = join(userData, "agent"),
 	dataDir = join(userData, "data");
@@ -128,7 +129,7 @@ async function until(fn) {
 try {
 	if (toolMatrix || collectionFault) {
 		const { createToolChannelFixture } = await import("./fixtures/agent-evaluation/tool-channel.mjs");
-		scriptedTools = await createToolChannelFixture(agentDir);
+		scriptedTools = await createToolChannelFixture(agentDir, modeMatrix ? 128000 : 32000);
 	}
 	app = await launchNativeApp({
 		executablePath: electron,
@@ -744,7 +745,43 @@ try {
 					),
 				),
 			);
+			if (modeMatrix) {
+				const snap = await rpc("get", { ...selectedBound, ref: originalReport.data.snapshotRef });
+				const attemptRef = snap.data.attemptRefs[0];
+				assert.ok(attemptRef);
+				for (const mode of ["readonly", "plan"])
+					steps.push(
+						{ id: `tool-${mode}-get`, mode, args: { action: "get", ref: status.reportRef }, allowed: true },
+						{ id: `tool-${mode}-collect`, mode, args: { action: "collect", ref: attemptRef }, allowed: false },
+					);
+			}
 			for (const step of steps) {
+				if (step.mode) {
+					const offset = await page.evaluate(() => window.__nativeFrames.length);
+					await page.evaluate((mode) => {
+						window.__nativeSocket.send(
+							JSON.stringify({
+								type: "dsh_permission_set",
+								preset: mode === "readonly" ? "read-only" : "workspace-write-never",
+							}),
+						);
+						window.__nativeSocket.send(JSON.stringify({ type: "set_plan_mode", enabled: mode === "plan" }));
+					}, step.mode);
+					await until(() =>
+						page.evaluate(
+							({ offset, mode }) =>
+								window.__nativeFrames
+									.slice(offset)
+									.some(
+										(f) =>
+											["snapshot", "snapshot_delta"].includes(f.type) &&
+											f.state?.permission === (mode === "readonly" ? "read-only" : "workspace-write-never") &&
+											f.state?.planMode === (mode === "plan"),
+									),
+							{ offset, mode: step.mode },
+						),
+					);
+				}
 				const args = { requestId: crypto.randomUUID(), ...selectedBound, ...step.args };
 				scriptedTools.select(step.id, args);
 				await page.evaluate(
@@ -774,8 +811,15 @@ try {
 				if (step.allowed) assert.deepEqual(JSON.parse(toolResult.content[0].text), originalReport);
 				else {
 					const text = toolResult.content.map((block) => block.text ?? "").join("\n");
-					assert.ok(text.startsWith('Validation failed for tool "agent_evaluation":'), text);
-					assert.ok(text.includes("- action: must be equal to one of the allowed values"), text);
+					if (step.mode)
+						assert.match(
+							text,
+							step.mode === "plan"
+								? /计划模式：只规划不实施，agent_evaluation 被拒/
+								: /只读权限：agent_evaluation \(asset-write\) 被拒/,
+						);
+					else assert.ok(text.startsWith('Validation failed for tool "agent_evaluation":'), text);
+					if (!step.mode) assert.ok(text.includes("- action: must be equal to one of the allowed values"), text);
 					if (step.id === "tool-denied-spoof")
 						assert.ok(text.includes("- root: must not have additional properties"), text);
 				}
@@ -785,11 +829,16 @@ try {
 				results.push({ id: step.id, args, allowed: step.allowed, toolResult });
 			}
 			assert.equal(scriptedTools.observations.filter((entry) => entry.error).length, 0);
-			assert.equal(scriptedTools.observations.length, 6);
+			assert.equal(scriptedTools.observations.length, modeMatrix ? 14 : 6);
 			for (const observed of scriptedTools.observations) {
 				assert.ok(observed.toolSchema.properties.action.enum.includes("get"));
 				assert.equal(observed.toolSchema.properties.action.enum.includes("review"), false);
 			}
+			if (modeMatrix)
+				await page.evaluate(() => {
+					window.__nativeSocket.send(JSON.stringify({ type: "set_plan_mode", enabled: false }));
+					window.__nativeSocket.send(JSON.stringify({ type: "dsh_permission_set", preset: "workspace-write-never" }));
+				});
 			const afterDenied = await nativeMatrixFiles(join(dataDir, "agent-evaluation"));
 			assert.deepEqual(afterDenied, storeBefore);
 			const reviewRef = await rpc("review", { ...selectedBound, data: reviewData }),
@@ -827,7 +876,8 @@ try {
 			result.checks.push({
 				toolChannel: true,
 				realModelCalls: 0,
-				localScriptedResponses: 6,
+				localScriptedResponses: modeMatrix ? 14 : 6,
+				modeWriteRejections: modeMatrix ? 2 : 0,
 				positiveRead: true,
 				rejectedHumanReviewAttempts: 2,
 				storeUnchangedAfterEachTool: true,

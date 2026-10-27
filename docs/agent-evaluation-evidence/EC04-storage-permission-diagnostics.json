@@ -1,0 +1,381 @@
+{
+	"scope": "EC04 current 0.4.34 actual Electron storage/permission/recovery combinations and unchanged frozen performance comparison",
+	"timestamp": "2026-10-27T01:54:25.978167+00:00",
+	"baselineCommit": "aa8c0d39ee00bee712a041b9c4623c6ba7fb8502",
+	"branch": "codex/ec04-acceptance",
+	"worktree": "/Users/liyingjun/.codex/worktrees/ec04-acceptance/15-aqa",
+	"pluginVersion": "0.4.34",
+	"platform": "macOS arm64; actual Electron via original native main/sidecar/preload; isolated task-owned userData",
+	"productChanges": false,
+	"status": "PARTIAL_ACCEPTANCE_PERFORMANCE_FAIL",
+	"ec04Complete": false,
+	"m1Complete": false,
+	"archive": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/index.json",
+		"bytes": 851232,
+		"sha256": "b20b086745450183090502229068bff63025aeaeabbbddceacda8741d07416ed"
+	},
+	"archiveFiles": 1872,
+	"archiveBytes": 48148338,
+	"independentAudit": {
+		"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/checks/independent-audit.json",
+		"bytes": 4233,
+		"sha256": "4de339627ea6bfaeb2e5359b6ac7195dbe792f8cc0b3c35e85d5fb76d4c793c3"
+	},
+	"sourceRegistration": {
+		"trackedFiles": 33,
+		"runs": 5,
+		"fileComparisons": 165,
+		"allMatchHeadAndSource": true,
+		"audit": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/checks/installed-plugin-audit.json",
+			"bytes": 54766,
+			"sha256": "69c2262b5359ac89ea3b87985c292d42dec130afeafc98f477ab587b20e001bf"
+		},
+		"storageRegistrationReadBackFromOwnedImageReadOnly": true
+	},
+	"storage": {
+		"status": "PASS_FOR_STATED_COMBINATIONS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/desktop/storage/result.json",
+			"bytes": 9545,
+			"sha256": "82e510125a9f557592560cfa6b45cec8b06819bb38fbbcd5d19b2e8fbd49b121"
+		},
+		"actualErrnos": ["EACCES", "ENOSPC"],
+		"maximumOwnedVolumeBytes": 67108864,
+		"filledBytes": 64917504,
+		"availableBlocksAtFault": 0,
+		"operations": "Original createContract RPC and real UI; existing report read; retry after permission/space recovery; native restart repeats both original request IDs",
+		"newPartialRecords": false,
+		"formValuesRetained": true,
+		"oldReportUnchanged": true,
+		"sameKeyRetriesAndNativeRestartIdempotent": true,
+		"volumeDetached": true,
+		"imageRetainedNotCopied": {
+			"path": "/var/folders/zl/dv8m7cfs0mj0j3vf6psss9y80000gn/T/agent-evaluation-desktop-xkfVQr/fault-volume.dmg",
+			"bytes": 67108864,
+			"sha256": "8cb9f95b5545e76cadd9a8542d5e2b56f4b433d039d54ee44c9c975aef95a0b9",
+			"copied": false
+		},
+		"testSourceNote": "Final test source contains strict bavail=0 assertion. Successful rerun briefly included quit-event console listeners; exact block reconstructed separately. No durable event trace was saved; no quit root-cause claim."
+	},
+	"permissions": {
+		"status": "PASS_FOR_STATED_COMBINATIONS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/desktop/permissions/result.json",
+			"bytes": 2955,
+			"sha256": "db3768ab3b22d2a04b095f4ede7489ef9f580233edb1dce18ea71017094f5c16"
+		},
+		"probes": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/desktop/permissions/tool-channel-probes.json",
+			"bytes": 199415,
+			"sha256": "e0486158dcc1e46583a3768e840e0f396095ad6d259c3177357ba21d915e91f5"
+		},
+		"observations": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/desktop/permissions/tool-channel-observations.json",
+			"bytes": 109178,
+			"sha256": "9967f67675b555a7d68701e82be88a8dc989ee5f7d205c6f6598bba4bc813fd3"
+		},
+		"actualSdkToolAttempts": 7,
+		"localScriptedResponses": 14,
+		"fixtureErrors": 0,
+		"modeWritesRejected": 2,
+		"readOnlyAndPlanGetPass": true,
+		"reviewAttemptsSchemaRejected": 2,
+		"storeUnchangedAfterEveryTool": true,
+		"trustedUIReviewAppends": 1,
+		"crossScopeAndPrincipalExpectedErrors": 30,
+		"allErrorsArePermissionDenied": false,
+		"nativeRunnerCallsThisRound": 0,
+		"historicalUiRows": {
+			"count": 41,
+			"passed": 27,
+			"failed": 14,
+			"pageSizes": [20, 20, 1],
+			"notCurrentExecution": true
+		}
+	},
+	"crashEvidence": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/desktop/crash-evidence/result.json",
+			"bytes": 9899,
+			"sha256": "7a3cb76b8f1d4e11aad6910d15025589cb105c5af272fb2f236b54ead54c984f"
+		},
+		"actualSidecarExitCode": 83,
+		"partialManifestBytes": 23,
+		"partialPublished": false,
+		"checkpointPublished": false,
+		"deadWriterLockRetained": true,
+		"backupRestoredFiles": 77,
+		"originalBytesUnchanged": true
+	},
+	"crashReport": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/desktop/crash-report/result.json",
+			"bytes": 12587,
+			"sha256": "0669b89db0371326950b8071fffb06a57d504a2f24f2cdda8649d4df31ecc062"
+		},
+		"actualSidecarExitCode": 83,
+		"partialReportBytes": 23,
+		"partialPublished": false,
+		"confirmedRecordsRestored": 81,
+		"interruptedJobState": "unknown",
+		"cancelAndSameRequestReplay": "EXECUTION_UNKNOWN",
+		"unknownDesktopDiscovery": {
+			"afterNativeRestart": true,
+			"afterRefresh": true,
+			"languages": ["en", "zh-CN"],
+			"themes": ["dark", "white stylesheet"],
+			"narrowWidth": 375,
+			"simulatedTextSizePx": 24,
+			"reducedMotion": true,
+			"queriedState": "unknown",
+			"cancellationOffered": false,
+			"scoringReplayed": false,
+			"completedJobOpensOriginalReport": true
+		},
+		"originalBytesUnchanged": true
+	},
+	"rollback": {
+		"status": "PASS_FOR_SAME_HOST",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/desktop/rollback/result.json",
+			"bytes": 30515,
+			"sha256": "cf188adbdd78b1f7abb3826eeb5c977f773b10f212987e6d6a1e25d99cd64fca"
+		},
+		"phases": [
+			{
+				"version": "0.4.19",
+				"status": "PASS",
+				"scope": "Original Pi report, separate human review and sealed file readable; offline records/private package retained exactly for re-upgrade; old version has no upload/original UI"
+			},
+			{
+				"version": "0.4.34",
+				"status": "PASS",
+				"scope": "Exact complete userData restore before launch; Pi report/review/sealed file and human-confirmed offline original reopen without new evidence/attempt/snapshot/report/review"
+			},
+			{
+				"version": "0.4.18",
+				"status": "EXPECTED_REJECTION",
+				"rejection": "STORE_CORRUPT · Recovery issues require explicit repair; original files preserved",
+				"scope": "Supported Pi history remains readable; unknown offline records block a new diagnosis with STORE_CORRUPT, no rewrite/delete/replay"
+			},
+			{
+				"version": "0.4.34",
+				"status": "PASS",
+				"scope": "Second full restore returns original identity, Pi report/review/sealed file and original offline bytes; all durable evaluation and seeded SDK files unchanged"
+			}
+		],
+		"fullUserDataBackupEntries": 349,
+		"samePathRestores": 2,
+		"originalIdentityAndStoreAndSdkSourceUnchanged": true
+	},
+	"performance": {
+		"baseline": {
+			"workers": 30,
+			"status": "FAIL",
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 47.57450000000006,
+					"wallLimit": 50,
+					"cpuDelta": 39.260999999999996,
+					"cpuLimit": 50,
+					"rssDeltas": [3637248, 2064384, 7012352, 5816320, 4571136],
+					"pass": true
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 111.43529199999998,
+					"wallLimit": 50,
+					"cpuDelta": 116.642,
+					"cpuLimit": 50,
+					"rssDeltas": [23756800, 26247168, 21577728, 24166400, 27885568],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 440.1720419999999,
+					"wallLimit": 50,
+					"cpuDelta": 390.673,
+					"cpuLimit": 50,
+					"rssDeltas": [56983552, 55607296, 60243968, 58261504, 58064896],
+					"pass": false
+				}
+			],
+			"evidenceCounts": [40, 400, 200],
+			"gapsEmpty": true,
+			"collectionErrors": 0,
+			"diskAndRssPass": true
+		},
+		"rejectedCandidate": {
+			"workers": 30,
+			"status": "FAIL",
+			"comparisons": [
+				{
+					"workload": "serial",
+					"wallDelta": 44.20579099999995,
+					"wallLimit": 50,
+					"cpuDelta": 34.300000000000004,
+					"cpuLimit": 50,
+					"rssDeltas": [4145152, 3522560, 3883008, 3457024, 1540096],
+					"pass": true
+				},
+				{
+					"workload": "parallel",
+					"wallDelta": 106.92291600000001,
+					"wallLimit": 50,
+					"cpuDelta": 114.65499999999999,
+					"cpuLimit": 50,
+					"rssDeltas": [22609920, 24477696, 24199168, 23756800, 26083328],
+					"pass": false
+				},
+				{
+					"workload": "long",
+					"wallDelta": 467.47191699999996,
+					"wallLimit": 50,
+					"cpuDelta": 412.146,
+					"cpuLimit": 50,
+					"rssDeltas": [60538880, 58179584, 55492608, 57704448, 58048512],
+					"pass": false
+				}
+			],
+			"evidenceCounts": [40, 400, 200],
+			"gapsEmpty": true,
+			"collectionErrors": 0,
+			"diskAndRssPass": true
+		},
+		"candidate": "Canonical long-string no-escape fast path plus request-local source-event Map/Set; tests3files34 passed; complete patch preserved; fully reverted",
+		"candidatePatch": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/checks/ec04-rejected-candidate.patch",
+			"bytes": 3992,
+			"sha256": "5888ce04b691a2a80de134bfd02eb40ea882b2650555ad11fa9aa9697fe730a4"
+		},
+		"runnerUnchanged": true,
+		"necessarySyncAndHashChecksUnchanged": true,
+		"formalExitCode": 1,
+		"status": "FAIL",
+		"diagnosticOnly": {
+			"cpuProfile": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/checks/ec04-long.cpuprofile",
+				"bytes": 118804,
+				"sha256": "085b32b791fe8a5f03aa8278a7348c9ba1fdd54dd842a60b05da3da8c59c4853"
+			},
+			"phaseLog": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/checks/ec04-phases.log",
+				"bytes": 399,
+				"sha256": "82619c5165633ce73fc906482c75d4b4204c1053ac82d6a24fafc8070a2e805f"
+			},
+			"syncCalls": 12,
+			"syncMs": 74.9198,
+			"sourceMs": 148.9184,
+			"writePageNextMs": 286.0531,
+			"nestedDoNotSum": true,
+			"desktopRanConcurrently": true,
+			"notFormalBenchmarkOrImpossibilityProof": true
+		}
+	},
+	"reportPerformance": {
+		"status": "PASS",
+		"raw": {
+			"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/performance/report-result.json",
+			"bytes": 1729,
+			"sha256": "9bebdc940d41c8fe1e2a624547fd740eb93c66649f0dbdb2a469217ce166f40a"
+		},
+		"rounds": 5,
+		"evidenceItems": 1000,
+		"reportsCompleted": true,
+		"reportMedianMs": 601.7669159999999,
+		"listMedianMs": 4.3276670000000195,
+		"evidenceMedianMs": 0.4204999999997199
+	},
+	"regression": {
+		"typecheck": {
+			"status": "PASS",
+			"configurations": 5,
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/checks/ec04-final-typecheck.log",
+				"bytes": 251,
+				"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5"
+			}
+		},
+		"unit": {
+			"status": "PASS",
+			"files": 17,
+			"tests": 303,
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/checks/ec04-final-units.log",
+				"bytes": 428,
+				"sha256": "5340fac6e9dc463eae335fdf7b18ae892228b42d864e3d655034ac897bacb524"
+			}
+		},
+		"build": {
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/checks/ec04-build-baseline.log",
+				"bytes": 6101,
+				"sha256": "c94f1b116ff46195bab7b67173c4d17713b780d617c2377ba347cbdc98d6edaa"
+			}
+		},
+		"desktopBuild": {
+			"status": "PASS",
+			"log": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/checks/ec04-desktop-build.log",
+				"bytes": 67,
+				"sha256": "68325ed14405e2ccec5475987e1276895e2be065ed1af364c8e1ebb16a93a694"
+			}
+		},
+		"lint": "PASS",
+		"protocolStructureAndV33": "PASS",
+		"protocolGitTagHeuristic": "SKIP no usable tag; not pass",
+		"size": "PASS",
+		"finalChecks": "See final-checks.json in the same archive; final changed files formatting/syntax/diff/clean separately verified"
+	},
+	"retainedFailures": [
+		{
+			"run": "agent-evaluation-desktop-yIaL6I",
+			"cause": "64KiB filler left enough space for a small contract; expected-rejection assertion failed; fixed fill granularity; not a product rejection failure"
+		},
+		{
+			"run": "agent-evaluation-desktop-qLh3Yo",
+			"cause": "Reload catalog announcement has no active field; wait timed out; fixed version/tool announcement check and kept RPC positive control"
+		},
+		{
+			"run": "agent-evaluation-native-desktop-2HpZSL",
+			"cause": "Actual read-only guard rejected in Chinese; initial assertion expected English"
+		},
+		{
+			"run": "agent-evaluation-native-desktop-xGHKJC",
+			"cause": "32k local fixture triggered compaction and13 missing-tool fixture errors; dedicated128k mode fixture final strict14/zero-error pass"
+		},
+		{
+			"run": "agent-evaluation-desktop-WFPxGy",
+			"status": "FAIL",
+			"cause": "EACCES/ENOSPC/retries passed but native app quit timed out at full restart; original15s unchanged; child/store lock released at final cleanup and no owned process remained; retry passed; root cause unconfirmed",
+			"raw": {
+				"path": "/Users/liyingjun/.codex/artifacts/agent-evaluation/2026-10-27-ec04-storage-permissions/files/earlier/agent-evaluation-desktop-WFPxGy/result.json",
+				"bytes": 9464,
+				"sha256": "d3d81b76dc6e1ed8c0588913d81516b7b14e001e1440a8b0b25a6a655d64de94"
+			},
+			"riskRemains": true
+		}
+	],
+	"notExecuted": [
+		"Independent OS login user",
+		"ENOSPC during collection/scoring and other publication boundaries",
+		"Physical power loss",
+		"Other process-kill points",
+		"Full permissions/language/theme/fault Cartesian product",
+		"Real CLI/model calls"
+	],
+	"remaining": [
+		"AC39 parallel/long wall and CPU above frozen limits; no accepted optimization delivered",
+		"Intermittent native quit timeout needs further reproduction/diagnosis; preserve failure, do not claim eliminated",
+		"Other existing AC01–AC20 boundaries remain per acceptance audit; no inferred full-M1 pass"
+	],
+	"actualRealModelCalls": 0,
+	"actualRealCliCalls": 0,
+	"ec06DraftUntouched": true
+}
