@@ -25,3 +25,5 @@ description: UI 自动化测试工作流入口：发现录制、用例设计与�
 选择录入后，按数据空间规范显式调用 `import`，以原生 cases ref 为 `assetRef`，按所选 `envId` 匹配所属 `systemId`。保留显式或既有通道 `featureId`；无目录时默认使用“测试用例 → UI用例”，不存在则建、存在则复用，用户重命名后跟随目录 ID。可选 `moduleName` / `featureName` / `envId` / `featureId` 以实际工具 schema 为准；缺少扩展能力时报告阻塞。不要为了入库提前创建 candidate、绑定或执行测试，不生成执行结果。入库不替代设计批准、诊断或正式执行门禁；正式批次仍按原 run 的 `sync` 路径核对结果。
 
 维护安装、资源归属与升级时，查阅 [维护入口](references/maintenance.md)。
+
+按任务 ID 的最小交接、诊断查询复用和分析候选请按运行包内 `ui-test-workflow`、`ui-design-review`、`ui-result-analysis` 当前阶段说明执行；仍保留完整资产执行授权与独立结果评审，不复制运行规则。版本与验收见[维护入口](references/maintenance.md)。

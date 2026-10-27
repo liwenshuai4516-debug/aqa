@@ -45,12 +45,18 @@ function output(state = "blocked", completed = ["analyze"], id = "partial-task",
 	return { content: [{ type: "text", text: JSON.stringify({ output: value }) }] };
 }
 
-function finish(h: ReturnType<typeof host>, operation: string, result = output(), isError = false) {
+function finish(
+	h: ReturnType<typeof host>,
+	operation: string,
+	result = output(),
+	isError = false,
+	toolName = "ui_test_workflow",
+) {
 	h.conv.toolPendingArgs.set("call", { request: { operation } });
 	h.service.onEvent(h.conv, {
 		type: "tool_execution_end",
 		toolCallId: "call",
-		toolName: "ui_test_workflow",
+		toolName,
 		result,
 		isError,
 	});
@@ -89,10 +95,37 @@ describe("Native UI workflow board reconciliation", () => {
 		expect(finish(h, "status", output("completed", ["analyze", "result-review"], "other-task"))).toEqual(before);
 		expect(finish(h, "checkpoint", output("completed"), true)).toEqual(before);
 	});
+	it("task-id handoff updates its board; explicit continuation attaches a separate execution task once", () => {
+		const h = host();
+		finish(h, "start");
+		const handed = finish(h, "handoff", output("running"));
+		expect(handed?.steps.map((s: any) => s.status)).toEqual(["done", "in_progress"]);
+		const continued = finish(h, "continue-execute", output("running", [], "execute-child", "execute"));
+		expect(continued?.steps).toHaveLength(4);
+		expect(continued?.steps.slice(0, 2)).toEqual(handed?.steps);
+		const repeated = finish(h, "continue-execute", output("running", [], "execute-child", "execute"));
+		expect(repeated?.steps).toHaveLength(4);
+		expect(finish(h, "handoff", output("running", [], "unrelated"))).toEqual(repeated);
+	});
 	it("catalog, view and malformed output never create a board", () => {
 		const h = host();
 		expect(finish(h, "catalog")).toBeNull();
 		expect(finish(h, "start", output("running", [], "view-task", "view"))).toBeNull();
 		expect(finish(h, "start", { content: [{ type: "text", text: "bad JSON" }] })).toBeNull();
+	});
+	it("analysis receipt refreshes the existing board without attaching another task or inferring delivery", () => {
+		const h = host();
+		finish(h, "start");
+		const nested = (value: ReturnType<typeof output>) => ({
+			content: [
+				{ type: "text", text: JSON.stringify({ output: { workflow: JSON.parse(value.content[0].text).output } }) },
+			],
+		});
+		const plan = finish(h, "analyze-task", nested(output("running")), false, "ui_result_analysis");
+		expect(plan?.steps.map((s: any) => s.status)).toEqual(["done", "in_progress"]);
+		expect(finish(h, "analyze-task", nested(output("running", [], "unrelated")), false, "ui_result_analysis")).toEqual(
+			plan,
+		);
+		expect(finish(h, "analyze-task", nested(output("completed")), true, "ui_result_analysis")).toEqual(plan);
 	});
 });

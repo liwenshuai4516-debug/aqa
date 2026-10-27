@@ -6,7 +6,7 @@ export type ExtensionToolEffect = "query" | "asset-write" | "browser-action" | "
 const QUERIES: Record<string, readonly string[]> = {
 	ui_discover_record: ["status"],
 	ui_case_design: ["check"],
-	ui_design_diagnose: ["schema", "status"],
+	ui_design_diagnose: ["schema", "status", "reuse"],
 	ui_test_run: ["status", "plan-recovery"],
 	ui_result_analysis: ["read-trace"],
 	ui_asset_maintain: ["impact", "inspect-import"],

@@ -11,6 +11,9 @@ describe("UI execution guards", () => {
 		["ui_discover_record", "action"],
 		["ui_case_design", "save-file"],
 		["ui_test_workflow", "start"],
+		["ui_test_workflow", "handoff"],
+		["ui_test_workflow", "continue-execute"],
+		["ui_result_analysis", "analyze-task"],
 		["ui_asset_maintain", "audit-evidence"],
 		["mcp__ui_playwright_test__browser_click", ""],
 	])("rejects %s/%s before implementation in plan and reviewer modes", (name, operation) => {
@@ -23,6 +26,7 @@ describe("UI execution guards", () => {
 		["ui_discover_record", "status"],
 		["ui_test_workflow", "catalog"],
 		["ui_design_diagnose", "schema"],
+		["ui_design_diagnose", "reuse"],
 	])("allows read-only %s/%s", (name, operation) => {
 		expect(planModeDenial(name, { request: { operation } })).toBeUndefined();
 		expect(delegationDenial(name, { request: { operation } })).toBeUndefined();
@@ -82,6 +86,9 @@ describe("extension permission and operation boundaries", () => {
 		["ui_test_workflow", "checkpoint"],
 		["ui_test_workflow", "block"],
 		["ui_test_workflow", "resume-task"],
+		["ui_test_workflow", "handoff"],
+		["ui_test_workflow", "continue-execute"],
+		["ui_result_analysis", "analyze-task"],
 	])("rejects side effects %s/%s under readonly permission", (name, operation) => {
 		expect(extensionToolDenial(name, { request: { operation } }, { ...state, permission: "read-only" })).toBeDefined();
 		expect(extensionToolDenial(name, { request: { operation } }, state)).toBeUndefined();

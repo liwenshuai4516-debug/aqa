@@ -4348,7 +4348,11 @@ export class ClientSession {
 				if (event.toolName === "bash") {
 					this.bg.snapshotBefore();
 				}
-				if (["update_plan", "ui_test_workflow", "ui_test_run", "api_test_execute"].includes(event.toolName)) {
+				if (
+					["update_plan", "ui_test_workflow", "ui_result_analysis", "ui_test_run", "api_test_execute"].includes(
+						event.toolName,
+					)
+				) {
 					conv.toolPendingArgs.set(event.toolCallId, event.args);
 				}
 				// 看门狗豁免：ask_user_question 阻塞等的是「人类回答」，不是挂死的工具
@@ -4389,7 +4393,7 @@ export class ClientSession {
 				if (!event.isError && event.toolName === "update_plan" && pendingArgs) {
 					this.syncSolUpdatePlan(conv, pendingArgs);
 				}
-				if (!event.isError && event.toolName === "ui_test_workflow") {
+				if (!event.isError && ["ui_test_workflow", "ui_result_analysis"].includes(event.toolName)) {
 					const projection = nativeUiWorkflowPlan(pendingArgs, event.result, this.planManager.getPlan(conv.id));
 					if (projection) this.updatePlan(projection.steps, projection.activeStepId, conv.id);
 				}

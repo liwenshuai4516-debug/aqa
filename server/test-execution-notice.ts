@@ -9,11 +9,17 @@ export function nativeUiWorkflowPlan(
 	current: PlanState | null,
 ): { steps: PlanStep[]; activeStepId: string | null } | undefined {
 	const operation = args?.request?.operation;
-	if (!["start", "status", "checkpoint", "block", "resume-task"].includes(operation)) return;
+	if (
+		!["start", "status", "checkpoint", "handoff", "continue-execute", "analyze-task", "block", "resume-task"].includes(
+			operation,
+		)
+	)
+		return;
 	try {
 		const text = result?.content?.find((part: any) => part.type === "text")?.text;
 		if (typeof text !== "string" || Buffer.byteLength(text) > 64000) return;
-		const output = JSON.parse(text).output;
+		const value = JSON.parse(text).output;
+		const output = operation === "analyze-task" ? value?.workflow : value;
 		const task = output?.task;
 		const data = task?.data;
 		if (task?.kind !== "task" || !/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,95}$/.test(task.id ?? "")) return;
@@ -44,7 +50,11 @@ export function nativeUiWorkflowPlan(
 		const prefix = `ui:${task.id}:`;
 		const existing = current?.steps ?? [];
 		// Read-only status must not attach an unrelated task to this conversation.
-		if (!["start", "resume-task"].includes(operation) && !existing.some((step) => step.id.startsWith(prefix))) return;
+		if (
+			!["start", "resume-task", "continue-execute"].includes(operation) &&
+			!existing.some((step) => step.id.startsWith(prefix))
+		)
+			return;
 		const reasons = [
 			...(Array.isArray(data.blockers) ? data.blockers : []),
 			...(Array.isArray(output.blockers) ? output.blockers.map((b: any) => b.message) : []),

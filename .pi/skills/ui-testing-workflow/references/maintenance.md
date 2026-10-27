@@ -5,7 +5,7 @@
 | 维护内容                                | 唯一位置                                                                                                        |
 | --------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | 技能名称、描述、调度入口                | `../SKILL.md`                                                                                                   |
-| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.18.tgz`                                                                            |
+| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.20.tgz`                                                                            |
 | 原生测试 MCP 适配                       | `../assets/mcp-extension.mjs`                                                                                   |
 | 产品私密连接、采集消费与发布            | `../assets/private-recording-connection.mjs`（显式受管协议；原生过滤复用、私有原文及writer独占发布）            |
 | 私密动作的SDK调用归属                   | `../assets/private-recording-actions.mjs`（真实父子ID、单次授权与固定helper；不绕过宿主门禁）                   |
@@ -20,8 +20,8 @@
 | 管理页与快捷发现的公共逻辑              | `server/skill/`、`server/settings-service.ts`、`server/slash-commands.ts`                                       |
 | 测试资产与执行证据                      | 被测工作区 `qa/ui/`，不写进技能目录                                                                             |
 
-原版包来源提交：`5c71405d839cdb7c6d130e24691b2c8bcaa492c2`（上游本地提交；未推送上游远端）。
-SHA-256：`e2273382a238d165cfe031491004304a31da8e36dba5848bf1d17001692e9c49`。0.1.4 仅在一次引用核验内按 path+sha256 复用成功读取；不同摘要、后续调用及并发调用仍独立核验，不增加跨请求缓存，不改变批准或产物协议。
+原版包来源提交：`df6f303e92301e01566bd8a1858f85bee1499018`（上游本地提交；未推送上游远端）。
+SHA-256：`ef0d4027b4c548c9c749bd2b0136995bffa3988deb33b5bb23273f579fd7ec15`。0.1.4 仅在一次引用核验内按 path+sha256 复用成功读取；不同摘要、后续调用及并发调用仍独立核验，不增加跨请求缓存，不改变批准或产物协议。
 
 保留 0.1.3：将认证诊断/正式执行的原始捕获保存在工作区外的宿主私有目录，公开副本脱敏已知值并隐藏图片/二进制资源；真实失败保留，缺失原始附件时不声明完整证据。trace 读取绑定实际 Playwright 1.62.1，避免误用独立安装的 core 1.63.0。0.1.3当时未覆盖录制、运行中新凭据、任意编码和脚本自行写文件；数据空间私密桥接继续 not-ready，不因该版本放行真实环境。
 
@@ -112,3 +112,5 @@ MCP 运行时选择由 `assets/playwright-runtime.mjs` 负责：CLI 与配置均
 此准入适用于受信工作区，不证明任意配置/依赖代码安全，不支持多frame/其他target或中断后完整续录；数据空间通用record仍unsupported。取消、坏证据、宿主门禁拒绝、预算和路径冲突保留partial及清理入口。实际产品SDK/Chromium回归入口：`PI_WEB_SMOKE_PREBUILT=1 node tests/ui-private-recording-product-test.mjs --mode=normal`；其他模式及桌面证据见[阶段索引](../../../../docs/ui-testing-evidence/optimization-u02-recording-product-actions.json)。
 
 重载/重连补证（2026-10-27）：同一测试入口的 `--mode=reload` 调用真实 SDK `session.reload()`，`--mode=reconnect` 调用已登记的 `/mcp reconnect ui-playwright-test` 处理器。原生重载门禁本已拒绝旧会话动作，无需新增宿主守卫；重连撤销旧私密快照。两类均保留原3步、无新增目标请求/公开writer，最终partial；重连另留2条失败尝试，重载不追加MCP动作。原生close未成功，保留清理未知，不把物理连接关闭冒称业务清理成功。见[生命周期证据](../../../../docs/ui-testing-evidence/optimization-u02-recording-product-lifecycle.json)。完整中断续录不属于现有恢复契约，后续应验证安全停止/查询及显式重新准备，不据历史“待验”文字增加自动恢复功能。
+
+0.1.20 增加 task ID 的 `stage_inputs`/`handoff` 与显式 `continue-execute`、只读诊断 `reuse`、按任务 `analyze-task` 及逐实例失败分组；沿用原 checkpoint/诊断/报告评审门禁。仅返回当前技能目录，不预载正文。0.1.19 为未交付中间包。0.1.18 的旧运行证明会因现行诊断规则摘要改变而失效，须按原规则重新诊断；不得为复用而降级门禁。现有任务/原始 run 仍可读取，实际应用链接已核对，旧会话需 `/reload`。工程、Electron、性能及未通过项见[U03/U07 实施记录](../../../../docs/ui-testing-u03-u07-implementation.md)。
