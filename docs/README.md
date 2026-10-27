@@ -46,7 +46,7 @@
 - [Agent 评估 EC04 产品进展](agent-evaluation-evidence/EC04.md)：两页、可信人审、绑定/配置表单、技能工具登记、批量证据持久化、桌面主进程身份恢复、原生批次只读详情、活动评分同步卸载与实际 Electron；[AC39批量v2性能复验](agent-evaluation-evidence/EC04-performance-gate-review.md)已通过，原v1失败保留；M1其余验收待对账。
 - [Agent 评估实际执行混合分页](agent-evaluation-evidence/EC04-executed-matrix-diagnostics.json)：41条本地UI原生结果27通过/14失败；实际Electron分页/源故障通过，API多页未验，M1未完成。
 - [Agent 评估 EC08 接入准备](agent-evaluation-evidence/EC08.md)：WaterMate 1.0.0 安装及 GUI 目标核对、1 USD 授权上限与认证/隔离缺口；AC39批量v2已通过，其他前置待对账；EC08 CLI/M2 未执行。
-- [Agent 评估 EC14 WaterMate 试点](agent-evaluation-evidence/EC14.md)：隔离 GUI profile、人工登录、单一正常回显及受控 CDP 观察资产已完成；真实 Agent 失败、人工接管、超时恢复和后台核验仍未执行，最多 3 次顶层提交和 USD 0.25 告警为软限制。
+- [Agent 评估 EC14 WaterMate 试点](agent-evaluation-evidence/EC14.md)：隔离 GUI profile、人工登录、正常回显、真实 Agent 约束失败、人工接管及受控 CDP 观察资产已完成；运行中超时恢复未执行、独立后台核验受阻，最多 5 次顶层提交和 USD 1.00 为软限制。
 - [Agent 评估 EC09 专项诊断](agent-evaluation-evidence/EC09.md)：受控项目/环境/批次关系、F03和幂等报告索引；75条隔离样本、权限/失败恢复及实际Electron验收记录，不代表EC08或全部M1完成。
 - [外部 Agent 评估旧入口](external-agent-evaluation-design.md)：转向统一规范，保留旧 EX/T 编号迁移说明，不再维护独立实施方案。
 - [接口测试本机 OS/MCP 隔离补验](api-testing-evidence/isolation-local-mcp.md)：合成文件、进程继承与端口边界；真实目标仍未开放。

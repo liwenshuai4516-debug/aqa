@@ -11,4 +11,6 @@ npm run test:agent-evaluation:watermate -- --cdp-url http://127.0.0.1:9333 --sce
 
 `submit` and `stop` require `WATERMATE_EC14_ALLOW_SUBMIT=1` and a bounded task. They consume a top-level submission and therefore remain subject to the EC14 trial budget and evidence plan. Capture only the script's structured JSON result in the EC14 evidence record; do not archive screenshots, CDP payloads, DOM text, cookies, or the isolated profile.
 
+`handoff` submits a bounded task, waits until the visible stop control appears, then waits up to two minutes for a human to end or take over the task. It does not click stop itself.
+
 This probe supports controlled GUI observation. It does not establish a general WaterMate executor, a CLI integration, model usage accounting, or a completed EC14 evaluation.

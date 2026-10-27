@@ -12,7 +12,7 @@ const option = (name) => {
 	return index < 0 ? undefined : args[index + 1];
 };
 const scenario = option("--scenario") ?? "observe";
-assert.ok(["observe", "input", "submit", "stop"].includes(scenario), "Unknown WaterMate EC14 scenario");
+assert.ok(["observe", "input", "submit", "stop", "handoff"].includes(scenario), "Unknown WaterMate EC14 scenario");
 
 const cdpUrl = option("--cdp-url") ?? process.env.WATERMATE_EC14_CDP_URL;
 assert.ok(cdpUrl, "Provide --cdp-url for the isolated WaterMate CDP endpoint");
@@ -24,7 +24,7 @@ assert.ok(Number(endpoint.port) >= 8900, "WaterMate CDP port must be at least 89
 const allowSubmit = process.env.WATERMATE_EC14_ALLOW_SUBMIT === "1";
 const task = process.env.WATERMATE_EC14_TASK;
 const expected = process.env.WATERMATE_EC14_EXPECTED;
-if (["submit", "stop"].includes(scenario)) {
+if (["submit", "stop", "handoff"].includes(scenario)) {
 	assert.equal(allowSubmit, true, "Submission requires WATERMATE_EC14_ALLOW_SUBMIT=1");
 	assert.match(task ?? "", /^[\x20-\x7e\n]{1,512}$/, "Use a bounded plain-text EC14 task");
 }
@@ -73,6 +73,26 @@ try {
 		result.submission = "submitted";
 	}
 
+	if (scenario === "handoff") {
+		await input.pressSequentially(task);
+		assert.equal(await send.isDisabled(), false, "Task input must enable send before submission");
+		await send.click();
+		result.submission = "submitted";
+		const stop = page.getByRole("button", { name: /^(停止|Stop)$/ });
+		const running = await stop
+			.waitFor({ timeout: 5000 })
+			.then(() => true)
+			.catch(() => false);
+		if (!running) {
+			result.status = "NO_RUNNING_CONTROL";
+			result.manualHandoffObserved = false;
+		} else {
+			console.log(JSON.stringify({ ...result, status: "HANDOFF_READY" }));
+			await stop.waitFor({ state: "hidden", timeout: 120000 });
+			result.manualHandoffObserved = true;
+		}
+	}
+
 	if (scenario === "submit") {
 		await page.getByText(expected, { exact: true }).waitFor({ timeout: 30000 });
 		result.expectedMarkerVisible = true;
@@ -82,9 +102,7 @@ try {
 		const stop = page.getByRole("button", { name: /^(停止|Stop)$/ });
 		await stop.waitFor({ timeout: 5000 });
 		await stop.click();
-		await page.waitForFunction(() => !document.querySelector('button[aria-label="发送"]')?.disabled, {
-			timeout: 30000,
-		});
+		await stop.waitFor({ state: "hidden", timeout: 30000 });
 		result.stopRequested = true;
 	}
 
