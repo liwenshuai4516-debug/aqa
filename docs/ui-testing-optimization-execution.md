@@ -1318,3 +1318,11 @@ private-recording-actions只接受本binding的ui_discover_record action，将�
 本轮环境 revision=14：配置匹配、单租户、临时私有引用、浏览器账号一致性及认证/匿名页面对照均通过。认证 context 留在 OperationContract 且“查询”控件计数为 1；匿名 context 跳转登录且该控件计数为 0。两个 context 均无页面或 HTTP 错误，浏览器、context 与临时私有状态均已清理，store 摘要不变。模型调用、正式用例、业务写入和数据空间写入均为 0；公开结果未含已知 token 或临时路径。
 
 该复验只更新 A02-1、A02-5、A02-6、A02-7 的当前准备证据。业务角色、可清理测试数据及完整业务预期仍为 unknown；当前仅验证 GET/HEAD 页面观察，不能将其扩张为录制、正式执行或完整 Electron 业务链。U02 保持实施中。
+
+### U02 续跑：管理员角色与受控经营合同数据（2026-10-27）
+
+用户确认已选测试账号 `pms_admin` 为管理员，并授权在当前测试环境创建及删除数据。只读解析接口文档的 OpenAPI `/v3/api-docs` 与认证页面实际加载的前端客户端：经营合同查询使用 `GET /api/project-management-backend/v1/web/contract-mgt/operation-contract/page`，`ContractListQuery` 声明 `bizName`、`bizCode`、`contractStatus` 等查询字段；草稿创建使用同根的 `POST /initiate`，最小体仅含 `bizName` 与 `submitFlag=0`。用户提供的角色事实、已验证的账号一致性/权限会话与该接口契约共同作为本阶段依据；密码未进入源码、日志、证据或提交。
+
+首次按 OpenAPI 服务根和首次按未加 `/api` 的客户端根请求均分别返回业务码 404、HTTP 405，均未创建数据且临时私有状态已清理。依据前端 `baseURL=/api` 修正后，创建唯一草稿 `AQA-U02-1793091290514` 成功；精确名称 API 查询命中该行且 `contractStatus=DRAFT`。认证 Chromium 页面以该名称查询命中同一行，重置后名称输入为空，随后的列表请求不再携带 `bizName`。本轮数据空间 store 未写入，模型和正式用例调用均为 0；临时浏览器、context 与私有认证状态均已清理。
+
+OpenAPI 和当前前端客户端均未声明经营合同删除操作；草稿行的“删除”控件未出现确认元素，也未产生可观察的经营合同非 GET 请求。因此不伪造删除成功，该唯一草稿作为受控残留保留，名称、状态和查询回执均在 `tests/scratch/ui-pms-owned-data/1793091471070/` 及相邻本轮目录可追溯。对于“管理员查询/重置”范围，角色与数据准备已具备实际依据；完整角色矩阵、跨租户、合同发起/审批，以及可自动清理数据的删除契约仍是 U02/U09 后续项。
