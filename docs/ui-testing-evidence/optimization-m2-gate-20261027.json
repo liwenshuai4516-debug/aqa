@@ -1,0 +1,31 @@
+{
+	"date": "2026-10-27",
+	"scope": "M2 performance gate retry for U03/U07",
+	"native_source_commit": "5579b9bb0571771000e7c0ae26f64c233d639681",
+	"distribution": {
+		"version": "0.1.24",
+		"sha256": "7781eeac2172ce81f691df9e863a7bd041021856c4fe91085925d57e94c01ec6"
+	},
+	"change": "Within one analyzeTask call, reuse the just-reconciled result for analysis input construction. Public analysis, save, report, and review calls continue to revalidate.",
+	"verification": {
+		"native_check": "passed",
+		"native_build": "passed",
+		"native_regression": "optimization-handoff, results, result-review, recovery, reference-reads passed; one live-model case skipped",
+		"comparison": "tests/scratch/ui-u03-u07/comparison/1793097422266/result.json"
+	},
+	"comparison": {
+		"pairs": 5,
+		"baseline_version": "0.1.18",
+		"baseline_median_ms": 254.565,
+		"current_version": "0.1.24",
+		"current_median_ms": 291.019167,
+		"deterministic_tool_calls": "4->1",
+		"performance_target_met": false
+	},
+	"m2_status": "blocked",
+	"blockers": [
+		"The measured mechanical path does not meet the frozen performance target.",
+		"Equivalent real-model end-to-end measurement requires explicit model authorization and an approved model configuration.",
+		"U02, U05, and U06 retain their documented real Electron/business-chain acceptance gaps."
+	]
+}
