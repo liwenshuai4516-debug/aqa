@@ -110,3 +110,5 @@ MCP 运行时选择由 `assets/playwright-runtime.mjs` 负责：CLI 与配置均
 显式产品接线阶段（2026-10-27）：宿主在准备和setup前校验直接受管fixture、literal环境/归属、同物理Playwright和Chromium/trace:off；新协议才允许原生动作的真实SDK子调用。每个非清理响应在SDK转换前，以真实MCP父ID派发一次固定helper，核验原生完成标记、存储历史/state及trace，复用原生过滤并隐藏媒体。原生writer只能写声明目标，公开副本须在最终生命周期核验后同步、字节一致、wx/0600发布；不覆盖、不跟随符号链接。未声明协议的旧路径仍只握手。
 
 此准入适用于受信工作区，不证明任意配置/依赖代码安全，不支持多frame/其他target或中断后完整续录；数据空间通用record仍unsupported。取消、坏证据、宿主门禁拒绝、预算和路径冲突保留partial及清理入口。实际产品SDK/Chromium回归入口：`PI_WEB_SMOKE_PREBUILT=1 node tests/ui-private-recording-product-test.mjs --mode=normal`；其他模式及桌面证据见[阶段索引](../../../../docs/ui-testing-evidence/optimization-u02-recording-product-actions.json)。
+
+重载/重连补证（2026-10-27）：同一测试入口的 `--mode=reload` 调用真实 SDK `session.reload()`，`--mode=reconnect` 调用已登记的 `/mcp reconnect ui-playwright-test` 处理器。原生重载门禁本已拒绝旧会话动作，无需新增宿主守卫；重连撤销旧私密快照。两类均保留原3步、无新增目标请求/公开writer，最终partial；重连另留2条失败尝试，重载不追加MCP动作。原生close未成功，保留清理未知，不把物理连接关闭冒称业务清理成功。见[生命周期证据](../../../../docs/ui-testing-evidence/optimization-u02-recording-product-lifecycle.json)。完整中断续录不属于现有恢复契约，后续应验证安全停止/查询及显式重新准备，不据历史“待验”文字增加自动恢复功能。

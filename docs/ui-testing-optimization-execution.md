@@ -1242,3 +1242,19 @@ private-recording-actions只接受本binding的ui_discover_record action，将�
 本协议是受信工作区的显式准入，不是任意配置/测试代码沙箱或通用依赖闭包证明；单page/frame Chromium之外不支持，任意业务秘密/任意编码、完整中断续录及真实PMS均未证明。数据空间通用record准备仍unsupported，不能把产品合成样本改写为真实业务就绪。原始合成私密文件和SDK临时原文由自有跑器清理；公开归档保留实际公开qa、日志、源码与摘要，不把摘要当作仍可回读的私有原始证据。
 
 [本轮索引](ui-testing-evidence/optimization-u02-recording-product-actions.json)及归档登记全部早期失败、最终12样本、工程/SDK/Electron证据。权威Electron项目另存阶段文档和公开快照，仅文件落盘，不建立应用文档索引或正式结果入库。剩余真实角色/租户/测试数据、完整重连续录、U00完整计量、U03/U07与M1/M2仍待执行/验收，整体goal保持active。
+
+### U02 续跑：产品重载/重连的安全停止与原记录保留（2026-10-27）
+
+从7ce38d43继续。上一轮按用户要求盘点进度，未新增实施结果；本轮完成已开始的生命周期补证。plan_update不可用，沿用本文与计划第8节。开始clean仅预览、0可清理项；保留其他协作差异，不改个人配置或安装目录源码。原生仍0.1.18，模型调用、正式批次、真实PMS写入均0；U05及PMS账本摘要不变，PMS剩余2次仅设计额度保留。
+
+只扩展tests/ui-private-recording-product-test.mjs，不改生产实现。reload模式实际调用SDK session.reload()；reconnect模式调用SDK已登记的/mcp reconnect ui-playwright-test处理器。两者在setup/snapshot/read_log三步后保存原生status与公开QA快照，再尝试writer/close，核对旧事件、固定helper归属、目标请求计数、私有及公开writer、派生身份及partial缺口。重载使用带onError的真实扩展绑定，SDK才会重新发送session_start；不通过新建录制会话恢复动作。
+
+原生extension已在activeSession不匹配时拒绝动作，明确“重启后只读旧记录，不从点击中间续跑”，原生工作流技能也禁止从临时browser ref继续点击。因此未复现怀疑的重载后匿名writer回退，无需增加猜测性宿主守卫。历史“完整重连续录待验”以现有安全停止/查询契约澄清，不把自动连续恢复另加为本计划要求。
+
+最终实际SDK/Chromium两类样本均符合预期：reload原3步及status保持（JSON工具回执省略undefined字段按序列化事实比较），中断后无MCP子调用；reconnect原3步不变、旧快照拒绝，另保存writer和close两条失败尝试，共5步。两者固定采集均3次，目标请求计数保持2，私有/公开writer均未生成、父身份未变、finish后派生身份撤销。最终均partial，保留missing-generated-script、browser-cleanup-not-confirmed等真实缺口；物理连接退出不冒称原生browser_close成功。自有临时文件由跑器清理，不把文件清理当业务数据核验。共享normal分支另跑一次通过，complete/1脚本/gaps=[]，4次固定采集、9次MCP调用，公开及原生writer字节一致。
+
+早期三轮测试器失败均保留：空扩展绑定导致重载后MCP注册等待超时；误期待close completed而被原生正确拒绝；直接status对象含stopped:undefined与JSON工具回执比较不等。之后两轮旧版断言通过；最后增加“中断后目标请求不增加”断言并分别重跑reload/reconnect通过。未将旧版通过代替最终断言执行，也未把这些测试器失败算为产品业务失败。
+
+完整5配置typecheck、8文件52项相关Vitest、lint、协议结构和能力布局检查通过；无Git tag的协议历史启发式明确SKIP。能力布局首次误用不存在的scripts入口、第二次漏加tsx加载器，均未实际运行检查，原日志保留；最终node --import tsx tests/capability-layout-test.mjs实际通过，发现13个技能、0模型/业务调用。本轮无生产代码变更、未重复构建或新增Electron界面回归，不把前轮桌面结果算本轮通过；技能边界及维护说明同步。公开证据逐文件摘要和归档回读核验，早期失败与最终测试源码分别保留；原始合成私密协议/state/trace由跑器清理，公开摘要不冒充可回读原件。
+
+[生命周期证据索引](ui-testing-evidence/optimization-u02-recording-product-lifecycle.json)及归档、阶段文档另存权威Electron项目文档目录，逐文件回读、store字节不变；仅文件落盘，不建立应用文档索引、不导入用例或结果。真实PMS角色/租户/数据、通用record准备、其他产品生命周期、Electron业务全链、U00完整计量、U03/U07及M1/M2仍未完成，整体goal保持active。

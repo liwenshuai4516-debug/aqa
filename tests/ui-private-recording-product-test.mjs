@@ -8,7 +8,7 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Type } from "typebox";
-import { ArtifactStore, authState, sha256 } from "pi-ui-testing";
+import { ArtifactStore, RecordingService, authState, sha256 } from "pi-ui-testing";
 import {
 	createAgentSessionFromServices,
 	createAgentSessionServices,
@@ -25,10 +25,17 @@ const repo = fileURLToPath(new URL("..", import.meta.url));
 ensureBuild(repo, "ui-private-recording-product");
 const mode = process.argv.find((arg) => arg.startsWith("--mode="))?.slice(7) ?? "normal";
 const gated = ["helper-readonly", "helper-plan", "helper-delegate", "helper-disabled"].includes(mode);
+const lifecycle = ["reload", "reconnect"].includes(mode);
 assert.ok(
-	gated || ["normal", "ephemeral", "corrupt", "cancel", "budget", "existing", "symlink", "unsupported"].includes(mode),
+	lifecycle ||
+		gated ||
+		["normal", "ephemeral", "corrupt", "cancel", "budget", "existing", "symlink", "unsupported"].includes(mode),
 );
-const output = join(repo, "tests/scratch/ui-optimization-u00/recording-product-actions", `${Date.now()}-${mode}`);
+const output = join(
+	repo,
+	`tests/scratch/ui-optimization-u00/recording-product-${lifecycle ? "lifecycle" : "actions"}`,
+	`${Date.now()}-${mode}`,
+);
 await mkdir(output, { recursive: true });
 const root = await realpath(await mkdtemp(join(tmpdir(), "ui-private-product-")));
 const workspace = join(root, "workspace"),
@@ -264,7 +271,15 @@ try {
 		services,
 		sessionManager: SessionManager.create(workspace, sessionDir),
 	}));
-	await session.bindExtensions({});
+	await session.bindExtensions(
+		lifecycle
+			? {
+					onError: () => {
+						result.extensionErrors = (result.extensionErrors ?? 0) + 1;
+					},
+				}
+			: {},
+	);
 	const prefix = "mcp__ui_playwright_test__";
 	await waitFor(
 		() => session.agent.state.tools.some((tool) => tool.name === prefix + "generator_setup_page"),
@@ -441,6 +456,34 @@ try {
 		});
 		inventoryRef = reply.artifact_refs[0];
 		await action("generator_read_log");
+		let beforeInterruption, interruptionEvent, requestsBeforeInterruption;
+		if (lifecycle) {
+			requestsBeforeInterruption = result.fixtureRequests;
+			beforeInterruption = await new RecordingService(workspace).status(sessionRef);
+			await writeFile(join(output, "before-interruption.json"), JSON.stringify(beforeInterruption, null, 2));
+			result.beforeInterruptionSteps = beforeInterruption.events.length;
+			await cp(join(workspace, "qa"), join(output, "qa-before-interruption"), { recursive: true });
+			if (mode === "reload") {
+				await session.reload();
+				await waitFor(
+					() => session.agent.state.tools.some((tool) => tool.name === prefix + "generator_setup_page"),
+					"reloaded MCP",
+				);
+				result.reloaded = true;
+			} else {
+				const command = session.extensionRunner.getCommand("mcp");
+				assert.ok(command);
+				const ctx = session.extensionRunner.createCommandContext(),
+					notices = [];
+				await command.handler("reconnect ui-playwright-test", {
+					...ctx,
+					ui: { ...ctx.ui, notify: (text, type) => notices.push({ text, type }) },
+				});
+				assert.ok(notices.some((n) => n.type === "error"));
+				result.reconnectNotices = notices;
+			}
+			interruptionEvent = result.events.length;
+		}
 		const generated =
 			"import {test,expect} from '@playwright/test';test('heading',async({page})=>{await page.goto('/');await expect(page.getByRole('heading',{name:'Privacy fixture'})).toBeVisible();});\n";
 		if (mode === "existing") await writeFile(join(workspace, outputFile), "existing draft preserved\n");
@@ -481,7 +524,25 @@ try {
 			assert.equal(existsSync(join(root, "outside/generated.spec.ts")), false);
 			result.rejectedBeforeNativeWriter = true;
 		}
-		await action("browser_close");
+		await action("browser_close", {}, lifecycle);
+		if (lifecycle) {
+			const current = await invoke({ operation: "status", session_ref: sessionRef });
+			assert.equal(current.status, "completed");
+			const afterInterruption = current.output;
+			await writeFile(join(output, "after-interruption.json"), JSON.stringify(afterInterruption, null, 2));
+			assert.deepEqual(afterInterruption.events.slice(0, beforeInterruption.events.length), beforeInterruption.events);
+			if (mode === "reload") {
+				assert.deepEqual(afterInterruption, JSON.parse(JSON.stringify(beforeInterruption)));
+				assert.ok(result.events.slice(interruptionEvent).every((e) => !e.name.startsWith(prefix)));
+			} else {
+				assert.ok(afterInterruption.events.slice(beforeInterruption.events.length).every((e) => e.response.isError));
+			}
+			result.oldEvidenceUnchanged = true;
+			result.afterInterruptionSteps = afterInterruption.events.length;
+			assert.equal(result.fixtureRequests, requestsBeforeInterruption);
+			result.interruptionTriggeredNoNavigation = true;
+			assert.equal(existsSync(join(workspace, outputFile)), false);
+		}
 		const helpers = result.events.filter(
 			(event) =>
 				event.type === "call" &&
@@ -490,7 +551,10 @@ try {
 					(parent) => parent.type === "call" && parent.id === event.parent && parent.name.startsWith(prefix),
 				),
 		);
-		assert.equal(helpers.length, mode === "budget" ? 4 : gated || ["existing", "symlink"].includes(mode) ? 3 : 4);
+		assert.equal(
+			helpers.length,
+			mode === "budget" ? 4 : lifecycle || gated || ["existing", "symlink"].includes(mode) ? 3 : 4,
+		);
 		assert.ok(
 			helpers.every((helper) =>
 				result.events.some((event) => event.id === helper.parent && event.name.startsWith(prefix)),
@@ -522,7 +586,7 @@ try {
 			replaceable_data: true,
 			stable_locators: true,
 			assertion_sources: true,
-			cleanup_owned: mode !== "unsupported",
+			cleanup_owned: mode !== "unsupported" && !lifecycle,
 		},
 	});
 	assert.equal(reply.status, "completed", JSON.stringify(reply));
@@ -570,6 +634,11 @@ try {
 	result.error = { name: error.name, message: String(error.message).split(root).join("[OWNED-TEMP]") };
 	process.exitCode = 1;
 } finally {
+	if (lifecycle && result.status !== "PASS" && existsSync(join(workspace, "tests/generated.spec.ts"))) {
+		const bytes = await readFile(join(workspace, "tests/generated.spec.ts"));
+		result.unexpectedPublicDraftExists = true;
+		if (!contains(bytes.toString())) await writeFile(join(output, "unexpected-public-draft.spec.ts"), bytes);
+	}
 	if (session) {
 		await session.extensionRunner?.emit({ type: "session_shutdown", reason: "shutdown" }).catch(() => {});
 		session.dispose();
