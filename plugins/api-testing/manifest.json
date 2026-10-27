@@ -2,7 +2,7 @@
 	"id": "api-testing",
 	"name": "接口自动化测试",
 	"nameEn": "API testing",
-	"version": "0.4.3",
+	"version": "0.5.0",
 	"description": "导入、评审、执行与复测套件；支持宿主配置的单个手动 HTTP IPv4 目标。",
 	"descriptionEn": "Prepare, review, run and retest suites for fixtures or one host-configured manual HTTP IPv4 target.",
 	"apiVersion": 2,
