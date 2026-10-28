@@ -14,11 +14,19 @@ await mkdir(output, { recursive: true });
 const extracted = await mkdtemp(join(tmpdir(), "ui-u03-baseline-"));
 const currentExtracted = await mkdtemp(join(tmpdir(), "ui-u03-current-"));
 const baselinePackage = join(repo, ".pi/skills/ui-testing-workflow/assets/pi-ui-testing-0.1.18.tgz");
-const currentPackage = join(repo, ".pi/skills/ui-testing-workflow/assets/pi-ui-testing-0.1.23.tgz");
+const currentPackage = join(repo, ".pi/skills/ui-testing-workflow/assets/pi-ui-testing-0.1.29.tgz");
 execFileSync("tar", ["-xzf", baselinePackage, "-C", extracted]);
 execFileSync("tar", ["-xzf", currentPackage, "-C", currentExtracted]);
 await symlink(join(repo, "node_modules"), join(extracted, "package/node_modules"), "dir");
 await symlink(join(repo, "node_modules"), join(currentExtracted, "package/node_modules"), "dir");
+const baselineMetadata = JSON.parse(await readFile(join(extracted, "package/package.json"), "utf8"));
+const currentMetadata = JSON.parse(await readFile(join(currentExtracted, "package/package.json"), "utf8"));
+assert.equal(baselineMetadata.version, "0.1.18");
+assert.equal(currentMetadata.version, "0.1.29");
+assert.deepEqual(
+	await readFile(join(currentExtracted, "package/dist/index.js")),
+	await readFile(new URL(import.meta.resolve("pi-ui-testing"))),
+);
 const baseline = await import(pathToFileURL(join(extracted, "package/dist/index.js")).href);
 const current = await import(pathToFileURL(join(currentExtracted, "package/dist/index.js")).href);
 const cleanup = [];
@@ -33,8 +41,8 @@ const samples = [],
 		status: "FAIL",
 		actualModelCalls: 0,
 		pairs: 5,
-		baseline_version: "0.1.18",
-		current_version: "0.1.23",
+		baseline_version: baselineMetadata.version,
+		current_version: currentMetadata.version,
 		samples,
 	};
 try {

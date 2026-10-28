@@ -17,11 +17,12 @@
 		"pairs": 5,
 		"baseline_version": "0.1.18",
 		"baseline_median_ms": 254.565,
-		"current_version": "0.1.24",
+		"current_version": "0.1.23",
 		"current_median_ms": 291.019167,
 		"deterministic_tool_calls": "4->1",
 		"performance_target_met": false
 	},
+	"correction_20261028": "The cited comparison result records current_version 0.1.23 and package SHA-256 a9678f50b1fe929c88afbc13bb159dffd232cd9d093480511c89f7e65bf6596f. The 0.1.24 distribution above describes the implementation, not the package used in that comparison; the original result remains unchanged.",
 	"m2_status": "blocked",
 	"blockers": [
 		"The measured mechanical path does not meet the frozen performance target.",
