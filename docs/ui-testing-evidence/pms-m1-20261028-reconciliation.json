@@ -1,0 +1,40 @@
+{
+	"status": "partial",
+	"scope": "Selected PMS test environment, owned draft, read-only contract name query and reset",
+	"asset": { "revision": "v3", "sha256": "280d1c80251cddf6db07e52a50040170ed3f7b60929896ac5b3fcec35ba3a306" },
+	"run": {
+		"id": "run-689e696a1208c75a40928b7bb3136315",
+		"sha256": "f5cc705898255e0e00a6c0daa1eb3451e16b7e08b55799ae0d12bbd729c8d0a5",
+		"passed": 2,
+		"failed": 0
+	},
+	"report": {
+		"sha256": "cb63cf87d048cf40749b0ca704ff4b36e5a819b633fec201a5637ac937256039",
+		"review": "approved",
+		"review_sha256": "d0c1c6b6d018fffc930f5707ce20cf83d120335e1dc85ade385efda5153633b3"
+	},
+	"project_id": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+	"environment_id": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+	"items": [
+		{
+			"native_case_id": "C-query",
+			"case_id": "8a291a73-68fa-43a3-8b53-c047286ffc20",
+			"native_status": "passed",
+			"sync_status": "existing",
+			"data_space_verdict": "未知",
+			"result_id": "72e51f23-10bd-47f1-969f-a8978867ac1a"
+		},
+		{
+			"native_case_id": "C-reset",
+			"case_id": "626b1a73-f081-4047-bc03-c1b3ced9c7bd",
+			"native_status": "passed",
+			"sync_status": "existing",
+			"data_space_verdict": "未知",
+			"result_id": "e69dd4d9-40d4-4c0d-9ab7-f5f20c0fe275"
+		}
+	],
+	"gaps": [
+		"Data Space cannot access the original session's private seal through its current native reader; do not overwrite existing results or manufacture authority.",
+		"The original native workspace and private authority remain in an OS temporary directory; durable native retention is unverified."
+	]
+}

@@ -256,6 +256,10 @@ try {
 	const passed = await service.start(request);
 	const passedResults = await collectResults(d.f.root, passed.run_ref, "private-pass-results");
 	assert.equal(passedResults.data.counts.passed, 1);
+	assert.deepEqual(passedResults.data.instances[0].evidence_visibility, {
+		public_media: "withheld",
+		private_trace_integrity: "unverified",
+	});
 	assert.equal(
 		passedResults.details.complete,
 		false,
@@ -281,6 +285,11 @@ try {
 	);
 	const verifiedResults = await collectResults(d.f.root, passed.run_ref, "private-verified-results", d.f.authority);
 	assert.equal(verifiedResults.details.complete, true, "The sealed private trace must be verified for this run");
+	assert.deepEqual(verifiedResults.data.instances[0].evidence_visibility, {
+		public_media: "withheld",
+		private_trace_integrity: "verified",
+	});
+	assert.ok(verifiedResults.details.limitations.some((text) => text.includes("不表示已查看画面")));
 	const privacyRef = passed.run.data.output_refs.find((ref) => ref.path.endsWith("/privacy.json"));
 	const privacy = JSON.parse(await readFile(join(d.f.root, privacyRef.path), "utf8"));
 	const audit = join(d.f.authority, "private-evidence", privacy.private_capture_id, "audit.json");
