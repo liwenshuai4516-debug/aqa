@@ -1,0 +1,26 @@
+[
+  {
+    "judge": 1,
+    "afterLabel": "A",
+    "labels": {
+      "A": "after",
+      "B": "before"
+    }
+  },
+  {
+    "judge": 2,
+    "afterLabel": "B",
+    "labels": {
+      "A": "before",
+      "B": "after"
+    }
+  },
+  {
+    "judge": 3,
+    "afterLabel": "A",
+    "labels": {
+      "A": "after",
+      "B": "before"
+    }
+  }
+]

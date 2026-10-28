@@ -1,0 +1,11 @@
+{
+  "metrics": {
+    "width": 900,
+    "height": 1465,
+    "overflow": false,
+    "summaryFooterGap": 28
+  },
+  "deviceScaleFactor": 2,
+  "externalRequests": "blocked",
+  "source": "result-card.html"
+}

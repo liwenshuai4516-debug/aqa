@@ -1,0 +1,2 @@
+timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
+2026-10-28T08:10:33.658417+00:00	8eabef6f7b57ac1561d589925332fb64e5533cb0	api-test-review	68.4 (triage only)	3 better / 0 worse / 0 tie	keep	2 (correlated 3/4/5/7/8/9)	receipt routing only; six fresh response samples; all judges clear; no new absolute score; native business execution=0/3; pending item delivery confirmation	paired

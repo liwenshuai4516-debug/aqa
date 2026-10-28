@@ -1,0 +1,153 @@
+{
+  "initialClean": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "d655b4",
+      "wall_time_seconds": 2.41040875,
+      "exit_code": 0,
+      "original_token_count": 168,
+      "output": "\n> pi-web-ui@0.109.0 clean\n> node scripts/clean-project.mjs\n\n仅预览；未删除文件。执行前先结束相关测试/构建进程。\n保留\t68.9 MiB\ttests/scratch/api-testing-p1-1/runtime/node_modules · .cleanup-keep 保留标记\n保留\t65.4 MiB\ttests/scratch/api-testing-p0-1/runtime/node_modules · .cleanup-keep 保留标记\n保留\t65.3 MiB\ttests/scratch/api-testing-p0-1/reproduce/node_modules · .cleanup-keep 保留标记\n保留\t25.4 MiB\tnode_modules/.vite · 未满 7 天或近期有写入\n保留\t0.2 MiB\t.workbuddy/tmp · .cleanup-keep 保留标记\n保留\t0.0 MiB\tnode_modules/.vite-temp · 未满 7 天或近期有写入\n可清理 0 项，共 0.0 MiB。\n"
+    }
+  },
+  "typecheck": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "0e9ca6",
+      "wall_time_seconds": 1.001174333,
+      "session_id": 4902,
+      "original_token_count": 63,
+      "output": "\n> pi-web-ui@0.109.0 typecheck\n> tsc -p tsconfig.server.json --noEmit && tsc -p web/tsconfig.json --noEmit && tsc -p tsconfig.tests.json --noEmit && tsc -p desktop/tsconfig.json --noEmit && tsc -p plugins/page-picker/extension/tsconfig.json --noEmit\n\n"
+    }
+  },
+  "units": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "88ab16",
+      "wall_time_seconds": 1.001490708,
+      "session_id": 81100,
+      "original_token_count": 14,
+      "output": "\n RUN  v5.0.1 /Users/liyingjun/Desktop/SW-QA/15-aqa\n\n"
+    }
+  },
+  "lint": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "1d3b6d",
+      "wall_time_seconds": 0.162316083,
+      "exit_code": 0,
+      "original_token_count": 22,
+      "output": "\n> pi-web-ui@0.109.0 lint\n> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/\n\n"
+    }
+  },
+  "protocol": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "e7af3e",
+      "wall_time_seconds": 0.082560541,
+      "exit_code": 0,
+      "original_token_count": 90,
+      "output": "\n> pi-web-ui@0.109.0 check:protocol\n> node scripts/check-protocol-sync.mjs\n\n✓ types.ts 是 protocol.ts 的 type-only re-export shim\n✓ protocol.ts 保持纯类型导出（无运行时代码）\n✓ 双端 PROTOCOL_VERSION 一致 (v33)\nfatal: No names found, cannot describe anything.\n· 跳过协议版本 git 启发式（无可用 tag 或浅检出环境）\n"
+    }
+  },
+  "validate": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "1d6b5b",
+      "wall_time_seconds": 0.000011417,
+      "exit_code": 0,
+      "original_token_count": 4,
+      "output": "Skill is valid!\n"
+    }
+  },
+  "sdk": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "70e725",
+      "wall_time_seconds": 1.002541167,
+      "session_id": 59911,
+      "original_token_count": 0,
+      "output": ""
+    }
+  },
+  "review": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "9e8468",
+      "wall_time_seconds": 1.001353167,
+      "session_id": 95044,
+      "original_token_count": 0,
+      "output": ""
+    }
+  },
+  "workflow": {
+    "chunk_id": "5234f1",
+    "wall_time_seconds": 1.001918709,
+    "session_id": 74063,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "desktop": {
+    "chunk_id": "ac2e33",
+    "wall_time_seconds": 1.0017065,
+    "session_id": 98175,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "desktop_final": {
+    "chunk_id": "33546f",
+    "wall_time_seconds": 0.00000675,
+    "exit_code": 0,
+    "original_token_count": 311,
+    "output": "{\n  \"status\": \"PASS\",\n  \"checks\": [\n    \"reproduced missing API skills, plugin and /api shortcut in a different desktop workspace\",\n    \"explicit API registration preserves existing settings and is idempotent\",\n    \"API/UI skills use Chinese aliases and descriptions while retaining stable canonical identities\",\n    \"skill disable persists across reload, removes shortcut and can be re-enabled\",\n    \"/api lists API shortcuts; click and Tab complete without a model request\",\n    \"API plugin disable blocks all owned skills and manual slash calls; rescan preserves disable state\",\n    \"owner re-enable restores individual preferences and enabled skills sort above disabled skills\",\n    \"UI capability shows real SDK loading state, gates all associated skills, sorts below enabled plugins, persists across reload and reconnects when enabled\",\n    \"API execution tool is exposed in tool management through the existing host plugin\",\n    \"subsequent reload retains API shortcuts with no business or model execution\"\n  ],\n  \"actualModelCalls\": 0,\n  \"businessRequests\": 0,\n  \"mcpStatus\": \"ui-playwright-test: connected, 87 tools (direct)\",\n  \"evidence\": \"/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/api-testing-visibility/1793174968654\"\n}\n"
+  },
+  "completion_1": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "f38102",
+      "wall_time_seconds": 0.000008041,
+      "exit_code": 0,
+      "original_token_count": 0,
+      "output": ""
+    }
+  },
+  "completion_2": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "b51d43",
+      "wall_time_seconds": 0.000003708,
+      "exit_code": 0,
+      "original_token_count": 39,
+      "output": "\n Test Files  5 passed (5)\n      Tests  31 passed (31)\n   Start at  16:08:29\n   Duration  1.31s (import 57%, transform 35%, tests 4%, setup 3%, worker 1%)\n\n"
+    }
+  },
+  "completion_3": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "93c8f8",
+      "wall_time_seconds": 0.000004958,
+      "exit_code": 0,
+      "original_token_count": 289,
+      "output": "{\n  \"task\": \"P1-4\",\n  \"status\": \"skills-discovery-passed\",\n  \"checks\": [\n    {\n      \"name\": \"isolated-project-has-no-personal-skills\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"distributed-package-discovered-by-real-sdk-project-loader\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"all-three-load-through-real-host-tool-without-truncation\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"disabled-skill-body-not-exposed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"explicit-package-path-also-discoverable\",\n      \"status\": \"passed\"\n    }\n  ],\n  \"environment\": \"isolated project and empty agentDir; actual SDK and host tool\",\n  \"actualModelCalls\": 0,\n  \"businessRequests\": 0,\n  \"modelAcceptance\": \"Not exercised by this discovery test; see api-testing-model-test.mjs\",\n  \"skills\": [\n    {\n      \"name\": \"api-test-analyze\",\n      \"bytes\": 3586\n    },\n    {\n      \"name\": \"api-test-review\",\n      \"bytes\": 3787\n    },\n    {\n      \"name\": \"api-test-workflow\",\n      \"bytes\": 7151\n    }\n  ],\n  \"evidence\": \"/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api3-r1-tests/sdk/api-testing-p1-4-W6yEQn/summary.json\"\n}\n"
+    }
+  },
+  "completion_4": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "45cda5",
+      "wall_time_seconds": 0.000003791,
+      "exit_code": 0,
+      "original_token_count": 51,
+      "output": "{\n  \"status\": \"passed-controls-model-stub-only\",\n  \"checks\": 11,\n  \"evidence\": \"/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api3-r1-tests/review/api-testing-p1-2-2ijW5v/summary.json\"\n}\n"
+    }
+  },
+  "completion_5": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "79b2db",
+      "wall_time_seconds": 0.000002833,
+      "exit_code": 0,
+      "original_token_count": 75,
+      "output": "[plugin:api-testing] registered AI tool: api_test_execute\n[plugin:api-testing] activated (v0.5.0)\n{\n  \"status\": \"passed-fixture-model-stub-only\",\n  \"checks\": 17,\n  \"evidence\": \"/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api3-r1-tests/workflow/api-testing-p1-3-ccVEJ4/summary.json\"\n}\n"
+    }
+  }
+}

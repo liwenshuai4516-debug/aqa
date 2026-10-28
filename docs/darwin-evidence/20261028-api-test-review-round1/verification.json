@@ -1,0 +1,129 @@
+{
+  "timestamp": "2026-10-28T08:16:12.958370+00:00",
+  "scope": "one user-authorized round limited to public review receipt routing in one SKILL.md; no additional round or item 4",
+  "checks": [
+    {
+      "command": "npx prettier --write plugins/api-testing/skills/api-test-review/SKILL.md <this task explanatory docs/card>",
+      "status": "passed; skill and explanatory docs/card formatted; raw inputs/responses/judges unformatted"
+    },
+    {
+      "command": "python3 /Users/liyingjun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/api-testing/skills/api-test-review",
+      "status": "passed",
+      "evidence": "check-outputs.json:validate"
+    },
+    {
+      "command": "npm run typecheck",
+      "status": "passed",
+      "configurations": 5,
+      "evidence": "check-outputs.json:typecheck,completion_1"
+    },
+    {
+      "command": "npm run lint",
+      "status": "passed",
+      "evidence": "check-outputs.json:lint"
+    },
+    {
+      "command": "npm run check:protocol",
+      "status": "structure passed",
+      "skipped": "Git history heuristic: no available tag",
+      "evidence": "check-outputs.json:protocol"
+    },
+    {
+      "command": "npx vitest run tests/unit/api-testing-registration.test.ts tests/unit/skill-block.test.ts tests/unit/skill-tool.test.ts tests/unit/skill-capability-settings.test.ts tests/unit/skill-settings-wire.test.ts",
+      "status": "passed",
+      "files": 5,
+      "tests": 31,
+      "evidence": "check-outputs.json:completion_2"
+    },
+    {
+      "command": "TMPDIR=<owned sdk dir> node --import tsx tests/api-testing-skills-test.mjs",
+      "status": "5 passed",
+      "loadedBytes": 3787,
+      "modelCalls": 0,
+      "businessRequests": 0,
+      "evidence": "sdk-discovery.json"
+    },
+    {
+      "command": "TMPDIR=<owned review dir> node tests/api-testing-review-test.mjs <owned runtime>",
+      "status": "11 passed",
+      "explicitModelStubCalls": 13,
+      "httpRequests": 0,
+      "businessRequests": 0,
+      "paidModelCalls": 0,
+      "evidence": "review-controls.json"
+    },
+    {
+      "command": "TMPDIR=<owned workflow dir> node --import tsx tests/api-testing-workflow-test.mjs <owned runtime>",
+      "status": "17 passed",
+      "explicitModelStubCalls": 9,
+      "syntheticHttpRequests": 8,
+      "businessRequests": 0,
+      "paidModelCalls": 0,
+      "evidence": "workflow-summary.json"
+    },
+    {
+      "command": "TMPDIR=<short alias> PI_WEB_SMOKE_PREBUILT=1 node tests/api-testing-visibility-test.mjs",
+      "status": "10 passed",
+      "actualElectron": true,
+      "testAssertionsUnchanged": true,
+      "isolatedDataDirAndAgentDir": true,
+      "prebuilt": true,
+      "actualModelCalls": 0,
+      "businessRequests": 0,
+      "evidence": "desktop-result.json"
+    }
+  ],
+  "behavior": {
+    "beforeSamples": 3,
+    "afterSamples": 3,
+    "independentJudges": 3,
+    "better": 3,
+    "worse": 0,
+    "tie": 0,
+    "allMargins": "clear",
+    "diagnosticBaseline": 68.4,
+    "newAbsoluteScore": null,
+    "nativeBusinessPromptsExecuted": 0,
+    "nativeBusinessPromptsTotal": 3
+  },
+  "notVerified": [
+    "original three prompts using native business tool",
+    "real model semantic acceptance",
+    "user existing Electron instance reloaded",
+    "full resolution of shared budget and stagnation wording"
+  ],
+  "archiveAudit": {
+    "files": 326,
+    "status": "passed"
+  },
+  "cleanup": {
+    "ownedDirectories": "archived then removed; cleanup.json",
+    "initialPreview": "passed; check-outputs.json:initialClean",
+    "finalPreview": {
+      "command": "npm run clean",
+      "exitCode": 0,
+      "eligibleEntries": 0
+    },
+    "finalResidue": {
+      "command": "npm run clean:junk -- --only .workbuddy/tmp",
+      "exitCode": 0,
+      "removedEntries": 0,
+      "protectedHistoryPreserved": true
+    }
+  },
+  "finalIntegrity": {
+    "status": "passed",
+    "checks": [
+      "all JSON parse",
+      "before/after hashes and size gates; frontmatter/budget paragraph unchanged; all other frozen sources match current files",
+      "six fresh answer inputs have same confirmed questions/conditions, no expected, exact frozen skill and response binding",
+      "three anonymous paired inputs match text and six outputs; raw votes/clear margins and nine-dimension tally map correctly",
+      "TSV nine columns; no new absolute score",
+      "326 archived files and archive SHA; 31 unit/5 SDK/11 review/17 fixture/10 Electron recorded; three installed skills bind to candidate",
+      "zero-context patch replay equals candidate; temporary audit directory removed",
+      "owned test directories and short alias absent after archive"
+    ]
+  },
+  "finalDiffCheck": "passed: git diff --check",
+  "resultCardVisual": "passed: fully visible, no overflow/clipping, 3 of 3 ring"
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "better": 0,
+    "worse": 0,
+    "tie": 3
+  },
+  {
+    "id": 2,
+    "better": 3,
+    "worse": 0,
+    "tie": 0
+  },
+  {
+    "id": 3,
+    "better": 3,
+    "worse": 0,
+    "tie": 0
+  },
+  {
+    "id": 4,
+    "better": 3,
+    "worse": 0,
+    "tie": 0
+  },
+  {
+    "id": 5,
+    "better": 3,
+    "worse": 0,
+    "tie": 0
+  },
+  {
+    "id": 6,
+    "better": 0,
+    "worse": 0,
+    "tie": 3
+  },
+  {
+    "id": 7,
+    "better": 3,
+    "worse": 0,
+    "tie": 0
+  },
+  {
+    "id": 8,
+    "better": 3,
+    "worse": 0,
+    "tie": 0
+  },
+  {
+    "id": 9,
+    "better": 3,
+    "worse": 0,
+    "tie": 0
+  }
+]

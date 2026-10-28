@@ -1,0 +1,44 @@
+{
+  "task": "P1-4",
+  "status": "skills-discovery-passed",
+  "checks": [
+    {
+      "name": "isolated-project-has-no-personal-skills",
+      "status": "passed"
+    },
+    {
+      "name": "distributed-package-discovered-by-real-sdk-project-loader",
+      "status": "passed"
+    },
+    {
+      "name": "all-three-load-through-real-host-tool-without-truncation",
+      "status": "passed"
+    },
+    {
+      "name": "disabled-skill-body-not-exposed",
+      "status": "passed"
+    },
+    {
+      "name": "explicit-package-path-also-discoverable",
+      "status": "passed"
+    }
+  ],
+  "environment": "isolated project and empty agentDir; actual SDK and host tool",
+  "actualModelCalls": 0,
+  "businessRequests": 0,
+  "modelAcceptance": "Not exercised by this discovery test; see api-testing-model-test.mjs",
+  "skills": [
+    {
+      "name": "api-test-analyze",
+      "bytes": 3586
+    },
+    {
+      "name": "api-test-review",
+      "bytes": 3787
+    },
+    {
+      "name": "api-test-workflow",
+      "bytes": 7151
+    }
+  ]
+}

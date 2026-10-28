@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-10-28T08:13:10.218843+00:00",
+  "precondition": "all four engineering test processes exited; lsof +D owned root returned no open files; archive SHA and all member hashes checked before deletion",
+  "removed": [
+    {
+      "path": ".workbuddy/tmp/darwin-api3-r1-tests",
+      "files": 1110,
+      "directories": 181,
+      "symlinks": 6,
+      "bytes": 24208962
+    },
+    {
+      "path": "tests/scratch/api-testing-visibility/1793174968654",
+      "files": 9,
+      "directories": 1,
+      "symlinks": 0,
+      "bytes": 2940696
+    }
+  ],
+  "aliasRemoved": "/private/tmp/d3r-tuqcm_ua/d",
+  "aliasParentRemoved": "/private/tmp/d3r-tuqcm_ua",
+  "historicalCleanupKeepPreserved": true,
+  "temporaryScriptFilesCreated": 0
+}

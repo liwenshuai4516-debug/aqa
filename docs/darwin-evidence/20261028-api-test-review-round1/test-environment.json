@@ -1,0 +1,7 @@
+{
+  "physicalRoot": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api3-r1-tests",
+  "desktopTmpAlias": "/private/tmp/d3r-tuqcm_ua/d",
+  "aliasParent": "/private/tmp/d3r-tuqcm_ua",
+  "reason": "short Unix socket path; own files remain inside workspace task directory",
+  "build": "existing prebuilt artifacts; PI_WEB_SMOKE_PREBUILT=1; original test assertions unchanged"
+}

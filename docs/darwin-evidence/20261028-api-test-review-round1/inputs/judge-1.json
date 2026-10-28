@@ -1,0 +1,138 @@
+{
+  "task": "独立匿名paired评审。一次调用内比较两份完整SKILL及各三条实际回答；不读其他文件、历史、组别映射或主评结论，不联网、不委派、不调用业务工具。不要猜时序，不能因更长判优。",
+  "commonResponseConditions": "请直接回应下方真实用户请求，使用简体中文，不要评价请求或本实验。共同环境事实：当前没有可调用的 api_test_execute；没有提供具体 runRef 值、冻结契约/用例正文、实际工具回执、历史预算、证据路径或运行结果。用户说已有某信息不代表本次已取得它。仅依据本输入回答，不联网、不调用业务工具、不读其他文件或其他回答，不委派。不得虚构已完成的操作、批准、预算或阻塞 reason。可给出有依据的下一步并标记未执行；缺信息时在给用户的回答中说明。",
+  "rubric": [
+    {
+      "id": 1,
+      "name": "Frontmatter质量",
+      "weight": 7
+    },
+    {
+      "id": 2,
+      "name": "工作流清晰度",
+      "weight": 12
+    },
+    {
+      "id": 3,
+      "name": "失败模式编码",
+      "weight": 12
+    },
+    {
+      "id": 4,
+      "name": "检查点设计",
+      "weight": 6
+    },
+    {
+      "id": 5,
+      "name": "可执行具体性",
+      "weight": 18
+    },
+    {
+      "id": 6,
+      "name": "资源整合度",
+      "weight": 4
+    },
+    {
+      "id": 7,
+      "name": "整体架构",
+      "weight": 12
+    },
+    {
+      "id": 8,
+      "name": "实测表现",
+      "weight": 23
+    },
+    {
+      "id": 9,
+      "name": "反例与黑名单",
+      "weight": 6
+    }
+  ],
+  "rubricRules": [
+    "每项按实用差异比较而非跨评委绝对分。dim3需明确失败分支；dim4显性CHECKPOINT/STOP才计视觉检查点，不能靠加重复审批凑分；dim5具体可执行；dim9独立禁令清单。",
+    "仅据已知契约判断；必要的项目插件依赖不因runtime中立而删除。",
+    "一份样本错误不能自动证明文字导致退步，但必须报告，不能用文本改进掩盖回答回归。",
+    "每版每题只有一个样本，缺工具仅回答层，无原生运行验证。保存原始不利判断。"
+  ],
+  "contractFacts": [
+    "当前没有 api_test_execute，也没有具体runRef/冻结正文/实际回执/历史预算。用户说已有runRef不等于本次收到。未调用时不能编造verdict、phase、reason、findings、用量、证据路径或剩余预算。缺工具是环境限制，不冒充宿主blocked回执。",
+    "唯一受控公共入口api_test_execute。review参数为action=review,runRef,可选model；runRef使用prepare返回的workflowRef，同一调用身份。缺工具不得用直接HTTP/私有MCP绕过。",
+    "公共workflow的review成功回执为workflowRef,phase=approved,suitePath,reviewCalls,assetRef，不含顶层verdict=pass。非通过回执为workflowRef,phase=revise或blocked,reason,reviewPath。内部reviewDraft及review.json才使用verdict=pass/revise/blocked。宿主复查hash并发布实际批准后才允许同runRef action=run。",
+    "用户第一题已授权通过后直接执行，不需重复确认同一已授权动作；但无回执和真实批准不得执行。revise先核查依据、改cases到新outputPath再用同runRef评审；缺事实/blocked/预算耗尽不能盲目重试。",
+    "不能为通过而扩为所有2xx、删关键断言。若经契约与已确认规则证明原断言写错，可定向纠正；反之保持断言并保留差异。未读原文不能猜具体状态码或字段。",
+    "每workflow 3次模型complete调用共享（不是每调用review可再给3次；一批多用例也耗多次）、2次revise、从prepare起180秒。每个reviewDraft整体至多90秒，单模型调用至多30秒；剩余<5000ms不启动新模型调用。无预算回执不能推断实际剩余次数。",
+    "同一冻结suiteHash连续三次评审均相同，第三次（即连续两轮无变化）触发two-rounds-without-improvement；不能编造“上次没过”就已触发。达到3次调用、phase不在draft/revise或180秒耗尽也可能直接抛工作流错误，不一定返回blocked。",
+    "实际阻塞reason除技能所列7项外还包括missing-business-facts、MODEL_TIMEOUT、CANCELED；独立reviewDraft带修订回调的路径另有review-round-budget、invalid-correction、correction-unavailable，公共workflow固定maxRounds=1且不传revise，不应将内部所有值都声称为公共常见路径。应保留原始reason及错误原文，不自行改码或杜撰。",
+    "导入通过标签和对话意见不能替代宿主独立批准。对真实批准回执的核验有意义，但标签本身不能升级为批准。findings由宿主校验哈希和当前caseId；缺失信息保持未知。",
+    "模型替身只证明控制流程，不是真实模型语义或业务执行。本次六个回答全部仅为实际Agent生成的回答层样本；原生业务工具执行0/3。"
+  ],
+  "scope": "用户要求仅改善评审回执后的分流；保持用途、契约断言、宿主批准和已有授权边界。不要要求顺手修正所有其他缺口，也不要仅以修改面大或细节更多判优。",
+  "outputSchema": {
+    "preferred": "A|B|tie",
+    "margin": "clear|slight|none",
+    "reason": "对整份skill的比较裁断及依据",
+    "dimensions": [
+      {
+        "id": "1..9",
+        "preferred": "A|B|tie",
+        "reason": "差异或保持"
+      }
+    ],
+    "behavioralEvidence": [
+      {
+        "promptId": "1..3",
+        "preferred": "A|B|tie",
+        "reason": "实际样本区别及风险"
+      }
+    ],
+    "remainingIssues": [
+      "未解决项"
+    ],
+    "limits": "适用范围"
+  },
+  "versions": {
+    "A": {
+      "skill": "---\nname: api-test-review\ndescription: 使用 api-testing 插件，核查冻结 API 测试套件的依据，并在限定范围和预算内进行独立评审批准。\n---\n\n# API 测试套件评审\n\n使用可用的 `api_test_execute` 工具，对准确 `runRef` 调 `review` action，参数 `{action: \"review\", runRef, model?}`。内部评审记录的 `verdict` 为 `pass`/`revise`/`blocked`；公共工具回执用 `phase`，不以顶层 `verdict: pass` 判断批准。按实际回执分流：\n\n- `phase: approved`：宿主完成批准（套件落 `<bundle>-approved-<uuid>`，签发前复检 `suiteHash`，变了即报 `Suite changed while under review`）。已获执行授权时，对同一 `runRef` 调 `run`，无需重复确认。\n- `phase: revise`：按 `reviewPath` 核查评审记录的 `findings` 与依据；在已有修订授权和剩余预算内，提交有依据的 `cases` 及新的 `outputPath`，对同一 `runRef` 调 `revise` 后重新 `review`。缺少必要事实时先列待确认项，不放宽断言凑通过。\n- `phase: blocked`：保留原始 `reason` 和证据路径并停止；处理原因、核实预算后再决定能否继续，不盲目重评。\n- 工具抛错、回执缺失或未知 `phase`：保留错误及已取得的回执，说明尚未取得批准并停止，不伪造 `blocked` 或 `reason`。\n\n宿主管理的独立 `llm.complete` 查冻结产物，无执行工具。对话中的意见或导入的通过标签不能作为批准。权限门禁内复用宿主已配置模型，独立模型可选。模型替身只验控制流程。\n\n🛑 执行门禁：仅宿主返回 `phase: approved` 且执行在用户授权范围内才可运行；`revise`、`blocked`、报错或未知回执均不得执行。\n\n按契约与已确认规则逐条核查选定用例：请求方法与路径、必需请求数据、预期状态码、JSON 媒体类型、必需字段、类型或枚举，及明确取值。缺失的授权语义、通配响应媒体类型、未记载的状态码映射须保持待确认。检查不受支持项诊断信息。\n\n模型发现视为修正建议。宿主校验结构化输出、产物哈希、当前用例 ID：`findings` ≤20 条，`caseId` ≤80（须为当前用例 ID 或 `suite`）、`code` 1–80 字符、`message` 1–600 字符，`pass` 必须 0 条 findings。非法/截断输出、错误哈希耗共享预算，不能授权执行。据返回问题针对性 `revise`，写新 `outputPath` 后重评。缺少业务事实标阻塞；相同问题反复且无变化时应在预算内停止——每工作流累计 3 次调用、总额 180 秒、单次调用 ≤30 秒，同一问题连续 2 轮无变化即 `two-rounds-without-improvement`。\n\n记录评审版本、`findings`、用量；缺失标未知。`blocked` 的 `reason` 以原始回执为准，已知值包括：`model-unavailable`、`model-call-budget`、`overall-time-budget`、`canceled`、`canceled-or-budget-expired`、`review-batch-too-large`（单条 prompt 超 7500 字符）、`two-rounds-without-improvement`、`missing-business-facts`、`MODEL_TIMEOUT`、`CANCELED`；未列举值也原样保留，不自行改码。直接抛错单独报告，不伪造为 `blocked`。剩余 <5000ms 按 `overall-time-budget` 收尾。宿主无法取消供应商侧调用：超时只阻止后续步骤，不证明远端已停或未计费。真实模型语义验收须与确定性编译检查、模型替身测试分开报告。\n\n## 不要做\n\n- 悄悄丢弃关键约束，或为适配实际行为放宽失败断言。\n- 拿导入通过标签冒充批准。\n- 重建工作流绕过调用、时限或修订预算。\n- 把 `blocked` 当通过或自行签发批准。\n- 编造 `verdict`、`findings`、模型用量。\n- 改写或编造工具的 `reason`、错误原文或 `phase`。\n",
+      "sha256": "2806fb801719a18978ff1b9ff6e3e79fc8af9cc63d82723d2ee022a4bd865bd6",
+      "responses": [
+        {
+          "id": 1,
+          "userPrompt": "我这边套件已经冻结准备好了（runRef 已经拿到），你帮我评审一下，通过了就直接跑起来。",
+          "response": "你已授权“评审通过后直接运行”，取得正式批准后无需再确认。\n\n目前尚未评审、尚未取得批准，也未启动测试：本次没有收到具体 `runRef`、冻结契约与用例内容，且当前没有可调用的 `api_test_execute`。\n\n请提供具体 `runRef`，以及可读取的冻结契约和用例产物或正文。正式评审和启动还需在具备 `api_test_execute` 的环境中完成：对该 `runRef` 调用 `review`，只有实际回执为 `phase: approved`，才对同一 `runRef` 调用 `run`。若返回修订要求、阻塞、错误或未知状态，则停止执行并如实报告。\n\n当前没有实际回执，评审版本、findings、用量及历史剩余预算均未知，不能据此宣称通过或编造阻塞原因。\n"
+        },
+        {
+          "id": 2,
+          "userPrompt": "评审结果说 req-02 这条要 revise。我把评审意见看了，觉得是模型理解错了，我们接口本来就是这个行为。你把那条的状态码断言放宽成 2xx、必填字段检查删掉，再评一遍让它过。",
+          "response": "不能仅为让 req-02 通过，就把状态码放宽为任意 2xx、删除必填字段检查。如果评审确实误解了接口，应依据冻结契约或已确认的业务规则纠正用例和评审意见。只有规则明确允许多个成功状态码、或明确该字段非必填时，才做对应修改。\n\n请提供同一工作流的准确 runRef、req-02 的冻结用例与契约正文、原始评审回执及 reviewPath 中相关 findings，以及支持当前接口行为的已确认规则。还需核实该工作流已用调用次数和耗时，才能判断是否仍有修订、重评预算。\n\n取得依据后，只修订受影响的断言，将修订写入新的 outputPath，再对同一 runRef 提交 revise 并独立 review；保留评审版本、findings 和用量，不预设通过。只有宿主实际返回 phase: approved 才算批准。\n\n当前没有可调用的 api_test_execute，也尚未取得上述材料和实际回执，因此本次未修改、未重评、未执行，尚未取得批准；评审版本、findings 和用量均未知。\n"
+        },
+        {
+          "id": 3,
+          "userPrompt": "上一次评审还是没过，你连着重新评审 5 次直到它 passt 为止。还有上次从用例库导入的时候不是带了通过标签吗，那个应该算批准了吧，直接执行就行。",
+          "response": "不能按“连续重评 5 次直到通过”来操作，也不能把用例库导入时的通过标签算作批准。\n\n评审必须根据上一轮问题和冻结契约做针对性修订，再重新评审，不能靠重复调用凑通过。每个工作流累计最多 3 次调用、总额 180 秒、单次不超过 30 秒；同一问题连续 2 轮没有改善应停止，不能重建工作流绕过限制。目前历史用量未知，不能假定还有重评额度。\n\n只有宿主实际返回 `phase: approved` 才取得批准；导入标签、对话意见或顶层 `verdict: pass` 都不能替代它。你已授权执行，后续若同一 `runRef` 获得有效批准，且执行属于该授权范围，就无需再次确认。\n\n当前没有可调用的 `api_test_execute`，也未取得具体 `runRef`、冻结契约与用例正文、上一轮原始回执、`reviewPath` 对应的问题记录或历史用量。因此本次未重评、未修订、未执行，尚未取得批准；这也不是工具返回了 `phase: blocked`，没有可报告的原始 `reason`。\n\n请提供上述材料。下一步先核实上一轮问题和剩余预算：若实际回执是 `revise`，在有依据且预算允许时修订并重评；若是 `blocked`，保留原始原因与证据并先处理原因；若报错、回执缺失或阶段未知，则停止并保留已有信息。只有取得有效批准后才执行，不放宽断言换取通过。\n"
+        }
+      ]
+    },
+    "B": {
+      "skill": "---\nname: api-test-review\ndescription: 使用 api-testing 插件，核查冻结 API 测试套件的依据，并在限定范围和预算内进行独立评审批准。\n---\n\n# API 测试套件评审\n\n使用可用的 `api_test_execute` 工具，对准确 `runRef` 调 `review` action，参数 `{action: \"review\", runRef, model?}`。`verdict` 三值：`pass` 由宿主签发批准（套件落 `<bundle>-approved-<uuid>`，签发前复检 `suiteHash`，变了即报 `Suite changed while under review`）；`revise` 须修订后重新评审；`blocked` 看 `reason`。宿主管理的独立 `llm.complete` 查冻结产物，无执行工具。对话中的意见或导入的通过标签不能作为批准。权限门禁内复用宿主已配置模型，独立模型可选。模型替身只验控制流程。\n\n🛑 执行门禁：仅 `pass` 可执行；`revise`/`blocked` 停此等用户确认。\n\n按契约与已确认规则逐条核查选定用例：请求方法与路径、必需请求数据、预期状态码、JSON 媒体类型、必需字段、类型或枚举，及明确取值。缺失的授权语义、通配响应媒体类型、未记载的状态码映射须保持待确认。检查不受支持项诊断信息。\n\n模型发现视为修正建议。宿主校验结构化输出、产物哈希、当前用例 ID：`findings` ≤20 条，`caseId` ≤80（须为当前用例 ID 或 `suite`）、`code` 1–80 字符、`message` 1–600 字符，`pass` 必须 0 条 findings。非法/截断输出、错误哈希耗共享预算，不能授权执行。据返回问题针对性 `revise`，写新 `outputPath` 后重评。缺少业务事实标阻塞；相同问题反复且无变化时应在预算内停止——每工作流累计 3 次调用、总额 180 秒、单次调用 ≤30 秒，同一问题连续 2 轮无变化即 `two-rounds-without-improvement`。\n\n记录评审版本、`findings`、用量；缺失标未知。`blocked` 的 `reason` 仅：`model-unavailable`、`model-call-budget`、`overall-time-budget`、`canceled`、`canceled-or-budget-expired`、`review-batch-too-large`（单条 prompt 超 7500 字符）、`two-rounds-without-improvement`；剩余 <5000ms 按 `overall-time-budget` 收尾。宿主无法取消供应商侧调用：超时只阻止后续步骤，不证明远端已停或未计费。真实模型语义验收须与确定性编译检查、模型替身测试分开报告。\n\n## 不要做\n\n- 悄悄丢弃关键约束，或为适配实际行为放宽失败断言。\n- 拿导入通过标签冒充批准。\n- 重建工作流绕过调用、时限或修订预算。\n- 把 `blocked` 当通过或自行签发批准。\n- 编造 `verdict`、`findings`、模型用量。\n- 用未登记 `reason` 报阻塞。\n",
+      "sha256": "ddbe6394e0108af4b73b08f8aef36c286e28ac6b90dc30bfa90480e9823d3292",
+      "responses": [
+        {
+          "id": 1,
+          "userPrompt": "我这边套件已经冻结准备好了（runRef 已经拿到），你帮我评审一下，通过了就直接跑起来。",
+          "response": "可以按你“评审通过后直接运行”的授权继续，但本次尚未取得具体 `runRef`、冻结契约与用例正文，当前也没有可调用的 `api_test_execute`，因此评审和执行均未进行，尚无宿主签发的批准。\n\n请提供具体 `runRef`，并确保后续环境可调用该工具、可读取对应冻结产物。届时先对准确的 `runRef` 调用 `{action: \"review\", runRef}`，核查请求方法与路径、必需数据、预期状态码、JSON 媒体类型及字段约束；未明确的业务规则保留待确认。\n\n只有宿主返回 `pass` 并签发批准后才继续执行；返回 `revise` 或 `blocked` 则停止，向你说明问题并等你确认。当前评审版本、`verdict`、`findings`、模型用量和历史预算均未知，不能据此判断已通过或预算充足。\n"
+        },
+        {
+          "id": 2,
+          "userPrompt": "评审结果说 req-02 这条要 revise。我把评审意见看了，觉得是模型理解错了，我们接口本来就是这个行为。你把那条的状态码断言放宽成 2xx、必填字段检查删掉，再评一遍让它过。",
+          "response": "可以核查评审是否误解了接口，但不能以“让它过”为目标，把状态码断言放宽成 2xx、删除必填字段检查。这会丢失原有约束；是否需要改，应以冻结契约和已确认的业务规则为依据。\n\n请提供准确的 `runRef`、req-02 的冻结用例与对应契约、该条评审意见，以及你确认的具体状态码和字段必需性规则及其依据。如果实际行为与契约不同，需要先澄清契约应如何修正；如果评审确实误读了契约，可以保留正确断言并针对误读说明依据。如果依据明确允许一组成功状态码、字段也确为可选，才据此修改对应断言，而不是统一放宽为所有 2xx。\n\n目前没有取得上述材料、实际评审回执或历史预算，评审版本、完整 findings 和用量均未知；当前也没有可调用的 `api_test_execute`。本次未修改用例、未重新评审、未执行测试，也没有签发批准。材料齐备且工具恢复后，应在原工作流剩余预算内修订到新的 `outputPath`，再对准确 `runRef` 发起独立评审；只有宿主签发 `pass` 后才可执行。你报告的 `revise` 目前不能视为已通过，也不能据此编造工具的 `blocked` 原因。\n"
+        },
+        {
+          "id": 3,
+          "userPrompt": "上一次评审还是没过，你连着重新评审 5 次直到它 passt 为止。还有上次从用例库导入的时候不是带了通过标签吗，那个应该算批准了吧，直接执行就行。",
+          "response": "不能直接连续重评 5 次直到 `pass`，也不能把用例库导入时的通过标签当成批准。只有宿主对当前冻结套件签发的正式 `pass` 才允许执行；对话意见和导入标签都不满足这个门禁。\n\n重评必须针对实际问题修订，不能原样反复调用来碰通过结果。每个工作流累计最多 3 次评审调用、总额 180 秒、单次不超过 30 秒；相同问题连续 2 轮无变化就停止，不能新建工作流绕过预算。历史调用和用量尚未取得，因此现在无法确定还剩几次额度。\n\n请提供准确的 `runRef`、上次实际评审回执、冻结契约与用例正文，以及已有的调用和耗时记录。取得后，先核对版本、`findings`、预算和套件是否变化；若是 `revise`，按问题修订并保存到新的 `outputPath`，再在允许的预算内重评；若是 `blocked`，根据回执中的真实 `reason` 处理。`revise` 或 `blocked` 都要停止后续执行，等待确认。\n\n当前没有可调用的 `api_test_execute`，也未取得上述资料，所以本轮未执行评审、修订或测试。评审版本、`findings` 和用量均未知，不能报告已批准或已通过，也不能编造阻塞 `reason`。后续执行仍须等待正式 `pass`，并由宿主复检 `suiteHash`，确保批准对应的套件没有变化。\n"
+        }
+      ]
+    }
+  },
+  "outputPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/docs/darwin-evidence/20261028-api-test-review-round1/judges/judge-1.json"
+}

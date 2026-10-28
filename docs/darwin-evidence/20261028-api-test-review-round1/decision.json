@@ -1,0 +1,43 @@
+{
+  "timestamp": "2026-10-28T08:10:33.658417+00:00",
+  "status": "keep",
+  "votes": [
+    {
+      "judge": 1,
+      "rawPreferred": "A",
+      "afterLabel": "A",
+      "verdict": "better",
+      "margin": "clear",
+      "reason": "A在本次限定的评审回执后分流范围内有明确实用优势：区分内部verdict与公共phase，按approved、revise、blocked及抛错/缺失/未知回执分别行动，保留原始reason，并承接已有的执行授权。B把公共入口按pass判断批准、把revise/blocked一律转为等待用户确认，又把reason写成封闭名单，均与给定契约不符。三题回答中A实际使用phase: approved并避免伪造阻塞，B则持续使用pass门禁，且第一、三题保留了额外确认。两版都守住了不放宽断言凑通过、不接受导入标签及不盲目重试的核心边界。判优依据是可观察的契约准确性与分流改善，不是篇幅；A也仍有预算与无改善触发条件的共同表述问题。"
+    },
+    {
+      "judge": 2,
+      "rawPreferred": "B",
+      "afterLabel": "B",
+      "verdict": "better",
+      "margin": "clear",
+      "reason": "B在本次限定的评审回执后分流上有明确实用优势：区分内部verdict与公共phase，以phase=approved作为宿主批准依据；把已有执行授权延续到同一runRef的run；为revise、blocked、直接抛错、缺失或未知回执分别给出处理方式，并保留原始reason。A将公共成功描述为pass，并要求revise/blocked等待用户确认，既可能误识别真实批准，又会在已有授权时增加无依据的停顿。三题实际回答支持该优势，尤其第1、3题；没有发现B样本产生新的实际执行、批准或预算捏造。该结论来自契约符合性和实际回答差异，不来自篇幅。两版共同保留的预算与停滞判据表述问题仍须如实记录。"
+    },
+    {
+      "judge": 3,
+      "rawPreferred": "A",
+      "afterLabel": "A",
+      "verdict": "better",
+      "margin": "clear",
+      "reason": "A在本次限定的评审回执分流范围内有明确实用优势：区分内部verdict与公共phase，以phase=approved作为宿主批准依据；对revise、blocked、抛错、缺失及未知回执分别给出动作，并保留原始原因和错误。A还明确复用用户已给出的执行授权，避免B把revise/blocked一律转成等待用户确认。两版用途、契约断言、插件依赖及独立批准边界基本保持。实际回答也体现了A对公共批准字段和已有授权的改善，未发现A样本在这三题中相对B的实质退步。但两版共有的预算和无改善判定表述仍不够准确，不能视为完整契约正确性或原生运行验证。"
+    }
+  ],
+  "counts": {
+    "better": 3,
+    "worse": 0,
+    "tie": 0
+  },
+  "rule": "within-judge paired majority; three better / zero worse / zero tie; all clear",
+  "beforeSha256": "ddbe6394e0108af4b73b08f8aef36c286e28ac6b90dc30bfa90480e9823d3292",
+  "candidateSha256": "2806fb801719a18978ff1b9ff6e3e79fc8af9cc63d82723d2ee022a4bd865bd6",
+  "candidateBytes": 3787,
+  "baselineDiagnosticScore": 68.4,
+  "newAbsoluteScore": null,
+  "limits": "single sample per version per prompt; three judges evaluate same six samples; no causal inference, native business execution 0/3",
+  "pending": "user item confirmation after concrete delivery; no next round or item 4 started"
+}

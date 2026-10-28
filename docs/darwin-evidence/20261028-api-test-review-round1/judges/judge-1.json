@@ -1,0 +1,77 @@
+{
+  "preferred": "A",
+  "margin": "clear",
+  "reason": "A在本次限定的评审回执后分流范围内有明确实用优势：区分内部verdict与公共phase，按approved、revise、blocked及抛错/缺失/未知回执分别行动，保留原始reason，并承接已有的执行授权。B把公共入口按pass判断批准、把revise/blocked一律转为等待用户确认，又把reason写成封闭名单，均与给定契约不符。三题回答中A实际使用phase: approved并避免伪造阻塞，B则持续使用pass门禁，且第一、三题保留了额外确认。两版都守住了不放宽断言凑通过、不接受导入标签及不盲目重试的核心边界。判优依据是可观察的契约准确性与分流改善，不是篇幅；A也仍有预算与无改善触发条件的共同表述问题。",
+  "dimensions": [
+    {
+      "id": 1,
+      "preferred": "tie",
+      "reason": "两版name与description完全相同，均清楚说明api-testing插件、冻结套件和限定预算内独立评审；没有可比较的frontmatter变化。"
+    },
+    {
+      "id": 2,
+      "preferred": "A",
+      "reason": "A在公共入口后直接列出四类回执分支，明确修订使用同一runRef、新outputPath及重新review，批准后在已有授权内直接run。B以内部verdict组织公共流程，且执行门禁中的等待确认与后文修订重评衔接不清。"
+    },
+    {
+      "id": 3,
+      "preferred": "A",
+      "reason": "A明确编码blocked、工具抛错、回执缺失和未知phase的失败分支，禁止将错误伪造成blocked；reason采用开放式原文保留，覆盖给定事实中的missing-business-facts、MODEL_TIMEOUT、CANCELED。B的封闭reason名单及禁止未登记reason会误处理真实回执，且没有未知/缺失回执分支。"
+    },
+    {
+      "id": 4,
+      "preferred": "A",
+      "reason": "两版均有显性的🛑执行门禁，均可计作视觉停止检查点。A将其条件准确限定为宿主phase: approved及用户授权，并显式阻止revise、blocked、报错和未知回执进入执行。B的pass门禁不符合公共回执，等待确认也不能代替批准；优势来自门禁准确性，而非增加审批次数。"
+    },
+    {
+      "id": 5,
+      "preferred": "A",
+      "reason": "review参数和断言核查项目两版相同。A补足可直接据公共回执执行的分流：reviewPath核查依据、授权与预算允许时revise后review、approved后同runRef运行，以及异常时停止留存。B要求等待pass会漏认真实approved，且未说明错误回执处理。"
+    },
+    {
+      "id": 6,
+      "preferred": "tie",
+      "reason": "两版都保留必要的api-testing插件、唯一公共工具及宿主管理的独立模型依赖，没有新增外部资源或可比较的资源加载组织变化。A使用reviewPath更具体，已在流程与可执行性维度体现。"
+    },
+    {
+      "id": 7,
+      "preferred": "A",
+      "reason": "A明确公共workflow状态与内部评审记录的边界，同时维持宿主哈希复检、独立批准、用户授权及模型替身的职责分离。B混淆公共phase和内部verdict，使其批准架构虽有正确意图却无法准确对接给定公共契约。"
+    },
+    {
+      "id": 8,
+      "preferred": "A",
+      "reason": "三个回答样本中，A均采用phase: approved作为宿主批准依据，并报告工具、材料和实际回执缺失，第一、三题明确沿用已有执行授权。B三个样本均沿用pass作为门禁，第一、三题还要求revise/blocked后等待确认。两版均拒绝无依据删断言及五次碰通过，均没有虚构执行结果；预算表述仍有共同不足。"
+    },
+    {
+      "id": 9,
+      "preferred": "A",
+      "reason": "两版均有独立“不要做”清单，保留关键约束、导入标签、预算绕过和伪造结果禁令。A将B的“用未登记reason报阻塞”改为禁止改写或编造reason、错误原文和phase，更符合真实reason应原样保留的契约。"
+    }
+  ],
+  "behavioralEvidence": [
+    {
+      "promptId": 1,
+      "preferred": "A",
+      "reason": "两版均准确指出未收到具体runRef且无工具，未谎称评审或运行。A明确公共phase: approved后对同一runRef执行run，并承接用户已有授权。B称宿主返回pass才执行，与真实公共成功回执不符；对revise/blocked统一等待确认也没有按原因和已有授权分流。A要求补充可读产物是信息请求，未伪装为已取得资料。"
+    },
+    {
+      "promptId": 2,
+      "preferred": "A",
+      "reason": "两版均拒绝为通过扩为所有2xx和删除必填字段，并允许经契约与已确认规则证明后的定向纠正；均说明没有修改、重评或运行。A还明确索取原始回执、reviewPath中findings及历史预算，对同一runRef按revise再review，最终使用phase: approved。B的依据澄清同样有用，但最终仍以宿主pass作为公共批准条件，因此本题A略优，而非B全面失守。"
+    },
+    {
+      "promptId": 3,
+      "preferred": "A",
+      "reason": "两版均拒绝五次重评及导入通过标签，保留历史预算未知，没有凭“上次没过”宣称已触发具体阻塞。A区分实际blocked与环境缺工具，并按revise、blocked、错误/未知回执分流，已有授权下取得有效批准即可执行。B继续使用pass门禁，并统一要求等待确认；另把共享模型complete预算称为“3次评审调用”，容易误解为三次review action。A的“累计最多3次调用”也未明确为模型complete，且两版均把无改善条件表述成同一问题连续两轮，尚不够精确。"
+    }
+  ],
+  "remainingIssues": [
+    "两版全文及第三题回答都把two-rounds-without-improvement简化为同一问题连续两轮无变化。给定契约实际要求同一冻结suiteHash连续三次评审相同，第三次才触发；本次均未伪造其已触发，但规则表述仍可能误导后续执行。",
+    "两版仍未清晰区分每workflow累计3次模型complete调用与review action次数，B第三题明确称3次评审调用，A第三题使用笼统调用。多用例批次可能一次review耗多次模型调用，不能据此推算剩余额度。",
+    "两版未完整写明每workflow最多2次revise和每个reviewDraft整体最多90秒；这些是共同保留缺口，不应据此要求本次越过回执分流范围全面扩写。",
+    "A的“剩余<5000ms按overall-time-budget收尾”仍应与其原文保留原则一起理解：可以不再启动模型调用，不能在没有实际回执时自行造出blocked或reason。当前三个回答没有发生这种伪造。",
+    "B尚存公共phase与内部verdict混用、封闭reason名单及笼统等待确认的问题，实际回答已出现相应pass门禁和确认分支；单样本不能单独证明文本造成了全部行为差异。"
+  ],
+  "limits": "仅依据本输入内两版完整SKILL、各三条实际回答和给定契约做匿名配对比较，未读取其他文件、映射或历史，未调用业务工具、联网或委派。每版每题只有一个回答层样本；两版原生业务工具执行均为0/3，没有真实review/revise/run、预算回执、哈希校验或桌面接入验证。判优仅支持本次回执分流及可观察回答行为的相对改善，不构成全流程通过、真实模型语义验收或新的绝对总分。"
+}

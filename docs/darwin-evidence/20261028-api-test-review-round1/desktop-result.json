@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "checks": [
+    "reproduced missing API skills, plugin and /api shortcut in a different desktop workspace",
+    "explicit API registration preserves existing settings and is idempotent",
+    "API/UI skills use Chinese aliases and descriptions while retaining stable canonical identities",
+    "skill disable persists across reload, removes shortcut and can be re-enabled",
+    "/api lists API shortcuts; click and Tab complete without a model request",
+    "API plugin disable blocks all owned skills and manual slash calls; rescan preserves disable state",
+    "owner re-enable restores individual preferences and enabled skills sort above disabled skills",
+    "UI capability shows real SDK loading state, gates all associated skills, sorts below enabled plugins, persists across reload and reconnects when enabled",
+    "API execution tool is exposed in tool management through the existing host plugin",
+    "subsequent reload retains API shortcuts with no business or model execution"
+  ],
+  "actualModelCalls": 0,
+  "businessRequests": 0,
+  "mcpStatus": "ui-playwright-test: connected, 87 tools (direct)"
+}

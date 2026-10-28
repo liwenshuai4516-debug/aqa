@@ -1,0 +1,77 @@
+{
+  "preferred": "A",
+  "margin": "clear",
+  "reason": "A在本次限定的评审回执分流范围内有明确实用优势：区分内部verdict与公共phase，以phase=approved作为宿主批准依据；对revise、blocked、抛错、缺失及未知回执分别给出动作，并保留原始原因和错误。A还明确复用用户已给出的执行授权，避免B把revise/blocked一律转成等待用户确认。两版用途、契约断言、插件依赖及独立批准边界基本保持。实际回答也体现了A对公共批准字段和已有授权的改善，未发现A样本在这三题中相对B的实质退步。但两版共有的预算和无改善判定表述仍不够准确，不能视为完整契约正确性或原生运行验证。",
+  "dimensions": [
+    {
+      "id": 1,
+      "preferred": "tie",
+      "reason": "name与description完全相同，均描述冻结套件、独立评审及范围和预算，没有frontmatter差异。"
+    },
+    {
+      "id": 2,
+      "preferred": "A",
+      "reason": "A按公共phase列出批准后执行、定向修订后重评、阻塞停止、错误或未知停止四类后续动作，使用同一runRef并保留已有授权；B以内部verdict承接公共入口且把revise/blocked一律要求用户确认，分流既不准确也不够具体。"
+    },
+    {
+      "id": 3,
+      "preferred": "A",
+      "reason": "A显式编码回执缺失、未知phase和工具抛错分支，禁止伪造blocked，开放保留未知原始reason，并补充实际存在的缺事实、超时和取消原因。B把reason封闭为七项且禁止未登记reason，可能掩盖真实错误。A并未冒称所有内部修订路径的reason都是公共常见路径。"
+    },
+    {
+      "id": 4,
+      "preferred": "A",
+      "reason": "两版都有显性的🛑执行门禁。A将检查点准确落在宿主phase=approved与用户授权范围，并对revise、blocked、错误或未知回执显式停止执行；B使用pass门禁且增加笼统等待确认。A的优势来自门禁准确性，不是重复审批数量。"
+    },
+    {
+      "id": 5,
+      "preferred": "A",
+      "reason": "A给出正确的公共批准字段、同runRef的run/revise/review衔接、reviewPath核查、新outputPath及预算不足或事实不足时的停止动作。B虽有入口参数和修订说明，却未将公共回执正确映射为后续操作。两版对共享模型调用预算和无改善触发条件仍有相同的不精确之处。"
+    },
+    {
+      "id": 6,
+      "preferred": "tie",
+      "reason": "两版均保留必要的api-testing插件、api_test_execute公共入口、宿主独立模型及冻结产物依赖，没有因中立化而删除项目依赖。A使用reviewPath改进分流，但没有新增可独立比较的配套资源或资源组织。"
+    },
+    {
+      "id": 7,
+      "preferred": "A",
+      "reason": "A把公共工具状态与内部评审记录分层，明确模型建议、宿主批准和实际执行的职责边界，并让回执分流位于入口附近。B将公共批准与内部pass混合，导致执行门禁和样本回答都沿用错误层次。A的增加直接服务所请求的分流范围。"
+    },
+    {
+      "id": 8,
+      "preferred": "A",
+      "reason": "三题回答均未虚构已执行、预算或阻塞reason，也都拒绝为通过削弱断言及导入标签冒充批准。A三题均正确使用phase=approved，第一和第三题明确沿用已有执行授权；B三题持续要求正式pass，第一和第三题还对revise/blocked笼统等待确认。第三题B把预算称为三次评审调用，较明确地混淆共享模型complete调用与review次数；A虽仍笼统称调用，未解决这一精度问题。"
+    },
+    {
+      "id": 9,
+      "preferred": "A",
+      "reason": "两版均有独立的不要做清单，保留断言、批准和预算禁令。A将B的用未登记reason报阻塞禁令改成不得改写或编造reason、错误原文或phase，更符合保留真实回执的契约；同时在正文明确不伪造blocked。"
+    }
+  ],
+  "behavioralEvidence": [
+    {
+      "promptId": 1,
+      "preferred": "A",
+      "reason": "两版都正确指出具体runRef、冻结正文及工具未取得，评审与执行均未进行。A准确要求实际phase=approved后对同一runRef运行，并明确无需重复确认；B等待宿主返回pass，且对revise/blocked笼统等用户确认，存在公共回执识别错误及不必要停顿。"
+    },
+    {
+      "promptId": 2,
+      "preferred": "A",
+      "reason": "两版都拒绝无依据放宽所有2xx和删除必填检查，允许依据契约与已确认规则定向纠错，并如实报告未修改和未重评。A进一步明确同runRef提交revise再review、核查reviewPath及真实phase=approved；B末尾仍把宿主pass当批准依据。这一差异支持A，但未取得原文和实际回执，不能判断req-02原断言是否确实有误。"
+    },
+    {
+      "promptId": 3,
+      "preferred": "A",
+      "reason": "两版都拒绝连续五次碰通过和用导入标签批准，也都承认历史预算未知。A明确缺工具并非blocked回执，区分revise、blocked与错误/未知分支，沿用已有执行授权；B仍采用正式pass及等待确认，并把三次共享模型complete预算说成三次评审调用。两版都沿用同一问题连续两轮无变化的简化说法，未说明冻结suiteHash连续三次相同这一准确触发条件。"
+    }
+  ],
+  "remainingIssues": [
+    "两版都把two-rounds-without-improvement简写为同一问题连续两轮无变化；已知契约实际依据同一冻结suiteHash连续三次相同，不能仅凭用户说上次没过判断触发。实际样本未伪造已经触发，但没有澄清精确条件。",
+    "A仍笼统写每工作流累计三次调用，未明确是共享的模型complete调用而非每次review额度；B第三题直接称三次评审调用，构成实际样本中的具体精度问题。",
+    "两版未完整列出两次revise、从prepare起计180秒和每个reviewDraft整体至多90秒，亦未明确调用额度、阶段或总时限问题可能直接抛工作流错误。A已补通用抛错分支，但这些共同缺口尚未被完整消除，不应据此声称全契约已修复。",
+    "A剩余小于5000ms按overall-time-budget收尾的原有表述仍可能被理解为助手自行生成reason；应结合其新增的原样保留回执、禁止伪造reason要求理解，不能代替实际工具回执。",
+    "三题均缺少真实工具、具体runRef、冻结正文和实际回执，无法核验哈希、findings、实际预算、修订发布或批准后执行。"
+  ],
+  "limits": "仅依据本输入两份完整SKILL、每版每题一个实际Agent回答样本及给定contractFacts作匿名配对比较；未读取其他文件、历史或组别映射，未联网、委派或调用业务工具。六个样本均仅为回答层证据，每版原生业务工具执行0/3；不能证明实际插件运行、真实模型语义或业务执行结果，也不能把样本差异全部归因为文字修改。本结果不使用新的绝对总分，未将更长或修改面更大本身计为优势。"
+}
