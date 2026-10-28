@@ -1,7 +1,7 @@
 /** U02 privacy regression against the native diagnostic capture; synthetic cookie or JSON storage only. */
 import assert from "node:assert/strict";
 import { randomBytes } from "node:crypto";
-import { mkdir, mkdtemp, readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { chmod, mkdir, mkdtemp, readdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import yauzl from "yauzl";
@@ -279,6 +279,46 @@ try {
 	result.checks.push(
 		"Authenticated passing run preserves its passed result and explicitly incomplete public trace resources",
 	);
+	const verifiedResults = await collectResults(d.f.root, passed.run_ref, "private-verified-results", d.f.authority);
+	assert.equal(verifiedResults.details.complete, true, "The sealed private trace must be verified for this run");
+	const privacyRef = passed.run.data.output_refs.find((ref) => ref.path.endsWith("/privacy.json"));
+	const privacy = JSON.parse(await readFile(join(d.f.root, privacyRef.path), "utf8"));
+	const audit = join(d.f.authority, "private-evidence", privacy.private_capture_id, "audit.json");
+	const auditBytes = await readFile(audit);
+	const auditData = JSON.parse(auditBytes);
+	const privateTrace = join(
+		d.f.authority,
+		"private-evidence",
+		privacy.private_capture_id,
+		auditData.traces[0].private_relative_path,
+	);
+	assert.equal((await stat(privateTrace)).mode & 0o777, 0o600);
+	await writeFile(audit, JSON.stringify({ ...auditData, run_id: "other-run" }));
+	try {
+		const wrongOwner = await collectResults(d.f.root, passed.run_ref, "private-wrong-owner", d.f.authority);
+		assert.equal(wrongOwner.details.complete, false, "A seal belonging to another run must be rejected");
+		assert.equal(wrongOwner.data.counts.passed, 1);
+	} finally {
+		await writeFile(audit, auditBytes);
+	}
+	await chmod(privateTrace, 0o644);
+	try {
+		const loosePermissions = await collectResults(d.f.root, passed.run_ref, "private-loose-permissions", d.f.authority);
+		assert.equal(loosePermissions.details.complete, false, "A private trace with loose permissions must be rejected");
+	} finally {
+		await chmod(privateTrace, 0o600);
+	}
+	await rename(audit, audit + ".saved");
+	try {
+		const legacyResults = await collectResults(d.f.root, passed.run_ref, "private-unsealed-results", d.f.authority);
+		assert.equal(legacyResults.details.complete, false, "Missing private seal must retain the evidence gap");
+		assert.equal(legacyResults.data.counts.passed, 1);
+	} finally {
+		await rename(audit + ".saved", audit);
+	}
+	result.checks.push(
+		"Private trace verification requires the original run seal; an unsealed capture remains incomplete",
+	);
 	d.f.fixture.state.discardPersistence = true;
 	const failed = await service.start({ ...request, request_id: "private-failure" });
 	const failedResults = await collectResults(d.f.root, failed.run_ref, "private-failure-results");
@@ -289,6 +329,10 @@ try {
 		"Withheld visual resources cannot be advertised as complete public evidence",
 	);
 	result.checks.push("Authenticated failing run remains failed and publicly incomplete");
+	const verifiedFailure = await collectResults(d.f.root, failed.run_ref, "private-verified-failure", d.f.authority);
+	assert.equal(verifiedFailure.data.counts.failed, 1);
+	assert.equal(verifiedFailure.details.complete, false, "A withheld screenshot remains an evidence gap");
+	result.checks.push("Private trace verification does not conceal a withheld failure screenshot");
 	const trace = failed.run.data.output_refs.find((ref) => ref.path.endsWith("/trace.zip"));
 	assert.ok(trace, "Public redacted trace retains action evidence");
 	const events = await traceEvidence(d.f.root, failedResults.results_ref, trace);
