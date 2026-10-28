@@ -57,6 +57,8 @@
 	"limitations": [
 		"Historical private PMS batch remains partial; this does not change the approved new batch.",
 		"Desktop recovery and running-process cancellation used a synthetic target; business_started and any business side effects in the interrupted batch remain unknown.",
+		"The selected PMS run used its frozen 0.1.27 dependency; readiness after restoring it is not a browser revalidation on 0.1.29 or a changed deployment.",
+		"A read-only process-name check found no Pi desktop process; actual session resource loading remains unverified.",
 		"Real workspace removal was not simulated; the verified private backup is local only.",
 		"Observed baseline is not an approved product requirement; other roles, tenants and contract writes remain out of scope."
 	]
