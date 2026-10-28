@@ -1,0 +1,9 @@
+
+> pi-web-ui@0.109.0 check:protocol
+> node scripts/check-protocol-sync.mjs
+
+✓ types.ts 是 protocol.ts 的 type-only re-export shim
+✓ protocol.ts 保持纯类型导出（无运行时代码）
+✓ 双端 PROTOCOL_VERSION 一致 (v33)
+fatal: No names found, cannot describe anything.
+· 跳过协议版本 git 启发式（无可用 tag 或浅检出环境）

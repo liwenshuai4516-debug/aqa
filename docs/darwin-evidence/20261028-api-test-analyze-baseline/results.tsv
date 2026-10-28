@@ -1,0 +1,2 @@
+timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
+2026-10-28T08:40:04.851723+00:00	baseline	api-test-analyze	-	71.8	baseline	-	response_layer_only;native_business=0/3;6_independent_answers;one_anonymous_judge;runtime_warn=0	full_test

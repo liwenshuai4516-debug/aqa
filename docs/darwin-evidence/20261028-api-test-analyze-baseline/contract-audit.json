@@ -1,0 +1,50 @@
+{
+  "basis": "current source inspection; not historical expected answers",
+  "facts": [
+    {
+      "id": "F1",
+      "source": "plugins/api-testing/index.mjs; workflow.mjs:call/report",
+      "fact": "公共工具 api_test_execute 接受 {action:\"report\",runRef,runId} 或 {action:\"asset_report\",runId}。内存 report 对当前调用者的 runRef 和指定 runId 查询，不存在默认最新 run：省略 runId 时查找 undefined 并抛 Unknown run。它只返回 runId、summary、scope（summary 含 executionVerdict、reportPath、findingsPath、cleanup、openFindings），不是内嵌完整报告/逐条断言。"
+    },
+    {
+      "id": "F2",
+      "source": "plugins/api-testing/assets.mjs:asset_report; tracking.mjs:source/history",
+      "fact": "asset_report 在当前项目查持久化 runId，校验原始证据和分析修订摘要。通常返回 record、report、reportPath、analyses、followup、scope；record.status 为 unknown 时只返回 record 与历史证据不完整 scope；JSON 超过48000字符时返回 reportExcerpt、truncated:true 等，不含完整 report。未知 run 或证据变化抛错；不自动重跑、生成分析或修复原始文件。"
+    },
+    {
+      "id": "F3",
+      "source": "plugins/api-testing/report.mjs:buildReport; runner.mjs",
+      "fact": "kind 为 suspected_api_defect/environment_fault/testcase_error/cleanup_failure/evidence_insufficient/execution_unknown；分类只是线索，rootCause 固定 unconfirmed。持久化响应仅保留 status、jsonValid 与错误码等，省略原始响应体、断言实际值；统计未知时不可编造。HTTP500或重复失败本身不能证明后端根因。"
+    },
+    {
+      "id": "F4",
+      "source": "plugins/api-testing/report.mjs:resolved",
+      "fact": "问题关闭须相同 suiteHash、旧问题引用的 priorRunId 在 occurrences 中、同 caseId 本轮有断言且全部 passed且未skipped、无请求错误、当前无同 id finding。保留首次失败与全部尝试；修改测试并通过不等于证明旧版业务缺陷修复。"
+    },
+    {
+      "id": "F5",
+      "source": "plugins/api-testing/tracking.mjs:analyze",
+      "fact": "asset_analyze 参数 action/runId/可选model，只追加分析，不发HTTP；每run最多3次尝试，pending/interrupted也占预留次数，每次最多1次complete，20000ms，maxChars2400。唯一顶层hypotheses为1–5条，条目只含findingId/summary/evidenceRun；须现有open finding、本runId、非空summary≤300字符。成功completed但根因仍unconfirmed；不得生成执行指令或改原始判定。"
+    },
+    {
+      "id": "F6",
+      "source": "plugins/api-testing/tracking.mjs:source/analyze/history",
+      "fact": "证据不存在/未完成/哈希变化、分析已活动、3次已耗尽、没有open findings为预检查抛错，不新增失败修订。进入尝试并建立pending后，模型不可用/非法输出/超时等才通常落failed修订；中断pending会显示pending或interrupted、reserved; unknown。实际计数以历史回执为准，不把对话次数当工具次数，不无限重试或换run绕过预算。"
+    },
+    {
+      "id": "F7",
+      "source": "plugins/api-testing/report.mjs:cleanup",
+      "fact": "cleanup由确定性报告生成：interrupted且有写请求→residuals-unknown；否则有cleanup用例→这些用例均在successfulCases则passed否则failed；否则有写请求→not-defined；否则not-required。无报告或未提供数据时只能说清理状态未知，不能把自主推断冒充宿主原始cleanup，也不能声称必为其中一值。"
+    },
+    {
+      "id": "F8",
+      "source": "plugins/api-testing/skills/api-test-analyze/SKILL.md:不要做; workflow.mjs:run/retest; assets.mjs:asset_run",
+      "fact": "分析技能不自动重发、删除数据或修业务代码；显式请求复测应转交已有执行链，核对冻结资产/批准、环境/数据、历史priorRunId、未知写入和授权条件，生成新run，不能仅因请求而实际绕过门禁。用户已表达复测/删除意图无需重复泛泛求授权，但未知目标/归属/前置事实需补齐。删除不属于此分析工具action。"
+    },
+    {
+      "id": "F9",
+      "source": "plugins/api-testing/tracking.mjs:followup",
+      "fact": "定时fixture仅对新增或变化的open证据按配置有限分析；重复已知失败跳过分析而保留新执行证据，变化或恢复可发站内通知。宿主定时能力不表示助手自动创建计划或通知外部人员。"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+
+> pi-web-ui@0.109.0 clean
+> node scripts/clean-project.mjs
+
+仅预览；未删除文件。执行前先结束相关测试/构建进程。
+保留	68.9 MiB	tests/scratch/api-testing-p1-1/runtime/node_modules · .cleanup-keep 保留标记
+保留	65.4 MiB	tests/scratch/api-testing-p0-1/runtime/node_modules · .cleanup-keep 保留标记
+保留	65.3 MiB	tests/scratch/api-testing-p0-1/reproduce/node_modules · .cleanup-keep 保留标记
+保留	25.4 MiB	node_modules/.vite · 未满 7 天或近期有写入
+保留	0.2 MiB	.workbuddy/tmp · .cleanup-keep 保留标记
+保留	0.0 MiB	node_modules/.vite-temp · 未满 7 天或近期有写入
+可清理 0 项，共 0.0 MiB。

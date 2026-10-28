@@ -1,0 +1,10 @@
+{
+  "ownedRoot": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api4-baseline-tests",
+  "trackingTmpAlias": "/private/tmp/d4b-fwypp7wu/t",
+  "aliasParent": "/private/tmp/d4b-fwypp7wu",
+  "dependencySource": "plugins/api-testing/node_modules; shared symlink, no copied dependencies",
+  "trackingCommand": "node --import tsx tests/api-testing-tracking-test.mjs <task-owned runtime>; WITHOUT --use-configured-model",
+  "models": "explicit model stubs only; 0 real provider calls",
+  "businessRequests": 0,
+  "originalAssertionsUnchanged": true
+}

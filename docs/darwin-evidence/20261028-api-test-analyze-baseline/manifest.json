@@ -1,0 +1,94 @@
+{
+  "timestamp": "2026-10-28T08:31:05.025046+00:00",
+  "phase": "baseline only; no skill edits",
+  "baseCommit": "36ead70cdeb67093787cf966364011662c2695e8",
+  "branch": "auto-optimize/20261027-1550",
+  "sourceEntries": [
+    {
+      "path": "plugins/api-testing/skills/api-test-analyze/SKILL.md",
+      "snapshot": "sources/01-SKILL.md",
+      "bytes": 3586,
+      "sha256": "d2e3d010c29f0315e3b5cbc68b5abdd2b2d0bf356d092a5126d6568c8cee7672"
+    },
+    {
+      "path": ".pi/skills/api-test-analyze/SKILL.md",
+      "snapshot": "sources/02-SKILL.md",
+      "bytes": 673,
+      "sha256": "695f4a7fc2689a2732b4ac26eb0cc30ec4e9d6a336c65cd838dd346d53562f52"
+    },
+    {
+      "path": "plugins/api-testing/skills/api-test-analyze/test-prompts.json",
+      "snapshot": "sources/03-test-prompts.json",
+      "bytes": 1577,
+      "sha256": "dfea6c377723f3b153c4a19dfec99fe4cec6d0179e0bfe7226d3117540503cf1"
+    },
+    {
+      "path": "plugins/api-testing/index.mjs",
+      "snapshot": "sources/04-index.mjs",
+      "bytes": 2843,
+      "sha256": "748ea78abd4c9be1dca5966f5462a9777a31aa3e93166c6c791bf2eb559478cb"
+    },
+    {
+      "path": "plugins/api-testing/workflow.mjs",
+      "snapshot": "sources/05-workflow.mjs",
+      "bytes": 11395,
+      "sha256": "3d424c3bc30a00168e7c21cd1a047fdf0e4aa090d1167d2564e409be24da26a7"
+    },
+    {
+      "path": "plugins/api-testing/assets.mjs",
+      "snapshot": "sources/06-assets.mjs",
+      "bytes": 15399,
+      "sha256": "f7e5d1efa03398ee77cbd7f6227d40eda29f8f2f594c21a57b2f4d0105a95555"
+    },
+    {
+      "path": "plugins/api-testing/report.mjs",
+      "snapshot": "sources/07-report.mjs",
+      "bytes": 3933,
+      "sha256": "accfef954b3ed1a7cf9fc9e908ec1bc56748e1069827f77664200d9cc6eee8cf"
+    },
+    {
+      "path": "plugins/api-testing/tracking.mjs",
+      "snapshot": "sources/08-tracking.mjs",
+      "bytes": 8557,
+      "sha256": "f7f93910e809426f5564de0e3a25c7b73cf77b9119926a12a52be027459a7774"
+    },
+    {
+      "path": "plugins/api-testing/runner.mjs",
+      "snapshot": "sources/09-runner.mjs",
+      "bytes": 4568,
+      "sha256": "57d8984eddd07b33aa01b272e431bbfe119ed75b1cec3327d0b2622154ec9ab9"
+    },
+    {
+      "path": "plugins/api-testing/README.md",
+      "snapshot": "sources/10-README.md",
+      "bytes": 15823,
+      "sha256": "3b668a181398969b2e2fc65686a4ffc32866ba55e6491fe60d722a3cb1370cd6"
+    },
+    {
+      "path": "plugins/api-testing/manifest.json",
+      "snapshot": "sources/11-manifest.json",
+      "bytes": 708,
+      "sha256": "2e57fa647fab782fac11ae62d6a51a445a4301e3d0b0935fa21bdeec1bdbe0cf"
+    },
+    {
+      "path": "tests/api-testing-tracking-test.mjs",
+      "snapshot": "sources/12-api-testing-tracking-test.mjs",
+      "bytes": 11960,
+      "sha256": "5f34b11f94a9fbf9356b8f8af758deda96ca28a1e6f2635e31d72794924fc4a8"
+    },
+    {
+      "path": "tests/api-testing-skills-test.mjs",
+      "snapshot": "sources/13-api-testing-skills-test.mjs",
+      "bytes": 3376,
+      "sha256": "c9ae8b77c11a7c1adc57ea4857d7391075045d243b210692fe4b91c898c79833"
+    }
+  ],
+  "skillBytes": 3586,
+  "maxOptimizedBytes": 5379.0,
+  "testPromptsConfirmed": true,
+  "nativeToolAvailable": false,
+  "planUpdateAvailable": false,
+  "businessPromptsExecuted": 0,
+  "testPromptsTotal": 3,
+  "legacyResultsReused": false
+}

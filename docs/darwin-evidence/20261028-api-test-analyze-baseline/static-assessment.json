@@ -1,0 +1,85 @@
+{
+  "dimensions": [
+    {
+      "id": 1,
+      "name": "Frontmatter",
+      "weight": 7,
+      "score": 8,
+      "weighted": 5.6,
+      "weightedGap": 1.4,
+      "reason": "名称与用途清晰，描述覆盖报告/问题/清理/复测；未明说重新分析触发。"
+    },
+    {
+      "id": 2,
+      "name": "工作流清晰度",
+      "weight": 12,
+      "score": 7,
+      "weighted": 8.4,
+      "weightedGap": 3.6,
+      "reason": "六步输入输出清晰；report误称runId可选、未说明summary与完整report差别；step4无修订时保留失败修订不成立。"
+    },
+    {
+      "id": 3,
+      "name": "失败模式编码",
+      "weight": 12,
+      "score": 6.5,
+      "weighted": 7.8,
+      "weightedGap": 4.2,
+      "reason": "有模型不可用/截断与未知分支；缺报告、unknown/截断回执、前置检查抛错与已落修订未明确分开。"
+    },
+    {
+      "id": 4,
+      "name": "检查点设计",
+      "weight": 6,
+      "score": 6,
+      "weighted": 3.6,
+      "weightedGap": 2.4,
+      "reason": "纠正措施须补齐事实/授权，黑名单明确；无显式STOP标记，也未明确证据缺失何处停止判断。无需为只读任务添加泛泛人工审批。"
+    },
+    {
+      "id": 5,
+      "name": "可执行具体性",
+      "weight": 18,
+      "score": 6.5,
+      "weighted": 11.7,
+      "weightedGap": 6.3,
+      "reason": "action/六类kind/模型输出与预算具体；错误的runId可选、cleanup五态必须选一和失败修订表述与实现有差异。"
+    },
+    {
+      "id": 6,
+      "name": "资源整合度",
+      "weight": 4,
+      "score": 8,
+      "weighted": 3.2,
+      "weightedGap": 0.8,
+      "reason": "工具与项目包装入口可定位，5项SDK加载通过，无外部资源链接失效；具体路径与字段回执引用仍简略。"
+    },
+    {
+      "id": 7,
+      "name": "整体架构",
+      "weight": 12,
+      "score": 8,
+      "weighted": 9.6,
+      "weightedGap": 2.4,
+      "reason": "历史读取/分类/留存/追加分析/清理/交付分段清晰，正文紧凑；定时fixture叙述混入手动分析，个别输出与前置条件不一致。"
+    },
+    {
+      "id": 9,
+      "name": "反例与黑名单",
+      "weight": 6,
+      "score": 9,
+      "weighted": 5.4,
+      "weightedGap": 0.6,
+      "reason": "独立不要做清单覆盖误判根因、猜测响应、擅自重发、误关问题及删数据。"
+    }
+  ],
+  "runtimeScan": {
+    "matches": 0,
+    "status": "passed",
+    "scope": [
+      "plugins/api-testing/skills/api-test-analyze/SKILL.md",
+      "plugins/api-testing/README.md"
+    ]
+  },
+  "skillChanged": false
+}

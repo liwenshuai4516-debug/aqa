@@ -1,0 +1,96 @@
+{
+  "timestamp": "2026-10-28T08:45:56.963377+00:00",
+  "phase": "baseline only; no candidate/skill changes",
+  "checks": [
+    {
+      "command": "prettier --write <three task Markdown documents>",
+      "status": "passed; raw evidence unformatted"
+    },
+    {
+      "command": "npm run typecheck",
+      "status": "passed",
+      "configurations": 5,
+      "log": "check-outputs.json:typecheck-output.log"
+    },
+    {
+      "command": "npm run lint",
+      "status": "passed",
+      "log": "check-outputs.json:lint-output.log"
+    },
+    {
+      "command": "npm run check:protocol",
+      "status": "structure passed; Git history heuristic skipped (no available tag)",
+      "log": "protocol-output.log"
+    },
+    {
+      "command": "npx vitest run <5 existing skill/registration files>",
+      "status": "passed",
+      "files": 5,
+      "tests": 31,
+      "log": "check-outputs.json:unit-output.log"
+    },
+    {
+      "command": "TMPDIR=<owned SDK directory> node --import tsx tests/api-testing-skills-test.mjs",
+      "status": "passed",
+      "checks": 5,
+      "loadedAnalyzeSkillBytes": 3586,
+      "actualModelCalls": 0,
+      "businessRequests": 0
+    },
+    {
+      "command": "TMPDIR=<owned short alias> node --import tsx tests/api-testing-tracking-test.mjs <owned runtime>",
+      "status": "passed",
+      "checks": 14,
+      "explicitModelStubCalls": 7,
+      "actualProviderCalls": 0,
+      "syntheticLoopbackHttpRequests": 7,
+      "businessRequests": 0,
+      "timerScope": "registered callbacks manually fired; no wall-clock schedule acceptance"
+    },
+    {
+      "command": "npm run clean",
+      "status": "task start and delivery preview passed; zero eligible entries"
+    },
+    {
+      "command": "npm run clean:junk -- --only .workbuddy/tmp",
+      "status": "passed; zero additional removals"
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed"
+    }
+  ],
+  "integrity": {
+    "status": "passed",
+    "frozenSources": 13,
+    "inputs": 6,
+    "responses": 6,
+    "anonymousJudges": 1,
+    "sourceBytesAndHashesMatch": true,
+    "inputsNoExpectedAnswers": true,
+    "judgeInputMatchesRawResponses": true,
+    "rawVotesAndWeightedScoreVerified": true,
+    "tsvColumns": 9,
+    "archiveFiles": 617,
+    "archiveHashesVerified": true,
+    "isolatedSkillCopiesVerified": 2
+  },
+  "notExecuted": {
+    "originalBusinessPrompts": "0/3; missing api_test_execute and reports",
+    "actualProviderModelCalls": 0,
+    "electronForThisItem": "not run; baseline does not change skill or implementation; do not inherit previous item pass",
+    "optimization": "not started; awaiting baseline checkpoint",
+    "nextSkill": "not started"
+  },
+  "cleanup": {
+    "files": 619,
+    "directories": 64,
+    "symlinks": 3,
+    "bytes": 7366739
+  },
+  "precommitWhitespaceCheck": {
+    "initialAttempt": "failed on trailing blank lines in three raw logs; no commit created",
+    "resolution": "preserved exact stdout bytes with byte counts and SHA-256 in check-outputs.json; removed redundant loose copies",
+    "finalAttempt": "passed: staged whitespace check after lossless stdout encapsulation"
+  }
+}

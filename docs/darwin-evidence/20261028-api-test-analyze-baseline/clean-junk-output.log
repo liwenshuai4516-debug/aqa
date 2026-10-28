@@ -1,0 +1,8 @@
+
+> pi-web-ui@0.109.0 clean:junk
+> node scripts/clean-project.mjs --residue --apply --only .workbuddy/tmp
+
+执行清理（请先结束使用这些目录的测试/构建进程）
+保留	0.2 MiB	.workbuddy/tmp · .cleanup-keep 保留标记
+可清理 0 项，共 0.0 MiB。
+实际删除 0 项，逻辑大小 0.0 MiB。

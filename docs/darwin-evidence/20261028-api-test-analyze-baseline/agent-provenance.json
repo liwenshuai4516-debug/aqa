@@ -1,0 +1,13 @@
+{
+  "answerAgents": {
+    "with-p1": "/root/api4_base_w1",
+    "with-p2": "/root/api4_base_w2",
+    "with-p3": "/root/api4_base_w3",
+    "without-p1": "/root/api4_base_n1",
+    "without-p2": "/root/api4_base_n2",
+    "without-p3": "/root/api4_base_n3"
+  },
+  "history": "fork_turns=none; input file only; no expected answers or sources supplied to answer agents",
+  "samplesPerPromptPerGroup": 1,
+  "nativeBusinessExecuted": 0
+}

@@ -1,0 +1,125 @@
+{
+  "timestamp": "2026-10-28T08:40:04.851723+00:00",
+  "purpose": "triage only; no candidate/keep/revert",
+  "dimensions": [
+    {
+      "id": 1,
+      "name": "Frontmatter",
+      "weight": 7,
+      "score": 8,
+      "weighted": 5.6,
+      "weightedGap": 1.4,
+      "reason": "名称与用途清晰，描述覆盖报告/问题/清理/复测；未明说重新分析触发。"
+    },
+    {
+      "id": 2,
+      "name": "工作流清晰度",
+      "weight": 12,
+      "score": 7,
+      "weighted": 8.4,
+      "weightedGap": 3.6,
+      "reason": "六步输入输出清晰；report误称runId可选、未说明summary与完整report差别；step4无修订时保留失败修订不成立。"
+    },
+    {
+      "id": 3,
+      "name": "失败模式编码",
+      "weight": 12,
+      "score": 6.5,
+      "weighted": 7.8,
+      "weightedGap": 4.2,
+      "reason": "有模型不可用/截断与未知分支；缺报告、unknown/截断回执、前置检查抛错与已落修订未明确分开。"
+    },
+    {
+      "id": 4,
+      "name": "检查点设计",
+      "weight": 6,
+      "score": 6,
+      "weighted": 3.6,
+      "weightedGap": 2.4,
+      "reason": "纠正措施须补齐事实/授权，黑名单明确；无显式STOP标记，也未明确证据缺失何处停止判断。无需为只读任务添加泛泛人工审批。"
+    },
+    {
+      "id": 5,
+      "name": "可执行具体性",
+      "weight": 18,
+      "score": 6.5,
+      "weighted": 11.7,
+      "weightedGap": 6.3,
+      "reason": "action/六类kind/模型输出与预算具体；错误的runId可选、cleanup五态必须选一和失败修订表述与实现有差异。"
+    },
+    {
+      "id": 6,
+      "name": "资源整合度",
+      "weight": 4,
+      "score": 8,
+      "weighted": 3.2,
+      "weightedGap": 0.8,
+      "reason": "工具与项目包装入口可定位，5项SDK加载通过，无外部资源链接失效；具体路径与字段回执引用仍简略。"
+    },
+    {
+      "id": 7,
+      "name": "整体架构",
+      "weight": 12,
+      "score": 8,
+      "weighted": 9.6,
+      "weightedGap": 2.4,
+      "reason": "历史读取/分类/留存/追加分析/清理/交付分段清晰，正文紧凑；定时fixture叙述混入手动分析，个别输出与前置条件不一致。"
+    },
+    {
+      "id": 8,
+      "name": "实测表现（回答层）",
+      "weight": 23,
+      "score": 7.166666666666667,
+      "weighted": 16.483333333333334,
+      "weightedGap": 6.516666666666666,
+      "reason": "新独立六份回答由匿名评委评价；带技能P1/P3在无证据时赋cleanup具体状态；P2正确拒绝无依据确认根因，但复测执行链门禁仍略。真实业务0/3。"
+    },
+    {
+      "id": 9,
+      "name": "反例与黑名单",
+      "weight": 6,
+      "score": 9,
+      "weighted": 5.4,
+      "weightedGap": 0.6,
+      "reason": "独立不要做清单覆盖误判根因、猜测响应、擅自重发、误关问题及删数据。"
+    }
+  ],
+  "unroundedTotal": 71.78333333333335,
+  "score": 71.8,
+  "responseScores": [
+    {
+      "id": 1,
+      "with": 6.5,
+      "without": 9,
+      "preference": "without"
+    },
+    {
+      "id": 2,
+      "with": 8.5,
+      "without": 8,
+      "preference": "with"
+    },
+    {
+      "id": 3,
+      "with": 6.5,
+      "without": 7.5,
+      "preference": "without"
+    }
+  ],
+  "meanWith": 7.166666666666667,
+  "meanWithout": 8.166666666666666,
+  "votes": {
+    "with": 1,
+    "without": 2,
+    "tie": 0
+  },
+  "scoringAuthority": "D1–D7,D9 main agent source assessment; D8 independent anonymous judge",
+  "maxGap": 8,
+  "nextFocus": "D5可执行具体性：与D8加权缺口差≤1.0，D5原始分更低；首轮只建议清理状态的证据门禁，不改其他段落",
+  "limitations": [
+    "每题每组仅一回答、一名基线评委，无统计置信度或因果归因",
+    "full_test仅指Agent回答对照；真实业务工具0/3，不是业务full_test",
+    "两组均无报告与工具；无工具结果约束回答质量结论，不证明工具可用时一定误报",
+    "runtime scan零命中；必要项目插件依赖保留"
+  ]
+}

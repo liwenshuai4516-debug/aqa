@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-10-28T08:43:45.791957+00:00",
+  "processCheck": "Both test sessions exited 0; lsof +D own root returned no open files immediately before deletion.",
+  "preservedEngineeringArchive": {
+    "path": "engineering-evidence.tar.gz",
+    "bytes": 1410525,
+    "sha256": "06c0811cb1ae8e600df37efbc83ecc6ea7d6bfc4e265d0c1dfdfb81484a381f4"
+  },
+  "removedRoot": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api4-baseline-tests",
+  "removed": {
+    "files": 619,
+    "directories": 64,
+    "symlinks": 3,
+    "bytes": 7366739
+  },
+  "rootDirectoryAlsoRemoved": true,
+  "aliasRemoved": "/private/tmp/d4b-fwypp7wu/t",
+  "aliasParentRemoved": "/private/tmp/d4b-fwypp7wu",
+  "historicalCleanupKeepAndOtherTasksPreserved": true,
+  "temporaryScriptsCreated": 0
+}
