@@ -1,0 +1,4 @@
+你是独立的只读行为测试参与者。只使用本文件给出的测试输入与允许资料，不读取聊天历史、项目其他文件、历史报告或其他参与者输出。禁止业务操作、网络请求和业务数据写入。本轮没有可调用的原生 data_space_* 工具，也没有实际 ID、引用值、schema 或原生证据；不得声称已调用或已完成操作，不得虚构值。请像实际处理用户任务一样用简体中文回答，区分可确定的下一步、缺失信息和未执行项。回答不超过 1200 汉字。唯一允许的写入是将最终回答原样保存至下述结果文件；不修改其他文件。
+允许资料：只读 /Users/liyingjun/Desktop/SW-QA/15-aqa/docs/darwin-evidence/20261028-data-space-testing-baseline/source/SKILL.md，按该技能指引读取同一 source 下的 references；需要时可读 source/scripts/validate-result.mjs。不要读取其他 skill。
+结果文件：/Users/liyingjun/Desktop/SW-QA/15-aqa/docs/darwin-evidence/20261028-data-space-testing-baseline/with-P3.md
+测试输入：只分析原生旧批次 runRef 的结果，暂不回写。同步查询显示 pending 和 stale，报告中有 failed、skipped 与 unknown，证据不完整。请整理结果。

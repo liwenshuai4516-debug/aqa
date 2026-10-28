@@ -1,0 +1,28 @@
+{
+  "capturedAt": "2026-10-28T02:56:28.184862+00:00",
+  "head": "40c402c02a521e85a30a478a755b59aaf9dc9e43",
+  "source": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.pi/skills/data-space-testing",
+  "files": [
+    {
+      "path": "SKILL.md",
+      "bytes": 7606,
+      "sha256": "6b897be2e2de321425b2f97195f53ca89a7c465c5c4fbb0f9ca476ad757f4ee4"
+    },
+    {
+      "path": "references/native-handoff.md",
+      "bytes": 9039,
+      "sha256": "d8e63700b683b71d8b222f77b54a82f68083a5b1aee031e4c75823886742b327"
+    },
+    {
+      "path": "references/result-output.md",
+      "bytes": 11878,
+      "sha256": "b5e11083404f515c4cc3a016a983e4f512417d2a9a24b3ec1ec694edca5de34f"
+    },
+    {
+      "path": "scripts/validate-result.mjs",
+      "bytes": 11602,
+      "sha256": "4594c68346982ea8cb2d6d2069c3b34866e9291a3c204093c3ce6c4e50153e35"
+    }
+  ],
+  "scope": "Agent prompt response test only; native data_space tools unavailable; no business execution."
+}

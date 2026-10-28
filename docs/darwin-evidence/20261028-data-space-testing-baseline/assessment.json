@@ -1,0 +1,79 @@
+{
+  "dimensions": [
+    {
+      "dimension": 1,
+      "weight": 7,
+      "score": 10,
+      "weightedScore": 7.0
+    },
+    {
+      "dimension": 2,
+      "weight": 12,
+      "score": 7,
+      "weightedScore": 8.4
+    },
+    {
+      "dimension": 3,
+      "weight": 12,
+      "score": 9,
+      "weightedScore": 10.8
+    },
+    {
+      "dimension": 4,
+      "weight": 6,
+      "score": 9,
+      "weightedScore": 5.4
+    },
+    {
+      "dimension": 5,
+      "weight": 18,
+      "score": 9,
+      "weightedScore": 16.2
+    },
+    {
+      "dimension": 6,
+      "weight": 4,
+      "score": 10,
+      "weightedScore": 4.0
+    },
+    {
+      "dimension": 7,
+      "weight": 12,
+      "score": 8,
+      "weightedScore": 9.6
+    },
+    {
+      "dimension": 8,
+      "weight": 23,
+      "score": 9.133333333333333,
+      "weightedScore": 21.006666666666668
+    },
+    {
+      "dimension": 9,
+      "weight": 6,
+      "score": 7,
+      "weightedScore": 4.2
+    }
+  ],
+  "dim8Scope": "Actual independent prompt-response quality, NOT native runtime effectiveness. Three with-skill outputs scored by a fresh blinded judge.",
+  "withSkillScores": [
+    9.5,
+    8.7,
+    9.2
+  ],
+  "withoutSkillScores": [
+    6.5,
+    6.5,
+    7.5
+  ],
+  "totalRaw": 86.60666666666667,
+  "totalRounded": 86.6,
+  "keepRevertDecision": null,
+  "nativeExecutions": 0,
+  "nativeScenarios": 3,
+  "promptResponses": 6,
+  "responseDryRuns": 0,
+  "judges": 1,
+  "judgeAgent": "/root/baseline_behavior_judge",
+  "judgeSha256": "d9e28422bed3357c060f096fd5a2e8096267993baa94053c00e29b230e8365c6"
+}

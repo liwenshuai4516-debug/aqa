@@ -1,0 +1,11 @@
+{
+  "scope": "Parent independently validated the exact JSON in with-P3 response using the frozen validator. No native evidence or business execution.",
+  "responseSha256": "44f3a45cbe02a0cea410ce8de1ed7e1dc7e8d24a718d4d8a2604712a30b1aa23",
+  "result": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      "Consistency only: evidence bytes, independent review, live ownership and model adherence are not verified."
+    ]
+  }
+}

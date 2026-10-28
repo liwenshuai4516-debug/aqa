@@ -1,0 +1,58 @@
+{
+  "checkedAt": "2026-10-28T03:08:43.217Z",
+  "scope": "Baseline reports and archived prompt-response evidence only. Existing dirty runtime changes not included. No native business or Electron acceptance.",
+  "typecheck": [
+    {
+      "chunk_id": "71034e",
+      "wall_time_seconds": 1.002924541,
+      "session_id": 28208,
+      "original_token_count": 63,
+      "output": "\n> pi-web-ui@0.109.0 typecheck\n> tsc -p tsconfig.server.json --noEmit && tsc -p web/tsconfig.json --noEmit && tsc -p tsconfig.tests.json --noEmit && tsc -p desktop/tsconfig.json --noEmit && tsc -p plugins/page-picker/extension/tsconfig.json --noEmit\n\n"
+    },
+    {
+      "chunk_id": "8882a8",
+      "wall_time_seconds": 0.000006209,
+      "exit_code": 0,
+      "original_token_count": 0,
+      "output": ""
+    }
+  ],
+  "unit": [
+    {
+      "chunk_id": "9e3908",
+      "wall_time_seconds": 1.002143083,
+      "session_id": 53409,
+      "original_token_count": 14,
+      "output": "\n RUN  v5.0.1 /Users/liyingjun/Desktop/SW-QA/15-aqa\n\n"
+    },
+    {
+      "chunk_id": "17494d",
+      "wall_time_seconds": 0.000006875,
+      "exit_code": 0,
+      "original_token_count": 37,
+      "output": "\n Test Files  4 passed (4)\n      Tests  56 passed (56)\n   Start at  11:07:48\n   Duration  2.12s (transform 60%, import 29%, tests 10%, setup 1%)\n\n"
+    }
+  ],
+  "lint": {
+    "chunk_id": "61818e",
+    "wall_time_seconds": 0.103488917,
+    "exit_code": 0,
+    "original_token_count": 22,
+    "output": "\n> pi-web-ui@0.109.0 lint\n> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/\n\n"
+  },
+  "protocol": {
+    "chunk_id": "3b2814",
+    "wall_time_seconds": 0.049845208,
+    "exit_code": 0,
+    "original_token_count": 90,
+    "output": "\n> pi-web-ui@0.109.0 check:protocol\n> node scripts/check-protocol-sync.mjs\n\n✓ types.ts 是 protocol.ts 的 type-only re-export shim\n✓ protocol.ts 保持纯类型导出（无运行时代码）\n✓ 双端 PROTOCOL_VERSION 一致 (v33)\nfatal: No names found, cannot describe anything.\n· 跳过协议版本 git 启发式（无可用 tag 或浅检出环境）\n"
+  },
+  "cleanup": {
+    "chunk_id": "53c3e9",
+    "wall_time_seconds": 0.0000065,
+    "exit_code": 0,
+    "original_token_count": 220,
+    "output": "执行清理（请先结束使用这些目录的测试/构建进程）\n保留\t0.2 MiB\t.workbuddy/tmp · .cleanup-keep 保留标记\n可清理 0 项，共 0.0 MiB。\n实际删除 0 项，逻辑大小 0.0 MiB。\n\n> pi-web-ui@0.109.0 clean\n> node scripts/clean-project.mjs\n\n仅预览；未删除文件。执行前先结束相关测试/构建进程。\n保留\t68.9 MiB\ttests/scratch/api-testing-p1-1/runtime/node_modules · .cleanup-keep 保留标记\n保留\t65.4 MiB\ttests/scratch/api-testing-p0-1/runtime/node_modules · .cleanup-keep 保留标记\n保留\t65.3 MiB\ttests/scratch/api-testing-p0-1/reproduce/node_modules · .cleanup-keep 保留标记\n保留\t25.4 MiB\tnode_modules/.vite · 未满 7 天或近期有写入\n保留\t0.2 MiB\t.workbuddy/tmp · .cleanup-keep 保留标记\n保留\t0.0 MiB\tnode_modules/.vite-temp · 未满 7 天或近期有写入\n可清理 0 项，共 0.0 MiB。\n"
+  },
+  "integrity": "4 live source files and frozen copies match manifest; 6 raw responses match agent-records; all JSON parses; TSV has 9 columns; passed before save. Raw response/snapshot bytes deliberately not reformatted."
+}

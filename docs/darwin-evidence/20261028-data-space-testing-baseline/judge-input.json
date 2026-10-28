@@ -1,0 +1,26 @@
+{
+  "commonConditions": "六个全新上下文，原生工具不可用，无真实 ID/ref/schema/证据；回答无需真实执行业务，不得虚构。本测试仅比较实际回答行为，未测试原生运行。任务约束回答不超过1200汉字。A/B 身份未披露；不得从路径或其他资料寻找身份。",
+  "pairs": [
+    {
+      "id": "P1",
+      "prompt": "请为指定测试地址准备 UI 测试。initialize 返回两个候选环境；我选定 envId 后，同一环境返回 refresh-required。下一步怎么处理？",
+      "expected": "用真实候选 ID 消歧；已选环境不改选。授权环境准备内 data_space_env(action=refresh,project=systemId,env=envId)，成功后同目标重新 initialize，复核 preparation/parameterSources；缺能力、刷新失败或 not-ready 停止依赖操作。不 force、旧值、脱敏占位；configured 不等于身份网络就绪。",
+      "A": "先保留已选定的 envId，暂停依赖该环境的后续测试准备。仅凭 `refresh-required` 不能确定刷新入口、参数或重试规则，也不能把它当作环境已就绪。\n\n可确定的下一步：\n1. 查看该环境的完整原始返回，确认是否提供刷新指引、所需参数和有效引用。\n2. 按原生接口明确支持的方式刷新同一环境；刷新后核对仍是所选 envId，并依据新的状态和引用继续。不要自行改选另一个候选环境，也不要猜测刷新命令。\n3. 若刷新后仍返回 `refresh-required`，保留返回信息，按接口说明排查；没有明确规则时暂停，不无限重试。\n4. 环境恢复可用、目标测试地址确认一致后，再继续页面发现与 UI 用例准备。\n\n当前缺少所选 envId、`refresh-required` 完整返回、刷新接口说明和测试地址。请提供这些信息，以便确定具体操作。\n\n本轮未调用 initialize、刷新环境，也未准备或执行 UI 测试；当前没有可用原生工具或原生证据，不能声称操作已完成。\n",
+      "B": "下一步应刷新你已选定的环境，刷新后重新初始化并检查准备状态。\n\n1. 从真实候选回执取得所选 `envId` 及其所属 `systemId`，保持你的选择，不套用默认环境或切换目标。\n2. 在本次环境准备授权范围内调用 `data_space_env`：`action=refresh`、`project=所选 systemId`、`env=所选 envId`。\n3. 刷新成功后，对同一目标重新调用 `data_space_automation.initialize`，使用 `engine=ui`、当前 `mode` 及原测试地址与所选环境，复核新回执的 `preparation`、`parameterSources`。有效动态值优先于同名静态值，并检查有效期。\n4. 缺少刷新能力、刷新失败或 `preparation.parameters.state=not-ready` 时，停止后续录制、诊断和执行，报告阻塞；不自动 `force` 重试，不回退旧值，不使用脱敏占位执行。\n\n即使返回 `configured`，也只代表配置匹配；网络、身份、角色和数据仍待原生预检。进入 UI 录制前还须核对 Playwright 依赖、配置、project 与相对 seed，再由浏览器验证前置条件。\n\n本轮没有可调用的原生工具，也没有实际测试地址、所选 ID 或完整回执，因此当前阻塞于刷新能力和真实输入缺失。以上为可确定的处理顺序；刷新、重新初始化、预检、录制及执行均未进行，也没有生成用例或写入业务数据。\n"
+    },
+    {
+      "id": "P2",
+      "prompt": "本批 UI 用例已生成，明确同意录入已选测试环境所属项目的用例库。原生工具返回了 cases ref，尚未批准设计或执行。请处理入库。",
+      "expected": "已有整批入库授权不重复询问；UI cases ref 可入草稿，不需先设计批准。按真实 schema inspect 完整范围，以所选 envId 归属项目 import 真 assetRef；不扩大整份资产授权。核对 featureId/修订和逐项/截断回执及归类；不绑定、不批准、不执行。缺工具/真引用应明确阻塞。",
+      "A": "本批 UI 用例已明确获准录入所选测试环境所属项目，无需再次确认。UI 原生 cases ref 可以用于草稿入库，尚未批准设计或执行不阻止入库。\n\n目前入库受阻：本轮没有可调用的原生 `data_space_*` 工具，也未提供实际 cases ref、所选 `envId`、所属 `systemId` 或当前工具 schema。无法核对完整范围和目标归属，不能编造引用、ID 或声称已导入。\n\n能力与真实引用恢复后，下一步是：\n\n1. 核对当前 schema，用 `inspect` 读取 cases ref 的完整用例范围，确认整份资产均属于本批授权。`import` 处理整份资产；若范围不符或无法确认，停止并列出差异。\n2. 按所选 `envId` 确认所属项目及真实目录 ID，调用 `data_space_automation` 的 `import`，使用 `engine=ui` 和工具实际返回的 `assetRef`。未指定目录时按默认“测试用例 → UI用例”规则定位，已有目录复用；归属不明时停止。多功能映射只使用真实 ID，未明确映射的用例保留“待归类”。\n3. 核对导入回执中的 `imported`、`duplicate`、`errors`、`unmatched`，再以相同引用和环境查询 `archive-status`，保留完整计数、待入库项及归类状态；`ok=true` 或导入数为 0 均不能单独证明全部已入库。\n\n本轮未执行任何业务操作。整批用例的入库状态尚未核验，数量未知；没有可据以认定成功的回执。未绑定自动化资产、未执行测试、未生成或同步执行结果。后续绑定和执行仍须遵循各自门禁。\n",
+      "B": "已明确获得入库授权，可直接推进用例入库；设计审批和测试执行尚未获批，本次不启动这两项。\n\n下一步应使用原生工具返回的实际 cases ref，核实它对应本批 UI 用例及已选测试环境所属项目，再写入该项目的用例库，并依据原生回执核对入库结果。\n\n当前没有提供实际 cases ref、可核验的目标定位信息，也没有可调用的原生工具，因此尚未执行入库，无法确认成功、失败或入库数量。\n\n请补充实际 cases ref 和所选环境、项目的原生引用，并提供可用的原生工具。条件齐备后即可按现有授权继续，无需再次确认入库许可。\n"
+    },
+    {
+      "id": "P3",
+      "prompt": "只分析原生旧批次 runRef 的结果，暂不回写。同步查询显示 pending 和 stale，报告中有 failed、skipped 与 unknown，证据不完整。请整理结果。",
+      "expected": "只读原生证据，可按原 runRef 查询 sync-status；不 initialize/sync/import/bind/重跑。pending/stale 属同步缺口；failed/skipped/unknown 分别保留，未知数量不虚构，全分母待核验，缺证据不推根因。按 data-space-result/v1 交付，未知 null + gaps，无真用例不生造结果，writeback none/not-requested。结构校验不等于证据核验。",
+      "A": "目前只能形成阶段性结果，无法确认旧批次的完整结论。以下仅依据你提供的状态整理，尚未读取原生 runRef 或证据，未执行查询或回写。\n\n| 已知状态 | 当前可下结论 |\n| --- | --- |\n| 同步显示 pending | 同步尚有待处理状态；不能据此认定批次完成或数据已齐全。 |\n| 同步显示 stale | 结果可能尚未更新；具体含义及影响须由原生状态定义和时间信息确认。 |\n| 报告含 failed | 保留为报告中的失败项；缺少明细与证据，暂不能核验失败原因。 |\n| 报告含 skipped | 单独列为跳过，不能计为通过；跳过原因待补。 |\n| 报告含 unknown | 单独列为未知，不能归入通过或失败；须补充原始结果。 |\n| 证据不完整 | 失败归因、统计完整性和最终结论均待核验。 |\n\n当前不能计算通过率，也不能给出总数、各状态数量或“全部通过／全部失败”等结论。同步状态与测试结果应分别记录，不能把 pending、stale 直接换算为用例失败。\n\n下一步需提供实际 runRef 及其只读结果：批次状态和更新时间、用例清单与原始状态、各状态数量、跳过原因、错误信息及证据引用。再核对统计是否覆盖全部用例、证据是否对应本批次，并将有证据的结论与待确认项分别列出。\n\n本轮未执行：原生批次查询、证据读取、统计核验、重新执行测试及任何回写。\n",
+      "B": "当前只能形成待核验整理稿。题述的 failed 对应“失败”、skipped 对应“跳过”、unknown 对应“未知”，三者分别保留；pending、stale 属于同步对账缺口，不与测试结论混算。没有逐项数量与完整范围，暂不计算总数或通过率，也不推断失败根因。\n\n```json\n{\n  \"format\": \"data-space-result/v1\",\n  \"context\": {\n    \"workspace\": null,\n    \"project\": null,\n    \"environment\": null\n  },\n  \"origin\": null,\n  \"native\": null,\n  \"results\": [],\n  \"evidence\": [],\n  \"evidenceComplete\": null,\n  \"reportReview\": null,\n  \"writeback\": {\n    \"method\": \"none\",\n    \"status\": \"not-requested\",\n    \"receipt\": null\n  },\n  \"gaps\": [\n    {\n      \"case\": null,\n      \"reason\": \"未提供实际 engine/runRef、批次身份、工作区、项目、环境及用例关联版本，无法核验批次归属。\"\n    },\n    {\n      \"case\": null,\n      \"reason\": \"题述同步状态含 pending、stale；缺少真实逐项回执，作为对账缺口保留，不判为测试失败。\"\n    },\n    {\n      \"case\": null,\n      \"reason\": \"题述报告含 failed、skipped、unknown；缺少逐项用例、原生结果和数量，不能生成执行记录或统计。\"\n    },\n    {\n      \"case\": null,\n      \"reason\": \"题述证据不完整；未提供证据引用、摘要、原生完整性核验值及独立报告评审。\"\n    }\n  ]\n}\n```\n\n下一步需取得实际 engine/runRef、原生报告与证据索引，并核对批次归属、用例版本及全部八态分母；工具可用后仅按原引用读取原生证据、查询 sync-status。同步 complete 不能证明证据完整；若发现声明通过但缺证据，沿用宿主投影，不自行判通过。\n\n本次未调用原生工具，未执行初始化、补同步、入库、绑定、回写或重跑。上方 JSON 已通过离线结构一致性校验；该检查不证明证据真实或报告获批。"
+    }
+  ]
+}
