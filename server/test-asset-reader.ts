@@ -1,6 +1,15 @@
 /** Read-only adapters to native UI/API artifacts. Never approves or executes tests. */
 import { createHash } from "node:crypto";
-import { readFileSync, realpathSync, statSync, readdirSync, existsSync } from "node:fs";
+import {
+	readFileSync,
+	realpathSync,
+	statSync,
+	readdirSync,
+	existsSync,
+	lstatSync,
+	mkdirSync,
+	writeFileSync,
+} from "node:fs";
 import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 export type TestEngine = "ui" | "api";
@@ -75,8 +84,90 @@ async function uiRuntime(): Promise<any> {
 	const name = "pi-ui-testing";
 	return import(name);
 }
+export function trustedUiEvidenceAuthority(
+	workspace: string,
+	active: { cwd?: string; sessionDir?: string } | null,
+): string | undefined {
+	if (!active?.cwd || !active.sessionDir) return undefined;
+	try {
+		if (realpathSync(active.cwd) !== realpathSync(workspace)) return undefined;
+		return join(active.sessionDir, "ui-review-authority");
+	} catch {
+		return undefined;
+	}
+}
 export class TestAssetReader {
-	constructor(private readonly dataDir: string) {}
+	constructor(
+		private readonly dataDir: string,
+		private readonly authorityForWorkspace?: (workspace: string) => string | undefined,
+	) {}
+	private registryDirectory(create = false): string {
+		const root = join(realpathSync(this.dataDir), "ui-evidence-authorities");
+		if (create) mkdirSync(root, { mode: 0o700, recursive: true });
+		const stat = lstatSync(root);
+		if (
+			!stat.isDirectory() ||
+			stat.isSymbolicLink() ||
+			stat.mode & 0o077 ||
+			(process.getuid && stat.uid !== process.getuid())
+		)
+			throw new Error("Private evidence registry is not secure");
+		return root;
+	}
+	private registeredAuthority(workspace: string, ref: TestFileRef): string | undefined {
+		try {
+			const dir = this.registryDirectory(),
+				path = join(dir, `${hash(JSON.stringify([workspace, ref]))}.json`);
+			const stat = lstatSync(path);
+			if (
+				!stat.isFile() ||
+				stat.isSymbolicLink() ||
+				stat.mode & 0o077 ||
+				(process.getuid && stat.uid !== process.getuid())
+			)
+				return undefined;
+			const record = JSON.parse(readFileSync(path, "utf8"));
+			if (
+				record.version !== 1 ||
+				record.workspace !== workspace ||
+				JSON.stringify(record.runRef) !== JSON.stringify(ref) ||
+				typeof record.authority !== "string" ||
+				!isAbsolute(record.authority)
+			)
+				return undefined;
+			return record.authority;
+		} catch {
+			return undefined;
+		}
+	}
+	async registerEvidence(workspace: string, reference: unknown): Promise<{ ok: true; registered: boolean }> {
+		workspace = realpathSync(workspace);
+		const ref = fileRef(reference, "qa/ui/runs/"),
+			authority = this.authorityForWorkspace?.(workspace);
+		if (!authority) throw new Error("Original session is required to register private evidence");
+		const { reconcileRun } = await uiRuntime();
+		const checked = await reconcileRun(workspace, ref, authority);
+		if (
+			!checked.details.complete ||
+			!checked.data.instances.some((i: any) => i.evidence_visibility?.private_trace_integrity === "verified") ||
+			checked.data.instances.some(
+				(i: any) => i.evidence_visibility && i.evidence_visibility.private_trace_integrity !== "verified",
+			)
+		)
+			throw new Error("Private evidence is not completely verified for this run");
+		const canonical = realpathSync(authority),
+			dir = this.registryDirectory(true);
+		const path = join(dir, `${hash(JSON.stringify([workspace, ref]))}.json`);
+		const record = { version: 1, workspace, runRef: ref, authority: canonical };
+		try {
+			writeFileSync(path, JSON.stringify(record), { mode: 0o600, flag: "wx" });
+		} catch (error: any) {
+			if (error.code !== "EEXIST" || this.registeredAuthority(workspace, ref) !== canonical)
+				throw new Error("Private evidence registration failed");
+			return { ok: true, registered: false };
+		}
+		return { ok: true, registered: true };
+	}
 	private apiRoot(workspace: string): string {
 		return join(this.dataDir, "api-testing/assets", hash(workspace));
 	}
@@ -209,7 +300,11 @@ export class TestAssetReader {
 			if (run.kind !== "run") throw new Error("Expected native UI run");
 			const asset = await this.inspect(engine, workspace, run.data.asset_ref);
 			if (asset.executable === false) throw new Error("Native UI run cannot reference a draft");
-			const reconciled = await reconcileRun(workspace, ref);
+			const authority = this.authorityForWorkspace?.(workspace);
+			let reconciled = await reconcileRun(workspace, ref, authority);
+			const registered = this.registeredAuthority(workspace, ref);
+			if (!reconciled.details.complete && registered && registered !== authority)
+				reconciled = await reconcileRun(workspace, ref, registered);
 			return {
 				engine,
 				workspace,

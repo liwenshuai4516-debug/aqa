@@ -21,20 +21,21 @@
 			"case_id": "8a291a73-68fa-43a3-8b53-c047286ffc20",
 			"native_status": "passed",
 			"sync_status": "existing",
-			"data_space_verdict": "未知",
-			"result_id": "72e51f23-10bd-47f1-969f-a8978867ac1a"
+			"data_space_verdict": "通过",
+			"original_result_id": "72e51f23-10bd-47f1-969f-a8978867ac1a",
+			"result_id": "c2cdf932-8c84-486d-b459-fb1a72b6fd6f"
 		},
 		{
 			"native_case_id": "C-reset",
 			"case_id": "626b1a73-f081-4047-bc03-c1b3ced9c7bd",
 			"native_status": "passed",
 			"sync_status": "existing",
-			"data_space_verdict": "未知",
-			"result_id": "e69dd4d9-40d4-4c0d-9ab7-f5f20c0fe275"
+			"data_space_verdict": "通过",
+			"original_result_id": "e69dd4d9-40d4-4c0d-9ab7-f5f20c0fe275",
+			"result_id": "a81ca5cc-1a09-4c18-b7bd-35aa54e5c8ff"
 		}
 	],
 	"gaps": [
-		"Data Space cannot access the original session's private seal through its current native reader; do not overwrite existing results or manufacture authority.",
-		"The original native workspace and private authority remain in an OS temporary directory; durable native retention is unverified."
+		"The original native workspace and private authority remain in an OS temporary directory; a verified private backup exists, but durable native retention and real restoration are unverified."
 	]
 }

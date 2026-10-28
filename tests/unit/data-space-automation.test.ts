@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { mkdtempSync, realpathSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -87,6 +87,17 @@ it("keeps API environment matching exact when a UI page can be nested", async ()
 	expect(f.store().cases[0].automation).toBeUndefined();
 	f.a.dispose();
 });
+it("registers evidence only through the UI host capability and treats it as a write", async () => {
+	const f = fixture();
+	await expect(f.a.call(f.cwd, { action: "register-evidence", engine: "api", runRef: "r" })).rejects.toThrow();
+	await expect(f.a.call(f.cwd, { action: "register-evidence", engine: "ui", runRef: "r" })).rejects.toThrow();
+	const registerEvidence = vi.fn(async () => ({ ok: true, registered: true }));
+	Object.assign(f.host.testing, { registerEvidence });
+	await f.a.call(f.cwd, { action: "register-evidence", engine: "ui", runRef: "r", authority: "/untrusted" });
+	expect(registerEvidence).toHaveBeenCalledWith(f.cwd, "r");
+	expect(extensionToolEffect("data_space_automation", { action: "register-evidence" })).toBe("asset-write");
+	f.a.dispose();
+});
 it("queries pending native results without writing, then reconciles concurrent sync receipts", async () => {
 	const f = fixture();
 	await f.a.idle();
@@ -111,6 +122,105 @@ it("queries pending native results without writing, then reconciles concurrent s
 		items: [{ caseId: "c", nativeCaseId: "native", envId: "e", projectId: "s", featureId: "f", verdict: "通过" }],
 	});
 	expect(f.runs().runs).toHaveLength(1);
+	f.a.dispose();
+});
+it("appends an explicit, evidence-backed correction without changing the original result", async () => {
+	const f = fixture();
+	await f.a.idle();
+	f.store().cases[0].type = "UI";
+	f.native.engine = "ui";
+	f.native.evidence = ["r"];
+	f.host.testing.inspect = async () => ({
+		engine: "ui",
+		workspace: f.cwd,
+		assetRef: "asset",
+		revision: "version",
+		cases: [{ id: "native" }],
+		environment: f.native.environment,
+	});
+	await f.a.call(f.cwd, {
+		action: "bind",
+		caseId: "c",
+		engine: "ui",
+		assetRef: "asset",
+		nativeCaseId: "native",
+		envId: "e",
+	});
+	f.native.rows[0].evidenceComplete = false;
+	await f.a.sync(f.cwd, "ui", "r");
+	const original = structuredClone(f.runs().runs[0]);
+	expect(original.verdict).toBe("未知");
+	f.native.rows[0].evidenceComplete = true;
+	const requested = {
+		action: "reconcile",
+		engine: "ui",
+		runRef: "r",
+		expectedResults: [{ caseId: "c", resultId: original.id }],
+	};
+	expect(await f.a.call(f.cwd, { action: "sync-status", engine: "ui", runRef: "r" })).toMatchObject({
+		complete: false,
+		counts: { stale: 1 },
+	});
+	await f.a.call(f.cwd, requested);
+	expect(f.runs().runs).toHaveLength(2);
+	expect(f.runs().runs[0]).toEqual(original);
+	expect(f.runs().runs[1]).toMatchObject({ verdict: "通过", automation: { supersedes: original.id } });
+	await f.a.call(f.cwd, requested);
+	expect(f.runs().runs).toHaveLength(2);
+	f.native.rows[0].evidenceComplete = false;
+	expect(await f.a.call(f.cwd, { action: "sync-status", engine: "ui", runRef: "r" })).toMatchObject({
+		complete: false,
+		counts: { stale: 1 },
+	});
+	await expect(f.a.call(f.cwd, requested)).rejects.toThrow();
+	expect(f.runs().runs).toHaveLength(2);
+	f.a.dispose();
+});
+it("rejects correction without matching evidence, exact original IDs and the full association set", async () => {
+	const f = fixture();
+	await f.a.idle();
+	f.store().cases[0].type = "UI";
+	f.native.engine = "ui";
+	f.native.evidence = ["r"];
+	f.host.testing.inspect = async () => ({
+		engine: "ui",
+		workspace: f.cwd,
+		assetRef: "asset",
+		revision: "version",
+		cases: [{ id: "native" }],
+		environment: f.native.environment,
+	});
+	await f.a.call(f.cwd, {
+		action: "bind",
+		caseId: "c",
+		engine: "ui",
+		assetRef: "asset",
+		nativeCaseId: "native",
+		envId: "e",
+	});
+	f.store().cases.push({ ...structuredClone(f.store().cases[0]), id: "other" });
+	f.native.rows[0].evidenceComplete = false;
+	await f.a.sync(f.cwd, "ui", "r");
+	const original = structuredClone(f.runs().runs);
+	const expectedResults = original.map((r: any) => ({ caseId: r.caseId, resultId: r.id }));
+	await expect(f.a.call(f.cwd, { action: "reconcile", engine: "ui", runRef: "r", expectedResults })).rejects.toThrow();
+	f.native.rows[0].evidenceComplete = true;
+	await expect(
+		f.a.call(f.cwd, { action: "reconcile", engine: "ui", runRef: "r", expectedResults: expectedResults.slice(0, 1) }),
+	).rejects.toThrow();
+	await expect(
+		f.a.call(f.cwd, {
+			action: "reconcile",
+			engine: "ui",
+			runRef: "r",
+			expectedResults: expectedResults.map((v: any) => ({ ...v, resultId: "wrong" })),
+		}),
+	).rejects.toThrow();
+	f.native.evidence = ["different"];
+	await expect(
+		f.a.call(f.cwd, { action: "reconcile", engine: "ui", runRef: "different", expectedResults }),
+	).rejects.toThrow();
+	expect(f.runs().runs).toEqual(original);
 	f.a.dispose();
 });
 it("reports unbound native cases and stale associations without treating zero imports as complete", async () => {

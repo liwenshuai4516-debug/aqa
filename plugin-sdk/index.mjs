@@ -298,6 +298,9 @@ export function createMockHost(overrides) {
 		chat: async () => okFalse("chatProvider（无头调用未接入）"),
 		chatWait: async () => ({ ok: false, error: "mock：未注入 chatProvider（不等 run_end）" }),
 		testing: {
+			registerEvidence: async () => {
+				throw new Error("No native test evidence configured in mock");
+			},
 			inspect: async (...args) => {
 				throw new Error("No native test asset configured in mock");
 			},

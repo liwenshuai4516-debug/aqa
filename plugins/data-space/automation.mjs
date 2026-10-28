@@ -62,7 +62,24 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns, p
 		serial = next.catch(() => {});
 		return next;
 	}
-	async function syncNative(cwd, engine, reference, queryOnly = false) {
+	function reconcile(cwd, input) {
+		if (
+			input.engine !== "ui" ||
+			!Array.isArray(input.expectedResults) ||
+			!input.expectedResults.length ||
+			input.expectedResults.length > 100 ||
+			input.expectedResults.some(
+				(item) =>
+					typeof item?.caseId !== "string" || !item.caseId || typeof item?.resultId !== "string" || !item.resultId,
+			) ||
+			new Set(input.expectedResults.map((item) => item.caseId)).size !== input.expectedResults.length
+		)
+			throw new Error("更正须提供 UI 批次及每条用例的原结果 ID");
+		const next = serial.then(() => syncNative(cwd, input.engine, input.runRef, false, input.expectedResults));
+		serial = next.catch(() => {});
+		return next;
+	}
+	async function syncNative(cwd, engine, reference, queryOnly = false, expectedResults = undefined) {
 		const workspace = realpathSync(cwd);
 		const native = await host.testing.read(engine, workspace, reference);
 		if (disposed) throw new Error("数据空间已停用");
@@ -121,22 +138,61 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns, p
 				continue;
 			}
 			const key = JSON.stringify([engine, workspace, native.runId, c.id]);
-			const existing = runs().runs.find((r) => r.automation?.key === key);
-			if (existing) {
-				item.status = "existing";
-				item.resultId = existing.id;
-				item.verdict = existing.verdict;
-				duplicate++;
-				continue;
-			}
 			const states = rows.map((r) => (r.status === "passed" && !r.evidenceComplete ? "unknown" : r.status));
 			const status =
 				["failed", "unknown", "cancelled", "not-run", "blocked", "skipped", "flaky", "passed"].find((s) =>
 					states.includes(s),
 				) ?? "unknown";
-			item.verdict = normalizeVerdict(status);
+			const verdict = normalizeVerdict(status);
+			const existing = runs().runs.findLast((r) => r.automation?.key === key);
+			if (existing) {
+				const expected = expectedResults?.find((entry) => entry.caseId === c.id);
+				if (expectedResults && !expected) {
+					item.status = "stale";
+					item.reason = "更正范围未包含该用例";
+					continue;
+				}
+				if (expectedResults && existing.automation?.supersedes === expected?.resultId && existing.verdict === verdict) {
+					item.status = "existing";
+					item.resultId = existing.id;
+					item.verdict = existing.verdict;
+					duplicate++;
+					continue;
+				}
+				if (existing.verdict !== verdict) {
+					item.status = "stale";
+					item.resultId = existing.id;
+					item.verdict = existing.verdict;
+					item.reason = "原生证据状态已改变；原记录保留，须显式核对更正";
+					if (
+						!expectedResults ||
+						existing.verdict !== "未知" ||
+						verdict !== "通过" ||
+						expected?.resultId !== existing.id ||
+						!existing.automation?.evidence?.some((ref) => same(ref, reference))
+					)
+						continue;
+				} else {
+					if (expectedResults) {
+						item.status = "stale";
+						item.reason = "原记录与指定更正不匹配";
+						continue;
+					}
+					item.status = "existing";
+					item.resultId = existing.id;
+					item.verdict = existing.verdict;
+					duplicate++;
+					continue;
+				}
+			} else if (expectedResults) {
+				item.status = "stale";
+				item.reason = "未找到指定的原结果";
+				continue;
+			}
+			item.verdict = verdict;
 			if (queryOnly) continue;
 			item.status = "new";
+			item.reason = null;
 			item.resultId = randomUUID();
 			pending.push({
 				id: item.resultId,
@@ -161,11 +217,12 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns, p
 					revision: b.revision,
 					nativeCaseId: b.nativeCaseId,
 					caseVersion: b.caseVersion,
-					environment: native.environment,
-					instances: rows,
-					evidence: native.evidence,
+					environment: structuredClone(native.environment),
+					instances: structuredClone(rows),
+					evidence: structuredClone(native.evidence),
 					complete: native.complete,
 					review: native.review,
+					...(expectedResults && existing ? { supersedes: existing.id } : {}),
 				},
 			});
 		}
@@ -173,6 +230,11 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns, p
 			if (!matched.has(nativeCaseId))
 				items.push({ nativeCaseId, caseId: null, status: "unmatched", reason: "本批次用例没有当前工作区内的资产绑定" });
 		}
+		if (
+			expectedResults &&
+			(items.length !== expectedResults.length || items.some((item) => !["new", "existing"].includes(item.status)))
+		)
+			throw new Error("更正范围或原生证据不一致；未写入任何结果");
 		if (pending.length) commitRuns({ ...runs(), revision: runs().revision + 1, runs: [...runs().runs, ...pending] });
 		if (!queryOnly) syncError = errors.join("；");
 		const counts = { new: 0, existing: 0, pending: 0, unmatched: 0, stale: 0, failed: 0 };
@@ -229,7 +291,12 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns, p
 			});
 		}
 		if (input.action === "bind") return bind(cwd, input);
+		if (input.action === "register-evidence") {
+			if (input.engine !== "ui" || !host.testing.registerEvidence) throw new Error("当前宿主缺少 UI 私密证据登记能力");
+			return host.testing.registerEvidence(cwd, input.runRef);
+		}
 		if (input.action === "sync") return sync(cwd, input.engine, input.runRef);
+		if (input.action === "reconcile") return reconcile(cwd, input);
 		if (input.action === "sync-status") return syncNative(cwd, input.engine, input.runRef, true);
 		if (input.action === "inspect") {
 			const asset = await host.testing.inspect(input.engine, cwd, input.assetRef);

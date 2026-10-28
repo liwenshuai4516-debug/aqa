@@ -1,7 +1,7 @@
 /** U02 privacy regression against the native diagnostic capture; synthetic cookie or JSON storage only. */
 import assert from "node:assert/strict";
 import { randomBytes } from "node:crypto";
-import { chmod, mkdir, mkdtemp, readdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
+import { chmod, cp, mkdir, mkdtemp, readdir, readFile, realpath, rename, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import yauzl from "yauzl";
@@ -290,6 +290,61 @@ try {
 		private_trace_integrity: "verified",
 	});
 	assert.ok(verifiedResults.details.limitations.some((text) => text.includes("不表示已查看画面")));
+	let privateReader, registeredReader;
+	if (process.argv.includes("--reader")) {
+		const { TestAssetReader } = await import("../server/test-asset-reader.ts");
+		const untrusted = new TestAssetReader(privateDir);
+		const realWorkspace = await realpath(d.f.root);
+		privateReader = new TestAssetReader(privateDir, (workspace) =>
+			workspace === realWorkspace ? d.f.authority : undefined,
+		);
+		const withoutAuthority = await untrusted.read("ui", d.f.root, passed.run_ref);
+		const withAuthority = await privateReader.read("ui", d.f.root, passed.run_ref);
+		assert.equal(withoutAuthority.rows[0].evidenceComplete, false);
+		assert.equal(withAuthority.rows[0].evidenceComplete, true);
+		assert.equal(withAuthority.rows[0].status, "passed");
+		assert.equal(JSON.stringify(withAuthority).includes(d.f.authority), false);
+		await assert.rejects(() => untrusted.registerEvidence(d.f.root, passed.run_ref), /Original session/);
+		assert.deepEqual(await privateReader.registerEvidence(d.f.root, passed.run_ref), { ok: true, registered: true });
+		assert.deepEqual(await privateReader.registerEvidence(d.f.root, passed.run_ref), { ok: true, registered: false });
+		registeredReader = untrusted;
+		const crossSession = await registeredReader.read("ui", d.f.root, passed.run_ref);
+		assert.equal(crossSession.rows[0].evidenceComplete, true);
+		assert.equal(JSON.stringify(crossSession).includes(d.f.authority), false);
+		const registry = join(privateDir, "ui-evidence-authorities");
+		await chmod(registry, 0o755);
+		try {
+			assert.equal((await registeredReader.read("ui", d.f.root, passed.run_ref)).rows[0].evidenceComplete, false);
+		} finally {
+			await chmod(registry, 0o700);
+		}
+		result.checks.push("Host reader uses only its trusted workspace authority and does not expose private paths");
+	}
+	if (process.argv.includes("--restore-proof")) {
+		const qa = join(d.f.root, "qa"),
+			savedQa = join(d.f.root, "qa-original");
+		const savedAuthority = d.f.authority + "-original",
+			backup = join(privateDir, "restore-proof");
+		await mkdir(backup, { mode: 0o700 });
+		await cp(qa, join(backup, "qa"), { recursive: true });
+		await cp(d.f.authority, join(backup, "authority"), { recursive: true });
+		await rename(qa, savedQa);
+		await rename(d.f.authority, savedAuthority);
+		try {
+			await cp(join(backup, "qa"), qa, { recursive: true });
+			await cp(join(backup, "authority"), d.f.authority, { recursive: true });
+			const restored = await collectResults(d.f.root, passed.run_ref, "restored-original-results", d.f.authority);
+			assert.equal(restored.details.complete, true);
+			assert.equal(restored.data.counts.passed, 1);
+			assert.equal(restored.data.instances[0].evidence_visibility.private_trace_integrity, "verified");
+		} finally {
+			await rm(qa, { recursive: true, force: true });
+			await rm(d.f.authority, { recursive: true, force: true });
+			await rename(savedQa, qa);
+			await rename(savedAuthority, d.f.authority);
+		}
+		result.checks.push("Synthetic backup restored only to original paths and passed native ownership verification");
+	}
 	const privacyRef = passed.run.data.output_refs.find((ref) => ref.path.endsWith("/privacy.json"));
 	const privacy = JSON.parse(await readFile(join(d.f.root, privacyRef.path), "utf8"));
 	const audit = join(d.f.authority, "private-evidence", privacy.private_capture_id, "audit.json");
@@ -307,6 +362,10 @@ try {
 		const wrongOwner = await collectResults(d.f.root, passed.run_ref, "private-wrong-owner", d.f.authority);
 		assert.equal(wrongOwner.details.complete, false, "A seal belonging to another run must be rejected");
 		assert.equal(wrongOwner.data.counts.passed, 1);
+		if (privateReader)
+			assert.equal((await privateReader.read("ui", d.f.root, passed.run_ref)).rows[0].evidenceComplete, false);
+		if (registeredReader)
+			assert.equal((await registeredReader.read("ui", d.f.root, passed.run_ref)).rows[0].evidenceComplete, false);
 	} finally {
 		await writeFile(audit, auditBytes);
 	}
@@ -314,6 +373,10 @@ try {
 	try {
 		const loosePermissions = await collectResults(d.f.root, passed.run_ref, "private-loose-permissions", d.f.authority);
 		assert.equal(loosePermissions.details.complete, false, "A private trace with loose permissions must be rejected");
+		if (privateReader)
+			assert.equal((await privateReader.read("ui", d.f.root, passed.run_ref)).rows[0].evidenceComplete, false);
+		if (registeredReader)
+			assert.equal((await registeredReader.read("ui", d.f.root, passed.run_ref)).rows[0].evidenceComplete, false);
 	} finally {
 		await chmod(privateTrace, 0o600);
 	}
@@ -322,6 +385,10 @@ try {
 		const legacyResults = await collectResults(d.f.root, passed.run_ref, "private-unsealed-results", d.f.authority);
 		assert.equal(legacyResults.details.complete, false, "Missing private seal must retain the evidence gap");
 		assert.equal(legacyResults.data.counts.passed, 1);
+		if (privateReader)
+			assert.equal((await privateReader.read("ui", d.f.root, passed.run_ref)).rows[0].evidenceComplete, false);
+		if (registeredReader)
+			assert.equal((await registeredReader.read("ui", d.f.root, passed.run_ref)).rows[0].evidenceComplete, false);
 	} finally {
 		await rename(audit + ".saved", audit);
 	}

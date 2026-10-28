@@ -1,4 +1,4 @@
-import { TestAssetReader, type TestEngine } from "./test-asset-reader.js";
+import { TestAssetReader, trustedUiEvidenceAuthority, type TestEngine } from "./test-asset-reader.js";
 /**
  * pi-web-ui 插件管理器 —— 可选界面组件的加载与桥接。
  *
@@ -188,6 +188,8 @@ export interface PluginConversationSnapshot {
 	sessionFile?: string;
 	/** 会话所属物理目录（即 <agentDir>/sessions/<encodedCwd>）。 */
 	sessionDir?: string;
+	/** 宿主持有的该会话工作区，用于核对私有证据归属。 */
+	cwd?: string;
 	title: string;
 	/** 当前对话选中模型的 canonical id（如 "openai-codex/gpt-5"；未选/无为 undefined）。 */
 	model?: string;
@@ -376,7 +378,7 @@ export function isPluginLogsRequest(p: unknown): p is PluginLogsWireUp {
 /** 插件服务端入口拿到的宿主接口。 */
 export interface PluginHost {
 	/** Read-only native test adapters. No runner execution or approval bypass. */
-	testing: Pick<TestAssetReader, "inspect" | "read" | "list">;
+	testing: Pick<TestAssetReader, "inspect" | "read" | "list" | "registerEvidence">;
 	/** 向所有已连接的浏览器广播一条本插件的消息（plugin_data）。 */
 	broadcast(payload: unknown): void;
 	/** 发一条系统通知条（notice）给所有已连接的浏览器。 */
@@ -3835,6 +3837,12 @@ export class PluginManager {
 				return () => modelChangeHandlers.delete(h);
 			},
 			testing: {
+				registerEvidence: (cwd, ref) => {
+					if (!can("tools")) throw new Error("Testing tools permission denied");
+					return new TestAssetReader(self.dataDir, (workspace) =>
+						trustedUiEvidenceAuthority(workspace, self.getActiveConversation()),
+					).registerEvidence(cwd, ref);
+				},
 				list: (engine, cwd) => {
 					if (!can("tools")) throw new Error("Testing tools permission denied");
 					return new TestAssetReader(self.dataDir).list(engine, cwd);
@@ -3845,7 +3853,9 @@ export class PluginManager {
 				},
 				read: (engine, cwd, ref) => {
 					if (!can("tools")) throw new Error("Testing tools permission denied");
-					return new TestAssetReader(self.dataDir).read(engine, cwd, ref);
+					return new TestAssetReader(self.dataDir, (workspace) =>
+						trustedUiEvidenceAuthority(workspace, self.getActiveConversation()),
+					).read(engine, cwd, ref);
 				},
 			},
 			getActiveConversation: (opts) => self.getActiveConversation(opts),

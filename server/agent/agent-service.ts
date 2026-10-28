@@ -4046,6 +4046,7 @@ export class ClientSession {
 				sessionId: target.session.sessionId,
 				sessionFile: target.session.sessionFile,
 				sessionDir: target.session.sessionManager?.getSessionDir?.(),
+				cwd: target.cwd,
 				title: target.title,
 				model: modelId,
 				at: target.lastActiveAt,

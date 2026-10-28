@@ -255,8 +255,9 @@ export interface PluginHost {
 	/** 注册通用反向代理前缀（子路径去前缀透传到 127.0.0.1:port；要 "http" 能力；返回注销函数）。 */
 	registerProxy(prefix: string, target: number | { port: number; host?: string }): () => void;
 	ui: PluginHostUi;
-	/** Read-only native test evidence. Requires tools permission; never executes or approves. */
+	/** Native test evidence. Requires tools permission; never executes or approves. */
 	testing: {
+		registerEvidence(workspace: string, reference: unknown): Promise<{ ok: true; registered: boolean }>;
 		inspect(engine: "ui" | "api", workspace: string, reference: unknown): Promise<unknown>;
 		read(engine: "ui" | "api", workspace: string, reference: unknown): Promise<unknown>;
 		list(engine: "ui" | "api", workspace: string): Promise<unknown[]>;
