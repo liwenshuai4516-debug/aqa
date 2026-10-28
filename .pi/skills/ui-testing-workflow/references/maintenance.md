@@ -5,7 +5,7 @@
 | 维护内容                                | 唯一位置                                                                                                        |
 | --------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | 技能名称、描述、调度入口                | `../SKILL.md`                                                                                                   |
-| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.28.tgz`                                                                            |
+| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.29.tgz`                                                                            |
 | 原生测试 MCP 适配                       | `../assets/mcp-extension.mjs`                                                                                   |
 | 产品私密连接、采集消费与发布            | `../assets/private-recording-connection.mjs`（显式受管协议；原生过滤复用、私有原文及writer独占发布）            |
 | 私密动作的SDK调用归属                   | `../assets/private-recording-actions.mjs`（真实父子ID、单次授权与固定helper；不绕过宿主门禁）                   |
@@ -20,7 +20,8 @@
 | 管理页与快捷发现的公共逻辑              | `server/skill/`、`server/settings-service.ts`、`server/slash-commands.ts`                                       |
 | 测试资产与执行证据                      | 被测工作区 `qa/ui/`，不写进技能目录                                                                             |
 
-原版包来源提交：`744596a`（上游本地提交；未推送上游远端）。
+原版包来源提交：`036d133`（维护仓库本地分支 `codex/ui-evidence-retention`；未推送上游远端）。
+0.1.29 SHA-256：`90dc5a8ef05b9b3091b8af537e11429be25ac3aadc251aa0beae0f3883f3b77f`。仅在显式归档读取时按原工作区映射原报告的附件和脚本路径；原始 run、来源、逐 attempt 归属及证据摘要仍须核验。映射不授予设计或执行批准。
 0.1.28 SHA-256：`bd64c25fa7dac57d35c4d9686fe630569d641240a6c9ea12bdea39189b61a1f9`。认证执行逐实例区分公开媒体隐藏与私有 trace 归属、权限和摘要核验；校验不表示查看过画面，缺封存或未公开截图仍阻断完整证据。旧认证结果须以原 run 重新解析为新报告修订，原记录不覆盖；旧会话需 `/reload`。
 SHA-256：`df698d90fb9200e7f7b6e66d9e1bb3b54516c8eee81eef80ec5baaafa89cba60`。0.1.27 只替换五个阶段技能的 `SKILL.md`（`ui-discover-record`/`ui-case-design`/`ui-design-review`/`ui-test-run`/`ui-result-analysis`，经 darwin 九维评审优化），`dist`、其余三个技能与 104 个安装文件路径逐文件与 0.1.26 一致；不改产物 schema、冻结与门禁规则，旧批次结论不变，旧会话需 `/reload`。0.1.26 修正同批次 `native.json` 与 `report.json` 的引用核验、私有 trace 文件权限，以及未公开截图的完整性判断。已封存 trace 可参与完整性判断；缺封存、错误归属、权限不符或未公开截图仍保留缺口。0.1.25 之前的历史批次不会自动获得封存，私有原文和路径不进入工作区、报告或模型输入。
 

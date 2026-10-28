@@ -257,6 +257,13 @@ export interface PluginHost {
 	ui: PluginHostUi;
 	/** Native test evidence. Requires tools permission; never executes or approves. */
 	testing: {
+		registerEvidenceArchive(
+			workspace: string,
+			reference: unknown,
+			backup: string,
+			manifestSha256: string,
+		): Promise<{ ok: true; registered: boolean }>;
+		readEvidenceArchive(workspace: string, reference: unknown): Promise<unknown>;
 		registerEvidence(workspace: string, reference: unknown): Promise<{ ok: true; registered: boolean }>;
 		inspect(engine: "ui" | "api", workspace: string, reference: unknown): Promise<unknown>;
 		read(engine: "ui" | "api", workspace: string, reference: unknown): Promise<unknown>;

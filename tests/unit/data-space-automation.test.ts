@@ -34,7 +34,7 @@ function fixture() {
 	const host = {
 		testing: {
 			inspect: async () => ({
-				engine: "api",
+				engine: native.engine,
 				workspace: cwd,
 				assetRef: "asset",
 				revision: "version",
@@ -96,6 +96,36 @@ it("registers evidence only through the UI host capability and treats it as a wr
 	await f.a.call(f.cwd, { action: "register-evidence", engine: "ui", runRef: "r", authority: "/untrusted" });
 	expect(registerEvidence).toHaveBeenCalledWith(f.cwd, "r");
 	expect(extensionToolEffect("data_space_automation", { action: "register-evidence" })).toBe("asset-write");
+	f.a.dispose();
+});
+it("queries an archived run by its original association without writing results", async () => {
+	const f = fixture();
+	await f.a.idle();
+	f.native.engine = "ui";
+	f.store().cases[0].type = "UI";
+	await f.a.call(f.cwd, {
+		action: "bind",
+		caseId: "c",
+		engine: "ui",
+		assetRef: "asset",
+		nativeCaseId: "native",
+		envId: "e",
+	});
+	await f.a.call(f.cwd, { action: "sync", engine: "ui", runRef: "r" });
+	const before = JSON.stringify(f.runs());
+	const readEvidenceArchive = vi.fn(async () => f.native);
+	Object.assign(f.host.testing, { readEvidenceArchive });
+	const result = await f.a.call("/different-current-workspace", {
+		action: "archived-sync-status",
+		engine: "ui",
+		caseId: "c",
+		runRef: "r",
+	});
+	expect(result.complete).toBe(true);
+	expect(readEvidenceArchive).toHaveBeenCalledWith(f.cwd, "r");
+	expect(JSON.stringify(f.runs())).toBe(before);
+	expect(extensionToolEffect("data_space_automation", { action: "archived-sync-status" })).toBe("query");
+	expect(extensionToolEffect("data_space_automation", { action: "register-evidence-archive" })).toBe("asset-write");
 	f.a.dispose();
 });
 it("queries pending native results without writing, then reconciles concurrent sync receipts", async () => {

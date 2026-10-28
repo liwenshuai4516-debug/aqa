@@ -79,9 +79,11 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns, p
 		serial = next.catch(() => {});
 		return next;
 	}
-	async function syncNative(cwd, engine, reference, queryOnly = false, expectedResults = undefined) {
-		const workspace = realpathSync(cwd);
-		const native = await host.testing.read(engine, workspace, reference);
+	async function syncNative(cwd, engine, reference, queryOnly = false, expectedResults = undefined, archived = false) {
+		const workspace = archived ? cwd : realpathSync(cwd);
+		const native = archived
+			? await host.testing.readEvidenceArchive(workspace, reference)
+			: await host.testing.read(engine, workspace, reference);
 		if (disposed) throw new Error("数据空间已停用");
 		const candidates = store().cases.filter(
 			(c) =>
@@ -291,6 +293,17 @@ export function createAutomation({ host, store, runs, commitStore, commitRuns, p
 			});
 		}
 		if (input.action === "bind") return bind(cwd, input);
+		if (input.action === "register-evidence-archive") {
+			if (input.engine !== "ui" || !host.testing.registerEvidenceArchive)
+				throw new Error("当前宿主缺少私密归档登记能力");
+			return host.testing.registerEvidenceArchive(cwd, input.runRef, input.backupName, input.manifestSha256);
+		}
+		if (input.action === "archived-sync-status") {
+			const c = find(input.caseId);
+			if (input.engine !== "ui" || c?.automation?.engine !== "ui" || !host.testing.readEvidenceArchive)
+				throw new Error("未找到 UI 归档关联");
+			return syncNative(c.automation.workspace, "ui", input.runRef, true, undefined, true);
+		}
 		if (input.action === "register-evidence") {
 			if (input.engine !== "ui" || !host.testing.registerEvidence) throw new Error("当前宿主缺少 UI 私密证据登记能力");
 			return host.testing.registerEvidence(cwd, input.runRef);

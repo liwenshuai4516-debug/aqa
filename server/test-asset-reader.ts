@@ -168,6 +168,152 @@ export class TestAssetReader {
 		}
 		return { ok: true, registered: true };
 	}
+	private archiveRecord(workspace: string, ref: TestFileRef): { backup: string; manifestSha256: string } {
+		const dir = this.registryDirectory();
+		const path = join(dir, `archive-${hash(JSON.stringify([workspace, ref]))}.json`);
+		const info = lstatSync(path);
+		if (
+			!info.isFile() ||
+			info.isSymbolicLink() ||
+			info.mode & 0o077 ||
+			(process.getuid && info.uid !== process.getuid())
+		)
+			throw new Error("Private archive registration is not secure");
+		const record = JSON.parse(readFileSync(path, "utf8"));
+		if (
+			record.version !== 1 ||
+			record.workspace !== workspace ||
+			JSON.stringify(record.runRef) !== JSON.stringify(ref) ||
+			typeof record.backup !== "string" ||
+			!/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(record.backup)
+		)
+			throw new Error("Invalid private archive registration");
+		return { backup: record.backup, manifestSha256: digest(record.manifestSha256) };
+	}
+	private archiveRoot(record: { backup: string; manifestSha256: string }): { root: string; manifest: any } {
+		const parent = join(realpathSync(this.dataDir), "ui-private-evidence-backups");
+		const root = join(parent, record.backup);
+		const authority = join(root, "authority");
+		for (const path of [parent, root, join(root, "workspace"), join(root, "manifest.json"), authority]) {
+			if (path === authority && !existsSync(path)) continue;
+			const info = lstatSync(path);
+			if (info.isSymbolicLink() || info.mode & 0o077 || (process.getuid && info.uid !== process.getuid()))
+				throw new Error("Private archive is not secure");
+			if (path === join(root, "manifest.json") ? !info.isFile() || info.size > 4 * 1024 * 1024 : !info.isDirectory())
+				throw new Error("Invalid private archive entry");
+		}
+		if (realpathSync(root) !== root) throw new Error("Private archive path is not canonical");
+		const bytes = readFileSync(join(root, "manifest.json"));
+		if (hash(bytes) !== record.manifestSha256) throw new Error("Private archive manifest changed");
+		const manifest = JSON.parse(bytes.toString("utf8"));
+		if (manifest.schema !== "ui-evidence-backup/v1" || !Array.isArray(manifest.entries))
+			throw new Error("Invalid private archive manifest");
+		return { root, manifest };
+	}
+	async registerEvidenceArchive(
+		workspace: string,
+		reference: unknown,
+		backup: string,
+		manifestSha256: string,
+	): Promise<{ ok: true; registered: boolean }> {
+		workspace = realpathSync(workspace);
+		const ref = fileRef(reference, "qa/ui/runs/"),
+			authority = this.authorityForWorkspace?.(workspace);
+		if (!authority) throw new Error("Original session is required to register a private archive");
+		if (typeof backup !== "string" || !/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(backup))
+			throw new Error("Invalid private archive name");
+		const record = { backup, manifestSha256: digest(manifestSha256) };
+		const { root, manifest } = this.archiveRoot(record);
+		if (
+			realpathSync(manifest.originalWorkspace) !== workspace ||
+			realpathSync(manifest.originalAuthority) !== realpathSync(authority)
+		)
+			throw new Error("Private archive does not belong to this session");
+		const actual: any[] = [];
+		const scan = (label: string) => {
+			const path = join(root, label),
+				info = lstatSync(path);
+			if (info.isSymbolicLink() || (process.getuid && info.uid !== process.getuid()))
+				throw new Error("Invalid private archive entry");
+			if (info.isDirectory()) {
+				actual.push({ path: label, type: "directory", mode: info.mode & 0o777 });
+				for (const name of readdirSync(path).sort()) scan(`${label}/${name}`);
+			} else if (info.isFile())
+				actual.push({
+					path: label,
+					type: "file",
+					mode: info.mode & 0o777,
+					bytes: info.size,
+					sha256: hash(readFileSync(path)),
+				});
+			else throw new Error("Invalid private archive entry");
+		};
+		for (const label of [
+			"workspace/qa",
+			"workspace/tests",
+			"workspace/package.json",
+			"workspace/playwright.config.mjs",
+			"authority",
+		])
+			scan(label);
+		if (JSON.stringify(actual) !== JSON.stringify(manifest.entries))
+			throw new Error("Private archive content differs from manifest");
+		const { reconcileRun } = await uiRuntime();
+		const original = await reconcileRun(workspace, ref, authority);
+		const archived = await reconcileRun(join(root, "workspace"), ref, join(root, "authority"), {
+			originalWorkspace: manifest.originalWorkspace,
+		});
+		if (
+			!original.details.complete ||
+			!archived.details.complete ||
+			!archived.data.instances.some((i: any) => i.evidence_visibility?.private_trace_integrity === "verified")
+		)
+			throw new Error("Private archive evidence is incomplete");
+		const path = join(this.registryDirectory(true), `archive-${hash(JSON.stringify([workspace, ref]))}.json`);
+		const value = { version: 1, workspace, runRef: ref, ...record };
+		try {
+			writeFileSync(path, JSON.stringify(value), { mode: 0o600, flag: "wx" });
+		} catch (error: any) {
+			if (error.code !== "EEXIST" || JSON.stringify(this.archiveRecord(workspace, ref)) !== JSON.stringify(record))
+				throw new Error("Private archive registration failed");
+			return { ok: true, registered: false };
+		}
+		return { ok: true, registered: true };
+	}
+	async readEvidenceArchive(workspace: string, reference: unknown): Promise<NativeTestRun> {
+		if (!isAbsolute(workspace) || resolve(workspace) !== workspace) throw new Error("Invalid original workspace");
+		const ref = fileRef(reference, "qa/ui/runs/"),
+			record = this.archiveRecord(workspace, ref);
+		const { root, manifest } = this.archiveRoot(record);
+		if (resolve(manifest.originalWorkspace) !== workspace) throw new Error("Private archive workspace differs");
+		const archiveWorkspace = join(root, "workspace");
+		const { ArtifactStore, reconcileRun } = await uiRuntime();
+		const run = await new ArtifactStore(archiveWorkspace).load(ref, false);
+		if (run.kind !== "run") throw new Error("Expected native UI run");
+		const asset = await this.inspect("ui", archiveWorkspace, run.data.asset_ref);
+		if (asset.executable === false) throw new Error("Native UI run cannot reference a draft");
+		const result = await reconcileRun(archiveWorkspace, ref, join(root, "authority"), {
+			originalWorkspace: manifest.originalWorkspace,
+		});
+		return {
+			engine: "ui",
+			workspace,
+			runId: run.id,
+			parentRunId: run.data.parent_run_id ?? "",
+			assetRef: asset.assetRef,
+			environment: { ...asset.environment, id: run.data.environment_id },
+			at: run.created_at,
+			rows: result.data.instances.map((i: any) => ({
+				caseId: run.data.plan.find((p: any) => p.instance_id === i.instance_id)?.case_id ?? "",
+				instanceId: i.instance_id,
+				status: i.status,
+				evidenceComplete: i.evidence_state === "complete" && result.details.complete,
+			})),
+			evidence: [ref, ...run.data.output_refs],
+			complete: result.details.complete,
+			review: "execution-evidence-only",
+		};
+	}
 	private apiRoot(workspace: string): string {
 		return join(this.dataDir, "api-testing/assets", hash(workspace));
 	}

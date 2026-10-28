@@ -19,7 +19,9 @@ export function extensionToolEffect(name: string, params: unknown): ExtensionToo
 	if (name === "data_space_env") return action === undefined || action === "list" ? "query" : "asset-write";
 	if (name === "data_space_record_result") return "asset-write";
 	if (name === "data_space_automation")
-		return ["inspect", "route", "archive-status", "sync-status"].includes(action as string) ? "query" : "asset-write";
+		return ["inspect", "route", "archive-status", "sync-status", "archived-sync-status"].includes(action as string)
+			? "query"
+			: "asset-write";
 	if (name === "ui_validate_artifact") return "query";
 	if (name.startsWith("mcp__")) return "browser-action";
 	if (!name.startsWith("ui_")) return undefined;

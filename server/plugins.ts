@@ -378,7 +378,10 @@ export function isPluginLogsRequest(p: unknown): p is PluginLogsWireUp {
 /** 插件服务端入口拿到的宿主接口。 */
 export interface PluginHost {
 	/** Read-only native test adapters. No runner execution or approval bypass. */
-	testing: Pick<TestAssetReader, "inspect" | "read" | "list" | "registerEvidence">;
+	testing: Pick<
+		TestAssetReader,
+		"inspect" | "read" | "list" | "registerEvidence" | "registerEvidenceArchive" | "readEvidenceArchive"
+	>;
 	/** 向所有已连接的浏览器广播一条本插件的消息（plugin_data）。 */
 	broadcast(payload: unknown): void;
 	/** 发一条系统通知条（notice）给所有已连接的浏览器。 */
@@ -3837,6 +3840,16 @@ export class PluginManager {
 				return () => modelChangeHandlers.delete(h);
 			},
 			testing: {
+				registerEvidenceArchive: (cwd, ref, backup, manifestSha256) => {
+					if (!can("tools")) throw new Error("Testing tools permission denied");
+					return new TestAssetReader(self.dataDir, (workspace) =>
+						trustedUiEvidenceAuthority(workspace, self.getActiveConversation()),
+					).registerEvidenceArchive(cwd, ref, backup, manifestSha256);
+				},
+				readEvidenceArchive: (cwd, ref) => {
+					if (!can("tools")) throw new Error("Testing tools permission denied");
+					return new TestAssetReader(self.dataDir).readEvidenceArchive(cwd, ref);
+				},
 				registerEvidence: (cwd, ref) => {
 					if (!can("tools")) throw new Error("Testing tools permission denied");
 					return new TestAssetReader(self.dataDir, (workspace) =>

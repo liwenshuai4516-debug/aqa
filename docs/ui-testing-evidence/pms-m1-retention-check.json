@@ -1,5 +1,5 @@
 {
-	"status": "partial",
+	"status": "archive_verified",
 	"run_id": "run-689e696a1208c75a40928b7bb3136315",
 	"manifest_sha256": "3b97efbeba0cc2076e47bb2c0742430bc019335227df67850c031d0003128414",
 	"backup_files_checked": 413,
@@ -7,12 +7,20 @@
 	"original_workspace_with_backup_authority": { "complete": true, "passed": 2, "private_trace_integrity": "verified" },
 	"relocated_backup_workspace": {
 		"complete": false,
-		"reason": "Original trace attachments refer to absolute paths in the original workspace."
+		"reason": "The original 0.1.28 reader cannot map absolute attachment paths."
 	},
+	"archive_mapping_0_1_29": { "complete": true, "passed": 2, "private_trace_integrity": "verified" },
+	"synthetic_original_workspace_absent": "passed, including wrong owner, missing seal and loose permissions",
+	"synthetic_chromium": "tests/scratch/ui-private-evidence/1793170288330/",
+	"isolated_electron": "tests/scratch/ui-pms-m1-20261028/retention-electron/1793169560822/result.json",
+	"real_electron": "tests/scratch/ui-pms-m1-20261028/retention-real/1793170156168/result.json",
+	"real_electron_original_workspace_absent": "not simulated; original paths preserved",
+	"backup_scope": "local private application data, not offsite",
 	"without_authority": { "complete": false },
 	"real_original_path_restore": "not performed; original paths still exist",
 	"synthetic_original_path_restore": "previously verified",
 	"model_calls": 0,
 	"target_requests": 0,
-	"writes_to_original_or_backup": 0
+	"writes_to_original_or_backup": 0,
+	"archive_registration_writes": "one private registry entry; no ledger writes"
 }

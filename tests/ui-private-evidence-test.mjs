@@ -1,7 +1,20 @@
 /** U02 privacy regression against the native diagnostic capture; synthetic cookie or JSON storage only. */
 import assert from "node:assert/strict";
 import { randomBytes } from "node:crypto";
-import { chmod, cp, mkdir, mkdtemp, readdir, readFile, realpath, rename, rm, stat, writeFile } from "node:fs/promises";
+import {
+	chmod,
+	cp,
+	mkdir,
+	mkdtemp,
+	readdir,
+	readFile,
+	realpath,
+	rename,
+	rm,
+	stat,
+	symlink,
+	writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import yauzl from "yauzl";
@@ -317,6 +330,100 @@ try {
 			assert.equal((await registeredReader.read("ui", d.f.root, passed.run_ref)).rows[0].evidenceComplete, false);
 		} finally {
 			await chmod(registry, 0o700);
+		}
+		if (process.argv.includes("--archive")) {
+			const name = "synthetic-archive",
+				backup = join(privateDir, "ui-private-evidence-backups", name);
+			await mkdir(join(realWorkspace, "tests"), { recursive: true });
+			try {
+				await writeFile(join(realWorkspace, "playwright.config.mjs"), "export default {};\n", { flag: "wx" });
+			} catch (error) {
+				if (error.code !== "EEXIST") throw error;
+			}
+			await mkdir(join(backup, "workspace"), { recursive: true, mode: 0o700 });
+			await chmod(join(privateDir, "ui-private-evidence-backups"), 0o700);
+			const sources = [
+				["workspace/qa", join(realWorkspace, "qa")],
+				["workspace/tests", join(realWorkspace, "tests")],
+				["workspace/package.json", join(realWorkspace, "package.json")],
+				["workspace/playwright.config.mjs", join(realWorkspace, "playwright.config.mjs")],
+				["authority", d.f.authority],
+			];
+			for (const [label, source] of sources) await cp(source, join(backup, label), { recursive: true });
+			await cp(join(realWorkspace, "requirements.md"), join(backup, "workspace/requirements.md"));
+			const entries = [];
+			async function scan(label) {
+				const path = join(backup, label),
+					info = await stat(path);
+				if (info.isDirectory()) {
+					entries.push({ path: label, type: "directory", mode: info.mode & 0o777 });
+					for (const child of (await readdir(path)).sort()) await scan(`${label}/${child}`);
+				} else {
+					const bytes = await readFile(path);
+					entries.push({ path: label, type: "file", mode: info.mode & 0o777, bytes: info.size, sha256: sha256(bytes) });
+				}
+			}
+			for (const [label] of sources) await scan(label);
+			const bytes = Buffer.from(
+				JSON.stringify({
+					schema: "ui-evidence-backup/v1",
+					originalWorkspace: realWorkspace,
+					originalAuthority: d.f.authority,
+					entries,
+				}),
+			);
+			await writeFile(join(backup, "manifest.json"), bytes, { mode: 0o600 });
+			await privateReader.registerEvidenceArchive(realWorkspace, passed.run_ref, name, sha256(bytes));
+			await rename(realWorkspace, realWorkspace + "-held");
+			try {
+				const archived = await untrusted.readEvidenceArchive(realWorkspace, passed.run_ref);
+				assert.equal(archived.complete, true);
+				assert.equal(archived.rows[0].status, "passed");
+				const captureRoot = join(backup, "authority/private-evidence");
+				let auditPath;
+				for (const name of await readdir(captureRoot)) {
+					const candidate = join(captureRoot, name, "audit.json");
+					try {
+						if (JSON.parse(await readFile(candidate)).run_id === passed.run.id) {
+							auditPath = candidate;
+							break;
+						}
+					} catch {}
+				}
+				assert.ok(auditPath);
+				const originalAudit = await readFile(auditPath),
+					audit = JSON.parse(originalAudit);
+				await writeFile(auditPath, JSON.stringify({ ...audit, run_id: "other-run" }));
+				try {
+					assert.equal((await untrusted.readEvidenceArchive(realWorkspace, passed.run_ref)).complete, false);
+				} finally {
+					await writeFile(auditPath, originalAudit);
+				}
+				await chmod(auditPath, 0o644);
+				try {
+					assert.equal((await untrusted.readEvidenceArchive(realWorkspace, passed.run_ref)).complete, false);
+				} finally {
+					await chmod(auditPath, 0o600);
+				}
+				await rename(auditPath, auditPath + ".held");
+				try {
+					assert.equal((await untrusted.readEvidenceArchive(realWorkspace, passed.run_ref)).complete, false);
+				} finally {
+					await rename(auditPath + ".held", auditPath);
+				}
+				const archivedAuthority = join(backup, "authority");
+				await rename(archivedAuthority, archivedAuthority + "-held");
+				await symlink(archivedAuthority + "-held", archivedAuthority);
+				try {
+					await assert.rejects(() => untrusted.readEvidenceArchive(realWorkspace, passed.run_ref));
+				} finally {
+					await rm(archivedAuthority);
+					await rename(archivedAuthority + "-held", archivedAuthority);
+				}
+			} finally {
+				await rename(realWorkspace + "-held", realWorkspace);
+			}
+			result.checks.push("Archived private evidence remains verifiable with the synthetic original workspace absent");
 		}
 		result.checks.push("Host reader uses only its trusted workspace authority and does not expose private paths");
 	}

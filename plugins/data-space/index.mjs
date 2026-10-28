@@ -601,6 +601,7 @@ export default {
 						"Query sync-status by runRef before retrying sync; pending, unmatched and stale items are not complete. Retry synchronization without replaying execution.",
 						"Use reconcile only with explicit authorization and all original result IDs to append evidence-backed UI corrections; never replace historical results.",
 						"Register private evidence from its original session before cross-session verification; registration does not approve a run.",
+						"Register a verified private archive in its original session; archived-sync-status reads it using an associated case and never writes results.",
 					],
 					parameters: {
 						type: "object",
@@ -621,6 +622,8 @@ export default {
 									"sync-status",
 									"reconcile",
 									"register-evidence",
+									"register-evidence-archive",
+									"archived-sync-status",
 								],
 							},
 							systemId: { type: "string" },
@@ -684,6 +687,8 @@ export default {
 							engine: { type: "string", enum: ["ui", "api"] },
 							assetRef: { anyOf: [{ type: "string" }, { type: "object" }] },
 							runRef: { anyOf: [{ type: "string" }, { type: "object" }] },
+							backupName: { type: "string" },
+							manifestSha256: { type: "string" },
 							expectedResults: {
 								type: "array",
 								minItems: 1,
