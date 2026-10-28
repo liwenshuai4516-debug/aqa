@@ -1,5 +1,5 @@
 {
-	"status": "partial",
+	"status": "reconciled_for_selected_scope",
 	"scope": "Selected PMS test environment, owned draft, read-only contract name query and reset",
 	"asset": { "revision": "v3", "sha256": "280d1c80251cddf6db07e52a50040170ed3f7b60929896ac5b3fcec35ba3a306" },
 	"run": {
@@ -35,7 +35,14 @@
 			"result_id": "a81ca5cc-1a09-4c18-b7bd-35aa54e5c8ff"
 		}
 	],
+	"archive": {
+		"status": "verified_local_private_archive",
+		"evidence": "docs/ui-testing-evidence/pms-m1-retention-check.json",
+		"manifest_sha256": "3b97efbeba0cc2076e47bb2c0742430bc019335227df67850c031d0003128414"
+	},
 	"gaps": [
-		"The original native workspace and private authority remain in an OS temporary directory; a verified private backup exists, but durable native retention and real restoration are unverified."
+		"The original workspace remains in an OS temporary directory; original-path loss was tested with a synthetic fixture, not by removing the real workspace.",
+		"The private archive is local to this machine and is not an offsite backup.",
+		"Observed controlled-data expectations are not confirmed product requirements; other roles, tenants and contract writes remain outside this scope."
 	]
 }

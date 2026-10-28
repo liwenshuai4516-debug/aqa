@@ -30,7 +30,7 @@ await mkdir(output, { recursive: true });
 await writeFile(join(agentDir, "auth.json"), "{}");
 await writeFile(join(agentDir, "models.json"), '{"providers":{}}');
 await enableDataSpace(repo, { agentDir, dataDir });
-assert.equal(JSON.parse(await readFile(join(dataDir, "plugins/data-space/manifest.json"), "utf8")).version, "0.17.2");
+assert.equal(JSON.parse(await readFile(join(dataDir, "plugins/data-space/manifest.json"), "utf8")).version, "0.17.4");
 await mkdir(join(dataDir, "data-space"), { recursive: true });
 await writeFile(
 	join(dataDir, "data-space/store.json"),

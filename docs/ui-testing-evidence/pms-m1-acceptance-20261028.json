@@ -1,0 +1,55 @@
+{
+	"status": "partial",
+	"scope": "PMS read-only contract query and reset; engineering checks on isolated synthetic targets",
+	"real_run_id": "run-689e696a1208c75a40928b7bb3136315",
+	"real_result": { "passed": 2, "failed": 0, "independent_report_gate": "approved", "delivery_digest_verified": true },
+	"task_lineage": {
+		"same_scope": true,
+		"same_v3_asset": true,
+		"both_tasks_completed": true,
+		"current_runtime_ready": true
+	},
+	"current_checks": {
+		"vitest_files": 17,
+		"vitest_passed": 264,
+		"sdk_mcp_checks_passed": 22,
+		"native_recovery_tests_passed": 3,
+		"typecheck": "passed",
+		"lint": "passed",
+		"protocol": "structure passed; git history heuristic skipped because no tag"
+	},
+	"model_calls": 0,
+	"real_target_requests": 0,
+	"evidence": [
+		{
+			"path": "tests/scratch/ui-pms-m1-20261028/lineage-check/1793172315954/result.json",
+			"sha256": "2a2c8433d4e30618fde5e1d3d2f10a1f4c68bd57876273dc2764527643011b6c"
+		},
+		{
+			"path": "tests/scratch/ui-pms-m1-20261028/dependency-pinned/1793171838017/result.json",
+			"sha256": "adae28fb7a973ba72ecc148e0a9c906c3ff15416018b863b5342dc4a0ebb5142"
+		},
+		{
+			"path": "tests/scratch/data-space-skill-desktop/1793171987151/result.json",
+			"sha256": "330046a1c24f3286b603729ab22711b902b64fccd388e4a6254056fb18409ea4"
+		},
+		{
+			"path": "tests/scratch/ui-workflow-visibility/1793172050371/result.json",
+			"sha256": "261b49dfa1a0249bc8ca053fc863986e1ab17e6afd810ad0993bfc265c0030e8"
+		},
+		{
+			"path": "tests/scratch/ui-workflow-board-desktop/1793172099349/result.json",
+			"sha256": "e0b343b26e33bdf6ac95405dc94f80b7c64bbb7aa486a6e5e6182bf8ebb3d33e"
+		},
+		{
+			"path": "tests/scratch/ui-u03-u07/desktop/1793172541222/result.json",
+			"sha256": "a7d0c9441f6bf1c1327ce6b86f35cf04990dc206f953072bd0a9e5c3450bf6f5"
+		}
+	],
+	"limitations": [
+		"Historical private PMS batch remains partial; this does not change the approved new batch.",
+		"Desktop failure-subset rerun and cancellation of a running process were not reverified in the current combination.",
+		"Real workspace removal was not simulated; the verified private backup is local only.",
+		"Observed baseline is not an approved product requirement; other roles, tenants and contract writes remain out of scope."
+	]
+}
