@@ -5,7 +5,7 @@
 | 维护内容                                | 唯一位置                                                                                                        |
 | --------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | 技能名称、描述、调度入口                | `../SKILL.md`                                                                                                   |
-| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.26.tgz`                                                                            |
+| 原版工作流分发包                        | `../assets/pi-ui-testing-0.1.27.tgz`                                                                            |
 | 原生测试 MCP 适配                       | `../assets/mcp-extension.mjs`                                                                                   |
 | 产品私密连接、采集消费与发布            | `../assets/private-recording-connection.mjs`（显式受管协议；原生过滤复用、私有原文及writer独占发布）            |
 | 私密动作的SDK调用归属                   | `../assets/private-recording-actions.mjs`（真实父子ID、单次授权与固定helper；不绕过宿主门禁）                   |
@@ -21,7 +21,7 @@
 | 测试资产与执行证据                      | 被测工作区 `qa/ui/`，不写进技能目录                                                                             |
 
 原版包来源提交：`3a566ce`（上游本地提交；未推送上游远端）。
-SHA-256：`10a928d07dbd83ccb20e69993165c827967983e6ff04e2f399b41a14f58b4eba`。0.1.26 修正同批次 `native.json` 与 `report.json` 的引用核验、私有 trace 文件权限，以及未公开截图的完整性判断。已封存 trace 可参与完整性判断；缺封存、错误归属、权限不符或未公开截图仍保留缺口。0.1.25 之前的历史批次不会自动获得封存，私有原文和路径不进入工作区、报告或模型输入。
+SHA-256：`df698d90fb9200e7f7b6e66d9e1bb3b54516c8eee81eef80ec5baaafa89cba60`。0.1.27 只替换五个阶段技能的 `SKILL.md`（`ui-discover-record`/`ui-case-design`/`ui-design-review`/`ui-test-run`/`ui-result-analysis`，经 darwin 九维评审优化），`dist`、其余三个技能与 104 个安装文件路径逐文件与 0.1.26 一致；不改产物 schema、冻结与门禁规则，旧批次结论不变，旧会话需 `/reload`。0.1.26 修正同批次 `native.json` 与 `report.json` 的引用核验、私有 trace 文件权限，以及未公开截图的完整性判断。已封存 trace 可参与完整性判断；缺封存、错误归属、权限不符或未公开截图仍保留缺口。0.1.25 之前的历史批次不会自动获得封存，私有原文和路径不进入工作区、报告或模型输入。
 
 保留 0.1.3：将认证诊断/正式执行的原始捕获保存在工作区外的宿主私有目录，公开副本脱敏已知值并隐藏图片/二进制资源；真实失败保留，缺失原始附件时不声明完整证据。trace 读取绑定实际 Playwright 1.62.1，避免误用独立安装的 core 1.63.0。0.1.3当时未覆盖录制、运行中新凭据、任意编码和脚本自行写文件；数据空间私密桥接继续 not-ready，不因该版本放行真实环境。
 
@@ -113,9 +113,13 @@ MCP 运行时选择由 `assets/playwright-runtime.mjs` 负责：CLI 与配置均
 
 重载/重连补证（2026-10-27）：同一测试入口的 `--mode=reload` 调用真实 SDK `session.reload()`，`--mode=reconnect` 调用已登记的 `/mcp reconnect ui-playwright-test` 处理器。原生重载门禁本已拒绝旧会话动作，无需新增宿主守卫；重连撤销旧私密快照。两类均保留原3步、无新增目标请求/公开writer，最终partial；重连另留2条失败尝试，重载不追加MCP动作。原生close未成功，保留清理未知，不把物理连接关闭冒称业务清理成功。见[生命周期证据](../../../../docs/ui-testing-evidence/optimization-u02-recording-product-lifecycle.json)。完整中断续录不属于现有恢复契约，后续应验证安全停止/查询及显式重新准备，不据历史“待验”文字增加自动恢复功能。
 
+数据空间0.17.1补齐显式录制的参数准备入口：`prepare-private` 使用 `mode=record`、`recordingCapture:"chromium-single-page-v1"`，只返回原生可消费的短期auth引用及`explicit-capture-required`。宿主按原生`recordingStartSchema`中精确capture literal核验兼容，未声明/旧包拒绝，不从版本号推测支持。该入口不安装/启动录制器，不替代上述seed/范围/预算/权限与私密采集校验；通用录制仍未开放。
+
 0.1.20 增加 task ID 的 `stage_inputs`/`handoff` 与显式 `continue-execute`、只读诊断 `reuse`、按任务 `analyze-task` 及逐实例失败分组；沿用原 checkpoint/诊断/报告评审门禁。仅返回当前技能目录，不预载正文。0.1.19 为未交付中间包。0.1.18 的旧运行证明会因现行诊断规则摘要改变而失效，须按原规则重新诊断；不得为复用而降级门禁。现有任务/原始 run 仍可读取，实际应用链接已核对，旧会话需 `/reload`。工程、Electron、性能及未通过项见[U03/U07 实施记录](../../../../docs/ui-testing-u03-u07-implementation.md)。
 
 0.1.21 仅调整 `ui-test-workflow` 的文档结构：7 步编号主链与每步输入/输出、mode 表增加「用户说的」列与拿不准时的分流判据、阶段 Skill 一览（7 个名称与包内目录逐字对齐，并显式排除 `ui-run-analyze` 等臆造名）、跨阶段失败分支索引 12 条。正文原有条款、参数、拒绝条件与门禁零删改；`dist` 代码及另外七个阶段技能逐文件与 0.1.20 一致。
+
+0.1.21 修复报告时点：冻结 case/asset gaps 原文保留，以历史声明前缀及 coverage.gap_basis 与当前批准、原生执行结果区分；不放宽评审或运行门禁。原生提交 c295a26，匿名旧失败及新正式通过报告均获独立结果批准并在 Electron 完整交付，见[匿名未结项续跑](../../../../docs/ui-testing-anonymous-closure.md)。逐文件核对运行代码一致；安装目录 README 与 ui-test-workflow/SKILL.md 两份说明存在未归因的并行差异，已保留摘要和快照，未覆盖。旧会话需 /reload。
 
 0.1.22 合并并行的 0.1.21 工作流说明优化与 c295a26 报告时点修复，避免同名分发包互相覆盖。冻结 case/asset gaps 以历史声明及 coverage.gap_basis 与当前状态区分；不改评审或运行门禁。匿名旧失败与新正式通过报告均获独立批准并在 Electron 完整交付，最终 104 个安装文件与 0.1.22 分发包一致，见[匿名未结项续跑](../../../../docs/ui-testing-anonymous-closure.md)。原生维护仅本地提交，旧会话需 /reload。
 
