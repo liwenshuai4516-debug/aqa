@@ -1,0 +1,6 @@
+{
+  "desktopTmpAlias": "/private/tmp/dar-rj_43o8y/d",
+  "aliasParent": "/private/tmp/dar-rj_43o8y",
+  "physicalRoot": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api-retry-tests",
+  "reason": "short Unix socket path; all runtime files remain in task-owned workspace temporary directory"
+}

@@ -1,0 +1,2 @@
+timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
+2026-10-28T07:10:47.513747+00:00	dfc01c152708544e6f0a28fb39035cebd7d86005	api-test-workflow	78.0 (triage only)	3 better / 0 worse / 0 tie	keep	2,3,5,8	user-authorized retry; fresh 3 before + 3 after responses; all judges slight; readiness gate; native_prompt_execution=0/3; no new absolute score; awaiting item confirmation	paired

@@ -1,0 +1,51 @@
+{
+  "scope": "deterministic in-process compiler and workflow-entry checks on existing synthetic records fixture; no HTTP, model or business calls; not native execution of users prompt",
+  "results": [
+    {
+      "id": "ready-one",
+      "expected": "accepted",
+      "actual": "accepted"
+    },
+    {
+      "id": "ready-three",
+      "expected": "accepted",
+      "actual": "accepted"
+    },
+    {
+      "id": "empty-cases",
+      "expected": "rejected",
+      "actual": "rejected",
+      "error": "Cases must have unique IDs"
+    },
+    {
+      "id": "missing-checks",
+      "expected": "rejected",
+      "actual": "rejected",
+      "error": "Each case must have a JSON assertion"
+    },
+    {
+      "id": "unknown-operation",
+      "expected": "rejected",
+      "actual": "rejected",
+      "error": "Case operation was not selected"
+    },
+    {
+      "id": "missing-path-data",
+      "expected": "rejected",
+      "actual": "rejected",
+      "error": "Required request parameter is missing"
+    },
+    {
+      "id": "legacy-request-shape",
+      "expected": "rejected",
+      "actual": "rejected",
+      "error": "Unsupported request data key"
+    },
+    {
+      "id": "four-cases-at-workflow-entry",
+      "expected": "rejected",
+      "actual": "rejected",
+      "error": "Select one to three small cases per workflow"
+    }
+  ]
+}

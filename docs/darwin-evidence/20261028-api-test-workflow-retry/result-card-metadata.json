@@ -1,0 +1,10 @@
+{
+  "metrics": {
+    "width": 900,
+    "height": 1405,
+    "overflow": false
+  },
+  "deviceScaleFactor": 2,
+  "externalRequests": "blocked",
+  "source": "result-card.html"
+}

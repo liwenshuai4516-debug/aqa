@@ -1,0 +1,125 @@
+{
+  "timestamp": "2026-10-28T07:24:08.507112+00:00",
+  "scope": "one authorized retry of api-test-workflow; one SKILL.md; no plugin code or test changes; next skill not started",
+  "formatSkill": {
+    "command": "npx prettier --write plugins/api-testing/skills/api-test-workflow/SKILL.md",
+    "status": "passed"
+  },
+  "quickValidate": {
+    "command": "python3 /Users/liyingjun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/api-testing/skills/api-test-workflow",
+    "status": "passed",
+    "evidence": "check-outputs.json:api_retry_check_4"
+  },
+  "typecheck": {
+    "command": "npm run typecheck",
+    "status": "passed",
+    "configurations": 5,
+    "evidence": "completed earlier in this retry; session 45898 polled to exit 0 before context handoff; raw terminal transcript is in chat"
+  },
+  "lint": {
+    "command": "npm run lint",
+    "status": "passed",
+    "evidence": "check-outputs.json:api_retry_check_2"
+  },
+  "protocol": {
+    "command": "npm run check:protocol",
+    "structure": "passed",
+    "historyHeuristic": "skipped: no available tag",
+    "evidence": "check-outputs.json:api_retry_check_3"
+  },
+  "unit": {
+    "runner": "existing vitest",
+    "files": [
+      "api-testing-registration",
+      "skill-block",
+      "skill-tool",
+      "skill-capability-settings",
+      "skill-settings-wire"
+    ],
+    "testFiles": 5,
+    "testsPassed": 31,
+    "evidence": "check-outputs.json:api_retry_finish_0"
+  },
+  "sdk": {
+    "script": "tests/api-testing-skills-test.mjs",
+    "checksPassed": 5,
+    "loadedBytes": 7151,
+    "evidence": "sdk-discovery.json"
+  },
+  "parameters": {
+    "checksPassed": 8,
+    "businessRequests": 0,
+    "httpRequests": 0,
+    "evidence": "parameter-check.json"
+  },
+  "workflow": {
+    "script": "tests/api-testing-workflow-test.mjs",
+    "checksPassed": 17,
+    "explicitModelStubCalls": 9,
+    "fixtureHttpRequests": 8,
+    "paidModelCalls": 0,
+    "businessRequests": 0,
+    "note": "contains expected failed/error/unknown runs, not all runs passed",
+    "evidence": "workflow-summary.json"
+  },
+  "electron": {
+    "script": "tests/api-testing-visibility-test.mjs",
+    "checksPassed": 10,
+    "prebuilt": true,
+    "isolatedDataAndAgentDirs": true,
+    "unchangedTestAssertions": true,
+    "businessRequests": 0,
+    "actualModelCalls": 0,
+    "existingUserInstanceReloaded": "not verified",
+    "evidence": "desktop-result.json"
+  },
+  "promptBehavior": {
+    "beforeResponses": 3,
+    "afterResponses": 3,
+    "independentJudges": 3,
+    "better": 3,
+    "worse": 0,
+    "tie": 0,
+    "allMargins": "slight",
+    "nativeBusinessPromptsExecuted": 0,
+    "nativeBusinessPromptsTotal": 3,
+    "newAbsoluteScore": null
+  },
+  "cleanup": {
+    "initialPreview": "passed; check-outputs.json:api_retry_check_5",
+    "ownedArtifacts": "archived then removed; cleanup.json",
+    "finalPreview": {
+      "command": "npm run clean",
+      "exitCode": 0,
+      "eligibleItems": 0
+    },
+    "finalResidue": {
+      "command": "npm run clean:junk -- --only .workbuddy/tmp",
+      "exitCode": 0,
+      "removedItems": 0,
+      "protectedHistoryPreserved": true
+    }
+  },
+  "archiveAudit": {
+    "files": 211,
+    "status": "passed",
+    "checks": [
+      "all JSON parse",
+      "candidate and frozen sources match current source; hashes and size limits",
+      "six inputs: same common conditions/prompts, no expected, correct skill snapshots and responses",
+      "three judge inputs and raw votes map to 3 better/slight; no vote inversion",
+      "TSV nine columns",
+      "archive 211 files and archive SHA verified without extracting",
+      "zero-context patch replay equals candidate; temporary audit directory removed",
+      "owned test directories and short alias absent"
+    ]
+  },
+  "finalDiffCheck": "passed: git diff --check",
+  "limitations": [
+    "no real business execution of the three prompts",
+    "same six samples rated by three judges",
+    "no causal inference or new absolute score",
+    "no claim that user existing Electron instance has reloaded"
+  ],
+  "resultCardVisual": "passed: no overflow or clipping; corrected ring to 3 of 3 votes"
+}

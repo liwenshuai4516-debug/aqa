@@ -1,0 +1,13 @@
+diff --git a/plugins/api-testing/skills/api-test-workflow/SKILL.md b/plugins/api-testing/skills/api-test-workflow/SKILL.md
+index 0b5dcb0..c5d59c3 100644
+--- a/plugins/api-testing/skills/api-test-workflow/SKILL.md
++++ b/plugins/api-testing/skills/api-test-workflow/SKILL.md
+@@ -20 +20,7 @@ description: 通过 api-testing 插件准备并执行基于契约的 API 测试
+-输出：`cases` 数组（`id`/`operationId`/`request`/`status`/`checks`）与待补充项清单。
++提交 `prepare` 前核对用例就绪状态：
++
++- 可提交批次：`operationIds` 为 1–3 个真实接口 ID，`cases` 为 1–3 条完整用例；每条的请求必需数据、契约状态码及断言均已确认，`checks` 至少一项。
++- `request` 仅含按契约需要提供的 `path`、`query`、`body`；`path`/`query` 为参数对象，方法和 URL 由契约派生，不传 `method` 或字符串 `path`。
++- 不完整条目只作待补齐草稿。没有完整用例时，交付接口清单与待补充项，停止准备；不提交空 `cases` 或占位条目，不将其称为可提交套件。
++
++输出：就绪的 `cases` 数组（`id`/`operationId`/`request`/`status`/`checks`）及待补充项；无就绪用例时只输出接口清单与待补充项，不调用 `prepare`。

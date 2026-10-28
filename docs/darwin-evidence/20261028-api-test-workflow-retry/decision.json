@@ -1,0 +1,42 @@
+{
+  "timestamp": "2026-10-28T07:10:47.513747+00:00",
+  "status": "keep",
+  "votes": [
+    {
+      "judge": 1,
+      "rawPreferred": "A",
+      "afterLabel": "A",
+      "verdict": "better",
+      "margin": "slight",
+      "reason": "A在生成用例与prepare之间补齐了可提交批次的具体门槛，明确禁止空cases和占位条目，并给出request允许的结构；这些内容直接对应已知契约，且没有增加重复审批。实际样本1中，B将空cases称为当前可提交的完整用例，违反compileSuite拒绝空cases的事实；A明确停止prepare并保留接口清单，表现更可靠。其余两题两版均守住契约断言、令牌和受控复测边界，没有足够证据判出稳定差异。整体优势明确集中在准备就绪性，尚未覆盖共有的评审状态分支及引用参数缺口，因此裁为A小幅优于B。"
+    },
+    {
+      "judge": 2,
+      "rawPreferred": "B",
+      "afterLabel": "B",
+      "verdict": "better",
+      "margin": "slight",
+      "reason": "B 在生成与 prepare 之间增加了有契约依据的就绪门槛，明确完整用例数量、至少一项断言和 request 的合法结构，并阻止把空 cases 称为可提交套件。其第一条实际回答也落实了这一点，避免了 A 明确将空 cases 标成可提交完整用例的错误。两份技能的其余流程、失败分支和禁令基本相同，第二、三题表现接近，且共同保留流程状态及调用参数不够明确的问题，因此整体判 B 小幅领先。"
+    },
+    {
+      "judge": 3,
+      "rawPreferred": "A",
+      "afterLabel": "A",
+      "verdict": "better",
+      "margin": "slight",
+      "reason": "A在提交prepare前增加了与已知契约直接对应的就绪门槛，明确完整用例数量、请求形状、最少断言以及没有完整用例时停止准备，实用性优于B。实际第1题中，A正确停止并列出待补充项，B却把空cases称为可提交的完整用例，违反compileSuite拒绝空cases的已知约束。其余主体内容及第2、3题表现基本相当，因此整体判A小幅占优；该单次样本差异不能证明文字差异必然导致表现差异。"
+    }
+  ],
+  "counts": {
+    "better": 3,
+    "worse": 0,
+    "tie": 0
+  },
+  "rule": "paired within-judge majority; 3 better / 0 worse / 0 tie",
+  "scope": "one user-authorized retry after prior rollback; no additional round or next skill started",
+  "candidateSha256": "9d4725fd0b38577b57f33845e3c20cd23cf9933b9ab2d4f2c271278a06554d31",
+  "bytes": 7151,
+  "newAbsoluteScore": null,
+  "baselineDiagnosticScore": 78.0,
+  "pending": "user review after concrete delivery"
+}

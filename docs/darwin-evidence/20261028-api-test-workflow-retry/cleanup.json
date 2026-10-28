@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-10-28T07:14:05.568674+00:00",
+  "precondition": "all test processes exited and lsof +D owned test root reported no open files",
+  "removed": [
+    {
+      "path": ".workbuddy/tmp/darwin-api-retry-tests",
+      "files": 1001,
+      "directories": 161,
+      "symlinks": 5,
+      "bytes": 26138483
+    },
+    {
+      "path": "tests/scratch/api-testing-visibility/1793171368073",
+      "files": 9,
+      "directories": 1,
+      "symlinks": 0,
+      "bytes": 2942171
+    }
+  ],
+  "shortAliasRemoved": "/private/tmp/dar-rj_43o8y/d",
+  "aliasParentRemoved": "/private/tmp/dar-rj_43o8y",
+  "archive": "integration-evidence.tar.gz",
+  "historicalCleanupKeepPreserved": true,
+  "temporaryScriptFilesCreated": 0
+}
