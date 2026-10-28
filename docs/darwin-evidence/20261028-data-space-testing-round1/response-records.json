@@ -1,0 +1,44 @@
+[
+  {
+    "id": "P1",
+    "agent": "/root/r1_after_p1",
+    "file": "after-P1.md",
+    "sha256": "6e717d9073f1e67c4eb837abb83a73df2ac2533126864ae121aadd44131a70cc"
+  },
+  {
+    "id": "P2",
+    "agent": "/root/r1_after_p2",
+    "file": "after-P2.md",
+    "sha256": "4eea07ba0713afe063243c9c8acd2c7d46c2912ea7e76f38ba913fe777193b29"
+  },
+  {
+    "id": "P3",
+    "agent": "/root/r1_after_p3",
+    "file": "after-P3.md",
+    "sha256": "da438b09b7f97363eacf516f90adc6de539a300aabe9f0d38b986d1a253af363"
+  },
+  {
+    "judge": 1,
+    "agent": "/root/r1_judge1",
+    "labels": {
+      "A": "after",
+      "B": "before"
+    }
+  },
+  {
+    "judge": 2,
+    "agent": "/root/r1_judge2",
+    "labels": {
+      "A": "before",
+      "B": "after"
+    }
+  },
+  {
+    "judge": 3,
+    "agent": "/root/r1_judge3",
+    "labels": {
+      "A": "after",
+      "B": "before"
+    }
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "responseSha256": "da438b09b7f97363eacf516f90adc6de539a300aabe9f0d38b986d1a253af363",
+  "result": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      "Consistency only: evidence bytes, independent review, live ownership and model adherence are not verified."
+    ]
+  },
+  "scope": "Actual candidate P3 JSON checked by parent; consistency only, not native evidence."
+}

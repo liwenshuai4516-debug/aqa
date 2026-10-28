@@ -1,0 +1,13 @@
+--- a/.pi/skills/data-space-testing/SKILL.md
++++ b/.pi/skills/data-space-testing/SKILL.md
+@@ -18 +18,9 @@
+-2. 读取本次 `preparation` 与 `parameterSources`：有效动态值优先于同名静态值；🔴 CHECKPOINT：`refresh-required` 时，在本次已授权的环境准备范围内调用 `data_space_env`，传 `action=refresh`、`project=<所选 systemId>`、`env=<所选 envId>`。刷新成功后对同一目标重新 `initialize` 并复核 `preparation` / `parameterSources`；缺少刷新能力、刷新失败或 `preparation.parameters.state=not-ready` 时，停止后续录制／诊断／执行并报告阻塞，不自动 `force` 重试。不能回退旧值或使用脱敏占位；阶段切换或续跑时复核动态值的 `expiresAt`，失效则重走准备及原生资产更新门禁，不修改旧批准。`configured` 仅代表配置匹配，网络、身份、角色和数据未检查均为 `unknown`，仍须原生执行预检。UI 录制先核对 Playwright 依赖、配置、project 与相对 seed，再由浏览器验证前置条件；已有资产执行不新增录制 seed。参数不得当脚本或任意进程环境变量执行。API 沿用原目标许可与预检；配置冲突不能悄悄切换目标。用例范围通过 `data_space_cases` 查询，优先真实 ID；`get` 不按 project 消歧，前 100 条不是全量。
++2. 读取本次 `preparation` 与 `parameterSources`：有效动态值优先于同名静态值；
++
++   - 🔴 CHECKPOINT：`refresh-required` 时，在本次已授权的环境准备范围内调用 `data_space_env`，传 `action=refresh`、`project=<所选 systemId>`、`env=<所选 envId>`。刷新成功后对同一目标重新 `initialize` 并复核 `preparation` / `parameterSources`；
++   - 缺少刷新能力、刷新失败或 `preparation.parameters.state=not-ready` 时，停止后续录制／诊断／执行并报告阻塞，不自动 `force` 重试。不能回退旧值或使用脱敏占位；
++   - 阶段切换或续跑时复核动态值的 `expiresAt`，失效则重走准备及原生资产更新门禁，不修改旧批准。
++   - `configured` 仅代表配置匹配，网络、身份、角色和数据未检查均为 `unknown`，仍须原生执行预检。
++   - UI 录制先核对 Playwright 依赖、配置、project 与相对 seed，再由浏览器验证前置条件；已有资产执行不新增录制 seed。参数不得当脚本或任意进程环境变量执行。API 沿用原目标许可与预检；配置冲突不能悄悄切换目标。
++   - 用例范围通过 `data_space_cases` 查询，优先真实 ID；`get` 不按 project 消歧，前 100 条不是全量。
++

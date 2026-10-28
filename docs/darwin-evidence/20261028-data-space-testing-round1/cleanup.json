@@ -1,0 +1,14 @@
+{
+  "registeredSkill": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.pi/skills/data-space-testing",
+  "skillSha256": "a6ad80a4acdaf88c6b704ca487c137c0c4720bf97f85d896155b2841ef48d867",
+  "sourceReferencedByIsolatedAgent": true,
+  "appClosed": true,
+  "portClosed": 18983,
+  "removedOwnedTemporaryScript": ".workbuddy/tmp/darwin-data-space-skill-lifecycle.mjs",
+  "removedOwnedIsolatedDirectory": "/private/tmp/darwin-skill-ZmFcIM",
+  "evidence": "desktop-evidence.tar.gz retained; test scratch output and original failures retained",
+  "cleanJunkTmpDeleted": 0,
+  "cleanJunkMetadataDeleted": [
+    ".DS_Store"
+  ]
+}

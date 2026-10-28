@@ -1,0 +1,82 @@
+{
+  "checkedAt": "2026-10-28T03:44:01.355Z",
+  "scope": "One Markdown layout-only change. Existing dirty rules and other work excluded. No native Agent business-effectiveness claim.",
+  "layoutCommit": "9f6e91caadde954e511912b8bfbb8901a9ac0f70",
+  "typecheck": {
+    "chunk_id": "d5f9f0",
+    "wall_time_seconds": 0.000004792,
+    "exit_code": 0,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "unit": {
+    "chunk_id": "8412a2",
+    "wall_time_seconds": 0.000007042,
+    "exit_code": 0,
+    "original_token_count": 100,
+    "output": "\n Test Files  7 passed (7)\n      Tests  79 passed (79)\n   Start at  11:40:11\n   Duration  1.95s (transform 46%, import 44%, tests 8%, setup 1%)\n\n  Transform  transforming modules took 2.34s · 46% of tracked time, re-done on every run\n             persist transforms across runs with fsModuleCache: true\n             learn more: https://vitest.dev/guide/improving-performance#caching-between-reruns\n\n"
+  },
+  "lintProtocolDiff": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "b545c4",
+      "wall_time_seconds": 0.48328925,
+      "exit_code": 0,
+      "original_token_count": 112,
+      "output": "\n> pi-web-ui@0.109.0 lint\n> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/\n\n\n> pi-web-ui@0.109.0 check:protocol\n> node scripts/check-protocol-sync.mjs\n\n✓ types.ts 是 protocol.ts 的 type-only re-export shim\n✓ protocol.ts 保持纯类型导出（无运行时代码）\n✓ 双端 PROTOCOL_VERSION 一致 (v33)\nfatal: No names found, cannot describe anything.\n· 跳过协议版本 git 启发式（无可用 tag 或浅检出环境）\n"
+    }
+  },
+  "fullDesktop": {
+    "restrictedAttempt": {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "f9fee4",
+        "wall_time_seconds": 0.000006959,
+        "exit_code": 1,
+        "original_token_count": 150,
+        "output": "node:events:485\n      throw er; // Unhandled 'error' event\n      ^\n\nError: listen EPERM: operation not permitted 127.0.0.1\n    at Server.setupListenHandle [as _listen2] (node:net:1917:21)\n    at listenInCluster (node:net:1996:12)\n    at node:net:2205:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\nEmitted 'error' event on Server instance at:\n    at emitErrorNT (node:net:1975:8)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {\n  code: 'EPERM',\n  errno: -1,\n  syscall: 'listen',\n  address: '127.0.0.1'\n}\n\nNode.js v23.10.0\n"
+      }
+    },
+    "firstElevatedAttempt": {
+      "status": "fulfilled",
+      "value": {
+        "chunk_id": "682223",
+        "wall_time_seconds": 0.000008625,
+        "exit_code": 1,
+        "original_token_count": 114,
+        "output": "{\n  \"status\": \"FAIL\",\n  \"checks\": [],\n  \"actualModelCalls\": 0,\n  \"businessRequests\": 0,\n  \"error\": \"page.reload: Protocol error (Page.reload): Not attached to an active page\\nCall log:\\n\\u001b[2m  - waiting for navigation until \\\"load\\\"\\u001b[22m\\n\\n    at /Users/liyingjun/Desktop/SW-QA/15-aqa/tests/data-space-skill-desktop-test.mjs:113:13\",\n  \"evidence\": \"/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/data-space-skill-desktop/1793157880758\"\n}\n"
+      }
+    },
+    "secondElevatedAttempt": {
+      "exitCode": 1,
+      "error": "AssertionError: installed '0.17.3' !== hardcoded expected '0.17.2'; tests/data-space-skill-desktop-test.mjs:34; before native app launch.",
+      "status": "blocked; no assertions bypassed; no full-suite pass"
+    }
+  },
+  "focusedDesktop": {
+    "chunk_id": "5dad2a",
+    "wall_time_seconds": 0.000006583,
+    "exit_code": 0,
+    "original_token_count": 197,
+    "output": "{\n  \"status\": \"PASS\",\n  \"checks\": [\n    \"app-level registration is idempotent; desktop discovers the skill in another workspace and completes /data\",\n    \"individual skill disabling survives reload, hides the shortcut, and can be restored\",\n    \"plugin disabling gates its skill across reload; enabling restores discovery without changing the skill preference\",\n    \"desktop tool management exposes all four existing Data Space tools\"\n  ],\n  \"scope\": \"Skill discovery, ownership and lifecycle only; original full-suite failures are not cleared\",\n  \"actualModelCalls\": 0,\n  \"businessRequests\": 0,\n  \"pluginVersion\": \"0.17.3\",\n  \"temporary\": \"/private/tmp/darwin-skill-ZmFcIM\",\n  \"evidence\": \"/Users/liyingjun/Desktop/SW-QA/15-aqa/tests/scratch/darwin-data-space-lifecycle/1793158272282\"\n}\n"
+  },
+  "cleanup": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "3963bd",
+      "wall_time_seconds": 0.000006667,
+      "exit_code": 0,
+      "original_token_count": 227,
+      "output": "执行清理（请先结束使用这些目录的测试/构建进程）\n保留\t0.3 MiB\t.workbuddy/tmp · .cleanup-keep 保留标记\n可清理 0 项，共 0.0 MiB。\n实际删除 0 项，逻辑大小 0.0 MiB。\n\n> pi-web-ui@0.109.0 clean\n> node scripts/clean-project.mjs\n\n仅预览；未删除文件。执行前先结束相关测试/构建进程。\n保留\t68.9 MiB\ttests/scratch/api-testing-p1-1/runtime/node_modules · .cleanup-keep 保留标记\n保留\t65.4 MiB\ttests/scratch/api-testing-p0-1/runtime/node_modules · .cleanup-keep 保留标记\n保留\t65.3 MiB\ttests/scratch/api-testing-p0-1/reproduce/node_modules · .cleanup-keep 保留标记\n保留\t25.4 MiB\tnode_modules/.vite · 未满 7 天或近期有写入\n保留\t0.3 MiB\t.workbuddy/tmp · .cleanup-keep 保留标记\n可清理\t0.0 MiB\t.DS_Store\n保留\t0.0 MiB\tnode_modules/.vite-temp · 未满 7 天或近期有写入\n可清理 1 项，共 0.0 MiB。\n"
+    }
+  },
+  "notes": [
+    "Original full desktop failures preserved separately; focused 4-check PASS is not a full-suite PASS.",
+    "7 files / 79 tests passed; protocol structure passed, git-history heuristic skipped because no tags.",
+    "Candidate P3 actual JSON validated by parent; output-validation.json retains original warning.",
+    "P2 candidate response overstates all items as not imported; do not count all prompt behavior as passed.",
+    "Final source snapshots and response hashes matched; JSON parsed; TSV has 9 columns.",
+    "Own temporary script and focused isolated app directory removed after archive and app/port closed; cleanup.json records proof.",
+    "Card rendering used local installed Darwin template and no network fonts. First restricted browser launch failed; relative-path attempt failed; final absolute-path render succeeded and was visually inspected."
+  ]
+}

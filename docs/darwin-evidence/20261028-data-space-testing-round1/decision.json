@@ -1,0 +1,66 @@
+{
+  "votes": [
+    {
+      "judge": 1,
+      "agent": "/root/r1_judge1",
+      "rawVote": "A",
+      "mapping": {
+        "A": "after",
+        "B": "before"
+      },
+      "outcome": "better",
+      "margin": "slight",
+      "sha256": "d9cdf76c1187cb20b470be52635581ea497f6adac60e244425e1c085a949a962"
+    },
+    {
+      "judge": 2,
+      "agent": "/root/r1_judge2",
+      "rawVote": "B",
+      "mapping": {
+        "A": "before",
+        "B": "after"
+      },
+      "outcome": "better",
+      "margin": "slight",
+      "sha256": "88ca0465f1a506b4f389a9370bdac64f8b4a949c988fac828edcf5681cf4fd3c"
+    },
+    {
+      "judge": 3,
+      "agent": "/root/r1_judge3",
+      "rawVote": "A",
+      "mapping": {
+        "A": "after",
+        "B": "before"
+      },
+      "outcome": "better",
+      "margin": "slight",
+      "sha256": "933092ac72bc8af256ad112e926fb94dedf17bed37874c4c89268f8a564bbb99"
+    }
+  ],
+  "better": 3,
+  "worse": 0,
+  "tie": 0,
+  "status": "keep",
+  "basis": "Within-judge paired comparisons only; absolute scores are diagnostic. All three prefer layout slightly.",
+  "rounds": 1,
+  "stopReason": "The authorized narrow layout change is complete. All judges report only a small structural gain and no demonstrated behavioral gain. No additional edit supported within this scope.",
+  "diagnosticWorkflowScores": [
+    {
+      "judge": 1,
+      "before": 7,
+      "after": 8
+    },
+    {
+      "judge": 2,
+      "before": 8,
+      "after": 9
+    },
+    {
+      "judge": 3,
+      "before": 8,
+      "after": 9
+    }
+  ],
+  "newAbsoluteTotal": null,
+  "behavior": "Overall comparable; P2 after output overstates all cases as not imported despite lacking archive receipts. Not caused by a changed instruction; retained as an output error/limitation."
+}

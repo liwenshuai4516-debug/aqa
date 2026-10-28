@@ -1,0 +1,61 @@
+{
+  "capturedAt": "2026-10-28T03:20:45.645578+00:00",
+  "head": "efba8edbfbf268d0ae0802659ba8d6f1845456c1",
+  "target": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.pi/skills/data-space-testing/SKILL.md",
+  "scope": "Only Markdown layout of step 2; all instruction bytes preserved after removing added bullets/whitespace. Pre-existing dirty content not staged.",
+  "beforeBytes": 7606,
+  "afterBytes": 7644,
+  "ratio": 1.004996055745464,
+  "files": [
+    {
+      "path": "after/SKILL.md",
+      "bytes": 7644,
+      "sha256": "a6ad80a4acdaf88c6b704ca487c137c0c4720bf97f85d896155b2841ef48d867"
+    },
+    {
+      "path": "after/references/native-handoff.md",
+      "bytes": 9039,
+      "sha256": "d8e63700b683b71d8b222f77b54a82f68083a5b1aee031e4c75823886742b327"
+    },
+    {
+      "path": "after/references/result-output.md",
+      "bytes": 11878,
+      "sha256": "b5e11083404f515c4cc3a016a983e4f512417d2a9a24b3ec1ec694edca5de34f"
+    },
+    {
+      "path": "after/scripts/validate-result.mjs",
+      "bytes": 11602,
+      "sha256": "4594c68346982ea8cb2d6d2069c3b34866e9291a3c204093c3ce6c4e50153e35"
+    },
+    {
+      "path": "before/SKILL.md",
+      "bytes": 7606,
+      "sha256": "6b897be2e2de321425b2f97195f53ca89a7c465c5c4fbb0f9ca476ad757f4ee4"
+    },
+    {
+      "path": "before/references/native-handoff.md",
+      "bytes": 9039,
+      "sha256": "d8e63700b683b71d8b222f77b54a82f68083a5b1aee031e4c75823886742b327"
+    },
+    {
+      "path": "before/references/result-output.md",
+      "bytes": 11878,
+      "sha256": "b5e11083404f515c4cc3a016a983e4f512417d2a9a24b3ec1ec694edca5de34f"
+    },
+    {
+      "path": "before/scripts/validate-result.mjs",
+      "bytes": 11602,
+      "sha256": "4594c68346982ea8cb2d6d2069c3b34866e9291a3c204093c3ce6c4e50153e35"
+    },
+    {
+      "path": "tracked-after.md",
+      "bytes": 6357,
+      "sha256": "a2a5439dc6324ed5da98998d385f53fd75159e0461f09355802a82461a430c88"
+    },
+    {
+      "path": "tracked-before.md",
+      "bytes": 6331,
+      "sha256": "2571388302afd4f3b1e1c207093cab6c6d65f359303522c9f5e066ad263128ad"
+    }
+  ]
+}

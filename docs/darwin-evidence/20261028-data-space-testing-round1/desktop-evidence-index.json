@@ -1,0 +1,54 @@
+{
+  "archive": "desktop-evidence.tar.gz",
+  "sha256": "ae49ead655592c71346ef60b1c3f9c44d3d2b2d5217b37c36cdc1d0b4e9b64d7",
+  "bytes": 1506174,
+  "items": [
+    {
+      "path": "focused/result.json",
+      "bytes": 788,
+      "sha256": "005514bc6f7e59a7ae77219479af9ff2adfb4fd8d00c536f7e2b734a5ccb1eb5"
+    },
+    {
+      "path": "focused/plugin-blocked.png",
+      "bytes": 387714,
+      "sha256": "3d5e8dc6dcc9f26a232f2da9305bbd86fa4bead203d84d3a2990f727211df4a6"
+    },
+    {
+      "path": "focused/skill.png",
+      "bytes": 397111,
+      "sha256": "0f4bc567fe47c7d2a16d250767e37da2c908c63b5db74432726d2df9567c9784"
+    },
+    {
+      "path": "focused/tools.png",
+      "bytes": 328122,
+      "sha256": "2fd539f44f04ffd16970684e1984658c03b85333b228d1627f4d55527fef206f"
+    },
+    {
+      "path": "focused/harness.mjs",
+      "bytes": 7736,
+      "sha256": "57dcffc00d45816d6b1e568bcd84d2be6b66eadcbec93b606df62786e957bf48"
+    },
+    {
+      "path": "full-first/result.json",
+      "bytes": 345,
+      "sha256": "9763ef01432b23785a0ebe52faecc0581980984b092490042376cb161af7fc91"
+    },
+    {
+      "path": "full-first/harness.mjs",
+      "bytes": 25838,
+      "sha256": "131e05825f0e95cd693dbda25cac62cffa66b8565609da78bc13853be0f99d5a"
+    },
+    {
+      "path": "full-first/failure.png",
+      "bytes": 442384,
+      "sha256": "e09e9d9f9341016f74a7dfc416e3b3089d172f95c75a643c94905b5f2ca9d060"
+    },
+    {
+      "path": "full-first/desktop.log",
+      "bytes": 1581,
+      "sha256": "583b8907fcea55b35f0b4f8cf3236319bfe54534dc5f88a9d79e241d22764570"
+    }
+  ],
+  "fullSecondFailure": "Before app launch: installed plugin 0.17.3 != hardcoded expected 0.17.2; exit 1. Captured in verification record.",
+  "focusedScope": "Real Electron skill lifecycle only. Four checks; 0 model calls, 0 business operations. Does not clear original full-suite failures."
+}

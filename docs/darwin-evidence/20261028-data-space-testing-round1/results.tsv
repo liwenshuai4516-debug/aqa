@@ -1,0 +1,3 @@
+timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
+2026-10-28T03:04:23.205589+00:00	40c402c02a521e85a30a478a755b59aaf9dc9e43	data-space-testing	-	86.6	baseline	1-9	source=6b897be2; scope=prompt-response; 6 isolated responses; with preferred 3/3; native_execution=0/3; runtime_effectiveness_unverified; awaiting_Phase2_confirmation	full_test
+2026-10-28T03:33:53.587763+00:00	9f6e91caadde954e511912b8bfbb8901a9ac0f70	data-space-testing	86.6 triage	3-0 better (slight)	keep	2	one round; source text unchanged; business effectiveness unverified; scope=paired text+actual prompt outputs; desktop full suite blocked; focused lifecycle passed	paired
