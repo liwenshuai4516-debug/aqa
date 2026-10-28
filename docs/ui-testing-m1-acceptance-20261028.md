@@ -14,6 +14,7 @@
 - 本轮 `tests/ui-testing-integration-test.mjs`：22 项通过，覆盖真实 SDK/MCP 工具发现、独立 Playwright、seed 异常、只读/计划/禁用守卫和取消；不执行真实模型评审或业务回归。相关 17 个 Vitest 文件、264 项通过。执行记录及历史证据见[实施记录](ui-testing-optimization-execution.md)。
 - 本轮合成私密录制生命周期：[重载](../tests/scratch/ui-optimization-u00/recording-product-lifecycle/1793172779556-reload/result.json)、[重连](../tests/scratch/ui-optimization-u00/recording-product-lifecycle/1793172837113-reconnect/result.json)、[取消](../tests/scratch/ui-optimization-u00/recording-product-actions/1793172865302-cancel/result.json)分别符合安全停止预期；三份录制均为 partial，重载/重连仍保留浏览器清理未确认缺口，不把断连结果算作完整录制。
 - 本轮从原生维护分支 `036d133` 构建并运行 `tests/ui-testing/recovery.test.mjs`：3 项通过，覆盖失败子集及全量重跑的父批次区分、未知写入阻断和中断工作流恢复；这是合成目标的原生回归，不是桌面内重跑或真实业务重跑。
+- 本轮 Electron 合成目标专项：[结果](../tests/scratch/ui-u03-u07/desktop/1793174813432/result.json)。父批次 C1 通过、C2 失败，子批次仅重跑 C2 并通过，父批次未改写；运行中的正式测试进程被取消并确认退出，批次保留为 interrupted / cancelled，重启后恢复计划阻断且未重放。`business_started` 未知，不代表业务副作用已核实。默认桌面路径亦[复验通过](../tests/scratch/ui-u03-u07/desktop/1793174943737/result.json)。两次均无真实模型调用和真实业务请求。
 - [真实业务阶段](ui-testing-pms-m1-20261028-status.md)、[逐项对账](ui-testing-evidence/pms-m1-20261028-reconciliation.json)、[私密归档核验](ui-testing-evidence/pms-m1-retention-check.json)。归档在本机私有目录；真实原目录不存在的场景仅用合成数据验证，不是异地备份。
 
 ## 逐项矩阵
@@ -53,7 +54,7 @@
 | A06-8 | 本轮覆盖     | 已通读入口、原生交接及结果约定并对照当前 schema/守卫；环境查询、授权归档、原生补同步、人工登记和部分失败由本轮相关单测与桌面回归覆盖。新增归档查询不复制 runner/批准规则；未验证真实模型遵循度。            |
 | A09-1 | 待核         | 本矩阵列出各条证据和缺口；尚需对部分/历史项作最终逐条判定。                                                                                                                                                 |
 | A09-2 | 选定范围覆盖 | 真实 PMS 两任务的同 scope/v3/run 引用、真实模型独立评审、执行和归档已核验；录制使用本地控制调度，未证明真实模型自主规划。                                                                                   |
-| A09-3 | 部分         | 本轮桌面覆盖已有资产、查看、分析、缺证据、重启及失败保留；SDK/Chromium 合成取消、重载和断连安全停止、错误环境守卫，以及原生失败子集重跑有证据。失败子集重跑与运行中进程取消尚未在本轮当前桌面组合逐项复验。 |
+| A09-3 | 本轮覆盖     | 桌面覆盖已有资产、查看、分析、缺证据、重启、失败保留、失败子集重跑及运行中进程取消；录制取消、重载和断连安全停止及错误环境守卫由 SDK/Chromium 合成测试覆盖。取消批次的业务副作用未知，重启后恢复被阻断。 |
 | A09-4 | 本轮覆盖     | UI 与数据空间技能、工具、插件、`/ui`、`/data`、启停、重载及执行侧门禁有隔离 Electron/SDK 证据。                                                                                                             |
 | A09-5 | 部分         | 实际桌面配置中的包指向本仓 0.1.29，插件指向本仓 0.17.4；旧入口为兼容转接。未操作已有个人窗口，不能声称旧进程已刷新；下次启动或 `/reload` 后使用新资源。                                                     |
 | A09-6 | 不阻挡 M1    | 性能对照属于 M2，本轮不声称提效达标。                                                                                                                                                                       |

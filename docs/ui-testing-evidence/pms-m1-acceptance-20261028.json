@@ -44,11 +44,19 @@
 		{
 			"path": "tests/scratch/ui-u03-u07/desktop/1793172541222/result.json",
 			"sha256": "a7d0c9441f6bf1c1327ce6b86f35cf04990dc206f953072bd0a9e5c3450bf6f5"
+		},
+		{
+			"path": "tests/scratch/ui-u03-u07/desktop/1793174813432/result.json",
+			"sha256": "e3c7121924df3fa1cf7b36594bdb73d32f938c5ee322629403a2e4769ca0c96c"
+		},
+		{
+			"path": "tests/scratch/ui-u03-u07/desktop/1793174943737/result.json",
+			"sha256": "28b4789586705927f5462e718298f36d36eefdde8a715dbd0be5435e723f0b04"
 		}
 	],
 	"limitations": [
 		"Historical private PMS batch remains partial; this does not change the approved new batch.",
-		"Desktop failure-subset rerun and cancellation of a running process were not reverified in the current combination.",
+		"Desktop recovery and running-process cancellation used a synthetic target; business_started and any business side effects in the interrupted batch remain unknown.",
 		"Real workspace removal was not simulated; the verified private backup is local only.",
 		"Observed baseline is not an approved product requirement; other roles, tenants and contract writes remain out of scope."
 	]

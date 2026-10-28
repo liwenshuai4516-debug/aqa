@@ -2,14 +2,21 @@
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import { once } from "node:events";
-import { mkdtemp, mkdir, readFile, writeFile, readdir, cp } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, writeFile, readdir, cp, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import electron from "electron";
-import { UiWorkflowService, RuntimeAdmissionService, assetDigest, capabilities } from "pi-ui-testing";
+import {
+	UiWorkflowService,
+	UiRunService,
+	RuntimeAdmissionService,
+	assetDigest,
+	capabilities,
+	reconcileRun,
+} from "pi-ui-testing";
 import { ready } from "./fixtures/data-space/ui-run-fixture.mjs";
-import { response } from "./fixtures/data-space/ui-design-fixture.mjs";
+import { response, validCode } from "./fixtures/data-space/ui-design-fixture.mjs";
 import { enableUiTesting } from "../scripts/enable-ui-testing.mjs";
 import { ensureBuild } from "./lib/ensure-build.mjs";
 import { launchNativeApp } from "./desktop/native-app.mjs";
@@ -21,7 +28,16 @@ ensureBuild(repo, "ui-u03-u07-desktop");
 const output = join(repo, "tests/scratch/ui-u03-u07/desktop", String(Date.now()));
 await mkdir(output, { recursive: true });
 const cleanup = [];
-const d = await ready({ after: (fn) => cleanup.push(fn) });
+const recoveryChecks = process.argv.includes("--m1-recovery");
+const d = await ready(
+	{ after: (fn) => cleanup.push(fn) },
+	recoveryChecks
+		? {
+				globalSetupSource:
+					"import {existsSync} from 'node:fs';export default async function(){if(existsSync(process.cwd()+'/.m1-pause'))await new Promise(()=>{});}",
+			}
+		: undefined,
+);
 const { f } = d,
 	workspace = f.root;
 const runtime = {
@@ -59,6 +75,55 @@ await new RuntimeAdmissionService(workspace, f.authority).diagnose(
 	d.specRef,
 	"desktop-ready",
 );
+let recovery;
+if (recoveryChecks) {
+	const second = validCode
+		.slice(validCode.indexOf("test('C1"))
+		.replace("C1 Name persists", "C2 Name persists")
+		.replace("A1 Name", "A2 Name")
+		.replace(
+			"await test.step",
+			"if(existsSync(process.cwd()+'/.m1-fail-c2'))await page.getByRole('listitem').evaluate(e=>e.textContent='wrong');await test.step",
+		);
+	const made = await f.make("m1-two", "import {existsSync} from 'node:fs';\n" + validCode + "\n" + second, (cases) => {
+		const next = structuredClone(cases.data.cases[0]);
+		next.case_id = "C2";
+		next.assertions[0].assertion_id = "A2";
+		next.steps[0].assertion_ids = ["A2"];
+		cases.data.cases.push(next);
+	});
+	made.asset.data.bindings.push({
+		...made.asset.data.bindings[0],
+		case_id: "C2",
+		test_title: "C2 Name persists",
+		assertion_ids: ["A2"],
+	});
+	const spec = structuredClone(d.spec);
+	spec.probes[0].assertion_ids.push("A2");
+	const specRef = await f.store.putFile("qa/ui/scopes/scope-1/m1-two-diagnostic.json", JSON.stringify(spec));
+	made.asset.data.files.push(
+		...d.asset.data.files.filter(
+			(r) => !r.path.endsWith(".spec.ts") && !made.asset.data.files.some((x) => x.path === r.path),
+		),
+		specRef,
+	);
+	made.asset.id = "m1-two-case-asset";
+	made.asset.data.content_sha256 = assetDigest(made.asset);
+	const assetRef = await f.store.put(made.asset);
+	const review = await f.service.assess(f.taskRef, assetRef, "m1-two-review", response);
+	assert.equal(
+		(
+			await new RuntimeAdmissionService(workspace, f.authority).diagnose(
+				assetRef,
+				review.review_ref,
+				specRef,
+				"m1-two-ready",
+			)
+		).runtime_ready,
+		true,
+	);
+	recovery = { assetRef, reviewRef: review.review_ref };
+}
 const temporary = await mkdtemp(join(tmpdir(), "ui-u03-u07-desktop-"));
 const userData = join(temporary, "desktop"),
 	agentDir = join(userData, "agent");
@@ -300,6 +365,175 @@ try {
 	result.checks.push(
 		"Full Electron exit/restart preserves both tasks and pending approval; repeated continuation/analysis and view do not replay browser actions",
 	);
+	if (recoveryChecks) {
+		const parentTask = "m1-desktop-failed-parent";
+		await tool("ui_test_workflow", {
+			operation: "start",
+			input: { task_id: parentTask, mode: "execute", asset_ref: recovery.assetRef },
+		});
+		await writeFile(join(workspace, ".m1-fail-c2"), "synthetic");
+		const parent = await tool("ui_test_run", {
+			operation: "start",
+			input: {
+				...d.request,
+				task_id: parentTask,
+				request_id: "m1-parent",
+				asset_ref: recovery.assetRef,
+				review_ref: recovery.reviewRef,
+			},
+		});
+		assert.equal(parent.status, "completed", JSON.stringify(parent));
+		const parentRef = parent.output.run_ref;
+		const parentBytes = await readFile(join(workspace, parentRef.path));
+		const parentResult = await reconcileRun(workspace, parentRef);
+		assert.equal(parentResult.data.counts.passed, 1);
+		assert.equal(parentResult.data.counts.failed, 1);
+		const plan = await tool("ui_test_run", {
+			operation: "plan-recovery",
+			parent_run_ref: parentRef,
+			intent: "rerun-failed",
+		});
+		assert.deepEqual(
+			plan.selected.map((item) => item.case_id),
+			["C2"],
+		);
+		assert.deepEqual(plan.blockers, []);
+		await rm(join(workspace, ".m1-fail-c2"));
+		const subsetTask = "m1-desktop-failed-subset";
+		await tool("ui_test_workflow", {
+			operation: "start",
+			input: { task_id: subsetTask, mode: "rerun-failed", run_ref: parentRef },
+		});
+		const subset = await tool("ui_test_run", {
+			operation: "start",
+			input: {
+				...d.request,
+				task_id: subsetTask,
+				request_id: "m1-subset",
+				asset_ref: recovery.assetRef,
+				review_ref: recovery.reviewRef,
+				parent_run_ref: parentRef,
+			},
+		});
+		assert.equal(subset.status, "completed", JSON.stringify(subset));
+		assert.equal(subset.output.run.data.parent_run_id, parent.output.run.id);
+		assert.deepEqual(
+			subset.output.run.data.plan.map((item) => item.case_id),
+			["C2"],
+		);
+		const childResult = await reconcileRun(workspace, subset.output.run_ref);
+		assert.equal(childResult.data.counts.passed, 1);
+		assert.deepEqual(await readFile(join(workspace, parentRef.path)), parentBytes);
+		result.recovery = {
+			parentRef,
+			subsetRef: subset.output.run_ref,
+			parentCounts: parentResult.data.counts,
+			subsetCounts: childResult.data.counts,
+			selected: ["C2"],
+		};
+		result.checks.push("Electron reruns only the failed case and preserves the original mixed-result parent");
+
+		const cancelTask = "m1-desktop-cancel",
+			cancelRequest = "m1-running-cancel";
+		await tool("ui_test_workflow", {
+			operation: "start",
+			input: { task_id: cancelTask, mode: "execute", asset_ref: recovery.assetRef },
+		});
+		await writeFile(join(workspace, ".m1-pause"), "synthetic");
+		const request = {
+			...d.request,
+			task_id: cancelTask,
+			request_id: cancelRequest,
+			asset_ref: recovery.assetRef,
+			review_ref: recovery.reviewRef,
+		};
+		pending = { tool: "ui_test_run", request: { operation: "start", input: request } };
+		marker++;
+		await send({ type: "prompt", text: `Controlled local cancellation ${marker}.` });
+		const runService = new UiRunService(workspace, f.authority);
+		let running;
+		await waitUntil(
+			async () => {
+				try {
+					running = await runService.status(cancelTask, cancelRequest);
+					if (running.run.data.state !== "running") return false;
+					await readFile(join(workspace, running.run_ref.path.replace("manifest.json", "process-started.json")));
+					return true;
+				} catch {
+					return false;
+				}
+			},
+			"running native process",
+			30000,
+		);
+		const started = JSON.parse(
+			await readFile(join(workspace, running.run_ref.path.replace("manifest.json", "process-started.json"))),
+		);
+		assert.ok(Number.isInteger(started.pid) && started.pid > 0);
+		await send({ type: "abort" });
+		let cancelled;
+		await waitUntil(
+			async () => {
+				try {
+					cancelled = await runService.status(cancelTask, cancelRequest);
+					return cancelled.run.data.state === "interrupted";
+				} catch {
+					return false;
+				}
+			},
+			"cancelled native process",
+			30000,
+		);
+		const summaryRef = cancelled.run.data.output_refs.find((ref) => ref.path.endsWith("/execution-summary.json"));
+		const summary = JSON.parse(await readFile(join(workspace, summaryRef.path)));
+		assert.equal(summary.status, "cancelled");
+		assert.ok(cancelled.run.data.output_refs.some((ref) => ref.path.endsWith("/process-started.json")));
+		const processRef = cancelled.run.data.output_refs.find((ref) => ref.path.endsWith("/process.json"));
+		const processResult = JSON.parse(await readFile(join(workspace, processRef.path)));
+		assert.ok(processResult.code === "ABORT_ERR" || processResult.signal);
+		await waitUntil(
+			() => {
+				try {
+					process.kill(started.pid, 0);
+					return false;
+				} catch (error) {
+					if (error.code === "ESRCH") return true;
+					throw error;
+				}
+			},
+			"native process exited",
+			10000,
+		);
+		const cancelledBytes = await readFile(join(workspace, cancelled.run_ref.path));
+		const afterCancelRequests = f.fixture.state.browserRequests;
+		await app.close();
+		app = undefined;
+		await launch();
+		const observed = await tool("ui_test_run", { operation: "status", task_id: cancelTask, request_id: cancelRequest });
+		assert.equal(observed.output.run.data.state, "interrupted");
+		const unsafeResume = await tool("ui_test_run", {
+			operation: "plan-recovery",
+			parent_run_ref: cancelled.run_ref,
+			intent: "resume",
+		});
+		assert.ok(unsafeResume.blockers.length > 0);
+		assert.equal(f.fixture.state.browserRequests, afterCancelRequests);
+		assert.deepEqual(await readFile(join(workspace, cancelled.run_ref.path)), cancelledBytes);
+		await rm(join(workspace, ".m1-pause"));
+		result.cancellation = {
+			runRef: cancelled.run_ref,
+			state: cancelled.run.data.state,
+			summary: summary.status,
+			businessStarted: summary.business_started,
+			processStarted: true,
+			processExitObserved: true,
+			recoveryBlocked: true,
+			noReplay: true,
+		};
+		result.checks.push(
+			"Electron abort stops an observed native process, retains the interrupted batch and blocks blind recovery after restart",
+		);
+	}
 	result.status = "PASS";
 } catch (error) {
 	result.error = error.stack;
