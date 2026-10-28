@@ -1,0 +1,10 @@
+{
+  "removedPath": ".workbuddy/tmp/darwin-api2-discovery-20261028",
+  "files": 54,
+  "directories": 10,
+  "bytes": 1542475,
+  "processExitCode": 0,
+  "preservedEvidence": "sdk-discovery.json",
+  "evidenceSha256": "ea7670279d7b98e1c0da70821672cf19b2663461437e9b82aab6e09d7bd419ab",
+  "preservedExistingCleanupKeep": true
+}

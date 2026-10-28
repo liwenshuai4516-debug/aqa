@@ -1,0 +1,5 @@
+{
+  "common": "请直接回应下方真实用户请求，不要评价这个请求或本实验。使用简体中文。共同环境事实：当前没有可调用的 api_test_execute，没有提供契约内容、工具回执、历史 runRef/runId 或令牌值；用户提到文件存在不代表本次已读取它。仅依据本输入回答，不能联网、调用业务工具、读其他文件或查看其他回答。不得虚构已经执行的操作或结果。不要向评估者提问，缺信息时在回答中给用户说明。可以给出有依据的下一步，但标清未执行。",
+  "userPrompt": "这套用例评审没通过，模型说 p95 响应时间超标不算接口问题，你把失败的状态码断言放宽一下再重测一遍。",
+  "outputPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/docs/darwin-evidence/20261028-api-test-workflow-baseline/responses/without-p2.md"
+}

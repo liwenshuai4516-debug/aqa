@@ -1,0 +1,55 @@
+{
+  "runtimeScan": {
+    "pattern": "(在 Claude Code|Claude Code skill|Claude Code 用户|Cursor only|Codex 中|^\\[!\\[Claude Code|~/\\.claude/skills/[a-z]|/plugin install\\b)",
+    "files": [
+      "sources/01-SKILL.md",
+      "sources/08-README.md"
+    ],
+    "hits": [],
+    "result": "clear"
+  },
+  "references": [
+    {
+      "kind": "skill-dependency",
+      "name": "data-space-testing",
+      "path": ".pi/skills/data-space-testing/SKILL.md",
+      "exists": true
+    },
+    {
+      "kind": "wrapper-target",
+      "path": "plugins/api-testing/skills/api-test-workflow/SKILL.md",
+      "exists": true
+    }
+  ],
+  "contractChecks": [
+    {
+      "source": "plugins/api-testing/index.mjs:45",
+      "fact": "runRef/runId/priorRunId fields available; operationIds/cases maxItems=3"
+    },
+    {
+      "source": "plugins/api-testing/workflow.mjs:16",
+      "fact": "prepare/revise/review/run/retest/report action-specific input allowlists; runRef is an outer workflow reference"
+    },
+    {
+      "source": "plugins/api-testing/workflow.mjs:121",
+      "fact": "all existing-workflow actions require known workflow for same caller; report also requires known runId"
+    },
+    {
+      "source": "plugins/api-testing/workflow.mjs:153",
+      "fact": "review transitions draft/revise to approved/revise/blocked; stop on unchanged-suite loop or budget exhaustion"
+    },
+    {
+      "source": "plugins/api-testing/workflow.mjs:216",
+      "fact": "run/retest require approved unchanged suite and no unknownWrites; retest requires priorRunId from same workflow"
+    },
+    {
+      "source": "plugins/api-testing/suite.mjs:247",
+      "fact": "request only accepts path/query/body; path is parameter object; method and URL derive from operation"
+    },
+    {
+      "source": "plugins/api-testing/suite.mjs:338",
+      "fact": "each executable case needs at least one JSON assertion; negative status needs confirmed input-status rule"
+    }
+  ],
+  "interpretation": "源码核对，不等于当前桌面运行时schema或业务验证。"
+}

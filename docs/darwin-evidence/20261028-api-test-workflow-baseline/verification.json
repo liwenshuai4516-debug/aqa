@@ -1,0 +1,74 @@
+{
+  "formatting": {
+    "command": "npx prettier --write docs/darwin-api-test-workflow-baseline-20261028.md docs/darwin-skill-scan-20261028.md docs/darwin-evidence/20261028-api-test-workflow-baseline/README.md",
+    "exitCode": 0,
+    "scope": "only explanatory Markdown; raw snapshots and agent artifacts unmodified"
+  },
+  "typecheck": {
+    "command": "npm run typecheck",
+    "exitCode": 0,
+    "scope": "five project configurations, including desktop"
+  },
+  "lint": {
+    "chunk_id": "41e975",
+    "wall_time_seconds": 0.134835625,
+    "exit_code": 0,
+    "original_token_count": 22,
+    "output": "\n> pi-web-ui@0.109.0 lint\n> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/\n\n"
+  },
+  "protocol": {
+    "chunk_id": "f2faf7",
+    "wall_time_seconds": 0.04926875,
+    "exit_code": 0,
+    "original_token_count": 90,
+    "output": "\n> pi-web-ui@0.109.0 check:protocol\n> node scripts/check-protocol-sync.mjs\n\n✓ types.ts 是 protocol.ts 的 type-only re-export shim\n✓ protocol.ts 保持纯类型导出（无运行时代码）\n✓ 双端 PROTOCOL_VERSION 一致 (v33)\nfatal: No names found, cannot describe anything.\n· 跳过协议版本 git 启发式（无可用 tag 或浅检出环境）\n"
+  },
+  "unit": {
+    "chunk_id": "5064ef",
+    "wall_time_seconds": 8.167e-06,
+    "exit_code": 0,
+    "original_token_count": 39,
+    "output": "\n Test Files  5 passed (5)\n      Tests  31 passed (31)\n   Start at  14:16:16\n   Duration  1.06s (import 61%, transform 31%, tests 5%, setup 1%, worker 1%)\n\n"
+  },
+  "discovery": {
+    "chunk_id": "b17847",
+    "wall_time_seconds": 7.542e-06,
+    "exit_code": 0,
+    "original_token_count": 291,
+    "output": "{\n  \"task\": \"P1-4\",\n  \"status\": \"skills-discovery-passed\",\n  \"checks\": [\n    {\n      \"name\": \"isolated-project-has-no-personal-skills\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"distributed-package-discovered-by-real-sdk-project-loader\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"all-three-load-through-real-host-tool-without-truncation\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"disabled-skill-body-not-exposed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"explicit-package-path-also-discoverable\",\n      \"status\": \"passed\"\n    }\n  ],\n  \"environment\": \"isolated project and empty agentDir; actual SDK and host tool\",\n  \"actualModelCalls\": 0,\n  \"businessRequests\": 0,\n  \"modelAcceptance\": \"Not exercised by this discovery test; see api-testing-model-test.mjs\",\n  \"skills\": [\n    {\n      \"name\": \"api-test-analyze\",\n      \"bytes\": 3586\n    },\n    {\n      \"name\": \"api-test-review\",\n      \"bytes\": 2712\n    },\n    {\n      \"name\": \"api-test-workflow\",\n      \"bytes\": 6458\n    }\n  ],\n  \"evidence\": \"/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api2-discovery-20261028/api-testing-p1-4-zcIrKG/summary.json\"\n}\n"
+  },
+  "diff": {
+    "chunk_id": "ea47d0",
+    "wall_time_seconds": 8e-06,
+    "exit_code": 0,
+    "original_token_count": 351,
+    "output": " .gitignore                                         |    3 +\n .pi/skills/data-space-testing/SKILL.md             |   10 +-\n .../references/native-handoff.md                   |   26 +-\n .../data-space-testing/references/result-output.md |    2 +-\n docs/README.md                                     |    6 +-\n docs/darwin-skill-scan-20261028.md                 |   12 +-\n docs/data-space-integration.md                     |    4 +\n docs/directory-reference.md                        |    2 +-\n docs/project-map.md                                |    2 +-\n docs/ui-testing-optimization-execution.md          |   33 +\n docs/ui-testing-optimization-plan.md               |   42 +-\n plugins/data-space/README.md                       |    6 +\n plugins/data-space/index.mjs                       |   10 +-\n plugins/data-space/private-browser-state.mjs       |   21 +-\n plugins/data-space/tools.mjs                       |    4 +-\n plugins/db-client/package-lock.json                | 2342 ++++++++++++++++++--\n tests/data-space-skill-desktop-test.mjs            |   44 +-\n tests/ui-private-recording-product-test.mjs        |    7 +-\n tests/unit/data-space-private-state.test.ts        |   58 +-\n 19 files changed, 2366 insertions(+), 268 deletions(-)\n M docs/darwin-skill-scan-20261028.md\n?? docs/darwin-api-test-workflow-baseline-20261028.md\n?? docs/darwin-evidence/20261028-api-test-workflow-baseline/\n"
+  },
+  "cleanup": {
+    "startPreviewExitCode": 0,
+    "deliveryPreviewExitCode": 0,
+    "cleanJunkCommand": "npm run clean:junk -- --only .workbuddy/tmp",
+    "cleanJunkExitCode": 0,
+    "cleanJunkDeleted": 0,
+    "ownedTemporaryDirectoryRemoved": true,
+    "see": "cleanup.json"
+  },
+  "limitations": [
+    "protocol Git history heuristic skipped because no available tag",
+    "SDK discovery is not Electron acceptance",
+    "no native API execution or host paid-model call",
+    "other concurrent work and commits left intact"
+  ],
+  "timestamp": "2026-10-28T06:20:13.217348+00:00",
+  "sourceAndArchiveAudit": {
+    "status": "passed",
+    "sourceFiles": 8,
+    "rawResponses": 6,
+    "fairInputPairs": 3,
+    "mappingAndHashes": "passed",
+    "JSONandTSV": "passed",
+    "arithmetic": "passed",
+    "currentSourceMatchesFrozen": true
+  },
+  "headAtAudit": "2f59d9d57ff04d40c6a109779f1a5537b64d04c3"
+}

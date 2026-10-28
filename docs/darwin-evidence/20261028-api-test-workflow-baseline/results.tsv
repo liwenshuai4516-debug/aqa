@@ -1,0 +1,2 @@
+timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
+2026-10-28T06:13:39.109887+00:00	388ad4e2a358f6efd4862a0dcbb9812a0865bd2c	api-test-workflow	-	78.0	baseline	1-9	source=585b8d6a; scope=prompt-response; 6 isolated responses; with preferred 2/3, without preferred 1/3; native_execution=0/3; runtime_effectiveness_unverified; awaiting_Phase2_confirmation	full_test

@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "labels": {
+      "A": {
+        "file": "responses/without-p1.md",
+        "sha256": "4fdc8fa78d686bd6942afba9e208d124ea1c5bff8329fd93a213afc2df426a99"
+      },
+      "B": {
+        "file": "responses/with-p1.md",
+        "sha256": "9e7652f142f170edcfa0d59996c3f5668847dd0c6730caf3df1a6b5fc4524337"
+      }
+    }
+  },
+  {
+    "id": 2,
+    "labels": {
+      "A": {
+        "file": "responses/with-p2.md",
+        "sha256": "2f70bae7616111433a93102284585321b021ff58967d1a5eebe5c66f521798bf"
+      },
+      "B": {
+        "file": "responses/without-p2.md",
+        "sha256": "ea27345a1e9d4b6b51a8b405967121ccb0c939e1dfe9e24b9bd9c9684b055db4"
+      }
+    }
+  },
+  {
+    "id": 3,
+    "labels": {
+      "A": {
+        "file": "responses/without-p3.md",
+        "sha256": "d56ce06cfab12da9bcd05ce1e6437daefd0361166682ebcdf29c4d039315e131"
+      },
+      "B": {
+        "file": "responses/with-p3.md",
+        "sha256": "d077881260046a9cfefd753f1b9a65170623b7fed1cd1a72591d55cf33a69da4"
+      }
+    }
+  }
+]

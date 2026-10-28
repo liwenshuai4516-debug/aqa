@@ -1,0 +1,104 @@
+{
+  "source": "sources/01-SKILL.md",
+  "dimensions": [
+    {
+      "id": 1,
+      "name": "Frontmatter",
+      "weight": 7,
+      "score": 8,
+      "reason": "name合规且描述覆盖准备、执行、评审、修订和定向复测；未明确触发条件或排除范围，未发现空话尾句。"
+    },
+    {
+      "id": 2,
+      "name": "工作流清晰度",
+      "weight": 12,
+      "score": 7,
+      "reason": "有八个步骤与输出；按序执行标题下未明确review approved/revise/blocked分流，review输出只说问题清单，引用传递分散。"
+    },
+    {
+      "id": 3,
+      "name": "失败模式编码",
+      "weight": 12,
+      "score": 8,
+      "reason": "七条触发→一线→兜底覆盖缺能力、契约、鉴权、准备错误、预算、未知写入及未批准；review blocked/连续无改进的停止分支未直述。"
+    },
+    {
+      "id": 4,
+      "name": "检查点设计",
+      "weight": 6,
+      "score": 4,
+      "reason": "入库有用户确认且已授权不重复询问，执行有批准门禁；没有rubric要求的显性CHECKPOINT/STOP标记。扣分是可见性诊断，不意味着需额外审批。"
+    },
+    {
+      "id": 5,
+      "name": "可执行具体性",
+      "weight": 18,
+      "score": 7,
+      "reason": "prepare/retest参数和检查种类具体；review/report没有写全runRef与runId，request子结构未定义，单批3条仅在准备失败后提示。"
+    },
+    {
+      "id": 6,
+      "name": "资源整合度",
+      "weight": 4,
+      "score": 9,
+      "reason": "data-space-testing依赖及项目发现包装均可达，规则不复制；跨技能调用仍需核对实际schema，未验证运行时能力。"
+    },
+    {
+      "id": 7,
+      "name": "整体架构",
+      "weight": 12,
+      "score": 8,
+      "reason": "准备、评审、执行与原生草稿入库边界清楚，无泛化空话；线性步骤与条件状态转换不完全对应，短参数步骤和长入库段失衡。"
+    },
+    {
+      "id": 8,
+      "name": "实测回答表现",
+      "weight": 23,
+      "score": 8.766666666666667,
+      "reason": "三个带技能样本均分；匿名判断两场带技能胜、一场不带技能胜，含request示意错误及p95条件缺口；仅回答层，真实业务未验证。"
+    },
+    {
+      "id": 9,
+      "name": "反例与黑名单",
+      "weight": 6,
+      "score": 10,
+      "reason": "独立六条禁令覆盖HTTP绕过、放宽断言、令牌外泄、盲重试、绕预算及未获批执行。"
+    }
+  ],
+  "rawTotal": 77.96333333333334,
+  "diagnosticTotal": 78.0,
+  "formula": "sum(weight * score) / 10; use raw dimension8 mean before final rounding",
+  "pairedBaselineComparisons": [
+    {
+      "id": 1,
+      "with_score": 8.5,
+      "without_score": 8.2,
+      "preferred": "with",
+      "margin": "slight",
+      "originalJudgmentUnchanged": true
+    },
+    {
+      "id": 2,
+      "with_score": 8.8,
+      "without_score": 9.0,
+      "preferred": "without",
+      "margin": "slight",
+      "originalJudgmentUnchanged": true
+    },
+    {
+      "id": 3,
+      "with_score": 9.0,
+      "without_score": 4.5,
+      "preferred": "with",
+      "margin": "clear",
+      "originalJudgmentUnchanged": true
+    }
+  ],
+  "interpretation": "triage only; not keep/revert, not test pass rate; single response per arm per prompt, single behavior judge",
+  "agentResponseTests": 6,
+  "independentBehaviorJudges": 1,
+  "nativeExecutionScenarios": 0,
+  "nativeTotalScenarios": 3,
+  "optimizationRounds": 0,
+  "status": "Phase1 complete; awaiting separate Phase2 confirmation"
+}

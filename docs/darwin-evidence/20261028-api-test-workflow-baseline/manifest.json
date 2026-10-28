@@ -1,0 +1,62 @@
+{
+  "timestamp": "2026-10-28T06:07:28.396432+00:00",
+  "head": "388ad4e2a358f6efd4862a0dcbb9812a0865bd2c",
+  "branch": "auto-optimize/20261027-1550",
+  "scope": "Phase 1 baseline; prompt-response only; no runtime skill modification",
+  "files": [
+    {
+      "path": "plugins/api-testing/skills/api-test-workflow/SKILL.md",
+      "snapshot": "sources/01-SKILL.md",
+      "bytes": 6458,
+      "sha256": "585b8d6a27b63ccec10e2cc71d32f313da670794709bd10caf09a2a471e5cb71"
+    },
+    {
+      "path": ".pi/skills/api-test-workflow/SKILL.md",
+      "snapshot": "sources/02-SKILL.md",
+      "bytes": 683,
+      "sha256": "225688dbc87f4b18bbca682d9d2466183e92434f59674160ff0020ae4d5e48e4"
+    },
+    {
+      "path": "plugins/api-testing/skills/api-test-workflow/test-prompts.json",
+      "snapshot": "sources/03-test-prompts.json",
+      "bytes": 1858,
+      "sha256": "df7675b4afb72ae037ec3c4dc0262d5e4429b3c24cbbb383d5fc966cfafacdc1"
+    },
+    {
+      "path": "plugins/api-testing/index.mjs",
+      "snapshot": "sources/04-index.mjs",
+      "bytes": 2843,
+      "sha256": "748ea78abd4c9be1dca5966f5462a9777a31aa3e93166c6c791bf2eb559478cb"
+    },
+    {
+      "path": "plugins/api-testing/workflow.mjs",
+      "snapshot": "sources/05-workflow.mjs",
+      "bytes": 11395,
+      "sha256": "3d424c3bc30a00168e7c21cd1a047fdf0e4aa090d1167d2564e409be24da26a7"
+    },
+    {
+      "path": "plugins/api-testing/suite.mjs",
+      "snapshot": "sources/06-suite.mjs",
+      "bytes": 18206,
+      "sha256": "4fee7d7b977b681d2d5d123a578480e40873ed303e6a101d41e044d62fc9cc8f"
+    },
+    {
+      "path": "plugins/api-testing/manifest.json",
+      "snapshot": "sources/07-manifest.json",
+      "bytes": 708,
+      "sha256": "2e57fa647fab782fac11ae62d6a51a445a4301e3d0b0935fa21bdeec1bdbe0cf"
+    },
+    {
+      "path": "plugins/api-testing/README.md",
+      "snapshot": "sources/08-README.md",
+      "bytes": 15823,
+      "sha256": "3b668a181398969b2e2fc65686a4ffc32866ba55e6491fe60d722a3cb1370cd6"
+    }
+  ],
+  "toolAvailability": {
+    "api_test_execute": false,
+    "plan_update": false
+  },
+  "paidHostModelCalls": 0,
+  "nativeBusinessRequests": 0
+}
