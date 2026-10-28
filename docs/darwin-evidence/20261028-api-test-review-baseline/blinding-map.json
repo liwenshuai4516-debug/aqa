@@ -1,0 +1,23 @@
+[
+  {
+    "promptId": 1,
+    "labels": {
+      "A": "with",
+      "B": "without"
+    }
+  },
+  {
+    "promptId": 2,
+    "labels": {
+      "A": "without",
+      "B": "with"
+    }
+  },
+  {
+    "promptId": 3,
+    "labels": {
+      "A": "with",
+      "B": "without"
+    }
+  }
+]

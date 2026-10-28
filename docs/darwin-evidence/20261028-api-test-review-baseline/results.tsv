@@ -1,0 +1,2 @@
+timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
+2026-10-28T07:45:51.525642+00:00	eefafaf2b2402eb4429144a3ea4cde98507e0924	api-test-review	-	68.4	baseline	1-9	response-layer only; 6 actual agent samples; independent anonymous judge; no native business execution 0/3; no keep/revert; phase2 pending user checkpoint	full_test

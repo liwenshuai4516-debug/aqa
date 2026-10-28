@@ -1,0 +1,112 @@
+{
+  "check_0": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "ab61de",
+      "wall_time_seconds": 1.001169959,
+      "session_id": 83982,
+      "original_token_count": 63,
+      "output": "\n> pi-web-ui@0.109.0 typecheck\n> tsc -p tsconfig.server.json --noEmit && tsc -p web/tsconfig.json --noEmit && tsc -p tsconfig.tests.json --noEmit && tsc -p desktop/tsconfig.json --noEmit && tsc -p plugins/page-picker/extension/tsconfig.json --noEmit\n\n"
+    }
+  },
+  "check_1": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "541e85",
+      "wall_time_seconds": 1.002633542,
+      "session_id": 28995,
+      "original_token_count": 14,
+      "output": "\n RUN  v5.0.1 /Users/liyingjun/Desktop/SW-QA/15-aqa\n\n"
+    }
+  },
+  "check_2": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "dbfd1a",
+      "wall_time_seconds": 0.112882125,
+      "exit_code": 0,
+      "original_token_count": 22,
+      "output": "\n> pi-web-ui@0.109.0 lint\n> oxlint server/ web/src/ extensions/ scripts/ bin/ desktop/\n\n"
+    }
+  },
+  "check_3": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "d58baf",
+      "wall_time_seconds": 0.038152709,
+      "exit_code": 0,
+      "original_token_count": 90,
+      "output": "\n> pi-web-ui@0.109.0 check:protocol\n> node scripts/check-protocol-sync.mjs\n\n✓ types.ts 是 protocol.ts 的 type-only re-export shim\n✓ protocol.ts 保持纯类型导出（无运行时代码）\n✓ 双端 PROTOCOL_VERSION 一致 (v33)\nfatal: No names found, cannot describe anything.\n· 跳过协议版本 git 启发式（无可用 tag 或浅检出环境）\n"
+    }
+  },
+  "check_4": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "c39928",
+      "wall_time_seconds": 0.000007709,
+      "exit_code": 0,
+      "original_token_count": 4,
+      "output": "Skill is valid!\n"
+    }
+  },
+  "finalcheck_0": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "6eedf5",
+      "wall_time_seconds": 0.000010125,
+      "exit_code": 0,
+      "original_token_count": 0,
+      "output": ""
+    }
+  },
+  "finalcheck_1": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "5e6244",
+      "wall_time_seconds": 0.00001,
+      "exit_code": 0,
+      "original_token_count": 39,
+      "output": "\n Test Files  5 passed (5)\n      Tests  31 passed (31)\n   Start at  15:47:58\n   Duration  1.24s (import 59%, transform 35%, tests 4%, setup 1%, worker 1%)\n\n"
+    }
+  },
+  "finalcheck_2": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "39c1b5",
+      "wall_time_seconds": 5.052670791,
+      "exit_code": 0,
+      "original_token_count": 168,
+      "output": "\n> pi-web-ui@0.109.0 clean\n> node scripts/clean-project.mjs\n\n仅预览；未删除文件。执行前先结束相关测试/构建进程。\n保留\t68.9 MiB\ttests/scratch/api-testing-p1-1/runtime/node_modules · .cleanup-keep 保留标记\n保留\t65.4 MiB\ttests/scratch/api-testing-p0-1/runtime/node_modules · .cleanup-keep 保留标记\n保留\t65.3 MiB\ttests/scratch/api-testing-p0-1/reproduce/node_modules · .cleanup-keep 保留标记\n保留\t25.4 MiB\tnode_modules/.vite · 未满 7 天或近期有写入\n保留\t0.2 MiB\t.workbuddy/tmp · .cleanup-keep 保留标记\n保留\t0.0 MiB\tnode_modules/.vite-temp · 未满 7 天或近期有写入\n可清理 0 项，共 0.0 MiB。\n"
+    }
+  },
+  "finalcheck_3": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "638722",
+      "wall_time_seconds": 5.052651084,
+      "exit_code": 0,
+      "original_token_count": 79,
+      "output": "\n> pi-web-ui@0.109.0 clean:junk\n> node scripts/clean-project.mjs --residue --apply --only .workbuddy/tmp\n\n执行清理（请先结束使用这些目录的测试/构建进程）\n保留\t0.2 MiB\t.workbuddy/tmp · .cleanup-keep 保留标记\n可清理 0 项，共 0.0 MiB。\n实际删除 0 项，逻辑大小 0.0 MiB。\n"
+    }
+  },
+  "initialTest_0": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "ade993",
+      "wall_time_seconds": 1.001215334,
+      "session_id": 43330,
+      "original_token_count": 0,
+      "output": ""
+    }
+  },
+  "initialTest_1": {
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "af7773",
+      "wall_time_seconds": 0.998668167,
+      "exit_code": 0,
+      "original_token_count": 291,
+      "output": "{\n  \"task\": \"P1-4\",\n  \"status\": \"skills-discovery-passed\",\n  \"checks\": [\n    {\n      \"name\": \"isolated-project-has-no-personal-skills\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"distributed-package-discovered-by-real-sdk-project-loader\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"all-three-load-through-real-host-tool-without-truncation\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"disabled-skill-body-not-exposed\",\n      \"status\": \"passed\"\n    },\n    {\n      \"name\": \"explicit-package-path-also-discoverable\",\n      \"status\": \"passed\"\n    }\n  ],\n  \"environment\": \"isolated project and empty agentDir; actual SDK and host tool\",\n  \"actualModelCalls\": 0,\n  \"businessRequests\": 0,\n  \"modelAcceptance\": \"Not exercised by this discovery test; see api-testing-model-test.mjs\",\n  \"skills\": [\n    {\n      \"name\": \"api-test-analyze\",\n      \"bytes\": 3586\n    },\n    {\n      \"name\": \"api-test-review\",\n      \"bytes\": 2712\n    },\n    {\n      \"name\": \"api-test-workflow\",\n      \"bytes\": 7151\n    }\n  ],\n  \"evidence\": \"/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api3-baseline-tests/sdk/api-testing-p1-4-2YSYs2/summary.json\"\n}\n"
+    }
+  }
+}

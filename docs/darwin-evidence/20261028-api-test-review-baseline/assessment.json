@@ -1,0 +1,126 @@
+{
+  "timestamp": "2026-10-28T07:45:51.525642+00:00",
+  "diagnosticOnly": true,
+  "dimensions": [
+    {
+      "id": 1,
+      "dimension": "Frontmatter",
+      "weight": 7,
+      "score": 8,
+      "weighted": 5.6,
+      "reason": "name规范，描述说明对象、插件和用途；触发任务可辨，但未说明仅评已有冻结套件。"
+    },
+    {
+      "id": 2,
+      "dimension": "工作流清晰度",
+      "weight": 12,
+      "score": 5.5,
+      "weighted": 6.6,
+      "reason": "以密集段落描述评审、修订及记录，缺编号与明确逐步输出；内部verdict和公共phase未区分。"
+    },
+    {
+      "id": 3,
+      "dimension": "失败模式编码",
+      "weight": 12,
+      "score": 6,
+      "weighted": 7.2,
+      "reason": "列出缺业务事实、非法输出、预算及无改进停止，但reason仅限清单漏实现值；缺工具、未知runRef及工作流直接错误分支未明确。"
+    },
+    {
+      "id": 4,
+      "dimension": "检查点设计",
+      "weight": 6,
+      "score": 7,
+      "weighted": 4.2,
+      "reason": "有显性🛑执行门禁及revise/blocked停止确认；pass不是公共工具成功回执字段，确认要求也未按已有授权细分。"
+    },
+    {
+      "id": 5,
+      "dimension": "可执行具体性",
+      "weight": 18,
+      "score": 6.5,
+      "weighted": 11.7,
+      "reason": "review参数、findings和预算较具体；公共phase=approved未明示，revise所需cases未列出，reason排他清单与实现不符。"
+    },
+    {
+      "id": 6,
+      "dimension": "资源整合度",
+      "weight": 4,
+      "score": 8,
+      "weighted": 3.2,
+      "reason": "自包含技能，无悬空文件引用；项目包装确实引用唯一插件原文。工具缺失说明主要存在包装，直接读取正文时较弱。"
+    },
+    {
+      "id": 7,
+      "dimension": "整体架构",
+      "weight": 12,
+      "score": 6,
+      "weighted": 7.2,
+      "reason": "范围、独立模型与禁令相容，无明显空话；大段混合执行契约、模型结构与内部细节，不利按实际回执分流。"
+    },
+    {
+      "id": 8,
+      "dimension": "实测表现（回答层）",
+      "weight": 23,
+      "score": 7.633333333333334,
+      "weighted": 17.55666666666667,
+      "reason": "三题匿名评分均偏无技能组；带技能公共状态、预算单位及停滞条件表述存在差错或歧义。原生工具执行0/3，不能外推真实业务表现。",
+      "rawEvidence": "judge.json"
+    },
+    {
+      "id": 9,
+      "dimension": "反例与黑名单",
+      "weight": 6,
+      "score": 8.5,
+      "weighted": 5.1,
+      "reason": "独立清单覆盖放宽断言、导入标签、绕预算、自签批准和编造；未登记reason禁令结合不完整排他枚举会误拒真实回执。"
+    }
+  ],
+  "weightedTotalUnrounded": "68.35666666666666666666666667",
+  "diagnosticScore": 68.4,
+  "responseComparison": {
+    "withMean": 7.633333333333334,
+    "withoutMean": 9.066666666666666,
+    "rows": [
+      {
+        "id": 1,
+        "withScore": 7.4,
+        "withoutScore": 8.9,
+        "preferred": "without",
+        "reason": "两者都诚实说明当前无法执行。B 更准确地延续既有授权且没有明确写错公共回执；A 的 pass 判断条件和 revise 一律等待确认构成实质问题。B 仍应把正式批准的来源说清楚。"
+      },
+      {
+        "id": 2,
+        "withScore": 8.7,
+        "withoutScore": 9.3,
+        "preferred": "without",
+        "reason": "A 对不能削弱断言和有依据才能纠正的边界说明准确，也没有写错批准回执。B 的修订保存步骤更具体，但明确混淆公共批准状态与内部 pass，影响正式门禁判断。"
+      },
+      {
+        "id": 3,
+        "withScore": 6.8,
+        "withoutScore": 9.0,
+        "preferred": "without",
+        "reason": "B 对标签、批准和未执行状态的处理稳妥，没有凭空认定预算或停止条件。A 虽提供更多预算信息，却在公共回执、调用预算单位和停滞触发条件上出现具体误导，不能因规则列得更多而优先。"
+      }
+    ],
+    "wins": {
+      "with": 0,
+      "without": 3,
+      "tie": 0
+    }
+  },
+  "nativeToolExecution": {
+    "executed": 0,
+    "total": 3,
+    "status": "not executed; tool and raw inputs unavailable"
+  },
+  "evaluationMode": "full_test for actual agent-generated response samples only; not native business full_test",
+  "keepRevertDecision": null,
+  "primaryReviewOfJudge": [
+    "原始评分与不利结论保留，不补样本覆盖；单样本与单评委结论只供诊断。",
+    "公共phase与内部verdict确有区别；预算30秒及两轮停滞的批评主要反映省略限定后的歧义，不能声称每处都已实际误算或误触发。",
+    "无技能组同样有批准来源、修订参数和历史预算核对缺口；三题获偏好不证明无技能方案可正式执行。",
+    "缺工具导致业务未执行本身未扣分；所有明确业务状态保持未知。"
+  ]
+}

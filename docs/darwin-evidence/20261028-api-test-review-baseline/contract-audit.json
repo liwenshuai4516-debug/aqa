@@ -1,0 +1,33 @@
+{
+  "scope": "read-only source audit for item 3 baseline; skill unchanged",
+  "references": [
+    "sources/04-index.mjs",
+    "sources/05-workflow.mjs",
+    "sources/06-review.mjs",
+    "sources/09-api-testing-review-test.mjs"
+  ],
+  "verifiedContractFacts": [
+    "当前没有 api_test_execute，也没有具体runRef/冻结正文/实际回执/历史预算。用户说已有runRef不等于本次收到。未调用时不能编造verdict、phase、reason、findings、用量、证据路径或剩余预算。缺工具是环境限制，不冒充宿主blocked回执。",
+    "唯一受控公共入口api_test_execute。review参数为action=review,runRef,可选model；runRef使用prepare返回的workflowRef，同一调用身份。缺工具不得用直接HTTP/私有MCP绕过。",
+    "公共workflow的review成功回执为workflowRef,phase=approved,suitePath,reviewCalls,assetRef，不含顶层verdict=pass。非通过回执为workflowRef,phase=revise或blocked,reason,reviewPath。内部reviewDraft及review.json才使用verdict=pass/revise/blocked。宿主复查hash并发布实际批准后才允许同runRef action=run。",
+    "用户第一题已授权通过后直接执行，不需重复确认同一已授权动作；但无回执和真实批准不得执行。revise先核查依据、改cases到新outputPath再用同runRef评审；缺事实/blocked/预算耗尽不能盲目重试。",
+    "不能为通过而扩为所有2xx、删关键断言。若经契约与已确认规则证明原断言写错，可定向纠正；反之保持断言并保留差异。未读原文不能猜具体状态码或字段。",
+    "每workflow 3次模型complete调用共享（不是每调用review可再给3次；一批多用例也耗多次）、2次revise、从prepare起180秒。每个reviewDraft整体至多90秒，单模型调用至多30秒；剩余<5000ms不启动新模型调用。无预算回执不能推断实际剩余次数。",
+    "同一冻结suiteHash连续三次评审均相同，第三次（即连续两轮无变化）触发two-rounds-without-improvement；不能编造“上次没过”就已触发。达到3次调用、phase不在draft/revise或180秒耗尽也可能直接抛工作流错误，不一定返回blocked。",
+    "实际阻塞reason除技能所列7项外还包括missing-business-facts、MODEL_TIMEOUT、CANCELED；独立reviewDraft带修订回调的路径另有review-round-budget、invalid-correction、correction-unavailable，公共workflow固定maxRounds=1且不传revise，不应将内部所有值都声称为公共常见路径。应保留原始reason及错误原文，不自行改码或杜撰。",
+    "导入通过标签和对话意见不能替代宿主独立批准。对真实批准回执的核验有意义，但标签本身不能升级为批准。findings由宿主校验哈希和当前caseId；缺失信息保持未知。",
+    "模型替身只证明控制流程，不是真实模型语义或业务执行。本次六个回答全部仅为实际Agent生成的回答层样本；原生业务工具执行0/3。"
+  ],
+  "runtimeScan": {
+    "pattern": "Darwin required runtime red-flag patterns",
+    "matches": 0,
+    "status": "green",
+    "necessaryProjectPluginDependencyPreserved": true
+  },
+  "legacyExpectedCaveats": [
+    "expected只作历史测试意图，不作当前工具事实源",
+    "P1必须区分内部verdict与公共phase，不因背出verdict枚举而认为公共回执参数正确",
+    "P3要求给出当前blocked原因，但无实际回执时应标未知，不编造具体reason",
+    "历史报告的绝对涨分、全因果归因和2712-byte历史上限不继承；本次基线2712，上限4068"
+  ]
+}

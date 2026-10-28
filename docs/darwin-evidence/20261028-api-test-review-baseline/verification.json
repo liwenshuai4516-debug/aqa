@@ -1,0 +1,91 @@
+{
+  "timestamp": "2026-10-28T07:49:44.569915+00:00",
+  "phase": "baseline only; source skill unchanged; no candidate or next skill",
+  "checks": [
+    {
+      "command": "prettier --write <this task explanatory Markdown only>",
+      "status": "passed",
+      "rawInputsAndResponsesUnformatted": true
+    },
+    {
+      "command": "npm run typecheck",
+      "status": "passed",
+      "configurations": 5,
+      "evidence": "check-outputs.json:check_0 and finalcheck_0"
+    },
+    {
+      "command": "npm run lint",
+      "status": "passed",
+      "evidence": "check-outputs.json:check_2"
+    },
+    {
+      "command": "npm run check:protocol",
+      "status": "structure passed; Git history heuristic skipped (no available tag)",
+      "evidence": "check-outputs.json:check_3"
+    },
+    {
+      "command": "python3 /Users/liyingjun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/api-testing/skills/api-test-review",
+      "status": "passed",
+      "evidence": "check-outputs.json:check_4"
+    },
+    {
+      "command": "npx vitest run tests/unit/api-testing-registration.test.ts tests/unit/skill-block.test.ts tests/unit/skill-tool.test.ts tests/unit/skill-capability-settings.test.ts tests/unit/skill-settings-wire.test.ts",
+      "status": "passed",
+      "files": 5,
+      "tests": 31,
+      "evidence": "check-outputs.json:finalcheck_1"
+    },
+    {
+      "command": "TMPDIR=<task-owned review directory> node tests/api-testing-review-test.mjs <task-owned runtime>",
+      "status": "11 controls passed",
+      "explicitModelStubCalls": 13,
+      "actualProviderCalls": 0,
+      "httpRequests": 0,
+      "businessRequests": 0,
+      "evidence": "review-controls.json; engineering-evidence.tar.gz"
+    },
+    {
+      "command": "TMPDIR=<task-owned SDK directory> node --import tsx tests/api-testing-skills-test.mjs",
+      "status": "5 checks passed",
+      "loadedReviewSkillBytes": 2712,
+      "actualModelCalls": 0,
+      "businessRequests": 0,
+      "evidence": "sdk-discovery.json"
+    },
+    {
+      "command": "npm run clean",
+      "stage": "task start and delivery",
+      "status": "passed; zero eligible entries",
+      "evidence": "check-outputs.json:finalcheck_2"
+    },
+    {
+      "command": "npm run clean:junk -- --only .workbuddy/tmp",
+      "status": "passed; zero additional entries removed; protected history retained",
+      "evidence": "check-outputs.json:finalcheck_3"
+    }
+  ],
+  "notExecuted": {
+    "nativeBusinessPrompts": "0/3; missing api_test_execute and raw inputs",
+    "realModelSemanticReview": "not exercised; explicit stubs only",
+    "electronForThisItem": "not executed; baseline leaves source unchanged; do not inherit item 2 desktop pass",
+    "optimizationCandidate": "not created; pending baseline checkpoint"
+  },
+  "engineeringArchive": {
+    "files": 115,
+    "status": "passed"
+  },
+  "cleanup": "172 files, 31 directories and 1 symlink removed, 1807507 bytes; see cleanup.json; no temporary script files created",
+  "finalIntegrity": {
+    "status": "passed",
+    "checks": [
+      "all JSON parse",
+      "nine frozen sources match current bytes and hashes; review SKILL unchanged; size baseline correct",
+      "six answer inputs share conditions/prompts; skill only in with group; no expected answers; outputs exact",
+      "anonymous judge input, raw scores, decoding and unrounded weighted score verified; no new keep/revert",
+      "TSV nine columns with response-layer qualifier",
+      "115 archived files and archive SHA verified; 11 stub controls/13 calls and 5 SDK checks bound to current skill",
+      "owned temporary directory removed after archived evidence verification"
+    ]
+  },
+  "finalDiffCheck": "passed: git diff --check"
+}

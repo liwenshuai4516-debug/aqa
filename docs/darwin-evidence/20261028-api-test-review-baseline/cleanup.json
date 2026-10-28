@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-10-28T07:47:57.312944+00:00",
+  "precondition": "review and SDK test processes exited; lsof +D task root returned no open files; 115 archived files SHA-verified",
+  "removed": {
+    "path": ".workbuddy/tmp/darwin-api3-baseline-tests",
+    "files": 172,
+    "directories": 31,
+    "symlinks": 1,
+    "bytes": 1807507
+  },
+  "historyCleanupKeepPreserved": true,
+  "temporaryScriptFilesCreated": 0
+}

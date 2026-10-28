@@ -1,0 +1,13 @@
+{
+	"id": "api-testing",
+	"name": "接口自动化测试",
+	"nameEn": "API testing",
+	"version": "0.5.0",
+	"description": "导入、评审、执行与复测套件；支持宿主配置的单个手动 HTTP IPv4 目标。",
+	"descriptionEn": "Prepare, review, run and retest suites for fixtures or one host-configured manual HTTP IPv4 target.",
+	"apiVersion": 2,
+	"permissions": ["tools", "llm", "notify"],
+	"view": false,
+	"icon": "🧪",
+	"iconSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 3h6M10 3v7l-5 8a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-8V3M8 15h8\"/></svg>"
+}

@@ -1,0 +1,71 @@
+{
+  "startedAt": "2026-10-28T07:36:21.032990+00:00",
+  "head": "eefafaf2b2402eb4429144a3ea4cde98507e0924",
+  "branch": "auto-optimize/20261027-1550",
+  "authorization": "user confirmed item 2 and continue item 3; explicit reuse of all three existing prompts",
+  "scope": "item 3 baseline only; skill not edited; phase 2 requires baseline checkpoint confirmation",
+  "sources": [
+    {
+      "path": "plugins/api-testing/skills/api-test-review/SKILL.md",
+      "snapshot": "sources/01-SKILL.md",
+      "bytes": 2712,
+      "sha256": "ddbe6394e0108af4b73b08f8aef36c286e28ac6b90dc30bfa90480e9823d3292"
+    },
+    {
+      "path": ".pi/skills/api-test-review/SKILL.md",
+      "snapshot": "sources/02-SKILL.md",
+      "bytes": 689,
+      "sha256": "6a9925facc29ed0d8300e13285489c0e6283fabb1685764741ac0dc8d1e10b0c"
+    },
+    {
+      "path": "plugins/api-testing/skills/api-test-review/test-prompts.json",
+      "snapshot": "sources/03-test-prompts.json",
+      "bytes": 1632,
+      "sha256": "d98550752527937fd4874e8501ccc78f0e21ccdee2e7572c636d4d6f85cc1260"
+    },
+    {
+      "path": "plugins/api-testing/index.mjs",
+      "snapshot": "sources/04-index.mjs",
+      "bytes": 2843,
+      "sha256": "748ea78abd4c9be1dca5966f5462a9777a31aa3e93166c6c791bf2eb559478cb"
+    },
+    {
+      "path": "plugins/api-testing/workflow.mjs",
+      "snapshot": "sources/05-workflow.mjs",
+      "bytes": 11395,
+      "sha256": "3d424c3bc30a00168e7c21cd1a047fdf0e4aa090d1167d2564e409be24da26a7"
+    },
+    {
+      "path": "plugins/api-testing/review.mjs",
+      "snapshot": "sources/06-review.mjs",
+      "bytes": 11489,
+      "sha256": "2c9cdbceb22c88e5eaf0989d95e37fa94eba3ace760db83f007398b7a354c4cd"
+    },
+    {
+      "path": "plugins/api-testing/suite.mjs",
+      "snapshot": "sources/07-suite.mjs",
+      "bytes": 18206,
+      "sha256": "4fee7d7b977b681d2d5d123a578480e40873ed303e6a101d41e044d62fc9cc8f"
+    },
+    {
+      "path": "plugins/api-testing/manifest.json",
+      "snapshot": "sources/08-manifest.json",
+      "bytes": 708,
+      "sha256": "2e57fa647fab782fac11ae62d6a51a445a4301e3d0b0935fa21bdeec1bdbe0cf"
+    },
+    {
+      "path": "tests/api-testing-review-test.mjs",
+      "snapshot": "sources/09-api-testing-review-test.mjs",
+      "bytes": 7761,
+      "sha256": "c9d20f6700b49fc2e5f438350351c845c092a1d56839bb091a4fb602ea89d8fc"
+    }
+  ],
+  "skillBytes": 2712,
+  "maxOptimizedBytes": 4068.0,
+  "nativeToolAvailable": false,
+  "planUpdateAvailable": false,
+  "businessPromptsExecuted": 0,
+  "testPromptsTotal": 3,
+  "legacyReport": ".workbuddy/reports/api-test-review-darwin-20261027.md",
+  "legacyResultsReused": false
+}

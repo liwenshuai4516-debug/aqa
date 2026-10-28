@@ -1,0 +1,71 @@
+{
+  "scope": "dimensions 1–7 and 9 by primary agent against frozen sources; dim8 pending independent anonymous response judge",
+  "dimensions": [
+    {
+      "id": 1,
+      "dimension": "Frontmatter",
+      "weight": 7,
+      "score": 8,
+      "weighted": 5.6,
+      "reason": "name规范，描述说明对象、插件和用途；触发任务可辨，但未说明仅评已有冻结套件。"
+    },
+    {
+      "id": 2,
+      "dimension": "工作流清晰度",
+      "weight": 12,
+      "score": 5.5,
+      "weighted": 6.6,
+      "reason": "以密集段落描述评审、修订及记录，缺编号与明确逐步输出；内部verdict和公共phase未区分。"
+    },
+    {
+      "id": 3,
+      "dimension": "失败模式编码",
+      "weight": 12,
+      "score": 6,
+      "weighted": 7.2,
+      "reason": "列出缺业务事实、非法输出、预算及无改进停止，但reason仅限清单漏实现值；缺工具、未知runRef及工作流直接错误分支未明确。"
+    },
+    {
+      "id": 4,
+      "dimension": "检查点设计",
+      "weight": 6,
+      "score": 7,
+      "weighted": 4.2,
+      "reason": "有显性🛑执行门禁及revise/blocked停止确认；pass不是公共工具成功回执字段，确认要求也未按已有授权细分。"
+    },
+    {
+      "id": 5,
+      "dimension": "可执行具体性",
+      "weight": 18,
+      "score": 6.5,
+      "weighted": 11.7,
+      "reason": "review参数、findings和预算较具体；公共phase=approved未明示，revise所需cases未列出，reason排他清单与实现不符。"
+    },
+    {
+      "id": 6,
+      "dimension": "资源整合度",
+      "weight": 4,
+      "score": 8,
+      "weighted": 3.2,
+      "reason": "自包含技能，无悬空文件引用；项目包装确实引用唯一插件原文。工具缺失说明主要存在包装，直接读取正文时较弱。"
+    },
+    {
+      "id": 7,
+      "dimension": "整体架构",
+      "weight": 12,
+      "score": 6,
+      "weighted": 7.2,
+      "reason": "范围、独立模型与禁令相容，无明显空话；大段混合执行契约、模型结构与内部细节，不利按实际回执分流。"
+    },
+    {
+      "id": 9,
+      "dimension": "反例与黑名单",
+      "weight": 6,
+      "score": 8.5,
+      "weighted": 5.1,
+      "reason": "独立清单覆盖放宽断言、导入标签、绕预算、自签批准和编造；未登记reason禁令结合不完整排他枚举会误拒真实回执。"
+    }
+  ],
+  "partialWeightedTotal": 50.800000000000004,
+  "diagnosticOnly": true
+}
