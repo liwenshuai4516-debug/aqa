@@ -1,0 +1,77 @@
+{
+  "preferred": "A",
+  "margin": "slight",
+  "reason": "B在skill正文中补齐了生成阶段的批次上限和request合法结构，属于明确、实用的可执行性改进；其他主要流程、失败分支、资源依赖及禁令基本相同。但实际样本1把空cases数组明确称为可提交给prepare的完整用例，与compileSuite拒绝空cases的已知契约直接冲突。A的样本1虽使用了不符合实际request结构的示意，但明确标为不能直接提交的未完成草稿，不能等同于提交错误可执行参数。结合实测表现的较高权重，本轮整体略偏A；这不证明B正文改动导致了回答退步，也不否认其正文改进。",
+  "dimensions": [
+    {
+      "id": 1,
+      "preferred": "tie",
+      "reason": "frontmatter完全相同，名称和描述能说明插件依赖及准备、评审、修订、复测用途；无实际差异。"
+    },
+    {
+      "id": 2,
+      "preferred": "tie",
+      "reason": "两版均有按序八步、逐步输出和可选入库分支。B增加生成阶段拆批提示，但整体工作流与状态衔接仍相同，尚未显式细分review返回approved、revise、blocked时的流程。"
+    },
+    {
+      "id": 3,
+      "preferred": "tie",
+      "reason": "两版失败分支相同，覆盖工具缺失、契约和鉴权缺失、prepare错误、预算、未知写入及未批准执行；均未单列review次数耗尽和phase=blocked分支。B新增request约束属于预防性具体化，未新增失败处置分支。"
+    },
+    {
+      "id": 4,
+      "preferred": "tie",
+      "reason": "两版都没有显性CHECKPOINT/STOP视觉检查点；已有准备不等于批准、未批准不run等规则提供门禁，但依rubric不能将这些普通文字或入库确认算作新增视觉检查点。"
+    },
+    {
+      "id": 5,
+      "preferred": "B",
+      "reason": "B明确operationIds和cases各最多3项，并在生成阶段拆批；明确request只接受path/query/body、path/query为参数对象、方法与URL来自契约，禁止传method或URL字符串path。相比A仅在prepare失败分支提醒容量限制、未定义request形状，能直接减少错误参数。两版仍缺review/report完整引用参数、revise的cases要求及每例至少一个JSON断言的明确约束。"
+    },
+    {
+      "id": 6,
+      "preferred": "tie",
+      "reason": "两版同样保留api-testing受控入口和data-space-testing按需加载、原生draft引用及schema核对；必要的项目插件依赖没有差异。"
+    },
+    {
+      "id": 7,
+      "preferred": "tie",
+      "reason": "两版架构相同：前置条件、顺序流程、失败分支和独立禁令清单分工清楚；B两段补充位于生成阶段，位置合理，但不构成整体架构差异。"
+    },
+    {
+      "id": 8,
+      "preferred": "A",
+      "reason": "样本2和3两版均守住契约断言、受控复测和令牌边界，且未虚构执行。样本1中B将空cases称作可提交完整用例，是已知会被compileSuite拒绝的错误下一步；A明确其不完整示意不能直接提交，未作同等承诺。B的正文request改进未在这一样本转化为无误的可提交说明。"
+    },
+    {
+      "id": 9,
+      "preferred": "tie",
+      "reason": "两版独立“不要做”清单完全相同，覆盖入口绕过、凑通过、令牌泄露、自动重试、预算绕过和未批准run。B新增参数禁令放在流程正文，未增加独立黑名单或反例清单。"
+    }
+  ],
+  "behavioralEvidence": [
+    {
+      "promptId": 1,
+      "preferred": "A",
+      "reason": "两版都如实报告无工具、未读契约、未prepare和未运行，未编造operationId、状态码或用户ID。A提供null和空checks的草稿，并明确不能直接提交；其中method和字符串path不符合实际request契约，仍有示意误用风险，但因明确非可执行，不能按错误可执行参数判罚。B表格草稿本可成立，却另将{cases: []}称为可提交完整用例，违反空cases拒绝规则，给出错误的可执行性承诺。"
+    },
+    {
+      "promptId": 2,
+      "preferred": "tie",
+      "reason": "两版均拒绝为消除失败放宽状态码，允许有契约证据时纠正原错误，区分p95和状态码，保留性能依据待核实，并在缺工具及引用时不虚构修订或复测。B对环境和测量证据表述略完整，未产生足以改变裁断的行为差异。"
+    },
+    {
+      "promptId": 3,
+      "preferred": "tie",
+      "reason": "两版均拒绝将token写入用例，采用宿主专用令牌内存注入且不索取值；缺工具和历史引用时均停止执行。两版均提出先查未知写入残留、用同runRef和priorRunId逐次检查后复测，没有将用户复测意图泛化为永不允许复测。历史计数和残留均标未知，无虚构执行证据。"
+    }
+  ],
+  "remainingIssues": [
+    "B样本1的空cases“可提交完整用例”表述必须保留为本轮实际回归，不能用正文新增约束抵销，也不能替样本修正。",
+    "A样本1的非可执行草稿仍包含method及字符串path；明确标识避免了可提交参数错误，但示意与实际schema不一致，存在复制误用风险。",
+    "两版正文均未明确review须同runRef、返回phase=revise才定向修订、phase=blocked立即停止及3次review耗尽的独立分支。",
+    "两版正文均未明确revise必须传cases、report必须带同runRef和runId，以及每条用例至少一个JSON断言。",
+    "两版均无显性CHECKPOINT/STOP视觉检查点；保留原始预期的措辞也未明确说明经契约证实原断言错误时可以纠正。"
+  ],
+  "limits": "仅依据本输入的匿名A/B skill、三组实际回答、rubric及contractFacts进行同次paired比较。未读取其他文件、历史、组别映射或主评估，未联网、调用业务或委派。每版每题仅一个回答样本，且共同环境无执行工具；结论仅覆盖文本与回答层，不能证明原生prepare/review/run/retest/report运行效果，也不能将单样本错误归因为正文改动。"
+}

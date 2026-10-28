@@ -1,0 +1,77 @@
+{
+  "preferred": "A",
+  "margin": "slight",
+  "reason": "B 的文字补齐了生成阶段的批量上限和 request 参数结构，具体性优于 A；但实际回答第 1 题把空 cases 明确称为可提交的完整用例，直接违反 compileSuite 拒绝空用例的已知契约。A 同题虽然展示了不合工具结构的示意，却明确声明不能直接提交，风险较低。两版其余流程及禁令大体一致，第 2、3 题也均正确停止未授权或缺前置条件的执行。综合文字收益和实际样本的不利结果，略偏 A；这只是本次有限样本的比较，不证明 B 的文字修改导致了回答错误。",
+  "dimensions": [
+    {
+      "id": 1,
+      "preferred": "tie",
+      "reason": "name 和 description 完全相同，均说明插件依赖与契约测试、评审、修订、复测范围。"
+    },
+    {
+      "id": 2,
+      "preferred": "B",
+      "reason": "主流程相同；B 在生成阶段即约束 operationIds/cases 各不超过 3，并要求提前拆批，使准备前的组织方式更明确，属于小幅改进。"
+    },
+    {
+      "id": 3,
+      "preferred": "tie",
+      "reason": "失败分支相同，均明确工具缺失、资料不足、鉴权缺失、prepare 错误、预算到限、写入未知与未获批的处理。仍共同遗漏 review 返回 blocked 的专门停止分支及 3 次 review 耗尽的显性处理。"
+    },
+    {
+      "id": 4,
+      "preferred": "tie",
+      "reason": "均有准备不等于批准、批准后才执行的门禁，但都没有独立显性的 CHECKPOINT/STOP 视觉检查点；相同的可选入库确认不构成版本优势。"
+    },
+    {
+      "id": 5,
+      "preferred": "B",
+      "reason": "B 新增 request 只接受 path/query/body、path/query 为参数对象，以及 method 和 URL 从契约派生的具体规则，直接消除 A 的参数形状空白；批量限制也前置到了生成阶段。不过两版均未明确 review、report 的完整引用要求，未说明 revise 必传 cases，也未显式要求每条用例至少一个 JSON 断言。"
+    },
+    {
+      "id": 6,
+      "preferred": "tie",
+      "reason": "均保留必要 api-testing 插件依赖、受控执行入口和 data-space-testing schema 核验，资源引用方式没有差异。"
+    },
+    {
+      "id": 7,
+      "preferred": "tie",
+      "reason": "两版结构相同，均区分草稿、可选入库、评审、修订、执行、复测及历史报告，新增两段参数规则未改变总体架构。"
+    },
+    {
+      "id": 8,
+      "preferred": "A",
+      "reason": "第 1 题 A 将不完整示意明确标为不能直接提交；B 将空 cases 误称可提交的完整用例，形成实际契约错误。第 2 题 B 对 p95 测试条件的说明稍精确，第 3 题基本持平，均不足以抵消第 1 题的实用退步。没有原生工具运行验证。"
+    },
+    {
+      "id": 9,
+      "preferred": "tie",
+      "reason": "独立禁令清单完全相同，覆盖绕过入口、放宽断言、令牌泄漏、盲目重试、重建绕预算和未批准执行；两版均未提供成对反例。"
+    }
+  ],
+  "behavioralEvidence": [
+    {
+      "promptId": 1,
+      "preferred": "A",
+      "reason": "两版都如实说明缺工具、未读契约、未 prepare/执行，且不编造 operationId 或响应预期。A 的 request 含不受支持的 method 和字符串 path，但已明确是不能提交的待补齐草稿，应按非可执行示意判断。B 用表格保留草稿本可接受，却另外声明 cases:[] 为可提交的完整用例；空 cases 被编译器拒绝，这一说法错误且会误导下一步提交。"
+    },
+    {
+      "promptId": 2,
+      "preferred": "B",
+      "reason": "两版均拒绝为消除失败放宽断言，并允许经证据纠正原错误；均未虚构修改或复测。B 明确要求核对性能指标、测试环境和测量证据，更符合 p95 判定需要指标及测试条件依据的要求。A 也要求证据，但其有指标即应保留性能问题的表述较简化。"
+    },
+    {
+      "promptId": 3,
+      "preferred": "tie",
+      "reason": "两版均正确说明缺工具和历史引用而阻塞，拒绝令牌写入并坚持宿主配置及内存注入；均要求写入 unknown 先查残留，且保留逐轮核对后定向复测的路径，没有把用户明确复测意图解释为永远禁止复测。均不编造历史数量或残留状态。"
+    }
+  ],
+  "remainingIssues": [
+    "B 第 1 题不得把空 cases 称为可提交的完整套件，应只保留明确不可执行的草稿及待补充项。",
+    "A 第 1 题虽明确不可执行，示意 request 仍沿用错误结构，存在后续复制误用风险；宜按实际 path/query/body 结构表达待补齐项。",
+    "两版需补明 prepare 的 phase=draft、review 使用同一 runRef，并按 approved/revise/blocked 分支推进；blocked 或 review 预算耗尽应停止。",
+    "两版需补明 revise 的 cases、新 outputPath，以及 report 的同一 runRef 和 runId 参数，且每条可执行用例至少包含一个 JSON 断言。",
+    "两版 prepare 错误后的重试或拆批规则应区分可纠正参数问题与不可支持契约，避免将拆批泛化为所有契约错误的兜底。"
+  ],
+  "limits": "仅依据指定输入中的两份 skill、三组成对实际回答和 contractFacts 评审；未读取其他资料、未联网、未调用业务工具或委派。每版每题只有一个样本，且共同缺 api_test_execute，结论限于文本及回答层，不能声称原生运行通过、统计显著性或文字修改与样本错误的因果关系。"
+}

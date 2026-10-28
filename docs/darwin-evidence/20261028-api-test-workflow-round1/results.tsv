@@ -1,0 +1,2 @@
+timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
+2026-10-28T06:35:39.679015+00:00	20a6919fe8a54c8ec5cb25e64991c29279c77ec4	api-test-workflow	78.0 (triage only)	0 better / 2 worse / 1 tie	revert	5,8	2-paragraph candidate rejected; 3 actual response tests; empty-cases falsely called submittable; restored exact before source; no new score; native_prompt_execution=0/3	paired

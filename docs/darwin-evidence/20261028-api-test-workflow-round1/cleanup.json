@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-10-28T06:47:14.832402+00:00",
+  "precondition": "all three test processes exited; lsof +D task-owned test root returned no open files",
+  "removed": [
+    {
+      "path": ".workbuddy/tmp/darwin-api2-r1-tests",
+      "files": 881,
+      "directories": 131,
+      "symlinks": 2,
+      "bytes": 13510054
+    },
+    {
+      "path": "tests/scratch/api-testing-visibility/1793169236653",
+      "files": 2,
+      "directories": 1,
+      "symlinks": 0,
+      "bytes": 104642
+    }
+  ],
+  "preservedArchive": "integration-evidence.tar.gz",
+  "archiveSha256": "1f7064cca2761b1645308baf6d8fbb23c641aabba4a84b272fbece46ea8e59c0",
+  "historyCleanupKeepPreserved": true,
+  "temporaryScriptsCreated": 0
+}

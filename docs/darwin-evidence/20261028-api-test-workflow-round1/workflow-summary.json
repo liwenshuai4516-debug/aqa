@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "task": "P1-3",
+  "environment": "macOS fixture; real private MCP/Newman, explicit model stub",
+  "startedAt": "2026-10-28T06:33:57.442Z",
+  "output": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api2-r1-tests/workflow/api-testing-p1-3-lP5OzA",
+  "checks": [
+    {
+      "name": "one-entry-prepare-freezes-draft-and-unreviewed-cannot-run",
+      "status": "passed"
+    },
+    {
+      "name": "semantic-return-correction-approval-only-from-live-independent-call",
+      "status": "passed"
+    },
+    {
+      "name": "actual-contract-defect-produces-open-finding-and-report",
+      "status": "passed"
+    },
+    {
+      "name": "unfixed-retest-retains-open-identity-and-new-evidence",
+      "status": "passed"
+    },
+    {
+      "name": "fixture-fix-retest-closes-finding-without-erasing-first-failure-or-model-recalls",
+      "status": "passed"
+    },
+    {
+      "name": "historical-report-never-requests-or-calls-model",
+      "status": "passed"
+    },
+    {
+      "name": "workflow-reference-bound-to-original-conversation",
+      "status": "passed"
+    },
+    {
+      "name": "business-target-still-blocked-despite-user-write-authorization",
+      "status": "passed"
+    },
+    {
+      "name": "changed-approved-package-cannot-execute",
+      "status": "passed"
+    },
+    {
+      "name": "actual-network-fault-separated-from-contract-defect",
+      "status": "passed"
+    },
+    {
+      "name": "actual-cleanup-response-failure-is-visible",
+      "status": "passed"
+    },
+    {
+      "name": "post-execution-case-revision-requires-new-review-and-retains-prior-version-finding",
+      "status": "passed"
+    },
+    {
+      "name": "concurrent-start-blocked-and-cancellation-preserves-unknown-report",
+      "status": "passed"
+    },
+    {
+      "name": "public-review-actions-share-no-improvement-and-model-call-budget",
+      "status": "passed"
+    },
+    {
+      "name": "unknown-write-blocks-new-requests-and-preserves-residual-record",
+      "status": "passed"
+    },
+    {
+      "name": "workflow-model-calls-obey-host-model-scope",
+      "status": "passed"
+    },
+    {
+      "name": "missing-real-model-does-not-fake-approval",
+      "status": "passed"
+    }
+  ],
+  "runs": [
+    {
+      "workflowRef": "4d776a67-870c-4f08-ad8a-cfe6a58d361a",
+      "runId": "519d321f-1f2a-4ce8-93e4-1c858b26185b",
+      "executionVerdict": "failed",
+      "reportPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api2-r1-tests/workflow/api-testing-p1-3-lP5OzA/project/suite-1-evidence-4d776a67-870c-4f08-ad8a-cfe6a58d361a/519d321f-1f2a-4ce8-93e4-1c858b26185b/report.md",
+      "findingsPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api2-r1-tests/workflow/api-testing-p1-3-lP5OzA/project/suite-1-evidence-4d776a67-870c-4f08-ad8a-cfe6a58d361a/519d321f-1f2a-4ce8-93e4-1c858b26185b/findings.json",
+      "cleanup": "not-required",
+      "openFindings": 1
+    },
+    {
+      "workflowRef": "4d776a67-870c-4f08-ad8a-cfe6a58d361a",
+      "runId": "a3df51dd-b033-42a3-b6b3-8a56d726ae71",
+      "executionVerdict": "failed",
+      "reportPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api2-r1-tests/workflow/api-testing-p1-3-lP5OzA/project/suite-1-evidence-4d776a67-870c-4f08-ad8a-cfe6a58d361a/a3df51dd-b033-42a3-b6b3-8a56d726ae71/report.md",
+      "findingsPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api2-r1-tests/workflow/api-testing-p1-3-lP5OzA/project/suite-1-evidence-4d776a67-870c-4f08-ad8a-cfe6a58d361a/a3df51dd-b033-42a3-b6b3-8a56d726ae71/findings.json",
+      "cleanup": "not-required",
+      "openFindings": 1
+    },
+    {
+      "workflowRef": "4d776a67-870c-4f08-ad8a-cfe6a58d361a",
+      "runId": "55bab090-8f06-463d-bb45-e3e1165678d5",
+      "executionVerdict": "passed",
+      "reportPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api2-r1-tests/workflow/api-testing-p1-3-lP5OzA/project/suite-1-evidence-4d776a67-870c-4f08-ad8a-cfe6a58d361a/55bab090-8f06-463d-bb45-e3e1165678d5/report.md",
+      "findingsPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api2-r1-tests/workflow/api-testing-p1-3-lP5OzA/project/suite-1-evidence-4d776a67-870c-4f08-ad8a-cfe6a58d361a/55bab090-8f06-463d-bb45-e3e1165678d5/findings.json",
+      "cleanup": "not-required",
+      "openFindings": 0
+    },
+    {
+      "workflowRef": "9af94898-915b-40ae-83f3-b2985521f69c",
+      "runId": "5aea6cf2-ce9a-4da3-a280-e7a7500852bc",
+      "executionVerdict": "error",
+      "reportPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api2-r1-tests/workflow/api-testing-p1-3-lP5OzA/project/suite-3-evidence-9af94898-915b-40ae-83f3-b2985521f69c/5aea6cf2-ce9a-4da3-a280-e7a7500852bc/report.md",
+      "findingsPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api2-r1-tests/workflow/api-testing-p1-3-lP5OzA/project/suite-3-evidence-9af94898-915b-40ae-83f3-b2985521f69c/5aea6cf2-ce9a-4da3-a280-e7a7500852bc/findings.json",
+      "cleanup": "not-required",
+      "openFindings": 2
+    },
+    {
+      "workflowRef": "4ddc863d-02c3-4fd1-81a9-d613e858552a",
+      "runId": "0d12410a-4e05-4e7e-8658-6d23175f4193",
+      "executionVerdict": "failed",
+      "reportPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api2-r1-tests/workflow/api-testing-p1-3-lP5OzA/project/suite-4-evidence-4ddc863d-02c3-4fd1-81a9-d613e858552a/0d12410a-4e05-4e7e-8658-6d23175f4193/report.md",
+      "findingsPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api2-r1-tests/workflow/api-testing-p1-3-lP5OzA/project/suite-4-evidence-4ddc863d-02c3-4fd1-81a9-d613e858552a/0d12410a-4e05-4e7e-8658-6d23175f4193/findings.json",
+      "cleanup": "failed",
+      "openFindings": 1
+    },
+    {
+      "workflowRef": "4ddc863d-02c3-4fd1-81a9-d613e858552a",
+      "runId": "a4fd0c62-5bda-453c-a771-7bf126ca614d",
+      "executionVerdict": "failed",
+      "reportPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api2-r1-tests/workflow/api-testing-p1-3-lP5OzA/project/suite-4-evidence-4ddc863d-02c3-4fd1-81a9-d613e858552a/a4fd0c62-5bda-453c-a771-7bf126ca614d/report.md",
+      "findingsPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/.workbuddy/tmp/darwin-api2-r1-tests/workflow/api-testing-p1-3-lP5OzA/project/suite-4-evidence-4ddc863d-02c3-4fd1-81a9-d613e858552a/a4fd0c62-5bda-453c-a771-7bf126ca614d/findings.json",
+      "cleanup": "failed",
+      "openFindings": 2
+    }
+  ],
+  "status": "passed-fixture-model-stub-only",
+  "modelCalls": 9,
+  "fixtureRequests": [
+    {
+      "method": "GET",
+      "path": "/records/r-2"
+    },
+    {
+      "method": "GET",
+      "path": "/records/r-2"
+    },
+    {
+      "method": "GET",
+      "path": "/records/r-2"
+    },
+    {
+      "method": "GET",
+      "path": "/records/r-1"
+    },
+    {
+      "method": "DELETE",
+      "path": "/records/r-2"
+    },
+    {
+      "method": "DELETE",
+      "path": "/records/r-3"
+    },
+    {
+      "method": "GET",
+      "path": "/records/r-1"
+    },
+    {
+      "method": "DELETE",
+      "path": "/records/r-2"
+    }
+  ],
+  "finishedAt": "2026-10-28T06:34:13.149Z"
+}

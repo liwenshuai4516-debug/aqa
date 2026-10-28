@@ -1,0 +1,9 @@
+{
+  "style": "Warm Swiss",
+  "templateBasis": "Darwin result card layout adapted in prior project card; reuse CSS only",
+  "cardFactsFrom": "decision.json and actual checks",
+  "newAbsoluteScore": null,
+  "baselineDiagnosticScore": 78.0,
+  "keptChanges": 0,
+  "nativePromptScenariosExecuted": 0
+}

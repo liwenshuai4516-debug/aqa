@@ -1,0 +1,28 @@
+{
+  "scope": "deterministic compiler parameter checks using existing synthetic records fixture; no HTTP or model calls; not a full validation of users prompt drafts",
+  "results": [
+    {
+      "id": "valid-path-object",
+      "expected": "accepted",
+      "actual": "accepted"
+    },
+    {
+      "id": "legacy-method-and-string-path",
+      "expected": "rejected",
+      "actual": "rejected",
+      "error": "Unsupported request data key"
+    },
+    {
+      "id": "string-path-alone",
+      "expected": "rejected",
+      "actual": "rejected",
+      "error": "Request parameter is not declared"
+    },
+    {
+      "id": "empty-cases",
+      "expected": "rejected",
+      "actual": "rejected",
+      "error": "Cases must have unique IDs"
+    }
+  ]
+}

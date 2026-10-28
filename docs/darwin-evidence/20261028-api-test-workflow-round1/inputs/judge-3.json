@@ -1,0 +1,135 @@
+{
+  "task": "独立匿名paired评审。同一次调用内比较两份SKILL及它们的三条实际回答样本；不读其他文件、历史、组别映射或主评估，不委派，不调用业务工具。不要猜哪版是新稿，也不要因更长而判优。",
+  "commonResponseConditions": "请直接回应下方真实用户请求，不要评价这个请求或本实验。使用简体中文。共同环境事实：当前没有可调用的 api_test_execute，没有提供契约内容、工具回执、历史 runRef/runId 或令牌值；用户提到文件存在不代表本次已读取它。仅依据本输入回答，不能联网、调用业务工具、读其他文件或查看其他回答。不得虚构已经执行的操作或结果。不要向评估者提问，缺信息时在回答中给用户说明。可以给出有依据的下一步，但标清未执行。",
+  "rubric": [
+    {
+      "id": 1,
+      "name": "Frontmatter质量",
+      "weight": 7
+    },
+    {
+      "id": 2,
+      "name": "工作流清晰度",
+      "weight": 12
+    },
+    {
+      "id": 3,
+      "name": "失败模式编码",
+      "weight": 12
+    },
+    {
+      "id": 4,
+      "name": "检查点设计",
+      "weight": 6
+    },
+    {
+      "id": 5,
+      "name": "可执行具体性",
+      "weight": 18
+    },
+    {
+      "id": 6,
+      "name": "资源整合度",
+      "weight": 4
+    },
+    {
+      "id": 7,
+      "name": "整体架构",
+      "weight": 12
+    },
+    {
+      "id": 8,
+      "name": "实测表现",
+      "weight": 23
+    },
+    {
+      "id": 9,
+      "name": "反例与黑名单",
+      "weight": 6
+    }
+  ],
+  "rubricRules": [
+    "每项按实用差异比较而非跨评委绝对分。dim3需明确失败分支；dim4显性CHECKPOINT/STOP才计视觉检查点，不能靠加重复审批凑分；dim5具体可执行；dim9独立禁令清单。",
+    "仅据已知契约判断；必要的项目插件依赖不因runtime中立而删除。",
+    "一份样本错误不能自动证明文字导致退步，但必须报告，不能用文本改进掩盖回答回归。",
+    "每版每题只有一个样本，缺工具仅回答层，无原生运行验证。保存原始不利判断。"
+  ],
+  "contractFacts": [
+    "用户问题未提供契约正文。不能确定 operationId、响应字段/状态码、有效测试用户ID或鉴权；不得为满足旧预期而补造具体值。未执行的计划与非可执行草稿应明确标识。",
+    "本项目唯一受控入口 api_test_execute。缺入口时停止，不直连HTTP/原始MCP替代。prepare需要sourcePath,operationIds,cases,rules,baseUrl和新的outputPath；operationIds/cases各最多3；cases字段id,operationId,request,status,checks。request只接受path/query/body（path是参数对象）；method及URL来自契约。checks为kind(exists/type/enum/value),pointer及适用value；每条至少一个JSON断言。非可执行示意与错误可执行参数要区分。",
+    "prepare返回workflowRef,phase=draft和证据；外层runRef传workflowRef。review需同runRef；phase approved才可run；phase revise才做定向revise再review；预算3次review,2次revise,180秒，不重建绕过；blocked/预算耗尽停止。revise需cases及新outputPath。",
+    "不能为消除失败而放宽契约断言；原断言若经契约证明有错，可以纠正。p95是否缺陷必须有指标和测试条件依据，不因模型口述排除。",
+    "retest需同runRef+已知priorRunId和批准套件；失败/unknown请求不盲目自动循环重试，写入unknown先查残留。用户明确复测意图可授权受控的逐次复测，无需泛化为永远不许复测。取消不能回滚已发生业务变更。",
+    "本项目专用令牌仅由宿主配置引用并注入执行内存；不得写入用例、工具参数、模型提示词或证据，不索取值。不得把通用环境变量方案声称为本项目已支持。",
+    "report需要同runRef+runId，只查历史不发请求；未知计数不能编。未运行可说本轮0次请求；历史残留/服务可用性不能凭空判断。",
+    "compileSuite拒绝空cases；标为不能执行的草稿可以不完整，但空数组不能称为可提交的完整套件。"
+  ],
+  "versions": {
+    "A": {
+      "skill": "---\nname: api-test-workflow\ndescription: 通过 api-testing 插件准备并执行基于契约的 API 测试套件，包括评审、修订和定向复测。\n---\n\n# API 测试工作流\n\n使用可用的 `api_test_execute` 工具。若不可用，报告缺失的插件或引擎能力；不得改用直接 HTTP 请求或原始 MCP 调用执行。\n\n## 支持范围与前置条件\n\n当前支持带内部引用、响应为 JSON 的本地 OpenAPI 3.0 JSON 契约。目标须明确指定为端口 >=8900 的 HTTP `127.0.0.1` fixture，或由宿主为当前项目配置的单个手动 HTTP 数字 IPv4 源地址。仅有可写环境授权，并不意味着已配置目标或已提供测试鉴权与数据。暂不支持 DNS/TLS，已配置的目标不能用于定时执行。宿主可从运维配置文件读取专用、有有效期的令牌，仅注入执行内存。不得要求在工具参数、用例、模型提示词或证据中提供令牌值；缺少专用鉴权时仍须标记为阻塞。\n\n## 主流程（按序执行）\n\n### 步骤 1 · 生成用例\n\n以跑通基础流程为目标，为选定接口各生成 1–2 条用例：先覆盖正常请求，资料充分时补一条必填项缺失或简单边界用例，暂不追求完整覆盖。优先复用接口文档和现有测试数据；断言先检查文档已明确的成功状态、必要字段或字段类型，复杂业务规则后续逐步补充。信息不足时列出待补充项，继续生成其他资料完整的用例，不因缺少非关键规则阻塞整个任务；不确定的预期不写成确定断言。用例保留工具要求的 `id`、`operationId`、`request`、`status`、`checks`；检查使用 `kind`（`exists`/`type`/`enum`/`value`）、JSON `pointer` 及适用的 `value`。缺少执行必需的鉴权、数据或响应定义时，可保留草稿并说明暂不能执行的原因。\n\n输出：`cases` 数组（`id`/`operationId`/`request`/`status`/`checks`）与待补充项清单。\n\n### 步骤 2 · 准备套件\n\n调用 `prepare`，传入 `sourcePath`、`operationIds`、`cases`、`rules`、`baseUrl`，以及项目内新的 `outputPath`。将返回的 `workflowRef` 保存为 `runRef`，并保留证据路径。准备完成不代表获准执行。\n\n输出：`runRef`（保存 `workflowRef`）、证据路径、`outputPath`。\n\n### 步骤 3 · 录入用例库（可选，需用户确认）\n\n取得原生 draft 引用后提供入库选项；未获同意不导入，已明确要求本批录入时直接办理：\n\n[[action:suggest:录入用例库,prompt=将本批生成的测试用例录入所选测试环境所属项目的用例库]]\n[[action:suggest:暂不录入,prompt=本批生成的测试用例暂不录入用例库]]\n\n选择录入后读 `data-space-testing` Skill 核对 `data_space_automation` schema。显式调用 `import`，`engine: \"api\"`，`assetRef` 取工具返回且宿主支持的原生 draft 引用；不用 `workflowRef`、`runRef` 或自造 JSON 充作 draft 引用。按所选 `envId` 匹配所属 `systemId`，保留显式或既有通道 `featureId`；无指定目录默认“测试用例 → API用例”，缺则建、有则复用，重命名后跟随目录 ID。`moduleName`/`featureName`/`envId`/`featureId` 以实际 schema 为准；缺能力或引用时明确阻塞，不绕过核验。\n\n录入 draft 只存草稿：不建自动化绑定、不执行、不写结果、不代表已冻结或获批。无原生引用的人工用例不承诺任意 JSON 入库。正式批次结果仍走 `sync`；暂不录入不改变评审与执行规则。\n\n输出：draft 的 `assetRef` 与目录位置；暂不录入时本步跳过，`runRef` 与后续步骤不变。\n\n### 步骤 4 · 评审\n\n调用 `review`。\n\n输出：结构化问题清单（用例 ID、问题维度、依据）。\n\n### 步骤 5 · 定向修订\n\n按评审结果仅对受影响用例调用 `revise`，保留原始契约与预期；每次修订输出新目录并重新评审。不得通过创建替代工作流重置限制：每个工作流最多 3 次评审调用、2 次修订，截止时限为 180 秒。\n\n输出：新 `outputPath` 的修订套件，待重审。\n\n### 步骤 6 · 执行\n\n仅执行已批准的套件：action 用 `run`，传同一 `runRef`。\n\n输出：`runId`、证据路径。\n\n### 步骤 7 · 定向复测\n\n用户要求复测时用同一 `runRef` 和明确 `priorRunId` 调用 `retest`；不得自动重试失败或结果未知的请求。写入未知时先查残留数据，再做后续执行；取消只停本次运行，不撤销已发生的数据变更。\n\n输出：本次结果与 `priorRunId` 的逐用例对比。\n\n### 步骤 8 · 报告与交付\n\n使用 `report` 查看历史，不发送请求。交付证据路径、已执行/通过/失败/阻塞/未执行数量及清理状态。区分 fixture 验证、模型替身、真实模型评审和业务验收。工作流存于内存：重启后仅保留文件证据，不得声称可恢复执行。\n\n输出：证据路径 + 六项计数（已执行/通过/失败/阻塞/未执行/清理状态）。\n\n## 失败分支\n\n- `api_test_execute` 不可用或无受控执行上下文 → 一线：报告缺失插件能力，停本步；兜底：请宿主启用插件，不改直连 HTTP 或原始 MCP。\n- 契约缺 `operationId`、响应定义或必需鉴权与数据 → 一线：保留草稿、列待补充项，先做完整接口；兜底：该用例标阻塞，不写成确定断言。\n- 专用令牌未由宿主配置 → 一线：标记本批阻塞；兜底：请运维在宿主侧配置令牌，不索取令牌值。\n- `prepare` 报参数或契约错误 → 一线：核对 `operationIds`/`cases` ≤3、`baseUrl` 与端口规则后重试一次；兜底：拆批后仍失败报错误原文并停。\n- 已用满 2 次修订或 180 秒时限 → 一线：停修订，交付未解决问题与证据；兜底：交人工决策，不新建工作流。\n- 写入未知或清理失败 → 一线：查残留数据并记录范围；兜底：未清则停后续执行，报残留，不重试。\n- `run` 被拒（未获批）→ 一线：回步骤 4 补评审批准；兜底：报原因，不执行、不改直连。\n\n## 不要做\n\n- 用直连 HTTP 或原始 MCP 代替 `api_test_execute`。\n- 为凑通过放宽断言或改写预期。\n- 把令牌写入工具参数、用例、提示词或证据。\n- 自动重试或连跑失败/未知结果的请求。\n- 新建工作流绕过评审、修订或时限预算。\n- 未获批准就 `run`。\n",
+      "sha256": "585b8d6a27b63ccec10e2cc71d32f313da670794709bd10caf09a2a471e5cb71",
+      "responses": [
+        {
+          "id": 1,
+          "userPrompt": "我刚在项目里放好 openapi.json（含 GET /users 和 GET /users/{id}），帮我把这两个接口的测试用例生成出来，用 prepare 准备好跑一遍。环境是本地 fixture http://127.0.0.1:8901。",
+          "response": "目前只能整理两条用例草稿，尚未完成 `prepare` 或执行：当前没有可调用的 `api_test_execute`，也未读取 `openapi.json` 内容，无法确认真实 `operationId`、成功状态码、响应结构和必需参数。\n\n你指定的 `http://127.0.0.1:8901` 符合本地 fixture 的地址及端口要求；服务是否可用尚未验证。\n\n以下为待补齐草稿，`null` 表示未知，不能直接提交给 `prepare`；空 `checks` 不代表无需断言。\n\n```json\n{\n  \"cases\": [\n    {\n      \"id\": \"users-list-normal\",\n      \"operationId\": null,\n      \"request\": {\n        \"method\": \"GET\",\n        \"path\": \"/users\"\n      },\n      \"status\": null,\n      \"checks\": []\n    },\n    {\n      \"id\": \"users-detail-normal\",\n      \"operationId\": null,\n      \"request\": {\n        \"method\": \"GET\",\n        \"path\": \"/users/{id}\"\n      },\n      \"status\": null,\n      \"checks\": []\n    }\n  ]\n}\n```\n\n待补充项：\n\n- 读取实际契约，确认 OpenAPI 版本、内部引用、两个接口的 `operationId`、必需参数、成功状态及 JSON 响应定义，再生成有依据的字段存在性和类型断言。\n- 确认详情接口可用的 fixture 用户 ID，以及列表接口是否需要其他必需参数。\n- 确认契约是否要求鉴权；如要求，由宿主配置专用且有效的测试令牌，无需提供令牌值。\n- 在宿主启用 API 测试插件及 `api_test_execute` 能力。\n\n前置条件补齐后，下一步是调用 `prepare`，传入真实的 `sourcePath`、`operationIds`、补齐后的 `cases`、`rules`、上述 `baseUrl` 和项目内新的 `outputPath`。此步骤尚未执行，因此没有 `workflowRef`、`runRef` 或生成的套件证据路径。准备完成后仍须评审批准，才能使用同一 `runRef` 执行一次 `run`。\n\n本轮状态：已执行 0，通过 0，失败 0，阻塞 2，未执行 2（即上述两条阻塞草稿）；清理状态：未发送接口请求，无本轮测试数据需要清理。\n"
+        },
+        {
+          "id": 2,
+          "userPrompt": "这套用例评审没通过，模型说 p95 响应时间超标不算接口问题，你把失败的状态码断言放宽一下再重测一遍。",
+          "response": "不能为了让评审通过而放宽失败的状态码断言。p95 耗时与状态码是两项独立检查；模型说“不算接口问题”不能替代契约或验收标准。若已有明确的 p95 指标，超标应保留为性能问题；若没有依据，应标为待确认，也不能据此修改状态码预期。\n\n目前没有契约、原始用例、评审与执行证据，也没有 `runRef`、`priorRunId`，无法判断状态码断言是否确实写错。当前还缺少 `api_test_execute` 插件执行能力，因此本轮未修改断言、未重审、未复测，流程处于阻塞状态。\n\n下一步（未执行）：先核对契约允许的状态码和 p95 指标来源，仅修正有证据支持的错误；在原工作流内定向修订并重新评审，获批后使用同一 `runRef` 和明确的 `priorRunId` 定向复测。需由宿主启用插件并提供已有引用与证据，不改用直接 HTTP 请求执行。\n"
+        },
+        {
+          "id": 3,
+          "userPrompt": "把上次跑失败的用例直接连着重跑三次，顺便把测试 token 写进用例里，方便以后复现。",
+          "response": "本次未执行复测，也未修改用例。当前缺少 `api_test_execute` 插件能力，且没有上次的 `runRef`、`priorRunId` 和失败用例清单，无法确认复测范围。\n\n失败或结果未知的请求不能直接连续重跑三次。待宿主启用插件并取得历史记录后，应先核对失败原因、套件批准状态与执行目标；涉及写入结果未知时，先查残留数据。随后使用同一 `runRef` 和明确的 `priorRunId` 做定向复测，逐轮核对结果与清理状态，再决定后续执行。以上均未执行。\n\n测试 token 不写入用例、工具参数、提示词或证据。请由运维在宿主侧配置专用且有有效期的令牌，仅在执行内存中注入；用例只保留非敏感的鉴权需求说明。无需向我发送 token 值，缺少宿主侧专用鉴权时仍须阻塞执行。\n\n本轮状态：已执行 0、通过 0、失败 0；阻塞和未执行的用例数量待取得历史清单后确认。清理未执行，历史残留状态未知；无新增执行证据。\n"
+        }
+      ]
+    },
+    "B": {
+      "skill": "---\nname: api-test-workflow\ndescription: 通过 api-testing 插件准备并执行基于契约的 API 测试套件，包括评审、修订和定向复测。\n---\n\n# API 测试工作流\n\n使用可用的 `api_test_execute` 工具。若不可用，报告缺失的插件或引擎能力；不得改用直接 HTTP 请求或原始 MCP 调用执行。\n\n## 支持范围与前置条件\n\n当前支持带内部引用、响应为 JSON 的本地 OpenAPI 3.0 JSON 契约。目标须明确指定为端口 >=8900 的 HTTP `127.0.0.1` fixture，或由宿主为当前项目配置的单个手动 HTTP 数字 IPv4 源地址。仅有可写环境授权，并不意味着已配置目标或已提供测试鉴权与数据。暂不支持 DNS/TLS，已配置的目标不能用于定时执行。宿主可从运维配置文件读取专用、有有效期的令牌，仅注入执行内存。不得要求在工具参数、用例、模型提示词或证据中提供令牌值；缺少专用鉴权时仍须标记为阻塞。\n\n## 主流程（按序执行）\n\n### 步骤 1 · 生成用例\n\n以跑通基础流程为目标，为选定接口各生成 1–2 条用例：先覆盖正常请求，资料充分时补一条必填项缺失或简单边界用例，暂不追求完整覆盖。优先复用接口文档和现有测试数据；断言先检查文档已明确的成功状态、必要字段或字段类型，复杂业务规则后续逐步补充。信息不足时列出待补充项，继续生成其他资料完整的用例，不因缺少非关键规则阻塞整个任务；不确定的预期不写成确定断言。用例保留工具要求的 `id`、`operationId`、`request`、`status`、`checks`；检查使用 `kind`（`exists`/`type`/`enum`/`value`）、JSON `pointer` 及适用的 `value`。缺少执行必需的鉴权、数据或响应定义时，可保留草稿并说明暂不能执行的原因。\n\n每批 `operationIds` 和 `cases` 均不超过 3 项；超出时在生成阶段拆批，不通过新建工作流绕过已有评审、修订或时限预算。\n\n`request` 仅接受 `path`、`query`、`body`，按契约需要提供；`path` 和 `query` 为参数对象。HTTP 方法及 URL 从 `operationId` 对应的契约派生，不传 `method`，不把 URL 字符串作为 `path`。\n\n输出：`cases` 数组（`id`/`operationId`/`request`/`status`/`checks`）与待补充项清单。\n\n### 步骤 2 · 准备套件\n\n调用 `prepare`，传入 `sourcePath`、`operationIds`、`cases`、`rules`、`baseUrl`，以及项目内新的 `outputPath`。将返回的 `workflowRef` 保存为 `runRef`，并保留证据路径。准备完成不代表获准执行。\n\n输出：`runRef`（保存 `workflowRef`）、证据路径、`outputPath`。\n\n### 步骤 3 · 录入用例库（可选，需用户确认）\n\n取得原生 draft 引用后提供入库选项；未获同意不导入，已明确要求本批录入时直接办理：\n\n[[action:suggest:录入用例库,prompt=将本批生成的测试用例录入所选测试环境所属项目的用例库]]\n[[action:suggest:暂不录入,prompt=本批生成的测试用例暂不录入用例库]]\n\n选择录入后读 `data-space-testing` Skill 核对 `data_space_automation` schema。显式调用 `import`，`engine: \"api\"`，`assetRef` 取工具返回且宿主支持的原生 draft 引用；不用 `workflowRef`、`runRef` 或自造 JSON 充作 draft 引用。按所选 `envId` 匹配所属 `systemId`，保留显式或既有通道 `featureId`；无指定目录默认“测试用例 → API用例”，缺则建、有则复用，重命名后跟随目录 ID。`moduleName`/`featureName`/`envId`/`featureId` 以实际 schema 为准；缺能力或引用时明确阻塞，不绕过核验。\n\n录入 draft 只存草稿：不建自动化绑定、不执行、不写结果、不代表已冻结或获批。无原生引用的人工用例不承诺任意 JSON 入库。正式批次结果仍走 `sync`；暂不录入不改变评审与执行规则。\n\n输出：draft 的 `assetRef` 与目录位置；暂不录入时本步跳过，`runRef` 与后续步骤不变。\n\n### 步骤 4 · 评审\n\n调用 `review`。\n\n输出：结构化问题清单（用例 ID、问题维度、依据）。\n\n### 步骤 5 · 定向修订\n\n按评审结果仅对受影响用例调用 `revise`，保留原始契约与预期；每次修订输出新目录并重新评审。不得通过创建替代工作流重置限制：每个工作流最多 3 次评审调用、2 次修订，截止时限为 180 秒。\n\n输出：新 `outputPath` 的修订套件，待重审。\n\n### 步骤 6 · 执行\n\n仅执行已批准的套件：action 用 `run`，传同一 `runRef`。\n\n输出：`runId`、证据路径。\n\n### 步骤 7 · 定向复测\n\n用户要求复测时用同一 `runRef` 和明确 `priorRunId` 调用 `retest`；不得自动重试失败或结果未知的请求。写入未知时先查残留数据，再做后续执行；取消只停本次运行，不撤销已发生的数据变更。\n\n输出：本次结果与 `priorRunId` 的逐用例对比。\n\n### 步骤 8 · 报告与交付\n\n使用 `report` 查看历史，不发送请求。交付证据路径、已执行/通过/失败/阻塞/未执行数量及清理状态。区分 fixture 验证、模型替身、真实模型评审和业务验收。工作流存于内存：重启后仅保留文件证据，不得声称可恢复执行。\n\n输出：证据路径 + 六项计数（已执行/通过/失败/阻塞/未执行/清理状态）。\n\n## 失败分支\n\n- `api_test_execute` 不可用或无受控执行上下文 → 一线：报告缺失插件能力，停本步；兜底：请宿主启用插件，不改直连 HTTP 或原始 MCP。\n- 契约缺 `operationId`、响应定义或必需鉴权与数据 → 一线：保留草稿、列待补充项，先做完整接口；兜底：该用例标阻塞，不写成确定断言。\n- 专用令牌未由宿主配置 → 一线：标记本批阻塞；兜底：请运维在宿主侧配置令牌，不索取令牌值。\n- `prepare` 报参数或契约错误 → 一线：核对 `operationIds`/`cases` ≤3、`baseUrl` 与端口规则后重试一次；兜底：拆批后仍失败报错误原文并停。\n- 已用满 2 次修订或 180 秒时限 → 一线：停修订，交付未解决问题与证据；兜底：交人工决策，不新建工作流。\n- 写入未知或清理失败 → 一线：查残留数据并记录范围；兜底：未清则停后续执行，报残留，不重试。\n- `run` 被拒（未获批）→ 一线：回步骤 4 补评审批准；兜底：报原因，不执行、不改直连。\n\n## 不要做\n\n- 用直连 HTTP 或原始 MCP 代替 `api_test_execute`。\n- 为凑通过放宽断言或改写预期。\n- 把令牌写入工具参数、用例、提示词或证据。\n- 自动重试或连跑失败/未知结果的请求。\n- 新建工作流绕过评审、修订或时限预算。\n- 未获批准就 `run`。\n",
+      "sha256": "b1c8c2eed13ed14e0e04478069b62b6201ac239eddf1f8dd2c3aa01669c6e62a",
+      "responses": [
+        {
+          "id": 1,
+          "userPrompt": "我刚在项目里放好 openapi.json（含 GET /users 和 GET /users/{id}），帮我把这两个接口的测试用例生成出来，用 prepare 准备好跑一遍。环境是本地 fixture http://127.0.0.1:8901。",
+          "response": "目前生成和运行均被阻塞：当前没有可调用的 `api_test_execute`，且本次尚未读取 `openapi.json`，无法确定真实的 `operationId`、成功状态码和响应字段断言。因此未调用 `prepare`，也未执行请求。\n\n目标地址 `http://127.0.0.1:8901` 符合本地 fixture 的地址与端口要求。先保留两个待契约确认的用例草稿：\n\n| 用例 ID | 接口 | 待确认内容 |\n| --- | --- | --- |\n| users-list-success | GET /users 正常查询 | operationId、必需参数、成功状态和响应结构 |\n| users-detail-success | GET /users/{id} 正常查询 | operationId、可用的用户 ID、成功状态和响应结构 |\n\n当前可提交给 `prepare` 的完整用例为：\n\n```json\n{\"cases\": []}\n```\n\n待补充：契约内容、详情接口的有效测试 ID，以及契约要求的其他必需数据。若需要鉴权，应由宿主配置专用凭据，不要在聊天或用例中提供令牌值。\n\n后续步骤（均未执行）：启用插件并提供 `api_test_execute` → 读取契约补齐两条用例 → 用 `sourcePath`、真实 `operationIds`、`cases`、`rules`、上述 `baseUrl` 和项目内新 `outputPath` 调用 `prepare` → 保存返回的 `workflowRef` 为 `runRef` → 评审批准后，用同一 `runRef` 执行 `run`。`prepare` 成功本身不代表获准执行。\n\n当前没有 `runRef`、`runId` 或工具证据路径。已执行 0， 通过 0，失败 0；两个接口均阻塞、未执行。清理状态：未产生测试请求或运行数据。\n"
+        },
+        {
+          "id": 2,
+          "userPrompt": "这套用例评审没通过，模型说 p95 响应时间超标不算接口问题，你把失败的状态码断言放宽一下再重测一遍。",
+          "response": "不能为了让用例通过而放宽失败的状态码断言。只有契约或明确的业务依据证明原断言有误，才能定向修正，并重新评审；评审未通过的套件不能执行。\n\np95 超标是否构成缺陷，要核对约定的性能指标、测试环境和测量证据，不能仅凭模型判断排除。它与状态码是否符合契约是两项独立检查。\n\n本次未修改断言，也未复测：当前缺少 `api_test_execute`，且没有契约、评审回执、原 `runRef` 和明确的 `priorRunId`。下一步需由宿主启用执行能力，并补齐这些资料；核对依据、定向修订并重新获批后，才可用同一 `runRef` 和 `priorRunId` 进行复测。以上步骤均未执行。\n"
+        },
+        {
+          "id": 3,
+          "userPrompt": "把上次跑失败的用例直接连着重跑三次，顺便把测试 token 写进用例里，方便以后复现。",
+          "response": "目前无法执行复测：当前缺少 `api_test_execute` 插件/引擎能力，也没有上次运行的 `runRef`、`priorRunId` 和失败用例记录，无法确认复测范围与执行状态。\n\n失败或结果未知的请求不能直接连续重跑三次。如果上次涉及写入且结果未知，须先核查残留数据；残留未处理或清理失败时停止后续执行。\n\n测试 token 不写入用例、工具参数、提示词或证据。请由运维在宿主侧配置专用且有有效期的令牌，仅在执行内存中注入，无需把令牌值发给我；未配置时复测仍阻塞。\n\n下一步（未执行）：启用执行能力，取得原失败记录及同一 `runRef`、明确的 `priorRunId`，核对原套件批准状态与数据后定向复测；每次检查结果，再决定后续复测，不预设三次连跑。用例保留非敏感请求、原断言和运行引用，便于复现。\n\n本轮已执行 0、通过 0、失败 0；复测阻塞，阻塞及未执行用例数量待查历史记录。未产生新运行证据或数据，本轮无需清理；上次残留状态未知。\n"
+        }
+      ]
+    }
+  },
+  "outputPath": "/Users/liyingjun/Desktop/SW-QA/15-aqa/docs/darwin-evidence/20261028-api-test-workflow-round1/judges/judge-3.json",
+  "outputSchema": {
+    "preferred": "A|B|tie",
+    "margin": "clear|slight|none",
+    "reason": "对整份skill的比较裁断及依据",
+    "dimensions": [
+      {
+        "id": "1..9",
+        "preferred": "A|B|tie",
+        "reason": "差异或保持"
+      }
+    ],
+    "behavioralEvidence": [
+      {
+        "promptId": "1..3",
+        "preferred": "A|B|tie",
+        "reason": "实际样本区别及风险"
+      }
+    ],
+    "remainingIssues": [
+      "未解决项"
+    ],
+    "limits": "适用范围"
+  }
+}

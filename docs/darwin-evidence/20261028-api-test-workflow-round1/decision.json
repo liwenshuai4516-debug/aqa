@@ -1,0 +1,43 @@
+{
+  "timestamp": "2026-10-28T06:35:39.679015+00:00",
+  "status": "revert",
+  "votes": [
+    {
+      "judge": 1,
+      "rawPreferred": "A",
+      "afterLabel": "B",
+      "verdict": "worse",
+      "margin": "slight",
+      "reason": "B在skill正文中补齐了生成阶段的批次上限和request合法结构，属于明确、实用的可执行性改进；其他主要流程、失败分支、资源依赖及禁令基本相同。但实际样本1把空cases数组明确称为可提交给prepare的完整用例，与compileSuite拒绝空cases的已知契约直接冲突。A的样本1虽使用了不符合实际request结构的示意，但明确标为不能直接提交的未完成草稿，不能等同于提交错误可执行参数。结合实测表现的较高权重，本轮整体略偏A；这不证明B正文改动导致了回答退步，也不否认其正文改进。"
+    },
+    {
+      "judge": 2,
+      "rawPreferred": "tie",
+      "afterLabel": "A",
+      "verdict": "tie",
+      "margin": "none",
+      "reason": "A 在生成阶段新增每批 operationIds/cases 上限和 request 的准确结构，能直接防止已知参数错误，文字层面的可执行性优于 B。但 A 的实际回答 1 将空 cases 声称为当前可提交的完整用例，明确违反 compileSuite 拒绝空 cases 的契约；B 虽展示了不符合工具结构的 request，却明确标记为不能直接提交的草稿，不能将两者视为同等的错误可执行参数。综合工作流具体性与权重最高的实测表现，优势相互抵消，本次不判任一版整体获胜，也不能据此认定 A 已取得行为改进。"
+    },
+    {
+      "judge": 3,
+      "rawPreferred": "A",
+      "afterLabel": "B",
+      "verdict": "worse",
+      "margin": "slight",
+      "reason": "B 的文字补齐了生成阶段的批量上限和 request 参数结构，具体性优于 A；但实际回答第 1 题把空 cases 明确称为可提交的完整用例，直接违反 compileSuite 拒绝空用例的已知契约。A 同题虽然展示了不合工具结构的示意，却明确声明不能直接提交，风险较低。两版其余流程及禁令大体一致，第 2、3 题也均正确停止未授权或缺前置条件的执行。综合文字收益和实际样本的不利结果，略偏 A；这只是本次有限样本的比较，不证明 B 的文字修改导致了回答错误。"
+    }
+  ],
+  "counts": {
+    "better": 0,
+    "worse": 2,
+    "tie": 1
+  },
+  "rule": "keep only if better >= worse; here 0 < 2, revert and stop",
+  "rounds": 1,
+  "nextRoundStarted": false,
+  "restoredSha256": "585b8d6a27b63ccec10e2cc71d32f313da670794709bd10caf09a2a471e5cb71",
+  "restoredBytes": 6458,
+  "method": "candidate was not committed pending required validation; restore exact frozen before bytes, preserving unrelated work and history",
+  "candidateByteRatio": 1.059615980179622,
+  "causality": "A single sampled response error does not establish that skill edits caused it; original votes still govern the ratchet."
+}

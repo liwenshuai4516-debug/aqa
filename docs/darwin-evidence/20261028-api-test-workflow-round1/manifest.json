@@ -1,0 +1,16 @@
+{
+  "startedAt": "2026-10-28T06:27:53.701131+00:00",
+  "beforeHead": "20a6919fe8a54c8ec5cb25e64991c29279c77ec4",
+  "skillPath": "plugins/api-testing/skills/api-test-workflow/SKILL.md",
+  "baselineReport": "docs/darwin-api-test-workflow-baseline-20261028.md",
+  "beforeBytes": 6458,
+  "beforeSha256": "585b8d6a27b63ccec10e2cc71d32f313da670794709bd10caf09a2a471e5cb71",
+  "maximumBytes": 9687.0,
+  "scope": "one round: clarify case input contract and batch caps; no plugin implementation change",
+  "userAuthorization": "确定 (confirm proposed first optimization round after Phase1)",
+  "nativeToolAvailableInThisChat": false,
+  "paidHostModelCalls": 0,
+  "afterBytes": 6843,
+  "afterSha256": "b1c8c2eed13ed14e0e04478069b62b6201ac239eddf1f8dd2c3aa01669c6e62a",
+  "sizeRatio": 1.059615980179622
+}

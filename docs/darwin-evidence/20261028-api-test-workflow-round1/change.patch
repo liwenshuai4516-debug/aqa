@@ -1,0 +1,9 @@
+diff --git a/plugins/api-testing/skills/api-test-workflow/SKILL.md b/plugins/api-testing/skills/api-test-workflow/SKILL.md
+index 0b5dcb0..aa8b99e 100644
+--- a/plugins/api-testing/skills/api-test-workflow/SKILL.md
++++ b/plugins/api-testing/skills/api-test-workflow/SKILL.md
+@@ -19,0 +20,4 @@ description: 通过 api-testing 插件准备并执行基于契约的 API 测试
++每批 `operationIds` 和 `cases` 均不超过 3 项；超出时在生成阶段拆批，不通过新建工作流绕过已有评审、修订或时限预算。
++
++`request` 仅接受 `path`、`query`、`body`，按契约需要提供；`path` 和 `query` 为参数对象。HTTP 方法及 URL 从 `operationId` 对应的契约派生，不传 `method`，不把 URL 字符串作为 `path`。
++
