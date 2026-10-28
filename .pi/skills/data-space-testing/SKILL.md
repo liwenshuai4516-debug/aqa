@@ -15,7 +15,13 @@ metadata:
 ## 先定位，后交接
 
 1. 开始新测试时，调用 `data_space_automation` 的 `initialize`，传 `engine`、当前 `mode` 和用户的 `targetUrl`（或明确的 `systemId` / `envId`），从结构化回执取得项目、环境 ID、`baseUrl`、非敏感 `parameters` 和 `privateParameterKeys`。`analyze`、`view` 或 `new/record` 配 `discovery=source` 返回 `not-required`，不选新环境、不建通道；普通查询不初始化。`missing-environment` 时补齐配置；`ambiguous` 时用候选真实 ID 消歧，不能套用默认项。
-2. 读取本次 `preparation` 与 `parameterSources`：有效动态值优先于同名静态值；`refresh-required` 时显式刷新再初始化，不能回退旧值或使用脱敏占位。`configured` 仅代表配置匹配，网络、身份、角色和数据未检查均为 `unknown`，仍须原生执行预检。UI 录制先核对 Playwright 依赖、配置、project 与相对 seed，再由浏览器验证前置条件；已有资产执行不新增录制 seed。参数不得当脚本或任意进程环境变量执行。API 沿用原目标许可与预检；配置冲突不能悄悄切换目标。用例范围通过 `data_space_cases` 查询，优先真实 ID；`get` 不按 project 消歧，前 100 条不是全量。
+2. 读取本次 `preparation` 与 `parameterSources`：有效动态值优先于同名静态值；
+
+   - `refresh-required` 时显式刷新再初始化，不能回退旧值或使用脱敏占位。
+   - `configured` 仅代表配置匹配，网络、身份、角色和数据未检查均为 `unknown`，仍须原生执行预检。
+   - UI 录制先核对 Playwright 依赖、配置、project 与相对 seed，再由浏览器验证前置条件；已有资产执行不新增录制 seed。参数不得当脚本或任意进程环境变量执行。API 沿用原目标许可与预检；配置冲突不能悄悄切换目标。
+   - 用例范围通过 `data_space_cases` 查询，优先真实 ID；`get` 不按 project 消歧，前 100 条不是全量。
+
 3. 保留本次取得的 `revision`、用例引用和原生资产／批次引用。聊天锚点只帮助定位，不是版本锁或结果证据。写前发现用例已变更，先核对对应测试版本；原生关联过期需重新关联，不能把旧结论贴到新用例上。
 
 数据空间在同一 dataDir 内跨工作区共享，项目名、环境名不能单独充当全局身份。敏感参数只返回脱敏占位或名称；不使用 `***` 执行，不把密钥、cookies、storageState 或连接口令写进备注与结果。只有原工作流明确支持的私有引用才能用于执行；执行/诊断使用私密参数时，0.17.0 的 `data_space_automation.prepare-private` 要求 `engine=ui`、`mode=execute`、明确 `systemId/envId/targetUrl`，以及 `privateBindings:[{parameterKey,storageKey}]` 名称映射。映射须来自目标声明，不猜测 token 的存储位置；只支持所选 origin 的 localStorage，不执行模板/代码或自动转换 HTTP token 为完整登录。该操作只消费当前有效静态/动态值，不刷新、不发请求，过期/刷新失败先走原显式刷新再重新准备。返回原生 `auth` 私有引用及有效期，填入本次原生环境配置；不复制真实值或文件路径。要求兼容 `managedAuthStateVersion=1` 的运行包（本项目分发0.1.12），缺失即阻塞。
