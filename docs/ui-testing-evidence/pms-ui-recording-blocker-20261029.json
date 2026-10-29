@@ -1,0 +1,64 @@
+{
+	"schema_version": "1.0",
+	"kind": "development-regression-evidence",
+	"created_at": "2026-10-29T06:57:43.371Z",
+	"scope": "Resolve UI workflow input compatibility and private recording admission blockers; no PMS business result claimed",
+	"facts": [
+		"Native new workflow accepts omission of asset_ref/run_ref through the installed codemode tool; real task created",
+		"Root stale UI runtime resolved a TypeScript 7 CLI module without compiler API",
+		"Pinned e2e profile reinstalled and root test dependencies linked to that physical runtime",
+		"Current active extension still rejects preparation; actual PMS admission awaits resource reload"
+	],
+	"changes": [
+		"Resolve only exact native-declared TypeScript version with parser API, including locked e2e profile candidate",
+		"Add regression for version-only compiler rejection and pinned profile resolution",
+		"Add explicit workspace Playwright entry and versioned PMS managed seeds",
+		"Preserve three zero-action partial recordings and back up old test dependencies"
+	],
+	"before": {
+		"preflight_unit_total": 3,
+		"passed": 2,
+		"failed": 1,
+		"reason": "Normal seed rejected at syntax because ScriptTarget was absent"
+	},
+	"after": {
+		"unit_files": 5,
+		"unit_total": 31,
+		"passed": 31,
+		"failed": 0,
+		"typecheck": "passed",
+		"lint": "passed",
+		"protocol": "passed; Git tag heuristic skipped because checkout has no tags",
+		"diff_check": "passed",
+		"sdk_integration": "passed",
+		"sdk_chromium_private_recording": "passed",
+		"isolated_electron_workflow": "passed"
+	},
+	"evidence": [
+		{
+			"path": "tests/scratch/ui-optimization-u00/recording-product-actions/1793256959991-normal/result.json",
+			"sha256": "22996e35bf08d0248274b1746727b5f269ff7816e6bc9986d23cf368c0e13476"
+		},
+		{
+			"path": "tests/scratch/ui-workflow-board-desktop/1793256462870/result.json",
+			"sha256": "cfaef579dd139473806f262c6c84a37932f8a8d61a2c1c19538823b1c07fa642"
+		}
+	],
+	"backup": ".workbuddy/tmp/pms-ui-runtime-backup-20261029",
+	"pms_business": {
+		"new_cases": 0,
+		"imported_cases": 0,
+		"executed_cases": 0,
+		"browser_actions": 0,
+		"business_writes": 0,
+		"status": "not-executed"
+	},
+	"task_id": "pms-operation-contract-new-20261029",
+	"next": "Reload current resources via /reload, resume the same workflow task, prepare a fresh private reference and a new recording ID/seed; verify PMS identity, role and controls before case generation and formal execution",
+	"not_claimed": [
+		"Actual user Desktop hot reload",
+		"PMS page access, business role and data readiness",
+		"Independent design/result approvals",
+		"PMS formal test results"
+	]
+}

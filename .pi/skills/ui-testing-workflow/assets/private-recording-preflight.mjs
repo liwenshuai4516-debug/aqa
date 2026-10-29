@@ -1,24 +1,50 @@
 // Admission for the explicit single-page protocol, not a sandbox for untrusted project code.
 import { readFile, realpath } from "node:fs/promises";
 import { createRequire } from "node:module";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { isDeepStrictEqual } from "node:util";
 import { validateRecordingSeed } from "./recording-preflight.mjs";
 
-// The native package pins the compiler API; the host's TS 7 CLI package has no parser API.
-const ts = createRequire(import.meta.resolve("pi-ui-testing"))("typescript");
+// Resolve the compiler API from a pinned UI runtime, never from the host's TS 7 CLI package.
+// The optional e2e profile is independently locked and may coexist with a legacy root install.
+/** @param {(string | URL)[]} [runtimeLocations] */
+export function resolveRecordingCompiler(
+	runtimeLocations = [
+		import.meta.resolve("pi-ui-testing"),
+		new URL("../../../../tools/e2e/package.json", import.meta.url),
+	],
+) {
+	for (const location of runtimeLocations) {
+		try {
+			const runtime = createRequire(location);
+			const native = createRequire(runtime.resolve("pi-ui-testing"));
+			const expected = native(join(dirname(runtime.resolve("pi-ui-testing")), "../package.json")).dependencies
+				.typescript;
+			const compiler = native("typescript");
+			if (
+				compiler.version === expected &&
+				typeof compiler.createSourceFile === "function" &&
+				compiler.ScriptTarget?.Latest !== undefined
+			)
+				return compiler;
+		} catch {
+			// A profile may be absent. Only a fully compatible pinned runtime is accepted.
+		}
+	}
+	throw blocked("compiler-api");
+}
 
 const blocked = (check = "admission") =>
 	new Error(
 		`受管采集 seed 未就绪（${check}）：核对直接 fixture、环境/归属、同一 Chromium 运行时及 trace:off；未执行 seed`,
 	);
-function literal(node) {
+function literal(node, ts) {
 	if (ts.isStringLiteral(node)) return node.text;
 	if (ts.isNumericLiteral(node)) return Number(node.text);
 	if (node.kind === ts.SyntaxKind.TrueKeyword) return true;
 	if (node.kind === ts.SyntaxKind.FalseKeyword) return false;
 	if (node.kind === ts.SyntaxKind.NullKeyword) return null;
-	if (ts.isArrayLiteralExpression(node)) return node.elements.map(literal);
+	if (ts.isArrayLiteralExpression(node)) return node.elements.map((element) => literal(element, ts));
 	if (!ts.isObjectLiteralExpression(node)) throw blocked();
 	const entries = node.properties.map((property) => {
 		if (
@@ -27,7 +53,7 @@ function literal(node) {
 			!(ts.isIdentifier(property.name) || ts.isStringLiteral(property.name))
 		)
 			throw blocked();
-		return [property.name.text, literal(property.initializer)];
+		return [property.name.text, literal(property.initializer, ts)];
 	});
 	if (new Set(entries.map(([key]) => key)).size !== entries.length) throw blocked();
 	return Object.fromEntries(entries);
@@ -45,6 +71,8 @@ export async function validatePrivateRecordingSeed({ capture, captureContext, sn
 			(await realpath(fixtureRequire.resolve("@playwright/test/package.json")))
 		)
 			throw blocked();
+		check = "compiler-api";
+		const ts = resolveRecordingCompiler();
 		check = "syntax";
 		const source = ts.createSourceFile(
 			capture.seedRef.path,
@@ -102,11 +130,11 @@ export async function validatePrivateRecordingSeed({ capture, captureContext, sn
 				!options.has("uiEnvironment") ||
 				!options.has("uiOwner") ||
 				!options.has("uiProjectRoot") ||
-				!isDeepStrictEqual(literal(options.get("uiEnvironment")), captureContext.environment) ||
+				!isDeepStrictEqual(literal(options.get("uiEnvironment"), ts), captureContext.environment) ||
 				options.get("uiProjectRoot").getText(source).replace(/\s/g, "") !== "process.cwd()"
 			)
 				throw blocked();
-			const owner = literal(options.get("uiOwner"));
+			const owner = literal(options.get("uiOwner"), ts);
 			if (
 				owner.kind !== "recording" ||
 				owner.id !== captureContext.sessionId ||

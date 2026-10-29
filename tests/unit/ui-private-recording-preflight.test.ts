@@ -2,7 +2,10 @@ import { afterEach, expect, it } from "vitest";
 import { mkdir, mkdtemp, realpath, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { validatePrivateRecordingSeed } from "../../.pi/skills/ui-testing-workflow/assets/private-recording-preflight.mjs";
+import {
+	resolveRecordingCompiler,
+	validatePrivateRecordingSeed,
+} from "../../.pi/skills/ui-testing-workflow/assets/private-recording-preflight.mjs";
 
 const roots: string[] = [];
 afterEach(async () => {
@@ -30,6 +33,28 @@ test('seed',async({page})=>{expect(page).toBeTruthy();});`;
 	};
 	return { root, prepared, code, config };
 }
+it("rejects a version-only compiler and resolves the pinned profile API instead", async () => {
+	const root = await realpath(await mkdtemp(join(tmpdir(), "private-compiler-")));
+	roots.push(root);
+	const native = join(root, "node_modules/pi-ui-testing");
+	const compiler = join(root, "node_modules/typescript");
+	await mkdir(join(native, "dist"), { recursive: true });
+	await mkdir(compiler, { recursive: true });
+	await writeFile(join(root, "package.json"), "{}");
+	await writeFile(
+		join(native, "package.json"),
+		JSON.stringify({ name: "pi-ui-testing", main: "dist/index.js", dependencies: { typescript: "5.9.3" } }),
+	);
+	await writeFile(join(native, "dist/index.js"), "module.exports = {};");
+	await writeFile(join(compiler, "package.json"), '{"name":"typescript","main":"index.cjs"}');
+	await writeFile(join(compiler, "index.cjs"), 'module.exports = {version: "5.9.3"};');
+	const location = join(root, "package.json");
+	expect(() => resolveRecordingCompiler([location])).toThrow("compiler-api");
+	const api = resolveRecordingCompiler([location, new URL("../../tools/e2e/package.json", import.meta.url)]);
+	expect(api.version).toBe("5.9.3");
+	expect(typeof api.createSourceFile).toBe("function");
+	expect(api.ScriptTarget.Latest).toBeDefined();
+});
 it("collects a direct managed fixture seed without executing its body", async () => {
 	const f = await fixture();
 	await writeFile(
