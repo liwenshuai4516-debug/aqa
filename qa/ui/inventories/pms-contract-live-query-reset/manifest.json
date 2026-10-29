@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "kind": "inventory",
+  "id": "pms-contract-live-query-reset",
+  "created_at": "2026-10-29T08:15:43.038Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "features": [
+      {
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "name": "本轮查询与重置执行主链（保留另7条源码草稿待执行）",
+        "entry": "http://192.168.90.224:8238/pms/OperationContract",
+        "role": "configured account; business role not yet verified",
+        "priority": "P0",
+        "actions": [
+          "输入已声明的纯字母合成查询词",
+          "点击查询并观察请求条件",
+          "设置并重置六项查询条件；仅改本次浏览器状态"
+        ],
+        "states": [
+          "同浏览器pms_admin身份通过seed核验",
+          "真实页面可访问",
+          "名称查询与重置真实操作已录制",
+          "六项控件初态可见；全部设值/重置的断言须经诊断及正式运行验证"
+        ],
+        "coverage": "explored",
+        "discovery": "both",
+        "source_refs": [
+          {
+            "path": "qa/ui/scopes/pms-contract-current-source/operation-contract.js",
+            "sha256": "5366384b16baf6abd47d238ddd4030ca8410124a3cde657c47158f927cbc03ac"
+          },
+          {
+            "path": "qa/ui/recordings/pms-operation-contract-observe-v13/events/setup/response.json",
+            "sha256": "02c9e5fd10af32fd4f346aadc79c6d45d368b232db56fc15c5069c119710ecc6"
+          }
+        ],
+        "source_locations": [
+          {
+            "ref": {
+              "path": "qa/ui/scopes/pms-contract-current-source/operation-contract.js",
+              "sha256": "5366384b16baf6abd47d238ddd4030ca8410124a3cde657c47158f927cbc03ac"
+            },
+            "line": 1,
+            "symbol": "OperationContract.setup N/z/p/b/m"
+          }
+        ],
+        "scenarios": [
+          {
+            "scenario_id": "oc-src-001",
+            "title": "合同名称trim、第一页与查询参数一致性"
+          },
+          {
+            "scenario_id": "oc-src-009",
+            "title": "六项条件重置与请求筛选清空"
+          }
+        ],
+        "gaps": [
+          "业务角色名称和其他角色权限未确认，执行仅限已验证账号可访问页面的只读查询。",
+          "部门必须至少有一个可选非全部项；不足时保留数据前置阻塞，不能虚报重置全覆盖。",
+          "其中六项全部设值的路径目前只有源码声明，需受控诊断与真实运行核验。"
+        ]
+      }
+    ],
+    "unexplored": [
+      "原9条源码草稿PMS-OC-SRC-002至008继续保留，未从历史用例或原清单删除，当前不纳入选定的两条P0主链执行资产。",
+      "合同创建、编辑、审批、上传、删除及其他角色未探索；可靠清理接口未确认，不创建合同。",
+      "源代码声明的项目类型/具体节点限制作为剩余覆盖，不据此宣布产品缺陷。"
+    ]
+  }
+}

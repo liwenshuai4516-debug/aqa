@@ -1,6 +1,7 @@
 import { defineConfig } from "@playwright/test";
+import { fileURLToPath } from "node:url";
 export default defineConfig({
-	testDir: new URL(".", import.meta.url).pathname,
+	testDir: fileURLToPath(new URL(".", import.meta.url)),
 	testMatch: "seed*.spec.ts",
 	workers: 1,
 	retries: 0,

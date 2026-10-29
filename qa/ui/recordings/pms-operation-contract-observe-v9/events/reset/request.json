@@ -1,0 +1,19 @@
+{
+  "operation": "action",
+  "session_ref": {
+    "path": "qa/ui/recordings/pms-operation-contract-observe-v9/session.json",
+    "sha256": "cd053c39ad62154ed6d1a95d37105cb4204533f49c932876a00bc390654e5db8"
+  },
+  "operation_id": "reset",
+  "tool": "browser_click",
+  "intent": "清空本次浏览器查询条件并恢复初态",
+  "input": {
+    "element": "重置按钮",
+    "target": "main button:has-text(\"重置\")",
+    "intent": "重置本次合成查询条件",
+    "button": "left",
+    "doubleClick": false,
+    "modifiers": []
+  },
+  "created_at": "2026-10-29T07:58:40.239Z"
+}

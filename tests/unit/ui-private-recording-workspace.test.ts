@@ -78,6 +78,29 @@ async function fixture() {
 	return { root, workspace, authority, reference, parentPath, state, input, prepare };
 }
 
+it("collects the PMS seed in a desktop directory containing spaces and Unicode without executing it", async () => {
+	const f = await fixture(),
+		directory = join(f.workspace, "Application Support", "受管录制"),
+		configPath = join(directory, "playwright.config.mjs");
+	await mkdir(directory, { recursive: true });
+	await writeFile(
+		configPath,
+		await readFile(new URL("../../qa/ui/pms-operation-contract/playwright.config.mjs", import.meta.url)),
+	);
+	await writeFile(
+		join(directory, "seed-regression.spec.ts"),
+		'import {test} from "@playwright/test"; test("collection only", () => { throw new Error("seed body must not run"); });',
+	);
+	const cli = createRequire(import.meta.url).resolve("@playwright/test/cli");
+	const output = execFileSync(process.execPath, [cli, "test", "--list", "--config", configPath], {
+		cwd: f.workspace,
+		encoding: "utf8",
+		timeout: 15000,
+	});
+	expect(output).toContain("Total: 1 test in 1 file");
+	expect(output).toContain("collection only");
+}, 20000);
+
 it("keeps parent scope intact while a child consumes an exact, equally expiring managed state", async () => {
 	const f = await fixture(),
 		before = await readFile(f.parentPath),

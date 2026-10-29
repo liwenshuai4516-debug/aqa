@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "id": "pms-operation-contract-observe-v14",
+  "kind": "recording",
+  "created_at": "2026-10-29T08:18:08.388Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "inventory_ref": {
+      "path": "qa/ui/inventories/pms-contract-live-query-reset/manifest.json",
+      "sha256": "2f62ea1e00a59d2d50f01ac4008711b8f4aaba63675186c04063b127533444b9"
+    },
+    "initial_state": "受管fixture重建独立context；同浏览器pms_admin布尔身份核验通过，六项条件与查询/重置可见，初始列表无数据。真实输入已声明纯字母合成词、查询、重置，参数化草稿已原样公开保存；UI_CONTRACT_QUERY须由运行数据夹具提供，不包含固定录制数据。浏览器关闭确认，无合同创建、修改或删除。",
+    "initial_state_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/initial-state.json",
+      "sha256": "58563c76317bd5a48b147388a894b3f2d011d5ec141113adf35e4b157c6ff346"
+    },
+    "data_rules_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+      "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+    },
+    "status": "complete",
+    "log_ref": {
+      "path": "qa/ui/recordings/pms-operation-contract-observe-v14/raw-log.json",
+      "sha256": "ca807f5948e5e5b530ca41e3a641ac6ab16fa57f461f714e854c510f4e0e3d02"
+    },
+    "script_refs": [
+      {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v14/draft.spec.ts",
+        "sha256": "3c3771d7d233467cf1878c9f6690fa77ca5212dcbf8db1d41590f57cec17d592"
+      }
+    ],
+    "steps": [
+      {
+        "step_id": "setup",
+        "intent": "核对同浏览器身份并准备真实查询重置录制",
+        "tool": "mcp__ui_playwright_test__generator_setup_page",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v14/events/setup/response.json",
+          "sha256": "aad6c594cb48a99add8d1dd717741e4baa45c5a6d2b215d873c4cc881248de61"
+        }
+      },
+      {
+        "step_id": "type-name",
+        "intent": "输入已声明的只读合成查询词",
+        "tool": "mcp__ui_playwright_test__browser_type",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v14/events/type-name/response.json",
+          "sha256": "444cda724cbc9e2426471553037f083d306d95cd33f4fe36785c850c30104feb"
+        }
+      },
+      {
+        "step_id": "query",
+        "intent": "按合成合同名称查询",
+        "tool": "mcp__ui_playwright_test__browser_click",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v14/events/query/response.json",
+          "sha256": "22d5c6d417c1b3983999c206120a0a8c6cf075652177b3df9c64d92e0ce84b7a"
+        }
+      },
+      {
+        "step_id": "reset",
+        "intent": "重置本次查询条件",
+        "tool": "mcp__ui_playwright_test__browser_click",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v14/events/reset/response.json",
+          "sha256": "2c5def0c0569a19494cd70203f176e4c8f0204182b6a01c1bd012f2ab50b8bd5"
+        }
+      },
+      {
+        "step_id": "read-log",
+        "intent": "保留真实查询重置操作来源",
+        "tool": "mcp__ui_playwright_test__generator_read_log",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v14/events/read-log/response.json",
+          "sha256": "b8327b93cf9579f217996f92abec979946a95c3daeb96c20ff0751749aef9069"
+        }
+      },
+      {
+        "step_id": "write-draft",
+        "intent": "保存真实步骤草稿，正式执行前须补齐受管fixture和获批断言",
+        "tool": "mcp__ui_playwright_test__generator_write_test",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v14/events/write-draft/response.json",
+          "sha256": "457c093ddb01964183dba13afca7e7cdc18f1acba39fbe1c21640b9bcfd2a030"
+        }
+      },
+      {
+        "step_id": "close",
+        "intent": "关闭本次独立浏览器上下文",
+        "tool": "mcp__ui_playwright_test__browser_close",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v14/events/close/response.json",
+          "sha256": "1c3a91769e4ccdb5290f652bc906bb857914fcd987aa11ae3c89b0af997df2e2"
+        }
+      }
+    ],
+    "data_refs": [
+      {
+        "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+        "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+      }
+    ],
+    "completion": {
+      "stable_locators": true,
+      "initial_state_rebuildable": true,
+      "replaceable_data": true,
+      "assertion_sources": true,
+      "cleanup_owned": true
+    },
+    "gaps": []
+  }
+}

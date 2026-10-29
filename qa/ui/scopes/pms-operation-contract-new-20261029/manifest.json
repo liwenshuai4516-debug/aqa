@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "kind": "scope",
+  "id": "pms-operation-contract-new-20261029",
+  "created_at": "2026-10-29T06:09:29Z",
+  "data": {
+    "project_id": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+    "environment_id": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+    "role": "configured account; business role not yet verified",
+    "goal": "Discover and test the OperationContract page, import cases and report the real results.",
+    "base_url": "http://192.168.90.224:8238/pms/OperationContract",
+    "allowed_actions": [
+      "Read and discover the target page using the configured account",
+      "Create, modify and clean only contracts owned by this test",
+      "Import the generated cases and execute approved tests"
+    ],
+    "sources": [
+      {
+        "source_id": "existing-source-drafts",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "tests/ui-pms-source-cases.mjs",
+          "sha256": "915aa3444bc4adcfe209cb3da4d8ae493039b7fcbc4105f870385bc260715ee9"
+        },
+        "statement": "Existing source-derived case drafts and declared gaps; not evidence of current deployment or a business requirement."
+      }
+    ],
+    "budget": {
+      "max_review_rounds": 3,
+      "max_tool_calls": 100
+    }
+  }
+}

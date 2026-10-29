@@ -1,0 +1,23 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Owned browser cleanup confirmed"
+    }
+  ],
+  "details": {
+    "server": "ui-playwright-test",
+    "tool": "browser_close"
+  },
+  "structuredContent": {
+    "isError": false,
+    "content": [
+      {
+        "type": "text",
+        "text": "Owned browser cleanup confirmed"
+      }
+    ]
+  },
+  "isError": false,
+  "duration_ms": 269
+}

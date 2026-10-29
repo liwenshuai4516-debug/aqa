@@ -1,0 +1,22 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "### Result\nTest written to qa/ui/[PRIVATE]-operation-contract/observed-v[PRIVATE]4.spec.ts"
+    }
+  ],
+  "details": {
+    "server": "ui-playwright-test",
+    "tool": "generator_write_test"
+  },
+  "structuredContent": {
+    "content": [
+      {
+        "type": "text",
+        "text": "### Result\nTest written to qa/ui/[PRIVATE]-operation-contract/observed-v[PRIVATE]4.spec.ts"
+      }
+    ]
+  },
+  "isError": false,
+  "duration_ms": 1006
+}

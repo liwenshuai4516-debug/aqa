@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "id": "pms-operation-contract-observe-v4",
+  "kind": "recording",
+  "created_at": "2026-10-29T07:08:37.905Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "inventory_ref": {
+      "path": "qa/ui/inventories/pms-operation-contract-initial/manifest.json",
+      "sha256": "448ec06626472c1a03ed502cca6bddaac9bb738763a350a7663ac63bf22d6923"
+    },
+    "initial_state": "浏览器尚未启动；账号、业务角色和页面初态未验证。只进行了seed静态准入与私有引用准备，不能视为浏览器实测。",
+    "initial_state_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/initial-state.json",
+      "sha256": "58563c76317bd5a48b147388a894b3f2d011d5ec141113adf35e4b157c6ff346"
+    },
+    "data_rules_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+      "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+    },
+    "status": "partial",
+    "log_ref": {
+      "path": "qa/ui/recordings/pms-operation-contract-observe-v4/raw-log.json",
+      "sha256": "c592f9795ffd5a324dbf08e052b3d9933992afeb48283c1c2a2fddb52768e584"
+    },
+    "script_refs": [],
+    "steps": [],
+    "data_refs": [
+      {
+        "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+        "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+      }
+    ],
+    "completion": {
+      "stable_locators": false,
+      "initial_state_rebuildable": false,
+      "replaceable_data": false,
+      "assertion_sources": false,
+      "cleanup_owned": false
+    },
+    "gaps": [
+      "v4启动返回：私密会话准备失败；会话已保留，请保存partial记录。浏览器动作0，未创建或修改业务合同。",
+      "尚不能确认当前活动宿主已加载修复后的录制扩展；需实际重载并核验，不能将隔离回归当成PMS接入通过。",
+      "本轮另已按公开部署源码声明生成9条独立用例草稿并入库；没有运行脚本、设计批准或执行证据，不能据此将本次录制标为完成。",
+      "missing-generated-script",
+      "missing-native-recording-log",
+      "browser-cleanup-not-confirmed",
+      "goal-not-reached",
+      "completion-checks-incomplete",
+      "time-budget"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "operation": "action",
+  "session_ref": {
+    "path": "qa/ui/recordings/pms-operation-contract-observe-v13/session.json",
+    "sha256": "5abd790b075f41141ca62832d10dd3ce7a10483ae2554b2628dc5578efeb27fa"
+  },
+  "operation_id": "type-name",
+  "tool": "browser_type",
+  "intent": "输入已声明的只读合成查询词",
+  "input": {
+    "element": "合同名称输入框",
+    "target": "main input[placeholder=\"请输入\"] >> nth=0",
+    "text": "AQA_OWNED_QUERY_ONLY",
+    "slowly": false,
+    "submit": false,
+    "intent": "设置只读合同名称查询条件"
+  },
+  "created_at": "2026-10-29T08:10:56.914Z"
+}

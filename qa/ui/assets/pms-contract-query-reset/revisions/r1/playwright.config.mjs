@@ -1,0 +1,1 @@
+export default { testDir: import.meta.dirname, timeout: 30000, expect: { timeout: 5000 }, workers: 1, fullyParallel: false, retries: 0, projects: [{ name: 'chromium', use: { browserName: 'chromium' } }], use: { headless: true, launchOptions: { executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' }, trace: 'off', screenshot: 'off', video: 'off' } };

@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "id": "pms-operation-contract-observe-v6",
+  "kind": "recording",
+  "created_at": "2026-10-29T07:45:29.007Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "inventory_ref": {
+      "path": "qa/ui/inventories/pms-operation-contract-initial/manifest.json",
+      "sha256": "448ec06626472c1a03ed502cca6bddaac9bb738763a350a7663ac63bf22d6923"
+    },
+    "initial_state": "v6修正配置后fresh Node在桌面默认authority成功准备，无浏览器；当前活动hook仍通用失败。身份、角色和DOM未验证。",
+    "initial_state_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/initial-state.json",
+      "sha256": "58563c76317bd5a48b147388a894b3f2d011d5ec141113adf35e4b157c6ff346"
+    },
+    "data_rules_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+      "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+    },
+    "status": "partial",
+    "log_ref": {
+      "path": "qa/ui/recordings/pms-operation-contract-observe-v6/raw-log.json",
+      "sha256": "3f9db230be24a4a89c6996ee17f5c67087dacb78b260be8d14d7c38ec838489a"
+    },
+    "script_refs": [],
+    "steps": [],
+    "data_refs": [
+      {
+        "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+        "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+      }
+    ],
+    "completion": {
+      "stable_locators": false,
+      "initial_state_rebuildable": false,
+      "replaceable_data": false,
+      "assertion_sources": false,
+      "cleanup_owned": false
+    },
+    "gaps": [
+      "原生工具活动会话仍在私密准备hook返回blocked，浏览器动作0，业务写入0。",
+      "修正URL路径转换后新Node默认桌面authority无浏览器准备通过，表明当前活动宿主与新加载模块仍存在差异；具体旧缓存或注册阶段差异尚待进一步证据，不冒充已确认根因。",
+      "missing-generated-script",
+      "missing-native-recording-log",
+      "browser-cleanup-not-confirmed",
+      "goal-not-reached",
+      "completion-checks-incomplete"
+    ]
+  }
+}

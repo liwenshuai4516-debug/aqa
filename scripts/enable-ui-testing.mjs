@@ -31,6 +31,24 @@ export async function enableUiTesting(root, agentDir) {
 				? join(root, "capabilities/ui-testing/ui-testing-workflow")
 				: "../capabilities/ui-testing/ui-testing-workflow",
 		};
+		if (field === "extensions") {
+			const isRegistration = (entry) => {
+				const source = typeof entry === "string" ? entry : entry.source;
+				return (
+					typeof source === "string" &&
+					[resource, legacy.extensions].some((path) => resolve(directory, source) === resolve(directory, path))
+				);
+			};
+			const index = entries.findIndex(isRegistration);
+			const filtered = entries.find((entry) => typeof entry === "object" && isRegistration(entry));
+			settings[field] = entries.filter((entry) => !isRegistration(entry));
+			settings[field].splice(
+				index < 0 ? entries.length : index,
+				0,
+				filtered ? { ...filtered, source: resource } : resource,
+			);
+			continue;
+		}
 		if (
 			!entries.some((entry) => {
 				const source = typeof entry === "string" ? entry : entry.source;

@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0",
+  "id": "pms-operation-contract-observe-v12",
+  "kind": "recording",
+  "created_at": "2026-10-29T08:06:17.218Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "inventory_ref": {
+      "path": "qa/ui/inventories/pms-operation-contract-initial/manifest.json",
+      "sha256": "448ec06626472c1a03ed502cca6bddaac9bb738763a350a7663ac63bf22d6923"
+    },
+    "initial_state": "pms_admin身份和真实初态通过；已完成查询与重置，关闭本次上下文已确认，无合同写入。",
+    "initial_state_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/initial-state.json",
+      "sha256": "58563c76317bd5a48b147388a894b3f2d011d5ec141113adf35e4b157c6ff346"
+    },
+    "data_rules_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+      "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+    },
+    "status": "partial",
+    "log_ref": {
+      "path": "qa/ui/recordings/pms-operation-contract-observe-v12/raw-log.json",
+      "sha256": "948a762fb05fbcbae503290ae03029a62140f84ba3399cf43674b8b06da76f73"
+    },
+    "script_refs": [],
+    "steps": [
+      {
+        "step_id": "setup",
+        "intent": "核对同浏览器身份并准备真实查询重置录制",
+        "tool": "mcp__ui_playwright_test__generator_setup_page",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v12/events/setup/response.json",
+          "sha256": "ff76c68f941f86d09f7bee922d95fb6b4c3882173c223d5b9ca65e3468f72061"
+        }
+      },
+      {
+        "step_id": "type-name",
+        "intent": "输入已声明的只读合成查询词",
+        "tool": "mcp__ui_playwright_test__browser_type",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v12/events/type-name/response.json",
+          "sha256": "76ee77890889595a837d09af3d9b5106912550a24bef0fc2dc0d2cc62ac007a4"
+        }
+      },
+      {
+        "step_id": "query",
+        "intent": "按合成合同名称查询",
+        "tool": "mcp__ui_playwright_test__browser_click",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v12/events/query/response.json",
+          "sha256": "1aa6bc507861d3834a7985cd7b976c75dbaf8a67f5db39e3ac0609a88c4b73c9"
+        }
+      },
+      {
+        "step_id": "reset",
+        "intent": "重置本次查询条件",
+        "tool": "mcp__ui_playwright_test__browser_click",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v12/events/reset/response.json",
+          "sha256": "d90f48253b623d3a118939f99432a5ecf9ae1d0caea9df7ea4e0b5bace37b7b2"
+        }
+      },
+      {
+        "step_id": "read-log",
+        "intent": "保留真实查询重置操作来源",
+        "tool": "mcp__ui_playwright_test__generator_read_log",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v12/events/read-log/response.json",
+          "sha256": "97ea08789b88a77203b7b9f3bf21c2b9d20f8beb3b2421856b9735607e1a93ae"
+        }
+      },
+      {
+        "step_id": "write-draft",
+        "intent": "保存真实步骤草稿，正式执行前须补齐受管fixture和获批断言",
+        "tool": "mcp__ui_playwright_test__generator_write_test",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v12/events/write-draft/response.json",
+          "sha256": "3815c245b4a12c00f4782b7a4b5b5a4fd371b9c97cd4d81facb2a9d21d33670b"
+        }
+      },
+      {
+        "step_id": "close-after-publish-block",
+        "intent": "关闭本次受管独立浏览器，保留私有失败证据",
+        "tool": "mcp__ui_playwright_test__browser_close",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v12/events/close-after-publish-block/response.json",
+          "sha256": "a73c21a3171a9ab3d96a7ab8a8fd7da902f75da135d6a126adecc74c931933c1"
+        }
+      }
+    ],
+    "data_refs": [
+      {
+        "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+        "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+      }
+    ],
+    "completion": {
+      "stable_locators": true,
+      "initial_state_rebuildable": true,
+      "replaceable_data": true,
+      "assertion_sources": true,
+      "cleanup_owned": true
+    },
+    "gaps": [
+      "草稿发布因privacy.text(code)!==code被门禁拒绝，保留原始私有证据。公开操作日志显示短数字和pms字符串均被当前存储过滤，含日期数字的合成查询词不能原样发布为脚本。",
+      "后续改用不与私密存储值重合的纯字母合成查询词，不逆转或放宽脱敏门禁，不重放该失败请求。",
+      "missing-generated-script",
+      "goal-not-reached",
+      "tool-error-or-cancelled"
+    ]
+  }
+}

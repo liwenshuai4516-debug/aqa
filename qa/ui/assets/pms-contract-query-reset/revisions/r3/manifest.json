@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "kind": "asset",
+  "id": "pms-contract-query-reset",
+  "created_at": "2026-10-29T08:34:38.363Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "cases_ref": {
+      "path": "qa/ui/cases/pms-contract-live-query-reset-r2/manifest.json",
+      "sha256": "b5180d2a76864d886a0a64fa4f7c836807bde029f1ec7528e31434a661989b9e"
+    },
+    "inventory_ref": {
+      "path": "qa/ui/inventories/pms-contract-live-query-reset/manifest.json",
+      "sha256": "2f62ea1e00a59d2d50f01ac4008711b8f4aaba63675186c04063b127533444b9"
+    },
+    "revision": "r3",
+    "module_ids": [
+      "operation-contract"
+    ],
+    "files": [
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r2/data.ts",
+        "sha256": "891e19edc496c9534126ea75f40d26c9b701fddb63404679a0ed26ea68c00f9d"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r2/playwright.config.mjs",
+        "sha256": "27c807016481cbb4491f5c6ad602542f6533433e3cb94a1657a3a708d37204a3"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r2/tsconfig.json",
+        "sha256": "658353186575c2eb62fe61229864e32bf3f39559947bd5a28113f34997b88801"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r2/query-reset.spec.ts",
+        "sha256": "076895c505b3caa09e0b058312d172135b90910beccad39f42c66fea0d4ff9f8"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r2/observations.md",
+        "sha256": "3a1881c334cceb630b6cc3c1e3ba9327bd0022f5abee0681a612d90c728b2d12"
+      }
+    ],
+    "compiler_config_ref": {
+      "path": "qa/ui/assets/pms-contract-query-reset/revisions/r2/tsconfig.json",
+      "sha256": "658353186575c2eb62fe61229864e32bf3f39559947bd5a28113f34997b88801"
+    },
+    "content_sha256": "991323ac5856239785beea4a4bd6e6e92b9b46869f43f804a628b295ff8149d6",
+    "dependencies": [
+      {
+        "name": "@playwright/test",
+        "version": "1.62.1"
+      },
+      {
+        "name": "pi-ui-testing",
+        "version": "0.1.30"
+      },
+      {
+        "name": "typescript",
+        "version": "7.0.2"
+      }
+    ],
+    "recording_refs": [
+      {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v14/manifest.json",
+        "sha256": "e1f8eb19a209822aef5b0de6a8550c08661613f29b6ea68fa6bef2861ae279dd"
+      }
+    ],
+    "bindings": [
+      {
+        "case_id": "PMS-OC-SRC-001",
+        "script_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r2/query-reset.spec.ts",
+          "sha256": "076895c505b3caa09e0b058312d172135b90910beccad39f42c66fea0d4ff9f8"
+        },
+        "test_title": "PMS-OC-SRC-001 合同名称去空白查询",
+        "assertion_ids": [
+          "A-name-query"
+        ]
+      },
+      {
+        "case_id": "PMS-OC-SRC-009",
+        "script_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r2/query-reset.spec.ts",
+          "sha256": "076895c505b3caa09e0b058312d172135b90910beccad39f42c66fea0d4ff9f8"
+        },
+        "test_title": "PMS-OC-SRC-009 六项条件重置",
+        "assertion_ids": [
+          "A-reset-all"
+        ]
+      }
+    ],
+    "readiness": "design-only",
+    "gaps": [
+      "另7条源码草稿未纳入本次P0主链资产，保持未执行。",
+      "实际业务角色名称未确认；同浏览器账号已核验，执行时再次核验；不推断其他角色权限。",
+      "六项全部设值尚待正式环境实测；隔离副本诊断不能替代。",
+      "运行时说明：工作区核心TypeScript确为7.0.2；pi-ui-testing@0.1.30自身锁定e2e profile的TypeScript5.9.3 parser。资产依赖登记按工作区真实安装版本，不将核心7伪报成5.9。fresh原生静态检查与活动会话缓存问题须分别留证。"
+    ]
+  }
+}

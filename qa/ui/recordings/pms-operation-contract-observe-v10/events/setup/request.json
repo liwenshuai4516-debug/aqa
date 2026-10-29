@@ -1,0 +1,16 @@
+{
+  "operation": "action",
+  "session_ref": {
+    "path": "qa/ui/recordings/pms-operation-contract-observe-v10/session.json",
+    "sha256": "a2e9ed0ae8647a52821318ef325d1eed180aa4e241c5d6b3d3b3195d630f7708"
+  },
+  "operation_id": "setup",
+  "tool": "generator_setup_page",
+  "intent": "核对同浏览器身份并准备真实查询重置录制",
+  "input": {
+    "project": "chromium",
+    "seedFile": "qa/ui/pms-operation-contract/seed-v10.spec.ts",
+    "plan": "Verify the configured account with the managed seed, query the declared synthetic name AQA_OWNED_QUERY_20261029, reset, save a draft and close. Read-only, no contract creation or modification."
+  },
+  "created_at": "2026-10-29T08:01:19.993Z"
+}

@@ -1,0 +1,8 @@
+{
+  "authorized": "Create, modify and clean only contracts owned by this test",
+  "recording_goal": "Observe live controls and exercise read-only query/reset first",
+  "mutation_gate": "Owned data creation and cleanup must be verified before submitting business writes",
+  "prepared_data": [],
+  "cleanup": "Close owned context; no business records created during discovery",
+  "secrets": "Host-managed auth reference only, no credentials or storage contents in public files"
+}

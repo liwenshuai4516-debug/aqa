@@ -1,0 +1,22 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "### Ran Playwright code\n```js\nawait page.locator('main button:has-text(\"重置\")').click({\n  button: 'left',\n  modifiers: []\n});\n```\n### Page\n- Page URL: http://[PRIVATE]9[PRIVATE].[PRIVATE]68.9[PRIVATE].[PRIVATE][PRIVATE]4:8[PRIVATE][PRIVATE]8[PRIVATE]\n- Page Title: 基础[PRIVATE]\n### Snapshot\n- [Snapshot](.playwright-mcp/page-[PRIVATE][PRIVATE][PRIVATE]6-[PRIVATE][PRIVATE]-[PRIVATE]9T[PRIVATE]7-58-4[PRIVATE]-[PRIVATE]5[PRIVATE]Z.yml)"
+    }
+  ],
+  "details": {
+    "server": "ui-playwright-test",
+    "tool": "browser_click"
+  },
+  "structuredContent": {
+    "content": [
+      {
+        "type": "text",
+        "text": "### Ran Playwright code\n```js\nawait page.locator('main button:has-text(\"重置\")').click({\n  button: 'left',\n  modifiers: []\n});\n```\n### Page\n- Page URL: http://[PRIVATE]9[PRIVATE].[PRIVATE]68.9[PRIVATE].[PRIVATE][PRIVATE]4:8[PRIVATE][PRIVATE]8[PRIVATE]\n- Page Title: 基础[PRIVATE]\n### Snapshot\n- [Snapshot](.playwright-mcp/page-[PRIVATE][PRIVATE][PRIVATE]6-[PRIVATE][PRIVATE]-[PRIVATE]9T[PRIVATE]7-58-4[PRIVATE]-[PRIVATE]5[PRIVATE]Z.yml)"
+      }
+    ]
+  },
+  "isError": false,
+  "duration_ms": 2114
+}

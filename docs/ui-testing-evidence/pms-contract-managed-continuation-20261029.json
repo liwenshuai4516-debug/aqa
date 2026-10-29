@@ -1,0 +1,426 @@
+{
+	"status": "PARTIAL_BLOCKED_AT_INDEPENDENT_DESIGN_REVIEW",
+	"taskId": "pms-operation-contract-new-20261029",
+	"taskRef": {
+		"path": "qa/ui/tasks/pms-operation-contract-new-20261029/manifest.json",
+		"sha256": "68cc52d913231c26b9813768ec677b0786c116658fe2e81cb3fcbbfbb6e7ba97"
+	},
+	"completedStages": ["discover-record", "case-design"],
+	"environment": {
+		"systemId": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+		"envId": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+		"target": "http://192.168.90.224:8238/pms/OperationContract",
+		"account": "pms_admin",
+		"sameBrowserAccountCheck": "passed-in-managed-seed",
+		"businessRole": "not-verified"
+	},
+	"recording": {
+		"ref": {
+			"path": "qa/ui/recordings/pms-operation-contract-observe-v14/manifest.json",
+			"sha256": "e1f8eb19a209822aef5b0de6a8550c08661613f29b6ea68fa6bef2861ae279dd"
+		},
+		"status": "complete",
+		"runtime": "fresh SDK; canonical installed extension; complete ctx.executeTool hooks; no model in driver",
+		"actions": [
+			"managed seed/setup",
+			"declared synthetic contract-name input",
+			"query",
+			"reset",
+			"read native log",
+			"save parameterized draft",
+			"close owned browser"
+		],
+		"formalTestRun": false,
+		"businessWrites": 0
+	},
+	"correction": {
+		"erratumRef": {
+			"path": "qa/ui/assets/pms-contract-query-reset/revisions/r2/observations.md",
+			"sha256": "3a1881c334cceb630b6cc3c1e3ba9327bd0022f5abee0681a612d90c728b2d12"
+		},
+		"description": "v13/v14 finish initial-state text incorrectly says no initial records. Setup snapshot actually shows 4, synthetic query shows 0. Frozen history is preserved and this erratum corrects it."
+	},
+	"candidate": {
+		"ref": {
+			"path": "qa/ui/assets/pms-contract-query-reset/revisions/r3/manifest.json",
+			"sha256": "d4c5b33415e1bddcd3195978d46b5e61ecafb503e26636ddf02b73aecdc2a691"
+		},
+		"selectedCaseIds": ["PMS-OC-SRC-001", "PMS-OC-SRC-009"],
+		"deferredCaseIds": [
+			"PMS-OC-SRC-002",
+			"PMS-OC-SRC-003",
+			"PMS-OC-SRC-004",
+			"PMS-OC-SRC-005",
+			"PMS-OC-SRC-006",
+			"PMS-OC-SRC-007",
+			"PMS-OC-SRC-008"
+		],
+		"staticCheckRef": {
+			"path": "docs/ui-testing-evidence/pms-contract-query-reset-r3-static-20261029.json",
+			"sha256": "c754e5d27fc3e7facb77c5da8eb1303540fe84e2a16252aa0851d8391a5f456d"
+		},
+		"freshNativeStaticIssues": 0,
+		"readyForReview": true,
+		"designApproved": false,
+		"runtimeAdmission": false
+	},
+	"activeToolErrors": {
+		"captureMethod": "Exact tool result fields transcribed from this conversation; not a manufactured raw review response.",
+		"ui_case_design": {
+			"operation": "check",
+			"assetRevision": "r3",
+			"status": "blocked",
+			"error": {
+				"category": "runner-error",
+				"message": "Cannot read properties of undefined (reading 'ES2022')"
+			}
+		},
+		"ui_design_review": {
+			"requestId": "pms-contract-query-reset-review-r3-01",
+			"status": "blocked",
+			"artifact_refs": [],
+			"error": {
+				"category": "runner-error",
+				"message": "评估调用失败；保留已有输入与响应，不批准"
+			}
+		},
+		"assessment": "Fresh native SDK static check succeeds while active parent and child tool checks fail. Active host dependency/cache loading discrepancy is supported, exact host root cause unconfirmed. No review approval or raw reviewer response was produced."
+	},
+	"dataSpace": {
+		"action": "archive-status",
+		"existing": 9,
+		"pending": 0,
+		"stale": 0,
+		"unclassified": 0,
+		"total": 9,
+		"classificationComplete": true,
+		"importedThisContinuation": 0,
+		"resultWrites": 0,
+		"sourceCasesRef": {
+			"path": "qa/ui/cases/pms-contract-current-source-20261029/manifest.json",
+			"sha256": "5a155f20c9bf99b594845f3af49ccfc96450017374b58657f665b9bbee15f83b"
+		}
+	},
+	"pmsFormalCounts": {
+		"designedAndArchived": 9,
+		"executableCandidateCases": 2,
+		"approved": 0,
+		"executed": 0,
+		"passed": 0,
+		"failed": 0,
+		"notExecuted": 9,
+		"workflowBlockers": 1,
+		"formalRuns": 0,
+		"businessWrites": 0
+	},
+	"history": [
+		{
+			"id": "pms-operation-contract-observe",
+			"status": "partial",
+			"gaps": [
+				"Host preparation failed before browser initialization; zero recorded actions. Explicit workspace Playwright config was missing from the frozen input set. No business data created.",
+				"missing-generated-script",
+				"missing-native-recording-log",
+				"browser-cleanup-not-confirmed",
+				"goal-not-reached",
+				"completion-checks-incomplete"
+			],
+			"ref": {
+				"path": "qa/ui/recordings/pms-operation-contract-observe/manifest.json",
+				"sha256": "bfe77c08d6e2e3c64cea477b05a3a8affd601ecdec50ce1a11886da64b54971f"
+			}
+		},
+		{
+			"id": "pms-operation-contract-observe-v10",
+			"status": "partial",
+			"gaps": [
+				"setup原生响应明确为工具未找到，不重放相同operation_id；将等待SDK实际工具可用后在新session继续。",
+				"本次没有浏览器或合同写入，保留真实partial而不算PMS测试失败。",
+				"missing-generated-script",
+				"missing-native-recording-log",
+				"browser-cleanup-not-confirmed",
+				"goal-not-reached",
+				"tool-error-or-cancelled"
+			],
+			"ref": {
+				"path": "qa/ui/recordings/pms-operation-contract-observe-v10/manifest.json",
+				"sha256": "93a9faf47dbe2f3b1ff5bf8c9dba874cd2ef8e3d2b603d71804ed1e3f97a38b9"
+			}
+		},
+		{
+			"id": "pms-operation-contract-observe-v11",
+			"status": "partial",
+			"gaps": [
+				"确认需等待匿名MCP初始tools/list及切换私密连接后的真实tools/list握手完成，再调setup；现有context内目录检查不足以证明注册同步。",
+				"停止该分支并保留真实错误，不重放失败operation_id。",
+				"missing-generated-script",
+				"missing-native-recording-log",
+				"browser-cleanup-not-confirmed",
+				"goal-not-reached",
+				"tool-error-or-cancelled"
+			],
+			"ref": {
+				"path": "qa/ui/recordings/pms-operation-contract-observe-v11/manifest.json",
+				"sha256": "be780ed6ec5db9de8a9046c7a663b1efed4e422beb3e0787c41a6c0798e7dfff"
+			}
+		},
+		{
+			"id": "pms-operation-contract-observe-v12",
+			"status": "partial",
+			"gaps": [
+				"草稿发布因privacy.text(code)!==code被门禁拒绝，保留原始私有证据。公开操作日志显示短数字和pms字符串均被当前存储过滤，含日期数字的合成查询词不能原样发布为脚本。",
+				"后续改用不与私密存储值重合的纯字母合成查询词，不逆转或放宽脱敏门禁，不重放该失败请求。",
+				"missing-generated-script",
+				"goal-not-reached",
+				"tool-error-or-cancelled"
+			],
+			"ref": {
+				"path": "qa/ui/recordings/pms-operation-contract-observe-v12/manifest.json",
+				"sha256": "ab7da45225a04568048052f66d3162829c32eac2cbbeed0bf1dd33a330cb76c1"
+			}
+		},
+		{
+			"id": "pms-operation-contract-observe-v13",
+			"status": "partial",
+			"gaps": ["script-has-fixed-recorded-data"],
+			"ref": {
+				"path": "qa/ui/recordings/pms-operation-contract-observe-v13/manifest.json",
+				"sha256": "b9a4aba34d8257e808ef513bd498a45a3d5cd48de024f03c8d7748cc787e95b6"
+			}
+		},
+		{
+			"id": "pms-operation-contract-observe-v14",
+			"status": "complete",
+			"gaps": [],
+			"ref": {
+				"path": "qa/ui/recordings/pms-operation-contract-observe-v14/manifest.json",
+				"sha256": "e1f8eb19a209822aef5b0de6a8550c08661613f29b6ea68fa6bef2861ae279dd"
+			}
+		},
+		{
+			"id": "pms-operation-contract-observe-v2",
+			"status": "partial",
+			"gaps": [
+				"Host preparation failed before browser initialization; zero recorded actions. Root TypeScript 7 CLI lacks the compiler API required by admission. Source fix and regressions are being verified; no business data was created.",
+				"missing-generated-script",
+				"missing-native-recording-log",
+				"browser-cleanup-not-confirmed",
+				"goal-not-reached",
+				"completion-checks-incomplete"
+			],
+			"ref": {
+				"path": "qa/ui/recordings/pms-operation-contract-observe-v2/manifest.json",
+				"sha256": "12011d1a8d9c52a101a2e659b4e1db92b20d0e578df29ad428f965b46dd54119"
+			}
+		},
+		{
+			"id": "pms-operation-contract-observe-v3",
+			"status": "partial",
+			"gaps": [
+				"Existing session still rejected host preparation after on-disk compiler/profile repair. Zero browser actions were recorded. Fresh SDK/Chromium and isolated Electron regression pass; active extension must be reloaded before business recording can be verified. No business records were created.",
+				"missing-generated-script",
+				"missing-native-recording-log",
+				"browser-cleanup-not-confirmed",
+				"goal-not-reached",
+				"completion-checks-incomplete"
+			],
+			"ref": {
+				"path": "qa/ui/recordings/pms-operation-contract-observe-v3/manifest.json",
+				"sha256": "59d800eee127ba515b0a7a4f1a6708ace2bf63f1cc5d61a0c50f34a3f50323aa"
+			}
+		},
+		{
+			"id": "pms-operation-contract-observe-v4",
+			"status": "partial",
+			"gaps": [
+				"v4启动返回：私密会话准备失败；会话已保留，请保存partial记录。浏览器动作0，未创建或修改业务合同。",
+				"尚不能确认当前活动宿主已加载修复后的录制扩展；需实际重载并核验，不能将隔离回归当成PMS接入通过。",
+				"本轮另已按公开部署源码声明生成9条独立用例草稿并入库；没有运行脚本、设计批准或执行证据，不能据此将本次录制标为完成。",
+				"missing-generated-script",
+				"missing-native-recording-log",
+				"browser-cleanup-not-confirmed",
+				"goal-not-reached",
+				"completion-checks-incomplete",
+				"time-budget"
+			],
+			"ref": {
+				"path": "qa/ui/recordings/pms-operation-contract-observe-v4/manifest.json",
+				"sha256": "7d9e771d8f49c121f3ffadde9479f66c2b76b4758f63e9430c28ff331f3e8be9"
+			}
+		},
+		{
+			"id": "pms-operation-contract-observe-v5",
+			"status": "partial",
+			"gaps": [
+				"受管start返回私密会话准备失败，浏览器未启动。",
+				"定向无浏览器收集复现桌面私有会话目录含空格时旧配置URL.pathname保留%20，导致No tests found；无空格临时目录相同seed准备可通过。计划修正配置路径转换后使用新session及新输入摘要核验，不改写本次历史失败。",
+				"missing-generated-script",
+				"missing-native-recording-log",
+				"browser-cleanup-not-confirmed",
+				"goal-not-reached",
+				"completion-checks-incomplete"
+			],
+			"ref": {
+				"path": "qa/ui/recordings/pms-operation-contract-observe-v5/manifest.json",
+				"sha256": "2c96a25eb1785e33ea1d97c459b06ca1c175c0bcd682f0728d988346a7609229"
+			}
+		},
+		{
+			"id": "pms-operation-contract-observe-v6",
+			"status": "partial",
+			"gaps": [
+				"原生工具活动会话仍在私密准备hook返回blocked，浏览器动作0，业务写入0。",
+				"修正URL路径转换后新Node默认桌面authority无浏览器准备通过，表明当前活动宿主与新加载模块仍存在差异；具体旧缓存或注册阶段差异尚待进一步证据，不冒充已确认根因。",
+				"missing-generated-script",
+				"missing-native-recording-log",
+				"browser-cleanup-not-confirmed",
+				"goal-not-reached",
+				"completion-checks-incomplete"
+			],
+			"ref": {
+				"path": "qa/ui/recordings/pms-operation-contract-observe-v6/manifest.json",
+				"sha256": "e7c09d7164c62bc08d8de604d9cdd5f531774cd13ef8450ba8cdb9987961750e"
+			}
+		},
+		{
+			"id": "pms-operation-contract-observe-v7",
+			"status": "partial",
+			"gaps": [
+				"项目兼容入口和agent正式入口重复注册同名MCP，session_start错误已复现；当前项目路径已迁到canonical assets入口，需新的SDK加载验证去重。",
+				"本次原生调用返回在临时本地IPC半关闭前未输出，未重放start；已核对保存的原生session和空events，保留partial，不作成功声明。",
+				"missing-generated-script",
+				"missing-native-recording-log",
+				"browser-cleanup-not-confirmed",
+				"goal-not-reached",
+				"completion-checks-incomplete"
+			],
+			"ref": {
+				"path": "qa/ui/recordings/pms-operation-contract-observe-v7/manifest.json",
+				"sha256": "344595b1e6fa86f5109a931ab78127a1bd855e462c89b65476a84eea1b8d3cb9"
+			}
+		},
+		{
+			"id": "pms-operation-contract-observe-v8",
+			"status": "partial",
+			"gaps": [
+				"未声明test_data的查询词输入被原生门禁拦截，没有执行输入或业务写入；保留本次partial，后续新session声明合成查询词。",
+				"只完成页面初态发现，未完成查询重置主链或保存可执行草稿，角色权限和后端查询结果仍待验证。",
+				"missing-generated-script",
+				"missing-native-recording-log",
+				"browser-cleanup-not-confirmed",
+				"goal-not-reached",
+				"completion-checks-incomplete"
+			],
+			"ref": {
+				"path": "qa/ui/recordings/pms-operation-contract-observe-v8/manifest.json",
+				"sha256": "d6956b16553af4f2aea4ac999ad46cb21f5873c09df3fbfdd82cff07203f1f90"
+			}
+		},
+		{
+			"id": "pms-operation-contract-observe-v9",
+			"status": "partial",
+			"gaps": [
+				"查询重置步骤已观察，但保存草稿时5分钟派生认证已过期，原生写入门禁拒绝；不改写为完整录制。",
+				"没有正式测试批次、独立设计批准或结果评审。关闭本次独立SDK上下文后使用新引用和新ID完成受管录制。",
+				"missing-generated-script",
+				"browser-cleanup-not-confirmed",
+				"goal-not-reached"
+			],
+			"ref": {
+				"path": "qa/ui/recordings/pms-operation-contract-observe-v9/manifest.json",
+				"sha256": "43d155dd5a7f755d9f78495816b7eba215ce976e6ce27b10552dbccb8d1b16e8"
+			}
+		}
+	],
+	"fixes": [
+		{
+			"file": "qa/ui/pms-operation-contract/playwright.config.mjs",
+			"change": "fileURLToPath(new URL(...)) decodes spaces in desktop Application Support testDir; fresh default-desktop-directory preflight passed."
+		},
+		{
+			"file": "scripts/enable-ui-testing.mjs",
+			"change": "Normalize legacy/canonical entries to a single canonical extension; preserve other entries, filters, disabled flags and idempotence."
+		},
+		{
+			"file": ".pi/settings.json",
+			"change": "Local project registration updated to canonical; ignored personal/project settings remain untracked. No personal installation override."
+		}
+	],
+	"verification": {
+		"registrationUnitTests": 4,
+		"registrationConfigurations": 20,
+		"formalPmsResults": "none",
+		"finalValidation": {
+			"status": "passed",
+			"checks": [
+				{ "name": "typecheck", "exitCode": 0 },
+				{ "name": "unit", "exitCode": 0 },
+				{ "name": "lint", "exitCode": 0 },
+				{ "name": "protocol", "exitCode": 0 },
+				{ "name": "diff", "exitCode": 0 }
+			],
+			"unitTestsPassed": 22,
+			"unitTestFilesPassed": 3,
+			"protocolTagHeuristic": "skipped-no-available-git-tag",
+			"pathRegression": {
+				"status": "passed",
+				"browserStarted": false,
+				"businessActions": 0,
+				"results": [
+					{
+						"variant": "legacy-pathname",
+						"exitCode": 1,
+						"noTestsFound": true,
+						"collectedOne": false
+					},
+					{
+						"variant": "fileURLToPath",
+						"exitCode": 0,
+						"noTestsFound": false,
+						"collectedOne": true
+					}
+				]
+			},
+			"currentTaskAssetReferenceClosure": {
+				"status": "passed",
+				"referenceCount": 41,
+				"totalBytes": 194125
+			},
+			"historicalPartialAudit": {
+				"status": "stale-shared-input-references-retained",
+				"referenceCount": 136,
+				"mismatchEntries": 7,
+				"paths": ["qa/ui/pms-operation-contract/seed.spec.ts", "qa/ui/pms-operation-contract/playwright.config.mjs"],
+				"description": "13 partial histories are preserved without rewriting. Some old sessions reference prior shared seed/config bytes and cannot be replayed from the current live paths. Current task/r3/v14 closure independently passes all 41 refs."
+			},
+			"publicEvidenceScan": {
+				"files": 144,
+				"bytes": 477166,
+				"jwtLikeValueMatches": 0,
+				"scope": "JWT-like pattern scan only, not a comprehensive privacy audit"
+			}
+		}
+	},
+	"resume": [
+		"Execute /reload in the current application after these registration/dependency changes; this is a technical reload, existing authorization remains valid.",
+		"Refresh expired dynamic parameters only as needed and prepare a NEW short-lived private reference; recording references from this phase are expired and must not be reused.",
+		"Use status/resume-task on the SAME task; recheck current ui_case_design r3; never repeat failed review request ID.",
+		"Query/preserve prior review-loop state and budget; use a NEW request ID only after runtime check passes, same task/scope/asset.",
+		"Complete independent review, controlled positive/negative diagnosis, runtime admission, then authorized continue-execute.",
+		"Reconcile archived case versions before result binding/sync; keep seven deferred cases unexecuted until designed and approved."
+	],
+	"cleanup": {
+		"ownedBrowserClosed": true,
+		"ownedDriverStopped": true,
+		"privateEvidencePreserved": true,
+		"command": "npm run clean:junk",
+		"deletedItems": 0,
+		"retentionReason": ".workbuddy/tmp/.cleanup-keep protects the parent directory; did not remove marker or bypass it to delete files.",
+		"protectedTemporaryEntries": 22,
+		"dependenciesBackupPreserved": true
+	},
+	"checksArchiveRef": {
+		"path": "docs/ui-testing-evidence/pms-contract-continuation-checks-20261029.json.gz",
+		"sha256": "89b918215e42498cbc86d69363f78052a8e5e8dbbaac44eecb83f7da318a05b8"
+	}
+}

@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "id": "pms-operation-contract-observe-v9",
+  "kind": "recording",
+  "created_at": "2026-10-29T07:56:54.965Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "inventory_ref": {
+      "path": "qa/ui/inventories/pms-operation-contract-initial/manifest.json",
+      "sha256": "448ec06626472c1a03ed502cca6bddaac9bb738763a350a7663ac63bf22d6923"
+    },
+    "initial_state": "同浏览器pms_admin和初态断言通过；已真实输入已声明合成合同名称、查询、重置，并保存原生操作日志。没有业务合同写入。",
+    "initial_state_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/initial-state.json",
+      "sha256": "58563c76317bd5a48b147388a894b3f2d011d5ec141113adf35e4b157c6ff346"
+    },
+    "data_rules_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+      "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+    },
+    "status": "partial",
+    "log_ref": {
+      "path": "qa/ui/recordings/pms-operation-contract-observe-v9/raw-log.json",
+      "sha256": "9c4e7e021970c44cc81a2fd006fb31b0bb48a3c7a05d107b59b828e5f9e38702"
+    },
+    "script_refs": [],
+    "steps": [
+      {
+        "step_id": "setup",
+        "intent": "核实同浏览器配置账号并录制只读查询重置",
+        "tool": "mcp__ui_playwright_test__generator_setup_page",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/setup/response.json",
+          "sha256": "d5a24c3a5758ee56b636859a2b1e70c905f90564eb82051a90fba775e67bbe07"
+        }
+      },
+      {
+        "step_id": "name-input",
+        "intent": "在合同名称输入已声明的合成查询词",
+        "tool": "mcp__ui_playwright_test__browser_type",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/name-input/response.json",
+          "sha256": "615971e019b55135f56b06460492c8e1db8f1a2b412ff26ad86d1a9a086903b1"
+        }
+      },
+      {
+        "step_id": "query",
+        "intent": "执行已授权的只读经营合同查询",
+        "tool": "mcp__ui_playwright_test__browser_click",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/query/response.json",
+          "sha256": "26fdc27eb13a4179436ffa871dd2a6964fd0475dfbeccd95deec0020f57a77c6"
+        }
+      },
+      {
+        "step_id": "reset",
+        "intent": "清空本次浏览器查询条件并恢复初态",
+        "tool": "mcp__ui_playwright_test__browser_click",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/reset/response.json",
+          "sha256": "8d0a55b01b2ba9fc38b08d9ea432a1a874bb923eefb16fcfbda22b44e2b8ff12"
+        }
+      },
+      {
+        "step_id": "read-log",
+        "intent": "保存已执行的只读查询重置操作来源",
+        "tool": "mcp__ui_playwright_test__generator_read_log",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/read-log/response.json",
+          "sha256": "5026755918077313c11a983b390f477cba448d333ad4bf28306c4a866a14569b"
+        }
+      }
+    ],
+    "data_refs": [
+      {
+        "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+        "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+      }
+    ],
+    "completion": {
+      "stable_locators": true,
+      "initial_state_rebuildable": true,
+      "replaceable_data": true,
+      "assertion_sources": true,
+      "cleanup_owned": true
+    },
+    "gaps": [
+      "查询重置步骤已观察，但保存草稿时5分钟派生认证已过期，原生写入门禁拒绝；不改写为完整录制。",
+      "没有正式测试批次、独立设计批准或结果评审。关闭本次独立SDK上下文后使用新引用和新ID完成受管录制。",
+      "missing-generated-script",
+      "browser-cleanup-not-confirmed",
+      "goal-not-reached"
+    ]
+  }
+}

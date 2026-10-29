@@ -1,0 +1,12 @@
+{
+  "operation": "action",
+  "session_ref": {
+    "path": "qa/ui/recordings/pms-operation-contract-observe-v9/session.json",
+    "sha256": "cd053c39ad62154ed6d1a95d37105cb4204533f49c932876a00bc390654e5db8"
+  },
+  "operation_id": "read-log",
+  "tool": "generator_read_log",
+  "intent": "保存已执行的只读查询重置操作来源",
+  "input": {},
+  "created_at": "2026-10-29T07:59:01.851Z"
+}

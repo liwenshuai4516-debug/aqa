@@ -1,0 +1,22 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "### Ran Playwright code\n```js\nawait page.locator('main input[placeholder=\"请输入\"]').first().fill('AQA_OWNED_QUERY_ONLY');\n```"
+    }
+  ],
+  "details": {
+    "server": "ui-playwright-test",
+    "tool": "browser_type"
+  },
+  "structuredContent": {
+    "content": [
+      {
+        "type": "text",
+        "text": "### Ran Playwright code\n```js\nawait page.locator('main input[placeholder=\"请输入\"]').first().fill('AQA_OWNED_QUERY_ONLY');\n```"
+      }
+    ]
+  },
+  "isError": false,
+  "duration_ms": 1039
+}

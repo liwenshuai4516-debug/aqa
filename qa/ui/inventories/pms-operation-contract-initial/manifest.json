@@ -1,0 +1,18 @@
+{
+  "created_at": "2026-10-29T06:36:00.000Z",
+  "data": {
+    "features": [],
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "unexplored": [
+      "Live page controls and query/reset",
+      "Owned contract creation, editing and cleanup",
+      "Permissions and state transitions"
+    ]
+  },
+  "id": "pms-operation-contract-initial",
+  "kind": "inventory",
+  "schema_version": "1.0"
+}

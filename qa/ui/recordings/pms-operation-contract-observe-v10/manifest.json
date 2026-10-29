@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "id": "pms-operation-contract-observe-v10",
+  "kind": "recording",
+  "created_at": "2026-10-29T08:01:19.251Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "inventory_ref": {
+      "path": "qa/ui/inventories/pms-operation-contract-initial/manifest.json",
+      "sha256": "448ec06626472c1a03ed502cca6bddaac9bb738763a350a7663ac63bf22d6923"
+    },
+    "initial_state": "受管准备成功；SDK动态MCP工具尚未完成注册时setup被调用，返回Tool not found，没有启动浏览器。",
+    "initial_state_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/initial-state.json",
+      "sha256": "58563c76317bd5a48b147388a894b3f2d011d5ec141113adf35e4b157c6ff346"
+    },
+    "data_rules_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+      "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+    },
+    "status": "partial",
+    "log_ref": {
+      "path": "qa/ui/recordings/pms-operation-contract-observe-v10/raw-log.json",
+      "sha256": "12fe5487b84e14cbc3c92ffad94df485f73a732cf2d18c7cc1410084cbab6c2c"
+    },
+    "script_refs": [],
+    "steps": [
+      {
+        "step_id": "setup",
+        "intent": "核对同浏览器身份并准备真实查询重置录制",
+        "tool": "mcp__ui_playwright_test__generator_setup_page",
+        "observation_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v10/events/setup/response.json",
+          "sha256": "ae081b856f5a05ab8139478cb4460709fa074ab29c9ce4523b6688b3a418cd47"
+        }
+      }
+    ],
+    "data_refs": [
+      {
+        "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+        "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+      }
+    ],
+    "completion": {
+      "stable_locators": true,
+      "initial_state_rebuildable": true,
+      "replaceable_data": true,
+      "assertion_sources": true,
+      "cleanup_owned": true
+    },
+    "gaps": [
+      "setup原生响应明确为工具未找到，不重放相同operation_id；将等待SDK实际工具可用后在新session继续。",
+      "本次没有浏览器或合同写入，保留真实partial而不算PMS测试失败。",
+      "missing-generated-script",
+      "missing-native-recording-log",
+      "browser-cleanup-not-confirmed",
+      "goal-not-reached",
+      "tool-error-or-cancelled"
+    ]
+  }
+}

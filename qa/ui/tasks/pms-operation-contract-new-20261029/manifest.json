@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "kind": "task",
+  "id": "pms-operation-contract-new-20261029",
+  "created_at": "2026-10-29T06:33:56.988Z",
+  "data": {
+    "intent": "record",
+    "workflow": {
+      "mode": "new",
+      "discovery": "browser"
+    },
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "state": "blocked",
+    "stage": "design-review",
+    "completed_stages": [
+      "discover-record",
+      "case-design"
+    ],
+    "input_sha256": "678d0a988281adc7dfadd25075d63e19eb6fa42cf1d3fcba5a457ef0bf1a4128",
+    "asset_refs": [],
+    "run_ids": [],
+    "output_refs": [
+      {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v14/manifest.json",
+        "sha256": "e1f8eb19a209822aef5b0de6a8550c08661613f29b6ea68fa6bef2861ae279dd"
+      },
+      {
+        "path": "qa/ui/inventories/pms-contract-live-query-reset/manifest.json",
+        "sha256": "2f62ea1e00a59d2d50f01ac4008711b8f4aaba63675186c04063b127533444b9"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r3/manifest.json",
+        "sha256": "d4c5b33415e1bddcd3195978d46b5e61ecafb503e26636ddf02b73aecdc2a691"
+      }
+    ],
+    "blockers": [
+      "真实受管录制v14和case-design已通过原生handoff；r3在fresh原生SDK静态检查issues=[]、ready_for_review=true，但未获得独立设计批准。",
+      "当前活动会话及子会话对同一r3候选的原生ui_case_design check仍报Cannot read properties of undefined (reading 'ES2022')；同环境freshSDK通过。活动工具与fresh运行时差异已复现，具体宿主加载原因待核验，不能以fresh检查代替当前应用重新加载验证。",
+      "原生ui_design_review请求pms-contract-query-reset-review-r3-01实际返回runner-error：评估调用失败；保留已有输入与响应，不批准。无批准产物、无正式run；不跨过评审/诊断门禁，原评估请求历史须保留，不重放。",
+      "项目登记入口已由legacy统一为canonical，迁移脚本已修复并通过4条定向单测；当前活动工具需要在应用重新加载后复核。原9条源码草稿仍在数据空间：本轮正式执行0、通过0、失败0、未执行9，合同业务写入0。"
+    ]
+  }
+}

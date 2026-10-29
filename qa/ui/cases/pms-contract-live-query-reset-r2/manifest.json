@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0",
+  "kind": "cases",
+  "id": "pms-contract-live-query-reset-r2",
+  "created_at": "2026-10-29T08:28:22.962Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "data_rules_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+      "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+    },
+    "sources": [
+      {
+        "source_id": "S-live-declaration",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-current-source/operation-contract.js",
+          "sha256": "5366384b16baf6abd47d238ddd4030ca8410124a3cde657c47158f927cbc03ac"
+        },
+        "statement": "当前部署组件m/N声明：合同名称trim后构造bizName，查询置pageNum=1；p将名称、编号置空，部门/节点/类型置全部，日期数组清空，页码置1并发出查询。预期是代码声明，不据此宣布需求缺陷。"
+      },
+      {
+        "source_id": "S-live-api",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-current-source/operation-contract-api.txt",
+          "sha256": "f984f1ff5fbb1d0d5156598fb51da4576f0d0d836b4d6392dd4d5f85309d9d78"
+        },
+        "statement": "经营合同page查询使用GET /project-management-backend/v1/web/contract-mgt/operation-contract/page；浏览器通过/api代理，参数应由组件传递，查询须收到成功响应。"
+      },
+      {
+        "source_id": "S-live-observation",
+        "oracle_type": "baseline",
+        "ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r2/observations.md",
+          "sha256": "3a1881c334cceb630b6cc3c1e3ba9327bd0022f5abee0681a612d90c728b2d12"
+        },
+        "statement": "同浏览器账号核验和v14受管页面真实观察；准确初态共4条，查询合成词后共0条。更正历史finish初态文本；不以历史条数作为本轮列表断言。"
+      }
+    ],
+    "gaps": [
+      "仅选定PMS-OC-SRC-001/009两条P0形成可执行候选；原9条中的002至008仍保留未执行。",
+      "业务角色名称未确认，仅核验配置账号；合同写入和其他角色权限未测试。",
+      "真实页面六项全部设值/重置未完成实测，部门/节点/类型必须存在非全部选项；缺失时记录前置blocked。",
+      "受管录制不等于正式运行；readiness暂为design-only，必须独立设计评审及正反诊断后再运行。"
+    ],
+    "cases": [
+      {
+        "case_id": "PMS-OC-SRC-001",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-001",
+        "title": "合同名称首尾空白trim后从第一页查询",
+        "priority": "P0",
+        "browser_project": "chromium",
+        "data_row_id": "synthetic-name-readonly",
+        "preconditions": [
+          "受管新context访问当前PMS页面、验证同浏览器pms_admin身份；真实账号/初态不满足则阻塞。",
+          "数据夹具data.ts使用本次专属纯字母合成词；没有合同创建、修改或删除。"
+        ],
+        "cleanup": "原生uiData fixture销毁独立context，空业务数据登记与清理记录；不删除既有合同。",
+        "steps": [
+          {
+            "step_id": "enter-name",
+            "action": "合同名称填入合成词两侧各两个空格；点击查询，等待匹配GET page响应。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "assert-name",
+            "action": "校验UI保留录入原文、成功HTTP、trim后的bizName、页码1和未设置编号不入参；冻结常量预期来自源码声明。",
+            "assertion_ids": [
+              "A-name-query"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "A-name-query",
+            "step_id": "assert-name",
+            "source_id": "S-live-declaration",
+            "oracle_type": "declaration",
+            "target": "合同名称输入值与实际GET查询参数",
+            "observation": "读取用户输入框及真实响应对应request的URL/method；不输出认证头，不以请求值计算预期。",
+            "comparison": "严格对象相等；API方法/成功响应另由S-live-api支持。",
+            "expected": {
+              "input": "  AQA_OWNED_QUERY_ONLY  ",
+              "status": 200,
+              "method": "GET",
+              "name": "AQA_OWNED_QUERY_ONLY",
+              "pageNum": "1",
+              "codePresent": false
+            },
+            "evidence_required": true
+          }
+        ]
+      },
+      {
+        "case_id": "PMS-OC-SRC-009",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-009",
+        "title": "六项条件全部设值后重置并清空请求筛选",
+        "priority": "P0",
+        "browser_project": "chromium",
+        "data_row_id": "synthetic-six-field-reset",
+        "preconditions": [
+          "受管新context访问当前PMS页面、同浏览器配置账号匹配。",
+          "展开六项条件；部门、节点、类型各至少存在一个可选非全部项。任意项缺失时附ui-preflight blocked并停止该用例，不改为默认值。",
+          "日期使用固定合法同月区间；全部数据仅限浏览器查询状态。"
+        ],
+        "cleanup": "重置查询状态；原生uiData fixture清理独立context并登记空业务数据生命周期。异常仍销毁独立context，无合同业务记录需删除。",
+        "steps": [
+          {
+            "step_id": "prepare-six",
+            "action": "先展开，再填名称、编号，分别选择三项非全部值，填写起止日期；保存七个底层输入的非空状态以证明前置确已设置。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "assert-reset",
+            "action": "点击重置，等待page GET；校验七个底层值（日期区间占两个）全部回默认、成功HTTP、页码1，七个后端过滤键均不存在。",
+            "assertion_ids": [
+              "A-reset-all"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "A-reset-all",
+            "step_id": "assert-reset",
+            "source_id": "S-live-declaration",
+            "oracle_type": "declaration",
+            "target": "六项UI筛选的默认值、页码及真实GET条件",
+            "observation": "重置前非空/非全部七项布尔，重置后名称编号、三select文本、两个日期input；实际page请求中筛选键存在性。",
+            "comparison": "严格对象相等，不把实际选项文本/编号用作重置预期；期待默认值全部及空输入均冻结。",
+            "expected": {
+              "prepared": [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true
+              ],
+              "values": [
+                "",
+                "",
+                "全部",
+                "全部",
+                "全部",
+                "",
+                ""
+              ],
+              "status": 200,
+              "method": "GET",
+              "pageNum": "1",
+              "filtersPresent": []
+            },
+            "evidence_required": true
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -27,28 +27,44 @@ describe("UI testing skill resource registration", () => {
 		});
 	});
 
-	it.each([false, true])(
-		"retains legacy registration and resource filters without duplicate loading (app=%s)",
-		async (app) => {
-			const root = await mkdtemp(join(tmpdir(), "ui-maintenance-"));
-			roots.push(root);
-			const path = (relative: string) => (app ? join(root, relative) : `../${relative}`);
-			const legacy = {
-				extensions: [{ source: path("capabilities/ui-testing/mcp-extension.mjs"), extensions: [] }],
+	it.each([false, true])("normalizes extension registrations and preserves filters (app=%s)", async (app) => {
+		const root = await mkdtemp(join(tmpdir(), "ui-maintenance-"));
+		roots.push(root);
+		const path = (relative: string) => (app ? join(root, relative) : `../${relative}`);
+		const legacy = path("capabilities/ui-testing/mcp-extension.mjs");
+		const canonical = path(".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs");
+		if (!app) await enableUiTesting(root);
+		const settings = join(root, app ? "settings.json" : ".pi/settings.json");
+		const filtered = { source: canonical, extensions: [] };
+		for (const [entries, expected] of [
+			[[legacy], canonical],
+			[[legacy, canonical], canonical],
+			[[canonical, legacy], canonical],
+			[[canonical], canonical],
+			[[{ source: legacy, extensions: [] }], filtered],
+			[[legacy, filtered], filtered],
+			[[canonical, { source: legacy, extensions: [] }], filtered],
+			[[filtered], filtered],
+			[[join(root, "capabilities/ui-testing/mcp-extension.mjs"), canonical], canonical],
+			[[join(root, ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs"), canonical], canonical],
+		] as const) {
+			const original = {
+				extensions: ["another-extension", ...entries, { source: "other-extension", extensions: [] }],
 				skills: [path("capabilities/ui-testing/ui-testing-workflow")],
+				disabledTools: ["ui_test_run"],
 			};
-			if (!app) {
-				await enableUiTesting(root);
-			}
-			const settings = join(root, app ? "settings.json" : ".pi/settings.json");
-			await writeFile(settings, JSON.stringify(legacy));
+			await writeFile(settings, JSON.stringify(original));
 			await enableUiTesting(root, app ? root : undefined);
-			const actual = JSON.parse(await readFile(settings, "utf8"));
-			expect(actual.extensions).toEqual(legacy.extensions);
-			expect(actual.skills).toEqual(legacy.skills);
+			const first = await readFile(settings, "utf8");
+			const actual = JSON.parse(first);
+			expect(actual.extensions).toEqual(["another-extension", expected, { source: "other-extension", extensions: [] }]);
+			expect(actual.skills).toEqual(original.skills);
+			expect(actual.disabledTools).toEqual(original.disabledTools);
 			expect(actual.packages).toHaveLength(1);
-		},
-	);
+			await enableUiTesting(root, app ? root : undefined);
+			expect(await readFile(settings, "utf8")).toBe(first);
+		}
+	});
 
 	it("recognizes both new and legacy MCP resources for capability disable gating", () => {
 		for (const path of [

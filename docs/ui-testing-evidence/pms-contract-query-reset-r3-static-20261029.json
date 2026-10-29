@@ -1,0 +1,47 @@
+{
+	"schema_version": "1.0",
+	"capability_id": "ui-case-design",
+	"capability_version": "0.1.0",
+	"status": "completed",
+	"artifact_refs": [
+		{
+			"path": "qa/ui/assets/pms-contract-query-reset/revisions/r3/manifest.json",
+			"sha256": "d4c5b33415e1bddcd3195978d46b5e61ecafb503e26636ddf02b73aecdc2a691"
+		}
+	],
+	"errors": [],
+	"output": {
+		"asset_ref": {
+			"path": "qa/ui/assets/pms-contract-query-reset/revisions/r3/manifest.json",
+			"sha256": "d4c5b33415e1bddcd3195978d46b5e61ecafb503e26636ddf02b73aecdc2a691"
+		},
+		"issues": [],
+		"coverage": {
+			"planned": [
+				"operation-contract/current-source-query-reset/oc-src-001",
+				"operation-contract/current-source-query-reset/oc-src-009"
+			],
+			"covered": [
+				"operation-contract/current-source-query-reset/oc-src-001",
+				"operation-contract/current-source-query-reset/oc-src-009"
+			],
+			"missing": []
+		},
+		"dependencies": [
+			{
+				"name": "@playwright/test",
+				"version": "1.62.1"
+			},
+			{
+				"name": "pi-ui-testing",
+				"version": "0.1.30"
+			},
+			{
+				"name": "typescript",
+				"version": "7.0.2"
+			}
+		],
+		"ready_for_review": true,
+		"design_approved": false
+	}
+}

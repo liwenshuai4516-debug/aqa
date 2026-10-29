@@ -1,0 +1,15 @@
+{
+  "operation": "action",
+  "session_ref": {
+    "path": "qa/ui/recordings/pms-operation-contract-observe-v14/session.json",
+    "sha256": "8a9f23a4574bea299c853aee5131f495698a3e4e74e4ee18d33fe90331e30885"
+  },
+  "operation_id": "write-draft",
+  "tool": "generator_write_test",
+  "intent": "保存真实步骤草稿，正式执行前须补齐受管fixture和获批断言",
+  "input": {
+    "fileName": "qa/ui/pms-operation-contract/observed-v14.spec.ts",
+    "code": "import { test, expect } from '@playwright/test';\ntest('PMS recorded query reset', async ({ page }) => {\n  // Draft only. Managed environment fixture and approved network assertions are still required.\n  const query = process.env.UI_CONTRACT_QUERY;\n  if (!query) throw new Error('Missing declared query fixture');\n  const name = page.locator('main input[placeholder=\"请输入\"]').first();\n  await name.fill(query);\n  await page.getByRole('button', { name: '查询', exact: true }).click();\n  await expect(name).toHaveValue(query);\n  await page.getByRole('button', { name: '重置', exact: true }).click();\n  await expect(name).toHaveValue('');\n});\n"
+  },
+  "created_at": "2026-10-29T08:18:26.792Z"
+}

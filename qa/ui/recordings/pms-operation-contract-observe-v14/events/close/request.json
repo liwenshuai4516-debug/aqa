@@ -1,0 +1,14 @@
+{
+  "operation": "action",
+  "session_ref": {
+    "path": "qa/ui/recordings/pms-operation-contract-observe-v14/session.json",
+    "sha256": "8a9f23a4574bea299c853aee5131f495698a3e4e74e4ee18d33fe90331e30885"
+  },
+  "operation_id": "close",
+  "tool": "browser_close",
+  "intent": "关闭本次独立浏览器上下文",
+  "input": {
+    "intent": "清理本次测试专属浏览器上下文；没有合同记录需要删除"
+  },
+  "created_at": "2026-10-29T08:18:27.830Z"
+}

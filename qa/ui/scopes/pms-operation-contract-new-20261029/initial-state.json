@@ -1,0 +1,7 @@
+{
+  "identity": "Verify configured account using same-browser profile request; record boolean only",
+  "entry": "http://192.168.90.224:8238/pms/OperationContract",
+  "query_entry": "查询 button from prior evidence, to reverify live",
+  "role": "unknown",
+  "data": "Existing records must not be mutated"
+}

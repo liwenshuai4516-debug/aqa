@@ -1,0 +1,254 @@
+{
+  "session_ref": {
+    "path": "qa/ui/recordings/pms-operation-contract-observe-v9/session.json",
+    "sha256": "cd053c39ad62154ed6d1a95d37105cb4204533f49c932876a00bc390654e5db8"
+  },
+  "events": [
+    {
+      "request": {
+        "operation": "action",
+        "session_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v9/session.json",
+          "sha256": "cd053c39ad62154ed6d1a95d37105cb4204533f49c932876a00bc390654e5db8"
+        },
+        "operation_id": "setup",
+        "tool": "generator_setup_page",
+        "intent": "核实同浏览器配置账号并录制只读查询重置",
+        "input": {
+          "project": "chromium",
+          "seedFile": "qa/ui/pms-operation-contract/seed-v9.spec.ts",
+          "plan": "Use the managed configured account and seed identity check. Query the declared synthetic name AQA_OWNED_QUERY_20261029, inspect the filter and stable list state, reset all filters, save a draft and close the owned context. Read-only: never create, modify or delete a business contract."
+        },
+        "created_at": "2026-10-29T07:57:30.484Z"
+      },
+      "request_ref": {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/setup/request.json",
+        "sha256": "c3eff03f93f5290a7d78653da3e60db600a639dd807c3a0e67cb8b75af694194"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "\nRunning [PRIVATE] test using [PRIVATE] worker\n### Paused at end of test. ready for interaction\n\n### Page state\n- Page URL: http://[PRIVATE]9[PRIVATE].[PRIVATE]68.9[PRIVATE].[PRIVATE][PRIVATE]4:8[PRIVATE][PRIVATE]8[PRIVATE]\n- Page Title: 基础[PRIVATE]\n- Page Snapshot:\n```yaml\n- generic [ref=e4]:\n  - img [ref=e7]:\n    - generic [ref=e8]: 基础[PRIVATE]\n  - generic [ref=e[PRIVATE]7]:\n    - separator [ref=e[PRIVATE]8]\n    - generic [ref=e[PRIVATE]9]: 你好\n    - button [ref=e[PRIVATE][PRIVATE]] [cursor=pointer]\n  - generic:\n    - generic [ref=e[PRIVATE][PRIVATE]]:\n      - generic [ref=e[PRIVATE]4]:\n        - menubar\n      - button \"收起导航\" [ref=e[PRIVATE]6] [cursor=pointer]\n    - generic [ref=e[PRIVATE][PRIVATE]]:\n      - generic [ref=e[PRIVATE][PRIVATE]]: [PRIVATE]\n      - main [ref=e4[PRIVATE]]:\n        - generic [ref=e4[PRIVATE]]:\n          - generic [ref=e44]:\n            - generic [ref=e45]:\n              - generic [ref=e46]: 合同名称\n              - textbox \"请输入\" [ref=e5[PRIVATE]]\n            - generic [ref=e5[PRIVATE]]:\n              - generic [ref=e5[PRIVATE]]: 合同编号\n              - textbox \"请输入\" [ref=e56]\n            - generic [ref=e57]:\n              - generic [ref=e58]: 归属部门\n              - generic [ref=e6[PRIVATE]] [cursor=pointer]:\n                - generic:\n                  - combobox [ref=e6[PRIVATE]]\n                  - generic [ref=e64]: 全部\n            - generic [ref=e69]:\n              - generic [ref=e7[PRIVATE]]: 流程节点\n              - generic [ref=e7[PRIVATE]] [cursor=pointer]:\n                - generic:\n                  - combobox [ref=e75]\n                  - generic [ref=e76]: 全部\n          - generic [ref=e8[PRIVATE]]:\n            - button \"查询\" [ref=e84] [cursor=pointer]\n            - button \"重置\" [ref=e9[PRIVATE]] [cursor=pointer]\n            - button [ref=e98] [cursor=pointer]\n        - generic [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n          - article [ref=e[PRIVATE][PRIVATE]4]:\n            - generic [ref=e[PRIVATE][PRIVATE]5]:\n              - generic [ref=e[PRIVATE][PRIVATE]6]: 累计签订合同\n              - strong [ref=e[PRIVATE][PRIVATE]7]: \"[PRIVATE]\"\n              - emphasis [ref=e[PRIVATE][PRIVATE]8]: 个\n            - generic [ref=e[PRIVATE][PRIVATE]9]:\n              - generic [ref=e[PRIVATE][PRIVATE][PRIVATE]]: 累计合同金额\n              - strong [ref=e[PRIVATE][PRIVATE][PRIVATE]]: \"[PRIVATE].[PRIVATE][PRIVATE]\"\n              - emphasis [ref=e[PRIVATE][PRIVATE][PRIVATE]]: 亿元\n          - article [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n            - generic [ref=e[PRIVATE][PRIVATE]4]:\n              - generic [ref=e[PRIVATE][PRIVATE]5]: 已确认营收\n              - strong [ref=e[PRIVATE][PRIVATE]6]: \"[PRIVATE].[PRIVATE][PRIVATE]\"\n              - emphasis [ref=e[PRIVATE][PRIVATE]7]: 万元\n            - generic [ref=e[PRIVATE][PRIVATE]8]:\n              - generic [ref=e[PRIVATE][PRIVATE]9]: 已回款\n              - strong [ref=e[PRIVATE][PRIVATE][PRIVATE]]: \"[PRIVATE].[PRIVATE][PRIVATE]\"\n              - emphasis [ref=e[PRIVATE][PRIVATE][PRIVATE]]: 万元\n          - article [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n            - generic [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n              - generic [ref=e[PRIVATE][PRIVATE]4]: 本年度签订合同\n              - strong [ref=e[PRIVATE][PRIVATE]5]: \"[PRIVATE]\"\n              - emphasis [ref=e[PRIVATE][PRIVATE]6]: 个\n            - generic [ref=e[PRIVATE][PRIVATE]7]:\n              - generic [ref=e[PRIVATE][PRIVATE]8]: 本年度合同金额\n              - strong [ref=e[PRIVATE][PRIVATE]9]: \"[PRIVATE].[PRIVATE][PRIVATE]\"\n              - emphasis [ref=e[PRIVATE][PRIVATE][PRIVATE]]: 万元\n          - article [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n            - generic [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n              - generic [ref=e[PRIVATE][PRIVATE][PRIVATE]]: 流程中合同\n              - strong [ref=e[PRIVATE][PRIVATE]4]: \"4\"\n              - emphasis [ref=e[PRIVATE][PRIVATE]5]: 个\n            - generic [ref=e[PRIVATE][PRIVATE]6]:\n              - generic [ref=e[PRIVATE][PRIVATE]7]: 流程中合同金额\n              - strong [ref=e[PRIVATE][PRIVATE]8]: \"[PRIVATE].[PRIVATE][PRIVATE]\"\n              - emphasis [ref=e[PRIVATE][PRIVATE]9]: 万元\n        - generic [ref=e[PRIVATE]4[PRIVATE]]:\n          - generic [ref=e[PRIVATE]4[PRIVATE]]:\n            - heading \"[PRIVATE]\" [level=[PRIVATE]] [ref=e[PRIVATE]4[PRIVATE]]\n            - button \"合同发起\" [ref=e[PRIVATE]4[PRIVATE]] [cursor=pointer]\n          - generic [ref=e[PRIVATE]47]:\n            - table [ref=e[PRIVATE]49]:\n              - rowgroup [ref=e[PRIVATE]64]:\n                - row [ref=e[PRIVATE]65]:\n                  - columnheader \"序号\" [ref=e[PRIVATE]66]\n                  - columnheader \"合同编号\" [ref=e[PRIVATE]68]\n                  - columnheader \"合同名称\" [ref=e[PRIVATE]7[PRIVATE]]\n                  - columnheader \"归属部门\" [ref=e[PRIVATE]7[PRIVATE]]\n                  - columnheader \"[PRIVATE]\" [ref=e[PRIVATE]74]\n                  - columnheader \"合同金额/元\" [ref=e[PRIVATE]76]\n                  - columnheader \"对方单位\" [ref=e[PRIVATE]78]\n                  - columnheader \"合同签订日期\" [ref=e[PRIVATE]8[PRIVATE]]\n                  - columnheader \"流程节点\" [ref=e[PRIVATE]8[PRIVATE]]\n                  - columnheader \"已确认营收/元\" [ref=e[PRIVATE]84]\n                  - columnheader \"已回款/元\" [ref=e[PRIVATE]86]\n                  - columnheader \"剩余合同金额/元\" [ref=e[PRIVATE]88]\n                  - columnheader \"操作\" [ref=e[PRIVATE]9[PRIVATE]]\n            - table [ref=e[PRIVATE]96]:\n              - rowgroup [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n                - row [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                  - cell \"HSKJ-JYHT-[PRIVATE][PRIVATE][PRIVATE]6-[PRIVATE][PRIVATE]5\" [ref=e[PRIVATE][PRIVATE]5]\n                  - cell [ref=e[PRIVATE][PRIVATE]7]:\n                    - button \"[PRIVATE][PRIVATE][PRIVATE]\" [ref=e[PRIVATE][PRIVATE]9] [cursor=pointer]\n                  - cell \"综合管理部\" [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                  - cell \"[PRIVATE].[PRIVATE][PRIVATE]\" [ref=e[PRIVATE][PRIVATE]5]\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE][PRIVATE]7]\n                  - cell [ref=e[PRIVATE][PRIVATE]9]\n                  - cell [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n                    - button [ref=e[PRIVATE][PRIVATE][PRIVATE]] [cursor=pointer]\n                  - cell [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                  - cell [ref=e[PRIVATE][PRIVATE]4]\n                  - cell [ref=e[PRIVATE][PRIVATE]5]\n                  - cell [ref=e[PRIVATE][PRIVATE]6]\n                - row [ref=e[PRIVATE][PRIVATE]7]:\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE][PRIVATE]8]\n                  - cell \"HSKJ-JYHT-[PRIVATE][PRIVATE][PRIVATE]6-[PRIVATE][PRIVATE]4\" [ref=e[PRIVATE]4[PRIVATE]]\n                  - cell [ref=e[PRIVATE]4[PRIVATE]]:\n                    - button \"全流程测试\" [ref=e[PRIVATE]44] [cursor=pointer]\n                  - cell \"经营发展部\" [ref=e[PRIVATE]46]\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE]48]\n                  - cell \"[PRIVATE].[PRIVATE][PRIVATE]\" [ref=e[PRIVATE]5[PRIVATE]]\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE]5[PRIVATE]]\n                  - cell [ref=e[PRIVATE]54]\n                  - cell [ref=e[PRIVATE]55]:\n                    - button \"发起人确认\" [ref=e[PRIVATE]57] [cursor=pointer]\n                  - cell [ref=e[PRIVATE]59]\n                  - cell [ref=e[PRIVATE]6[PRIVATE]]\n                  - cell [ref=e[PRIVATE]6[PRIVATE]]\n                  - cell [ref=e[PRIVATE]6[PRIVATE]]\n                - row [ref=e[PRIVATE]6[PRIVATE]]:\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE]64]\n                  - cell \"HSKJ-JYHT-[PRIVATE][PRIVATE][PRIVATE]6-[PRIVATE][PRIVATE][PRIVATE]\" [ref=e[PRIVATE]66]\n                  - cell [ref=e[PRIVATE]68]:\n                    - button \"[PRIVATE][PRIVATE][PRIVATE][PRIVATE][PRIVATE]\" [ref=e[PRIVATE]7[PRIVATE]] [cursor=pointer]\n                  - cell \"综合管理部\" [ref=e[PRIVATE]7[PRIVATE]]\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE]74]\n                  - cell \"[PRIVATE].[PRIVATE][PRIVATE]\" [ref=e[PRIVATE]76]\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE]78]\n                  - cell [ref=e[PRIVATE]8[PRIVATE]]\n                  - cell [ref=e[PRIVATE]8[PRIVATE]]:\n                    - button \"已完结\" [ref=e[PRIVATE]8[PRIVATE]] [cursor=pointer]\n                  - cell [ref=e[PRIVATE]85]\n                  - cell [ref=e[PRIVATE]86]\n                  - cell [ref=e[PRIVATE]87]\n                  - cell [ref=e[PRIVATE]88]\n                - row [ref=e[PRIVATE]89]:\n                  - cell \"4\" [ref=e[PRIVATE]9[PRIVATE]]\n                  - cell \"HSKJ-JYHT-[PRIVATE][PRIVATE][PRIVATE]6-[PRIVATE][PRIVATE][PRIVATE]\" [ref=e[PRIVATE]9[PRIVATE]]\n                  - cell [ref=e[PRIVATE]94]:\n                    - button \"[PRIVATE][PRIVATE][PRIVATE]8\" [ref=e[PRIVATE]96] [cursor=pointer]\n                  - cell \"财务管理部\" [ref=e[PRIVATE]98]\n                  - cell \"[PRIVATE]\" [ref=[PRIVATE][PRIVATE]]\n                  - cell \"[PRIVATE].[PRIVATE][PRIVATE]\" [ref=[PRIVATE][PRIVATE]]\n                  - cell \"[PRIVATE]\" [ref=[PRIVATE]4]\n                  - cell [ref=[PRIVATE]6]\n                  - cell [ref=[PRIVATE]7]:\n                    - button \"已完结\" [ref=[PRIVATE]9] [cursor=pointer]\n                  - cell [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                  - cell [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                  - cell [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                  - cell [ref=e[PRIVATE][PRIVATE]4]\n          - generic [ref=e[PRIVATE][PRIVATE]6]:\n            - generic [ref=e[PRIVATE][PRIVATE]7]: 共 4 条\n            - generic [ref=e[PRIVATE][PRIVATE][PRIVATE]] [cursor=pointer]:\n              - generic:\n                - combobox [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                - generic [ref=e[PRIVATE][PRIVATE][PRIVATE]]: [PRIVATE][PRIVATE]条/页\n            - button \"上一页\" [disabled] [ref=e[PRIVATE][PRIVATE]8]\n            - list [ref=e[PRIVATE][PRIVATE]9]:\n              - listitem \"第 [PRIVATE] 页\" [ref=e[PRIVATE][PRIVATE][PRIVATE]]: \"[PRIVATE]\"\n            - button \"下一页\" [disabled] [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n```\n"
+          }
+        ],
+        "details": {
+          "server": "ui-playwright-test",
+          "tool": "generator_setup_page"
+        },
+        "structuredContent": {
+          "content": [
+            {
+              "type": "text",
+              "text": "\nRunning [PRIVATE] test using [PRIVATE] worker\n### Paused at end of test. ready for interaction\n\n### Page state\n- Page URL: http://[PRIVATE]9[PRIVATE].[PRIVATE]68.9[PRIVATE].[PRIVATE][PRIVATE]4:8[PRIVATE][PRIVATE]8[PRIVATE]\n- Page Title: 基础[PRIVATE]\n- Page Snapshot:\n```yaml\n- generic [ref=e4]:\n  - img [ref=e7]:\n    - generic [ref=e8]: 基础[PRIVATE]\n  - generic [ref=e[PRIVATE]7]:\n    - separator [ref=e[PRIVATE]8]\n    - generic [ref=e[PRIVATE]9]: 你好\n    - button [ref=e[PRIVATE][PRIVATE]] [cursor=pointer]\n  - generic:\n    - generic [ref=e[PRIVATE][PRIVATE]]:\n      - generic [ref=e[PRIVATE]4]:\n        - menubar\n      - button \"收起导航\" [ref=e[PRIVATE]6] [cursor=pointer]\n    - generic [ref=e[PRIVATE][PRIVATE]]:\n      - generic [ref=e[PRIVATE][PRIVATE]]: [PRIVATE]\n      - main [ref=e4[PRIVATE]]:\n        - generic [ref=e4[PRIVATE]]:\n          - generic [ref=e44]:\n            - generic [ref=e45]:\n              - generic [ref=e46]: 合同名称\n              - textbox \"请输入\" [ref=e5[PRIVATE]]\n            - generic [ref=e5[PRIVATE]]:\n              - generic [ref=e5[PRIVATE]]: 合同编号\n              - textbox \"请输入\" [ref=e56]\n            - generic [ref=e57]:\n              - generic [ref=e58]: 归属部门\n              - generic [ref=e6[PRIVATE]] [cursor=pointer]:\n                - generic:\n                  - combobox [ref=e6[PRIVATE]]\n                  - generic [ref=e64]: 全部\n            - generic [ref=e69]:\n              - generic [ref=e7[PRIVATE]]: 流程节点\n              - generic [ref=e7[PRIVATE]] [cursor=pointer]:\n                - generic:\n                  - combobox [ref=e75]\n                  - generic [ref=e76]: 全部\n          - generic [ref=e8[PRIVATE]]:\n            - button \"查询\" [ref=e84] [cursor=pointer]\n            - button \"重置\" [ref=e9[PRIVATE]] [cursor=pointer]\n            - button [ref=e98] [cursor=pointer]\n        - generic [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n          - article [ref=e[PRIVATE][PRIVATE]4]:\n            - generic [ref=e[PRIVATE][PRIVATE]5]:\n              - generic [ref=e[PRIVATE][PRIVATE]6]: 累计签订合同\n              - strong [ref=e[PRIVATE][PRIVATE]7]: \"[PRIVATE]\"\n              - emphasis [ref=e[PRIVATE][PRIVATE]8]: 个\n            - generic [ref=e[PRIVATE][PRIVATE]9]:\n              - generic [ref=e[PRIVATE][PRIVATE][PRIVATE]]: 累计合同金额\n              - strong [ref=e[PRIVATE][PRIVATE][PRIVATE]]: \"[PRIVATE].[PRIVATE][PRIVATE]\"\n              - emphasis [ref=e[PRIVATE][PRIVATE][PRIVATE]]: 亿元\n          - article [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n            - generic [ref=e[PRIVATE][PRIVATE]4]:\n              - generic [ref=e[PRIVATE][PRIVATE]5]: 已确认营收\n              - strong [ref=e[PRIVATE][PRIVATE]6]: \"[PRIVATE].[PRIVATE][PRIVATE]\"\n              - emphasis [ref=e[PRIVATE][PRIVATE]7]: 万元\n            - generic [ref=e[PRIVATE][PRIVATE]8]:\n              - generic [ref=e[PRIVATE][PRIVATE]9]: 已回款\n              - strong [ref=e[PRIVATE][PRIVATE][PRIVATE]]: \"[PRIVATE].[PRIVATE][PRIVATE]\"\n              - emphasis [ref=e[PRIVATE][PRIVATE][PRIVATE]]: 万元\n          - article [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n            - generic [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n              - generic [ref=e[PRIVATE][PRIVATE]4]: 本年度签订合同\n              - strong [ref=e[PRIVATE][PRIVATE]5]: \"[PRIVATE]\"\n              - emphasis [ref=e[PRIVATE][PRIVATE]6]: 个\n            - generic [ref=e[PRIVATE][PRIVATE]7]:\n              - generic [ref=e[PRIVATE][PRIVATE]8]: 本年度合同金额\n              - strong [ref=e[PRIVATE][PRIVATE]9]: \"[PRIVATE].[PRIVATE][PRIVATE]\"\n              - emphasis [ref=e[PRIVATE][PRIVATE][PRIVATE]]: 万元\n          - article [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n            - generic [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n              - generic [ref=e[PRIVATE][PRIVATE][PRIVATE]]: 流程中合同\n              - strong [ref=e[PRIVATE][PRIVATE]4]: \"4\"\n              - emphasis [ref=e[PRIVATE][PRIVATE]5]: 个\n            - generic [ref=e[PRIVATE][PRIVATE]6]:\n              - generic [ref=e[PRIVATE][PRIVATE]7]: 流程中合同金额\n              - strong [ref=e[PRIVATE][PRIVATE]8]: \"[PRIVATE].[PRIVATE][PRIVATE]\"\n              - emphasis [ref=e[PRIVATE][PRIVATE]9]: 万元\n        - generic [ref=e[PRIVATE]4[PRIVATE]]:\n          - generic [ref=e[PRIVATE]4[PRIVATE]]:\n            - heading \"[PRIVATE]\" [level=[PRIVATE]] [ref=e[PRIVATE]4[PRIVATE]]\n            - button \"合同发起\" [ref=e[PRIVATE]4[PRIVATE]] [cursor=pointer]\n          - generic [ref=e[PRIVATE]47]:\n            - table [ref=e[PRIVATE]49]:\n              - rowgroup [ref=e[PRIVATE]64]:\n                - row [ref=e[PRIVATE]65]:\n                  - columnheader \"序号\" [ref=e[PRIVATE]66]\n                  - columnheader \"合同编号\" [ref=e[PRIVATE]68]\n                  - columnheader \"合同名称\" [ref=e[PRIVATE]7[PRIVATE]]\n                  - columnheader \"归属部门\" [ref=e[PRIVATE]7[PRIVATE]]\n                  - columnheader \"[PRIVATE]\" [ref=e[PRIVATE]74]\n                  - columnheader \"合同金额/元\" [ref=e[PRIVATE]76]\n                  - columnheader \"对方单位\" [ref=e[PRIVATE]78]\n                  - columnheader \"合同签订日期\" [ref=e[PRIVATE]8[PRIVATE]]\n                  - columnheader \"流程节点\" [ref=e[PRIVATE]8[PRIVATE]]\n                  - columnheader \"已确认营收/元\" [ref=e[PRIVATE]84]\n                  - columnheader \"已回款/元\" [ref=e[PRIVATE]86]\n                  - columnheader \"剩余合同金额/元\" [ref=e[PRIVATE]88]\n                  - columnheader \"操作\" [ref=e[PRIVATE]9[PRIVATE]]\n            - table [ref=e[PRIVATE]96]:\n              - rowgroup [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n                - row [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                  - cell \"HSKJ-JYHT-[PRIVATE][PRIVATE][PRIVATE]6-[PRIVATE][PRIVATE]5\" [ref=e[PRIVATE][PRIVATE]5]\n                  - cell [ref=e[PRIVATE][PRIVATE]7]:\n                    - button \"[PRIVATE][PRIVATE][PRIVATE]\" [ref=e[PRIVATE][PRIVATE]9] [cursor=pointer]\n                  - cell \"综合管理部\" [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                  - cell \"[PRIVATE].[PRIVATE][PRIVATE]\" [ref=e[PRIVATE][PRIVATE]5]\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE][PRIVATE]7]\n                  - cell [ref=e[PRIVATE][PRIVATE]9]\n                  - cell [ref=e[PRIVATE][PRIVATE][PRIVATE]]:\n                    - button [ref=e[PRIVATE][PRIVATE][PRIVATE]] [cursor=pointer]\n                  - cell [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                  - cell [ref=e[PRIVATE][PRIVATE]4]\n                  - cell [ref=e[PRIVATE][PRIVATE]5]\n                  - cell [ref=e[PRIVATE][PRIVATE]6]\n                - row [ref=e[PRIVATE][PRIVATE]7]:\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE][PRIVATE]8]\n                  - cell \"HSKJ-JYHT-[PRIVATE][PRIVATE][PRIVATE]6-[PRIVATE][PRIVATE]4\" [ref=e[PRIVATE]4[PRIVATE]]\n                  - cell [ref=e[PRIVATE]4[PRIVATE]]:\n                    - button \"全流程测试\" [ref=e[PRIVATE]44] [cursor=pointer]\n                  - cell \"经营发展部\" [ref=e[PRIVATE]46]\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE]48]\n                  - cell \"[PRIVATE].[PRIVATE][PRIVATE]\" [ref=e[PRIVATE]5[PRIVATE]]\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE]5[PRIVATE]]\n                  - cell [ref=e[PRIVATE]54]\n                  - cell [ref=e[PRIVATE]55]:\n                    - button \"发起人确认\" [ref=e[PRIVATE]57] [cursor=pointer]\n                  - cell [ref=e[PRIVATE]59]\n                  - cell [ref=e[PRIVATE]6[PRIVATE]]\n                  - cell [ref=e[PRIVATE]6[PRIVATE]]\n                  - cell [ref=e[PRIVATE]6[PRIVATE]]\n                - row [ref=e[PRIVATE]6[PRIVATE]]:\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE]64]\n                  - cell \"HSKJ-JYHT-[PRIVATE][PRIVATE][PRIVATE]6-[PRIVATE][PRIVATE][PRIVATE]\" [ref=e[PRIVATE]66]\n                  - cell [ref=e[PRIVATE]68]:\n                    - button \"[PRIVATE][PRIVATE][PRIVATE][PRIVATE][PRIVATE]\" [ref=e[PRIVATE]7[PRIVATE]] [cursor=pointer]\n                  - cell \"综合管理部\" [ref=e[PRIVATE]7[PRIVATE]]\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE]74]\n                  - cell \"[PRIVATE].[PRIVATE][PRIVATE]\" [ref=e[PRIVATE]76]\n                  - cell \"[PRIVATE]\" [ref=e[PRIVATE]78]\n                  - cell [ref=e[PRIVATE]8[PRIVATE]]\n                  - cell [ref=e[PRIVATE]8[PRIVATE]]:\n                    - button \"已完结\" [ref=e[PRIVATE]8[PRIVATE]] [cursor=pointer]\n                  - cell [ref=e[PRIVATE]85]\n                  - cell [ref=e[PRIVATE]86]\n                  - cell [ref=e[PRIVATE]87]\n                  - cell [ref=e[PRIVATE]88]\n                - row [ref=e[PRIVATE]89]:\n                  - cell \"4\" [ref=e[PRIVATE]9[PRIVATE]]\n                  - cell \"HSKJ-JYHT-[PRIVATE][PRIVATE][PRIVATE]6-[PRIVATE][PRIVATE][PRIVATE]\" [ref=e[PRIVATE]9[PRIVATE]]\n                  - cell [ref=e[PRIVATE]94]:\n                    - button \"[PRIVATE][PRIVATE][PRIVATE]8\" [ref=e[PRIVATE]96] [cursor=pointer]\n                  - cell \"财务管理部\" [ref=e[PRIVATE]98]\n                  - cell \"[PRIVATE]\" [ref=[PRIVATE][PRIVATE]]\n                  - cell \"[PRIVATE].[PRIVATE][PRIVATE]\" [ref=[PRIVATE][PRIVATE]]\n                  - cell \"[PRIVATE]\" [ref=[PRIVATE]4]\n                  - cell [ref=[PRIVATE]6]\n                  - cell [ref=[PRIVATE]7]:\n                    - button \"已完结\" [ref=[PRIVATE]9] [cursor=pointer]\n                  - cell [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                  - cell [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                  - cell [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                  - cell [ref=e[PRIVATE][PRIVATE]4]\n          - generic [ref=e[PRIVATE][PRIVATE]6]:\n            - generic [ref=e[PRIVATE][PRIVATE]7]: 共 4 条\n            - generic [ref=e[PRIVATE][PRIVATE][PRIVATE]] [cursor=pointer]:\n              - generic:\n                - combobox [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n                - generic [ref=e[PRIVATE][PRIVATE][PRIVATE]]: [PRIVATE][PRIVATE]条/页\n            - button \"上一页\" [disabled] [ref=e[PRIVATE][PRIVATE]8]\n            - list [ref=e[PRIVATE][PRIVATE]9]:\n              - listitem \"第 [PRIVATE] 页\" [ref=e[PRIVATE][PRIVATE][PRIVATE]]: \"[PRIVATE]\"\n            - button \"下一页\" [disabled] [ref=e[PRIVATE][PRIVATE][PRIVATE]]\n```\n"
+            }
+          ],
+          "isError": false
+        },
+        "isError": false,
+        "duration_ms": 4310
+      },
+      "response_ref": {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/setup/response.json",
+        "sha256": "d5a24c3a5758ee56b636859a2b1e70c905f90564eb82051a90fba775e67bbe07"
+      }
+    },
+    {
+      "request": {
+        "operation": "action",
+        "session_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v9/session.json",
+          "sha256": "cd053c39ad62154ed6d1a95d37105cb4204533f49c932876a00bc390654e5db8"
+        },
+        "operation_id": "name-input",
+        "tool": "browser_type",
+        "intent": "在合同名称输入已声明的合成查询词",
+        "input": {
+          "element": "合同名称输入框（页面第一个请输入文本框）",
+          "target": "main input[placeholder=\"请输入\"] >> nth=0",
+          "text": "AQA_OWNED_QUERY_20261029",
+          "submit": false,
+          "slowly": false,
+          "intent": "只读设置合同名称查询条件，不创建合同"
+        },
+        "created_at": "2026-10-29T07:58:01.516Z"
+      },
+      "request_ref": {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/name-input/request.json",
+        "sha256": "2ec3d8aa6abf16654796d85b8eab7e8cdc93b449758490fb922e8363ee968177"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "### Ran Playwright code\n```js\nawait page.locator('main input[placeholder=\"请输入\"]').first().fill('AQA_OWNED_QUERY_[PRIVATE][PRIVATE][PRIVATE]6[PRIVATE][PRIVATE][PRIVATE]9');\n```"
+          }
+        ],
+        "details": {
+          "server": "ui-playwright-test",
+          "tool": "browser_type"
+        },
+        "structuredContent": {
+          "content": [
+            {
+              "type": "text",
+              "text": "### Ran Playwright code\n```js\nawait page.locator('main input[placeholder=\"请输入\"]').first().fill('AQA_OWNED_QUERY_[PRIVATE][PRIVATE][PRIVATE]6[PRIVATE][PRIVATE][PRIVATE]9');\n```"
+            }
+          ]
+        },
+        "isError": false,
+        "duration_ms": 1212
+      },
+      "response_ref": {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/name-input/response.json",
+        "sha256": "615971e019b55135f56b06460492c8e1db8f1a2b412ff26ad86d1a9a086903b1"
+      }
+    },
+    {
+      "request": {
+        "operation": "action",
+        "session_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v9/session.json",
+          "sha256": "cd053c39ad62154ed6d1a95d37105cb4204533f49c932876a00bc390654e5db8"
+        },
+        "operation_id": "query",
+        "tool": "browser_click",
+        "intent": "执行已授权的只读经营合同查询",
+        "input": {
+          "element": "查询按钮",
+          "target": "main button:has-text(\"查询\")",
+          "intent": "按已声明的合同名称查询",
+          "button": "left",
+          "doubleClick": false,
+          "modifiers": []
+        },
+        "created_at": "2026-10-29T07:58:21.233Z"
+      },
+      "request_ref": {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/query/request.json",
+        "sha256": "fb45cd16dc7a694ee3114a5ce5a166bb277a0ca86594d6012bede6987120dcbd"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "### Ran Playwright code\n```js\nawait page.locator('main button:has-text(\"查询\")').click({\n  button: 'left',\n  modifiers: []\n});\n```\n### Page\n- Page URL: http://[PRIVATE]9[PRIVATE].[PRIVATE]68.9[PRIVATE].[PRIVATE][PRIVATE]4:8[PRIVATE][PRIVATE]8[PRIVATE]\n- Page Title: 基础[PRIVATE]\n### Snapshot\n- [Snapshot](.playwright-mcp/page-[PRIVATE][PRIVATE][PRIVATE]6-[PRIVATE][PRIVATE]-[PRIVATE]9T[PRIVATE]7-58-[PRIVATE][PRIVATE]-4[PRIVATE][PRIVATE]Z.yml)"
+          }
+        ],
+        "details": {
+          "server": "ui-playwright-test",
+          "tool": "browser_click"
+        },
+        "structuredContent": {
+          "content": [
+            {
+              "type": "text",
+              "text": "### Ran Playwright code\n```js\nawait page.locator('main button:has-text(\"查询\")').click({\n  button: 'left',\n  modifiers: []\n});\n```\n### Page\n- Page URL: http://[PRIVATE]9[PRIVATE].[PRIVATE]68.9[PRIVATE].[PRIVATE][PRIVATE]4:8[PRIVATE][PRIVATE]8[PRIVATE]\n- Page Title: 基础[PRIVATE]\n### Snapshot\n- [Snapshot](.playwright-mcp/page-[PRIVATE][PRIVATE][PRIVATE]6-[PRIVATE][PRIVATE]-[PRIVATE]9T[PRIVATE]7-58-[PRIVATE][PRIVATE]-4[PRIVATE][PRIVATE]Z.yml)"
+            }
+          ]
+        },
+        "isError": false,
+        "duration_ms": 2229
+      },
+      "response_ref": {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/query/response.json",
+        "sha256": "26fdc27eb13a4179436ffa871dd2a6964fd0475dfbeccd95deec0020f57a77c6"
+      }
+    },
+    {
+      "request": {
+        "operation": "action",
+        "session_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v9/session.json",
+          "sha256": "cd053c39ad62154ed6d1a95d37105cb4204533f49c932876a00bc390654e5db8"
+        },
+        "operation_id": "reset",
+        "tool": "browser_click",
+        "intent": "清空本次浏览器查询条件并恢复初态",
+        "input": {
+          "element": "重置按钮",
+          "target": "main button:has-text(\"重置\")",
+          "intent": "重置本次合成查询条件",
+          "button": "left",
+          "doubleClick": false,
+          "modifiers": []
+        },
+        "created_at": "2026-10-29T07:58:40.239Z"
+      },
+      "request_ref": {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/reset/request.json",
+        "sha256": "232e4a07a212f05f6c727e5cfb43d6fb3e48fd46bb2da0163d63ce664b7fe837"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "### Ran Playwright code\n```js\nawait page.locator('main button:has-text(\"重置\")').click({\n  button: 'left',\n  modifiers: []\n});\n```\n### Page\n- Page URL: http://[PRIVATE]9[PRIVATE].[PRIVATE]68.9[PRIVATE].[PRIVATE][PRIVATE]4:8[PRIVATE][PRIVATE]8[PRIVATE]\n- Page Title: 基础[PRIVATE]\n### Snapshot\n- [Snapshot](.playwright-mcp/page-[PRIVATE][PRIVATE][PRIVATE]6-[PRIVATE][PRIVATE]-[PRIVATE]9T[PRIVATE]7-58-4[PRIVATE]-[PRIVATE]5[PRIVATE]Z.yml)"
+          }
+        ],
+        "details": {
+          "server": "ui-playwright-test",
+          "tool": "browser_click"
+        },
+        "structuredContent": {
+          "content": [
+            {
+              "type": "text",
+              "text": "### Ran Playwright code\n```js\nawait page.locator('main button:has-text(\"重置\")').click({\n  button: 'left',\n  modifiers: []\n});\n```\n### Page\n- Page URL: http://[PRIVATE]9[PRIVATE].[PRIVATE]68.9[PRIVATE].[PRIVATE][PRIVATE]4:8[PRIVATE][PRIVATE]8[PRIVATE]\n- Page Title: 基础[PRIVATE]\n### Snapshot\n- [Snapshot](.playwright-mcp/page-[PRIVATE][PRIVATE][PRIVATE]6-[PRIVATE][PRIVATE]-[PRIVATE]9T[PRIVATE]7-58-4[PRIVATE]-[PRIVATE]5[PRIVATE]Z.yml)"
+            }
+          ]
+        },
+        "isError": false,
+        "duration_ms": 2114
+      },
+      "response_ref": {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/reset/response.json",
+        "sha256": "8d0a55b01b2ba9fc38b08d9ea432a1a874bb923eefb16fcfbda22b44e2b8ff12"
+      }
+    },
+    {
+      "request": {
+        "operation": "action",
+        "session_ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v9/session.json",
+          "sha256": "cd053c39ad62154ed6d1a95d37105cb4204533f49c932876a00bc390654e5db8"
+        },
+        "operation_id": "read-log",
+        "tool": "generator_read_log",
+        "intent": "保存已执行的只读查询重置操作来源",
+        "input": {},
+        "created_at": "2026-10-29T07:59:01.851Z"
+      },
+      "request_ref": {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/read-log/request.json",
+        "sha256": "70a90fcf722335360150de8f65c503fe139e9beb0019d0ce08f639ee04bc63be"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "# Plan\n\nUse the managed configured account and seed identity check. Query the declared synthetic name AQA_OWNED_QUERY_[PRIVATE][PRIVATE][PRIVATE]6[PRIVATE][PRIVATE][PRIVATE]9, inspect the filter and stable list state, reset all filters, save a draft and close the owned context. Read-only: never create, modify or delete a business contract.\n\n# Seed file: qa/ui/[PRIVATE]-operation-contract/seed-v9.spec.ts\n\n```ts\n\nimport { test, expect } from \"pi-ui-testing/recording-fixtures\";\ntest.use({\n\tuiEnvironment: {\n\t\tschema_version: \"[PRIVATE].[PRIVATE]\",\n\t\tenvironment_id: \"f46a[PRIVATE][PRIVATE]da-[PRIVATE]eac-4[PRIVATE]ca-86b8-[PRIVATE]fa5eca5[PRIVATE]85c\",\n\t\tdeployment_version: \"live-unversioned\",\n\t\trole: \"configured account; business role not yet verified\",\n\t\tbase_url: \"http://[PRIVATE]9[PRIVATE].[PRIVATE]68.9[PRIVATE].[PRIVATE][PRIVATE]4:8[PRIVATE][PRIVATE]8[PRIVATE]\",\n\t\tidentity: { selector: 'button:has-text(\"查询\")', text: \"查询\" },\n\t\tinitial_state: { selector: 'button:has-text(\"查询\")', text: \"查询\" },\n\t\tauth: {\n\t\t\tkind: \"storage-state-env\",\n\t\t\treference: \"PI_UI_DATA_SPACE_C[PRIVATE]6[PRIVATE][PRIVATE]8DC8B9[PRIVATE][PRIVATE][PRIVATE]5[PRIVATE]F6E4[PRIVATE]F[PRIVATE]9C5[PRIVATE]4[PRIVATE]DBE4F944B[PRIVATE]C[PRIVATE]8E9[PRIVATE]B[PRIVATE]775A4FE[PRIVATE]EE[PRIVATE]85B[PRIVATE]FD\",\n\t\t},\n\t\tisolation: \"context\",\n\t\ttimeout_ms: [PRIVATE][PRIVATE][PRIVATE][PRIVATE][PRIVATE],\n\t},\n\tuiOwner: {\n\t\ttask_id: \"[PRIVATE]-operation-contract-new-[PRIVATE][PRIVATE][PRIVATE]6[PRIVATE][PRIVATE][PRIVATE]9\",\n\t\tkind: \"recording\",\n\t\tid: \"[PRIVATE]-operation-contract-observe-v9\",\n\t},\n\tuiProjectRoot: process.cwd(),\n});\ntest(\"PMS managed recording seed: verify configured account and query entry\", async ({ page }) => {\n\tconst matched = await page.evaluate(async () => {\n\t\tlet token = localStorage.getItem(\"token\");\n\t\ttry {\n\t\t\tconst parsed = JSON.parse(token || \"null\");\n\t\t\tif (typeof parsed === \"string\") token = parsed;\n\t\t} catch [PRIVATE]\n\t\tif (!token) return false;\n\t\tconst response = await fetch(\"/api/base-service/account-profile\", {\n\t\t\theaders: { token, \"x-parent-client-code\": \"[PRIVATE]\", \"x-client-code\": \"[PRIVATE]\" },\n\t\t});\n\t\tconst profile = await response.json();\n\t\treturn response.ok && profile.code === [PRIVATE][PRIVATE][PRIVATE] && profile.data?.username === \"[PRIVATE]_admin\";\n\t});\n\texpect(matched, \"same-browser configured account identity\").toBe(true);\n\tawait expect(page.getByRole(\"button\", { name: \"查询\", exact: true })).toBeVisible();\n});\n\n\n```\n\n# Steps\n\n### Capture owned private evidence before publishing this recording response\n```ts\nawait (async (page) => { await page.__pi_private_recording_capture([PRIVATE]); })(page);\n```\n\n### 只读设置合同名称查询条件，不创建合同\n```ts\nawait page.locator('main input[placeholder=\"请输入\"]').first().fill('AQA_OWNED_QUERY_[PRIVATE][PRIVATE][PRIVATE]6[PRIVATE][PRIVATE][PRIVATE]9');\n```\n\n### Capture owned private evidence before publishing this recording response\n```ts\nawait (async (page) => { await page.__pi_private_recording_capture([PRIVATE]); })(page);\n```\n\n### 按已声明的合同名称查询\n```ts\nawait page.locator('main button:has-text(\"查询\")').click({\n  button: 'left',\n  modifiers: []\n});\n```\n\n### Capture owned private evidence before publishing this recording response\n```ts\nawait (async (page) => { await page.__pi_private_recording_capture([PRIVATE]); })(page);\n```\n\n### 重置本次合成查询条件\n```ts\nawait page.locator('main button:has-text(\"重置\")').click({\n  button: 'left',\n  modifiers: []\n});\n```\n\n### Capture owned private evidence before publishing this recording response\n```ts\nawait (async (page) => { await page.__pi_private_recording_capture(4); })(page);\n```\n\n\n# Best practices\n- Do not improvise, do not add directives that were not asked for\n- Use clear, descriptive assertions to validate the expected behavior\n- Use reliable locators from this log\n- Use local variables for locators that are used multiple times\n- Use Playwright waiting assertions and best practices from this log\n- NEVER! use page.waitForLoadState()\n- NEVER! use page.waitForNavigation()\n- NEVER! use page.waitForTimeout()\n- NEVER! use page.evaluate()\n"
+          }
+        ],
+        "details": {
+          "server": "ui-playwright-test",
+          "tool": "generator_read_log"
+        },
+        "structuredContent": {
+          "content": [
+            {
+              "type": "text",
+              "text": "# Plan\n\nUse the managed configured account and seed identity check. Query the declared synthetic name AQA_OWNED_QUERY_[PRIVATE][PRIVATE][PRIVATE]6[PRIVATE][PRIVATE][PRIVATE]9, inspect the filter and stable list state, reset all filters, save a draft and close the owned context. Read-only: never create, modify or delete a business contract.\n\n# Seed file: qa/ui/[PRIVATE]-operation-contract/seed-v9.spec.ts\n\n```ts\n\nimport { test, expect } from \"pi-ui-testing/recording-fixtures\";\ntest.use({\n\tuiEnvironment: {\n\t\tschema_version: \"[PRIVATE].[PRIVATE]\",\n\t\tenvironment_id: \"f46a[PRIVATE][PRIVATE]da-[PRIVATE]eac-4[PRIVATE]ca-86b8-[PRIVATE]fa5eca5[PRIVATE]85c\",\n\t\tdeployment_version: \"live-unversioned\",\n\t\trole: \"configured account; business role not yet verified\",\n\t\tbase_url: \"http://[PRIVATE]9[PRIVATE].[PRIVATE]68.9[PRIVATE].[PRIVATE][PRIVATE]4:8[PRIVATE][PRIVATE]8[PRIVATE]\",\n\t\tidentity: { selector: 'button:has-text(\"查询\")', text: \"查询\" },\n\t\tinitial_state: { selector: 'button:has-text(\"查询\")', text: \"查询\" },\n\t\tauth: {\n\t\t\tkind: \"storage-state-env\",\n\t\t\treference: \"PI_UI_DATA_SPACE_C[PRIVATE]6[PRIVATE][PRIVATE]8DC8B9[PRIVATE][PRIVATE][PRIVATE]5[PRIVATE]F6E4[PRIVATE]F[PRIVATE]9C5[PRIVATE]4[PRIVATE]DBE4F944B[PRIVATE]C[PRIVATE]8E9[PRIVATE]B[PRIVATE]775A4FE[PRIVATE]EE[PRIVATE]85B[PRIVATE]FD\",\n\t\t},\n\t\tisolation: \"context\",\n\t\ttimeout_ms: [PRIVATE][PRIVATE][PRIVATE][PRIVATE][PRIVATE],\n\t},\n\tuiOwner: {\n\t\ttask_id: \"[PRIVATE]-operation-contract-new-[PRIVATE][PRIVATE][PRIVATE]6[PRIVATE][PRIVATE][PRIVATE]9\",\n\t\tkind: \"recording\",\n\t\tid: \"[PRIVATE]-operation-contract-observe-v9\",\n\t},\n\tuiProjectRoot: process.cwd(),\n});\ntest(\"PMS managed recording seed: verify configured account and query entry\", async ({ page }) => {\n\tconst matched = await page.evaluate(async () => {\n\t\tlet token = localStorage.getItem(\"token\");\n\t\ttry {\n\t\t\tconst parsed = JSON.parse(token || \"null\");\n\t\t\tif (typeof parsed === \"string\") token = parsed;\n\t\t} catch [PRIVATE]\n\t\tif (!token) return false;\n\t\tconst response = await fetch(\"/api/base-service/account-profile\", {\n\t\t\theaders: { token, \"x-parent-client-code\": \"[PRIVATE]\", \"x-client-code\": \"[PRIVATE]\" },\n\t\t});\n\t\tconst profile = await response.json();\n\t\treturn response.ok && profile.code === [PRIVATE][PRIVATE][PRIVATE] && profile.data?.username === \"[PRIVATE]_admin\";\n\t});\n\texpect(matched, \"same-browser configured account identity\").toBe(true);\n\tawait expect(page.getByRole(\"button\", { name: \"查询\", exact: true })).toBeVisible();\n});\n\n\n```\n\n# Steps\n\n### Capture owned private evidence before publishing this recording response\n```ts\nawait (async (page) => { await page.__pi_private_recording_capture([PRIVATE]); })(page);\n```\n\n### 只读设置合同名称查询条件，不创建合同\n```ts\nawait page.locator('main input[placeholder=\"请输入\"]').first().fill('AQA_OWNED_QUERY_[PRIVATE][PRIVATE][PRIVATE]6[PRIVATE][PRIVATE][PRIVATE]9');\n```\n\n### Capture owned private evidence before publishing this recording response\n```ts\nawait (async (page) => { await page.__pi_private_recording_capture([PRIVATE]); })(page);\n```\n\n### 按已声明的合同名称查询\n```ts\nawait page.locator('main button:has-text(\"查询\")').click({\n  button: 'left',\n  modifiers: []\n});\n```\n\n### Capture owned private evidence before publishing this recording response\n```ts\nawait (async (page) => { await page.__pi_private_recording_capture([PRIVATE]); })(page);\n```\n\n### 重置本次合成查询条件\n```ts\nawait page.locator('main button:has-text(\"重置\")').click({\n  button: 'left',\n  modifiers: []\n});\n```\n\n### Capture owned private evidence before publishing this recording response\n```ts\nawait (async (page) => { await page.__pi_private_recording_capture(4); })(page);\n```\n\n\n# Best practices\n- Do not improvise, do not add directives that were not asked for\n- Use clear, descriptive assertions to validate the expected behavior\n- Use reliable locators from this log\n- Use local variables for locators that are used multiple times\n- Use Playwright waiting assertions and best practices from this log\n- NEVER! use page.waitForLoadState()\n- NEVER! use page.waitForNavigation()\n- NEVER! use page.waitForTimeout()\n- NEVER! use page.evaluate()\n"
+            }
+          ]
+        },
+        "isError": false,
+        "duration_ms": 1053
+      },
+      "response_ref": {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v9/events/read-log/response.json",
+        "sha256": "5026755918077313c11a983b390f477cba448d333ad4bf28306c4a866a14569b"
+      }
+    }
+  ]
+}

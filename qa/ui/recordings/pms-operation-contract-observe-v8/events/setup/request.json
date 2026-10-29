@@ -1,0 +1,16 @@
+{
+  "operation": "action",
+  "session_ref": {
+    "path": "qa/ui/recordings/pms-operation-contract-observe-v8/session.json",
+    "sha256": "3474d08d92562d74b14b726c58699d8baf89bc2f024593062e15506f8825933a"
+  },
+  "operation_id": "setup",
+  "tool": "generator_setup_page",
+  "intent": "验证同浏览器pms_admin身份并观察经营合同只读查询入口",
+  "input": {
+    "project": "chromium",
+    "seedFile": "qa/ui/pms-operation-contract/seed-v8.spec.ts",
+    "plan": "Use the managed configured account; confirm the same-browser account seed and query page. Observe filters, query a unique non-mutating name, verify read-only filtering and reset to initial filters; do not create, modify or delete any contract. Save a draft and close the owned context."
+  },
+  "created_at": "2026-10-29T07:55:08.877Z"
+}

@@ -1,0 +1,11 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "私密录制采集或发布未通过核验；保留私有证据和 partial，不自动重放"
+    }
+  ],
+  "details": {},
+  "isError": true,
+  "duration_ms": 4
+}
