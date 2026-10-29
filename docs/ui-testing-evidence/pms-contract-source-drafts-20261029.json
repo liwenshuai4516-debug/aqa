@@ -1,0 +1,172 @@
+{
+	"schema_version": "1.0",
+	"kind": "partial-stage-evidence",
+	"created_at": "2026-10-29T07:28:20.538Z",
+	"task_id": "pms-operation-contract-new-20261029",
+	"project_id": "e2f5d42d-2781-4e68-a452-4c87c7d1d346",
+	"environment_id": "f46a32da-2eac-43ca-86b8-2fa5eca5385c",
+	"target_url": "http://192.168.90.224:8238/pms/OperationContract",
+	"scope": "Source-grounded read-only query/reset drafts imported under existing authorization; managed browser discovery and formal execution remain blocked",
+	"basis": {
+		"oracle_type": "declaration",
+		"authenticated_browser_verified": false,
+		"source_archive_index_ref": {
+			"path": "qa/ui/scopes/pms-contract-current-source/archive-index.json",
+			"sha256": "9928727b22dfe2d621b0eb73cd729ad29ec01ee33e4def4ebfb4a321ac9ae876"
+		},
+		"source_provenance_ref": {
+			"path": "qa/ui/scopes/pms-contract-current-source/provenance.json",
+			"sha256": "ba0501c72fedb3018e8f95743835f69706a2313ae2bf8048c48dcee913cf00c9"
+		},
+		"source_component_ref": {
+			"path": "qa/ui/scopes/pms-contract-current-source/operation-contract.js",
+			"sha256": "5366384b16baf6abd47d238ddd4030ca8410124a3cde657c47158f927cbc03ac"
+		},
+		"source_api_ref": {
+			"path": "qa/ui/scopes/pms-contract-current-source/operation-contract-api.txt",
+			"sha256": "f984f1ff5fbb1d0d5156598fb51da4576f0d0d836b4d6392dd4d5f85309d9d78"
+		}
+	},
+	"native_refs": {
+		"scope_ref": {
+			"path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+			"sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+		},
+		"inventory_ref": {
+			"path": "qa/ui/inventories/pms-contract-current-source-20261029/manifest.json",
+			"sha256": "871237e180ee902e435bec9837e4af92d7de2b67c75927b969089b19bb24b4bf"
+		},
+		"cases_ref": {
+			"path": "qa/ui/cases/pms-contract-current-source-20261029/manifest.json",
+			"sha256": "5a155f20c9bf99b594845f3af49ccfc96450017374b58657f665b9bbee15f83b"
+		},
+		"partial_recording_ref": {
+			"path": "qa/ui/recordings/pms-operation-contract-observe-v4/manifest.json",
+			"sha256": "7d9e771d8f49c121f3ffadde9479f66c2b76b4758f63e9430c28ff331f3e8be9"
+		}
+	},
+	"counts": {
+		"new_drafts": 9,
+		"imported": 9,
+		"reviewed": 0,
+		"executed": 0,
+		"passed": 0,
+		"failed": 0,
+		"not_executed": 9,
+		"browser_actions": 0,
+		"business_contract_writes": 0
+	},
+	"archive": {
+		"inspected_full_scope": true,
+		"authorized_batch_match": true,
+		"destination": "项目管理系统 / 经营合同 / 合同查询与重置",
+		"feature_id": "pms-business-query-reset",
+		"import_receipt": {
+			"new": 9,
+			"duplicate": 0,
+			"pending": 0,
+			"stale": 0,
+			"unclassified": 0,
+			"total": 9
+		},
+		"read_only_archive_status_receipt": {
+			"existing": 9,
+			"pending": 0,
+			"stale": 0,
+			"unclassified": 0,
+			"total": 9,
+			"classificationComplete": true,
+			"itemsTruncated": false
+		},
+		"executable": false
+	},
+	"development_checks": {
+		"typecheck": "passed: all five project configurations",
+		"lint": "passed: 0 errors, 0 warnings",
+		"protocol": "passed; Git tag heuristic skipped because no tag was available",
+		"related_unit": { "files": 1, "tests": 4, "passed": 4, "failed": 0 },
+		"seed_collection": "passed: exactly one v4 seed collected; body not executed",
+		"diff_check": "passed",
+		"counts_as_pms_execution": false
+	},
+	"cleanup": {
+		"public_source_archive_roundtrip": "passed; original SHA256 preserved",
+		"owned_temp_files_removed": 1,
+		"owned_empty_temp_directories_removed": 1,
+		"clean_junk_deleted": 0,
+		"private_evidence_and_dependency_backup": "retained"
+	},
+	"cases": [
+		{
+			"native_case_id": "PMS-OC-SRC-001",
+			"title": "合同名称查询去除首尾空白并回到第一页",
+			"status": "草稿",
+			"execution": "未执行"
+		},
+		{
+			"native_case_id": "PMS-OC-SRC-002",
+			"title": "合同编号查询去除首尾空白",
+			"status": "草稿",
+			"execution": "未执行"
+		},
+		{
+			"native_case_id": "PMS-OC-SRC-003",
+			"title": "名称和编号仅为空白时不携带有效关键字筛选",
+			"status": "草稿",
+			"execution": "未执行"
+		},
+		{
+			"native_case_id": "PMS-OC-SRC-004",
+			"title": "归属部门按选项对应的departmentId查询",
+			"status": "草稿",
+			"execution": "未执行"
+		},
+		{
+			"native_case_id": "PMS-OC-SRC-005",
+			"title": "合同签订日期区间以YYYY-MM-DD传递两个端点",
+			"status": "草稿",
+			"execution": "未执行"
+		},
+		{
+			"native_case_id": "PMS-OC-SRC-006",
+			"title": "流程节点选择草稿时传递DRAFT状态",
+			"status": "草稿",
+			"execution": "未执行"
+		},
+		{
+			"native_case_id": "PMS-OC-SRC-007",
+			"title": "具体审批节点查询提示暂不支持并保留当前列表",
+			"status": "草稿",
+			"execution": "未执行"
+		},
+		{
+			"native_case_id": "PMS-OC-SRC-008",
+			"title": "项目类型非全部时查询提示暂不支持",
+			"status": "草稿",
+			"execution": "未执行"
+		},
+		{
+			"native_case_id": "PMS-OC-SRC-009",
+			"title": "重置清空全部六项条件并恢复第一页查询",
+			"status": "草稿",
+			"execution": "未执行"
+		}
+	],
+	"declared_limitations": [
+		"具体审批节点与项目类型筛选由当前公开代码主动提示暂不支持，尚未浏览器验证或判定需求缺陷",
+		"删除入口仅提示暂不支持；公开经营合同API wrapper没有删除方法，可靠清理能力未确认"
+	],
+	"blockers": [
+		"v4受管私密会话准备失败，浏览器尚未启动",
+		"活动宿主是否加载已修复扩展未确认；旧内存扩展仍只是待验证判断",
+		"没有浏览器身份/角色/DOM证据、部门独立夹具、可执行脚本、独立设计批准或运行诊断"
+	],
+	"next": "Execute /reload in the current application conversation, resume the same task, prepare a fresh private reference and new recording seed, then verify identity/role/controls before script design, independent review, diagnosis and formal execution. Existing import and owned-data permissions remain valid.",
+	"not_claimed": [
+		"Current PMS page behavior or backend query results",
+		"Business requirement acceptance or confirmed defects",
+		"Approved executable assets",
+		"PMS formal test pass rate or final result review",
+		"Historical developer regressions as current PMS execution"
+	]
+}

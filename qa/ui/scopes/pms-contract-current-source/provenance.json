@@ -1,0 +1,34 @@
+{
+  "kind": "public-deployment-source-provenance",
+  "entry_url": "http://192.168.90.224:8238/pms/OperationContract",
+  "entry_http_status": 200,
+  "asset_url": "http://192.168.90.224:8238/assets/index-Dryv8enx.js",
+  "asset_http_status": 200,
+  "asset_sha256": "6552b8e3ed45bbf8b35eb96e5f36907da20003a69daa1a2118cf10198d7f2675",
+  "asset_bytes": 2554539,
+  "source_file_saved_at": "2026-10-29T07:13:53.514Z",
+  "offset_unit": "UTF-16 code units",
+  "excerpts": [
+    {
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-current-source/operation-contract.js",
+        "sha256": "5366384b16baf6abd47d238ddd4030ca8410124a3cde657c47158f927cbc03ac"
+      },
+      "start": 2319086,
+      "end_exclusive": 2329822
+    },
+    {
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-current-source/operation-contract-api.txt",
+        "sha256": "f984f1ff5fbb1d0d5156598fb51da4576f0d0d836b4d6392dd4d5f85309d9d78"
+      },
+      "start": 2248105,
+      "end_exclusive": 2248746
+    }
+  ],
+  "limitations": [
+    "Public JavaScript declaration only; no authenticated browser actions",
+    "Deployed behavior, role, DOM locators and backend filtering are not verified",
+    "No business records created or changed"
+  ]
+}

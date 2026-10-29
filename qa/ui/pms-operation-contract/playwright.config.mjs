@@ -1,7 +1,7 @@
 import { defineConfig } from "@playwright/test";
 export default defineConfig({
 	testDir: new URL(".", import.meta.url).pathname,
-	testMatch: ["seed.spec.ts", "seed-v3.spec.ts"],
+	testMatch: "seed*.spec.ts",
 	workers: 1,
 	retries: 0,
 	timeout: 60000,

@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "kind": "inventory",
+  "id": "pms-contract-current-source-20261029",
+  "created_at": "2026-10-29T07:21:29.137Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "features": [
+      {
+        "feature_id": "current-source-query-reset",
+        "module_id": "operation-contract",
+        "name": "经营合同查询、重置与已声明的筛选限制",
+        "entry": "http://192.168.90.224:8238/pms/OperationContract",
+        "role": "configured account; business role not yet verified",
+        "priority": "P0",
+        "actions": [
+          "仅设置查询条件、查询、重置；不创建或改动业务记录"
+        ],
+        "states": [
+          "source-only",
+          "draft",
+          "browser-not-verified"
+        ],
+        "coverage": "discovered",
+        "discovery": "source",
+        "source_refs": [
+          {
+            "path": "qa/ui/scopes/pms-contract-current-source/operation-contract.js",
+            "sha256": "5366384b16baf6abd47d238ddd4030ca8410124a3cde657c47158f927cbc03ac"
+          },
+          {
+            "path": "qa/ui/scopes/pms-contract-current-source/operation-contract-api.txt",
+            "sha256": "f984f1ff5fbb1d0d5156598fb51da4576f0d0d836b4d6392dd4d5f85309d9d78"
+          },
+          {
+            "path": "qa/ui/scopes/pms-contract-current-source/provenance.json",
+            "sha256": "ba0501c72fedb3018e8f95743835f69706a2313ae2bf8048c48dcee913cf00c9"
+          }
+        ],
+        "source_locations": [
+          {
+            "ref": {
+              "path": "qa/ui/scopes/pms-contract-current-source/operation-contract.js",
+              "sha256": "5366384b16baf6abd47d238ddd4030ca8410124a3cde657c47158f927cbc03ac"
+            },
+            "line": 1,
+            "symbol": "OperationContract.setup: N,z,p,b,m,ba.page"
+          }
+        ],
+        "scenarios": [
+          {
+            "scenario_id": "oc-src-001",
+            "title": "合同名称查询去除首尾空白并回到第一页"
+          },
+          {
+            "scenario_id": "oc-src-002",
+            "title": "合同编号查询去除首尾空白"
+          },
+          {
+            "scenario_id": "oc-src-003",
+            "title": "名称和编号仅为空白时不携带有效关键字筛选"
+          },
+          {
+            "scenario_id": "oc-src-004",
+            "title": "归属部门按选项对应的departmentId查询"
+          },
+          {
+            "scenario_id": "oc-src-005",
+            "title": "签约时间区间以YYYY-MM-DD传递两个端点"
+          },
+          {
+            "scenario_id": "oc-src-006",
+            "title": "当前节点选择草稿时传递DRAFT状态"
+          },
+          {
+            "scenario_id": "oc-src-007",
+            "title": "具体审批节点查询提示暂不支持并保留当前列表"
+          },
+          {
+            "scenario_id": "oc-src-008",
+            "title": "项目类型非全部时查询提示暂不支持"
+          },
+          {
+            "scenario_id": "oc-src-009",
+            "title": "重置清空全部六项条件并恢复第一页查询"
+          }
+        ],
+        "gaps": [
+          "浏览器身份、角色、DOM与控件定位器未核实",
+          "部门label/id夹具尚未冻结",
+          "后端过滤结果、分页边界和日期端点语义无实测",
+          "仅从当前部署公开代码声明推导预期，不等于业务需求已确认"
+        ]
+      }
+    ],
+    "unexplored": [
+      "受管浏览器录制被宿主私密准备阻塞",
+      "合同创建、编辑、审批、上传、权限和一致性尚未探索",
+      "公开组件及API wrapper未提供可靠删除入口，测试合同清理能力未验证",
+      "尚无本轮正式执行或通过证据"
+    ]
+  }
+}

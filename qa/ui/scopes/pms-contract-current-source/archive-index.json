@@ -1,0 +1,16 @@
+{
+  "kind": "public-source-archive-index",
+  "compression": "gzip",
+  "archive_ref": {
+    "path": "qa/ui/scopes/pms-contract-current-source/index-Dryv8enx.js.gz",
+    "sha256": "f10591eb98e48e2cdc1da937fe59f783e6a0a3d7944eb8a538a962f62807db07"
+  },
+  "original_sha256": "6552b8e3ed45bbf8b35eb96e5f36907da20003a69daa1a2118cf10198d7f2675",
+  "original_bytes": 2554539,
+  "compressed_bytes": 812495,
+  "provenance_ref": {
+    "path": "qa/ui/scopes/pms-contract-current-source/provenance.json",
+    "sha256": "ba0501c72fedb3018e8f95743835f69706a2313ae2bf8048c48dcee913cf00c9"
+  },
+  "excerpts_verified": true
+}

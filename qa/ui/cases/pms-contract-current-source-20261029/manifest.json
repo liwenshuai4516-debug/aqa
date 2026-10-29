@@ -1,0 +1,499 @@
+{
+  "schema_version": "1.0",
+  "kind": "cases",
+  "id": "pms-contract-current-source-20261029",
+  "created_at": "2026-10-29T07:22:29.212Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "data_rules_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+      "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+    },
+    "sources": [
+      {
+        "source_id": "S-query",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-current-source/operation-contract.js",
+          "sha256": "5366384b16baf6abd47d238ddd4030ca8410124a3cde657c47158f927cbc03ac"
+        },
+        "statement": "当前部署OperationContract组件定义p/b查询状态；名称及编号使用trim，ba.page传pageNum/pageSize/bizName/bizCode、部门选项对应id、DRAFT状态及YYYY-MM-DD日期区间。仅声明前端行为，后端结果与端点包含语义未确认。"
+      },
+      {
+        "source_id": "S-limit",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-current-source/operation-contract.js",
+          "sha256": "5366384b16baf6abd47d238ddd4030ca8410124a3cde657c47158f927cbc03ac"
+        },
+        "statement": "N函数在p.type非空或p.node非空且非草稿时，显示“当前合同接口不支持项目类型及具体节点筛选，请清空后重试”并return，不执行Object.assign、pageNum重置及x刷新。"
+      },
+      {
+        "source_id": "S-reset",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-current-source/operation-contract.js",
+          "sha256": "5366384b16baf6abd47d238ddd4030ca8410124a3cde657c47158f927cbc03ac"
+        },
+        "statement": "z函数将name/code/department/node/type置空、signedAt置[]后调用N；N复制条件、将m设为1并刷新，不修改g每页条数。"
+      },
+      {
+        "source_id": "S-api",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-current-source/operation-contract-api.txt",
+          "sha256": "f984f1ff5fbb1d0d5156598fb51da4576f0d0d836b4d6392dd4d5f85309d9d78"
+        },
+        "statement": "公开API wrapper声明列表通过Dt.pageGet调用/project-management-backend/v1/web/contract-mgt/operation-contract/page；未声明删除经营合同的接口。"
+      }
+    ],
+    "cases": [
+      {
+        "case_id": "PMS-OC-SRC-001",
+        "title": "合同名称查询去除首尾空白并回到第一页",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-001",
+        "priority": "P0",
+        "preconditions": [
+          "来源：本轮HTTP GET 200取得的index-Dryv8enx.js代码声明；未完成浏览器实测、独立评审和执行准入。",
+          "执行前必须通过受管会话验证pms_admin身份及当前角色有经营合同页面和查询权限。",
+          "进入经营合同列表，等待初始列表/部门加载结束；保留现有业务数据，仅使用查询与重置。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "核实前置条件、记录初始请求/列表状态；前置条件未满足则记阻塞，不能算测试失败或通过。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "在合同名称输入“  AQA_OWNED_QUERY_20261029  ”，保持其他条件为空，点击查询；查询词仅作搜索，不创建合同。",
+            "assertion_ids": [
+              "PMS-OC-SRC-001-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-001-A1",
+            "step_id": "S2",
+            "source_id": "S-query",
+            "oracle_type": "declaration",
+            "target": "经营合同列表查询条件",
+            "observation": "采集本次查询触发的经营合同列表请求，核对pageNum与bizName；不要求预先存在匹配合同。",
+            "comparison": "按独立源码声明比较字段、有效筛选和指定UI状态；非运行结果",
+            "expected": {
+              "pageNum": 1,
+              "bizName": "AQA_OWNED_QUERY_20261029"
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "只改变本次浏览器查询状态；通过重置或关闭本次独立页面清理。不创建、修改、删除任何合同或既有业务记录。",
+        "data_row_id": "name-trim",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-002",
+        "title": "合同编号查询去除首尾空白",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-002",
+        "priority": "P1",
+        "preconditions": [
+          "来源：本轮HTTP GET 200取得的index-Dryv8enx.js代码声明；未完成浏览器实测、独立评审和执行准入。",
+          "执行前必须通过受管会话验证pms_admin身份及当前角色有经营合同页面和查询权限。",
+          "进入经营合同列表，等待初始列表/部门加载结束；保留现有业务数据，仅使用查询与重置。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "核实前置条件、记录初始请求/列表状态；前置条件未满足则记阻塞，不能算测试失败或通过。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "在合同编号输入“  AQA_CODE_20261029  ”，保持其他条件为空并点击查询。",
+            "assertion_ids": [
+              "PMS-OC-SRC-002-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-002-A1",
+            "step_id": "S2",
+            "source_id": "S-query",
+            "oracle_type": "declaration",
+            "target": "经营合同编号查询条件",
+            "observation": "采集本次列表请求并核对bizCode；不要求存在匹配记录。",
+            "comparison": "按独立源码声明比较字段、有效筛选和指定UI状态；非运行结果",
+            "expected": {
+              "pageNum": 1,
+              "bizCode": "AQA_CODE_20261029"
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "只改变本次浏览器查询状态；通过重置或关闭本次独立页面清理。不创建、修改、删除任何合同或既有业务记录。",
+        "data_row_id": "code-trim",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-003",
+        "title": "名称和编号仅为空白时不携带有效关键字筛选",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-003",
+        "priority": "P1",
+        "preconditions": [
+          "来源：本轮HTTP GET 200取得的index-Dryv8enx.js代码声明；未完成浏览器实测、独立评审和执行准入。",
+          "执行前必须通过受管会话验证pms_admin身份及当前角色有经营合同页面和查询权限。",
+          "进入经营合同列表，等待初始列表/部门加载结束；保留现有业务数据，仅使用查询与重置。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "核实前置条件、记录初始请求/列表状态；前置条件未满足则记阻塞，不能算测试失败或通过。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "合同名称和合同编号均输入三个空格，其他条件为空，点击查询。",
+            "assertion_ids": [
+              "PMS-OC-SRC-003-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-003-A1",
+            "step_id": "S2",
+            "source_id": "S-query",
+            "oracle_type": "declaration",
+            "target": "空白关键字的查询参数",
+            "observation": "核对输入trim及查询层对空字符串的省略行为；实际HTTP序列化形式须在运行准备时核实，不将undefined字面量当参数。",
+            "comparison": "按独立源码声明比较字段、有效筛选和指定UI状态；非运行结果",
+            "expected": {
+              "pageNum": 1,
+              "absent_effective_filters": [
+                "bizName",
+                "bizCode"
+              ]
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "只改变本次浏览器查询状态；通过重置或关闭本次独立页面清理。不创建、修改、删除任何合同或既有业务记录。",
+        "data_row_id": "whitespace",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-004",
+        "title": "归属部门按选项对应的departmentId查询",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-004",
+        "priority": "P1",
+        "preconditions": [
+          "来源：本轮HTTP GET 200取得的index-Dryv8enx.js代码声明；未完成浏览器实测、独立评审和执行准入。",
+          "执行前必须通过受管会话验证pms_admin身份及当前角色有经营合同页面和查询权限。",
+          "进入经营合同列表，等待初始列表/部门加载结束；保留现有业务数据，仅使用查询与重置。",
+          "需先取得并冻结当前账号可访问部门的独立label/id夹具；尚未准备，未满足时阻塞。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "核实前置条件、记录初始请求/列表状态；前置条件未满足则记阻塞，不能算测试失败或通过。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "从已预置且有独立label/id对照的可用部门中选择一项，其他条件为空，点击查询。",
+            "assertion_ids": [
+              "PMS-OC-SRC-004-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-004-A1",
+            "step_id": "S2",
+            "source_id": "S-query",
+            "oracle_type": "declaration",
+            "target": "归属部门与departmentId映射",
+            "observation": "对照运行前独立冻结的部门label/id夹具，核对本次列表请求departmentId，不能用请求自身反推预期。",
+            "comparison": "按独立源码声明比较字段、有效筛选和指定UI状态；非运行结果",
+            "expected": {
+              "pageNum": 1,
+              "departmentId": "独立预置部门夹具的id，运行前冻结"
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "只改变本次浏览器查询状态；通过重置或关闭本次独立页面清理。不创建、修改、删除任何合同或既有业务记录。",
+        "data_row_id": "known-department",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-005",
+        "title": "合同签订日期区间以YYYY-MM-DD传递两个端点",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-005",
+        "priority": "P1",
+        "preconditions": [
+          "来源：本轮HTTP GET 200取得的index-Dryv8enx.js代码声明；未完成浏览器实测、独立评审和执行准入。",
+          "执行前必须通过受管会话验证pms_admin身份及当前角色有经营合同页面和查询权限。",
+          "进入经营合同列表，等待初始列表/部门加载结束；保留现有业务数据，仅使用查询与重置。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "核实前置条件、记录初始请求/列表状态；前置条件未满足则记阻塞，不能算测试失败或通过。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "将合同签订日期选择为2026-01-01至2026-01-31，其他条件为空，点击查询。",
+            "assertion_ids": [
+              "PMS-OC-SRC-005-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-005-A1",
+            "step_id": "S2",
+            "source_id": "S-query",
+            "oracle_type": "declaration",
+            "target": "合同签订日期查询端点",
+            "observation": "采集列表请求并核对两个端点；仅核验前端声明的日期传递，不据此判定后端端点是否包含当天。",
+            "comparison": "按独立源码声明比较字段、有效筛选和指定UI状态；非运行结果",
+            "expected": {
+              "pageNum": 1,
+              "signedAtStart": "2026-01-01",
+              "signedAtEnd": "2026-01-31"
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "只改变本次浏览器查询状态；通过重置或关闭本次独立页面清理。不创建、修改、删除任何合同或既有业务记录。",
+        "data_row_id": "date-range",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-006",
+        "title": "流程节点选择草稿时传递DRAFT状态",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-006",
+        "priority": "P1",
+        "preconditions": [
+          "来源：本轮HTTP GET 200取得的index-Dryv8enx.js代码声明；未完成浏览器实测、独立评审和执行准入。",
+          "执行前必须通过受管会话验证pms_admin身份及当前角色有经营合同页面和查询权限。",
+          "进入经营合同列表，等待初始列表/部门加载结束；保留现有业务数据，仅使用查询与重置。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "核实前置条件、记录初始请求/列表状态；前置条件未满足则记阻塞，不能算测试失败或通过。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "流程节点选择草稿，项目类型保持全部，其他条件为空，点击查询。",
+            "assertion_ids": [
+              "PMS-OC-SRC-006-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-006-A1",
+            "step_id": "S2",
+            "source_id": "S-query",
+            "oracle_type": "declaration",
+            "target": "草稿节点到contractStatus的映射",
+            "observation": "核对查询请求contractStatus为DRAFT；不根据界面标签推测其他节点的后端状态值。",
+            "comparison": "按独立源码声明比较字段、有效筛选和指定UI状态；非运行结果",
+            "expected": {
+              "pageNum": 1,
+              "contractStatus": "DRAFT"
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "只改变本次浏览器查询状态；通过重置或关闭本次独立页面清理。不创建、修改、删除任何合同或既有业务记录。",
+        "data_row_id": "draft-node",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-007",
+        "title": "具体审批节点查询提示暂不支持并保留当前列表",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-007",
+        "priority": "P1",
+        "preconditions": [
+          "来源：本轮HTTP GET 200取得的index-Dryv8enx.js代码声明；未完成浏览器实测、独立评审和执行准入。",
+          "执行前必须通过受管会话验证pms_admin身份及当前角色有经营合同页面和查询权限。",
+          "进入经营合同列表，等待初始列表/部门加载结束；保留现有业务数据，仅使用查询与重置。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "核实前置条件、记录初始请求/列表状态；前置条件未满足则记阻塞，不能算测试失败或通过。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "在列表初态稳定后记录当前行及请求事件，流程节点选择部门负责人审核，项目类型为全部，点击查询。",
+            "assertion_ids": [
+              "PMS-OC-SRC-007-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-007-A1",
+            "step_id": "S2",
+            "source_id": "S-limit",
+            "oracle_type": "declaration",
+            "target": "不支持的具体节点筛选保护",
+            "observation": "核对提示原文、当前行保持以及该次查询处理器没有发起列表刷新；排除页面初始请求和独立自动刷新。",
+            "comparison": "按独立源码声明比较字段、有效筛选和指定UI状态；非运行结果",
+            "expected": {
+              "message": "当前合同接口不支持项目类型及具体节点筛选，请清空后重试",
+              "query_handler_refresh": false,
+              "rows_unchanged": true
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "只改变本次浏览器查询状态；通过重置或关闭本次独立页面清理。不创建、修改、删除任何合同或既有业务记录。",
+        "data_row_id": "unsupported-node",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-008",
+        "title": "项目类型非全部时查询提示暂不支持",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-008",
+        "priority": "P1",
+        "preconditions": [
+          "来源：本轮HTTP GET 200取得的index-Dryv8enx.js代码声明；未完成浏览器实测、独立评审和执行准入。",
+          "执行前必须通过受管会话验证pms_admin身份及当前角色有经营合同页面和查询权限。",
+          "进入经营合同列表，等待初始列表/部门加载结束；保留现有业务数据，仅使用查询与重置。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "核实前置条件、记录初始请求/列表状态；前置条件未满足则记阻塞，不能算测试失败或通过。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "在列表初态稳定后记录当前行及请求事件，选择任一实际存在的非全部项目类型，流程节点为全部，点击查询。",
+            "assertion_ids": [
+              "PMS-OC-SRC-008-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-008-A1",
+            "step_id": "S2",
+            "source_id": "S-limit",
+            "oracle_type": "declaration",
+            "target": "不支持的项目类型筛选保护",
+            "observation": "核对提示原文、当前行保持以及该次查询处理器没有发起列表刷新；可选项目类型须从真实控件确认。",
+            "comparison": "按独立源码声明比较字段、有效筛选和指定UI状态；非运行结果",
+            "expected": {
+              "message": "当前合同接口不支持项目类型及具体节点筛选，请清空后重试",
+              "query_handler_refresh": false,
+              "rows_unchanged": true
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "只改变本次浏览器查询状态；通过重置或关闭本次独立页面清理。不创建、修改、删除任何合同或既有业务记录。",
+        "data_row_id": "unsupported-project-type",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-009",
+        "title": "重置清空全部六项条件并恢复第一页查询",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-009",
+        "priority": "P0",
+        "preconditions": [
+          "来源：本轮HTTP GET 200取得的index-Dryv8enx.js代码声明；未完成浏览器实测、独立评审和执行准入。",
+          "执行前必须通过受管会话验证pms_admin身份及当前角色有经营合同页面和查询权限。",
+          "进入经营合同列表，等待初始列表/部门加载结束；保留现有业务数据，仅使用查询与重置。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "核实前置条件、记录初始请求/列表状态；前置条件未满足则记阻塞，不能算测试失败或通过。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "在合同名称、编号、归属部门、流程节点、项目类型和合同签订日期均设置非空值后点击重置；其中节点或类型选择不支持值，用于验证重置能解除筛选保护。",
+            "assertion_ids": [
+              "PMS-OC-SRC-009-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-009-A1",
+            "step_id": "S2",
+            "source_id": "S-reset",
+            "oracle_type": "declaration",
+            "target": "六项条件及重置后的列表查询",
+            "observation": "核对全部控件恢复空值/全部、日期区间清空，重置触发列表查询且pageNum=1、无有效筛选；每页条数维持重置前值。",
+            "comparison": "按独立源码声明比较字段、有效筛选和指定UI状态；非运行结果",
+            "expected": {
+              "fields": {
+                "name": "",
+                "code": "",
+                "department": "",
+                "node": "",
+                "type": "",
+                "signedAt": []
+              },
+              "pageNum": 1,
+              "absent_effective_filters": [
+                "bizName",
+                "bizCode",
+                "departmentId",
+                "contractStatus",
+                "signedAtStart",
+                "signedAtEnd"
+              ]
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "只改变本次浏览器查询状态；通过重置或关闭本次独立页面清理。不创建、修改、删除任何合同或既有业务记录。",
+        "data_row_id": "reset-all",
+        "browser_project": "chromium"
+      }
+    ],
+    "gaps": [
+      "本批为来源可追溯的人工用例草稿，无可执行脚本/绑定，未形成candidate、未独立评审或获准执行。",
+      "受管私密会话准备失败，尚无认证浏览器、角色、控件定位器或初态证据。",
+      "部门label/id数据需独立冻结；后端返回结果、日期包含规则、无结果及分页边界仍未验证。",
+      "需核实HTTP query序列化约定，不能把前端undefined假定为某种字面参数。",
+      "合同创建/修改/清理和审批权限不在本批只读草稿内；删除入口仅提示暂不支持，可靠清理未验证。"
+    ]
+  }
+}
