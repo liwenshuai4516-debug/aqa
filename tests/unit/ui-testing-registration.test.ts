@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, realpath, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join, relative } from "node:path";
 import { enableUiTesting } from "../../scripts/enable-ui-testing.mjs";
 import { isUiTestingExtension } from "../../server/skill/skill-presentation.js";
 
@@ -64,6 +64,128 @@ describe("UI testing skill resource registration", () => {
 			await enableUiTesting(root, app ? root : undefined);
 			expect(await readFile(settings, "utf8")).toBe(first);
 		}
+	});
+
+	it.each([
+		{ app: false, linked: false },
+		{ app: false, linked: true },
+		{ app: true, linked: false },
+		{ app: true, linked: true },
+	])("registers the installed native realpath once (app=$app, linked=$linked)", async ({ app, linked }) => {
+		const root = await realpath(await mkdtemp(join(tmpdir(), "ui registration 中文 ")));
+		roots.push(root);
+		const directory = app ? join(root, "应用 agent dir") : join(root, ".pi");
+		const packageDir = join(root, linked ? "tools/e2e/node_modules/pi-ui-testing" : "node_modules/pi-ui-testing");
+		const runtime = join(packageDir, "dist/extension.js");
+		await mkdir(dirname(runtime), { recursive: true });
+		await writeFile(runtime, "export default () => {};\n");
+		if (linked) {
+			await mkdir(join(root, "node_modules"));
+			await symlink(packageDir, join(root, "node_modules/pi-ui-testing"), "dir");
+		}
+		await mkdir(directory, { recursive: true });
+		const settings = join(directory, "settings.json");
+		await writeFile(settings, JSON.stringify({ theme: "light", extensions: ["another-extension"] }));
+
+		expect(await enableUiTesting(root, app ? directory : undefined)).toBe(settings);
+		const first = await readFile(settings, "utf8");
+		expect(JSON.parse(first)).toEqual({
+			theme: "light",
+			extensions: [
+				"another-extension",
+				app
+					? join(root, ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs")
+					: "../.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs",
+				app ? runtime : relative(directory, runtime),
+			],
+			packages: [app ? join(root, "node_modules/pi-ui-testing") : "../node_modules/pi-ui-testing"],
+			skills: [app ? join(root, ".pi/skills/ui-testing-workflow") : "./skills/ui-testing-workflow"],
+		});
+		await enableUiTesting(root, app ? directory : undefined);
+		expect(await readFile(settings, "utf8")).toBe(first);
+	});
+
+	it.each([false, true])(
+		"normalizes native logical/physical entries and retains disabled filters (app=%s)",
+		async (app) => {
+			const root = await realpath(await mkdtemp(join(tmpdir(), "ui registration 中文 ")));
+			roots.push(root);
+			const directory = app ? join(root, "应用 agent dir") : join(root, ".pi");
+			const runtime = join(root, "tools/e2e/node_modules/pi-ui-testing/dist/extension.js");
+			const logical = join(root, "node_modules/pi-ui-testing/dist/extension.js");
+			await mkdir(dirname(runtime), { recursive: true });
+			await writeFile(runtime, "export default () => {};\n");
+			await mkdir(join(root, "node_modules"));
+			await symlink(dirname(dirname(runtime)), dirname(dirname(logical)), "dir");
+			await mkdir(directory, { recursive: true });
+			const settings = join(directory, "settings.json");
+			const canonical = app ? runtime : relative(directory, runtime);
+			const filtered = { source: canonical, extensions: [], skills: ["keep-filter"] };
+			for (const source of [logical, runtime, relative(directory, logical), relative(directory, runtime)]) {
+				for (const entries of [
+					[source],
+					[source, canonical],
+					[canonical, source],
+					[source, { ...filtered, source }],
+					[{ ...filtered, source }, canonical],
+				]) {
+					const disabled = entries.some((entry) => typeof entry === "object");
+					const unrelated = { source: "other-extension", extensions: [] };
+					const original = {
+						extensions: ["another-extension", ...entries, unrelated],
+						packages: [
+							{ source: app ? join(root, "node_modules/pi-ui-testing") : "../node_modules/pi-ui-testing", skills: [] },
+						],
+						disabledTools: ["ui_test_run"],
+					};
+					await writeFile(settings, JSON.stringify(original));
+					await enableUiTesting(root, app ? directory : undefined);
+					const first = await readFile(settings, "utf8");
+					const actual = JSON.parse(first);
+					expect(actual.extensions).toEqual([
+						"another-extension",
+						disabled ? filtered : canonical,
+						unrelated,
+						app
+							? join(root, ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs")
+							: "../.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs",
+					]);
+					expect(actual.packages).toEqual(original.packages);
+					expect(actual.disabledTools).toEqual(original.disabledTools);
+					await enableUiTesting(root, app ? directory : undefined);
+					expect(await readFile(settings, "utf8")).toBe(first);
+				}
+			}
+		},
+	);
+
+	it.each([
+		{ app: false, installation: "absent" },
+		{ app: true, installation: "absent" },
+		{ app: false, installation: "incomplete" },
+		{ app: true, installation: "incomplete" },
+		{ app: false, installation: "broken-link" },
+		{ app: true, installation: "broken-link" },
+	])("does not add a missing native runtime (app=$app, installation=$installation)", async ({ app, installation }) => {
+		const root = await mkdtemp(join(tmpdir(), "ui-maintenance-"));
+		roots.push(root);
+		const packageDir = join(root, "node_modules/pi-ui-testing");
+		if (installation === "incomplete") await mkdir(packageDir, { recursive: true });
+		if (installation === "broken-link") {
+			await mkdir(join(root, "node_modules"));
+			await symlink(join(root, "missing-package"), packageDir, "dir");
+		}
+		const directory = app ? join(root, "agent") : join(root, ".pi");
+		const settings = await enableUiTesting(root, app ? directory : undefined);
+		const first = await readFile(settings, "utf8");
+		expect(JSON.parse(first).extensions).toEqual([
+			app
+				? join(root, ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs")
+				: "../.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs",
+		]);
+		expect(JSON.parse(first).packages).toEqual([app ? packageDir : "../node_modules/pi-ui-testing"]);
+		await enableUiTesting(root, app ? directory : undefined);
+		expect(await readFile(settings, "utf8")).toBe(first);
 	});
 
 	it("recognizes both new and legacy MCP resources for capability disable gating", () => {

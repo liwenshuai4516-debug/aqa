@@ -1,7 +1,22 @@
 /** Register original resources in the project or an explicitly selected Pi agent directory. */
-import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { join, resolve } from "node:path";
+import { mkdir, readFile, realpath, writeFile } from "node:fs/promises";
+import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+
+function normalizeExtension(entries, directory, resource, aliases) {
+	const isRegistration = (entry) => {
+		const source = typeof entry === "string" ? entry : entry?.source;
+		return (
+			typeof source === "string" &&
+			[resource, ...aliases].some((path) => resolve(directory, source) === resolve(directory, path))
+		);
+	};
+	const index = entries.findIndex(isRegistration);
+	const filtered = entries.find((entry) => typeof entry === "object" && isRegistration(entry));
+	const result = entries.filter((entry) => !isRegistration(entry));
+	result.splice(index < 0 ? entries.length : index, 0, filtered ? { ...filtered, source: resource } : resource);
+	return result;
+}
 
 export async function enableUiTesting(root, agentDir) {
 	root = resolve(root);
@@ -32,21 +47,7 @@ export async function enableUiTesting(root, agentDir) {
 				: "../capabilities/ui-testing/ui-testing-workflow",
 		};
 		if (field === "extensions") {
-			const isRegistration = (entry) => {
-				const source = typeof entry === "string" ? entry : entry.source;
-				return (
-					typeof source === "string" &&
-					[resource, legacy.extensions].some((path) => resolve(directory, source) === resolve(directory, path))
-				);
-			};
-			const index = entries.findIndex(isRegistration);
-			const filtered = entries.find((entry) => typeof entry === "object" && isRegistration(entry));
-			settings[field] = entries.filter((entry) => !isRegistration(entry));
-			settings[field].splice(
-				index < 0 ? entries.length : index,
-				0,
-				filtered ? { ...filtered, source: resource } : resource,
-			);
+			settings[field] = normalizeExtension(entries, directory, resource, [legacy.extensions]);
 			continue;
 		}
 		if (
@@ -57,6 +58,19 @@ export async function enableUiTesting(root, agentDir) {
 		) {
 			settings[field] = [...entries, resource];
 		}
+	}
+	const logicalRuntime = join(root, "node_modules/pi-ui-testing/dist/extension.js");
+	try {
+		// Pin the physical entry so SDK/Jiti cannot fall back to the symlink's root dependencies.
+		const runtime = await realpath(logicalRuntime);
+		settings.extensions = normalizeExtension(
+			settings.extensions,
+			directory,
+			agentDir ? runtime : relative(directory, runtime),
+			[logicalRuntime],
+		);
+	} catch (error) {
+		if (error.code !== "ENOENT") throw error;
 	}
 	await mkdir(directory, { recursive: true });
 	await writeFile(path, JSON.stringify(settings, null, "\t") + "\n");
