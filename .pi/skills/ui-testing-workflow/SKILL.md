@@ -52,6 +52,12 @@ description: UI 自动化测试工作流入口：发现录制、用例设计与�
 
 按任务 ID 的最小交接、诊断查询复用和分析候选请按运行包内 `ui-test-workflow`、`ui-design-review`、`ui-result-analysis` 当前阶段说明执行；仍保留完整资产执行授权与独立结果评审，不复制运行规则。版本与验收见[维护入口](references/maintenance.md)。
 
+## 宿主续授评审预算
+
+预算耗尽后，沿用原包 [ui-design-review](../../../node_modules/pi-ui-testing/skills/ui-design-review/SKILL.md) 的宿主续授规则，不新建 task/scope 或改写 authority。用户可明确说明“为原任务 `<task_id>` 追加 1 轮独立设计评审……对 r6 续评”。现有 canonical UI 扩展中的宿主 hook 从活动 SDK 会话核对原授权和候选修订，只调用原生 `DesignReviewService.renewBudget`；不注册模型可调用的增额工具，不接受 caller 的 `authorized`、authority 路径或额外额度。
+
+新扩展须在实际会话加载后生效；旧会话可执行 `/reload`。`/ui-review-budget` 只让宿主重新核对已存在的明确授权，不将命令本身当作新增授权。续授成功只触发正常回合按原生工具续评，不构成设计批准，也不允许超出本次追加轮数。原始尝试、无效评估输出及剩余范围全部保留。接入与边界见 [宿主预算续授](../../../docs/ui-review-budget-host.md)。
+
 ## 用例入库
 
 🛑 **CHECKPOINT**：生成 UI 用例后，保留 `save-cases` 等原生工具返回的 cases ref，并提供以下实际内联选项；未明确同意前不导入，用户已明确要求本批入库则直接办理，不重复询问：

@@ -4,7 +4,7 @@
 
 授权范围：只创建、修改和清理本次测试专属合同数据。首次发现阶段只观察页面和查询入口；创建业务数据前必须具备可验证的归属和清理流程。
 
-当前状态（2026-10-30）：原任务已完成 `discover-record`、`case-design`，现为 `blocked / design-review`。活动父会话的 TypeScript 运行时检查已恢复；r6 两条 P0 候选连同诊断计划通过原生全文件静态检查（`issues=[]`）。同一评审循环三轮已耗尽，仍无可信批准：第 1 轮运行时错误，第 2 轮非法 JSON，第 3 轮引用不存在的 anchors。诊断、正式执行及结果回写均未启动，原 9 条全部保留未执行。
+当前状态（2026-10-30，宿主续授接入后）：原任务仍为 `blocked / design-review`。用户已明确为原任务/r6 追加 **1 轮**，无须再次确认。宿主 hook 已接现有 canonical UI 扩展，153 条宿主单测及隔离 Electron 五组验证通过；实际原会话尚需 `/reload` 加载后，才会由活动 SDK 核验原授权并调用原生续授。当前原循环仍为 3 条 error、0 grant、0 pending，未发起第 4 轮；r6 原生静态检查 `issues=[]`，无可信批准。原 9 条全部保留未正式执行。
 
 ## 环境与启动前提
 
@@ -69,3 +69,12 @@ await tools.ui_test_workflow({
 - 续跑需要用户明确追加1–3轮，由受信任宿主对原 task/scope/cycle 续授；当前工具没有续授 operation，不能写 authority 文件或另建任务绕过。准备追加1轮评审 r6，诊断与正式执行授权沿用此前授权。
 - 002–008 的七条未批准设计草稿另存 `qa/ui/assets/pms-contract-remaining-seven/revisions/draft-r1/cases-draft.json`。原生已交接 inventory 只含001/009，评审阶段无扩展入口，七条仍待安全追加清单及完整准入。数据空间只读 archive-status 再次核实9条 existing，pending/stale/unclassified=0；未重复入库、未绑定或回写结果。
 - 本轮统计：原9条、当前候选2条、可信批准0、诊断0、正式执行0、通过0、失败0、未执行9、合同业务写入0。阶段证据 `docs/ui-testing-evidence/pms-contract-r4-continuation-20261030.json` 不构成最终测试报告。
+
+## 2026-10-30 明确追加1轮：宿主hook已验证，待原会话加载
+
+- 用户已明确授权原任务/r6追加1轮，原task/scope及三轮历史保留。宿主实现为 `.pi/skills/ui-testing-workflow/assets/review-budget-host.mjs`，由原canonical UI扩展加载；没有模型可调用的增额tool，也不接受caller授权布尔、authority路径或额度。
+- 活动SDK branch内的明确授权entry被稳定绑定；后续普通澄清和已知Peer Hand-off不变成新授权；撤销、改范围、切离授权branch或同名冻结资产被改写时拒绝。session与原entry消费锁防止重复增额；原生锁/pending/幂等登记保留。
+- 本轮开发检查：typecheck通过、4文件188条vitest通过（宿主153条）、lint零问题、协议静态检查通过；协议tag启发式因无tag跳过。隔离实际Electron最终批次1793340927046通过五组，真实SDK authority原生limit 3->4，grant/receipt各1，原attempt三份字节不变，重复reload不再触发模型，扩展启停/重载命令与技能管理通过；仅本地受控provider，付费/真实reviewer/PMS请求均0。
+- 原用户桌面旧SDK闭包尚未加载新增helper，不能把隔离grant当作原任务续授。browser_page不支持Electron；未认证WebSocket控制返回401，未读取token绕过。请在**原对话**执行 `/reload`，其session_start将核验本次既有明确授权，调用原生renewBudget增加恰1轮，并触发正常模型回合对精确r6进行独立续评。授权不需重复，普通“继续”不等于加载新扩展。
+- `/ui-review-budget`仅让已加载宿主重核既有授权，无参数；若reload后未出现回执，先核对命令、原branch、候选摘要和grant，不另发第4轮绕过门禁。新评估request由宿主回执给出，失败仍只消耗本次追加1轮，不重放。
+- 原任务实际统计仍：可信批准0、诊断0、正式执行0、通过0、失败0、未执行9、业务写入0。证据见 `docs/ui-testing-evidence/pms-review-budget-renewal-20261030.json`；宿主边界和维护见 `docs/ui-review-budget-host.md`。

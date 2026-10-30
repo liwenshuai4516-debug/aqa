@@ -6,8 +6,10 @@ import { join } from "node:path";
 import { preparePrivateRecordingSession } from "./private-recording-session.mjs";
 import { createPrivateRecordingConnection } from "./private-recording-connection.mjs";
 import { createPrivateRecordingActions } from "./private-recording-actions.mjs";
+import { registerReviewBudgetHost } from "./review-budget-host.mjs";
 
 export default async function (pi) {
+	registerReviewBudgetHost(pi);
 	// Reuse the locked SDK's transport factory for every unrelated registered server.
 	const sdkEntry = import.meta.resolve("@earendil-works/pi-coding-agent");
 	const { createDefaultTransport } = await import(new URL("./extensions/mcp/runtime.js", sdkEntry).href);

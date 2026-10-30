@@ -1,0 +1,216 @@
+{
+	"schema_version": "1.0",
+	"kind": "PARTIAL_STAGE_EVIDENCE_NOT_FORMAL_PMS_REPORT",
+	"created_at": "2026-10-30T06:23:15.808Z",
+	"status": "HOST_IMPLEMENTED_AND_ISOLATED_ELECTRON_VERIFIED_AWAITING_ORIGINAL_SESSION_RELOAD",
+	"authorization": {
+		"explicit_user_authorization_received": true,
+		"task_id": "pms-operation-contract-new-20261029",
+		"additional_rounds": 1,
+		"target_revision": "r6",
+		"reconfirmation_required": false,
+		"exact_instruction": "为原任务 pms-operation-contract-new-20261029 追加1轮独立设计评审；保留全部历史与预算记录，请先接通受信任宿主的预算续授能力，再对r6续评。"
+	},
+	"task_ref": {
+		"path": "qa/ui/tasks/pms-operation-contract-new-20261029/manifest.json",
+		"sha256": "2695d5f7e1d093cfa0dfc94f501c515df81a139b371b2acd72877073127b9e2c"
+	},
+	"asset_ref": {
+		"path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/manifest.json",
+		"sha256": "693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1"
+	},
+	"native_static_check": {
+		"schema_version": "1.0",
+		"capability_id": "ui-case-design",
+		"capability_version": "0.1.0",
+		"status": "completed",
+		"artifact_refs": [
+			{
+				"path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/manifest.json",
+				"sha256": "693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1"
+			}
+		],
+		"errors": [],
+		"output": {
+			"asset_ref": {
+				"path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/manifest.json",
+				"sha256": "693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1"
+			},
+			"issues": [],
+			"coverage": {
+				"planned": [
+					"operation-contract/current-source-query-reset/oc-src-001",
+					"operation-contract/current-source-query-reset/oc-src-009"
+				],
+				"covered": [
+					"operation-contract/current-source-query-reset/oc-src-001",
+					"operation-contract/current-source-query-reset/oc-src-009"
+				],
+				"missing": []
+			},
+			"dependencies": [
+				{
+					"name": "@playwright/test",
+					"version": "1.62.1"
+				},
+				{
+					"name": "pi-ui-testing",
+					"version": "0.1.30"
+				},
+				{
+					"name": "typescript",
+					"version": "7.0.2"
+				}
+			],
+			"ready_for_review": true,
+			"design_approved": false
+		}
+	},
+	"implementation": {
+		"source_refs": [
+			{
+				"path": ".pi/skills/ui-testing-workflow/assets/review-budget-host.mjs",
+				"sha256": "286641e566e262305261c76d53bf34958f7296edcc6d9c6fec94dc8b72dae75f"
+			},
+			{
+				"path": ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs",
+				"sha256": "964691bc84d105e682660088d87489fc09b4276ff09c0da4a20fdff642e143aa"
+			},
+			{
+				"path": "tests/unit/ui-review-budget-host.test.ts",
+				"sha256": "1107399a5c0103f916243e6347adf6c1c0b63330d25e86c0d4177ade1201b405"
+			},
+			{
+				"path": "tests/ui-review-budget-host-desktop-test.mjs",
+				"sha256": "48987b0bc6ed01a385e2dbaf1e40041cf287fdde6347a5b040f423c0c2d312d5"
+			}
+		],
+		"project_canonical_registered": true,
+		"no_new_model_budget_tool": true,
+		"native_service": "DesignReviewService.renewBudget",
+		"active_SDK_branch_only": true,
+		"same_authorization_entry_consumption_lock": true,
+		"original_authority_files_directly_written": false,
+		"old_failures_replayed": false,
+		"scope_changed": false,
+		"new_task_created": false,
+		"trust_limit": "Uses trusted loaded SDK extension and current branch user provenance, not an added cryptographic human signature system"
+	},
+	"checks": {
+		"typecheck": "passed all5 configs",
+		"vitest": {
+			"files": 4,
+			"passed": 188,
+			"host_passed": 153
+		},
+		"lint": "0 errors/0 warnings",
+		"protocol": {
+			"static": "passed",
+			"git_tag_heuristic": "skipped no tag"
+		},
+		"size_budget": "passed npm run size:check",
+		"electron": {
+			"status": "PASS",
+			"final_batch": "1793340927046",
+			"checks": [
+				"Actual Electron settings manages the original UI skill; /ui completes it and /ui-review-budget is discovered",
+				"Native DesignReviewService writes three controlled error attempts in the actual isolated SDK sessionDir and rejects round four before renewal",
+				"Renderer Chinese synthetic NON-PMS instruction reaches trusted SDK host: native limit 3 to 4, one receipt/grant, unchanged task/asset/three attempt bytes, no real review",
+				"Repeated original SDK reload preserves exactly one grant and three attempts without another provider request",
+				"Canonical extension disable/enable persists across reload and removes/restores command; original UI skill remains manageable after restore and its own toggle/menu state persists"
+			],
+			"provider_requests": 3,
+			"paid_model_calls": 0,
+			"real_reviewer_calls": 0,
+			"business_requests": 0,
+			"native_used_rounds": 3,
+			"native_previous_limit": 3,
+			"native_total_limit": 4,
+			"grant_count": 1,
+			"receipt_count": 1,
+			"original_three_attempt_bytes_unchanged": true,
+			"repeat_reload_no_more_grant_or_provider": true,
+			"source_hashes_unchanged": true,
+			"source_sha256": {
+				".pi/skills/ui-testing-workflow/assets/review-budget-host.mjs": "286641e566e262305261c76d53bf34958f7296edcc6d9c6fec94dc8b72dae75f",
+				"tests/ui-review-budget-host-desktop-test.mjs": "48987b0bc6ed01a385e2dbaf1e40041cf287fdde6347a5b040f423c0c2d312d5"
+			},
+			"cleanup": {
+				"electronClosed": true,
+				"providerClosed": true,
+				"isolatedTempRemoved": true,
+				"scratchEvidenceRetained": true
+			}
+		},
+		"first_failed_batch_preserved": "1793333378913",
+		"file_recovery": "Desktop test file was accidentally0 bytes during preparation; restored502 lines; final syntax/prettier and full real Electron passed. Original failure evidence retained."
+	},
+	"actual_original_session": {
+		"loaded_new_hook": false,
+		"grant_count": 0,
+		"attempt_count": 3,
+		"pending_count": 0,
+		"attempts": [
+			{
+				"name": "attempt-1.json",
+				"sha256": "184e26ab16ecf0bf0fec23fd481ff24a36de0964c6e8a8081adbbadbc31a652e",
+				"request_id": "pms-contract-query-reset-review-r3-01",
+				"round": 1,
+				"state": "error",
+				"error": "runner-error"
+			},
+			{
+				"name": "attempt-2.json",
+				"sha256": "52d6dd2520d4e3be10e6b01aa1ecd6db8f55c219a9514c38fd884b13bcb237c2",
+				"request_id": "pms-contract-query-reset-review-r5-02",
+				"round": 2,
+				"state": "error",
+				"error": "review-rejected"
+			},
+			{
+				"name": "attempt-3.json",
+				"sha256": "c16692fa7de17a06bb0179a4c2edb5b2e0f9b5959dfb360d23fd1c230361a470",
+				"request_id": "pms-contract-query-reset-review-r5-03",
+				"round": 3,
+				"state": "error",
+				"error": "review-rejected"
+			}
+		],
+		"round_four_executed": false,
+		"review_ref": null,
+		"reload_required": true,
+		"control_access_checks": {
+			"browser_page": "Electron unsupported; not retried",
+			"unauthenticated_owner_websocket": "401",
+			"personal_credentials_read": false
+		},
+		"next_action": "In original conversation execute /reload once. Host session_start validates persisted explicit authorization, invokes native renewal for exactly1 round, then triggers normal model turn for r6 native independent review. Do not call review before grant."
+	},
+	"execution": {
+		"archived": 9,
+		"current_candidate": 2,
+		"approved": 0,
+		"diagnostic_runs": 0,
+		"formal_runs": 0,
+		"executed": 0,
+		"passed": 0,
+		"failed": 0,
+		"not_executed": 9,
+		"business_writes": 0
+	},
+	"archive_index_ref": {
+		"path": "docs/ui-testing-evidence/pms-review-budget-host-desktop-archive-20261030.json",
+		"sha256": "1958a465342f685f79f6731dd01578be6ee508185bdfc9b01c3dcda71c2b9fb1"
+	},
+	"cleanup": {
+		"standard_junk_cleanup": "completed; deleted0",
+		"standard_preview": "completed; eligible0",
+		"protected_tmp_preserved": true,
+		"owned_electron_provider_and_temp_removed": true
+	},
+	"limitations": [
+		"Isolated Electron native grant is not the actual PMS grant.",
+		"No fourth review, diagnostic admission, formal run or result sync performed.",
+		"Existing unrelated workspace edits preserved; only task-specific edits will be committed."
+	]
+}

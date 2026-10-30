@@ -1,0 +1,1166 @@
+{
+	"kind": "synthetic-Electron-and-development-evidence-not-PMS-run",
+	"archive": {
+		"path": "docs/ui-testing-evidence/pms-review-budget-host-desktop-20261030.tar.gz",
+		"bytes": 2921840,
+		"sha256": "238b73739600223f7dead155e95d9a7c39043f95128344562123d3f38daa57c3"
+	},
+	"roundtrip_verified": true,
+	"archive_scope": "Full first failure and final pass; intermediate result/audit only. All intermediate raw scratch evidence preserved locally, not deleted.",
+	"files": [
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333378913/01-ui-skill-settings.png",
+			"bytes": 386869,
+			"sha256": "8fedbd59ef4d6a0e8c2cb8b863afc014cd28fe619b0f7a24021bd94d8da6462f",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333378913/02-native-host-renewal.png",
+			"bytes": 495828,
+			"sha256": "52676565bf876a3ea38f235b6652d431a0b41d1fdf2df0a7fa1e68e7f957bbfa",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333378913/authority-before/loops/27d18e32c6df321986d14e8880df31a3c0b2d2c9e3722b0ac170ab05d9c1c4d3/attempt-1.json",
+			"bytes": 704,
+			"sha256": "cca8df858e31de31e26282f155e50819b28c7a83cdf5af5bb71ffe5bd32670bd",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333378913/authority-before/loops/27d18e32c6df321986d14e8880df31a3c0b2d2c9e3722b0ac170ab05d9c1c4d3/attempt-2.json",
+			"bytes": 704,
+			"sha256": "4f7c507ca781ce69e89d4e67107def231370005d90fe3c1fc25ef4cc0f82a193",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333378913/authority-before/loops/27d18e32c6df321986d14e8880df31a3c0b2d2c9e3722b0ac170ab05d9c1c4d3/attempt-3.json",
+			"bytes": 704,
+			"sha256": "3d811c98f20fbac4b4e8d00f6cfa72752c82da96b00a5c1fe3c0c6c88d78a77b",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333378913/authority-failure/loops/27d18e32c6df321986d14e8880df31a3c0b2d2c9e3722b0ac170ab05d9c1c4d3/attempt-1.json",
+			"bytes": 704,
+			"sha256": "cca8df858e31de31e26282f155e50819b28c7a83cdf5af5bb71ffe5bd32670bd",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333378913/authority-failure/loops/27d18e32c6df321986d14e8880df31a3c0b2d2c9e3722b0ac170ab05d9c1c4d3/attempt-2.json",
+			"bytes": 704,
+			"sha256": "4f7c507ca781ce69e89d4e67107def231370005d90fe3c1fc25ef4cc0f82a193",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333378913/authority-failure/loops/27d18e32c6df321986d14e8880df31a3c0b2d2c9e3722b0ac170ab05d9c1c4d3/attempt-3.json",
+			"bytes": 704,
+			"sha256": "3d811c98f20fbac4b4e8d00f6cfa72752c82da96b00a5c1fe3c0c6c88d78a77b",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333378913/authority-failure/loops/27d18e32c6df321986d14e8880df31a3c0b2d2c9e3722b0ac170ab05d9c1c4d3/grant-1dcf469e4da50798146fc92ce0606ba781c9694d317adec244adb3efd03c58bf.json",
+			"bytes": 670,
+			"sha256": "a1856a6e178f0e51d77f32ca9f90187004409eb90a8edea8fd718fa86542794d",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333378913/electron.log",
+			"bytes": 1676,
+			"sha256": "e4ef82aa3bf233df4856ada620248d0cbdd288c8809fd0f5e454e1a389d58568",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333378913/failure-protocol.json",
+			"bytes": 1478965,
+			"sha256": "ba442b175d99ddfcfad00c1f75d8871ed652dc9874e6f5bdc39a744b9c73d7e4",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333378913/failure.png",
+			"bytes": 432486,
+			"sha256": "149db665804d33bfc455d6fdcdb98b27a4d8332e14cbda5c255edf661a9087f1",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333378913/result.json",
+			"bytes": 5105,
+			"sha256": "8c9048694899748fd980eb76f46b805ff10fe28fe446a4382830a3acfa854bb5",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333378913/sdk-session-failure.jsonl",
+			"bytes": 155090,
+			"sha256": "f56fae2e000e46c635c24ba31657aa4f160e964f5abbbd252e7f465b26a053b0",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/01-ui-skill-settings.png",
+			"bytes": 387600,
+			"sha256": "1f690f352c9ca11c81d6cd102f805bb370a634ebf5feb7f72d337ea92aa0ad38",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/02-native-host-renewal.png",
+			"bytes": 485293,
+			"sha256": "6b7e93c5f565f25fcedd2267e2a024256a83111eb60ffb39d5ea21d94fbda1a6",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/03-disabled-skill-persisted.png",
+			"bytes": 404611,
+			"sha256": "07cdfc2c8d42369781b44e38eac6168a089747a2747a3c847175b3322aea37dd",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/authority-after/loops/429ab25a5fcb55deb9f171c0b6552b0323fcaf6faff32da2bd5e62c7caf89e6b/attempt-1.json",
+			"bytes": 704,
+			"sha256": "3b86d678f21aa2fe90ccbc3d2a09d06bf73c6a69a08424f2264ef1aeebe844ec",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/authority-after/loops/429ab25a5fcb55deb9f171c0b6552b0323fcaf6faff32da2bd5e62c7caf89e6b/attempt-2.json",
+			"bytes": 704,
+			"sha256": "19500d0f531e232a1d8f5b8715ba28fb8dd42d7dd83e1384a22052fe34d71b89",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/authority-after/loops/429ab25a5fcb55deb9f171c0b6552b0323fcaf6faff32da2bd5e62c7caf89e6b/attempt-3.json",
+			"bytes": 704,
+			"sha256": "6a4aa18d438b96bd0d208941df988bcb29d99e11713c65b823cb05bec6dac427",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/authority-after/loops/429ab25a5fcb55deb9f171c0b6552b0323fcaf6faff32da2bd5e62c7caf89e6b/grant-2d4d8e2c3a853274aea7a1f4693ccec850c7a46631e83e5503c31719e239c201.json",
+			"bytes": 670,
+			"sha256": "b58ae82f3f06255b802f38d2fc15af00ffc13e4e24c6b5e9c4cce0a19066364f",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/authority-before/loops/429ab25a5fcb55deb9f171c0b6552b0323fcaf6faff32da2bd5e62c7caf89e6b/attempt-1.json",
+			"bytes": 704,
+			"sha256": "3b86d678f21aa2fe90ccbc3d2a09d06bf73c6a69a08424f2264ef1aeebe844ec",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/authority-before/loops/429ab25a5fcb55deb9f171c0b6552b0323fcaf6faff32da2bd5e62c7caf89e6b/attempt-2.json",
+			"bytes": 704,
+			"sha256": "19500d0f531e232a1d8f5b8715ba28fb8dd42d7dd83e1384a22052fe34d71b89",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/authority-before/loops/429ab25a5fcb55deb9f171c0b6552b0323fcaf6faff32da2bd5e62c7caf89e6b/attempt-3.json",
+			"bytes": 704,
+			"sha256": "6a4aa18d438b96bd0d208941df988bcb29d99e11713c65b823cb05bec6dac427",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/electron.log",
+			"bytes": 1916,
+			"sha256": "5650ff199015867dc6d948fa58dc6dddbdc2af714ef6261cc6b675b64f88c2d7",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/assets/names/revisions/r6/.incomplete.json",
+			"bytes": 117,
+			"sha256": "f363b6545de2dad8c5b0b2b43bd9bcc596ee21c05f20e77eb269565a7aed23f8",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/assets/names/revisions/r6/manifest.json",
+			"bytes": 1644,
+			"sha256": "bcb55303600c03f327117d389f9ed251c51a13ede772b134322feaeb3af17fff",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/assets/names/revisions/r6/name.spec.ts",
+			"bytes": 453,
+			"sha256": "796f0d54e8866fb5877df32bdc7be49e217ef17cf9decaf0ee20b95cb5b41aa8",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/assets/names/revisions/r6/reviews/design-3d4bc020-f26e-4653-b2f6-2fdb46e2de62/input.json",
+			"bytes": 39048,
+			"sha256": "4c0dbc732807d8e7f0069a5fff3b2d1a553c517a753397be07fe84f8c53404a6",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/assets/names/revisions/r6/reviews/design-3d4bc020-f26e-4653-b2f6-2fdb46e2de62/static.json",
+			"bytes": 421,
+			"sha256": "1a31aaa14b3df624936c828d2eca979cbca7ddbdbc8463d99838673459d370ca",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/assets/names/revisions/r6/reviews/design-4455e11f-54f3-49b9-beb3-512118459799/input.json",
+			"bytes": 39048,
+			"sha256": "0ff2e946080dcf1bf315e456adb95a88bbd9c331756f9e3b3348d82b90653837",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/assets/names/revisions/r6/reviews/design-4455e11f-54f3-49b9-beb3-512118459799/static.json",
+			"bytes": 421,
+			"sha256": "1a31aaa14b3df624936c828d2eca979cbca7ddbdbc8463d99838673459d370ca",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/assets/names/revisions/r6/reviews/design-7c699726-a489-4f93-942e-54452210f4ef/input.json",
+			"bytes": 39048,
+			"sha256": "2d7f3c00eccac445d316558bd28d96cdc29aaabeb1521ab92473a9ce92b79fe9",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/assets/names/revisions/r6/reviews/design-7c699726-a489-4f93-942e-54452210f4ef/static.json",
+			"bytes": 421,
+			"sha256": "1a31aaa14b3df624936c828d2eca979cbca7ddbdbc8463d99838673459d370ca",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/assets/names/revisions/v1/.incomplete.json",
+			"bytes": 39,
+			"sha256": "06d5fe2e07b287c5d854ec8ff4ef0a76d041eb5aba87c382a79e7c265cd0fc9a",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/assets/names/revisions/v1/manifest.json",
+			"bytes": 1644,
+			"sha256": "fa8d595dccefb637640298f1fc793bff348cd620c8dff5da90bf7665d09694c4",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/assets/names/revisions/v1/name.spec.ts",
+			"bytes": 453,
+			"sha256": "796f0d54e8866fb5877df32bdc7be49e217ef17cf9decaf0ee20b95cb5b41aa8",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/cases/cases-1/.incomplete.json",
+			"bytes": 58,
+			"sha256": "95ce5f3a54520d563c23ac5a2abdb991c368397c36effc6facf4cab35436687e",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/cases/cases-1/data-rules.json",
+			"bytes": 83,
+			"sha256": "1f0063b52dd7213d74cf4a6c61c5c5d037e28845dd915512bc6c3b6449650921",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/cases/cases-r6/.incomplete.json",
+			"bytes": 42,
+			"sha256": "f89e148ee54093f1b7f71607d2cf1e3410c8f86bc2c40c00ce75e0680ad49716",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/cases/cases-r6/manifest.json",
+			"bytes": 2047,
+			"sha256": "ab33fe8c97f119b8019f356e01be33bfb3579261059ad9a8688077c65fcd71f5",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/cases/cases-v1/.incomplete.json",
+			"bytes": 42,
+			"sha256": "31b4c118e799f78b5e8af95a2f1b452411cccbad991ced512e6f92d1a283af2d",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/cases/cases-v1/manifest.json",
+			"bytes": 2047,
+			"sha256": "c8ba77c3c9a225e24c37699a9298126043cae0d7c53335691506e463d941f2f8",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/catalog.json",
+			"bytes": 1958,
+			"sha256": "12e1f64463f933ba624d5bf9f79d21f698f656a9462a9ed9d8e858d183285ee8",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/inventories/inventory-1/.incomplete.json",
+			"bytes": 49,
+			"sha256": "c02042fb87dc34cad99ce6a889ddf015fd1b057b2b2e90607536c6decaf870dd",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/inventories/inventory-1/manifest.json",
+			"bytes": 1500,
+			"sha256": "bb6849ea773eda567c702f6f81056cdf46d150b70e8ad6f80675389959df7c98",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/scopes/scope-1/.incomplete.json",
+			"bytes": 41,
+			"sha256": "64e0bbdfab89a9e1a6eb72283cda77f635c0044d9456d098e9167fba42182a93",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/scopes/scope-1/manifest.json",
+			"bytes": 860,
+			"sha256": "e9fcc3cbaf1db4c35fbb7b7e8efc34ba878d6484fac93eb4bd4ca951054f2235",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/tasks/synthetic-non-pms-budget-host/.incomplete.json",
+			"bytes": 62,
+			"sha256": "bc4b0f0b414a54e21e616e492830bd577ecfd8840df4994ed881effbde4d554e",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/tasks/synthetic-non-pms-budget-host/manifest.json",
+			"bytes": 980,
+			"sha256": "bdaac4a174d29137fa220df4b5dabbf4d9febf2e900bfbcc4299a460eebb2125",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/tasks/task-1/.incomplete.json",
+			"bytes": 39,
+			"sha256": "73403bc7672641883733b30205de7c9b25d8ff5af256a664175d4d0e4b09cc21",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/qa/ui/tasks/task-1/manifest.json",
+			"bytes": 615,
+			"sha256": "7e9dfb7d085839dc35dcae37713fb5e7f54bdda693a9f7d3eac04e96e6e24523",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture/requirements.md",
+			"bytes": 454,
+			"sha256": "81ef8a4cdf9850c8389597bfc003b53c3c1f04353b60275b09977dc116470973",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/fixture-refs.json",
+			"bytes": 815,
+			"sha256": "187edebcd9a6a0ad70da4436af41aeaf066012f30a63c00fee4cd5ae032bcbbf",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/renderer-protocol.json",
+			"bytes": 6794,
+			"sha256": "008db14ad3a1795e243eb4f5eb85fcb91034f564db321388a6b3158628127acc",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/result.json",
+			"bytes": 4032,
+			"sha256": "595b960bfe3fe4fa5c06d3e9043205aaf5a0809c7ceff17c39d841fc08048575",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793333652794/sdk-session.jsonl",
+			"bytes": 155091,
+			"sha256": "45c7e24592d37c84b986a838ed919c62b8ccbcddc09663a1671fc2cbe8716040",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/01-ui-skill-settings.png",
+			"bytes": 386872,
+			"sha256": "7f516496fadbeb9177692b30c73e03bcd30af84d1046579ec6dfa68d57816f97",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/02-native-host-renewal.png",
+			"bytes": 491802,
+			"sha256": "ad7fd940273429714f0ebbc549b6ef2e56e9b0ab62b0e4e6c81ec407fc698875",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/03-disabled-skill-persisted.png",
+			"bytes": 404858,
+			"sha256": "ebead303c62a6d2a32b0e4ac9c074fdd62338d4d99157c03aa9f3647077604bb",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/authority-after/loops/56b8ceba8448757e2d5dacf6a9a6dc1f14d8cc65f9135d74dc2dde1dd1450c63/attempt-1.json",
+			"bytes": 704,
+			"sha256": "5974f4aeccdac2d0cddeff8946e2ea42447e0f8026640046518593636ce6ccb0",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/authority-after/loops/56b8ceba8448757e2d5dacf6a9a6dc1f14d8cc65f9135d74dc2dde1dd1450c63/attempt-2.json",
+			"bytes": 704,
+			"sha256": "b0567609ec71a944334b6b9bb154c03990129b9d6ac18fb26049deddfca710be",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/authority-after/loops/56b8ceba8448757e2d5dacf6a9a6dc1f14d8cc65f9135d74dc2dde1dd1450c63/attempt-3.json",
+			"bytes": 704,
+			"sha256": "6b63a818c93d13625936f09421a026f2bb8ece2b08afc9491fa29fb8053f9b45",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/authority-after/loops/56b8ceba8448757e2d5dacf6a9a6dc1f14d8cc65f9135d74dc2dde1dd1450c63/grant-e9649a530dc5661f2a4aabf9d34a940270a302d874973aed0301d097fe306d49.json",
+			"bytes": 670,
+			"sha256": "9867e0da28b87941031e55a06443f2d658c9eed2b71f366c41a790d8d9394b2b",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/authority-before/loops/56b8ceba8448757e2d5dacf6a9a6dc1f14d8cc65f9135d74dc2dde1dd1450c63/attempt-1.json",
+			"bytes": 704,
+			"sha256": "5974f4aeccdac2d0cddeff8946e2ea42447e0f8026640046518593636ce6ccb0",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/authority-before/loops/56b8ceba8448757e2d5dacf6a9a6dc1f14d8cc65f9135d74dc2dde1dd1450c63/attempt-2.json",
+			"bytes": 704,
+			"sha256": "b0567609ec71a944334b6b9bb154c03990129b9d6ac18fb26049deddfca710be",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/authority-before/loops/56b8ceba8448757e2d5dacf6a9a6dc1f14d8cc65f9135d74dc2dde1dd1450c63/attempt-3.json",
+			"bytes": 704,
+			"sha256": "6b63a818c93d13625936f09421a026f2bb8ece2b08afc9491fa29fb8053f9b45",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/electron.log",
+			"bytes": 1916,
+			"sha256": "27d9ba69c5f02bd67e36682c40284c8b53cbcbe80e5ee4db0085ca96f181aa95",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/assets/names/revisions/r6/.incomplete.json",
+			"bytes": 117,
+			"sha256": "bb8e0fac7048c3255f44e94e7aeacc1df1e82d40d39aa2b8736c3f38b762a2e3",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/assets/names/revisions/r6/manifest.json",
+			"bytes": 1644,
+			"sha256": "4dac4d5bdb47a1838c8a6912eeebcd1cc8e9391709292f83d19e2e75b9ec42e2",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/assets/names/revisions/r6/name.spec.ts",
+			"bytes": 453,
+			"sha256": "796f0d54e8866fb5877df32bdc7be49e217ef17cf9decaf0ee20b95cb5b41aa8",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/assets/names/revisions/r6/reviews/design-83f35d05-0cf3-4867-bb12-8208619d9fb1/input.json",
+			"bytes": 39048,
+			"sha256": "f82005792c236a24fa25e77a5d23ab00f8fc8be8899f83c2b892343751cdbadb",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/assets/names/revisions/r6/reviews/design-83f35d05-0cf3-4867-bb12-8208619d9fb1/static.json",
+			"bytes": 421,
+			"sha256": "d11e80947f379591adbdf0f4b26e4b49e0fa8df11890dc6d978c972e940b615c",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/assets/names/revisions/r6/reviews/design-ba1d42d4-488a-4fbe-965c-1c91bf7a7111/input.json",
+			"bytes": 39048,
+			"sha256": "5c002134be1566e7b83beb1cb9c342800a87ceefe767844195b24bb28d56b9c0",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/assets/names/revisions/r6/reviews/design-ba1d42d4-488a-4fbe-965c-1c91bf7a7111/static.json",
+			"bytes": 421,
+			"sha256": "d11e80947f379591adbdf0f4b26e4b49e0fa8df11890dc6d978c972e940b615c",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/assets/names/revisions/r6/reviews/design-d5ed00e4-c836-4b67-827d-7115673cbeb5/input.json",
+			"bytes": 39048,
+			"sha256": "73943edff42ac4ddb3d0f095debd54dfce746e65406f58d74dc2e615b6e2ec38",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/assets/names/revisions/r6/reviews/design-d5ed00e4-c836-4b67-827d-7115673cbeb5/static.json",
+			"bytes": 421,
+			"sha256": "d11e80947f379591adbdf0f4b26e4b49e0fa8df11890dc6d978c972e940b615c",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/assets/names/revisions/v1/.incomplete.json",
+			"bytes": 39,
+			"sha256": "06d5fe2e07b287c5d854ec8ff4ef0a76d041eb5aba87c382a79e7c265cd0fc9a",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/assets/names/revisions/v1/manifest.json",
+			"bytes": 1644,
+			"sha256": "294d001b1a2bc7097af4af52c402abda4fabfe67b6eea142419df8c8fe9bf51f",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/assets/names/revisions/v1/name.spec.ts",
+			"bytes": 453,
+			"sha256": "796f0d54e8866fb5877df32bdc7be49e217ef17cf9decaf0ee20b95cb5b41aa8",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/cases/cases-1/.incomplete.json",
+			"bytes": 58,
+			"sha256": "95ce5f3a54520d563c23ac5a2abdb991c368397c36effc6facf4cab35436687e",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/cases/cases-1/data-rules.json",
+			"bytes": 83,
+			"sha256": "1f0063b52dd7213d74cf4a6c61c5c5d037e28845dd915512bc6c3b6449650921",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/cases/cases-r6/.incomplete.json",
+			"bytes": 42,
+			"sha256": "f89e148ee54093f1b7f71607d2cf1e3410c8f86bc2c40c00ce75e0680ad49716",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/cases/cases-r6/manifest.json",
+			"bytes": 2047,
+			"sha256": "0fd6511042266f0d354f7fa2cf97cda71128bfb69192724c119519c62e03cdff",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/cases/cases-v1/.incomplete.json",
+			"bytes": 42,
+			"sha256": "31b4c118e799f78b5e8af95a2f1b452411cccbad991ced512e6f92d1a283af2d",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/cases/cases-v1/manifest.json",
+			"bytes": 2047,
+			"sha256": "68f90b17fe85c4efa35c8a5bdc5fd1ddb24cb4b9b4538177510839186fb20505",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/catalog.json",
+			"bytes": 1958,
+			"sha256": "8f1dba550c32ba44cc1cf7ed1f8359d43101431d61ce441a2b5dd6d7bc633b19",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/inventories/inventory-1/.incomplete.json",
+			"bytes": 49,
+			"sha256": "c02042fb87dc34cad99ce6a889ddf015fd1b057b2b2e90607536c6decaf870dd",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/inventories/inventory-1/manifest.json",
+			"bytes": 1500,
+			"sha256": "c2ab0ecba0210debe7cdeb472c6d194cdd2bb945195c5e54aa6b39fe28cf85f7",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/scopes/scope-1/.incomplete.json",
+			"bytes": 41,
+			"sha256": "64e0bbdfab89a9e1a6eb72283cda77f635c0044d9456d098e9167fba42182a93",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/scopes/scope-1/manifest.json",
+			"bytes": 860,
+			"sha256": "8766dee333ec35cd319272b55e828815dc6b34936e03548324d4742b6f206a6f",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/tasks/synthetic-non-pms-budget-host/.incomplete.json",
+			"bytes": 62,
+			"sha256": "bc4b0f0b414a54e21e616e492830bd577ecfd8840df4994ed881effbde4d554e",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/tasks/synthetic-non-pms-budget-host/manifest.json",
+			"bytes": 980,
+			"sha256": "66a0d74193f345016086b06938360c64532d872d062b0dc13a433e8b5e8c9c93",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/tasks/task-1/.incomplete.json",
+			"bytes": 39,
+			"sha256": "73403bc7672641883733b30205de7c9b25d8ff5af256a664175d4d0e4b09cc21",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/qa/ui/tasks/task-1/manifest.json",
+			"bytes": 615,
+			"sha256": "97f0df2258406063b517131f63892deca61021b5099573f91961ad419a1391b3",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture/requirements.md",
+			"bytes": 454,
+			"sha256": "81ef8a4cdf9850c8389597bfc003b53c3c1f04353b60275b09977dc116470973",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/fixture-refs.json",
+			"bytes": 815,
+			"sha256": "92af2d9597dad938825f02171cd87cf34617dd9515542979d04480a0eddc8cb4",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/renderer-protocol.json",
+			"bytes": 6716,
+			"sha256": "d11a3abdab7ac3b593673b4bfc08d3fbbcecbfe4f735f2e601e4ac163f5654a1",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/result.json",
+			"bytes": 4032,
+			"sha256": "d03998222c5c10022f7091e6317393d15eb44a533221e4e5b5795e879dbf4d5c",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340339526/sdk-session.jsonl",
+			"bytes": 155090,
+			"sha256": "ed9d231d68b5ddee13d3543f1bda14239ca7796319c407a479cb274194981a4f",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/01-ui-skill-settings.png",
+			"bytes": 387776,
+			"sha256": "8ae2225d74d1c11b08d9bc795933062d0d9b8570f7a97c1d022edbaffa5806ed",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/02-native-host-renewal.png",
+			"bytes": 488202,
+			"sha256": "be20ce013d07e87c57a55533f80221df73e67858a610edc6d4553eb31ebe7545",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/03-disabled-skill-persisted.png",
+			"bytes": 405253,
+			"sha256": "f1e9410900a1b843692f3be475e5dce2ca9402e56e3204c73414357503eb5f14",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/authority-after/loops/9aee0d301f33813fc31ccdfccb5b91128a4a62e8262727803ebd0e4c06be2aa9/attempt-1.json",
+			"bytes": 704,
+			"sha256": "8d7155506400c6f3f0c0fc85780fd930c4e9afd6b28a1f12526fa8996e3e81ee",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/authority-after/loops/9aee0d301f33813fc31ccdfccb5b91128a4a62e8262727803ebd0e4c06be2aa9/attempt-2.json",
+			"bytes": 704,
+			"sha256": "fc126c4ca9ae0057b05309f9aff1f663bfd72955f6b8a549eb25de4c544fbd36",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/authority-after/loops/9aee0d301f33813fc31ccdfccb5b91128a4a62e8262727803ebd0e4c06be2aa9/attempt-3.json",
+			"bytes": 704,
+			"sha256": "8e26a4445b1f661146cfc54dd66a784c954bc85bfde6d1c110b76a549ce7810b",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/authority-after/loops/9aee0d301f33813fc31ccdfccb5b91128a4a62e8262727803ebd0e4c06be2aa9/grant-d67d36ea972bbe8fb719779a405054e60d2c0d2038c57a58dfeacbe58fd182ea.json",
+			"bytes": 670,
+			"sha256": "0ac4f2bb0800e738d44a2794d9a1dfbe56a54d3821d252a4db822cb5c4aebf44",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/authority-before/loops/9aee0d301f33813fc31ccdfccb5b91128a4a62e8262727803ebd0e4c06be2aa9/attempt-1.json",
+			"bytes": 704,
+			"sha256": "8d7155506400c6f3f0c0fc85780fd930c4e9afd6b28a1f12526fa8996e3e81ee",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/authority-before/loops/9aee0d301f33813fc31ccdfccb5b91128a4a62e8262727803ebd0e4c06be2aa9/attempt-2.json",
+			"bytes": 704,
+			"sha256": "fc126c4ca9ae0057b05309f9aff1f663bfd72955f6b8a549eb25de4c544fbd36",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/authority-before/loops/9aee0d301f33813fc31ccdfccb5b91128a4a62e8262727803ebd0e4c06be2aa9/attempt-3.json",
+			"bytes": 704,
+			"sha256": "8e26a4445b1f661146cfc54dd66a784c954bc85bfde6d1c110b76a549ce7810b",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/electron.log",
+			"bytes": 1916,
+			"sha256": "5ad5893cb464ba9abb9d887c0cc8fa15da89d3e6a8dbb7359dfbae5037cf0c3b",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/final-audit.json",
+			"bytes": 580,
+			"sha256": "cfdc19bf0a645f6718aa1646aecc52f53febd41b1cbb47d07154bad56ea2ee9e",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/assets/names/revisions/r6/.incomplete.json",
+			"bytes": 117,
+			"sha256": "c18079d7994d3d7be4fde42a193025964f017a5e3e60553fb972548036482eb3",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/assets/names/revisions/r6/manifest.json",
+			"bytes": 1644,
+			"sha256": "9513c459f2eb5966335406329ffd5023d3087b223d46064439b1d22e8d4eb1ad",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/assets/names/revisions/r6/name.spec.ts",
+			"bytes": 453,
+			"sha256": "796f0d54e8866fb5877df32bdc7be49e217ef17cf9decaf0ee20b95cb5b41aa8",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/assets/names/revisions/r6/reviews/design-0a779be6-3b1b-49c6-b586-51f50d0fd4ab/input.json",
+			"bytes": 39048,
+			"sha256": "a7b05856bea0e1cca52fb5b5f652e4abfbdcd446afff5d790cfb455c971f8862",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/assets/names/revisions/r6/reviews/design-0a779be6-3b1b-49c6-b586-51f50d0fd4ab/static.json",
+			"bytes": 421,
+			"sha256": "af7f330b75720fd290fec70a130b23ffb809c0fdfd30f2c1422c728d551e3c9d",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/assets/names/revisions/r6/reviews/design-26c73dc2-8a2e-4f5f-9cd4-5f0a0c146727/input.json",
+			"bytes": 39048,
+			"sha256": "37b2053da17cf0b63f79db1a57a864d69cdde901e5abf93d0bd863385305c29d",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/assets/names/revisions/r6/reviews/design-26c73dc2-8a2e-4f5f-9cd4-5f0a0c146727/static.json",
+			"bytes": 421,
+			"sha256": "af7f330b75720fd290fec70a130b23ffb809c0fdfd30f2c1422c728d551e3c9d",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/assets/names/revisions/r6/reviews/design-655f512c-58a0-413a-b08e-5946bb25865e/input.json",
+			"bytes": 39048,
+			"sha256": "a72ab6d6fa0a180ba37b2eaa91c846bb904fbb636139c89bb7b10f124b07d4f0",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/assets/names/revisions/r6/reviews/design-655f512c-58a0-413a-b08e-5946bb25865e/static.json",
+			"bytes": 421,
+			"sha256": "af7f330b75720fd290fec70a130b23ffb809c0fdfd30f2c1422c728d551e3c9d",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/assets/names/revisions/v1/.incomplete.json",
+			"bytes": 39,
+			"sha256": "06d5fe2e07b287c5d854ec8ff4ef0a76d041eb5aba87c382a79e7c265cd0fc9a",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/assets/names/revisions/v1/manifest.json",
+			"bytes": 1644,
+			"sha256": "f81b958a89b626ee64bf789d71cc22beb05a2fbfdbca2e2c0e2904773cf8cdf3",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/assets/names/revisions/v1/name.spec.ts",
+			"bytes": 453,
+			"sha256": "796f0d54e8866fb5877df32bdc7be49e217ef17cf9decaf0ee20b95cb5b41aa8",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/cases/cases-1/.incomplete.json",
+			"bytes": 58,
+			"sha256": "95ce5f3a54520d563c23ac5a2abdb991c368397c36effc6facf4cab35436687e",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/cases/cases-1/data-rules.json",
+			"bytes": 83,
+			"sha256": "1f0063b52dd7213d74cf4a6c61c5c5d037e28845dd915512bc6c3b6449650921",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/cases/cases-r6/.incomplete.json",
+			"bytes": 42,
+			"sha256": "f89e148ee54093f1b7f71607d2cf1e3410c8f86bc2c40c00ce75e0680ad49716",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/cases/cases-r6/manifest.json",
+			"bytes": 2047,
+			"sha256": "6868f0bf00fe6fe376ce0b29b81bcfe3f1649f5f856ed7ef79a857891a2e8120",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/cases/cases-v1/.incomplete.json",
+			"bytes": 42,
+			"sha256": "31b4c118e799f78b5e8af95a2f1b452411cccbad991ced512e6f92d1a283af2d",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/cases/cases-v1/manifest.json",
+			"bytes": 2047,
+			"sha256": "db54aafcbbf04206e37bbed3034251092aa9a584a26f804ddab343f4aee035ec",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/catalog.json",
+			"bytes": 1958,
+			"sha256": "41cf5a52bf58bea837166687a336d7211767cb240cc7b7a95b58a046076846f9",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/inventories/inventory-1/.incomplete.json",
+			"bytes": 49,
+			"sha256": "c02042fb87dc34cad99ce6a889ddf015fd1b057b2b2e90607536c6decaf870dd",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/inventories/inventory-1/manifest.json",
+			"bytes": 1500,
+			"sha256": "97cc2f88259961e54f9e4d82860f284fa602ff64ded95d3d6ef4fef97df1eef4",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/scopes/scope-1/.incomplete.json",
+			"bytes": 41,
+			"sha256": "64e0bbdfab89a9e1a6eb72283cda77f635c0044d9456d098e9167fba42182a93",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/scopes/scope-1/manifest.json",
+			"bytes": 860,
+			"sha256": "7d55f5f0ace11f450ec3b7e1a183065a1e021dfa92f80ea883aecb0c926b4b1b",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/tasks/synthetic-non-pms-budget-host/.incomplete.json",
+			"bytes": 62,
+			"sha256": "bc4b0f0b414a54e21e616e492830bd577ecfd8840df4994ed881effbde4d554e",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/tasks/synthetic-non-pms-budget-host/manifest.json",
+			"bytes": 980,
+			"sha256": "e3496587f70cab3ce13ee0c063fcb3e92d9edbdc37cb8b7d36a62aab4e56433d",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/tasks/task-1/.incomplete.json",
+			"bytes": 39,
+			"sha256": "73403bc7672641883733b30205de7c9b25d8ff5af256a664175d4d0e4b09cc21",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/qa/ui/tasks/task-1/manifest.json",
+			"bytes": 615,
+			"sha256": "8c21ab083fd883666e76373625fa2976783e5659d1fc995e291a4c225096cc3c",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture/requirements.md",
+			"bytes": 454,
+			"sha256": "81ef8a4cdf9850c8389597bfc003b53c3c1f04353b60275b09977dc116470973",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/fixture-refs.json",
+			"bytes": 815,
+			"sha256": "41c4947dc1cac21547bbefefc63a995c1da63d66c762e2b80e3f4f9142a8b69c",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/renderer-protocol.json",
+			"bytes": 6794,
+			"sha256": "805a57ed0ca07e21e6d52d537d1ec43326747828ce33cbe89bcd09cf14177178",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/result.json",
+			"bytes": 4032,
+			"sha256": "e21f98516b67f0e90e05d2bf6b934203efc47dc4f463568852ad64dc26a5f698",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340601043/sdk-session.jsonl",
+			"bytes": 155090,
+			"sha256": "59999c382334ca481404c6985b9dd83e92f2c5d13e61513d95df4829e4004366",
+			"archived": false
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/01-ui-skill-settings.png",
+			"bytes": 387056,
+			"sha256": "76f073e259bfd974ab129d77f5b79ea403b81a954655bdb49e1e17e0db552cd6",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/02-native-host-renewal.png",
+			"bytes": 492318,
+			"sha256": "210ca15bc32835e1a9bea6360ac63fcd0224c716f512700c8cd678f717a673e5",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/03-disabled-skill-persisted.png",
+			"bytes": 405021,
+			"sha256": "a5f9c239ed0cd1767ed6c9c283dbe5847fcd1b0061df6f3f59c3dd6c9f1036af",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/authority-after/loops/0c4ed2188710a4e44ab90e83dca3f38bab6d7af918409fd7f147e0ce26c156f8/attempt-1.json",
+			"bytes": 704,
+			"sha256": "e581aee3c06a55f6e3e25518bc140baaf970a67cf7baa88fe4be70cc59f0828b",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/authority-after/loops/0c4ed2188710a4e44ab90e83dca3f38bab6d7af918409fd7f147e0ce26c156f8/attempt-2.json",
+			"bytes": 704,
+			"sha256": "cbe1f6476323eb228dd4b5b4d2f1cd4aca8b1a3cb374ba4c11a09474ac94b9c2",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/authority-after/loops/0c4ed2188710a4e44ab90e83dca3f38bab6d7af918409fd7f147e0ce26c156f8/attempt-3.json",
+			"bytes": 704,
+			"sha256": "7ad86a4776de65dcec12e6b744ca7aeae66e00ffc5581caa3bf4f9710fd72cba",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/authority-after/loops/0c4ed2188710a4e44ab90e83dca3f38bab6d7af918409fd7f147e0ce26c156f8/grant-b4f9453c393974cdd2809e600961b315fbbe1efd8ba64a71d8cf0433a0f1cac6.json",
+			"bytes": 670,
+			"sha256": "b77da2a6412bcf490bac4ec9bbd868caa647a419f9d94ff1f8217bdf6306f29f",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/authority-before/loops/0c4ed2188710a4e44ab90e83dca3f38bab6d7af918409fd7f147e0ce26c156f8/attempt-1.json",
+			"bytes": 704,
+			"sha256": "e581aee3c06a55f6e3e25518bc140baaf970a67cf7baa88fe4be70cc59f0828b",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/authority-before/loops/0c4ed2188710a4e44ab90e83dca3f38bab6d7af918409fd7f147e0ce26c156f8/attempt-2.json",
+			"bytes": 704,
+			"sha256": "cbe1f6476323eb228dd4b5b4d2f1cd4aca8b1a3cb374ba4c11a09474ac94b9c2",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/authority-before/loops/0c4ed2188710a4e44ab90e83dca3f38bab6d7af918409fd7f147e0ce26c156f8/attempt-3.json",
+			"bytes": 704,
+			"sha256": "7ad86a4776de65dcec12e6b744ca7aeae66e00ffc5581caa3bf4f9710fd72cba",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/electron.log",
+			"bytes": 1916,
+			"sha256": "aac2f86ba835fb2d338fbd8f048e3e1c44b67ebcbfd2080251476f10c101d265",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/final-audit.json",
+			"bytes": 594,
+			"sha256": "fb82c31fac849ae5db4e02742df37d28461a0f255980356b0411e5508b10f8fb",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/assets/names/revisions/r6/.incomplete.json",
+			"bytes": 117,
+			"sha256": "dbeab2f524628bcb08e102e0c6eba5fe449d251dbc0a20a8ab34259ff1ee6256",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/assets/names/revisions/r6/manifest.json",
+			"bytes": 1644,
+			"sha256": "91c0b2269dbdb775c4a32e842999d6a8f247950949eb88155f0a85e983963026",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/assets/names/revisions/r6/name.spec.ts",
+			"bytes": 453,
+			"sha256": "796f0d54e8866fb5877df32bdc7be49e217ef17cf9decaf0ee20b95cb5b41aa8",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/assets/names/revisions/r6/reviews/design-aa600704-81b1-440a-83e7-412b07dbd401/input.json",
+			"bytes": 39048,
+			"sha256": "18aff72c311856086ad495ed2ff0de40614dbc8359597bbd5b24254785607b97",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/assets/names/revisions/r6/reviews/design-aa600704-81b1-440a-83e7-412b07dbd401/static.json",
+			"bytes": 421,
+			"sha256": "15637aa1eb3b936a2b72a6459bf2d61d98258bfc19047f85e862e6c8499cd9bc",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/assets/names/revisions/r6/reviews/design-c523c4ec-298b-4adb-bdab-8208ceac3459/input.json",
+			"bytes": 39048,
+			"sha256": "ca8f95005be890763f7c0624a43fbd2f9b218e0925ccaee3cc9fa273b15222db",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/assets/names/revisions/r6/reviews/design-c523c4ec-298b-4adb-bdab-8208ceac3459/static.json",
+			"bytes": 421,
+			"sha256": "15637aa1eb3b936a2b72a6459bf2d61d98258bfc19047f85e862e6c8499cd9bc",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/assets/names/revisions/r6/reviews/design-d60b3087-6458-4df8-bdb4-5acc35add390/input.json",
+			"bytes": 39048,
+			"sha256": "72111be28706543b92e19acbf1386a6362806cb10ba7b42d674978dd19b61998",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/assets/names/revisions/r6/reviews/design-d60b3087-6458-4df8-bdb4-5acc35add390/static.json",
+			"bytes": 421,
+			"sha256": "15637aa1eb3b936a2b72a6459bf2d61d98258bfc19047f85e862e6c8499cd9bc",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/assets/names/revisions/v1/.incomplete.json",
+			"bytes": 39,
+			"sha256": "06d5fe2e07b287c5d854ec8ff4ef0a76d041eb5aba87c382a79e7c265cd0fc9a",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/assets/names/revisions/v1/manifest.json",
+			"bytes": 1644,
+			"sha256": "09d3b7a4cb9ebc2d74ee16c4226dc98b8e0e39c9ee89527bc8bec7773b7355fa",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/assets/names/revisions/v1/name.spec.ts",
+			"bytes": 453,
+			"sha256": "796f0d54e8866fb5877df32bdc7be49e217ef17cf9decaf0ee20b95cb5b41aa8",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/cases/cases-1/.incomplete.json",
+			"bytes": 58,
+			"sha256": "95ce5f3a54520d563c23ac5a2abdb991c368397c36effc6facf4cab35436687e",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/cases/cases-1/data-rules.json",
+			"bytes": 83,
+			"sha256": "1f0063b52dd7213d74cf4a6c61c5c5d037e28845dd915512bc6c3b6449650921",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/cases/cases-r6/.incomplete.json",
+			"bytes": 42,
+			"sha256": "f89e148ee54093f1b7f71607d2cf1e3410c8f86bc2c40c00ce75e0680ad49716",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/cases/cases-r6/manifest.json",
+			"bytes": 2047,
+			"sha256": "5d3aa9c96f26c3a06842f8f1822a27b5c7ba20579ddf17632f9a5eafcd47ae8d",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/cases/cases-v1/.incomplete.json",
+			"bytes": 42,
+			"sha256": "31b4c118e799f78b5e8af95a2f1b452411cccbad991ced512e6f92d1a283af2d",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/cases/cases-v1/manifest.json",
+			"bytes": 2047,
+			"sha256": "3fb2cbd353370ef9ad725909bee39f2f9b1db01cdf46cf0240853ada13eb5298",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/catalog.json",
+			"bytes": 1958,
+			"sha256": "7ac5b834a20527d2661fc1aa98e981df73a5069715a205ac7ba8d5bb747ba4fd",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/inventories/inventory-1/.incomplete.json",
+			"bytes": 49,
+			"sha256": "c02042fb87dc34cad99ce6a889ddf015fd1b057b2b2e90607536c6decaf870dd",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/inventories/inventory-1/manifest.json",
+			"bytes": 1500,
+			"sha256": "450316835945bf3b1e051d2f86cc0775774d5a456919b7037cb32368fd9f028f",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/scopes/scope-1/.incomplete.json",
+			"bytes": 41,
+			"sha256": "64e0bbdfab89a9e1a6eb72283cda77f635c0044d9456d098e9167fba42182a93",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/scopes/scope-1/manifest.json",
+			"bytes": 860,
+			"sha256": "14c12c452f0576e2e407e3ef926d7de55f4c05de1f0666828824e3dd36d3804b",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/tasks/synthetic-non-pms-budget-host/.incomplete.json",
+			"bytes": 62,
+			"sha256": "bc4b0f0b414a54e21e616e492830bd577ecfd8840df4994ed881effbde4d554e",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/tasks/synthetic-non-pms-budget-host/manifest.json",
+			"bytes": 980,
+			"sha256": "4933ddb9972579b7b8b4093cf9da418582268019f07a44e7cb49f779e18bcbf0",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/tasks/task-1/.incomplete.json",
+			"bytes": 39,
+			"sha256": "73403bc7672641883733b30205de7c9b25d8ff5af256a664175d4d0e4b09cc21",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/qa/ui/tasks/task-1/manifest.json",
+			"bytes": 615,
+			"sha256": "03d979ee645f7a7cf23cf47a22e2c394c4a4cd367d5c0386fa629156928520e7",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture/requirements.md",
+			"bytes": 454,
+			"sha256": "81ef8a4cdf9850c8389597bfc003b53c3c1f04353b60275b09977dc116470973",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/fixture-refs.json",
+			"bytes": 815,
+			"sha256": "57d5ecdcfa696c9318e2eb79f4b75571e9764ab931eaf5638d2076abfbfbf619",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/renderer-protocol.json",
+			"bytes": 6755,
+			"sha256": "acd0fdd4f39f9b3d9cd7443cb5d1a3ce46d7803ce9c284841a628fcf669e4714",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/result.json",
+			"bytes": 4032,
+			"sha256": "9b3648dcdb01e93ac9e71ed605cd17f69cadeb64823870fc637a36ecfb0f3b0b",
+			"archived": true
+		},
+		{
+			"path": "tests/scratch/ui-review-budget-host-desktop/1793340927046/sdk-session.jsonl",
+			"bytes": 155090,
+			"sha256": "e54bb22eed394d1b3ce25ced8fdc53fe9062d5429769688f830b662e312f05d8",
+			"archived": true
+		},
+		{
+			"path": ".workbuddy/tmp/pms-budget-typecheck.log",
+			"bytes": 251,
+			"sha256": "418458bcb4298c7eba05d5e6d7427a6e24589690185e95192d2c6dbface2fcd5",
+			"archived": true
+		},
+		{
+			"path": ".workbuddy/tmp/pms-budget-unit.log",
+			"bytes": 1537,
+			"sha256": "8f1fecd5b2f57a460f36af532a07f639a122d12c11307f0eacf2dfb35958cb73",
+			"archived": true
+		},
+		{
+			"path": ".workbuddy/tmp/pms-budget-lint.log",
+			"bytes": 181,
+			"sha256": "728e9225c32caa104e00e7b7834fbd8f8efc5379c9ed282eeb675a0ae9018a48",
+			"archived": true
+		},
+		{
+			"path": ".workbuddy/tmp/pms-budget-protocol.log",
+			"bytes": 360,
+			"sha256": "43be07c0f69dd8bad0e95fae80a737d6b73288cd6834d7ae87e41b491e086a60",
+			"archived": true
+		}
+	],
+	"original_failed_batch_preserved": "1793333378913",
+	"final_passing_batch": "1793340927046"
+}

@@ -37,11 +37,12 @@
       }
     ],
     "blockers": [
-      "当前父会话r3静态运行时已恢复；r6原生静态检查issues=[]、ready_for_review=true，但未独立设计批准。",
-      "同一评审循环已使用3/3轮，无pending：r3-01 runner-error；r5-02非法JSON；r5-03不存在原文anchors。原始输入/响应已保留，不重放、不改authority、不建新task重置预算。",
-      "后续待评r6：qa/ui/assets/pms-contract-query-reset/revisions/r6/manifest.json SHA256 693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1；已补精确reset/placeholder/全部空选项来源，脚本和断言预期不变。",
-      "需用户明确追加1–3轮且由受信任宿主续授后才能再评；当前可调用工具没有预算续授接口。",
-      "无可信批准，诊断/运行登记/正式执行/结果回写均未启动。9条归档用例全保留；当前P0候选2条，另7条有明确未批准草稿。正式执行0、通过0、失败0、未执行9、合同业务写入0。"
+      "用户本轮已明确为原任务pms-operation-contract-new-20261029追加1轮独立设计评审，指定r6；该授权持续有效，无需重复确认。",
+      "宿主续授hook已接canonical UI扩展，最终153条宿主单测及隔离实际Electron五组通过；隔离native grant由3->4、旧attempt字节不变、幂等与启停重载通过，不算实际PMS会话已grant。",
+      "实际桌面旧SDK闭包尚未加载新hook；browser_page不支持Electron，未认证WebSocket控制返回401，未读取个人token绕过。需在原对话执行/reload；session_start从原活动SDK branch核验既有明确授权，调用原生renewBudget追加恰1轮。",
+      "原循环当前仍3条error、0 grant、0 pending；r6原生静态复核issues=[]且未获批。不得在真实grant前调用第4轮评审；不得新任务或改authority绕过。",
+      "待评r6 manifest SHA256 693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1。续授后仅新request ID评1次，保留所有3轮旧输入/响应；可信批准前不诊断/正式执行。",
+      "原9条归档用例分母不变；P0当前候选2，另7有草稿待安全扩展清单；获批0、诊断0、正式执行0、通过0、失败0、未执行9、合同业务写入0。"
     ]
   }
 }
