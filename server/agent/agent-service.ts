@@ -18,7 +18,12 @@ import "../patch-turn-end-boundary.js";
 import { createExtensionToolGate } from "../extension-tool-gate.js";
 import { extensionToolEffect } from "../extension-tool-policy.js";
 import { nativeTestCompletion, nativeTestAssetCreated, nativeUiWorkflowPlan } from "../test-execution-notice.js";
-import { skillBlock, isUiTestingExtension, isUiTestingDisabled } from "../skill/skill-presentation.js";
+import {
+	skillBlock,
+	isUiTestingExtension,
+	isUiTestingDisabled,
+	deduplicateUiMcpExtensions,
+} from "../skill/skill-presentation.js";
 import { spawn } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
 import * as fsPromises from "node:fs/promises";
@@ -2966,12 +2971,14 @@ export class ClientSession {
 							const set = new Set(apply.enabledExtensions);
 							return {
 								...res,
-								extensions: available.filter((e) => keepOwn(e) || isExtensionEnabled(e, [...set])),
+								extensions: deduplicateUiMcpExtensions(
+									available.filter((e) => keepOwn(e) || isExtensionEnabled(e, [...set])),
+								),
 							};
 						}
 						return {
 							...res,
-							extensions: available,
+							extensions: deduplicateUiMcpExtensions(available),
 						};
 					},
 					// 组合模板渲染（主会话）+ 模板灵魂替换（子代理）：before_agent_start 在每个

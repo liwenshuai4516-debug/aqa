@@ -3,7 +3,7 @@ import { mkdir, mkdtemp, readFile, realpath, rm, symlink, writeFile } from "node
 import { tmpdir } from "node:os";
 import { dirname, join, relative } from "node:path";
 import { enableUiTesting } from "../../scripts/enable-ui-testing.mjs";
-import { isUiTestingExtension } from "../../server/skill/skill-presentation.js";
+import { deduplicateUiMcpExtensions, isUiTestingExtension } from "../../server/skill/skill-presentation.js";
 
 const roots: string[] = [];
 afterEach(async () => {
@@ -11,6 +11,14 @@ afterEach(async () => {
 });
 
 describe("UI testing skill resource registration", () => {
+	it("deduplicates legacy and canonical MCP entries only for the same project", () => {
+		const legacy = { path: "/repo/capabilities/ui-testing/mcp-extension.mjs" };
+		const canonical = { path: "/repo/.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs" };
+		const other = { path: "/other/capabilities/ui-testing/mcp-extension.mjs" };
+		expect(deduplicateUiMcpExtensions([legacy, canonical, other])).toEqual([canonical, other]);
+		expect(deduplicateUiMcpExtensions([canonical, legacy])).toEqual([canonical]);
+		expect(deduplicateUiMcpExtensions([legacy])).toEqual([legacy]);
+	});
 	it("registers canonical app resources once and retains unrelated settings", async () => {
 		const root = await mkdtemp(join(tmpdir(), "ui-maintenance-"));
 		roots.push(root);

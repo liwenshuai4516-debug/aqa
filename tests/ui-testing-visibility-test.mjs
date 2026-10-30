@@ -1,6 +1,6 @@
 // Reproduce the desktop workspace mismatch, then verify app registration via real UI reload.
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, symlink, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, symlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { setTimeout as delay } from "node:timers/promises";
@@ -95,6 +95,19 @@ try {
 	result.checks.push("reproduced missing UI skills and no /ui candidates in a different desktop workspace");
 	await page.locator(".set-close-btn").click();
 	await enableUiTesting(repo, agentDir);
+	const appSettings = join(agentDir, "settings.json");
+	const registered = JSON.parse(await readFile(appSettings, "utf8"));
+	registered.extensions = registered.extensions.map((entry) =>
+		entry === join(repo, ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs")
+			? join(repo, "capabilities/ui-testing/mcp-extension.mjs")
+			: entry,
+	);
+	await writeFile(appSettings, JSON.stringify(registered));
+	await mkdir(join(workspace, ".pi"), { recursive: true });
+	await writeFile(
+		join(workspace, ".pi/settings.json"),
+		JSON.stringify({ extensions: [join(repo, ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs")] }),
+	);
 	await command("/reload", /已重新加载|Reloaded extensions/);
 	await page.getByRole("button", { name: /^(设置|Settings)$/ }).click();
 	await page.locator('.settings-tab[data-tab="skills"]').click();
@@ -159,6 +172,7 @@ try {
 		"/ui offers ui-testing-workflow and selection inserts the SDK skill shortcut without sending a model request",
 	);
 	result.mcpStatus = await command("/mcp", /^ui-playwright-test:/);
+	assert.ok(!notices.some((notice) => notice.includes('MCP server "ui-playwright-test" is already registered')));
 	await page.screenshot({ path: join(output, "mcp-status.png") });
 	assert.match(result.mcpStatus, /^ui-playwright-test: connected, \d+ tools \(direct\)$/);
 	result.checks.push("desktop MCP reports connected with direct tools");

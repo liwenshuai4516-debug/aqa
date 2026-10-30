@@ -86,6 +86,16 @@ export function isUiTestingExtension(extension: { path: string; sourceInfo?: { s
 	);
 }
 
+export function deduplicateUiMcpExtensions<T extends { path: string }>(extensions: T[]): T[] {
+	const canonical = "/.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs";
+	const legacy = "/capabilities/ui-testing/mcp-extension.mjs";
+	const paths = new Set(extensions.map((extension) => extension.path.replace(/\\/g, "/")));
+	return extensions.filter((extension) => {
+		const path = extension.path.replace(/\\/g, "/");
+		return !path.endsWith(legacy) || !paths.has(path.slice(0, -legacy.length) + canonical);
+	});
+}
+
 export function isUiTestingDisabled(settings: Pick<ClientSettings, "disabledExtensions">): boolean {
 	return settings.disabledExtensions.some((path) => isUiTestingExtension({ path }));
 }
