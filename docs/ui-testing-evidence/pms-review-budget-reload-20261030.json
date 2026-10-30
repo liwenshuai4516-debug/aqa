@@ -1,0 +1,260 @@
+{
+	"schema_version": "1.0",
+	"kind": "PARTIAL_STAGE_EVIDENCE_NOT_FORMAL_PMS_REPORT",
+	"created_at": "2026-10-30T07:04:10.630Z",
+	"status": "ACTUAL_SETTINGS_MIGRATED_STANDALONE_HOST_VERIFIED_AWAITING_RUNTIME_LOAD",
+	"user_reported_reload": true,
+	"additional_authorization": {
+		"already_received": true,
+		"additional_rounds": 1,
+		"task_id": "pms-operation-contract-new-20261029",
+		"revision": "r6",
+		"reconfirmation_required": false
+	},
+	"task_ref": {
+		"path": "qa/ui/tasks/pms-operation-contract-new-20261029/manifest.json",
+		"sha256": "123a0b8d9d4d44cf2030f67bd9eabcdd68fa1628f7ff419e08fdc35d2753c534"
+	},
+	"asset_ref": {
+		"path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/manifest.json",
+		"sha256": "693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1"
+	},
+	"diagnosis": {
+		"actual_application_before": "Application agent/settings.json referenced owned legacy capabilities/ui-testing/mcp-extension.mjs while project referenced canonical.",
+		"log": "desktop-1793327185426.log",
+		"observed_reload_errors": [
+			{
+				"time": "2026-10-30T06:32:26.254Z",
+				"extension": "capabilities/ui-testing/mcp-extension.mjs",
+				"event": "session_start",
+				"error": "MCP server ui-playwright-test already registered by canonical extension"
+			},
+			{
+				"time": "2026-10-30T06:36:57.100Z",
+				"extension": "capabilities/ui-testing/mcp-extension.mjs",
+				"event": "session_start",
+				"error": "MCP server ui-playwright-test already registered by canonical extension"
+			}
+		],
+		"cache_limit": "Stack positions match an older canonical module; SDK reload does not guarantee Node ESM cache clearing. Exact prior closure internal trace not captured, do not claim a fully proven cache root cause.",
+		"persisted_transcript_read_only": {
+			"original_authorization_is_ancestor_of_reported_reload": true,
+			"exact_parser_reaches_binding": true,
+			"native_renew_called": false,
+			"used_as_authorization": false,
+			"host_receipts": 0
+		},
+		"artifact_refs_valid": [
+			"original handed r3",
+			"requested r6",
+			"original scope"
+		]
+	},
+	"fix": {
+		"source_refs": [
+			{
+				"path": ".pi/skills/ui-testing-workflow/assets/review-budget-host.mjs",
+				"sha256": "286641e566e262305261c76d53bf34958f7296edcc6d9c6fec94dc8b72dae75f"
+			},
+			{
+				"path": ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs",
+				"sha256": "5c8a8df3f629c8dd4e191437d9a093c6b264b90baf7a52a4dadd66dfcee411c9"
+			},
+			{
+				"path": "scripts/enable-ui-testing.mjs",
+				"sha256": "b3c7a07588dd1652f280551c3b77b54dedf49531fae0cfcb30471cd216f22f73"
+			},
+			{
+				"path": "tests/unit/ui-testing-registration.test.ts",
+				"sha256": "6470f5ba5d59f0f7a62b3d06d94f40c95ddc12b873a8f5bebccecbf1fbf02a6d"
+			},
+			{
+				"path": "tests/ui-review-budget-host-desktop-test.mjs",
+				"sha256": "925ac4e8fdcb11b7e4ee54123d9264f15eddaf2dcced36b71dfd1f910ff42134"
+			}
+		],
+		"standalone_host_extension": true,
+		"canonical_no_longer_registers_host": true,
+		"new_extension_identity": true,
+		"no_model_budget_tool": true,
+		"actual_project_and_desktop_settings_migrated": true,
+		"migration_before": [
+			{
+				"settings_path": ".pi/settings.json",
+				"snapshot_sha256": "15cabec5b29584265a7a7226d1de7a8a7ed1d95c2fd149e9f98fe3cd29c1eec9",
+				"managed_fields": {
+					"extensions": [
+						"../tools/e2e/node_modules/pi-ui-testing/dist/extension.js",
+						"../.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs"
+					],
+					"packages": [
+						"../node_modules/pi-ui-testing"
+					],
+					"skills": [
+						"./skills/ui-testing-workflow"
+					]
+				}
+			},
+			{
+				"settings_path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/agent/settings.json",
+				"snapshot_sha256": "1668deca288556c86f1093a6b704800779c7c87a546720b58447a5286d671f61",
+				"managed_fields": {
+					"extensions": [
+						"/Users/liyingjun/Desktop/SW-QA/15-aqa/capabilities/ui-testing/mcp-extension.mjs"
+					],
+					"packages": [
+						"npm:pi-goal-x",
+						"/Users/liyingjun/Desktop/SW-QA/15-aqa/node_modules/pi-ui-testing",
+						"git:github.com/NVlabs/SoL-Pi"
+					],
+					"skills": [
+						"/Users/liyingjun/Desktop/SW-QA/15-aqa/capabilities/ui-testing/ui-testing-workflow",
+						"/Users/liyingjun/Desktop/SW-QA/15-aqa/.pi/skills/api-test-workflow",
+						"/Users/liyingjun/Desktop/SW-QA/15-aqa/.pi/skills/api-test-review",
+						"/Users/liyingjun/Desktop/SW-QA/15-aqa/.pi/skills/api-test-analyze",
+						"/Users/liyingjun/Desktop/SW-QA/15-aqa/.pi/skills/data-space-testing",
+						"/Users/liyingjun/.codex/worktrees/agent-evaluation-ec11/15-aqa/plugins/agent-evaluation/skills/agent-evaluation"
+					]
+				}
+			}
+		],
+		"migration_after": {
+			"after": [
+				{
+					"settings_path": ".pi/settings.json",
+					"snapshot_sha256": "b5f90c72b7b45eb12b70aadf518bd2dd838ee0c5d01803f10c5ec76d1db0ea81",
+					"extensions": [
+						"../tools/e2e/node_modules/pi-ui-testing/dist/extension.js",
+						"../.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs",
+						"skills/ui-testing-workflow/assets/review-budget-host.mjs"
+					],
+					"unrelated_fields_unchanged": true
+				},
+				{
+					"settings_path": "/Users/liyingjun/Library/Application Support/Pi Agent Desktop/agent/settings.json",
+					"snapshot_sha256": "e4cab1986b0099e1f0eca872f7e5a2e1a694fb7597b2be650c343f18d1e588fa",
+					"extensions": [
+						"/Users/liyingjun/Desktop/SW-QA/15-aqa/.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs",
+						"/Users/liyingjun/Desktop/SW-QA/15-aqa/tools/e2e/node_modules/pi-ui-testing/dist/extension.js",
+						"/Users/liyingjun/Desktop/SW-QA/15-aqa/.pi/skills/ui-testing-workflow/assets/review-budget-host.mjs"
+					],
+					"unrelated_fields_unchanged": true
+				}
+			],
+			"idempotent": true
+		},
+		"unrelated_settings_preserved": true,
+		"personal_credentials_read": false,
+		"authority_files_directly_written": false
+	},
+	"verification": {
+		"prettier": "passed",
+		"typecheck": "all5 configurations passed",
+		"vitest": {
+			"files": 4,
+			"passed": 194,
+			"host": 153,
+			"registration": 23,
+			"preflight": 4,
+			"workspace": 14
+		},
+		"lint": "0warnings/0errors",
+		"protocol": {
+			"static": "passed",
+			"git_tag_heuristic": "skipped no tag"
+		},
+		"electron": {
+			"batch": "1793343225485",
+			"status": "PASS",
+			"checks": [
+				"Actual Electron settings manages the original UI skill; /ui completes it and /ui-review-budget is discovered",
+				"Native DesignReviewService writes three controlled error attempts in the actual isolated SDK sessionDir and rejects round four before renewal",
+				"Renderer Chinese synthetic NON-PMS instruction reaches trusted SDK host: native limit 3 to 4, one receipt/grant, unchanged task/asset/three attempt bytes, no real review",
+				"Repeated original SDK reload preserves exactly one grant and three attempts without another provider request",
+				"Standalone host extension disable/enable persists across reload and removes/restores only its command; canonical MCP remains enabled and the original UI skill remains manageable with its own toggle/menu persistence"
+			],
+			"paid_model_calls": 0,
+			"real_reviewer_calls": 0,
+			"business_requests": 0,
+			"controlled_provider_requests": 3,
+			"original_attempt_bytes_unchanged": true,
+			"grant_count": 1,
+			"receipt_count": 1,
+			"limit_before": 3,
+			"limit_after": 4,
+			"standalone_host_registered_once": true,
+			"host_disable_and_enable_persistent": true,
+			"canonical_enabled_during_host_toggle": true,
+			"sources_match_final_audit": true,
+			"cleanup": {
+				"electronClosed": true,
+				"providerClosed": true,
+				"isolatedTempRemoved": true,
+				"scratchEvidenceRetained": true
+			}
+		},
+		"interrupted_electron": {
+			"batch": "1793343058370",
+			"status": "INTERRUPTED",
+			"reason": "60s tool process-group timeout; no complete result; preserved SDK/fixture/interrupted.json; never counted as passed"
+		},
+		"size_budget": "passed npm run size:check"
+	},
+	"actual_original_cycle": {
+		"attempts": [
+			{
+				"file": "attempt-1.json",
+				"sha256": "184e26ab16ecf0bf0fec23fd481ff24a36de0964c6e8a8081adbbadbc31a652e",
+				"round": 1,
+				"request_id": "pms-contract-query-reset-review-r3-01",
+				"state": "error",
+				"error": "runner-error"
+			},
+			{
+				"file": "attempt-2.json",
+				"sha256": "52d6dd2520d4e3be10e6b01aa1ecd6db8f55c219a9514c38fd884b13bcb237c2",
+				"round": 2,
+				"request_id": "pms-contract-query-reset-review-r5-02",
+				"state": "error",
+				"error": "review-rejected"
+			},
+			{
+				"file": "attempt-3.json",
+				"sha256": "c16692fa7de17a06bb0179a4c2edb5b2e0f9b5959dfb360d23fd1c230361a470",
+				"round": 3,
+				"request_id": "pms-contract-query-reset-review-r5-03",
+				"state": "error",
+				"error": "review-rejected"
+			}
+		],
+		"grant_count": 0,
+		"pending_count": 0,
+		"attempt_count": 3,
+		"round_four_executed": false,
+		"review_ref": null,
+		"need_load_new_registration": true,
+		"next_step": "Original conversation /reload loads standalone host. Then inspect actual native grant and use host-issued new request ID to assess exact r6 once. Existing +1 authorization remains valid."
+	},
+	"product_statistics": {
+		"archived_cases": 9,
+		"current_candidate_cases": 2,
+		"approved": 0,
+		"diagnostics": 0,
+		"formal_runs": 0,
+		"executed": 0,
+		"passed": 0,
+		"failed": 0,
+		"not_executed": 9,
+		"business_writes": 0
+	},
+	"archive_index_ref": {
+		"path": "docs/ui-testing-evidence/pms-review-budget-standalone-archive-20261030.json",
+		"sha256": "4a6f802895e470a8e990691b07128e7490fe356410bf3bd475b1c685ee91d6c5"
+	},
+	"cleanup": {
+		"standard_junk_cleanup": "completed; deleted0",
+		"standard_preview": "completed; eligible0",
+		"protected_tmp_preserved": true,
+		"own_electron_provider_temp_removed": true
+	}
+}

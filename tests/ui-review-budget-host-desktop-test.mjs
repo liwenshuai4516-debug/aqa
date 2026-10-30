@@ -40,8 +40,16 @@ const result = {
 	originalUserSessionLoaded: false,
 	originalUserSessionRequiresReload: true,
 };
+const resourcePaths = {
+	host: join(repo, ".pi/skills/ui-testing-workflow/assets/review-budget-host.mjs"),
+	canonical: join(repo, ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs"),
+	enable: join(repo, "scripts/enable-ui-testing.mjs"),
+};
 let app, page, provider, temporary, f, sessionFile, authority;
 try {
+	result.sourceSha256 = Object.fromEntries(
+		await Promise.all(Object.entries(resourcePaths).map(async ([name, path]) => [name, sha256(await readFile(path))])),
+	);
 	temporary = await mkdtemp(join(tmpdir(), "ui-review-budget-host-desktop-"));
 	f = await setup({ after: (fn) => cleanup.push(fn) });
 	Object.assign(f, await f.make("r6"));
@@ -63,6 +71,16 @@ try {
 	const registration = await readFile(join(agentDir, "settings.json"));
 	await enableUiTesting(repo, agentDir);
 	assert.deepEqual(await readFile(join(agentDir, "settings.json")), registration);
+	const registeredExtensions = JSON.parse(registration).extensions.map((entry) =>
+		typeof entry === "string" ? entry : entry.source,
+	);
+	assert.equal(registeredExtensions.filter((path) => path === resourcePaths.host).length, 1);
+	assert.equal(registeredExtensions.filter((path) => path === resourcePaths.canonical).length, 1);
+	assert.equal(
+		registeredExtensions.filter((path) => path.includes("capabilities/ui-testing/mcp-extension.mjs")).length,
+		0,
+	);
+	await writeFile(join(output, "isolated-extension-registration.json"), registration);
 	await writeFile(join(agentDir, "auth.json"), json({ fixture: { type: "api_key", key: "local-only" } }));
 	provider = createServer(async (req, res) => {
 		try {
@@ -165,7 +183,15 @@ try {
 				window.__budgetSocket = this;
 				this.addEventListener("message", (event) => {
 					try {
-						window.__budgetFrames.push(JSON.parse(event.data));
+						const frame = JSON.parse(event.data);
+						window.__budgetFrames.push(frame);
+						if (frame.type === "snapshot") window.__budgetState = frame.state;
+						else if (frame.type === "snapshot_delta" && window.__budgetState?.rev === frame.baseRev)
+							window.__budgetState = {
+								...window.__budgetState,
+								...frame.state,
+								messages: [...window.__budgetState.messages, ...frame.appended],
+							};
 					} catch {}
 				});
 			}
@@ -213,7 +239,7 @@ try {
 	const settled = async (atLeast) => {
 		await waitUntil(
 			async () => {
-				const state = (await frames()).filter((m) => m.type === "snapshot").at(-1)?.state;
+				const state = await page.evaluate(() => window.__budgetState);
 				return (
 					result.providerRequests >= atLeast &&
 					state?.isStreaming === false &&
@@ -360,13 +386,30 @@ try {
 		"Repeated original SDK reload preserves exactly one grant and three attempts without another provider request",
 	);
 	// Normal protocol on the isolated renderer socket; never owner cookie/config access.
-	await send({ type: "get_settings" });
-	await waitUntil(async () => (await frames()).some((m) => m.type === "settings_state"), "native settings inventory");
-	const settings = (await frames()).filter((m) => m.type === "settings_state").at(-1).settings;
-	const hostExtension = settings.extensions.find((extension) =>
-		extension.path.endsWith("/ui-testing-workflow/assets/mcp-extension.mjs"),
+	const currentSettings = async () => {
+		const start = (await frames()).length;
+		await send({ type: "get_settings" });
+		await waitUntil(
+			async () => (await frames()).slice(start).some((m) => m.type === "settings_state"),
+			"fresh native settings inventory",
+		);
+		return (await frames())
+			.slice(start)
+			.filter((m) => m.type === "settings_state")
+			.at(-1).settings;
+	};
+	const settings = await currentSettings();
+	const hostExtensions = settings.extensions.filter((extension) => extension.path === resourcePaths.host);
+	assert.equal(hostExtensions.length, 1, "Standalone host extension must have exactly one inventory entry");
+	const hostExtension = hostExtensions[0];
+	const canonicalExtension = settings.extensions.find((extension) => extension.path === resourcePaths.canonical);
+	assert.ok(hostExtension.enabled && hostExtension.loaded && !hostExtension.error, "Standalone host extension loads");
+	assert.ok(
+		canonicalExtension?.enabled && canonicalExtension.loaded && !canonicalExtension.error,
+		"Canonical MCP extension independently remains enabled",
 	);
-	assert.ok(hostExtension && !hostExtension.error, "Canonical MCP extension loads");
+	assert.notEqual(hostExtension.id, canonicalExtension.id);
+	result.extensionInventory = { host: hostExtension, canonical: canonicalExtension };
 	const disabledExtensions = settings.disabledExtensions ?? [];
 	await send({ type: "set_settings", disabledExtensions: [...disabledExtensions, hostExtension.id] });
 	await send({ type: "extensions_reload" });
@@ -374,20 +417,35 @@ try {
 	await commandPresent(false);
 	await reload();
 	await commandPresent(false);
+	const disabledSettings = await currentSettings();
+	assert.equal(disabledSettings.extensions.find((extension) => extension.id === hostExtension.id)?.enabled, false);
+	assert.equal(disabledSettings.extensions.find((extension) => extension.id === canonicalExtension.id)?.enabled, true);
 	await openSettings("skills");
 	await skillRow().waitFor();
 	assert.equal(
 		await skillRow().getByRole("switch").isDisabled(),
-		true,
-		"Existing UI capability guard locks the skill while its extension is disabled",
+		false,
+		"Independent host disable keeps the original UI skill manageable",
 	);
+	assert.equal(await skillRow().getByRole("switch").getAttribute("aria-checked"), "true");
+	await page.screenshot({ path: join(output, "03-standalone-host-disabled-skill-enabled.png") });
 	await closeSettings();
+	await input.fill("/ui");
+	await slash("skill:ui-testing-workflow").waitFor();
+	await input.fill("");
 	await send({ type: "set_settings", disabledExtensions });
 	await send({ type: "extensions_reload" });
 	await reload();
 	await commandPresent(true);
 	await reload();
 	await commandPresent(true);
+	const restoredSettings = await currentSettings();
+	assert.equal(restoredSettings.extensions.find((extension) => extension.id === hostExtension.id)?.enabled, true);
+	assert.equal(restoredSettings.extensions.find((extension) => extension.id === canonicalExtension.id)?.enabled, true);
+	await writeFile(
+		join(output, "extension-toggle-inventory.json"),
+		json({ enabled: settings, disabled: disabledSettings, restored: restoredSettings }),
+	);
 	await openSettings("skills");
 	assert.equal(await skillRow().getByRole("switch").isDisabled(), false);
 	await skillRow().getByRole("switch").click();
@@ -422,7 +480,7 @@ try {
 	result.businessRequests = f.fixture.state.browserRequests;
 	assert.equal(result.businessRequests, 0);
 	result.checks.push(
-		"Canonical extension disable/enable persists across reload and removes/restores command; original UI skill remains manageable after restore and its own toggle/menu state persists",
+		"Standalone host extension disable/enable persists across reload and removes/restores only its command; canonical MCP remains enabled and the original UI skill remains manageable with its own toggle/menu persistence",
 	);
 	await cp(authority, join(output, "authority-after"), { recursive: true });
 	await writeFile(join(output, "sdk-session.jsonl"), await readFile(sessionFile));
@@ -445,6 +503,8 @@ try {
 			})),
 		),
 	);
+	for (const [name, path] of Object.entries(resourcePaths))
+		assert.equal(sha256(await readFile(path)), result.sourceSha256[name], `${name} resource changed during the run`);
 	result.status = "PASS";
 } catch (error) {
 	result.error = error.stack;

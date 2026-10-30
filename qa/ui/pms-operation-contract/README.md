@@ -4,7 +4,7 @@
 
 授权范围：只创建、修改和清理本次测试专属合同数据。首次发现阶段只观察页面和查询入口；创建业务数据前必须具备可验证的归属和清理流程。
 
-当前状态（2026-10-30，宿主续授接入后）：原任务仍为 `blocked / design-review`。用户已明确为原任务/r6 追加 **1 轮**，无须再次确认。宿主 hook 已接现有 canonical UI 扩展，153 条宿主单测及隔离 Electron 五组验证通过；实际原会话尚需 `/reload` 加载后，才会由活动 SDK 核验原授权并调用原生续授。当前原循环仍为 3 条 error、0 grant、0 pending，未发起第 4 轮；r6 原生静态检查 `issues=[]`，无可信批准。原 9 条全部保留未正式执行。
+当前状态（2026-10-30，实际 reload 复查后）：用户已明确为原任务/r6 追加 **1 轮**，授权持续有效。首次 reload 后原循环仍是 3 条 error、0 grant、0 pending；实际应用仍登记 legacy MCP 且日志确认与项目 canonical 重复注册。现已将 host 改为独立扩展身份，并对项目及真实桌面 agent 执行登记迁移、核对幂等，保留其他配置。独立 host 的新隔离 Electron 五组全部通过；真实原会话须加载这次新增登记后才可原生续授。r6 静态检查 `issues=[]`，第 4 轮未执行，原 9 条全部保留未正式执行。
 
 ## 环境与启动前提
 
@@ -78,3 +78,11 @@ await tools.ui_test_workflow({
 - 原用户桌面旧SDK闭包尚未加载新增helper，不能把隔离grant当作原任务续授。browser_page不支持Electron；未认证WebSocket控制返回401，未读取token绕过。请在**原对话**执行 `/reload`，其session_start将核验本次既有明确授权，调用原生renewBudget增加恰1轮，并触发正常模型回合对精确r6进行独立续评。授权不需重复，普通“继续”不等于加载新扩展。
 - `/ui-review-budget`仅让已加载宿主重核既有授权，无参数；若reload后未出现回执，先核对命令、原branch、候选摘要和grant，不另发第4轮绕过门禁。新评估request由宿主回执给出，失败仍只消耗本次追加1轮，不重放。
 - 原任务实际统计仍：可信批准0、诊断0、正式执行0、通过0、失败0、未执行9、业务写入0。证据见 `docs/ui-testing-evidence/pms-review-budget-renewal-20261030.json`；宿主边界和维护见 `docs/ui-review-budget-host.md`。
+
+## 实际 reload 后的独立宿主登记修正
+
+- 用户已执行reload；实查原authority仍为3个error、0grant、0pending，无第4轮。没有把reload动作本身视为续授成功。
+- 真实桌面agent设置仍引用本仓库legacy MCP，日志确认与项目canonical重复注册；旧stack行号与先前canonical版本一致，未见host回执。只读持久化祖先链中原授权仍存在，精确解析可达绑定阶段、r3/r6/scope原生引用均有效；离线检查仅用于定位，不用于授权。
+- host现在作为独立扩展`review-budget-host.mjs`登记，不再由canonical调用；新资源identity避免依赖旧canonical的ESM加载状态。对项目及实际应用agent显式执行enable脚本：legacy迁移canonical、锁定native物理入口、host恰一份，二次执行字节不变，其他配置字段保持不变。实际设置只保存受管字段摘要证据，未读取认证值。
+- 最终新隔离Electron批次1793343225485五组PASS，独立host禁用时命令消失、canonical仍enabled且原技能可管理；启用/reload恢复。native实际isolatedSDK grant/receipt各1、3->4、旧attempt字节不变、重复reload无额外provider。1793343058370因工具60s超时中断，保留interrupted证据，不能计通过。
+- 当前宿主代码与设置修正已准备；原会话必须加载这次独立扩展登记后，再核对真实grant才可发第4轮。原追加1轮授权无须重给。新阶段证据：`docs/ui-testing-evidence/pms-review-budget-reload-20261030.json`。

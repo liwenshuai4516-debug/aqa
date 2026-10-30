@@ -1,11 +1,17 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { mkdir, mkdtemp, readFile, realpath, rm, symlink, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, mkdtemp, readFile, realpath, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join, relative } from "node:path";
 import { enableUiTesting } from "../../scripts/enable-ui-testing.mjs";
 import { deduplicateUiMcpExtensions, isUiTestingExtension } from "../../server/skill/skill-presentation.js";
 
 const roots: string[] = [];
+const hostAsset = ".pi/skills/ui-testing-workflow/assets/review-budget-host.mjs";
+async function createHostFixture(root: string) {
+	const host = join(root, hostAsset);
+	await mkdir(dirname(host), { recursive: true });
+	await copyFile(new URL(`../../${hostAsset}`, import.meta.url), host);
+}
 afterEach(async () => {
 	await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })));
 });
@@ -87,6 +93,7 @@ describe("UI testing skill resource registration", () => {
 		const runtime = join(packageDir, "dist/extension.js");
 		await mkdir(dirname(runtime), { recursive: true });
 		await writeFile(runtime, "export default () => {};\n");
+		await createHostFixture(root);
 		if (linked) {
 			await mkdir(join(root, "node_modules"));
 			await symlink(packageDir, join(root, "node_modules/pi-ui-testing"), "dir");
@@ -105,6 +112,7 @@ describe("UI testing skill resource registration", () => {
 					? join(root, ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs")
 					: "../.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs",
 				app ? runtime : relative(directory, runtime),
+				app ? join(root, hostAsset) : relative(directory, join(root, hostAsset)),
 			],
 			packages: [app ? join(root, "node_modules/pi-ui-testing") : "../node_modules/pi-ui-testing"],
 			skills: [app ? join(root, ".pi/skills/ui-testing-workflow") : "./skills/ui-testing-workflow"],
@@ -123,6 +131,7 @@ describe("UI testing skill resource registration", () => {
 			const logical = join(root, "node_modules/pi-ui-testing/dist/extension.js");
 			await mkdir(dirname(runtime), { recursive: true });
 			await writeFile(runtime, "export default () => {};\n");
+			await createHostFixture(root);
 			await mkdir(join(root, "node_modules"));
 			await symlink(dirname(dirname(runtime)), dirname(dirname(logical)), "dir");
 			await mkdir(directory, { recursive: true });
@@ -157,6 +166,7 @@ describe("UI testing skill resource registration", () => {
 						app
 							? join(root, ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs")
 							: "../.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs",
+						app ? join(root, hostAsset) : relative(directory, join(root, hostAsset)),
 					]);
 					expect(actual.packages).toEqual(original.packages);
 					expect(actual.disabledTools).toEqual(original.disabledTools);
@@ -178,6 +188,7 @@ describe("UI testing skill resource registration", () => {
 		const root = await mkdtemp(join(tmpdir(), "ui-maintenance-"));
 		roots.push(root);
 		const packageDir = join(root, "node_modules/pi-ui-testing");
+		await createHostFixture(root);
 		if (installation === "incomplete") await mkdir(packageDir, { recursive: true });
 		if (installation === "broken-link") {
 			await mkdir(join(root, "node_modules"));
@@ -192,6 +203,98 @@ describe("UI testing skill resource registration", () => {
 				: "../.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs",
 		]);
 		expect(JSON.parse(first).packages).toEqual([app ? packageDir : "../node_modules/pi-ui-testing"]);
+		await enableUiTesting(root, app ? directory : undefined);
+		expect(await readFile(settings, "utf8")).toBe(first);
+	});
+
+	it.each([
+		{ app: false, linked: false },
+		{ app: false, linked: true },
+		{ app: true, linked: false },
+		{ app: true, linked: true },
+	])(
+		"normalizes independent host entries and preserves filters (app=$app, linked=$linked)",
+		async ({ app, linked }) => {
+			const root = await realpath(await mkdtemp(join(tmpdir(), "ui host 中文 ")));
+			roots.push(root);
+			const directory = app ? join(root, "应用 agent dir") : join(root, ".pi");
+			const packageDir = join(root, linked ? "tools/e2e/node_modules/pi-ui-testing" : "node_modules/pi-ui-testing");
+			const runtime = join(packageDir, "dist/extension.js");
+			await mkdir(dirname(runtime), { recursive: true });
+			await writeFile(runtime, "export default () => {};\n");
+			if (linked) {
+				await mkdir(join(root, "node_modules"));
+				await symlink(packageDir, join(root, "node_modules/pi-ui-testing"), "dir");
+			}
+			await createHostFixture(root);
+			await mkdir(directory, { recursive: true });
+			const settings = join(directory, "settings.json");
+			const absoluteHost = join(root, hostAsset);
+			const relativeHost = relative(directory, absoluteHost);
+			const host = app ? absoluteHost : relativeHost;
+			const canonical = app
+				? join(root, ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs")
+				: "../.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs";
+			const native = app ? runtime : relative(directory, runtime);
+			for (const source of [absoluteHost, relativeHost]) {
+				for (const filters of [undefined, [], ["keep-host-filter"]]) {
+					const filtered = { source: host, extensions: filters, skills: ["keep-skill-filter"] };
+					for (const entries of [
+						[source],
+						[source, host],
+						[host, source],
+						...(filters
+							? [
+									[source, { ...filtered, source }],
+									[{ ...filtered, source }, host],
+								]
+							: []),
+					]) {
+						const hasFilter = entries.some((entry) => typeof entry === "object");
+						const unrelated = { source: "other-extension", extensions: [] };
+						const original = {
+							theme: "light",
+							extensions: ["another-extension", ...entries, unrelated],
+							packages: [
+								{
+									source: app ? join(root, "node_modules/pi-ui-testing") : "../node_modules/pi-ui-testing",
+									extensions: [],
+								},
+							],
+							disabledTools: ["ui_test_run"],
+						};
+						await writeFile(settings, JSON.stringify(original));
+						await enableUiTesting(root, app ? directory : undefined);
+						const first = await readFile(settings, "utf8");
+						const actual = JSON.parse(first);
+						expect(actual).toEqual({
+							...original,
+							extensions: ["another-extension", hasFilter ? filtered : host, unrelated, canonical, native],
+							skills: [app ? join(root, ".pi/skills/ui-testing-workflow") : "./skills/ui-testing-workflow"],
+						});
+						await enableUiTesting(root, app ? directory : undefined);
+						expect(await readFile(settings, "utf8")).toBe(first);
+					}
+				}
+			}
+		},
+	);
+
+	it.each([false, true])("does not add a missing host helper with native installed (app=%s)", async (app) => {
+		const root = await realpath(await mkdtemp(join(tmpdir(), "ui-host-missing-")));
+		roots.push(root);
+		const directory = app ? join(root, "agent") : join(root, ".pi");
+		const runtime = join(root, "node_modules/pi-ui-testing/dist/extension.js");
+		await mkdir(dirname(runtime), { recursive: true });
+		await writeFile(runtime, "export default () => {};\n");
+		const settings = await enableUiTesting(root, app ? directory : undefined);
+		const first = await readFile(settings, "utf8");
+		expect(JSON.parse(first).extensions).toEqual([
+			app
+				? join(root, ".pi/skills/ui-testing-workflow/assets/mcp-extension.mjs")
+				: "../.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs",
+			app ? runtime : relative(directory, runtime),
+		]);
 		await enableUiTesting(root, app ? directory : undefined);
 		expect(await readFile(settings, "utf8")).toBe(first);
 	});

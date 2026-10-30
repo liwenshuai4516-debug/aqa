@@ -69,6 +69,15 @@ export async function enableUiTesting(root, agentDir) {
 			agentDir ? runtime : relative(directory, runtime),
 			[logicalRuntime],
 		);
+		const host = join(root, ".pi/skills/ui-testing-workflow/assets/review-budget-host.mjs");
+		// Use a separate extension identity so reload does not reuse the canonical MCP module's cached hooks.
+		await realpath(host);
+		settings.extensions = normalizeExtension(
+			settings.extensions,
+			directory,
+			agentDir ? host : relative(directory, host),
+			[],
+		);
 	} catch (error) {
 		if (error.code !== "ENOENT") throw error;
 	}

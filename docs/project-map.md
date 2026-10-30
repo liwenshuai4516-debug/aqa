@@ -113,7 +113,7 @@ API 能力接入：`scripts/enable-api-testing.mjs` 在明确的宿主 dataDir �
 
 UI 测试 P0：`server/extension-tool-policy.ts` 定义操作副作用，`server/extension-tool-gate.ts` 在 Pi SDK 工具调用前检查模式与只读权限；`qa/ui/` 维护本项目隔离服务、数据和浏览器 fixture。运行入口见 [fixture 维护](../qa/ui/README.md)，证据见 [P0 验收](ui-testing-p0-evidence.md)。
 
-UI 评审宿主续授：`.pi/skills/ui-testing-workflow/assets/review-budget-host.mjs` 在活动 SDK 会话中核对明确追加授权，仅消费原生 `DesignReviewService.renewBudget`；由 canonical MCP 扩展登记生命周期和 `/ui-review-budget`，不新增模型增额工具。接入及验证边界见 [宿主预算续授](ui-review-budget-host.md)。
+UI 评审宿主续授：`.pi/skills/ui-testing-workflow/assets/review-budget-host.mjs` 作为独立扩展，在活动 SDK 会话中核对明确追加授权，仅消费原生 `DesignReviewService.renewBudget`；由 `enable-ui-testing.mjs` 与 canonical MCP 分别登记，host 自有生命周期、禁用状态和 `/ui-review-budget`，不新增模型增额工具。接入及验证边界见 [宿主预算续授](ui-review-budget-host.md)。
 
 UI 私密捕获回归：`tests/ui-private-evidence-test.mjs` 使用原生包及合成认证验证诊断/正式执行的公开证据隔离；实现维护在上游，分发与安装位置见 [统一维护入口](../.pi/skills/ui-testing-workflow/references/maintenance.md)。
 

@@ -37,12 +37,12 @@
       }
     ],
     "blockers": [
-      "用户本轮已明确为原任务pms-operation-contract-new-20261029追加1轮独立设计评审，指定r6；该授权持续有效，无需重复确认。",
-      "宿主续授hook已接canonical UI扩展，最终153条宿主单测及隔离实际Electron五组通过；隔离native grant由3->4、旧attempt字节不变、幂等与启停重载通过，不算实际PMS会话已grant。",
-      "实际桌面旧SDK闭包尚未加载新hook；browser_page不支持Electron，未认证WebSocket控制返回401，未读取个人token绕过。需在原对话执行/reload；session_start从原活动SDK branch核验既有明确授权，调用原生renewBudget追加恰1轮。",
-      "原循环当前仍3条error、0 grant、0 pending；r6原生静态复核issues=[]且未获批。不得在真实grant前调用第4轮评审；不得新任务或改authority绕过。",
-      "待评r6 manifest SHA256 693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1。续授后仅新request ID评1次，保留所有3轮旧输入/响应；可信批准前不诊断/正式执行。",
-      "原9条归档用例分母不变；P0当前候选2，另7有草稿待安全扩展清单；获批0、诊断0、正式执行0、通过0、失败0、未执行9、合同业务写入0。"
+      "用户已执行reload，追加1轮对r6独立续评的明确授权持续有效，不重复请求授权。",
+      "实际reload后只读核验原循环仍3error/0grant/0pending，无第4轮；持久化祖先含原授权，解析形状和r3/r6/scope引用校验通过。离线重现只定位、不替代活动SDK授权。",
+      "发现真实桌面agent仍登记同仓库legacy MCP，日志确认与项目canonical重复注册，旧stack行号与旧版本一致且无host回执。现host改独立extension identity，canonical不再注册host，避免依赖旧canonical加载状态。",
+      "已分别对项目和实际桌面agent运行enableUiTesting登记迁移：仅受管legacy->canonical/native物理路径/独立host，其他字段不变；重复执行字节一致。独立host新隔离Electron1793343225485五组PASS，194单测通过；中断批次1793343058370保留，不计通过。",
+      "实际原会话仍须加载本次新登记，随后活动SDK核对原授权调用原生renewBudget恰追加1轮。真实grant产生前不调用第4轮；不读取凭据或手改authority，不换task/scope。",
+      "待评r6 manifest SHA256 693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1。续授后用宿主回执新request ID仅评一次；旧3轮原始产物保留。原9条仍未正式执行，获批0/诊断0/通过0/失败0/业务写入0。"
     ]
   }
 }

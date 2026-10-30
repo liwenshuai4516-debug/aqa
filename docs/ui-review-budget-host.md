@@ -4,7 +4,7 @@
 
 ## 入口与信任边界
 
-- 入口是 canonical `.pi/skills/ui-testing-workflow/assets/mcp-extension.mjs` 加载的 `review-budget-host.mjs`，与既有 UI 扩展一起启停、重载；不另建空壳插件，不注册模型可调用的续授 tool/MCP operation。
+- 入口是独立登记的 `.pi/skills/ui-testing-workflow/assets/review-budget-host.mjs`，由 `scripts/enable-ui-testing.mjs` 与 native/canonical 资源一起登记，但拥有独立扩展身份及启停状态。canonical MCP 不再调用 host 注册，避免 fresh 会话重复登记；旧 canonical 的 Node ESM 缓存也不妨碍新 host 身份首次加载。不另建空壳插件，不注册模型可调用的续授 tool/MCP operation。
 - 授权来自活动 SDK `sessionManager` 的当前 branch 中明确的 user 指令，包含原任务 ID、追加 1–3 轮独立设计评审和目标修订，例如本次原任务、追加 1 轮、r6。普通“继续”、引用、示例、否定、条件语句和 assistant/tool 文本不构成追加授权。
 - 任务须处于原生支持的未终结设计评审阶段，目标修订须来自该任务已关联的唯一资产 ID，scope/module 一致；不按全局最近目录回落。
 - `cwd`、session ID、sessionDir 和 branch 来自真实 SDK context。模型不能提交 `authorized=true`、authorityRoot、任意会话文件或额外额度。宿主不离线读 JSONL 回填授权，不复制个人凭据。
@@ -22,12 +22,14 @@
 
 ## 实际应用接入
 
-1. 沿用 `scripts/enable-ui-testing.mjs` 的项目或显式应用登记，canonical 扩展引用保持不变，新增 helper 随该入口加载。
+1. 沿用 `scripts/enable-ui-testing.mjs` 的项目或显式应用登记，native 物理入口、canonical MCP 和独立 host 均规范化为一份；只迁移同仓库的 legacy MCP 引用，保留其他资源、对象过滤与禁用选项。对实际 Electron 使用 `--agent-dir <应用 agent 目录>`，只改项目配置不能消除应用级的 legacy 引用。
 2. 在实际目标会话加载新代码。流式期间宿主将 extension reload 延迟到 `agent_end`；仓库文件变更不意味着旧闭包已热更新。必要时在原对话执行 `/reload`，不需要重新同意已明确授权的追加轮次。
 3. 等待宿主续授回执后，在原任务对指定修订调用原生独立评审。未登记 grant、缺少明确授权、存在 pending 或范围变化时不评。
 4. 获批后仍需独立满足诊断、运行登记和正式执行门禁。
 
-设置沿用已有 UI 扩展与技能管理。禁用 canonical 扩展时不会注册宿主生命周期或命令；启用并重载后恢复。`/skill:ui-testing-workflow` 为技能发现入口，`/ui-review-budget` 为宿主复核命令。
+设置沿用已有扩展与技能管理。禁用独立 host 扩展时不会注册宿主生命周期或命令；启用并重载后恢复。canonical MCP 可以继续启用，原 UI 技能独立可管理。`/skill:ui-testing-workflow` 为技能发现入口，`/ui-review-budget` 为宿主复核命令。
+
+2026-10-30 实际 reload 后仍无 grant 的诊断：真实应用 agent 配置仍是 legacy MCP 引用，日志确认与项目 canonical 重复注册；旧 stack 行号对应旧模块，未见 host 回执。持久化会话只读复现授权解析及产物引用校验均通过，但该离线检查不构成实际授权。此后已对项目和实际应用分别执行迁移且验证幂等，host 使用独立扩展身份。新的隔离 Electron 验收覆盖独立 host 禁启/重载，不能沿用此前仅 canonical 接线的通过结果；真实原会话仍须加载本次新登记。
 
 ## 验证与证据
 

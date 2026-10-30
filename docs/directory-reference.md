@@ -26,7 +26,7 @@ pi-web-ui/
 │   └── README.md               # 桌面版说明：跑起来 / 约定 / 发布 / 签名（SignPath）
 ├── deploy/                     # 部署示例：launchd plist / systemd unit / Windows 任务 XML
 ├── .pi/skills/ui-testing-workflow/ # UI 技能统一维护入口，assets/ 资源、references/ 维护说明
-│   ├── assets/review-budget-host.mjs # 活动SDK明确授权→原生预算续授；无模型增额tool，命令只复核授权
+│   ├── assets/review-budget-host.mjs # 独立宿主扩展：活动SDK明确授权→原生预算续授；独立启停，无模型增额tool
 │   ├── assets/recording-preflight-reporter.mjs # 录制收集最小元数据，不输出认证值；配置storageState暂阻塞
 │   ├── assets/private-recording-session.mjs # 原生绑定→私有副本、采集预算与显式协议seed准入
 │   ├── assets/private-recording-actions.mjs # SDK真实父子调用的单次授权及固定采集helper
