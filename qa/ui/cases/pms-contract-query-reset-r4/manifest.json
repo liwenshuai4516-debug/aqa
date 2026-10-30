@@ -1,0 +1,251 @@
+{
+  "schema_version": "1.0",
+  "kind": "cases",
+  "id": "pms-contract-query-reset-r4",
+  "created_at": "2026-10-30T02:41:54.232Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "data_rules_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+      "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+    },
+    "sources": [
+      {
+        "source_id": "S-R4-001",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+          "sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+        },
+        "statement": "默认第一页输入带首尾空格名称并查询；组件声明trim查询词、pageNum=1与pageSize=10。名称失焦DOM raw/trim待确认，只断言GET名称trim和其他select/date默认状态。不新增第二页数据前置。"
+      },
+      {
+        "source_id": "S-R4-009",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+          "sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+        },
+        "statement": "默认第一页把六项条件全部设为非默认后直接重置；部门仅选UI首个可见非全部项，作为可替换输入，准备状态departmentNonDefault严格true。重置将两输入/双日期清空、三个select恢复全部，并GET第一页无筛选；独立部门ID映射属于004，不是009前置或oracle。"
+      },
+      {
+        "source_id": "S-R4-API",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract-api.txt",
+          "sha256": "6d3d0a17fa92105853a1936b99a2ea9c27eaec8970a0c354810ac5edc4db6476"
+        },
+        "statement": "ba.page调用kt.pageGet(operation-contract/page,e)，查询只读。"
+      },
+      {
+        "source_id": "S-R4-SHARED",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/shared-source.txt",
+          "sha256": "e86343852d510b589fe78f9fc90cca9d1681626327719381c9ef8fcb9025acb2"
+        },
+        "statement": "当前bundle精确原文小摘录：CSearchBar按钮顺序/折叠、search-item/search-label、项目类型枚举、部门映射、page transport与axios省略undefined。shared-source-provenance.json保留code-point offset与原归档摘要字符串；完整gzip不进入评审FileRef闭包。部门映射仅作组件来源，不构成009独立ID oracle。"
+      },
+      {
+        "source_id": "S-R4-RECORDED",
+        "oracle_type": "baseline",
+        "ref": {
+          "path": "qa/ui/recordings/pms-operation-contract-observe-v14/draft.spec.ts",
+          "sha256": "3c3771d7d233467cf1878c9f6690fa77ca5212dcbf8db1d41590f57cec17d592"
+        },
+        "statement": "历史v14录制仅名称输入、查询、重置及其placeholder/button定位；初始4条不要求第二页。不是本轮执行或当前部署定位器实测。"
+      },
+      {
+        "source_id": "S-R4-SEED",
+        "oracle_type": "baseline",
+        "ref": {
+          "path": "qa/ui/pms-operation-contract/seed-v14.spec.ts",
+          "sha256": "14b998b9e137b5f8d1c03398c0cb50a6b49e5af873e885c361e7c5e06e7cd5de"
+        },
+        "statement": "真实v14 seed身份协议：localStorage token若可解析为JSON字符串则解码；headers token、x-parent-client-code=pms、x-client-code=pms；只返回HTTP/profile.code/username匹配布尔值。"
+      }
+    ],
+    "cases": [
+      {
+        "case_id": "PMS-OC-SRC-001",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-001",
+        "title": "合同名称去空白查询",
+        "priority": "P0",
+        "preconditions": [
+          "依据2026-10-30冻结部署声明，readiness=design-only；未核验当前认证DOM/定位器。",
+          "保留原task/scope/inventory/budget；role精确匹配configured account; business role not yet verified，不推断业务角色。",
+          "pi-ui-testing/fixtures每case隔离context；真实PMS使用v14 seed原样token和两个client headers，仅返回账号匹配布尔。auth:none仅限loopback且body[data-controlled-diagnostic=true]与synthetic profile匹配。",
+          "原生fixture负责site/identity/initial-state；脚本核对默认第一页、六项默认状态与稳定网络；结构/身份失败attach ui-preflight blocked并抛错，不skip。",
+          "只需默认第一页可读；不要求存在第二页。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "原生fixture新context及环境预检；脚本布尔身份、scope role、结构和默认第一页初态检查，不点击重置。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "保持默认第一页，输入data-p0.ts的nameRaw并点击查询；不定义名称失焦后DOM预期。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S3",
+            "action": "唯一aggregate step比对GET方法/路径/状态/全部参数/次数、其他select/date默认状态及当前页1。",
+            "assertion_ids": [
+              "PMS-OC-SRC-001-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-001-A1",
+            "step_id": "S3",
+            "source_id": "S-R4-001",
+            "oracle_type": "declaration",
+            "target": "名称查询GET的trim bizName、pageNum=1、pageSize=10及非keyword默认UI",
+            "comparison": "aggregate-toEqual; exact params including omitted filters, extra/duplicate-key rejection; independent data-p0.ts inputs",
+            "expected": {
+              "request": {
+                "method": "GET",
+                "path": "/api/project-management-backend/v1/web/contract-mgt/operation-contract/page",
+                "status": 200,
+                "params": [
+                  [
+                    "bizName",
+                    "${data.nameRaw.trim()}"
+                  ],
+                  [
+                    "pageNum",
+                    "1"
+                  ],
+                  [
+                    "pageSize",
+                    "10"
+                  ]
+                ],
+                "queryCount": 1
+              },
+              "ui": {
+                "department": "全部",
+                "node": "全部",
+                "type": "全部",
+                "start": "",
+                "end": ""
+              },
+              "page": "1"
+            },
+            "observation": "只读取请求method/URL和HTTP状态，不读取合同响应正文；名称DOM失焦行为待确认，不参与001预期；preflight附件只含布尔/分类。",
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "原生fixture销毁隔离context；不创建/修改/删除合同，业务清理0。",
+        "data_row_id": "pms-r4-001",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-009",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-009",
+        "title": "六条件全部设值后重置",
+        "priority": "P0",
+        "preconditions": [
+          "依据2026-10-30冻结部署声明，readiness=design-only；未核验当前认证DOM/定位器。",
+          "保留原task/scope/inventory/budget；role精确匹配configured account; business role not yet verified，不推断业务角色。",
+          "pi-ui-testing/fixtures每case隔离context；真实PMS使用v14 seed原样token和两个client headers，仅返回账号匹配布尔。auth:none仅限loopback且body[data-controlled-diagnostic=true]与synthetic profile匹配。",
+          "原生fixture负责site/identity/initial-state；脚本核对默认第一页、六项默认状态与稳定网络；结构/身份失败attach ui-preflight blocked并抛错，不skip。",
+          "只需默认第一页可读；部门下拉至少一个可见非全部项。无该项则保留数据前置blocked，不要求独立部门ID fixture或第二页。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "原生fixture新context及环境预检；脚本布尔身份、scope role、结构和默认第一页初态检查，不点击重置。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "从默认第一页设置名称、编号、UI首个可见非全部部门、具体节点、非全部类型和日期双端点；保存准备状态，仅将部门是否非默认归一为布尔，不先点查询，直接重置。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S3",
+            "action": "唯一aggregate step严格验证六项准备状态、prepared.departmentNonDefault=true；重置后独立固定全部/空、GET第一页、六filters精确省略，拒绝额外/重复参数。",
+            "assertion_ids": [
+              "PMS-OC-SRC-009-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-009-A1",
+            "step_id": "S3",
+            "source_id": "S-R4-009",
+            "oracle_type": "declaration",
+            "target": "六项非默认准备状态与reset后的全部/空、第一页无筛选GET",
+            "comparison": "aggregate-toEqual; departmentNonDefault strictly true; reset expected fixed independently; exact six-filter omission and extra/duplicate-key rejection",
+            "expected": {
+              "prepared": {
+                "name": "${data.nameRaw.trim()}",
+                "code": "${data.codeRaw.trim()}",
+                "departmentNonDefault": true,
+                "node": "部门负责人审核",
+                "type": "集成实施类",
+                "start": "${data.start}",
+                "end": "${data.end}"
+              },
+              "preparedPage": "1",
+              "ui": {
+                "name": "",
+                "code": "",
+                "department": "全部",
+                "node": "全部",
+                "type": "全部",
+                "start": "",
+                "end": ""
+              },
+              "page": "1",
+              "request": {
+                "method": "GET",
+                "path": "/api/project-management-backend/v1/web/contract-mgt/operation-contract/page",
+                "status": 200,
+                "params": [
+                  [
+                    "pageNum",
+                    "1"
+                  ],
+                  [
+                    "pageSize",
+                    "10"
+                  ]
+                ],
+                "queryCount": 1
+              },
+              "filtersPresent": []
+            },
+            "observation": "准备时读取名称/编号并trim与预置词比较，部门仅判断非空且非全部；reset expected绝不由actual生成。读取reset全部控件和请求参数，bizName,bizCode,departmentId,contractStatus,signedAtStart,signedAtEnd须精确省略。",
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "原生fixture销毁隔离context；不创建/修改/删除合同，业务清理0。",
+        "data_row_id": "pms-r4-009",
+        "browser_project": "chromium"
+      }
+    ],
+    "gaps": [
+      "当前部署basis仅源码声明；角色未知、定位器未实测，readiness维持design-only。历史录制不计本轮UI通过。",
+      "001/009从默认第一页检查GET pageNum=1；非首页回1状态转换未覆盖，明确保留覆盖缺口。撤销无依据第二页前置不削弱原001/009断言。",
+      "001名称失焦DOM raw/trim待确认，仅GET trim有声明依据；009准备阶段按规范化名称/编号比对，reset后仍严格为空。",
+      "009部门为UI首个可见非全部替换输入；只验证departmentNonDefault严格true，不断言部门ID映射。004的独立映射oracle另案保留。",
+      "完整9条cases.json/query-reset.spec.ts/data.ts及其他draft均保留；002–008仍native discovery amendment blocked，不修改旧inventory/task/budget或假映射。",
+      "六个reset filters精确省略，不验证后端过滤准确性、日期边界/非法区间、其他角色权限或合同写入。",
+      "P0共享来源仅精确小摘录；原始bundle归档路径/摘要是溯源字符串，不作为cases或asset files显式FileRef传入。",
+      "本轮仅本地静态修订；无native登记、review、diagnose、run、浏览器动作或业务请求，两条P0均未执行。"
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "kind": "public-source-archive-index",
+  "schema_version": "1.0",
+  "observed_at": "2026-10-30T01:01:39.734Z",
+  "entry_http_status": 200,
+  "full_asset_gzip": true,
+  "files": [
+    {
+      "path": "qa/ui/scopes/pms-contract-deployment-20261030/entry.html",
+      "sha256": "13e13df11a6ee1dd5ce0b92802905c2c627da2565ea3fbe20b2918d8eda7f226",
+      "bytes": 1345
+    },
+    {
+      "path": "qa/ui/scopes/pms-contract-deployment-20261030/index-ByeuxnbH.js.gz",
+      "sha256": "88904eb28dff356258328091793296b9ed2e8f0bb3dad7021b3f4f50c16c3652",
+      "bytes": 812964
+    },
+    {
+      "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract-api.txt",
+      "sha256": "6d3d0a17fa92105853a1936b99a2ea9c27eaec8970a0c354810ac5edc4db6476",
+      "bytes": 641
+    },
+    {
+      "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+      "sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037",
+      "bytes": 10619
+    },
+    {
+      "path": "qa/ui/scopes/pms-contract-deployment-20261030/provenance.json",
+      "sha256": "af11475de809166ecfe16426ed59339461542c673e9ffb31ae8f2966874f0d16",
+      "bytes": 1275
+    }
+  ]
+}

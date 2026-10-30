@@ -1,0 +1,83 @@
+{
+	"kind": "exact-shared-source-excerpts-not-runtime-evidence",
+	"coordinate": "Unicode code-point offsets; not UTF-16 or byte offsets",
+	"archive_path": "qa/ui/scopes/pms-contract-deployment-20261030/index-ByeuxnbH.js.gz",
+	"archive_sha256": "88904eb28dff356258328091793296b9ed2e8f0bb3dad7021b3f4f50c16c3652",
+	"archive_index_path": "qa/ui/scopes/pms-contract-deployment-20261030/archive-index.json",
+	"original_provenance_path": "qa/ui/scopes/pms-contract-deployment-20261030/provenance.json",
+	"analysis_path": ".workbuddy/tmp/pms-r4-design/source-analysis.json",
+	"decompressed_sha256": "92a453a7b9b5d3aa58da23c1fe9335d78f75759808e6cf838d2800f2e72fb2c8",
+	"output_path": ".workbuddy/tmp/pms-r4-design/shared-source.txt",
+	"output_sha256": "e86343852d510b589fe78f9fc90cca9d1681626327719381c9ef8fcb9025acb2",
+	"output_utf8_bytes": 3831,
+	"segments": [
+		{
+			"id": "searchbar-expand",
+			"symbol": "searchbar-expand",
+			"source_codepoint_offset": 2184403,
+			"codepoint_length": 1800,
+			"output_codepoint_offset": 0,
+			"utf8_sha256": "d18f62bbbc91308d515f389c0170f7052c190df39d63ee6c69665581e4bddbea",
+			"evidence_kind": "declaration-not-runtime"
+		},
+		{
+			"id": "searchbar-label",
+			"symbol": "searchbar-label",
+			"source_codepoint_offset": 2187370,
+			"codepoint_length": 250,
+			"output_codepoint_offset": 1801,
+			"utf8_sha256": "e58281320ae5f0b93a6e664c60acb5baedd13925e87a44fef9198e93c417c1c8",
+			"evidence_kind": "declaration-not-runtime"
+		},
+		{
+			"id": "searchbar-item",
+			"symbol": "searchbar-item",
+			"source_codepoint_offset": 2187293,
+			"codepoint_length": 250,
+			"output_codepoint_offset": 2052,
+			"utf8_sha256": "5099fdf823f9cb84c39b2193d41832c2d70a1bbccda8bc04229396e06320bd4d",
+			"evidence_kind": "declaration-not-runtime"
+		},
+		{
+			"id": "project-type-options",
+			"symbol": "project-type-options",
+			"source_codepoint_offset": 2251863,
+			"codepoint_length": 190,
+			"output_codepoint_offset": 2303,
+			"utf8_sha256": "86a4118ca923d65c63cd75d869058e6bb0807e4806a59d8ca6f54ca52328c79e",
+			"evidence_kind": "declaration-not-runtime"
+		},
+		{
+			"id": "department-map",
+			"symbol": "department-map",
+			"source_codepoint_offset": 2258459,
+			"codepoint_length": 430,
+			"output_codepoint_offset": 2494,
+			"utf8_sha256": "ad496b061580032658816e6dbdda7ca6409ec6814fde0816827383d1fa6d827f",
+			"evidence_kind": "declaration-not-runtime"
+		},
+		{
+			"id": "page-transport",
+			"symbol": "page-transport",
+			"source_codepoint_offset": 2172037,
+			"codepoint_length": 300,
+			"output_codepoint_offset": 2925,
+			"utf8_sha256": "b2771f59081f3f2fb68e19ea0923663a3b0343adcf550a711ea80c825980bbbc",
+			"evidence_kind": "declaration-not-runtime"
+		},
+		{
+			"id": "axios-undefined",
+			"symbol": "axios-undefined",
+			"source_codepoint_offset": 2136285,
+			"codepoint_length": 500,
+			"output_codepoint_offset": 3226,
+			"utf8_sha256": "ceb019e69773feb3fe4c82d1c1dd0c2d11669157e458293285324d56d17fdf87",
+			"evidence_kind": "declaration-not-runtime"
+		}
+	],
+	"limits": [
+		"All archive/analysis pointers above are strings, not FileRefs in the review closure.",
+		"Exact source excerpts do not verify current authenticated DOM, role or selectors.",
+		"Run this extractor only; it never overwrites the full nine-case or P0 drafts."
+	]
+}

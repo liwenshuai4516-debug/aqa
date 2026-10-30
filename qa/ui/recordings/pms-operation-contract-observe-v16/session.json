@@ -1,0 +1,62 @@
+{
+  "id": "pms-operation-contract-observe-v16",
+  "backend": "mcp__ui_playwright_test__",
+  "project": "chromium",
+  "output_file": "qa/ui/pms-operation-contract/observed-v16.spec.ts",
+  "scope_ref": {
+    "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+    "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+  },
+  "inventory_ref": {
+    "path": "qa/ui/inventories/pms-contract-live-query-reset/manifest.json",
+    "sha256": "2f62ea1e00a59d2d50f01ac4008711b8f4aaba63675186c04063b127533444b9"
+  },
+  "seed_ref": {
+    "path": "qa/ui/pms-operation-contract/seed-v16.spec.ts",
+    "sha256": "03b77f9bb5f3ac50c6830c1b35f6e80fa033aed5cbf62c556a841bd8c0900fd7"
+  },
+  "initial_state_ref": {
+    "path": "qa/ui/scopes/pms-operation-contract-new-20261029/initial-state.json",
+    "sha256": "58563c76317bd5a48b147388a894b3f2d011d5ec141113adf35e4b157c6ff346"
+  },
+  "data_rules_ref": {
+    "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+    "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+  },
+  "max_steps": 8,
+  "max_no_progress": 5,
+  "max_duration_ms": 240000,
+  "test_data": [
+    "AQA_OWNED_QUERY_ONLY",
+    "AQA_OWNED_CODE_ONLY",
+    "2025-01-01",
+    "2025-01-31"
+  ],
+  "private_recording": {
+    "capture": "chromium-single-page-v1",
+    "environment_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/environment-v3.json",
+      "sha256": "b158e61b8e598ee48ccfa5598e3356a47cf35598c4e4206bc345e0f68db98cc9"
+    },
+    "input_refs": [
+      {
+        "path": "playwright.config.mjs",
+        "sha256": "c70865b58e17643580efb34d1ab2f2330a7006110e7be1716329d3c38a33d879"
+      },
+      {
+        "path": "qa/ui/pms-operation-contract/playwright.config.mjs",
+        "sha256": "732d3b4f21f17d0f74fd44254ec47511959580095cf376365c505c82039ac2c0"
+      },
+      {
+        "path": "package.json",
+        "sha256": "f6265a737363df59bad1197a6aa62d0163c1f97461866e6c80ef86c9e86de673"
+      },
+      {
+        "path": "qa/ui/pms-operation-contract/seed-v16.spec.ts",
+        "sha256": "03b77f9bb5f3ac50c6830c1b35f6e80fa033aed5cbf62c556a841bd8c0900fd7"
+      }
+    ]
+  },
+  "created_at": "2026-10-30T01:13:41.740Z",
+  "token": "f28b692c-1083-4571-8176-e962d03fe754"
+}

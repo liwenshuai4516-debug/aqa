@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>PMS r4 controlled diagnostic copy</title>
+		<style>
+			body {
+				font: 14px sans-serif;
+				color: #222;
+				margin: 24px;
+			}
+			header {
+				margin-bottom: 20px;
+			}
+			main {
+				max-width: 1100px;
+			}
+			section {
+				margin: 12px 0;
+				padding: 12px;
+				border: 1px solid #ccc;
+			}
+			.fields {
+				display: flex;
+				gap: 20px;
+				flex-wrap: wrap;
+			}
+			.el-select {
+				display: inline-block;
+				min-width: 180px;
+				border: 1px solid #bbb;
+				padding: 8px;
+				cursor: pointer;
+			}
+			label {
+				display: inline-flex;
+				flex-direction: column;
+				gap: 8px;
+			}
+			input,
+			button {
+				padding: 8px;
+			}
+			.el-select-dropdown {
+				position: fixed;
+				z-index: 1000;
+				top: 200px;
+				left: 30px;
+				background: white;
+				border: 1px solid #999;
+				padding: 4px;
+				list-style: none;
+				min-width: 200px;
+			}
+			.el-select-dropdown li {
+				padding: 8px;
+				cursor: pointer;
+			}
+			.el-message {
+				position: fixed;
+				top: 15px;
+				left: 30%;
+				background: #eee;
+				padding: 16px;
+				z-index: 1100;
+			}
+			table {
+				width: 100%;
+				border-collapse: collapse;
+			}
+			td,
+			th {
+				padding: 12px;
+				border: 1px solid #ccc;
+			}
+			[hidden] {
+				display: none !important;
+			}
+		</style>
+	</head>
+	<body data-controlled-diagnostic="true">
+		<header>
+			<h1>PMS</h1>
+			<nav>经营管理 / 经营合同</nav>
+			<span id="fixture-account">受控只读副本</span>
+		</header>
+		<main>
+			<section>
+				<div class="actions">
+					<button id="query" type="button">查询</button><button id="reset" type="button">重置</button
+					><button id="expand" type="button" aria-expanded="false">展开</button>
+				</div>
+				<div class="fields">
+					<label class="search-item"
+						><span class="search-label">合同名称</span
+						><input id="name" class="el-input__inner" placeholder="请输入" autocomplete="off"
+					/></label>
+					<label class="search-item"
+						><span class="search-label">合同编号</span
+						><input id="code" class="el-input__inner" placeholder="请输入" autocomplete="off"
+					/></label>
+				</div>
+				<div id="advanced" class="fields" hidden>
+					<label class="search-item"
+						><span class="search-label">归属部门</span>
+						<div id="department" class="el-select">
+							<div class="el-select__selected-item" role="combobox" tabindex="0" aria-expanded="false">全部</div>
+						</div></label
+					>
+					<label class="search-item"
+						><span class="search-label">流程节点</span>
+						<div id="node" class="el-select">
+							<div class="el-select__selected-item" role="combobox" tabindex="0" aria-expanded="false">全部</div>
+						</div></label
+					>
+					<label class="search-item"
+						><span class="search-label">项目类型</span>
+						<div id="type" class="el-select">
+							<div class="el-select__selected-item" role="combobox" tabindex="0" aria-expanded="false">全部</div>
+						</div></label
+					>
+					<label class="search-item"
+						><span class="search-label">合同签订日期</span
+						><input id="start" class="el-range-input" placeholder="开始日期" autocomplete="off" /><input
+							id="end"
+							class="el-range-input"
+							placeholder="结束日期"
+							autocomplete="off"
+					/></label>
+				</div>
+			</section>
+			<div class="el-table contract-table">
+				<div class="el-table__body-wrapper">
+					<table class="el-table__body">
+						<thead>
+							<tr>
+								<th>合同名称</th>
+								<th>合同编号</th>
+								<th>流程节点</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="el-table__row">
+								<td>隔离只读合同</td>
+								<td>FIXTURE-001</td>
+								<td>草稿</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="el-pagination">
+				<span class="el-pagination__total">共 1 条</span>
+				<ul class="el-pager">
+					<li class="number is-active" role="button" tabindex="0">1</li>
+				</ul>
+				<span id="page-size">10条/页</span>
+			</div>
+		</main>
+		<ul id="options" class="el-select-dropdown el-select-dropdown__list" role="listbox" hidden></ul>
+		<div id="message" class="el-message el-message--info" role="alert" hidden><p class="el-message__content"></p></div>
+		<script type="module" src="/fixture-client.mjs"></script>
+	</body>
+</html>

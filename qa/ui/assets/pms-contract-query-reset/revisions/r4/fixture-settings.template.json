@@ -1,0 +1,38 @@
+{
+	"status": "prepared-for-independent-review",
+	"host": "127.0.0.1",
+	"port": 8987,
+	"basePath": "/pms/OperationContract",
+	"account": "pms_admin",
+	"department": { "label": "诊断合成部门", "id": "diagnostic-dept-synthetic", "kind": "controlled-synthetic" },
+	"departmentPurpose": "Replaceable reset input only. No department label/id oracle in P0; inactive004 still requires an independent mapping.",
+	"paginationCoverage": "P0 starts at page 1. Non-first-page to page 1 transition is not covered.",
+	"nodeOptions": ["草稿", "部门负责人审核"],
+	"projectTypeOptions": ["集成实施类"],
+	"queryEndpoint": "/api/project-management-backend/v1/web/contract-mgt/operation-contract/page",
+	"unsupportedMessage": "当前合同接口不支持项目类型及具体节点筛选，请清空后重试",
+	"pageSize": 10,
+	"mutations": ["name-untrimmed", "reset-name-retained"],
+	"activeCaseIds": ["PMS-OC-SRC-001", "PMS-OC-SRC-009"],
+	"inactiveDraftMutations": [
+		"code-untrimmed",
+		"whitespace-effective-filter",
+		"wrong-department-id",
+		"wrong-date-end",
+		"wrong-draft-status",
+		"wrong-node-message",
+		"wrong-type-message"
+	],
+	"sourceStatus": "Current component/API hashes checked by source-audit; runtime DOM and data not verified",
+	"settingsStatusMeaning": "Inputs prepared only; no approval/runtime authorization. Main session starts the server only after trusted approval.",
+	"currentSourceRefs": [
+		{
+			"path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+			"sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+		},
+		{
+			"path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract-api.txt",
+			"sha256": "6d3d0a17fa92105853a1936b99a2ea9c27eaec8970a0c354810ac5edc4db6476"
+		}
+	]
+}

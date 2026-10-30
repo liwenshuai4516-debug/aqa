@@ -4,7 +4,7 @@
 
 授权范围：只创建、修改和清理本次测试专属合同数据。首次发现阶段只观察页面和查询入口；创建业务数据前必须具备可验证的归属和清理流程。
 
-当前状态：原任务已完成 `discover-record`、`case-design`，停在 `design-review`。v14 真实受管录制完整登记，两条 P0 已形成 r3 候选并通过 fresh 原生 SDK 静态检查；当前活动工具检查仍有运行时错误，独立评估调用未产生批准。正式执行仍为 0，原 9 条源码草稿全部保留未执行。
+当前状态（2026-10-30）：原任务已完成 `discover-record`、`case-design`，现为 `blocked / design-review`。活动父会话的 TypeScript 运行时检查已恢复；r6 两条 P0 候选连同诊断计划通过原生全文件静态检查（`issues=[]`）。同一评审循环三轮已耗尽，仍无可信批准：第 1 轮运行时错误，第 2 轮非法 JSON，第 3 轮引用不存在的 anchors。诊断、正式执行及结果回写均未启动，原 9 条全部保留未执行。
 
 ## 环境与启动前提
 
@@ -58,3 +58,14 @@ await tools.ui_test_workflow({
 - 当前活动主/子会话 `ui_case_design check` 仍报 `Cannot read properties of undefined (reading 'ES2022')`；实际 `ui_design_review` 请求 `pms-contract-query-reset-review-r3-01` 返回 runner-error“评估调用失败；保留已有输入与响应，不批准”。fresh 与活动宿主的加载差异已复现，具体原因待核验，不能把隔离检查当作当前桌面扩展重新加载通过。
 - 原任务最新为 blocked / design-review；阶段证据：`docs/ui-testing-evidence/pms-contract-managed-continuation-20261029.json`，准确 native 静态返回：`docs/ui-testing-evidence/pms-contract-query-reset-r3-static-20261029.json`。本轮原 9 条：获批 0、正式执行 0、通过 0、失败 0、未执行 9；合同业务写入 0。不交付虚构的正式测试报告。
 - 接续：在当前应用再执行 `/reload` 以加载本次登记/依赖变更；用 status/resume-task 恢复同一任务，先复核 r3 活动工具检查，再核对旧评审请求与预算，以新 request ID 续评，完成正反诊断和运行登记后才可正式执行。既有授权持续有效。绑定/同步前需对齐数据空间中的用例版本。
+
+## 2026-10-30 续跑：活动运行时恢复，评审预算耗尽
+
+- 项目本地显式登记原生扩展物理入口，避免已复现的 SDK/Jiti 逻辑 symlink 转译回退解析到根 TypeScript 的风险；未声称已取得旧宿主实际加载路径的完整跟踪。迁移脚本与回归已提交推送 `e65cd998d1973aab25fde4573fc919ff293ec042`；本轮父会话原生 r3 check 也为 issues=[]。这不代表 PMS 用例通过。无需重复请求旧授权或以重载替代评审续授。
+- 当前 HTML 引用 `index-ByeuxnbH.js`；已冻结完整 gzip、入口、AST 精确组件/API 原文及校验索引，目录 `qa/ui/scopes/pms-contract-deployment-20261030/`。旧 Dryv8enx 文件仍可访问，不能据此认为部署未变。v15/v16 受管私密准备失败，均保留 partial，没有新浏览器动作。
+- r4 原生检查暴露隔离副本 checkJs 的73项类型问题；r5 补充类型/DOM空值检查后 issues=[]。r6 针对未登记评估响应中的来源质疑，再补节点/类型 placeholder=全部、空选项 label=全部 与 reset 模型清空的精确原文，脚本及预期保持不变，原生检查同样 issues=[]。原9条断言未因实际数据只有4条而要求第二页；非首页回1的状态转换明确未覆盖。
+- 最新候选：`qa/ui/assets/pms-contract-query-reset/revisions/r6/manifest.json`，SHA256 `693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1`；两条 cases 为 `qa/ui/cases/pms-contract-query-reset-r6/manifest.json`。诊断 spec 复用已纳入候选的 r5 文件；全部配置、环境、mutation/helper 均在 files 内，但尚未批准或执行。
+- 第2轮 `pms-contract-query-reset-review-r5-02` 返回非法JSON；第3轮 `pms-contract-query-reset-review-r5-03` 引用了不存在的 E15L175/E15L211/E15L243。原始 input/raw/static 均在 r5/reviews 下，未修补输出或伪造 review manifest。三轮均为 error，无pending，没有可信 approved/revise/blocked 评审产物。
+- 续跑需要用户明确追加1–3轮，由受信任宿主对原 task/scope/cycle 续授；当前工具没有续授 operation，不能写 authority 文件或另建任务绕过。准备追加1轮评审 r6，诊断与正式执行授权沿用此前授权。
+- 002–008 的七条未批准设计草稿另存 `qa/ui/assets/pms-contract-remaining-seven/revisions/draft-r1/cases-draft.json`。原生已交接 inventory 只含001/009，评审阶段无扩展入口，七条仍待安全追加清单及完整准入。数据空间只读 archive-status 再次核实9条 existing，pending/stale/unclassified=0；未重复入库、未绑定或回写结果。
+- 本轮统计：原9条、当前候选2条、可信批准0、诊断0、正式执行0、通过0、失败0、未执行9、合同业务写入0。阶段证据 `docs/ui-testing-evidence/pms-contract-r4-continuation-20261030.json` 不构成最终测试报告。

@@ -1,0 +1,663 @@
+{
+  "status": "DESIGN_DRAFT_ONLY_NOT_APPROVED_NOT_EXECUTABLE",
+  "task_id": "pms-operation-contract-new-20261029",
+  "scope_ref": {
+    "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+    "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+  },
+  "source_basis": "Current declaration index-ByeuxnbH.js / 92a453a7b9b5d3aa58da23c1fe9335d78f75759808e6cf838d2800f2e72fb2c8",
+  "remaining_case_count": 7,
+  "cases": [
+    {
+      "case_id": "PMS-OC-SRC-002",
+      "module_id": "operation-contract",
+      "feature_id": "current-source-query-reset",
+      "scenario_id": "oc-src-002",
+      "title": "合同编号去空白查询",
+      "priority": "P1",
+      "preconditions": [
+        "本轮仅只读设计；依据2026-10-30冻结部署声明，不是当前认证DOM/业务实测。",
+        "原task pms-operation-contract-new-20261029与scope保持不变；role精确匹配configured account; business role not yet verified。",
+        "pi-ui-testing/fixtures受管环境，isolation=context；每case新context；账号仅返回匹配布尔值，不输出认证/用户profile。",
+        "site/identity/initial-state由原生fixture预检；脚本补充账号、六项结构/默认值与网络稳定检查；失败attach ui-preflight status=blocked并抛错，不skip。",
+        "用例及选择器readiness=design-only。未实际录制的label容器/展开/select/date/表格/分页结构在运行前检查，不能冒充已核验。"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "action": "原生fixture新context并执行site/identity/initial-state；脚本账号布尔核对、scope role、结构与初态预检，不点击重置。",
+          "assertion_ids": []
+        },
+        {
+          "step_id": "S2",
+          "action": "编号输入data.codeRaw（默认首尾各2空格），点击查询。",
+          "assertion_ids": []
+        },
+        {
+          "step_id": "S3",
+          "action": "在唯一test.step内读取具体UI/网络状态，聚合对象toEqual独立源码/冻结数据预期；007/008先等稳定.el-message可见，不按预期文案等待。",
+          "assertion_ids": [
+            "PMS-OC-SRC-002-A1"
+          ]
+        }
+      ],
+      "assertions": [
+        {
+          "assertion_id": "PMS-OC-SRC-002-A1",
+          "step_id": "S3",
+          "source_id": "S-R4-002",
+          "oracle_type": "declaration",
+          "target": "本case点击查询/重置后的实际请求方法/路径/全部参数及UI值；007/008额外提示/零GET/列表指纹与分页保持",
+          "comparison": "aggregate-toEqual; exact params including omission and duplicate-key rejection; parameter tokens bind to data.ts/frozen department before action",
+          "expected": {
+            "request": {
+              "method": "GET",
+              "path": "/api/project-management-backend/v1/web/contract-mgt/operation-contract/page",
+              "status": 200,
+              "params": [
+                [
+                  "bizCode",
+                  "${data.codeRaw.trim()}"
+                ],
+                [
+                  "pageNum",
+                  "1"
+                ],
+                [
+                  "pageSize",
+                  "10"
+                ]
+              ],
+              "queryCount": 1
+            },
+            "ui": {
+              "department": "全部",
+              "node": "全部",
+              "type": "全部",
+              "start": "",
+              "end": ""
+            },
+            "page": "1"
+          },
+          "observation": "读取Response.request URL/method/status，不读取合同响应正文；读取独立input/select/date/页码；007/008仅在内存hash业务行文本、不输出明细；附件只保存preflight布尔/分类。",
+          "evidence_required": true
+        }
+      ],
+      "cleanup": "原生fixture销毁本case context/临时选择状态；不创建、修改、删除合同，业务清理0。",
+      "data_row_id": "pms-r4-002",
+      "browser_project": "chromium"
+    },
+    {
+      "case_id": "PMS-OC-SRC-003",
+      "module_id": "operation-contract",
+      "feature_id": "current-source-query-reset",
+      "scenario_id": "oc-src-003",
+      "title": "空白名称编号不传筛选",
+      "priority": "P1",
+      "preconditions": [
+        "本轮仅只读设计；依据2026-10-30冻结部署声明，不是当前认证DOM/业务实测。",
+        "原task pms-operation-contract-new-20261029与scope保持不变；role精确匹配configured account; business role not yet verified。",
+        "pi-ui-testing/fixtures受管环境，isolation=context；每case新context；账号仅返回匹配布尔值，不输出认证/用户profile。",
+        "site/identity/initial-state由原生fixture预检；脚本补充账号、六项结构/默认值与网络稳定检查；失败attach ui-preflight status=blocked并抛错，不skip。",
+        "用例及选择器readiness=design-only。未实际录制的label容器/展开/select/date/表格/分页结构在运行前检查，不能冒充已核验。"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "action": "原生fixture新context并执行site/identity/initial-state；脚本账号布尔核对、scope role、结构与初态预检，不点击重置。",
+          "assertion_ids": []
+        },
+        {
+          "step_id": "S2",
+          "action": "名称与编号均输入data.whitespace（三个空格），点击查询。",
+          "assertion_ids": []
+        },
+        {
+          "step_id": "S3",
+          "action": "在唯一test.step内读取具体UI/网络状态，聚合对象toEqual独立源码/冻结数据预期；007/008先等稳定.el-message可见，不按预期文案等待。",
+          "assertion_ids": [
+            "PMS-OC-SRC-003-A1"
+          ]
+        }
+      ],
+      "assertions": [
+        {
+          "assertion_id": "PMS-OC-SRC-003-A1",
+          "step_id": "S3",
+          "source_id": "S-R4-003",
+          "oracle_type": "declaration",
+          "target": "本case点击查询/重置后的实际请求方法/路径/全部参数及UI值；007/008额外提示/零GET/列表指纹与分页保持",
+          "comparison": "aggregate-toEqual; exact params including omission and duplicate-key rejection; parameter tokens bind to data.ts/frozen department before action",
+          "expected": {
+            "request": {
+              "method": "GET",
+              "path": "/api/project-management-backend/v1/web/contract-mgt/operation-contract/page",
+              "status": 200,
+              "params": [
+                [
+                  "pageNum",
+                  "1"
+                ],
+                [
+                  "pageSize",
+                  "10"
+                ]
+              ],
+              "queryCount": 1
+            },
+            "ui": {
+              "department": "全部",
+              "node": "全部",
+              "type": "全部",
+              "start": "",
+              "end": ""
+            },
+            "page": "1"
+          },
+          "observation": "读取Response.request URL/method/status，不读取合同响应正文；读取独立input/select/date/页码；007/008仅在内存hash业务行文本、不输出明细；附件只保存preflight布尔/分类。",
+          "evidence_required": true
+        }
+      ],
+      "cleanup": "原生fixture销毁本case context/临时选择状态；不创建、修改、删除合同，业务清理0。",
+      "data_row_id": "pms-r4-003",
+      "browser_project": "chromium"
+    },
+    {
+      "case_id": "PMS-OC-SRC-004",
+      "module_id": "operation-contract",
+      "feature_id": "current-source-query-reset",
+      "scenario_id": "oc-src-004",
+      "title": "部门label映射departmentId",
+      "priority": "P1",
+      "preconditions": [
+        "本轮仅只读设计；依据2026-10-30冻结部署声明，不是当前认证DOM/业务实测。",
+        "原task pms-operation-contract-new-20261029与scope保持不变；role精确匹配configured account; business role not yet verified。",
+        "pi-ui-testing/fixtures受管环境，isolation=context；每case新context；账号仅返回匹配布尔值，不输出认证/用户profile。",
+        "site/identity/initial-state由原生fixture预检；脚本补充账号、六项结构/默认值与网络稳定检查；失败attach ui-preflight status=blocked并抛错，不skip。",
+        "用例及选择器readiness=design-only。未实际录制的label容器/展开/select/date/表格/分页结构在运行前检查，不能冒充已核验。",
+        "PMS_R4_DEPARTMENT_FILE指向独立冻结metadata；来源文件存在且SHA匹配，label/id先于查询冻结，target_origin与受管URL相同。"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "action": "原生fixture新context并执行site/identity/initial-state；脚本账号布尔核对、scope role、结构与初态预检，不点击重置。",
+          "assertion_ids": []
+        },
+        {
+          "step_id": "S2",
+          "action": "读取独立冻结的部门label/id/source sha/target_origin，按精确label选择部门，点击查询。",
+          "assertion_ids": []
+        },
+        {
+          "step_id": "S3",
+          "action": "在唯一test.step内读取具体UI/网络状态，聚合对象toEqual独立源码/冻结数据预期；007/008先等稳定.el-message可见，不按预期文案等待。",
+          "assertion_ids": [
+            "PMS-OC-SRC-004-A1"
+          ]
+        }
+      ],
+      "assertions": [
+        {
+          "assertion_id": "PMS-OC-SRC-004-A1",
+          "step_id": "S3",
+          "source_id": "S-R4-004",
+          "oracle_type": "declaration",
+          "target": "本case点击查询/重置后的实际请求方法/路径/全部参数及UI值；007/008额外提示/零GET/列表指纹与分页保持",
+          "comparison": "aggregate-toEqual; exact params including omission and duplicate-key rejection; parameter tokens bind to data.ts/frozen department before action",
+          "expected": {
+            "request": {
+              "method": "GET",
+              "path": "/api/project-management-backend/v1/web/contract-mgt/operation-contract/page",
+              "status": 200,
+              "params": [
+                [
+                  "departmentId",
+                  "${department.id}"
+                ],
+                [
+                  "pageNum",
+                  "1"
+                ],
+                [
+                  "pageSize",
+                  "10"
+                ]
+              ],
+              "queryCount": 1
+            },
+            "ui": {
+              "name": "",
+              "code": "",
+              "department": "${department.label}",
+              "node": "全部",
+              "type": "全部",
+              "start": "",
+              "end": ""
+            },
+            "page": "1"
+          },
+          "observation": "读取Response.request URL/method/status，不读取合同响应正文；读取独立input/select/date/页码；007/008仅在内存hash业务行文本、不输出明细；附件只保存preflight布尔/分类。",
+          "evidence_required": true
+        }
+      ],
+      "cleanup": "原生fixture销毁本case context/临时选择状态；不创建、修改、删除合同，业务清理0。",
+      "data_row_id": "pms-r4-004",
+      "browser_project": "chromium"
+    },
+    {
+      "case_id": "PMS-OC-SRC-005",
+      "module_id": "operation-contract",
+      "feature_id": "current-source-query-reset",
+      "scenario_id": "oc-src-005",
+      "title": "日期区间双端点查询",
+      "priority": "P1",
+      "preconditions": [
+        "本轮仅只读设计；依据2026-10-30冻结部署声明，不是当前认证DOM/业务实测。",
+        "原task pms-operation-contract-new-20261029与scope保持不变；role精确匹配configured account; business role not yet verified。",
+        "pi-ui-testing/fixtures受管环境，isolation=context；每case新context；账号仅返回匹配布尔值，不输出认证/用户profile。",
+        "site/identity/initial-state由原生fixture预检；脚本补充账号、六项结构/默认值与网络稳定检查；失败attach ui-preflight status=blocked并抛错，不skip。",
+        "用例及选择器readiness=design-only。未实际录制的label容器/展开/select/date/表格/分页结构在运行前检查，不能冒充已核验。"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "action": "原生fixture新context并执行site/identity/initial-state；脚本账号布尔核对、scope role、结构与初态预检，不点击重置。",
+          "assertion_ids": []
+        },
+        {
+          "step_id": "S2",
+          "action": "展开后输入data.start、data.end（YYYY-MM-DD），Tab完成输入后关闭日期浮层，点击查询。",
+          "assertion_ids": []
+        },
+        {
+          "step_id": "S3",
+          "action": "在唯一test.step内读取具体UI/网络状态，聚合对象toEqual独立源码/冻结数据预期；007/008先等稳定.el-message可见，不按预期文案等待。",
+          "assertion_ids": [
+            "PMS-OC-SRC-005-A1"
+          ]
+        }
+      ],
+      "assertions": [
+        {
+          "assertion_id": "PMS-OC-SRC-005-A1",
+          "step_id": "S3",
+          "source_id": "S-R4-005",
+          "oracle_type": "declaration",
+          "target": "本case点击查询/重置后的实际请求方法/路径/全部参数及UI值；007/008额外提示/零GET/列表指纹与分页保持",
+          "comparison": "aggregate-toEqual; exact params including omission and duplicate-key rejection; parameter tokens bind to data.ts/frozen department before action",
+          "expected": {
+            "request": {
+              "method": "GET",
+              "path": "/api/project-management-backend/v1/web/contract-mgt/operation-contract/page",
+              "status": 200,
+              "params": [
+                [
+                  "pageNum",
+                  "1"
+                ],
+                [
+                  "pageSize",
+                  "10"
+                ],
+                [
+                  "signedAtEnd",
+                  "${data.end}"
+                ],
+                [
+                  "signedAtStart",
+                  "${data.start}"
+                ]
+              ],
+              "queryCount": 1
+            },
+            "ui": {
+              "name": "",
+              "code": "",
+              "department": "全部",
+              "node": "全部",
+              "type": "全部",
+              "start": "${data.start}",
+              "end": "${data.end}"
+            },
+            "page": "1"
+          },
+          "observation": "读取Response.request URL/method/status，不读取合同响应正文；读取独立input/select/date/页码；007/008仅在内存hash业务行文本、不输出明细；附件只保存preflight布尔/分类。",
+          "evidence_required": true
+        }
+      ],
+      "cleanup": "原生fixture销毁本case context/临时选择状态；不创建、修改、删除合同，业务清理0。",
+      "data_row_id": "pms-r4-005",
+      "browser_project": "chromium"
+    },
+    {
+      "case_id": "PMS-OC-SRC-006",
+      "module_id": "operation-contract",
+      "feature_id": "current-source-query-reset",
+      "scenario_id": "oc-src-006",
+      "title": "草稿节点映射DRAFT",
+      "priority": "P1",
+      "preconditions": [
+        "本轮仅只读设计；依据2026-10-30冻结部署声明，不是当前认证DOM/业务实测。",
+        "原task pms-operation-contract-new-20261029与scope保持不变；role精确匹配configured account; business role not yet verified。",
+        "pi-ui-testing/fixtures受管环境，isolation=context；每case新context；账号仅返回匹配布尔值，不输出认证/用户profile。",
+        "site/identity/initial-state由原生fixture预检；脚本补充账号、六项结构/默认值与网络稳定检查；失败attach ui-preflight status=blocked并抛错，不skip。",
+        "用例及选择器readiness=design-only。未实际录制的label容器/展开/select/date/表格/分页结构在运行前检查，不能冒充已核验。"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "action": "原生fixture新context并执行site/identity/initial-state；脚本账号布尔核对、scope role、结构与初态预检，不点击重置。",
+          "assertion_ids": []
+        },
+        {
+          "step_id": "S2",
+          "action": "流程节点选草稿，项目类型保持全部，点击查询。",
+          "assertion_ids": []
+        },
+        {
+          "step_id": "S3",
+          "action": "在唯一test.step内读取具体UI/网络状态，聚合对象toEqual独立源码/冻结数据预期；007/008先等稳定.el-message可见，不按预期文案等待。",
+          "assertion_ids": [
+            "PMS-OC-SRC-006-A1"
+          ]
+        }
+      ],
+      "assertions": [
+        {
+          "assertion_id": "PMS-OC-SRC-006-A1",
+          "step_id": "S3",
+          "source_id": "S-R4-006",
+          "oracle_type": "declaration",
+          "target": "本case点击查询/重置后的实际请求方法/路径/全部参数及UI值；007/008额外提示/零GET/列表指纹与分页保持",
+          "comparison": "aggregate-toEqual; exact params including omission and duplicate-key rejection; parameter tokens bind to data.ts/frozen department before action",
+          "expected": {
+            "request": {
+              "method": "GET",
+              "path": "/api/project-management-backend/v1/web/contract-mgt/operation-contract/page",
+              "status": 200,
+              "params": [
+                [
+                  "contractStatus",
+                  "DRAFT"
+                ],
+                [
+                  "pageNum",
+                  "1"
+                ],
+                [
+                  "pageSize",
+                  "10"
+                ]
+              ],
+              "queryCount": 1
+            },
+            "ui": {
+              "name": "",
+              "code": "",
+              "department": "全部",
+              "node": "草稿",
+              "type": "全部",
+              "start": "",
+              "end": ""
+            },
+            "page": "1"
+          },
+          "observation": "读取Response.request URL/method/status，不读取合同响应正文；读取独立input/select/date/页码；007/008仅在内存hash业务行文本、不输出明细；附件只保存preflight布尔/分类。",
+          "evidence_required": true
+        }
+      ],
+      "cleanup": "原生fixture销毁本case context/临时选择状态；不创建、修改、删除合同，业务清理0。",
+      "data_row_id": "pms-r4-006",
+      "browser_project": "chromium"
+    },
+    {
+      "case_id": "PMS-OC-SRC-007",
+      "module_id": "operation-contract",
+      "feature_id": "current-source-query-reset",
+      "scenario_id": "oc-src-007",
+      "title": "具体节点保护不查询",
+      "priority": "P1",
+      "preconditions": [
+        "本轮仅只读设计；依据2026-10-30冻结部署声明，不是当前认证DOM/业务实测。",
+        "原task pms-operation-contract-new-20261029与scope保持不变；role精确匹配configured account; business role not yet verified。",
+        "pi-ui-testing/fixtures受管环境，isolation=context；每case新context；账号仅返回匹配布尔值，不输出认证/用户profile。",
+        "site/identity/initial-state由原生fixture预检；脚本补充账号、六项结构/默认值与网络稳定检查；失败attach ui-preflight status=blocked并抛错，不skip。",
+        "用例及选择器readiness=design-only。未实际录制的label容器/展开/select/date/表格/分页结构在运行前检查，不能冒充已核验。"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "action": "原生fixture新context并执行site/identity/initial-state；脚本账号布尔核对、scope role、结构与初态预检，不点击重置。",
+          "assertion_ids": []
+        },
+        {
+          "step_id": "S2",
+          "action": "记录当前行DOM hash/行数/页码；流程节点选部门负责人审核，项目类型全部，监听列表GET，点击查询。",
+          "assertion_ids": []
+        },
+        {
+          "step_id": "S3",
+          "action": "在唯一test.step内读取具体UI/网络状态，聚合对象toEqual独立源码/冻结数据预期；007/008先等稳定.el-message可见，不按预期文案等待。",
+          "assertion_ids": [
+            "PMS-OC-SRC-007-A1"
+          ]
+        }
+      ],
+      "assertions": [
+        {
+          "assertion_id": "PMS-OC-SRC-007-A1",
+          "step_id": "S3",
+          "source_id": "S-R4-007",
+          "oracle_type": "declaration",
+          "target": "本case点击查询/重置后的实际请求方法/路径/全部参数及UI值；007/008额外提示/零GET/列表指纹与分页保持",
+          "comparison": "aggregate-toEqual; exact params including omission and duplicate-key rejection; parameter tokens bind to data.ts/frozen department before action",
+          "expected": {
+            "messages": [
+              "当前合同接口不支持项目类型及具体节点筛选，请清空后重试"
+            ],
+            "queryCount": 0,
+            "unchanged": true,
+            "rowCountUnchanged": true,
+            "page": "${before.page}",
+            "ui": {
+              "name": "",
+              "code": "",
+              "department": "全部",
+              "node": "部门负责人审核",
+              "type": "全部",
+              "start": "",
+              "end": ""
+            }
+          },
+          "observation": "读取Response.request URL/method/status，不读取合同响应正文；读取独立input/select/date/页码；007/008仅在内存hash业务行文本、不输出明细；附件只保存preflight布尔/分类。",
+          "evidence_required": true
+        }
+      ],
+      "cleanup": "原生fixture销毁本case context/临时选择状态；不创建、修改、删除合同，业务清理0。",
+      "data_row_id": "pms-r4-007",
+      "browser_project": "chromium"
+    },
+    {
+      "case_id": "PMS-OC-SRC-008",
+      "module_id": "operation-contract",
+      "feature_id": "current-source-query-reset",
+      "scenario_id": "oc-src-008",
+      "title": "项目类型保护不查询",
+      "priority": "P1",
+      "preconditions": [
+        "本轮仅只读设计；依据2026-10-30冻结部署声明，不是当前认证DOM/业务实测。",
+        "原task pms-operation-contract-new-20261029与scope保持不变；role精确匹配configured account; business role not yet verified。",
+        "pi-ui-testing/fixtures受管环境，isolation=context；每case新context；账号仅返回匹配布尔值，不输出认证/用户profile。",
+        "site/identity/initial-state由原生fixture预检；脚本补充账号、六项结构/默认值与网络稳定检查；失败attach ui-preflight status=blocked并抛错，不skip。",
+        "用例及选择器readiness=design-only。未实际录制的label容器/展开/select/date/表格/分页结构在运行前检查，不能冒充已核验。"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "action": "原生fixture新context并执行site/identity/initial-state；脚本账号布尔核对、scope role、结构与初态预检，不点击重置。",
+          "assertion_ids": []
+        },
+        {
+          "step_id": "S2",
+          "action": "记录当前行DOM hash/行数/页码；项目类型选集成实施类，流程节点全部，监听列表GET，点击查询。",
+          "assertion_ids": []
+        },
+        {
+          "step_id": "S3",
+          "action": "在唯一test.step内读取具体UI/网络状态，聚合对象toEqual独立源码/冻结数据预期；007/008先等稳定.el-message可见，不按预期文案等待。",
+          "assertion_ids": [
+            "PMS-OC-SRC-008-A1"
+          ]
+        }
+      ],
+      "assertions": [
+        {
+          "assertion_id": "PMS-OC-SRC-008-A1",
+          "step_id": "S3",
+          "source_id": "S-R4-008",
+          "oracle_type": "declaration",
+          "target": "本case点击查询/重置后的实际请求方法/路径/全部参数及UI值；007/008额外提示/零GET/列表指纹与分页保持",
+          "comparison": "aggregate-toEqual; exact params including omission and duplicate-key rejection; parameter tokens bind to data.ts/frozen department before action",
+          "expected": {
+            "messages": [
+              "当前合同接口不支持项目类型及具体节点筛选，请清空后重试"
+            ],
+            "queryCount": 0,
+            "unchanged": true,
+            "rowCountUnchanged": true,
+            "page": "${before.page}",
+            "ui": {
+              "name": "",
+              "code": "",
+              "department": "全部",
+              "node": "全部",
+              "type": "集成实施类",
+              "start": "",
+              "end": ""
+            }
+          },
+          "observation": "读取Response.request URL/method/status，不读取合同响应正文；读取独立input/select/date/页码；007/008仅在内存hash业务行文本、不输出明细；附件只保存preflight布尔/分类。",
+          "evidence_required": true
+        }
+      ],
+      "cleanup": "原生fixture销毁本case context/临时选择状态；不创建、修改、删除合同，业务清理0。",
+      "data_row_id": "pms-r4-008",
+      "browser_project": "chromium"
+    }
+  ],
+  "gaps": [
+    "原生已交接inventory只有001/009，尚无评审阶段扩展入口；保留原任务与全部评审预算，不改旧inventory。",
+    "这些草稿包含尚待核实的定位器、第二页数据和部门独立映射前置；未完成相应真实环境录制、完整静态核查、独立评审或执行。",
+    "不得将当前P0修订批准或运行结果映射至这7条。"
+  ],
+  "sources": [
+    {
+      "source_id": "S-R4-001",
+      "oracle_type": "declaration",
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+        "sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+      },
+      "statement": "从初始第一页进入实际可用第2页；名称输入data.nameRaw（默认首尾各2空格），点击查询。 断言仅采用源码可声明的参数/控件状态；参见同批source-analysis.json精确摘录与API/共享渲染来源。名称/编号modelModifiers.trim不能单独证明失焦后DOM保留raw或显示trim，该项待确认；GET省略undefined由当前bundle默认序列化声明支持。"
+    },
+    {
+      "source_id": "S-R4-002",
+      "oracle_type": "declaration",
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+        "sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+      },
+      "statement": "编号输入data.codeRaw（默认首尾各2空格），点击查询。 断言仅采用源码可声明的参数/控件状态；参见同批source-analysis.json精确摘录与API/共享渲染来源。名称/编号modelModifiers.trim不能单独证明失焦后DOM保留raw或显示trim，该项待确认；GET省略undefined由当前bundle默认序列化声明支持。"
+    },
+    {
+      "source_id": "S-R4-003",
+      "oracle_type": "declaration",
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+        "sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+      },
+      "statement": "名称与编号均输入data.whitespace（三个空格），点击查询。 断言仅采用源码可声明的参数/控件状态；参见同批source-analysis.json精确摘录与API/共享渲染来源。名称/编号modelModifiers.trim不能单独证明失焦后DOM保留raw或显示trim，该项待确认；GET省略undefined由当前bundle默认序列化声明支持。"
+    },
+    {
+      "source_id": "S-R4-004",
+      "oracle_type": "declaration",
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+        "sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+      },
+      "statement": "读取独立冻结的部门label/id/source sha/target_origin，按精确label选择部门，点击查询。 断言仅采用源码可声明的参数/控件状态；参见同批source-analysis.json精确摘录与API/共享渲染来源。名称/编号modelModifiers.trim不能单独证明失焦后DOM保留raw或显示trim，该项待确认；GET省略undefined由当前bundle默认序列化声明支持。"
+    },
+    {
+      "source_id": "S-R4-005",
+      "oracle_type": "declaration",
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+        "sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+      },
+      "statement": "展开后输入data.start、data.end（YYYY-MM-DD），Tab完成输入后关闭日期浮层，点击查询。 断言仅采用源码可声明的参数/控件状态；参见同批source-analysis.json精确摘录与API/共享渲染来源。名称/编号modelModifiers.trim不能单独证明失焦后DOM保留raw或显示trim，该项待确认；GET省略undefined由当前bundle默认序列化声明支持。"
+    },
+    {
+      "source_id": "S-R4-006",
+      "oracle_type": "declaration",
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+        "sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+      },
+      "statement": "流程节点选草稿，项目类型保持全部，点击查询。 断言仅采用源码可声明的参数/控件状态；参见同批source-analysis.json精确摘录与API/共享渲染来源。名称/编号modelModifiers.trim不能单独证明失焦后DOM保留raw或显示trim，该项待确认；GET省略undefined由当前bundle默认序列化声明支持。"
+    },
+    {
+      "source_id": "S-R4-007",
+      "oracle_type": "declaration",
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+        "sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+      },
+      "statement": "记录当前行DOM hash/行数/页码；流程节点选部门负责人审核，项目类型全部，监听列表GET，点击查询。 断言仅采用源码可声明的参数/控件状态；参见同批source-analysis.json精确摘录与API/共享渲染来源。名称/编号modelModifiers.trim不能单独证明失焦后DOM保留raw或显示trim，该项待确认；GET省略undefined由当前bundle默认序列化声明支持。"
+    },
+    {
+      "source_id": "S-R4-008",
+      "oracle_type": "declaration",
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+        "sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+      },
+      "statement": "记录当前行DOM hash/行数/页码；项目类型选集成实施类，流程节点全部，监听列表GET，点击查询。 断言仅采用源码可声明的参数/控件状态；参见同批source-analysis.json精确摘录与API/共享渲染来源。名称/编号modelModifiers.trim不能单独证明失焦后DOM保留raw或显示trim，该项待确认；GET省略undefined由当前bundle默认序列化声明支持。"
+    },
+    {
+      "source_id": "S-R4-009",
+      "oracle_type": "declaration",
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+        "sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+      },
+      "statement": "进入实际第2页；名称、编号、独立部门、具体节点、非全部类型及日期双端点全部设值并保存准备状态；点击重置（不先点查询）。 断言仅采用源码可声明的参数/控件状态；参见同批source-analysis.json精确摘录与API/共享渲染来源。名称/编号modelModifiers.trim不能单独证明失焦后DOM保留raw或显示trim，该项待确认；GET省略undefined由当前bundle默认序列化声明支持。"
+    },
+    {
+      "source_id": "S-R4-API",
+      "oracle_type": "declaration",
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract-api.txt",
+        "sha256": "6d3d0a17fa92105853a1936b99a2ea9c27eaec8970a0c354810ac5edc4db6476"
+      },
+      "statement": "ba.page调用kt.pageGet(operation-contract/page,e)，查询只读。"
+    },
+    {
+      "source_id": "S-R4-SHARED",
+      "oracle_type": "declaration",
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-deployment-20261030/index-ByeuxnbH.js.gz",
+        "sha256": "88904eb28dff356258328091793296b9ed2e8f0bb3dad7021b3f4f50c16c3652"
+      },
+      "statement": "当前解压bundle声明CSearchBar按钮顺序/宽度折叠、.search-item/.search-label容器、项目类型枚举、部门label/value/id映射、CPagination及axios省略undefined。压缩来源需解压后按source-analysis.json定位。"
+    },
+    {
+      "source_id": "S-R4-RECORDED",
+      "oracle_type": "baseline",
+      "ref": {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v14/draft.spec.ts",
+        "sha256": "3c3771d7d233467cf1878c9f6690fa77ca5212dcbf8db1d41590f57cec17d592"
+      },
+      "statement": "历史录制仅名称输入、查询、重置：placeholder=请输入、精确查询/重置button；不证明当前新bundle的全部locator或9条业务通过。"
+    }
+  ]
+}

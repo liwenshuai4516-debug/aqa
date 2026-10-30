@@ -1,0 +1,60 @@
+<!--
+ * @Author: pzy 1012839072@qq.com
+ * @Date: 2024-03-27 17:58:23
+ * @LastEditors: pzy 1012839072@qq.com
+ * @LastEditTime: 2024-07-22 14:20:42
+ * @Description: 
+-->
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/logo.ico" />
+  <link rel="icon" href="/favicon.ico">
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>基础平台</title>
+  <script type="module" crossorigin src="/assets/index-ByeuxnbH.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-Dv3cqEWH.css">
+</head>
+
+<body>
+  <div id="app"></div>
+  <div class="main-loading" id="main-loading">
+    <img class="loading" src="/static/img/loading.gif" />
+  </div>
+</body>
+
+</html>
+<style>
+  .main-loading {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    transition: background-color 0.1s ease;
+    z-index: 9999;
+  }
+
+  .main-loading::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #ffffffee;
+  }
+
+  .main-loading .loading {
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    height: 120px;
+    position: absolute;
+  }
+</style>

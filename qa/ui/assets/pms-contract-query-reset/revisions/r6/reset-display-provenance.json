@@ -1,0 +1,27 @@
+{
+  "kind": "exact-public-declaration-excerpts",
+  "source_path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+  "source_sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037",
+  "offset_unit": "UTF-16 code units",
+  "spans": [
+    {
+      "label": "node-options-empty-value",
+      "start": 699,
+      "end_exclusive": 1092,
+      "sha256": "9d9fa154b91d6943efbb17a237514c10cdad1ee40887745f9cb4ab94f63f7491"
+    },
+    {
+      "label": "node-and-type-placeholder-and-empty-option",
+      "start": 4332,
+      "end_exclusive": 4908,
+      "sha256": "b9f990419501f1ed5507ae5539ec1103b4d23042965a8a1dadbe0b07f8b53cce"
+    },
+    {
+      "label": "reset-all-models-and-query",
+      "start": 2644,
+      "end_exclusive": 2738,
+      "sha256": "9e1156b572766d46572ac75629e670b2813d484a2699a9826a749c414792694a"
+    }
+  ],
+  "reason": "Explicit reset empty model, node empty option labelled 全部, node/type placeholder 全部 and type empty option labelled 全部; declaration only, not DOM execution."
+}

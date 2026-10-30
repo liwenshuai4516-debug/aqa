@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "id": "pms-operation-contract-observe-v16",
+  "kind": "recording",
+  "created_at": "2026-10-30T01:13:41.740Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "inventory_ref": {
+      "path": "qa/ui/inventories/pms-contract-live-query-reset/manifest.json",
+      "sha256": "2f62ea1e00a59d2d50f01ac4008711b8f4aaba63675186c04063b127533444b9"
+    },
+    "initial_state": "当前部署源码已冻结；补齐root Playwright配置和package.json显式输入后，活动父会话私密准备仍失败，浏览器动作未开始。",
+    "initial_state_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/initial-state.json",
+      "sha256": "58563c76317bd5a48b147388a894b3f2d011d5ec141113adf35e4b157c6ff346"
+    },
+    "data_rules_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+      "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+    },
+    "status": "partial",
+    "log_ref": {
+      "path": "qa/ui/recordings/pms-operation-contract-observe-v16/raw-log.json",
+      "sha256": "421c1d3c78626d1b477bdfae7f4d7de9e6c1831357764b0da30bb5bcf7afaf55"
+    },
+    "script_refs": [],
+    "steps": [],
+    "data_refs": [
+      {
+        "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+        "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+      }
+    ],
+    "completion": {
+      "assertion_sources": false,
+      "cleanup_owned": true,
+      "initial_state_rebuildable": false,
+      "replaceable_data": true,
+      "stable_locators": false
+    },
+    "gaps": [
+      "补齐输入闭包仍未建立受管私密浏览器会话；无本次身份/DOM实测。",
+      "保留v15与v16失败，不继续以新ID盲目重试；后续须查清活动受管准备原因。",
+      "missing-generated-script",
+      "missing-native-recording-log",
+      "browser-cleanup-not-confirmed",
+      "goal-not-reached",
+      "completion-checks-incomplete"
+    ]
+  }
+}

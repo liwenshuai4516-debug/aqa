@@ -15,3 +15,7 @@ plugins/run-trace/client/vendor/* linguist-generated=true
 
 # ---- 第三方原样入库（不是本项目源码，也不是本项目构建的）---------------------
 plugins/wechat-ilink/client/vendor/qrcode.js linguist-vendored=true
+
+# ---- 冻结的外部声明证据：保留原始空白；原文/切片由 SHA256 与 provenance 校验 ----
+qa/ui/scopes/pms-contract-deployment-20261030/entry.html -text -diff
+qa/ui/assets/pms-contract-query-reset/revisions/r6/reset-display-source.txt -text -diff

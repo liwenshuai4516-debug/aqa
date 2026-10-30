@@ -1,0 +1,260 @@
+{
+	"schema_version": "1.0",
+	"kind": "stage-evidence-not-formal-test-report",
+	"status": "PARTIAL_BLOCKED_AT_DESIGN_REVIEW_BUDGET",
+	"created_at": "2026-10-30T03:06:48.201Z",
+	"task_ref": {
+		"path": "qa/ui/tasks/pms-operation-contract-new-20261029/manifest.json",
+		"sha256": "00cd90e51d7c580f5a46a843c5a096bcbecf33cbffc3923bbe974b997f52faae"
+	},
+	"asset_ref": {
+		"path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/manifest.json",
+		"sha256": "693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1"
+	},
+	"scope_ref": {
+		"path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+		"sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+	},
+	"target_url": "http://192.168.90.224:8238/pms/OperationContract",
+	"configured_account": "pms_admin",
+	"business_role": "not yet verified",
+	"deployment": {
+		"entry_asset": "/assets/index-ByeuxnbH.js",
+		"bundle_sha256": "92a453a7b9b5d3aa58da23c1fe9335d78f75759808e6cf838d2800f2e72fb2c8",
+		"archive_index_ref": {
+			"path": "qa/ui/scopes/pms-contract-deployment-20261030/archive-index.json",
+			"sha256": "89c483b4f3b57d2d9edcd876bf873e587fe44c2f1ff018cf5a9a8a20724ef34b"
+		},
+		"basis": "Public GET and exact AST source declarations; current authenticated DOM not verified"
+	},
+	"runtime": {
+		"project_local_physical_extension_registration": true,
+		"current_parent_r3_native_check": "completed; issues=[]; ready_for_review=true; design_approved=false",
+		"registration_commit": "e65cd998d1973aab25fde4573fc919ff293ec042",
+		"registration_remote_verified": true,
+		"proven_mechanism": "Synthetic Jiti fallback from logical symlink resolves root TS7 lacking compiler API, physical path resolves TS5.9.3",
+		"limit": "Old active host exact load-path trace not collected; fresh SDK checks are not product execution"
+	},
+	"design": {
+		"cases_archived": 9,
+		"current_script_cases": 2,
+		"remaining_seven_draft_ref": {
+			"path": "qa/ui/assets/pms-contract-remaining-seven/revisions/draft-r1/cases-draft.json",
+			"sha256": "3b0a5bb827f80db5b92139a6cf847074c4760a7200e5b83c63195a0ba4296268"
+		},
+		"r4_static_issue_count": 73,
+		"r5_ready_for_review": true,
+		"r6_native_check": {
+			"schema_version": "1.0",
+			"capability_id": "ui-case-design",
+			"capability_version": "0.1.0",
+			"status": "completed",
+			"artifact_refs": [
+				{
+					"path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/manifest.json",
+					"sha256": "693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1"
+				}
+			],
+			"errors": [],
+			"output": {
+				"asset_ref": {
+					"path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/manifest.json",
+					"sha256": "693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1"
+				},
+				"issues": [],
+				"coverage": {
+					"planned": [
+						"operation-contract/current-source-query-reset/oc-src-001",
+						"operation-contract/current-source-query-reset/oc-src-009"
+					],
+					"covered": [
+						"operation-contract/current-source-query-reset/oc-src-001",
+						"operation-contract/current-source-query-reset/oc-src-009"
+					],
+					"missing": []
+				},
+				"dependencies": [
+					{
+						"name": "@playwright/test",
+						"version": "1.62.1"
+					},
+					{
+						"name": "pi-ui-testing",
+						"version": "0.1.30"
+					},
+					{
+						"name": "typescript",
+						"version": "7.0.2"
+					}
+				],
+				"ready_for_review": true,
+				"design_approved": false
+			}
+		},
+		"dependency_closure": {
+			"files": 43,
+			"bytes": 220290,
+			"all_refs_valid": true,
+			"limited_jwt_like_pattern_matches": 0
+		},
+		"untested": [
+			"Other-role permissions",
+			"All six non-default values/reset against current deployment",
+			"Non-first-page to first-page transition",
+			"001 keyword post-blur DOM display",
+			"002–008 remaining executable inventory amendment"
+		]
+	},
+	"review_budget": {
+		"base_limit": 3,
+		"used": 3,
+		"pending": 0,
+		"trusted_review_count": 0,
+		"attempts": [
+			{
+				"request_id": "pms-contract-query-reset-review-r3-01",
+				"round": 1,
+				"asset_ref": {
+					"path": "qa/ui/assets/pms-contract-query-reset/revisions/r3/manifest.json",
+					"sha256": "d4c5b33415e1bddcd3195978d46b5e61ecafb503e26636ddf02b73aecdc2a691"
+				},
+				"state": "error",
+				"error": "runner-error"
+			},
+			{
+				"request_id": "pms-contract-query-reset-review-r5-02",
+				"round": 2,
+				"asset_ref": {
+					"path": "qa/ui/assets/pms-contract-query-reset/revisions/r5/manifest.json",
+					"sha256": "4a53ee9cc636089a3ad02f5eb37cdfb2ba257e17953614304088a6ddf83bd5f2"
+				},
+				"state": "error",
+				"error": "review-rejected",
+				"raw_ref": {
+					"path": "qa/ui/assets/pms-contract-query-reset/revisions/r5/reviews/design-918a0fbc-c242-4328-9d08-e3c28cec8156/raw.json",
+					"sha256": "d0acd23c3181e1e568dac52c6e70fa05d2840ea2e2cd6b0d3b33d84e3a33869f"
+				},
+				"input_ref": {
+					"path": "qa/ui/assets/pms-contract-query-reset/revisions/r5/reviews/design-918a0fbc-c242-4328-9d08-e3c28cec8156/input.json",
+					"sha256": "094b1c7f522e8c0aad40a105c83b5d305686250ca7ef29cee5510f5401105645"
+				},
+				"static_ref": {
+					"path": "qa/ui/assets/pms-contract-query-reset/revisions/r5/reviews/design-918a0fbc-c242-4328-9d08-e3c28cec8156/static.json",
+					"sha256": "1178f91550c51d6b00f9ee21b09f1310bf8ac6220025d43b3fdd7d5742d7cd0a"
+				}
+			},
+			{
+				"request_id": "pms-contract-query-reset-review-r5-03",
+				"round": 3,
+				"asset_ref": {
+					"path": "qa/ui/assets/pms-contract-query-reset/revisions/r5/manifest.json",
+					"sha256": "4a53ee9cc636089a3ad02f5eb37cdfb2ba257e17953614304088a6ddf83bd5f2"
+				},
+				"state": "error",
+				"error": "review-rejected",
+				"raw_ref": {
+					"path": "qa/ui/assets/pms-contract-query-reset/revisions/r5/reviews/design-2810eaba-b63b-456e-8bbd-c9f05ae0484c/raw.json",
+					"sha256": "5f13b9a7321209274bfcbf2d8a2173618edc7de9a41f6b543f4e70d735fe7393"
+				},
+				"input_ref": {
+					"path": "qa/ui/assets/pms-contract-query-reset/revisions/r5/reviews/design-2810eaba-b63b-456e-8bbd-c9f05ae0484c/input.json",
+					"sha256": "b2b3a432ee64c68222be169a6ed13ec21c37445f511bb160f4b3bb7a2173b8e1"
+				},
+				"static_ref": {
+					"path": "qa/ui/assets/pms-contract-query-reset/revisions/r5/reviews/design-2810eaba-b63b-456e-8bbd-c9f05ae0484c/static.json",
+					"sha256": "1178f91550c51d6b00f9ee21b09f1310bf8ac6220025d43b3fdd7d5742d7cd0a"
+				}
+			}
+		],
+		"next_proposal": {
+			"additional_rounds": 1,
+			"asset_ref": {
+				"path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/manifest.json",
+				"sha256": "693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1"
+			},
+			"status": "USER_EXPLICIT_ADDITIONAL_AUTHORIZATION_AND_TRUSTED_HOST_RENEWAL_REQUIRED",
+			"authorization_received": false,
+			"host_renewal_exposed_as_tool": false
+		}
+	},
+	"review_anchor_audit": {
+		"kind": "read-only-review-format-audit",
+		"request_id": "pms-contract-query-reset-review-r5-03",
+		"jsonParse": true,
+		"anchorCount": 1407,
+		"cited": 51,
+		"missing": ["E15L175", "E15L211", "E15L243"],
+		"trustedReviewRegistered": false,
+		"modelIssueCount": 1
+	},
+	"recordings": {
+		"previous_v14_complete": true,
+		"current_v15_partial_ref": {
+			"path": "qa/ui/recordings/pms-operation-contract-observe-v15/manifest.json",
+			"sha256": "79a622d9d82ad34cf0f53d5f86defb44db073d3a8ce9c4a824810e5f4882429c"
+		},
+		"current_v16_partial_ref": {
+			"path": "qa/ui/recordings/pms-operation-contract-observe-v16/manifest.json",
+			"sha256": "bb8bd69a86ac9d36e9084569af5c44c6a9f2aeefd10851b3a8f673df907cc917"
+		},
+		"new_browser_actions": 0
+	},
+	"data_space_current_archive_check": {
+		"status": "archived",
+		"executable": false,
+		"total": 9,
+		"counts": {
+			"new": 0,
+			"existing": 9,
+			"pending": 0,
+			"stale": 0,
+			"unclassified": 0
+		},
+		"classificationComplete": true,
+		"imported": 0,
+		"result_writes": 0
+	},
+	"execution": {
+		"formal_runs": 0,
+		"diagnostic_runs": 0,
+		"approved": 0,
+		"executed": 0,
+		"passed": 0,
+		"failed": 0,
+		"not_executed": 9,
+		"blocked_at_workflow_gate": 9,
+		"business_writes": 0
+	},
+	"development_checks": {
+		"typecheck": true,
+		"vitest": {
+			"files": 3,
+			"tests_passed": 34
+		},
+		"lint": {
+			"warnings": 0,
+			"errors": 0
+		},
+		"protocol": "passed static sync; tag heuristic skipped (no usable tag)",
+		"artifact_ref": {
+			"path": "docs/ui-testing-evidence/pms-contract-r4-development-checks-20261030.json.gz",
+			"sha256": "b7f7ad698cf323e533b797a06ffea0f11cf1c996d8615a80d683b34b60f80235"
+		}
+	},
+	"cleanup": {
+		"browser_or_fixture_started_this_continuation": false,
+		"junk_cleanup": "npm run clean:junk completed; deleted0; .workbuddy/tmp protected by .cleanup-keep",
+		"preview": "npm run clean completed; eligible0"
+	},
+	"limitations": [
+		"No independent design approval; no diagnostic/run/result-review/result sync performed.",
+		"Raw evaluator wording is untrusted because native output validation failed; no response repair or authority mutation.",
+		"Current workflow inventory has only001/009; all9 remain the denominator; no new task/budget reset."
+	],
+	"artifact_byte_preservation": {
+		"initial_staged_whitespace_check": "entry.html original external header trailing space; native-frozen reset-display-source.txt final blank line",
+		"resolution": "Exact two source-evidence paths marked -text -diff in .gitattributes; raw bytes not reformatted; no business/test/config source paths excluded",
+		"source_integrity": "Native designEvidence validates all43 refs, complete gzip bundle roundtrip and exact spans validated",
+		"final_staged_whitespace_check": "passed"
+	}
+}

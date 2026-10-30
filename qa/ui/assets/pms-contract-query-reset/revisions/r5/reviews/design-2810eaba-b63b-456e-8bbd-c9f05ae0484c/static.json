@@ -1,0 +1,32 @@
+{
+  "asset_ref": {
+    "path": "qa/ui/assets/pms-contract-query-reset/revisions/r5/manifest.json",
+    "sha256": "4a53ee9cc636089a3ad02f5eb37cdfb2ba257e17953614304088a6ddf83bd5f2"
+  },
+  "issues": [],
+  "coverage": {
+    "planned": [
+      "operation-contract/current-source-query-reset/oc-src-001",
+      "operation-contract/current-source-query-reset/oc-src-009"
+    ],
+    "covered": [
+      "operation-contract/current-source-query-reset/oc-src-001",
+      "operation-contract/current-source-query-reset/oc-src-009"
+    ],
+    "missing": []
+  },
+  "dependencies": [
+    {
+      "name": "@playwright/test",
+      "version": "1.62.1"
+    },
+    {
+      "name": "pi-ui-testing",
+      "version": "0.1.30"
+    },
+    {
+      "name": "typescript",
+      "version": "7.0.2"
+    }
+  ]
+}

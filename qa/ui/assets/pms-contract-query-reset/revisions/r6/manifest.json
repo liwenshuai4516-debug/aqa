@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0",
+  "kind": "asset",
+  "id": "pms-contract-query-reset",
+  "created_at": "2026-10-30T03:01:52.591Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "cases_ref": {
+      "path": "qa/ui/cases/pms-contract-query-reset-r6/manifest.json",
+      "sha256": "0f252b8d34a8a6ecb95ee62ffedefc0aa632dd8165a4936687d47fb5b67f3c4c"
+    },
+    "inventory_ref": {
+      "path": "qa/ui/inventories/pms-contract-live-query-reset/manifest.json",
+      "sha256": "2f62ea1e00a59d2d50f01ac4008711b8f4aaba63675186c04063b127533444b9"
+    },
+    "revision": "r6",
+    "module_ids": [
+      "operation-contract"
+    ],
+    "files": [
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/data-p0.ts",
+        "sha256": "1e1317a2818128489a04c6342a2b13ed5e466ebca77b51aee411afd2984cfda3"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/query-reset-p0.spec.ts",
+        "sha256": "0adf6db8be39492fb408f955d03aa56e4e7742ef16af0cd88145b68e49a54357"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/playwright.p0.config.mjs",
+        "sha256": "98d2e28ba0c82c04403a8e4d68baf3d40f589e39bd3bcaba9b52794fa3ea8043"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/tsconfig-p0.json",
+        "sha256": "bce65a049f1fa4343d512c326d559bae13a308137acf487e3434e73be729f8f0"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/shared-source.txt",
+        "sha256": "e86343852d510b589fe78f9fc90cca9d1681626327719381c9ef8fcb9025acb2"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/shared-source-provenance.json",
+        "sha256": "b6ed11aa87d58fe5c54ad6e3c085b47a7c2d8670d414584df389fa37bb16e0c0"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/observations.md",
+        "sha256": "331b1d860d81def982d3af14c7cd64634eec1885901d3a6fd6e4456e70998c98"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/mutation-plan.json",
+        "sha256": "857c86a09f77ad2c4d87a52b456bb6adea40b9b6e0b79a000722c4084fcf4bff"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r5/fixture-settings.template.json",
+        "sha256": "64a8c8a0c8a86ec49a90d27414cfd4dc24185e29575071c2df078c423cfd3ea6"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r5/fixture-server.mjs",
+        "sha256": "970dab7b6380577d1d209b8964155b79917770c219f6f35d460b386807c8dcb2"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r5/fixture.html",
+        "sha256": "c3124d4806bb77da209aa0fd5f9379bd277600c6c28a3bbdd1081573c3f526fc"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r5/fixture-client.mjs",
+        "sha256": "56f07030a3d8bea54c9497de32acb3f51bccd87fc2966a4f96cb6f08d60c6e61"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/environment-positive.json",
+        "sha256": "681c1f6374f17807a17bd0c4f48b5132072744cac0061aeb7ec056e61f92cef2"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/environment-negative.json",
+        "sha256": "8df4f40c50e4e1a7786136c0b31dcdb8164b3b03d7ab4537c6fe83bef3a66bfb"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/playwright.base.config.mjs",
+        "sha256": "521147a33a04e5e678f7a044a706333aa49931f9a136f6da79b954e425355271"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/playwright.positive.config.mjs",
+        "sha256": "2c93df941a0247ae9a0addbdebae77dc1cdd8132f32bbe2f6509074c8f4e34a7"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/playwright.negative.config.mjs",
+        "sha256": "f5264e90fdada76959a0d51bdbc8b2cc8080d458ac6504edadf5d69aa2ef72c2"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r5/diagnostic-spec.json",
+        "sha256": "6c6225ed13c6433103b71f7286a351c24a610fefc414d7cc53b8f86fa700ee99"
+      },
+      {
+        "path": "tests/lib/chrome.mjs",
+        "sha256": "3cc62338c8df4b260e9e577d0ef7c55af20be7221adcdb38c9d9b5e5de3774bc"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/reset-display-source.txt",
+        "sha256": "4f020b2c2f33003838ba0fedd3e125f368823d0210747d9b3354376965151673"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/reset-display-provenance.json",
+        "sha256": "540378537959e59ec7461364f40470454c4633612478b2c96b0ca51adc5d10d0"
+      }
+    ],
+    "compiler_config_ref": {
+      "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/tsconfig-p0.json",
+      "sha256": "bce65a049f1fa4343d512c326d559bae13a308137acf487e3434e73be729f8f0"
+    },
+    "dependencies": [
+      {
+        "name": "@playwright/test",
+        "version": "1.62.1"
+      },
+      {
+        "name": "pi-ui-testing",
+        "version": "0.1.30"
+      },
+      {
+        "name": "typescript",
+        "version": "7.0.2"
+      }
+    ],
+    "recording_refs": [
+      {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v14/manifest.json",
+        "sha256": "e1f8eb19a209822aef5b0de6a8550c08661613f29b6ea68fa6bef2861ae279dd"
+      }
+    ],
+    "bindings": [
+      {
+        "case_id": "PMS-OC-SRC-001",
+        "test_title": "PMS-OC-SRC-001 合同名称去空白查询",
+        "assertion_ids": [
+          "PMS-OC-SRC-001-A1"
+        ],
+        "script_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/query-reset-p0.spec.ts",
+          "sha256": "0adf6db8be39492fb408f955d03aa56e4e7742ef16af0cd88145b68e49a54357"
+        }
+      },
+      {
+        "case_id": "PMS-OC-SRC-009",
+        "test_title": "PMS-OC-SRC-009 六条件全部设值后重置",
+        "assertion_ids": [
+          "PMS-OC-SRC-009-A1"
+        ],
+        "script_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/query-reset-p0.spec.ts",
+          "sha256": "0adf6db8be39492fb408f955d03aa56e4e7742ef16af0cd88145b68e49a54357"
+        }
+      }
+    ],
+    "readiness": "design-only",
+    "gaps": [
+      "原9条分母保留；002–008尚未登记可执行修订，原生任务评审阶段没有扩展inventory入口，不新建任务重置预算。",
+      "当前部署源码已更新，v14完整录制来自前部署；v15/v16受管准备失败。当前账号/DOM仍须正对照与正式批次预检。",
+      "业务角色名称未知，仅配置账号可访问范围；其他权限未覆盖。",
+      "001名称失焦DOM显示raw/trim待确认；001/009从默认页1检查pageNum=1，不覆盖非首页回1转换。",
+      "六项非默认准备/重置尚未真实环境实测；负副本仅验证聚合断言可检出指定错误，不证明每个子项独立敏感。",
+      "r5第2轮非法JSON、第3轮引用不存在anchors，均未登记可信review；原3轮预算已用尽。r6仅补精确placeholder/空选项/重置原文来源，不更改脚本与断言预期；尚未独立评审。"
+    ],
+    "content_sha256": "3ceed9bbcf4c4c199e7d6ba9d2258b314ec4364e8b87dcb4cc67980405a3c172"
+  }
+}

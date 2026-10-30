@@ -1,0 +1,51 @@
+{
+  "environment_ref": {
+    "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/environment-positive.json",
+    "sha256": "681c1f6374f17807a17bd0c4f48b5132072744cac0061aeb7ec056e61f92cef2"
+  },
+  "config_ref": {
+    "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/playwright.positive.config.mjs",
+    "sha256": "2c93df941a0247ae9a0addbdebae77dc1cdd8132f32bbe2f6509074c8f4e34a7"
+  },
+  "timeout_ms": 120000,
+  "probes": [
+    {
+      "id": "p0-name-and-reset-errors",
+      "environment_ref": {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/environment-negative.json",
+        "sha256": "8df4f40c50e4e1a7786136c0b31dcdb8164b3b03d7ab4537c6fe83bef3a66bfb"
+      },
+      "config_ref": {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/playwright.negative.config.mjs",
+        "sha256": "f5264e90fdada76959a0d51bdbc8b2cc8080d458ac6504edadf5d69aa2ef72c2"
+      },
+      "mutation_refs": [
+        {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/mutation-plan.json",
+          "sha256": "857c86a09f77ad2c4d87a52b456bb6adea40b9b6e0b79a000722c4084fcf4bff"
+        },
+        {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/fixture-settings.template.json",
+          "sha256": "64a8c8a0c8a86ec49a90d27414cfd4dc24185e29575071c2df078c423cfd3ea6"
+        },
+        {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/fixture-server.mjs",
+          "sha256": "763011c65c5d3f7d9443be25a9e37522b7ad97557ecaa2fda57797db5485f920"
+        },
+        {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/fixture.html",
+          "sha256": "c3124d4806bb77da209aa0fd5f9379bd277600c6c28a3bbdd1081573c3f526fc"
+        },
+        {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r4/fixture-client.mjs",
+          "sha256": "859be1aedb951a6524d7744c82355a5d0a11e1cea819af282bbb7959ba6b06cb"
+        }
+      ],
+      "description": "Isolated synthetic error copy, one row and default page 1. 001 sends actual untrimmed bizName in a 200 GET; 009 retains name after reset and sends actual bizName in a 200 GET. Same P0 script and aggregate expectations as real deployment 92a453... env-v3. 009 selects first visible non-all department, prepares only departmentNonDefault=true, then requires all/empty and all six exact filters absent. No department oracle or second page. Planned failure must be expect(actual).toEqual(expected) inside each mapped aggregate step, never locator/precondition failure. This is a plan, not observed runtime evidence.",
+      "assertion_ids": [
+        "PMS-OC-SRC-001-A1",
+        "PMS-OC-SRC-009-A1"
+      ]
+    }
+  ]
+}

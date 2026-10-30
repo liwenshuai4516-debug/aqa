@@ -1,0 +1,35 @@
+{
+  "kind": "public-deployment-source-provenance",
+  "entry_url": "http://192.168.90.224:8238/pms/OperationContract",
+  "entry_http_status": 200,
+  "entry_asset": "/assets/index-ByeuxnbH.js",
+  "asset_url": "http://192.168.90.224:8238/assets/index-ByeuxnbH.js",
+  "asset_http_status": 200,
+  "asset_sha256": "92a453a7b9b5d3aa58da23c1fe9335d78f75759808e6cf838d2800f2e72fb2c8",
+  "asset_bytes": 2556013,
+  "source_file_saved_at": "2026-10-30T01:00:44.294Z",
+  "offset_unit": "UTF-16 code units",
+  "excerpts": [
+    {
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+        "sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+      },
+      "start": 2319221,
+      "end_exclusive": 2328970
+    },
+    {
+      "ref": {
+        "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract-api.txt",
+        "sha256": "6d3d0a17fa92105853a1936b99a2ea9c27eaec8970a0c354810ac5edc4db6476"
+      },
+      "start": 2248030,
+      "end_exclusive": 2248671
+    }
+  ],
+  "limitations": [
+    "Declaration only; current authenticated DOM and business behavior not yet verified",
+    "No business write requests"
+  ],
+  "extraction": "TypeScript 5.9.3 AST VariableDeclaration spans, no rewriting"
+}

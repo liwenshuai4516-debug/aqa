@@ -1,0 +1,78 @@
+{
+	"status": "planning-only-no-review-no-run",
+	"task_scope_policy": "Keep original task/scope/inventory. Active candidate is existing 001/009 inventory only.",
+	"current_component_ref": {
+		"path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+		"sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+	},
+	"probe_strategy": "One negative probe, two aggregate assertion IDs; native positive round uses real PMS. No control_environment_ref. Same scripts and expectation values in all rounds.",
+	"active": [
+		{
+			"case_id": "PMS-OC-SRC-001",
+			"assertion_id": "PMS-OC-SRC-001-A1",
+			"mutation": "name-untrimmed",
+			"trigger": "Actual name input contains nonempty text plus leading/trailing spaces",
+			"wrong_observation": "Actual outgoing GET bizName retains raw whitespace; page remains 1 and status is 200",
+			"failure_location": "Aggregate test.step expect(actual).toEqual(expected); not locator, preflight or timeout"
+		},
+		{
+			"case_id": "PMS-OC-SRC-009",
+			"assertion_id": "PMS-OC-SRC-009-A1",
+			"mutation": "reset-name-retained",
+			"trigger": "Actual reset click after filling all six independent fields from the default page 1; department is any visible non-default UI input",
+			"wrong_observation": "Name input remains nonempty and actual outgoing GET retains bizName; other fields clear, page remains 1, status 200",
+			"failure_location": "Aggregate test.step expect(actual).toEqual(expected); not locator, preflight or timeout"
+		}
+	],
+	"inactive_drafts_not_in_current_spec": [
+		{
+			"case_id": "PMS-OC-SRC-002",
+			"assertion_id": "PMS-OC-SRC-002-A1",
+			"mutation": "code-untrimmed",
+			"wrong_observation": "Actual GET bizCode retains raw whitespace"
+		},
+		{
+			"case_id": "PMS-OC-SRC-003",
+			"assertion_id": "PMS-OC-SRC-003-A1",
+			"mutation": "whitespace-effective-filter",
+			"wrong_observation": "Whitespace-only name/code produce a nonempty GET bizName"
+		},
+		{
+			"case_id": "PMS-OC-SRC-004",
+			"assertion_id": "PMS-OC-SRC-004-A1",
+			"mutation": "wrong-department-id",
+			"wrong_observation": "Correct independently frozen department label selected, actual GET departmentId is incorrect"
+		},
+		{
+			"case_id": "PMS-OC-SRC-005",
+			"assertion_id": "PMS-OC-SRC-005-A1",
+			"mutation": "wrong-date-end",
+			"wrong_observation": "Actual GET signedAtEnd is shifted one day; independent input endpoints remain correct"
+		},
+		{
+			"case_id": "PMS-OC-SRC-006",
+			"assertion_id": "PMS-OC-SRC-006-A1",
+			"mutation": "wrong-draft-status",
+			"wrong_observation": "草稿 selected, actual GET contractStatus is SIGNED"
+		},
+		{
+			"case_id": "PMS-OC-SRC-007",
+			"assertion_id": "PMS-OC-SRC-007-A1",
+			"mutation": "wrong-node-message",
+			"wrong_observation": "Stable visible notification has wrong text; no query and same rows remain"
+		},
+		{
+			"case_id": "PMS-OC-SRC-008",
+			"assertion_id": "PMS-OC-SRC-008-A1",
+			"mutation": "wrong-type-message",
+			"wrong_observation": "Stable visible notification has wrong text; no query and same rows remain"
+		}
+	],
+	"limits": [
+		"Inactive probes must not be added to the existing task by editing inventory or resetting budget.",
+		"An aggregate assertion detected by one mutation does not prove each subclause is independently sensitive.",
+		"If a future candidate uses multiple assertion IDs per case, each probe must target one ID while all non-target cases pass; do not reuse the all-errors plan blindly.",
+		"DOM is a hand-built controlled subset based on component declarations and r4 locator contract, not a full PMS deployment clone or product result.",
+		"P0 uses any visible non-default department input without a label/id oracle. Independent mapping is required only for inactive004. Page2 is not a P0 precondition; non-first-page to first-page transition remains uncovered. Source freshness, account/role and actual DOM remain runtime preconditions."
+	]
+}

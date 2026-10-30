@@ -37,10 +37,11 @@
       }
     ],
     "blockers": [
-      "真实受管录制v14和case-design已通过原生handoff；r3在fresh原生SDK静态检查issues=[]、ready_for_review=true，但未获得独立设计批准。",
-      "当前活动会话及子会话对同一r3候选的原生ui_case_design check仍报Cannot read properties of undefined (reading 'ES2022')；同环境freshSDK通过。活动工具与fresh运行时差异已复现，具体宿主加载原因待核验，不能以fresh检查代替当前应用重新加载验证。",
-      "原生ui_design_review请求pms-contract-query-reset-review-r3-01实际返回runner-error：评估调用失败；保留已有输入与响应，不批准。无批准产物、无正式run；不跨过评审/诊断门禁，原评估请求历史须保留，不重放。",
-      "项目登记入口已由legacy统一为canonical，迁移脚本已修复并通过4条定向单测；当前活动工具需要在应用重新加载后复核。原9条源码草稿仍在数据空间：本轮正式执行0、通过0、失败0、未执行9，合同业务写入0。"
+      "当前父会话r3静态运行时已恢复；r6原生静态检查issues=[]、ready_for_review=true，但未独立设计批准。",
+      "同一评审循环已使用3/3轮，无pending：r3-01 runner-error；r5-02非法JSON；r5-03不存在原文anchors。原始输入/响应已保留，不重放、不改authority、不建新task重置预算。",
+      "后续待评r6：qa/ui/assets/pms-contract-query-reset/revisions/r6/manifest.json SHA256 693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1；已补精确reset/placeholder/全部空选项来源，脚本和断言预期不变。",
+      "需用户明确追加1–3轮且由受信任宿主续授后才能再评；当前可调用工具没有预算续授接口。",
+      "无可信批准，诊断/运行登记/正式执行/结果回写均未启动。9条归档用例全保留；当前P0候选2条，另7条有明确未批准草稿。正式执行0、通过0、失败0、未执行9、合同业务写入0。"
     ]
   }
 }

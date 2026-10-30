@@ -1,0 +1,12 @@
+{
+	"schema_version": "1.0",
+	"environment_id": "pms-r4-controlled-error-local",
+	"deployment_version": "controlled-r4-draft-from-92a453a7b9b5d3aa",
+	"role": "configured account; business role not yet verified",
+	"base_url": "http://127.0.0.1:8987/pms/OperationContract",
+	"identity": { "selector": "header nav", "text": "经营管理 / 经营合同" },
+	"initial_state": { "selector": "main button#query", "text": "查询" },
+	"auth": { "kind": "none" },
+	"isolation": "context",
+	"timeout_ms": 20000
+}
