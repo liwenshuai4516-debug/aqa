@@ -1,0 +1,1 @@
+a0t=e=>sn.get(Wt.BASE_SERVICE+"/department-tree",e)

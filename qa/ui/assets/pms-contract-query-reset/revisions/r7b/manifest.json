@@ -1,0 +1,256 @@
+{
+  "schema_version": "1.0",
+  "kind": "asset",
+  "id": "pms-contract-query-reset",
+  "created_at": "2026-10-30T09:01:00.000Z",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "cases_ref": {
+      "path": "qa/ui/cases/pms-contract-query-reset-r7/manifest.json",
+      "sha256": "3e80c1eca31c4b5ba5dc4fc8a54dd10570cb5c39b6425801e19178d822e4c591"
+    },
+    "inventory_ref": {
+      "path": "qa/ui/inventories/pms-contract-query-reset-all-r7/manifest.json",
+      "sha256": "ca5bcac44ad2955dbd0156fbcd9dc5924658aed92c8905df08adebea19de3e80"
+    },
+    "revision": "r7b",
+    "module_ids": [
+      "operation-contract"
+    ],
+    "files": [
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/data-all.ts",
+        "sha256": "c3e9d28923565f7a116f8807c0543bb184d04dc749a2e8ec77fbbd59d79e492a"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/query-reset-all.spec.ts",
+        "sha256": "c56af8b8951d1796127ef7adde90e5242be5121da8099892059da0fc8e8d56a3"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/r7-helpers.ts",
+        "sha256": "e5b79a6a2aada383c9e40c6506d352b6529b694c01326eb7b0673bc306933b9c"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/fixture-client.mjs",
+        "sha256": "f6eff1d1476735fb93be20fd80ed8e72756608695d9b355c27046ec643eb1868"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/fixture-server.mjs",
+        "sha256": "7b7cf66457d913b0571a781dd9e07874c7abfb2bc69130caceb8ec768c0d8510"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/fixture.html",
+        "sha256": "0f633dd5c5ab44224cc079a87580272825efc6b0172f016bbb836564123f5d36"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/fixture-settings.template.json",
+        "sha256": "618b5a24cb499320f6a12d641e6b11f783710f0be4cbf020ffbf46e6d0d85977"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/tsconfig-all.json",
+        "sha256": "9e3f7eba06da475d185b4521c3658c78b2542fea808fbd39356cb62e480fdd77"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/playwright.all.config.mjs",
+        "sha256": "d3976c80953714bc8ed2b42daf7e9d24be322da25279112e0e1cd167528044ab"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/fixture-settings-control.json",
+        "sha256": "8c7fee4186036fe4e9ddde306f2b29754e2e5fface10debad64280ae3f446f0e"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/fixture-settings-negative.json",
+        "sha256": "84c1a1fae86c3087c22c4ebee3a7751c979439efa49352917342a2d6a070eb69"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/environment-control.json",
+        "sha256": "82b4860f4934011feed574355fd6f8393789d9ee0a71fda18a95c9888abd1b02"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/environment-negative.json",
+        "sha256": "8c56b3e29655e656457a7c58d15085fbb049291b1b18f5b190d409c39fe53377"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/environment-target.json",
+        "sha256": "cdfe188e0b73eed5f6a1b093012ba0ca9a751a761a370dfac6617ac7832f33cb"
+      },
+      {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/diagnostic-spec.json",
+        "sha256": "a7d00aa385013850b432bd8dd68a947a2d9a51fa4e24832251a6db46b5c0cf83"
+      },
+      {
+        "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/provenance.json",
+        "sha256": "7296e4a8603e5d219c59d7f1ff8dedc8d10eb4179db5ecc9b620a601b5121515"
+      },
+      {
+        "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/http-and-value-helpers.txt",
+        "sha256": "d6895065dfe49d016bd4e6fa844466ae081e2088c9ee998277ea8044bc4c607c"
+      },
+      {
+        "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/department-a0t.txt",
+        "sha256": "21142b4704fd062281ab90785e7b4695909ed5d5378d4bbe917da4e98f2678bf"
+      },
+      {
+        "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/operation-contract-api.txt",
+        "sha256": "34204c1bc817d72636f404a949e136b4a2a0d0d431cefef1e11224974dbe731a"
+      },
+      {
+        "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/reset-handler.txt",
+        "sha256": "702642a6a00b24fb3ad190a5e08537e70337e99e858e8fc14818be6cb77746ce"
+      },
+      {
+        "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/query-handler.txt",
+        "sha256": "5246214e214681eb764930243670bff7b9e89a0aefa0feb56d0fc5c75f5855c9"
+      },
+      {
+        "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/department-n1.txt",
+        "sha256": "1fa54c8abc6b908995148d238fb4b189e4a144b2b663d3712ece97cf5393169a"
+      },
+      {
+        "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/shared-source.txt",
+        "sha256": "a59ba8658de33b3bbd513a88badcd79293145660a3ee30b5011866aec6ed1902"
+      },
+      {
+        "path": "tests/lib/chrome.mjs",
+        "sha256": "3cc62338c8df4b260e9e577d0ef7c55af20be7221adcdb38c9d9b5e5de3774bc"
+      }
+    ],
+    "compiler_config_ref": {
+      "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/tsconfig-all.json",
+      "sha256": "9e3f7eba06da475d185b4521c3658c78b2542fea808fbd39356cb62e480fdd77"
+    },
+    "dependencies": [
+      {
+        "name": "@playwright/test",
+        "version": "1.62.1"
+      },
+      {
+        "name": "pi-ui-testing",
+        "version": "0.1.31"
+      },
+      {
+        "name": "typescript",
+        "version": "7.0.2"
+      }
+    ],
+    "recording_refs": [
+      {
+        "path": "qa/ui/recordings/pms-operation-contract-observe-v14/manifest.json",
+        "sha256": "e1f8eb19a209822aef5b0de6a8550c08661613f29b6ea68fa6bef2861ae279dd"
+      }
+    ],
+    "bindings": [
+      {
+        "case_id": "PMS-OC-SRC-001",
+        "test_title": "PMS-OC-SRC-001 合同名称去空白查询",
+        "script_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/query-reset-all.spec.ts",
+          "sha256": "c56af8b8951d1796127ef7adde90e5242be5121da8099892059da0fc8e8d56a3"
+        },
+        "assertion_ids": [
+          "PMS-OC-SRC-001-A1"
+        ]
+      },
+      {
+        "case_id": "PMS-OC-SRC-002",
+        "test_title": "PMS-OC-SRC-002 合同编号去空白查询",
+        "script_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/query-reset-all.spec.ts",
+          "sha256": "c56af8b8951d1796127ef7adde90e5242be5121da8099892059da0fc8e8d56a3"
+        },
+        "assertion_ids": [
+          "PMS-OC-SRC-002-A1"
+        ]
+      },
+      {
+        "case_id": "PMS-OC-SRC-003",
+        "test_title": "PMS-OC-SRC-003 名称编号双空白省略筛选",
+        "script_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/query-reset-all.spec.ts",
+          "sha256": "c56af8b8951d1796127ef7adde90e5242be5121da8099892059da0fc8e8d56a3"
+        },
+        "assertion_ids": [
+          "PMS-OC-SRC-003-A1"
+        ]
+      },
+      {
+        "case_id": "PMS-OC-SRC-004",
+        "test_title": "PMS-OC-SRC-004 归属部门独立响应映射departmentId",
+        "script_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/query-reset-all.spec.ts",
+          "sha256": "c56af8b8951d1796127ef7adde90e5242be5121da8099892059da0fc8e8d56a3"
+        },
+        "assertion_ids": [
+          "PMS-OC-SRC-004-A1"
+        ]
+      },
+      {
+        "case_id": "PMS-OC-SRC-005",
+        "test_title": "PMS-OC-SRC-005 签订日期两端点按YYYY-MM-DD传递",
+        "script_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/query-reset-all.spec.ts",
+          "sha256": "c56af8b8951d1796127ef7adde90e5242be5121da8099892059da0fc8e8d56a3"
+        },
+        "assertion_ids": [
+          "PMS-OC-SRC-005-A1"
+        ]
+      },
+      {
+        "case_id": "PMS-OC-SRC-006",
+        "test_title": "PMS-OC-SRC-006 草稿节点传递DRAFT状态",
+        "script_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/query-reset-all.spec.ts",
+          "sha256": "c56af8b8951d1796127ef7adde90e5242be5121da8099892059da0fc8e8d56a3"
+        },
+        "assertion_ids": [
+          "PMS-OC-SRC-006-A1"
+        ]
+      },
+      {
+        "case_id": "PMS-OC-SRC-007",
+        "test_title": "PMS-OC-SRC-007 具体节点不支持且窗口内无请求列表不变",
+        "script_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/query-reset-all.spec.ts",
+          "sha256": "c56af8b8951d1796127ef7adde90e5242be5121da8099892059da0fc8e8d56a3"
+        },
+        "assertion_ids": [
+          "PMS-OC-SRC-007-A1"
+        ]
+      },
+      {
+        "case_id": "PMS-OC-SRC-008",
+        "test_title": "PMS-OC-SRC-008 项目类型不支持且窗口内无请求列表不变",
+        "script_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/query-reset-all.spec.ts",
+          "sha256": "c56af8b8951d1796127ef7adde90e5242be5121da8099892059da0fc8e8d56a3"
+        },
+        "assertion_ids": [
+          "PMS-OC-SRC-008-A1"
+        ]
+      },
+      {
+        "case_id": "PMS-OC-SRC-009",
+        "test_title": "PMS-OC-SRC-009 六条件全部设值后重置",
+        "script_ref": {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/query-reset-all.spec.ts",
+          "sha256": "c56af8b8951d1796127ef7adde90e5242be5121da8099892059da0fc8e8d56a3"
+        },
+        "assertion_ids": [
+          "PMS-OC-SRC-009-A1"
+        ]
+      }
+    ],
+    "readiness": "design-only",
+    "gaps": [
+      "All nine original cases and assertions are included; no claim of current browser execution or reliable runtime locators.",
+      "Scope role is the configured account; business role name and other roles remain unverified.",
+      "Default page 1 only; non-first-page-to-1 transition remains uncovered.",
+      "007/008 no-request and unchanged-list conclusions apply only to the measured 1500ms window, not indefinitely.",
+      "Independent native review budget remains the original loop; package JSON-mode fix does not restore failed attempts or grant approval."
+    ],
+    "content_sha256": "0ea3d52940b488696fb5a1615071e0a1c4eb7471fec9c9ad335ddccbb00ff5c8"
+  }
+}

@@ -1,0 +1,1 @@
+async function n1(){const e=await a0t(),t=[];function n(r){for(const a of r){const o=dn(a);o.id!==void 0&&o.name&&t.push({label:Ne(o.name),value:Ne(o.name),id:Ne(o.id)}),Array.isArray(o.children)&&n(o.children)}}return n(e.data??[]),t}

@@ -1,0 +1,58 @@
+{
+  "environment_ref": {
+    "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/environment-target.json",
+    "sha256": "cdfe188e0b73eed5f6a1b093012ba0ca9a751a761a370dfac6617ac7832f33cb"
+  },
+  "config_ref": {
+    "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/playwright.all.config.mjs",
+    "sha256": "d3976c80953714bc8ed2b42daf7e9d24be322da25279112e0e1cd167528044ab"
+  },
+  "control_environment_ref": {
+    "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/environment-control.json",
+    "sha256": "82b4860f4934011feed574355fd6f8393789d9ee0a71fda18a95c9888abd1b02"
+  },
+  "timeout_ms": 120000,
+  "probes": [
+    {
+      "id": "nine-query-reset-errors",
+      "environment_ref": {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/environment-negative.json",
+        "sha256": "8c56b3e29655e656457a7c58d15085fbb049291b1b18f5b190d409c39fe53377"
+      },
+      "config_ref": {
+        "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/playwright.all.config.mjs",
+        "sha256": "d3976c80953714bc8ed2b42daf7e9d24be322da25279112e0e1cd167528044ab"
+      },
+      "mutation_refs": [
+        {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/fixture-settings-negative.json",
+          "sha256": "84c1a1fae86c3087c22c4ebee3a7751c979439efa49352917342a2d6a070eb69"
+        },
+        {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/fixture-server.mjs",
+          "sha256": "7b7cf66457d913b0571a781dd9e07874c7abfb2bc69130caceb8ec768c0d8510"
+        },
+        {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/fixture-client.mjs",
+          "sha256": "f6eff1d1476735fb93be20fd80ed8e72756608695d9b355c27046ec643eb1868"
+        },
+        {
+          "path": "qa/ui/assets/pms-contract-query-reset/revisions/r7/fixture.html",
+          "sha256": "0f633dd5c5ab44224cc079a87580272825efc6b0172f016bbb836564123f5d36"
+        }
+      ],
+      "description": "Isolated loopback synthetic copy. Mutations change the actual serialized bizName/bizCode/departmentId/date-end/DRAFT fields, introduce effective whitespace filter, corrupt unsupported-node/type message, and retain name after reset. Same nine mapped tests and independent expected values are unchanged. Positive copy uses settings-control with no mutations, negative copy uses settings-negative. Both owned servers must be started only after trusted approval and closed after diagnosis; no PMS proxy, external writes or business IDs. 007/008 observation only covers the declared 1500ms window. A planned probe is not runtime evidence.",
+      "assertion_ids": [
+        "PMS-OC-SRC-001-A1",
+        "PMS-OC-SRC-002-A1",
+        "PMS-OC-SRC-003-A1",
+        "PMS-OC-SRC-004-A1",
+        "PMS-OC-SRC-005-A1",
+        "PMS-OC-SRC-006-A1",
+        "PMS-OC-SRC-007-A1",
+        "PMS-OC-SRC-008-A1",
+        "PMS-OC-SRC-009-A1"
+      ]
+    }
+  ]
+}

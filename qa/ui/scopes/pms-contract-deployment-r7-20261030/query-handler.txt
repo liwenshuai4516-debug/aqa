@@ -1,0 +1,1 @@
+function O(){if(p.type||p.node&&p.node!=="草稿"){xt.info("当前合同接口不支持项目类型及具体节点筛选，请清空后重试");return}Object.assign(b,p),m.value=1,x()}

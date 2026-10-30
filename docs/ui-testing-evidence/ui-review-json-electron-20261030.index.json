@@ -1,0 +1,229 @@
+{
+	"schema_version": "1.0",
+	"status": "PASS",
+	"kind": "synthetic-Electron-integration-evidence",
+	"scope": "JSON-mode transport and strict response validation; not PMS business execution or approval",
+	"source": "tests/ui-review-json-desktop-test.mjs",
+	"archive": {
+		"path": "docs/ui-testing-evidence/ui-review-json-electron-20261030.tar.gz",
+		"sha256": "ae13168fa441b4bb299b0dff586f190711c70dba719039a9f67cc48b5cf9879c",
+		"bytes": 2037394
+	},
+	"excluded": [
+		"native-authority (not exported as trusted registration)",
+		"desktop app data (removed by owned process cleanup)",
+		"node_modules and symlinks"
+	],
+	"entries": [
+		{
+			"path": ".cleanup-keep",
+			"sha256": "b1e47b672ce4ab4571127257839aca84a2be4f2e6ba1edd29e7ca5bf4c9e43f2",
+			"bytes": 45
+		},
+		{
+			"path": "01-skill-enabled.png",
+			"sha256": "846203714d359f6b0412395ade689db3718967140891b8c1a19c365cdff14d83",
+			"bytes": 407488
+		},
+		{
+			"path": "02-skill-disabled-after-reload.png",
+			"sha256": "a64fc998b5babb830b990d99f56eb58a43d16fee2ea725052ffaa34a16180d3c",
+			"bytes": 410373
+		},
+		{
+			"path": "03-approved-runtime-not-ready.png",
+			"sha256": "b437de96b40e2a3404f52f5c9a29d14a8c416d51505b158179812f56bdec8862",
+			"bytes": 315340
+		},
+		{
+			"path": "electron.log",
+			"sha256": "da0cd8a9fae28c342388b0b8b3103d82886e422580c7a08f5079151b757cfc51",
+			"bytes": 3639
+		},
+		{
+			"path": "isolated-registration.json",
+			"sha256": "b6872d83c8e0abac6c4dc974fc4e1b717da29c59ae3bd841b5eb9245040efda9",
+			"bytes": 502
+		},
+		{
+			"path": "native-tool-receipts.json",
+			"sha256": "658916f5b04c07e5990dcb04d49f3c3d1168347b4608ec18fe433d25cb09be50",
+			"bytes": 3563
+		},
+		{
+			"path": "provider-requests.json",
+			"sha256": "fb92604648720dccd9d629b5ad9d19b8c08a5bfce52b6ea11bba02bf88d24b2a",
+			"bytes": 2648746
+		},
+		{
+			"path": "renderer-frames.json",
+			"sha256": "183a33ddcb0f48c7f7b4f8d1dbb2b8438deaa155b0fda8005c4a280ac52ded3b",
+			"bytes": 3362592
+		},
+		{
+			"path": "result.json",
+			"sha256": "94676edcb530b4ad7c3d8c912a71e7824bf0c3c170e26d823a6ccf2ebaed7ddf",
+			"bytes": 3695
+		},
+		{
+			"path": "reviewer-1-input.json",
+			"sha256": "cc7e09af7fcaca232b99a050b0f0899b692ae04bc77a63e1c8ee2b1019973a5f",
+			"bytes": 32618
+		},
+		{
+			"path": "reviewer-2-input.json",
+			"sha256": "38c19884bc28f60a1fa603d6f161896abba7d0a6ee57daaa4190f034d984b99d",
+			"bytes": 32618
+		},
+		{
+			"path": "reviewer-3-input.json",
+			"sha256": "3869aa78d8da6f33387339f4894f91fb9c449c9bbf6213bd2eb22245b429cbaf",
+			"bytes": 32618
+		},
+		{
+			"path": "reviewer-responses.json",
+			"sha256": "49df9bb60c78824dfab102350a9dd48d851a80351a3f73fa15c84ea6a05fa966",
+			"bytes": 2257
+		},
+		{
+			"path": "sdk-session.jsonl",
+			"sha256": "a4084b40136999a8e73fb8cc80a008fc00334d68f544ff3b4e1f7257c9925b89",
+			"bytes": 168485
+		},
+		{
+			"path": "workspace/package.json",
+			"sha256": "1239d4d885dcad42201a27ed9324f8f0f760b78700d8db9ced39a511cffe7eae",
+			"bytes": 18
+		},
+		{
+			"path": "workspace/qa/ui/assets/json-desktop/revisions/v1/.incomplete.json",
+			"sha256": "a9d1cc6226331c60876ac3fd7832b7aca902733a7345d6dfadcce1a17aa68e4b",
+			"bytes": 122
+		},
+		{
+			"path": "workspace/qa/ui/assets/json-desktop/revisions/v1/manifest.json",
+			"sha256": "2d6084a1fd8db892a3df5a457f6f9f2d7f7e23e067c99dffc5eda6c516aa6241",
+			"bytes": 1710
+		},
+		{
+			"path": "workspace/qa/ui/assets/json-desktop/revisions/v1/name.spec.ts",
+			"sha256": "796f0d54e8866fb5877df32bdc7be49e217ef17cf9decaf0ee20b95cb5b41aa8",
+			"bytes": 453
+		},
+		{
+			"path": "workspace/qa/ui/assets/json-desktop/revisions/v1/reviews/design-1f66ca53-d48d-438c-bd41-acba4cca8b50/.incomplete.json",
+			"sha256": "270c3300e4fafc47d35532237585072c585fa8f22efa4a88cc570a2518da2589",
+			"bytes": 85
+		},
+		{
+			"path": "workspace/qa/ui/assets/json-desktop/revisions/v1/reviews/design-1f66ca53-d48d-438c-bd41-acba4cca8b50/input.json",
+			"sha256": "ccd357d149f3c27ce680759a90c7bdfdec858c64519c4e0a412413d0c73644df",
+			"bytes": 38934
+		},
+		{
+			"path": "workspace/qa/ui/assets/json-desktop/revisions/v1/reviews/design-1f66ca53-d48d-438c-bd41-acba4cca8b50/manifest.json",
+			"sha256": "a5f44818e795443e1968412bca22be213b5cbbd86f2367b192e823fbb72955a6",
+			"bytes": 7023
+		},
+		{
+			"path": "workspace/qa/ui/assets/json-desktop/revisions/v1/reviews/design-1f66ca53-d48d-438c-bd41-acba4cca8b50/raw.json",
+			"sha256": "21669a1f2afe87ff65433aa64b2f1e443c28590cdee728825bc3854ae933819c",
+			"bytes": 2236
+		},
+		{
+			"path": "workspace/qa/ui/assets/json-desktop/revisions/v1/reviews/design-1f66ca53-d48d-438c-bd41-acba4cca8b50/static.json",
+			"sha256": "17af64499cd2f6bae4a6db2a0203eee2cdea6aaf9d4f4b429093b6e2efa7ccc5",
+			"bytes": 428
+		},
+		{
+			"path": "workspace/qa/ui/assets/json-desktop/revisions/v1/reviews/design-2b53d6a1-ba0f-4ed3-82ec-336063086008/input.json",
+			"sha256": "ffd791bd677795e126dbfa5bb974ed2b3cae61befbe1e3703aee8e1a7fdf3736",
+			"bytes": 38934
+		},
+		{
+			"path": "workspace/qa/ui/assets/json-desktop/revisions/v1/reviews/design-2b53d6a1-ba0f-4ed3-82ec-336063086008/raw.json",
+			"sha256": "1e46d4530063e8b59afed6bdcfd771440aa900eeb40a7b4e375861eac400b539",
+			"bytes": 192
+		},
+		{
+			"path": "workspace/qa/ui/assets/json-desktop/revisions/v1/reviews/design-2b53d6a1-ba0f-4ed3-82ec-336063086008/static.json",
+			"sha256": "17af64499cd2f6bae4a6db2a0203eee2cdea6aaf9d4f4b429093b6e2efa7ccc5",
+			"bytes": 428
+		},
+		{
+			"path": "workspace/qa/ui/assets/json-desktop/revisions/v1/reviews/design-70e39840-cf0e-4757-a619-bc219cf1bb99/input.json",
+			"sha256": "1e17e7a8c4a35b313626c5584f4ea67d0d6d06f019e5ed28368b7f771ee3a91e",
+			"bytes": 38934
+		},
+		{
+			"path": "workspace/qa/ui/assets/json-desktop/revisions/v1/reviews/design-70e39840-cf0e-4757-a619-bc219cf1bb99/raw.json",
+			"sha256": "c9421ced13ec8d90c217135481b6bb7224075b395325aaf88dd6fecc628edd2b",
+			"bytes": 154
+		},
+		{
+			"path": "workspace/qa/ui/assets/json-desktop/revisions/v1/reviews/design-70e39840-cf0e-4757-a619-bc219cf1bb99/static.json",
+			"sha256": "17af64499cd2f6bae4a6db2a0203eee2cdea6aaf9d4f4b429093b6e2efa7ccc5",
+			"bytes": 428
+		},
+		{
+			"path": "workspace/qa/ui/cases/json-desktop/.incomplete.json",
+			"sha256": "d1f8165ccd9c44bbcc60765e6bbd2facc976bee4c04f1d02fbd8681415b68a72",
+			"bytes": 63
+		},
+		{
+			"path": "workspace/qa/ui/cases/json-desktop/data-rules.json",
+			"sha256": "1a5d9ca7242302be93cfd0184c656d924e1f56a40923c4d66f6534d130ff0c05",
+			"bytes": 103
+		},
+		{
+			"path": "workspace/qa/ui/cases/json-desktop-cases/.incomplete.json",
+			"sha256": "e9e97e23743f9368f66618ac2a61de15647dd84384091ee36cd3220f8179d4af",
+			"bytes": 52
+		},
+		{
+			"path": "workspace/qa/ui/cases/json-desktop-cases/manifest.json",
+			"sha256": "ba3233345ffd31307671fb78ac3e2ad281e6e956c16a454befe3ebb237f08ddf",
+			"bytes": 2005
+		},
+		{
+			"path": "workspace/qa/ui/catalog.json",
+			"sha256": "dc06931d72b915373a8c2946616de47709f4ca5a6f87187f10a13a27ff25c5b5",
+			"bytes": 1715
+		},
+		{
+			"path": "workspace/qa/ui/inventories/json-desktop-inventory/.incomplete.json",
+			"sha256": "1749c4643b06b71c19f57a6aa1360fc088703c8796a3872bd85a47c65b67284b",
+			"bytes": 60
+		},
+		{
+			"path": "workspace/qa/ui/inventories/json-desktop-inventory/manifest.json",
+			"sha256": "b1eceb5ce96f28fd021bdf42988e6c46034fe914ae9e9d72c3147c895323db01",
+			"bytes": 1505
+		},
+		{
+			"path": "workspace/qa/ui/scopes/json-desktop-non-pms-scope/.incomplete.json",
+			"sha256": "bb9eebe0e969b767fc30db2885e1d62fbaed91a7d2de233053ec09ad2d6bd067",
+			"bytes": 60
+		},
+		{
+			"path": "workspace/qa/ui/scopes/json-desktop-non-pms-scope/manifest.json",
+			"sha256": "aecc2d520a8e70d7db2664a462577a704f48f9f061196ff66b66575801a2210a",
+			"bytes": 808
+		},
+		{
+			"path": "workspace/qa/ui/tasks/json-desktop-non-pms-task/.incomplete.json",
+			"sha256": "08b08526fb0d7fd21a379bdcedc33cfe682ac9ffc4ecb7592fdcf7ac4b6b3945",
+			"bytes": 58
+		},
+		{
+			"path": "workspace/qa/ui/tasks/json-desktop-non-pms-task/manifest.json",
+			"sha256": "f74c2b239f89adcc202ef0b509493a3ca19c87b4eecffd3012c1815aafc59f17",
+			"bytes": 1009
+		},
+		{
+			"path": "workspace/requirements.md",
+			"sha256": "31831577a1a6c044937c66595ae9eb2b38b56e33e34666cc0f25751c0a80c974",
+			"bytes": 330
+		}
+	]
+}

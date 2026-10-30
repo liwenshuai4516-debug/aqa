@@ -1,0 +1,95 @@
+{
+  "status": "prepared-for-independent-review",
+  "host": "127.0.0.1",
+  "port": 8986,
+  "basePath": "/pms/OperationContract",
+  "account": "pms_admin",
+  "department": {
+    "label": "诊断合成部门",
+    "id": "diagnostic-dept-synthetic",
+    "kind": "controlled-synthetic"
+  },
+  "departmentPurpose": "Controlled synthetic response for fixture diagnosis only. 004 freezes the observed department-tree response BEFORE the contract query; real PMS requires a fresh real response. Never infer IDs from the contract query.",
+  "paginationCoverage": "P0 starts at page 1. Non-first-page to page 1 transition is not covered.",
+  "nodeOptions": [
+    "草稿",
+    "部门负责人审核"
+  ],
+  "projectTypeOptions": [
+    "集成实施类"
+  ],
+  "queryEndpoint": "/api/project-management-backend/v1/web/contract-mgt/operation-contract/page",
+  "unsupportedMessage": "当前合同接口不支持项目类型及具体节点筛选，请清空后重试",
+  "pageSize": 10,
+  "mutations": [],
+  "activeCaseIds": [
+    "PMS-OC-SRC-001",
+    "PMS-OC-SRC-002",
+    "PMS-OC-SRC-003",
+    "PMS-OC-SRC-004",
+    "PMS-OC-SRC-005",
+    "PMS-OC-SRC-006",
+    "PMS-OC-SRC-007",
+    "PMS-OC-SRC-008",
+    "PMS-OC-SRC-009"
+  ],
+  "sourceStatus": "Current component/department/shared/API sources confirmed, including BASE_SERVICE/API prefix and dn/Ne normalization by main agent; candidate registration remains with main agent. No review or run performed",
+  "settingsStatusMeaning": "Inputs prepared only; no approval/runtime authorization. Main session starts the server only after trusted approval.",
+  "currentSourceRefs": [
+    {
+      "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/operation-contract.js",
+      "sha256": "d39d1798e1488f85a4ff4df23ae11cb1ed0bd3baa48795f72daca4b2f5f74ae7"
+    },
+    {
+      "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/operation-contract-api.txt",
+      "sha256": "34204c1bc817d72636f404a949e136b4a2a0d0d431cefef1e11224974dbe731a"
+    },
+    {
+      "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/department-n1.txt",
+      "sha256": "1fa54c8abc6b908995148d238fb4b189e4a144b2b663d3712ece97cf5393169a"
+    },
+    {
+      "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/department-a0t.txt",
+      "sha256": "21142b4704fd062281ab90785e7b4695909ed5d5378d4bbe917da4e98f2678bf"
+    }
+  ],
+  "historicalSourceRefs": [
+    {
+      "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract.js",
+      "sha256": "3095b71c017cfb9787bdc11efdd4e9f92355453a0627b5356416bf21901c2037"
+    },
+    {
+      "path": "qa/ui/scopes/pms-contract-deployment-20261030/operation-contract-api.txt",
+      "sha256": "6d3d0a17fa92105853a1936b99a2ea9c27eaec8970a0c354810ac5edc4db6476"
+    }
+  ],
+  "departmentEndpoint": "/api/base-service/department-tree",
+  "departmentTree": [
+    {
+      "id": "diagnostic-dept-synthetic",
+      "name": "诊断合成部门",
+      "children": [
+        {
+          "id": "diagnostic-child-synthetic",
+          "name": "诊断合成子部门"
+        }
+      ]
+    }
+  ],
+  "availableDraftMutations": [
+    "name-untrimmed",
+    "reset-name-retained",
+    "code-untrimmed",
+    "whitespace-effective-filter",
+    "wrong-department-id",
+    "wrong-date-end",
+    "wrong-draft-status",
+    "wrong-node-message",
+    "wrong-type-message",
+    "unsupported-node-refresh",
+    "unsupported-type-refresh",
+    "unsupported-node-rows-changed",
+    "unsupported-type-rows-changed"
+  ],
+  "unsupportedObservation": "At least 1500ms after exact message; request listener and list observer installed before click. No assertion beyond this interval."
+}

@@ -1,0 +1,82 @@
+{
+  "checked_at": "2026-10-30T08:54:21.982644+00:00",
+  "entry_url": "http://192.168.90.224:8238/pms/OperationContract",
+  "entry_status": 200,
+  "asset_url": "http://192.168.90.224:8238/assets/index-CIpFLfjX.js",
+  "asset_status": 200,
+  "sha256": "6c8032c1be5c27ec07eb9d149f37c31980229561d819ff31c0e5ca3759eca9ed",
+  "bytes": 2557077,
+  "basis": "public deployed frontend source only; no authentication or browser execution",
+  "kind": "public-source-excerpts-not-runtime-evidence",
+  "archive_sha256": "3ddf49f58d64cc45f6c04bde98a807f58aa934bf41a0217951be3db5fc14a98d",
+  "archive_file": "index-CIpFLfjX.js.gz",
+  "offset_unit": "UTF-16 code units",
+  "entries": [
+    {
+      "file": "department-a0t.txt",
+      "start_utf16": 2218369,
+      "end_utf16": 2218420,
+      "sha256": "21142b4704fd062281ab90785e7b4695909ed5d5378d4bbe917da4e98f2678bf"
+    },
+    {
+      "file": "operation-contract-api.txt",
+      "start_utf16": 2248442,
+      "end_utf16": 2249073,
+      "sha256": "34204c1bc817d72636f404a949e136b4a2a0d0d431cefef1e11224974dbe731a"
+    },
+    {
+      "file": "department-n1.txt",
+      "start_utf16": 2258986,
+      "end_utf16": 2259221,
+      "sha256": "1fa54c8abc6b908995148d238fb4b189e4a144b2b663d3712ece97cf5393169a"
+    },
+    {
+      "file": "operation-contract.js",
+      "start_utf16": 2319741,
+      "end_utf16": 2329475,
+      "sha256": "d39d1798e1488f85a4ff4df23ae11cb1ed0bd3baa48795f72daca4b2f5f74ae7"
+    },
+    {
+      "file": "query-handler.txt",
+      "start_utf16": 2322256,
+      "end_utf16": 2322382,
+      "sha256": "5246214e214681eb764930243670bff7b9e89a0aefa0feb56d0fc5c75f5855c9"
+    },
+    {
+      "file": "reset-handler.txt",
+      "start_utf16": 2322382,
+      "end_utf16": 2322476,
+      "sha256": "702642a6a00b24fb3ad190a5e08537e70337e99e858e8fc14818be6cb77746ce"
+    },
+    {
+      "excerpt": "searchbar",
+      "start_utf16": 2184510,
+      "end_utf16": 2186310,
+      "sha256": "2923408d1f849abbee7c631e1ffc29e7606caedbebb43e9d02e0c50369b46bff"
+    },
+    {
+      "excerpt": "search-item",
+      "start_utf16": 2187400,
+      "end_utf16": 2187670,
+      "sha256": "6af413bfe4bfa6dff6f25112539f5fc011cdfaa77ca6453e8da5ed4c2b543886"
+    },
+    {
+      "excerpt": "project-types",
+      "start_utf16": 2252394,
+      "end_utf16": 2252564,
+      "sha256": "3c09df0aa208435403e0ce396ba260991f74efb5cc3de10b376e2cbe201c750a"
+    },
+    {
+      "excerpt": "page-get",
+      "start_utf16": 2172144,
+      "end_utf16": 2172444,
+      "sha256": "92be8feefbef9386a436a6cf1b684429ffc86bfba5089e15e491e443c4b9672e"
+    },
+    {
+      "excerpt": "axios-omit",
+      "start_utf16": 2136437,
+      "end_utf16": 2137017,
+      "sha256": "105228588aef69fbc29e1b8adb28ecfbf9dce9efc244683a4dc77e8ebe3fd808"
+    }
+  ]
+}

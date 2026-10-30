@@ -1,0 +1,155 @@
+{
+	"schema_version": "1.0",
+	"kind": "partial-stage-evidence",
+	"scope": "经营合同9条查询/重置；当前部署公开源码声明，实际PMS业务执行尚未发生",
+	"environment": {
+		"base_url": "http://192.168.90.224:8238/pms/OperationContract",
+		"deployment_bundle_sha256": "6c8032c1be5c27ec07eb9d149f37c31980229561d819ff31c0e5ca3759eca9ed",
+		"identity_role": "configured account; business role not yet verified"
+	},
+	"asset_ref": {
+		"path": "qa/ui/assets/pms-contract-query-reset/revisions/r8/manifest.json",
+		"sha256": "914863386236b4be14f4da4d47edb711979d82eeec015602c7581bdb0f51bf64"
+	},
+	"cases_ref": {
+		"path": "qa/ui/cases/pms-contract-query-reset-r7/manifest.json",
+		"sha256": "3e80c1eca31c4b5ba5dc4fc8a54dd10570cb5c39b6425801e19178d822e4c591"
+	},
+	"inventory_ref": {
+		"path": "qa/ui/inventories/pms-contract-query-reset-all-r7/manifest.json",
+		"sha256": "ca5bcac44ad2955dbd0156fbcd9dc5924658aed92c8905df08adebea19de3e80"
+	},
+	"static_result": {
+		"schema_version": "1.0",
+		"capability_id": "ui-case-design",
+		"capability_version": "0.1.0",
+		"status": "completed",
+		"artifact_refs": [
+			{
+				"path": "qa/ui/assets/pms-contract-query-reset/revisions/r8/manifest.json",
+				"sha256": "914863386236b4be14f4da4d47edb711979d82eeec015602c7581bdb0f51bf64"
+			}
+		],
+		"errors": [],
+		"output": {
+			"asset_ref": {
+				"path": "qa/ui/assets/pms-contract-query-reset/revisions/r8/manifest.json",
+				"sha256": "914863386236b4be14f4da4d47edb711979d82eeec015602c7581bdb0f51bf64"
+			},
+			"issues": [],
+			"coverage": {
+				"planned": [
+					"operation-contract/current-source-query-reset/oc-src-001",
+					"operation-contract/current-source-query-reset/oc-src-002",
+					"operation-contract/current-source-query-reset/oc-src-003",
+					"operation-contract/current-source-query-reset/oc-src-004",
+					"operation-contract/current-source-query-reset/oc-src-005",
+					"operation-contract/current-source-query-reset/oc-src-006",
+					"operation-contract/current-source-query-reset/oc-src-007",
+					"operation-contract/current-source-query-reset/oc-src-008",
+					"operation-contract/current-source-query-reset/oc-src-009"
+				],
+				"covered": [
+					"operation-contract/current-source-query-reset/oc-src-001",
+					"operation-contract/current-source-query-reset/oc-src-002",
+					"operation-contract/current-source-query-reset/oc-src-003",
+					"operation-contract/current-source-query-reset/oc-src-004",
+					"operation-contract/current-source-query-reset/oc-src-005",
+					"operation-contract/current-source-query-reset/oc-src-006",
+					"operation-contract/current-source-query-reset/oc-src-007",
+					"operation-contract/current-source-query-reset/oc-src-008",
+					"operation-contract/current-source-query-reset/oc-src-009"
+				],
+				"missing": []
+			},
+			"dependencies": [
+				{
+					"name": "@playwright/test",
+					"version": "1.62.1"
+				},
+				{
+					"name": "pi-ui-testing",
+					"version": "0.1.31"
+				},
+				{
+					"name": "typescript",
+					"version": "7.0.2"
+				}
+			],
+			"ready_for_review": true,
+			"design_approved": false
+		}
+	},
+	"native_review_admission": {
+		"request": {
+			"asset_ref": {
+				"path": "qa/ui/assets/pms-contract-query-reset/revisions/r8/manifest.json",
+				"sha256": "914863386236b4be14f4da4d47edb711979d82eeec015602c7581bdb0f51bf64"
+			},
+			"task_ref": {
+				"path": "qa/ui/tasks/pms-operation-contract-new-20261029/manifest.json",
+				"sha256": "c2fc580718cca099551d9b68a3b356a5f209f4a7b79d4154bce6f9a66605ecca"
+			},
+			"request_id": "pms-oc-r8-after-json-fix-20261030"
+		},
+		"result": {
+			"schema_version": "1.0",
+			"capability_id": "ui-design-review",
+			"capability_version": "0.1.0",
+			"status": "blocked",
+			"artifact_refs": [],
+			"errors": [
+				{
+					"category": "review-rejected",
+					"message": "设计评估预算已耗尽，不自动批准",
+					"recoverable": false
+				}
+			]
+		}
+	},
+	"execution": {
+		"designed": 9,
+		"script_mapped": 9,
+		"executed": 0,
+		"passed": 0,
+		"failed": 0,
+		"unexecuted": 9,
+		"run_ids": [],
+		"diagnosis_performed": false
+	},
+	"transport_fix": {
+		"package_version": "0.1.31",
+		"artifact": ".pi/skills/ui-testing-workflow/assets/pi-ui-testing-0.1.31.tgz",
+		"sha256": "f28f139a7ece07f469a68de18a08603c3e5c910f5d4d4470f2d24c932cb3d3bf",
+		"upstream_patch": ".pi/skills/ui-testing-workflow/assets/ui-review-json-0.1.31.patch",
+		"current_session_reloaded": false,
+		"isolated_actual_Electron_verified": true,
+		"synthetic_evidence_index": "docs/ui-testing-evidence/ui-review-json-electron-20261030.index.json",
+		"meaning": "JSON transport verified with local synthetic provider; no PMS semantic approval or execution granted"
+	},
+	"history": {
+		"preserved": true,
+		"original_task_id": "pms-operation-contract-new-20261029",
+		"original_budget_exhausted": true,
+		"invalid_response_not_salvaged": true,
+		"revision_lineage": "r7 files/cases/inventory frozen; r7 manifest compiler input mistakenly included minified declaration source and was rejected; r7b excludes declaration-only .js from compiler files while retaining source references, static passes; r8 is identical to r7b with a numeric revision for the host continuation grammar. No task/scope/budget reset."
+	},
+	"limitations": [
+		"默认第一页起步，未验证非首页回到1转换。",
+		"007/008只有精确1500ms无请求/无列表变化窗口的设计，尚未实测。",
+		"真实环境认证准备、部门可用数据及当前DOM定位未完成本轮预检。",
+		"隔离Electron合成provider结果不能证明个人安装已加载新版，也不替代真实PMS运行。"
+	],
+	"next": {
+		"execution_authorization_already_given": true,
+		"required_host_authorization": "为原任务 pms-operation-contract-new-20261029 追加1轮独立设计评审；对r8续评",
+		"host_requirement_source": "node_modules/pi-ui-testing/skills/ui-design-review/SKILL.md:80",
+		"host_authorization_not_registered": true,
+		"after_grant": [
+			"确认原会话已重载0.1.31",
+			"原循环对r8做最多1轮真实独立评审",
+			"获批后进行受控正反诊断和目标私密环境预检",
+			"合法execute任务按既有执行授权直接跑全部9条并保留原生证据"
+		]
+	}
+}

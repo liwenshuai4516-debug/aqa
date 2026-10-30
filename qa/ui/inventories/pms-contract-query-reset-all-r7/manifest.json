@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "kind": "inventory",
+  "id": "pms-contract-query-reset-all-r7",
+  "created_at": "2026-10-30T09:07:35.788015+00:00",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "features": [
+      {
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "name": "经营合同九条查询与重置场景",
+        "entry": "http://192.168.90.224:8238/pms/OperationContract",
+        "role": "configured account; business role not yet verified",
+        "priority": "P0",
+        "actions": [
+          "名称/编号/空白/部门/日期/草稿查询",
+          "具体节点和项目类型不支持校验",
+          "六项条件重置"
+        ],
+        "states": [
+          "当前部署源码已获取",
+          "九条脚本均已设计但未执行",
+          "历史001/009录制仅作参考，当前部署DOM待核验"
+        ],
+        "coverage": "discovered",
+        "discovery": "source",
+        "source_refs": [
+          {
+            "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/operation-contract.js",
+            "sha256": "d39d1798e1488f85a4ff4df23ae11cb1ed0bd3baa48795f72daca4b2f5f74ae7"
+          },
+          {
+            "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/query-handler.txt",
+            "sha256": "5246214e214681eb764930243670bff7b9e89a0aefa0feb56d0fc5c75f5855c9"
+          },
+          {
+            "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/reset-handler.txt",
+            "sha256": "702642a6a00b24fb3ad190a5e08537e70337e99e858e8fc14818be6cb77746ce"
+          },
+          {
+            "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/department-n1.txt",
+            "sha256": "1fa54c8abc6b908995148d238fb4b189e4a144b2b663d3712ece97cf5393169a"
+          },
+          {
+            "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/department-a0t.txt",
+            "sha256": "21142b4704fd062281ab90785e7b4695909ed5d5378d4bbe917da4e98f2678bf"
+          },
+          {
+            "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/http-and-value-helpers.txt",
+            "sha256": "d6895065dfe49d016bd4e6fa844466ae081e2088c9ee998277ea8044bc4c607c"
+          },
+          {
+            "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/shared-source.txt",
+            "sha256": "a59ba8658de33b3bbd513a88badcd79293145660a3ee30b5011866aec6ed1902"
+          },
+          {
+            "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/operation-contract-api.txt",
+            "sha256": "34204c1bc817d72636f404a949e136b4a2a0d0d431cefef1e11224974dbe731a"
+          }
+        ],
+        "source_locations": [
+          {
+            "ref": {
+              "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/operation-contract.js",
+              "sha256": "d39d1798e1488f85a4ff4df23ae11cb1ed0bd3baa48795f72daca4b2f5f74ae7"
+            },
+            "line": 1,
+            "symbol": "Jyt OperationContract setup O/H/p/b"
+          }
+        ],
+        "scenarios": [
+          {
+            "scenario_id": "oc-src-001",
+            "title": "合同名称去空白查询"
+          },
+          {
+            "scenario_id": "oc-src-002",
+            "title": "合同编号去空白查询"
+          },
+          {
+            "scenario_id": "oc-src-003",
+            "title": "名称编号双空白省略筛选"
+          },
+          {
+            "scenario_id": "oc-src-004",
+            "title": "归属部门独立响应映射departmentId"
+          },
+          {
+            "scenario_id": "oc-src-005",
+            "title": "签订日期两端点按YYYY-MM-DD传递"
+          },
+          {
+            "scenario_id": "oc-src-006",
+            "title": "草稿节点传递DRAFT状态"
+          },
+          {
+            "scenario_id": "oc-src-007",
+            "title": "具体节点不支持且窗口内无请求列表不变"
+          },
+          {
+            "scenario_id": "oc-src-008",
+            "title": "项目类型不支持且窗口内无请求列表不变"
+          },
+          {
+            "scenario_id": "oc-src-009",
+            "title": "六条件全部设值后重置"
+          }
+        ],
+        "gaps": [
+          "默认第一页起步，不覆盖非第一页回到1的状态转换。",
+          "007/008无请求及列表不变只覆盖记录的1500ms窗口；无无限期或业务SLA声明。",
+          "业务角色名称和其他角色权限未验证；真实身份、定位器和部门数据需每批预检。",
+          "日期端点包含性、后端筛选正确性、业务写入与审批未纳入本批声明用例。"
+        ]
+      }
+    ],
+    "unexplored": [
+      "合同创建、编辑、审批、上传、删除及其他角色；无可靠清理接口，不创建合同。",
+      "非第一页回1转换和后端业务筛选契约未验证。"
+    ]
+  }
+}

@@ -1,0 +1,665 @@
+{
+  "schema_version": "1.0",
+  "kind": "cases",
+  "id": "pms-contract-query-reset-r7",
+  "created_at": "2026-10-30T09:07:35.788015+00:00",
+  "data": {
+    "scope_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+      "sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+    },
+    "data_rules_ref": {
+      "path": "qa/ui/scopes/pms-operation-contract-new-20261029/data-rules.json",
+      "sha256": "7c6fb434069fe43e7d52b6b59184e02ab5138018c3e3ba0ad5e73da6311aee31"
+    },
+    "sources": [
+      {
+        "source_id": "S-query",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/operation-contract.js",
+          "sha256": "d39d1798e1488f85a4ff4df23ae11cb1ed0bd3baa48795f72daca4b2f5f74ae7"
+        },
+        "statement": "当前部署Jyt组件：p/b查询状态，输入trim modelModifier，默认pageNum=1/pageSize=10；ua.page提交bizName/bizCode、部门选项id、草稿DRAFT及两个YYYY-MM-DD日期端点。仅声明前端查询行为，不承诺后端筛选语义、日期包含性或当前产品正确。"
+      },
+      {
+        "source_id": "S-limit",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/query-handler.txt",
+          "sha256": "5246214e214681eb764930243670bff7b9e89a0aefa0feb56d0fc5c75f5855c9"
+        },
+        "statement": "O函数在p.type非空或p.node为具体非草稿节点时，显示当前合同接口不支持项目类型及具体节点筛选，请清空后重试，并return，不复制条件、不调用x刷新。脚本只能在显式1500ms观察窗口内证明无查询/列表变化，不声称无限期不变。"
+      },
+      {
+        "source_id": "S-reset",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/reset-handler.txt",
+          "sha256": "702642a6a00b24fb3ad190a5e08537e70337e99e858e8fc14818be6cb77746ce"
+        },
+        "statement": "H把name/code/department/node/type置空、signedAt置[]后调用O；组件空值选项/placeholder声明全部。脚本从默认第一页开始，未覆盖非首页回1转换。"
+      },
+      {
+        "source_id": "S-department",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/department-n1.txt",
+          "sha256": "1fa54c8abc6b908995148d238fb4b189e4a144b2b663d3712ece97cf5393169a"
+        },
+        "statement": "n1从独立部门树响应data[]递归children，使用name作为label/value、id作为id；004在合同查询前冻结该响应里唯一label和非空id，不能从合同查询参数反推预期。"
+      },
+      {
+        "source_id": "S-department-endpoint",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/department-a0t.txt",
+          "sha256": "21142b4704fd062281ab90785e7b4695909ed5d5378d4bbe917da4e98f2678bf"
+        },
+        "statement": "部门树wrapper以Wt.BASE_SERVICE+/department-tree读取；同bundle的BASE_SERVICE=/base-service及baseURL=/api确定浏览器路径/api/base-service/department-tree。"
+      },
+      {
+        "source_id": "S-http",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/http-and-value-helpers.txt",
+          "sha256": "d6895065dfe49d016bd4e6fa844466ae081e2088c9ee998277ea8044bc4c607c"
+        },
+        "statement": "当前bundle精确片段声明/api base URL、/base-service prefix，以及dn对象守卫和Ne字符串/数字转换。"
+      },
+      {
+        "source_id": "S-shared",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/shared-source.txt",
+          "sha256": "a59ba8658de33b3bbd513a88badcd79293145660a3ee30b5011866aec6ed1902"
+        },
+        "statement": "当前bundle精确摘录提供CSearchBar按钮/折叠、search-item/search-label、项目类型枚举、pageGet和序列化省略声明。"
+      },
+      {
+        "source_id": "S-api",
+        "oracle_type": "declaration",
+        "ref": {
+          "path": "qa/ui/scopes/pms-contract-deployment-r7-20261030/operation-contract-api.txt",
+          "sha256": "34204c1bc817d72636f404a949e136b4a2a0d0d431cefef1e11224974dbe731a"
+        },
+        "statement": "ua.page以只读pageGet请求经营合同列表；本批只执行查询、重置和页面重载，不操作其他接口。"
+      },
+      {
+        "source_id": "S-R4-SEED",
+        "oracle_type": "baseline",
+        "ref": {
+          "path": "qa/ui/pms-operation-contract/seed-v14.spec.ts",
+          "sha256": "14b998b9e137b5f8d1c03398c0cb50a6b49e5af873e885c361e7c5e06e7cd5de"
+        },
+        "statement": "真实v14 seed身份协议：localStorage token若可解析为JSON字符串则解码；headers token、x-parent-client-code=pms、x-client-code=pms；只返回HTTP/profile.code/username匹配布尔值。"
+      }
+    ],
+    "cases": [
+      {
+        "case_id": "PMS-OC-SRC-001",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-001",
+        "title": "合同名称去空白查询",
+        "priority": "P0",
+        "preconditions": [
+          "当前部署公开代码声明作为预期；设计候选尚未通过独立评审/运行诊断/本轮业务执行。",
+          "原task/scope/9条分母和全部评审历史保留；每例使用pi-ui-testing/fixtures独立context。",
+          "原生fixture预检环境/身份/初态；脚本只返回账号匹配布尔值并核对默认第一页、六项默认条件；不满足则记录前置阻塞，不skip。",
+          "真实PMS使用受管私密storageState；auth:none仅允许loopback合成fixture及其显式标记，不能匿名回退真实PMS。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "由原生fixture和脚本从独立context核对声明身份、默认筛选及第一页，真实页面尚待实测。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "输入data.nameRaw查询；其他条件保持默认。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S3",
+            "action": "在唯一assertion_id test.step内核对独立预期的查询请求、相关UI及页面状态；不以点击成功代替断言。",
+            "assertion_ids": [
+              "PMS-OC-SRC-001-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-001-A1",
+            "step_id": "S3",
+            "source_id": "S-query",
+            "oracle_type": "declaration",
+            "target": "名称查询GET的trim bizName、pageNum=1、pageSize=10及非keyword默认UI",
+            "comparison": "exact aggregate toEqual on independently declared inputs and current source; no self-derived query oracle",
+            "expected": {
+              "request": {
+                "method": "GET",
+                "path": "/api/project-management-backend/v1/web/contract-mgt/operation-contract/page",
+                "status": 200,
+                "params": [
+                  [
+                    "bizName",
+                    "${data.nameRaw.trim()}"
+                  ],
+                  [
+                    "pageNum",
+                    "1"
+                  ],
+                  [
+                    "pageSize",
+                    "10"
+                  ]
+                ],
+                "queryCount": 1
+              },
+              "ui": {
+                "department": "全部",
+                "node": "全部",
+                "type": "全部",
+                "start": "",
+                "end": ""
+              },
+              "page": "1"
+            },
+            "observation": "只读取请求method/URL和HTTP状态，不读取合同响应正文；名称DOM失焦行为待确认，不参与001预期；preflight附件只含布尔/分类。",
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "仅改变独立context内查询状态；由原生fixture关闭自有context。无合同创建/修改/删除或个人数据清理。",
+        "data_row_id": "pms-r4-001",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-002",
+        "title": "合同编号去空白查询",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-002",
+        "priority": "P1",
+        "preconditions": [
+          "当前部署公开代码声明作为预期；设计候选尚未通过独立评审/运行诊断/本轮业务执行。",
+          "原task/scope/9条分母和全部评审历史保留；每例使用pi-ui-testing/fixtures独立context。",
+          "原生fixture预检环境/身份/初态；脚本只返回账号匹配布尔值并核对默认第一页、六项默认条件；不满足则记录前置阻塞，不skip。",
+          "真实PMS使用受管私密storageState；auth:none仅允许loopback合成fixture及其显式标记，不能匿名回退真实PMS。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "由原生fixture和脚本从独立context核对声明身份、默认筛选及第一页，真实页面尚待实测。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "在合同编号输入“  AQA_CODE_20261029  ”，保持其他条件为空并点击查询。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S3",
+            "action": "在唯一assertion_id test.step内核对独立预期的查询请求、相关UI及页面状态；不以点击成功代替断言。",
+            "assertion_ids": [
+              "PMS-OC-SRC-002-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-002-A1",
+            "step_id": "S3",
+            "source_id": "S-query",
+            "oracle_type": "declaration",
+            "target": "经营合同编号查询条件",
+            "observation": "采集本次列表请求并核对bizCode；不要求存在匹配记录。",
+            "comparison": "exact aggregate toEqual on independently declared inputs and current source; no self-derived query oracle",
+            "expected": {
+              "bizCode": "${data.codeRaw.trim()}",
+              "pageNum": 1,
+              "pageSize": 10,
+              "queryCount": 1,
+              "otherFilters": "omitted",
+              "otherUI": "default"
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "仅改变独立context内查询状态；由原生fixture关闭自有context。无合同创建/修改/删除或个人数据清理。",
+        "data_row_id": "code-trim",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-003",
+        "title": "名称编号双空白省略筛选",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-003",
+        "priority": "P1",
+        "preconditions": [
+          "当前部署公开代码声明作为预期；设计候选尚未通过独立评审/运行诊断/本轮业务执行。",
+          "原task/scope/9条分母和全部评审历史保留；每例使用pi-ui-testing/fixtures独立context。",
+          "原生fixture预检环境/身份/初态；脚本只返回账号匹配布尔值并核对默认第一页、六项默认条件；不满足则记录前置阻塞，不skip。",
+          "真实PMS使用受管私密storageState；auth:none仅允许loopback合成fixture及其显式标记，不能匿名回退真实PMS。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "由原生fixture和脚本从独立context核对声明身份、默认筛选及第一页，真实页面尚待实测。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "合同名称和合同编号均输入三个空格，其他条件为空，点击查询。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S3",
+            "action": "在唯一assertion_id test.step内核对独立预期的查询请求、相关UI及页面状态；不以点击成功代替断言。",
+            "assertion_ids": [
+              "PMS-OC-SRC-003-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-003-A1",
+            "step_id": "S3",
+            "source_id": "S-query",
+            "oracle_type": "declaration",
+            "target": "空白关键字的查询参数",
+            "observation": "核对输入trim及查询层对空字符串的省略行为；实际HTTP序列化形式须在运行准备时核实，不将undefined字面量当参数。",
+            "comparison": "exact aggregate toEqual on independently declared inputs and current source; no self-derived query oracle",
+            "expected": {
+              "pageNum": 1,
+              "pageSize": 10,
+              "queryCount": 1,
+              "allSixFiltersPresent": [],
+              "otherUI": "default"
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "仅改变独立context内查询状态；由原生fixture关闭自有context。无合同创建/修改/删除或个人数据清理。",
+        "data_row_id": "whitespace",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-004",
+        "title": "归属部门独立响应映射departmentId",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-004",
+        "priority": "P1",
+        "preconditions": [
+          "当前部署公开代码声明作为预期；设计候选尚未通过独立评审/运行诊断/本轮业务执行。",
+          "原task/scope/9条分母和全部评审历史保留；每例使用pi-ui-testing/fixtures独立context。",
+          "原生fixture预检环境/身份/初态；脚本只返回账号匹配布尔值并核对默认第一页、六项默认条件；不满足则记录前置阻塞，不skip。",
+          "真实PMS使用受管私密storageState；auth:none仅允许loopback合成fixture及其显式标记，不能匿名回退真实PMS。",
+          "部门树需要至少一个label唯一且id非空的可选项；先捕获页面重载产生的独立响应并冻结映射，然后选择部门并查询。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "由原生fixture和脚本从独立context核对声明身份、默认筛选及第一页，真实页面尚待实测。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "从已预置且有独立label/id对照的可用部门中选择一项，其他条件为空，点击查询。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S3",
+            "action": "在唯一assertion_id test.step内核对独立预期的查询请求、相关UI及页面状态；不以点击成功代替断言。",
+            "assertion_ids": [
+              "PMS-OC-SRC-004-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-004-A1",
+            "step_id": "S3",
+            "source_id": "S-query",
+            "oracle_type": "declaration",
+            "target": "归属部门与departmentId映射",
+            "observation": "先冻结页面独立部门响应和唯一label/id，附响应摘要，再比较合同查询departmentId；选项实际值不能从被测查询中获取。",
+            "comparison": "exact aggregate toEqual on independently declared inputs and current source; no self-derived query oracle",
+            "expected": {
+              "departmentId": "${frozen independent department-tree response selected.id}",
+              "departmentUI": "${same frozen selected.label}",
+              "pageNum": 1,
+              "pageSize": 10,
+              "queryCount": 1,
+              "otherFilters": "omitted"
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "仅改变独立context内查询状态；由原生fixture关闭自有context。无合同创建/修改/删除或个人数据清理。",
+        "data_row_id": "known-department",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-005",
+        "title": "签订日期两端点按YYYY-MM-DD传递",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-005",
+        "priority": "P1",
+        "preconditions": [
+          "当前部署公开代码声明作为预期；设计候选尚未通过独立评审/运行诊断/本轮业务执行。",
+          "原task/scope/9条分母和全部评审历史保留；每例使用pi-ui-testing/fixtures独立context。",
+          "原生fixture预检环境/身份/初态；脚本只返回账号匹配布尔值并核对默认第一页、六项默认条件；不满足则记录前置阻塞，不skip。",
+          "真实PMS使用受管私密storageState；auth:none仅允许loopback合成fixture及其显式标记，不能匿名回退真实PMS。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "由原生fixture和脚本从独立context核对声明身份、默认筛选及第一页，真实页面尚待实测。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "将合同签订日期选择为2026-01-01至2026-01-31，其他条件为空，点击查询。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S3",
+            "action": "在唯一assertion_id test.step内核对独立预期的查询请求、相关UI及页面状态；不以点击成功代替断言。",
+            "assertion_ids": [
+              "PMS-OC-SRC-005-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-005-A1",
+            "step_id": "S3",
+            "source_id": "S-query",
+            "oracle_type": "declaration",
+            "target": "合同签订日期查询端点",
+            "observation": "采集列表请求并核对两个端点；仅核验前端声明的日期传递，不据此判定后端端点是否包含当天。",
+            "comparison": "exact aggregate toEqual on independently declared inputs and current source; no self-derived query oracle",
+            "expected": {
+              "signedAtStart": "${data.start}",
+              "signedAtEnd": "${data.end}",
+              "pageNum": 1,
+              "pageSize": 10,
+              "queryCount": 1,
+              "otherFilters": "omitted"
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "仅改变独立context内查询状态；由原生fixture关闭自有context。无合同创建/修改/删除或个人数据清理。",
+        "data_row_id": "date-range",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-006",
+        "title": "草稿节点传递DRAFT状态",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-006",
+        "priority": "P1",
+        "preconditions": [
+          "当前部署公开代码声明作为预期；设计候选尚未通过独立评审/运行诊断/本轮业务执行。",
+          "原task/scope/9条分母和全部评审历史保留；每例使用pi-ui-testing/fixtures独立context。",
+          "原生fixture预检环境/身份/初态；脚本只返回账号匹配布尔值并核对默认第一页、六项默认条件；不满足则记录前置阻塞，不skip。",
+          "真实PMS使用受管私密storageState；auth:none仅允许loopback合成fixture及其显式标记，不能匿名回退真实PMS。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "由原生fixture和脚本从独立context核对声明身份、默认筛选及第一页，真实页面尚待实测。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "流程节点选择草稿，项目类型保持全部，其他条件为空，点击查询。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S3",
+            "action": "在唯一assertion_id test.step内核对独立预期的查询请求、相关UI及页面状态；不以点击成功代替断言。",
+            "assertion_ids": [
+              "PMS-OC-SRC-006-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-006-A1",
+            "step_id": "S3",
+            "source_id": "S-query",
+            "oracle_type": "declaration",
+            "target": "草稿节点到contractStatus的映射",
+            "observation": "核对查询请求contractStatus为DRAFT；不根据界面标签推测其他节点的后端状态值。",
+            "comparison": "exact aggregate toEqual on independently declared inputs and current source; no self-derived query oracle",
+            "expected": {
+              "contractStatus": "DRAFT",
+              "nodeUI": "草稿",
+              "pageNum": 1,
+              "pageSize": 10,
+              "queryCount": 1,
+              "otherFilters": "omitted"
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "仅改变独立context内查询状态；由原生fixture关闭自有context。无合同创建/修改/删除或个人数据清理。",
+        "data_row_id": "draft-node",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-007",
+        "title": "具体节点不支持且窗口内无请求列表不变",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-007",
+        "priority": "P1",
+        "preconditions": [
+          "当前部署公开代码声明作为预期；设计候选尚未通过独立评审/运行诊断/本轮业务执行。",
+          "原task/scope/9条分母和全部评审历史保留；每例使用pi-ui-testing/fixtures独立context。",
+          "原生fixture预检环境/身份/初态；脚本只返回账号匹配布尔值并核对默认第一页、六项默认条件；不满足则记录前置阻塞，不skip。",
+          "真实PMS使用受管私密storageState；auth:none仅允许loopback合成fixture及其显式标记，不能匿名回退真实PMS。",
+          "选择条件后列表已稳定；只证明点击至提示出现后1500ms的有界观察区间，不能推断更晚行为。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "由原生fixture和脚本从独立context核对声明身份、默认筛选及第一页，真实页面尚待实测。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "在列表初态稳定后记录当前行及请求事件，流程节点选择部门负责人审核，项目类型为全部，点击查询。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S3",
+            "action": "在唯一assertion_id test.step内核对独立预期的查询请求、相关UI及页面状态；不以点击成功代替断言。",
+            "assertion_ids": [
+              "PMS-OC-SRC-007-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-007-A1",
+            "step_id": "S3",
+            "source_id": "S-limit",
+            "oracle_type": "declaration",
+            "target": "不支持的具体节点筛选保护",
+            "observation": "从点击前开始监听列表端点的所有method和列表/分页DOM变化；精确核对新提示、保持选中条件，并观察提示后至少1500ms；结论只适用于记录窗口。",
+            "comparison": "exact aggregate toEqual on independently declared inputs and current source; no self-derived query oracle",
+            "expected": {
+              "message": "当前合同接口不支持项目类型及具体节点筛选，请清空后重试",
+              "queryCount": 0,
+              "listUnchanged": true,
+              "changesObserved": 0,
+              "observationWindowMs": 1500
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "仅改变独立context内查询状态；由原生fixture关闭自有context。无合同创建/修改/删除或个人数据清理。",
+        "data_row_id": "unsupported-node",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-008",
+        "title": "项目类型不支持且窗口内无请求列表不变",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-008",
+        "priority": "P1",
+        "preconditions": [
+          "当前部署公开代码声明作为预期；设计候选尚未通过独立评审/运行诊断/本轮业务执行。",
+          "原task/scope/9条分母和全部评审历史保留；每例使用pi-ui-testing/fixtures独立context。",
+          "原生fixture预检环境/身份/初态；脚本只返回账号匹配布尔值并核对默认第一页、六项默认条件；不满足则记录前置阻塞，不skip。",
+          "真实PMS使用受管私密storageState；auth:none仅允许loopback合成fixture及其显式标记，不能匿名回退真实PMS。",
+          "选择条件后列表已稳定；只证明点击至提示出现后1500ms的有界观察区间，不能推断更晚行为。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "由原生fixture和脚本从独立context核对声明身份、默认筛选及第一页，真实页面尚待实测。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "在列表初态稳定后记录当前行及请求事件，选择任一实际存在的非全部项目类型，流程节点为全部，点击查询。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S3",
+            "action": "在唯一assertion_id test.step内核对独立预期的查询请求、相关UI及页面状态；不以点击成功代替断言。",
+            "assertion_ids": [
+              "PMS-OC-SRC-008-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-008-A1",
+            "step_id": "S3",
+            "source_id": "S-limit",
+            "oracle_type": "declaration",
+            "target": "不支持的项目类型筛选保护",
+            "observation": "从点击前开始监听列表端点的所有method和列表/分页DOM变化；精确核对新提示、保持选中条件，并观察提示后至少1500ms；结论只适用于记录窗口。",
+            "comparison": "exact aggregate toEqual on independently declared inputs and current source; no self-derived query oracle",
+            "expected": {
+              "message": "当前合同接口不支持项目类型及具体节点筛选，请清空后重试",
+              "queryCount": 0,
+              "listUnchanged": true,
+              "changesObserved": 0,
+              "observationWindowMs": 1500
+            },
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "仅改变独立context内查询状态；由原生fixture关闭自有context。无合同创建/修改/删除或个人数据清理。",
+        "data_row_id": "unsupported-project-type",
+        "browser_project": "chromium"
+      },
+      {
+        "case_id": "PMS-OC-SRC-009",
+        "module_id": "operation-contract",
+        "feature_id": "current-source-query-reset",
+        "scenario_id": "oc-src-009",
+        "title": "六条件全部设值后重置",
+        "priority": "P0",
+        "preconditions": [
+          "当前部署公开代码声明作为预期；设计候选尚未通过独立评审/运行诊断/本轮业务执行。",
+          "原task/scope/9条分母和全部评审历史保留；每例使用pi-ui-testing/fixtures独立context。",
+          "原生fixture预检环境/身份/初态；脚本只返回账号匹配布尔值并核对默认第一页、六项默认条件；不满足则记录前置阻塞，不skip。",
+          "真实PMS使用受管私密storageState；auth:none仅允许loopback合成fixture及其显式标记，不能匿名回退真实PMS。",
+          "部门下拉需要非全部选项；准备六项非默认值后重置，不要求存在业务合同或第二页。"
+        ],
+        "steps": [
+          {
+            "step_id": "S1",
+            "action": "由原生fixture和脚本从独立context核对声明身份、默认筛选及第一页，真实页面尚待实测。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S2",
+            "action": "六项条件均设非默认后点击重置；部门只作可替换输入。",
+            "assertion_ids": []
+          },
+          {
+            "step_id": "S3",
+            "action": "在唯一assertion_id test.step内核对独立预期的查询请求、相关UI及页面状态；不以点击成功代替断言。",
+            "assertion_ids": [
+              "PMS-OC-SRC-009-A1"
+            ]
+          }
+        ],
+        "assertions": [
+          {
+            "assertion_id": "PMS-OC-SRC-009-A1",
+            "step_id": "S3",
+            "source_id": "S-reset",
+            "oracle_type": "declaration",
+            "target": "六项非默认准备状态与reset后的全部/空、第一页无筛选GET",
+            "comparison": "exact aggregate toEqual on independently declared inputs and current source; no self-derived query oracle",
+            "expected": {
+              "prepared": {
+                "name": "${data.nameRaw.trim()}",
+                "code": "${data.codeRaw.trim()}",
+                "departmentNonDefault": true,
+                "node": "部门负责人审核",
+                "type": "集成实施类",
+                "start": "${data.start}",
+                "end": "${data.end}"
+              },
+              "preparedPage": "1",
+              "ui": {
+                "name": "",
+                "code": "",
+                "department": "全部",
+                "node": "全部",
+                "type": "全部",
+                "start": "",
+                "end": ""
+              },
+              "page": "1",
+              "request": {
+                "method": "GET",
+                "path": "/api/project-management-backend/v1/web/contract-mgt/operation-contract/page",
+                "status": 200,
+                "params": [
+                  [
+                    "pageNum",
+                    "1"
+                  ],
+                  [
+                    "pageSize",
+                    "10"
+                  ]
+                ],
+                "queryCount": 1
+              },
+              "filtersPresent": []
+            },
+            "observation": "准备时读取名称/编号并trim与预置词比较，部门仅判断非空且非全部；reset expected绝不由actual生成。读取reset全部控件和请求参数，bizName,bizCode,departmentId,contractStatus,signedAtStart,signedAtEnd须精确省略。",
+            "evidence_required": true
+          }
+        ],
+        "cleanup": "仅改变独立context内查询状态；由原生fixture关闭自有context。无合同创建/修改/删除或个人数据清理。",
+        "data_row_id": "pms-r4-009",
+        "browser_project": "chromium"
+      }
+    ],
+    "gaps": [
+      "默认第一页起步，不覆盖非第一页回到1的状态转换。",
+      "007/008无请求及列表不变只覆盖记录的1500ms窗口；无无限期或业务SLA声明。",
+      "业务角色名称和其他角色权限未验证；真实身份、定位器和部门数据需每批预检。",
+      "日期端点包含性、后端筛选正确性、业务写入与审批未纳入本批声明用例。"
+    ]
+  }
+}

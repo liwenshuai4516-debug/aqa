@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "environment_id": "pms-r7-synthetic-control",
+  "deployment_version": "pms-r7-controlled-copy-not-real-PMS",
+  "role": "configured account; business role not yet verified",
+  "base_url": "http://127.0.0.1:8986/pms/OperationContract",
+  "identity": {
+    "selector": "body[data-controlled-diagnostic=\"true\"]",
+    "text": "经营合同"
+  },
+  "initial_state": {
+    "selector": "button#query",
+    "text": "查询"
+  },
+  "auth": {
+    "kind": "none"
+  },
+  "isolation": "context",
+  "timeout_ms": 10000
+}

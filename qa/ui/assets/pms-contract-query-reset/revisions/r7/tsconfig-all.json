@@ -1,0 +1,24 @@
+{
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"types": ["node"],
+		"noEmit": true,
+		"allowJs": true,
+		"checkJs": true
+	},
+	"include": [
+		"./data-all.ts",
+		"./r7-helpers.ts",
+		"./query-reset-all.spec.ts",
+		"./fixture-client.mjs",
+		"./fixture-server.mjs",
+		"./playwright.all.config.mjs"
+	]
+}
