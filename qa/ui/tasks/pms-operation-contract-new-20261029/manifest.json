@@ -37,12 +37,10 @@
       }
     ],
     "blockers": [
-      "用户已执行reload，追加1轮对r6独立续评的明确授权持续有效，不重复请求授权。",
-      "实际reload后只读核验原循环仍3error/0grant/0pending，无第4轮；持久化祖先含原授权，解析形状和r3/r6/scope引用校验通过。离线重现只定位、不替代活动SDK授权。",
-      "发现真实桌面agent仍登记同仓库legacy MCP，日志确认与项目canonical重复注册，旧stack行号与旧版本一致且无host回执。现host改独立extension identity，canonical不再注册host，避免依赖旧canonical加载状态。",
-      "已分别对项目和实际桌面agent运行enableUiTesting登记迁移：仅受管legacy->canonical/native物理路径/独立host，其他字段不变；重复执行字节一致。独立host新隔离Electron1793343225485五组PASS，194单测通过；中断批次1793343058370保留，不计通过。",
-      "实际原会话仍须加载本次新登记，随后活动SDK核对原授权调用原生renewBudget恰追加1轮。真实grant产生前不调用第4轮；不读取凭据或手改authority，不换task/scope。",
-      "待评r6 manifest SHA256 693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1。续授后用宿主回执新request ID仅评一次；旧3轮原始产物保留。原9条仍未正式执行，获批0/诊断0/通过0/失败0/业务写入0。"
+      "用户授权的原native续授已实际保存：previous_limit=3,total_limit=4,grant1；原scope/task保留。第4轮精确request ui-design-review-d6db7c790a12063b93959ac6-04已调用且消耗本次唯一追加额度，不再次renew、重试或重置。",
+      "第4轮原生ui_design_review返回blocked/review-rejected：评估输出不是有效JSON，保留原始响应且不批准。原始raw/input/static保存于r6/reviews/design-4095fbf3-0e25-4782-aca8-73275ff2baa5/。不得修补响应或把其中approved文字当可信批准。",
+      "原循环现在4条error、1grant、0pending、额度4/4，无可信review_ref。用户要求快速推进且不再卡评审，故停止额外评审开销，仅保存本轮事实与明确partial阻塞报告。",
+      "依照执行门禁，未获可信设计批准时不启动诊断或正式执行；本次不是PMS产品测试失败。原9条已归档，2条当前候选静态check issues=[]，另外7条草稿保留；正式执行0、通过0、失败0、未执行9、业务写入0。"
     ]
   }
 }

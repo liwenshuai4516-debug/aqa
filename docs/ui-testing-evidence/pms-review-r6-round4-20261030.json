@@ -1,0 +1,163 @@
+{
+	"schema_version": "1.0",
+	"kind": "PARTIAL_STAGE_EVIDENCE_NOT_FORMAL_PMS_REPORT",
+	"created_at": "2026-10-30T07:26:33.020Z",
+	"status": "BLOCKED_REVIEW_RESPONSE_INVALID_JSON_NO_FURTHER_RETRIES",
+	"request_id": "ui-design-review-d6db7c790a12063b93959ac6-04",
+	"task_ref": {
+		"path": "qa/ui/tasks/pms-operation-contract-new-20261029/manifest.json",
+		"sha256": "350a955b0b012025e52f952af83f20fef2248623a579ccf9407051d3896a4051"
+	},
+	"asset_ref": {
+		"path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/manifest.json",
+		"sha256": "693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1"
+	},
+	"scope_ref": {
+		"path": "qa/ui/scopes/pms-operation-contract-new-20261029/manifest.json",
+		"sha256": "f6ed5ff577126a73efffd150d41b85728e5fb66177758ab30e48971237a6689d"
+	},
+	"result": {
+		"native_status": "blocked",
+		"native_error": "review-rejected",
+		"message": "评估输出不是有效 JSON，保留原始响应且不批准",
+		"local_read_only_json_parse_error": "Bad control character in string literal in JSON at position 3764 (line 68 column 25)",
+		"raw_response_repaired": false,
+		"trusted_review_ref": null,
+		"design_approved": false
+	},
+	"native_evidence_refs": [
+		{
+			"path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/reviews/design-4095fbf3-0e25-4782-aca8-73275ff2baa5/raw.json",
+			"sha256": "649097a2bcb2b70b1cc3ed15d7df7a095b530d051b5673f66547c66392b4f8a2"
+		},
+		{
+			"path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/reviews/design-4095fbf3-0e25-4782-aca8-73275ff2baa5/input.json",
+			"sha256": "53456c7665bb47e5733bef288c48fea0423162b05fc49d87ac3c8966c5c643ee"
+		},
+		{
+			"path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/reviews/design-4095fbf3-0e25-4782-aca8-73275ff2baa5/static.json",
+			"sha256": "8a27dcc35f8f7abaee4ccbab76193ff97f17e987481317791830e994631eb64f"
+		}
+	],
+	"budget": {
+		"attempts": [
+			{
+				"file": "attempt-1.json",
+				"sha256": "184e26ab16ecf0bf0fec23fd481ff24a36de0964c6e8a8081adbbadbc31a652e",
+				"round": 1,
+				"state": "error",
+				"request_id": "pms-contract-query-reset-review-r3-01",
+				"error": "runner-error"
+			},
+			{
+				"file": "attempt-2.json",
+				"sha256": "52d6dd2520d4e3be10e6b01aa1ecd6db8f55c219a9514c38fd884b13bcb237c2",
+				"round": 2,
+				"state": "error",
+				"request_id": "pms-contract-query-reset-review-r5-02",
+				"error": "review-rejected"
+			},
+			{
+				"file": "attempt-3.json",
+				"sha256": "c16692fa7de17a06bb0179a4c2edb5b2e0f9b5959dfb360d23fd1c230361a470",
+				"round": 3,
+				"state": "error",
+				"request_id": "pms-contract-query-reset-review-r5-03",
+				"error": "review-rejected"
+			},
+			{
+				"file": "attempt-4.json",
+				"sha256": "1fcb3c5acb90ee0d12776f9af879a6a3626cebc4ab585a08644b2f0c934d8a50",
+				"round": 4,
+				"state": "error",
+				"request_id": "ui-design-review-d6db7c790a12063b93959ac6-04",
+				"error": "review-rejected"
+			}
+		],
+		"grants": [
+			{
+				"file": "grant-d7945846662b03a18627f1e92cc285ddfbc677d95eda4773d2e3462a1214d50c.json",
+				"sha256": "8caea8a0e9513ae2122e5d9c0583cbaeece223bc22640b65236931a67616bf7f",
+				"additional_rounds": 1,
+				"previous_limit": 3,
+				"total_limit": 4,
+				"task_ref": {
+					"path": "qa/ui/tasks/pms-operation-contract-new-20261029/manifest.json",
+					"sha256": "123a0b8d9d4d44cf2030f67bd9eabcdd68fa1628f7ff419e08fdc35d2753c534"
+				},
+				"asset_ref": {
+					"path": "qa/ui/assets/pms-contract-query-reset/revisions/r6/manifest.json",
+					"sha256": "693552cf63fe8fd2b002d26d2a7b452dc930ea20b74ec7f837d66d93863d0ce1"
+				}
+			}
+		],
+		"used": 4,
+		"total_limit": 4,
+		"additional_authorized_rounds": 1,
+		"additional_rounds_consumed": 1,
+		"pending": 0,
+		"historical_three_bytes_unchanged": true,
+		"renew_called_by_model": false,
+		"retries_after_round4": 0,
+		"task_or_scope_reset": false
+	},
+	"static_check": {
+		"native": "issues=[]",
+		"planned": 2,
+		"covered": 2,
+		"missing": 0,
+		"ready_for_review": true,
+		"design_approved": false
+	},
+	"scope": {
+		"target": "http://192.168.90.224:8238/pms/OperationContract",
+		"basis": "Frozen current deployment source and native cases r6; no browser action or business request in this round",
+		"candidate_cases": [
+			"PMS-OC-SRC-001",
+			"PMS-OC-SRC-009"
+		],
+		"remaining_seven": "Preserved design drafts, not approved or executable"
+	},
+	"statistics": {
+		"archived": 9,
+		"current_candidate": 2,
+		"approved": 0,
+		"diagnostics": 0,
+		"formal_runs": 0,
+		"executed": 0,
+		"passed": 0,
+		"failed": 0,
+		"not_executed": 9,
+		"business_writes": 0,
+		"data_space_results_written": 0
+	},
+	"classification": {
+		"confirmed": "Review response protocol/format failure",
+		"product_defect": false,
+		"root_cause": "Unknown; no provider/runner cause inferred from JSON error alone",
+		"product_test_outcome": "NOT_EXECUTED"
+	},
+	"disposition": {
+		"user_requested": "Stop wasting resources in review; quickly close testing",
+		"action": "Stop extra review/renewal attempts; preserve actual blocking evidence and partial stage report",
+		"execution_gate": "No trusted design approval; dependent diagnostic/formal run not started",
+		"overall_goal_complete": false,
+		"automatic_retry_scheduled": false
+	},
+	"cleanup": {
+		"junk_deleted": 0,
+		"preview_eligible": 0,
+		"protected_tmp_preserved": true
+	},
+	"repository_checks": {
+		"typecheck": "passed",
+		"unit_tests": {
+			"files": 2,
+			"passed": 176
+		},
+		"lint": "passed",
+		"protocol_static": "passed",
+		"diff_check": "passed",
+		"product_testing": false
+	}
+}
